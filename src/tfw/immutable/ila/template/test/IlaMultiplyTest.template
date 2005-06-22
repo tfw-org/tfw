@@ -1,0 +1,75 @@
+/*
+ * The Framework Project
+ * Copyright (C) 2005 Anonymous
+ * 
+ * This library is free software; you can
+ * redistribute it and/or modify it under the
+ * terms of the GNU Lesser General Public License
+ * as published by the Free Software Foundation;
+ * either version 2.1 of the License, or (at your
+ * option) any later version.
+ * 
+ * This library is distributed in the hope that it
+ * will be useful, but WITHOUT ANY WARRANTY;
+ * witout even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR
+ * PURPOSE.  See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU
+ * Lesser General Public License along with this
+ * library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA 02111-1307 USA
+ */
+
+package tfw.immutable.ila.%%PACKAGE%%ila.test;
+
+import java.util.Random;
+import junit.framework.TestCase;
+import tfw.immutable.ila.%%PACKAGE%%ila.%%NAME%%Ila;
+import tfw.immutable.ila.%%PACKAGE%%ila.%%NAME%%IlaMultiply;
+import tfw.immutable.ila.%%PACKAGE%%ila.%%NAME%%IlaFromArray;
+
+public class %%NAME%%IlaMultiplyTest extends TestCase
+{
+	public void test%%NAME%%IlaMultiply()
+	{
+		final Random random = new Random();
+		final int LENGTH = 29;
+		
+		%%TYPE%%[] array1 = new %%TYPE%%[LENGTH];
+		%%TYPE%%[] array2 = new %%TYPE%%[LENGTH];
+		%%TYPE%%[] array3 = new %%TYPE%%[LENGTH];
+		
+		for (int i=0 ; i < LENGTH ; i++)
+		{
+			array1[i] = %%RANDOM_VALUE%%;
+			array2[i] = %%RANDOM_VALUE%%;
+			array3[i] = array1[i] * array2[i];
+		}
+		
+		%%NAME%%Ila ila1 = %%NAME%%IlaFromArray.create(array1);
+		%%NAME%%Ila ila2 = %%NAME%%IlaFromArray.create(array2);
+		%%NAME%%Ila ila3 = %%NAME%%IlaFromArray.create(array3);
+		
+		try
+		{
+			%%NAME%%IlaMultiply.create(null, ila2);
+			fail("firstIla == null not checked for!");
+		}
+		catch (IllegalArgumentException iae) {}
+		
+		try
+		{
+			%%NAME%%IlaMultiply.create(ila1, null);
+			fail("secondIla == null not checked for!");
+		}
+		catch (IllegalArgumentException iae) {}
+		
+		String s = %%NAME%%IlaTest.check(ila3,
+			%%NAME%%IlaMultiply.create(ila1, ila2));
+		
+		assertNull(s, s);
+	}
+}

@@ -1,0 +1,5 @@
+%%TYPE%% = long
+%%NAME%% = Long
+%%PACKAGE%% = long
+%%RANDOM_VALUE%% = random.nextLong()
+%%ASSERT_EQUALS_DELTA%% =

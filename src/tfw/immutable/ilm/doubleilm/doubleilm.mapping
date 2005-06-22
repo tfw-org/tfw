@@ -1,0 +1,6 @@
+%%TYPE%% = double
+%%NAME%% = Double
+%%PACKAGE%% = double
+%%RANDOM_VALUE%% = random.nextDouble()
+%%ASSERT_EQUALS_DELTA%% = , 0
+%%DEFAULT_VALUE%% = 0.0

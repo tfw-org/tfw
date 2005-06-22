@@ -1,0 +1,79 @@
+/*
+ * The Framework Project
+ * Copyright (C) 2005 Anonymous
+ * 
+ * This library is free software; you can
+ * redistribute it and/or modify it under the
+ * terms of the GNU Lesser General Public License
+ * as published by the Free Software Foundation;
+ * either version 2.1 of the License, or (at your
+ * option) any later version.
+ * 
+ * This library is distributed in the hope that it
+ * will be useful, but WITHOUT ANY WARRANTY;
+ * witout even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR
+ * PURPOSE.  See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU
+ * Lesser General Public License along with this
+ * library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA 02111-1307 USA
+ */
+package tfw.tsm;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import tfw.tsm.ecd.EventChannelDescription;
+import tfw.value.ValueException;
+
+
+/**
+ * A utility class for creating an array of {@link EventChannelState}.
+ */
+public class EventChannelStateBuffer
+{
+    private Map state = new HashMap();
+
+	/**
+	 * Adds an {@link EventChannelState} based on the specified event 
+	 * channel description and state.
+	 * @param ecd The event channel description
+	 * @param state The event channel state.
+	 * @throws ValueException If the specified state is incompatible with 
+	 * the specified event channel description.
+	 */
+    public void put(EventChannelDescription ecd, Object state)
+        throws ValueException
+    {
+    	EventChannelState ecs = new EventChannelState(ecd, state);
+        this.state.put(ecd.getEventChannelName(), ecs);
+    }
+
+	/**
+	 * Returns the contents of the buffer.
+	 * @return the contents of the buffer.
+	 */
+    public EventChannelState[] toArray()
+    {
+        return (EventChannelState[]) state.values().toArray(new EventChannelState[state.size()]);
+    }
+    
+    /**
+     * Clears the contents of the buffer.
+     */
+    public void clear(){
+    	this.state.clear();
+    }
+    
+    /**
+     * Returns the number of item in the buffer.
+     * @return the number of item in the buffer.
+     */
+    public int size(){
+    	return this.state.size();
+    }
+}

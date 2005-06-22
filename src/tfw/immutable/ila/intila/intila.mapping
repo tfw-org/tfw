@@ -1,0 +1,5 @@
+%%TYPE%% = int
+%%NAME%% = Int
+%%PACKAGE%% = int
+%%RANDOM_VALUE%% = random.nextInt()
+%%ASSERT_EQUALS_DELTA%% =

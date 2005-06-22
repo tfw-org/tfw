@@ -1,0 +1,5 @@
+%%TYPE%% = short
+%%NAME%% = Short
+%%PACKAGE%% = short
+%%RANDOM_VALUE%% = (short)random.nextInt()
+%%ASSERT_EQUALS_DELTA%% =

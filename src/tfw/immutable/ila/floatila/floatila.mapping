@@ -1,0 +1,5 @@
+%%TYPE%% = float
+%%NAME%% = Float
+%%PACKAGE%% = float
+%%RANDOM_VALUE%% = random.nextFloat()
+%%ASSERT_EQUALS_DELTA%% = , 0f

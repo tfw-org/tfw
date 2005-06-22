@@ -1,0 +1,5 @@
+%%TYPE%% = byte
+%%NAME%% = Byte
+%%PACKAGE%% = byte
+%%RANDOM_VALUE%% = (byte)random.nextInt()
+%%ASSERT_EQUALS_DELTA%% =

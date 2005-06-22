@@ -1,0 +1,6 @@
+%%TYPE%% = Object
+%%NAME%% = Object
+%%PACKAGE%% = object
+%%RANDOM_VALUE%% = new Object()
+%%ASSERT_EQUALS_DELTA%% =
+%%DEFAULT_VALUE%% = Object.class

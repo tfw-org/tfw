@@ -1,0 +1,74 @@
+/*
+ * The Framework Project
+ * Copyright (C) 2005 Anonymous
+ * 
+ * This library is free software; you can
+ * redistribute it and/or modify it under the
+ * terms of the GNU Lesser General Public License
+ * as published by the Free Software Foundation;
+ * either version 2.1 of the License, or (at your
+ * option) any later version.
+ * 
+ * This library is distributed in the hope that it
+ * will be useful, but WITHOUT ANY WARRANTY;
+ * witout even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR
+ * PURPOSE.  See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU
+ * Lesser General Public License along with this
+ * library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA 02111-1307 USA
+ */
+
+package tfw.immutable.ila.%%PACKAGE%%ila.test;
+
+import java.util.Random;
+import junit.framework.TestCase;
+import tfw.immutable.ila.%%PACKAGE%%ila.%%NAME%%Ila;
+import tfw.immutable.ila.%%PACKAGE%%ila.%%NAME%%IlaFromArray;
+import tfw.immutable.ila.%%PACKAGE%%ila.%%NAME%%IlaFrom%%NAME%%Ilm;
+import tfw.immutable.ilm.%%PACKAGE%%ilm.%%NAME%%Ilm;
+import tfw.immutable.ilm.%%PACKAGE%%ilm.%%NAME%%IlmFromArray;
+
+public class %%NAME%%IlaFrom%%NAME%%IlmTest extends TestCase
+{
+	public void test%%NAME%%IlaFrom%%NAME%%Ilm()
+	{
+		final Random random = new Random();
+		final int WIDTH = 11;
+		final int HEIGHT = 7;
+		final int LENGTH = WIDTH * HEIGHT;
+	
+		%%TYPE%%[][] ilmArray = new %%TYPE%%[HEIGHT][WIDTH];
+		%%TYPE%%[] ilaArray = new %%TYPE%%[LENGTH];
+	
+		for (int r=0 ; r < HEIGHT ; r++)
+		{
+			for (int c=0 ; c < WIDTH ; c++)
+			{
+				final %%TYPE%% element = %%RANDOM_VALUE%%;
+				
+				ilmArray[r][c] = element;
+				ilaArray[r * WIDTH + c] = element;
+			}
+		}
+		
+		%%NAME%%Ilm ilm = %%NAME%%IlmFromArray.create(ilmArray);
+		%%NAME%%Ila ila = %%NAME%%IlaFromArray.create(ilaArray);
+		
+		try
+		{
+			%%NAME%%IlaFrom%%NAME%%Ilm.create(null);
+			fail("ilm == null not checked for!");
+		}
+		catch (IllegalArgumentException iae) {}
+		
+		String s = %%NAME%%IlaTest.check(ila,
+			%%NAME%%IlaFrom%%NAME%%Ilm.create(ilm));
+		
+		assertNull(s, s);
+	}
+}

@@ -1,0 +1,5 @@
+%%TYPE%% = boolean
+%%NAME%% = Boolean
+%%PACKAGE%% = boolean
+%%RANDOM_VALUE%% = random.nextBoolean()
+%%ASSERT_EQUALS_DELTA%% =

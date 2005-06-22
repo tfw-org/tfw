@@ -1,0 +1,22 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<TITLE>Initiator Analysis</TITLE>
+</HEAD>
+<BODY>
+<H1 ALIGN=CENTER>Initiator Analysis</H1>
+	Initiators are used to change state in a new transaction. 
+	<UL>
+	<LI>Leaf components can not create initiators because they can not add
+	them to the component structure.</LI>
+	<LI>If a leaf component needs an initiator, it is passed in through the 
+	constructor. This approach causes a problem. The event channel 
+	description associated with the initiator is unknown to the leaf 
+	component.</LI>
+	<LI>We need to add initiator event channel descriptions to the 
+	constructors of leaf components.</LI>
+	<LI>Add an initiate(EventChannelDescription) method to leaf components.</LI>
+	
+	</UL>
+</BODY>
+</HTML>

@@ -1,0 +1,6 @@
+%%TYPE%% = char
+%%NAME%% = Char
+%%PACKAGE%% = char
+%%RANDOM_VALUE%% = (char)random.nextInt()
+%%ASSERT_EQUALS_DELTA%% =
+%%DEFAULT_VALUE%% = (char)0

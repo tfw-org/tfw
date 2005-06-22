@@ -1,0 +1,78 @@
+/*
+ * The Framework Project
+ * Copyright (C) 2005 Anonymous
+ * 
+ * This library is free software; you can
+ * redistribute it and/or modify it under the
+ * terms of the GNU Lesser General Public License
+ * as published by the Free Software Foundation;
+ * either version 2.1 of the License, or (at your
+ * option) any later version.
+ * 
+ * This library is distributed in the hope that it
+ * will be useful, but WITHOUT ANY WARRANTY;
+ * witout even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR
+ * PURPOSE.  See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU
+ * Lesser General Public License along with this
+ * library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA 02111-1307 USA
+ */
+package tfw.immutable.ilm.%%PACKAGE%%ilm;
+
+import tfw.check.CheckArg;
+import tfw.immutable.ilm.AbstractIlm;
+
+public abstract class Abstract%%NAME%%Ilm extends AbstractIlm implements %%NAME%%Ilm
+{
+    protected abstract void toArrayImpl(%%TYPE%%[][] array, int xOffset, int yOffset,
+			long xStart, long yStart, int xLength, int yLength);
+
+    protected Abstract%%NAME%%Ilm(long width, long height)
+    {
+    	super(width, height);
+    }
+
+    public final %%TYPE%%[][] toArray()
+    {
+    	CheckArg.isGreaterThan(width(), Integer.MAX_VALUE,
+    		"width()", "native array size");
+    	CheckArg.isGreaterThan(height(), Integer.MAX_VALUE,
+    		"height()", "native array size");
+    	
+    	return toArray(0, 0, (int)width(), (int)height());
+    }
+
+    public final %%TYPE%%[][] toArray(long rowStart, long columnStart,
+    	int width, int height)
+    {
+    	CheckArg.isLessThanConstant(width, 0, "width");
+    	CheckArg.isLessThanConstant(height, 0, "height");
+    	
+    	%%TYPE%%[][] result = new %%TYPE%%[height][width];
+    	
+    	toArray(result, 0, 0, rowStart, columnStart, width, height);
+    	
+    	return result;
+    }
+
+    public final void toArray(%%TYPE%%[][] array, int rowOffset, int columnOffset,
+    	long rowStart, long columnStart, int width, int height)
+    {
+    	CheckArg.isNull(array, "array");
+    	
+    	if (width == 0 || height == 0 || array.length == 0)
+    	{
+    		return;
+    	}
+    	
+    	boundsCheck(array[0].length, array.length, rowOffset, columnOffset,
+    		rowStart, columnStart, width, height);
+    	toArrayImpl(array, rowOffset, columnOffset, rowStart, columnStart,
+    		width, height);
+    }
+}
