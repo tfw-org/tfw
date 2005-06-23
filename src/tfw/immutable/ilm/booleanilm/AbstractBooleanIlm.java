@@ -27,10 +27,12 @@ package tfw.immutable.ilm.booleanilm;
 import tfw.check.Argument;
 import tfw.immutable.ilm.AbstractIlm;
 
-public abstract class AbstractBooleanIlm extends AbstractIlm implements BooleanIlm
+public abstract class AbstractBooleanIlm extends AbstractIlm
+	implements BooleanIlm
 {
-    protected abstract void toArrayImpl(boolean[][] array, int xOffset, int yOffset,
-			long xStart, long yStart, int xLength, int yLength);
+    protected abstract void toArrayImpl(boolean[][] array,
+    	int xOffset, int yOffset, long xStart, long yStart,
+    	int xLength, int yLength);
 
     protected AbstractBooleanIlm(long width, long height)
     {
@@ -60,8 +62,9 @@ public abstract class AbstractBooleanIlm extends AbstractIlm implements BooleanI
     	return result;
     }
 
-    public final void toArray(boolean[][] array, int rowOffset, int columnOffset,
-    	long rowStart, long columnStart, int width, int height)
+    public final void toArray(boolean[][] array, int rowOffset,
+    	int columnOffset, long rowStart, long columnStart,
+    	int width, int height)
     {
     	Argument.assertNotNull(array, "array");
     	

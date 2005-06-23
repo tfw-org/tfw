@@ -53,8 +53,9 @@ public final class BooleanIlmConcatenateHorizontal
 		    this.rightIlm = rightIlm;
 		}
 		
-		protected void toArrayImpl(boolean[][] array, int rowOffset, int columnOffset,
-			long rowStart, long columnStart, int width, int height)
+		protected void toArrayImpl(boolean[][] array, int rowOffset,
+			int columnOffset, long rowStart, long columnStart,
+			int width, int height)
 		{
 		    if (columnStart + width <= leftIlm.width())
 		    {

@@ -26,7 +26,8 @@ package tfw.immutable.ila.charila;
 
 import tfw.immutable.ila.AbstractIla;
 
-public abstract class AbstractCharIla extends AbstractIla implements CharIla
+public abstract class AbstractCharIla extends AbstractIla
+	implements CharIla
 {
     protected abstract void toArrayImpl(char[] array, int offset,
 			long start, int length);
@@ -54,7 +55,8 @@ public abstract class AbstractCharIla extends AbstractIla implements CharIla
     	return result;
     }
 
-    public final void toArray(char[] array, int offset, long start, int length)
+    public final void toArray(char[] array, int offset,
+    	long start, int length)
     {
     	if (length == 0)
     	{

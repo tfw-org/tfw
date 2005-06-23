@@ -24,13 +24,15 @@
  */
 package tfw.immutable.ilm.%%PACKAGE%%ilm;
 
-import tfw.check.CheckArg;
+import tfw.check.Argument;
 import tfw.immutable.ilm.AbstractIlm;
 
-public abstract class Abstract%%NAME%%Ilm extends AbstractIlm implements %%NAME%%Ilm
+public abstract class Abstract%%NAME%%Ilm extends AbstractIlm
+	implements %%NAME%%Ilm
 {
-    protected abstract void toArrayImpl(%%TYPE%%[][] array, int xOffset, int yOffset,
-			long xStart, long yStart, int xLength, int yLength);
+    protected abstract void toArrayImpl(%%TYPE%%[][] array,
+    	int xOffset, int yOffset, long xStart, long yStart,
+    	int xLength, int yLength);
 
     protected Abstract%%NAME%%Ilm(long width, long height)
     {
@@ -39,9 +41,9 @@ public abstract class Abstract%%NAME%%Ilm extends AbstractIlm implements %%NAME%
 
     public final %%TYPE%%[][] toArray()
     {
-    	CheckArg.isGreaterThan(width(), Integer.MAX_VALUE,
+    	Argument.assertNotGreaterThan(width(), Integer.MAX_VALUE,
     		"width()", "native array size");
-    	CheckArg.isGreaterThan(height(), Integer.MAX_VALUE,
+    	Argument.assertNotGreaterThan(height(), Integer.MAX_VALUE,
     		"height()", "native array size");
     	
     	return toArray(0, 0, (int)width(), (int)height());
@@ -50,8 +52,8 @@ public abstract class Abstract%%NAME%%Ilm extends AbstractIlm implements %%NAME%
     public final %%TYPE%%[][] toArray(long rowStart, long columnStart,
     	int width, int height)
     {
-    	CheckArg.isLessThanConstant(width, 0, "width");
-    	CheckArg.isLessThanConstant(height, 0, "height");
+    	Argument.assertNotLessThan(width, 0, "width");
+    	Argument.assertNotLessThan(height, 0, "height");
     	
     	%%TYPE%%[][] result = new %%TYPE%%[height][width];
     	
@@ -60,10 +62,11 @@ public abstract class Abstract%%NAME%%Ilm extends AbstractIlm implements %%NAME%
     	return result;
     }
 
-    public final void toArray(%%TYPE%%[][] array, int rowOffset, int columnOffset,
-    	long rowStart, long columnStart, int width, int height)
+    public final void toArray(%%TYPE%%[][] array, int rowOffset,
+    	int columnOffset, long rowStart, long columnStart,
+    	int width, int height)
     {
-    	CheckArg.isNull(array, "array");
+    	Argument.assertNotNull(array, "array");
     	
     	if (width == 0 || height == 0 || array.length == 0)
     	{

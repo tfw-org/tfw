@@ -24,7 +24,7 @@
  */
 package tfw.immutable.ila.%%PACKAGE%%ila;
 
-import tfw.check.CheckArg;
+import tfw.check.Argument;
 import tfw.immutable.ilm.%%PACKAGE%%ilm.%%NAME%%Ilm;
 
 public final class %%NAME%%IlaFrom%%NAME%%Ilm
@@ -33,7 +33,7 @@ public final class %%NAME%%IlaFrom%%NAME%%Ilm
 
     public static %%NAME%%Ila create(%%NAME%%Ilm ilm)
     {
-    	CheckArg.isNull(ilm, "ilm");
+    	Argument.assertNotNull(ilm, "ilm");
 
 		return new My%%NAME%%Ila(ilm);
     }

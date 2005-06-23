@@ -24,7 +24,7 @@
  */
 package tfw.immutable.ilm.%%PACKAGE%%ilm;
 
-import tfw.check.CheckArg;
+import tfw.check.Argument;
 
 public final class %%NAME%%IlmConcatenateVertical
 {
@@ -32,9 +32,9 @@ public final class %%NAME%%IlmConcatenateVertical
 
     public static %%NAME%%Ilm create(%%NAME%%Ilm topIlm, %%NAME%%Ilm bottomIlm)
     {
-    	CheckArg.isNull(topIlm, "topIlm");
-    	CheckArg.isNull(bottomIlm, "bottomIlm");
-    	CheckArg.isNotEqual(topIlm.width(), bottomIlm.width(),
+    	Argument.assertNotNull(topIlm, "topIlm");
+    	Argument.assertNotNull(bottomIlm, "bottomIlm");
+    	Argument.assertEquals(topIlm.width(), bottomIlm.width(),
     		"topIlm.width()", "bottomIlm.width()");
 
 		return new My%%NAME%%Ilm(topIlm, bottomIlm);
@@ -53,8 +53,9 @@ public final class %%NAME%%IlmConcatenateVertical
 		    this.bottomIlm = bottomIlm;
 		}
 		
-		protected void toArrayImpl(%%TYPE%%[][] array, int rowOffset, int columnOffset,
-			long rowStart, long columnStart, int width, int height)
+		protected void toArrayImpl(%%TYPE%%[][] array, int rowOffset,
+			int columnOffset, long rowStart, long columnStart,
+			int width, int height)
 		{
 		    if (rowStart + height <= topIlm.height())
 		    {

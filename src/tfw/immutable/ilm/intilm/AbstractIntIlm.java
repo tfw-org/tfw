@@ -27,10 +27,12 @@ package tfw.immutable.ilm.intilm;
 import tfw.check.Argument;
 import tfw.immutable.ilm.AbstractIlm;
 
-public abstract class AbstractIntIlm extends AbstractIlm implements IntIlm
+public abstract class AbstractIntIlm extends AbstractIlm
+	implements IntIlm
 {
-    protected abstract void toArrayImpl(int[][] array, int xOffset, int yOffset,
-			long xStart, long yStart, int xLength, int yLength);
+    protected abstract void toArrayImpl(int[][] array,
+    	int xOffset, int yOffset, long xStart, long yStart,
+    	int xLength, int yLength);
 
     protected AbstractIntIlm(long width, long height)
     {
@@ -60,8 +62,9 @@ public abstract class AbstractIntIlm extends AbstractIlm implements IntIlm
     	return result;
     }
 
-    public final void toArray(int[][] array, int rowOffset, int columnOffset,
-    	long rowStart, long columnStart, int width, int height)
+    public final void toArray(int[][] array, int rowOffset,
+    	int columnOffset, long rowStart, long columnStart,
+    	int width, int height)
     {
     	Argument.assertNotNull(array, "array");
     	

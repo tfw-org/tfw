@@ -53,8 +53,9 @@ public final class BooleanIlmConcatenateVertical
 		    this.bottomIlm = bottomIlm;
 		}
 		
-		protected void toArrayImpl(boolean[][] array, int rowOffset, int columnOffset,
-			long rowStart, long columnStart, int width, int height)
+		protected void toArrayImpl(boolean[][] array, int rowOffset,
+			int columnOffset, long rowStart, long columnStart,
+			int width, int height)
 		{
 		    if (rowStart + height <= topIlm.height())
 		    {

@@ -25,7 +25,7 @@
 
 package tfw.immutable.ilm.%%PACKAGE%%ilm.test;
 
-import tfw.check.CheckArg;
+import tfw.check.Argument;
 import tfw.immutable.ilm.%%PACKAGE%%ilm.%%NAME%%Ilm;
 
 public class %%NAME%%IlmTest
@@ -34,9 +34,9 @@ public class %%NAME%%IlmTest
 	
 	public static void check(%%NAME%%Ilm ilm1, %%NAME%%Ilm ilm2)
 	{
-		CheckArg.isNotEqual(ilm1.width(), ilm2.width(),
+		Argument.assertEquals(ilm1.width(), ilm2.width(),
 			"ilm1.width()", "ilm2.width");
-		CheckArg.isNotEqual(ilm1.height(), ilm2.height(),
+		Argument.assertEquals(ilm1.height(), ilm2.height(),
 			"ilm1.height()", "ilm2.height()");
 			
 		// Check to see if the zero argument toArray() methods return

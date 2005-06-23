@@ -26,7 +26,8 @@ package tfw.immutable.ila.booleanila;
 
 import tfw.immutable.ila.AbstractIla;
 
-public abstract class AbstractBooleanIla extends AbstractIla implements BooleanIla
+public abstract class AbstractBooleanIla extends AbstractIla
+	implements BooleanIla
 {
     protected abstract void toArrayImpl(boolean[] array, int offset,
 			long start, int length);
@@ -54,7 +55,8 @@ public abstract class AbstractBooleanIla extends AbstractIla implements BooleanI
     	return result;
     }
 
-    public final void toArray(boolean[] array, int offset, long start, int length)
+    public final void toArray(boolean[] array, int offset,
+    	long start, int length)
     {
     	if (length == 0)
     	{

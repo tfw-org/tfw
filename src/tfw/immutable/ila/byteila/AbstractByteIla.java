@@ -26,7 +26,8 @@ package tfw.immutable.ila.byteila;
 
 import tfw.immutable.ila.AbstractIla;
 
-public abstract class AbstractByteIla extends AbstractIla implements ByteIla
+public abstract class AbstractByteIla extends AbstractIla
+	implements ByteIla
 {
     protected abstract void toArrayImpl(byte[] array, int offset,
 			long start, int length);
@@ -54,7 +55,8 @@ public abstract class AbstractByteIla extends AbstractIla implements ByteIla
     	return result;
     }
 
-    public final void toArray(byte[] array, int offset, long start, int length)
+    public final void toArray(byte[] array, int offset,
+    	long start, int length)
     {
     	if (length == 0)
     	{

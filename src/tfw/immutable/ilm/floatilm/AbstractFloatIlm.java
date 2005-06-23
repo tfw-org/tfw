@@ -27,10 +27,12 @@ package tfw.immutable.ilm.floatilm;
 import tfw.check.Argument;
 import tfw.immutable.ilm.AbstractIlm;
 
-public abstract class AbstractFloatIlm extends AbstractIlm implements FloatIlm
+public abstract class AbstractFloatIlm extends AbstractIlm
+	implements FloatIlm
 {
-    protected abstract void toArrayImpl(float[][] array, int xOffset, int yOffset,
-			long xStart, long yStart, int xLength, int yLength);
+    protected abstract void toArrayImpl(float[][] array,
+    	int xOffset, int yOffset, long xStart, long yStart,
+    	int xLength, int yLength);
 
     protected AbstractFloatIlm(long width, long height)
     {
@@ -60,8 +62,9 @@ public abstract class AbstractFloatIlm extends AbstractIlm implements FloatIlm
     	return result;
     }
 
-    public final void toArray(float[][] array, int rowOffset, int columnOffset,
-    	long rowStart, long columnStart, int width, int height)
+    public final void toArray(float[][] array, int rowOffset,
+    	int columnOffset, long rowStart, long columnStart,
+    	int width, int height)
     {
     	Argument.assertNotNull(array, "array");
     	

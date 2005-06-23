@@ -24,7 +24,7 @@
  */
 package tfw.immutable.ila.%%PACKAGE%%ila;
 
-import tfw.check.CheckArg;
+import tfw.check.Argument;
 
 public final class %%NAME%%IlaRamp
 {
@@ -33,7 +33,7 @@ public final class %%NAME%%IlaRamp
     public static %%NAME%%Ila create(%%TYPE%% startValue, %%TYPE%% increment,
     	long length)
     {
-    	CheckArg.isLessThanConstant(length, 0, "length");
+    	Argument.assertNotLessThan(length, 0, "length");
 
 		return new My%%NAME%%Ila(startValue, increment, length);
     }

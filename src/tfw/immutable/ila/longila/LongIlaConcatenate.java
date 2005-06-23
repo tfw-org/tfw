@@ -56,7 +56,7 @@ public final class LongIlaConcatenate
 		}
 		
 		protected void toArrayImpl(long[] array, int offset,
-					   long start, int length)
+			long start, int length)
 		{
 		    if (start + length <= leftIlaLength)
 		    {

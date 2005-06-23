@@ -30,7 +30,8 @@ public final class CharIlmSegment
 {
     private CharIlmSegment() { }
 
-    public static CharIlm create(CharIlm instance, long rowStart, long columnStart)
+    public static CharIlm create(CharIlm instance,
+    	long rowStart, long columnStart)
     {
 		return create(instance, rowStart, columnStart,
 			instance.width() - columnStart, instance.height() - rowStart);
@@ -68,11 +69,13 @@ public final class CharIlmSegment
 		    this.columnStart = columnStart;
 		}
 
-		protected void toArrayImpl(char[][] array, int rowOffset, int columnOffset,
-			long rowStart, long columnStart, int width, int height)
+		protected void toArrayImpl(char[][] array, int rowOffset,
+			int columnOffset, long rowStart, long columnStart,
+			int width, int height)
 		{
-			instance.toArray(array, rowOffset, columnOffset, this.rowStart + rowStart,
-				this.columnStart + columnStart, width, height);
+			instance.toArray(array, rowOffset, columnOffset,
+				this.rowStart + rowStart, this.columnStart + columnStart,
+				width, height);
 		}
     }
 }

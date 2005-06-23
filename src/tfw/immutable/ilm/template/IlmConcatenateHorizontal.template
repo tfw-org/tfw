@@ -24,7 +24,7 @@
  */
 package tfw.immutable.ilm.%%PACKAGE%%ilm;
 
-import tfw.check.CheckArg;
+import tfw.check.Argument;
 
 public final class %%NAME%%IlmConcatenateHorizontal
 {
@@ -32,9 +32,9 @@ public final class %%NAME%%IlmConcatenateHorizontal
 
     public static %%NAME%%Ilm create(%%NAME%%Ilm leftIlm, %%NAME%%Ilm rightIlm)
     {
-    	CheckArg.isNull(leftIlm, "leftIlm");
-    	CheckArg.isNull(rightIlm, "rightIlm");
-    	CheckArg.isNotEqual(leftIlm.height(), rightIlm.height(),
+    	Argument.assertNotNull(leftIlm, "leftIlm");
+    	Argument.assertNotNull(rightIlm, "rightIlm");
+    	Argument.assertEquals(leftIlm.height(), rightIlm.height(),
     		"leftIlm.height()", "rightIlm.height()");
 
 		return new My%%NAME%%Ilm(leftIlm, rightIlm);
@@ -53,8 +53,9 @@ public final class %%NAME%%IlmConcatenateHorizontal
 		    this.rightIlm = rightIlm;
 		}
 		
-		protected void toArrayImpl(%%TYPE%%[][] array, int rowOffset, int columnOffset,
-			long rowStart, long columnStart, int width, int height)
+		protected void toArrayImpl(%%TYPE%%[][] array, int rowOffset,
+			int columnOffset, long rowStart, long columnStart,
+			int width, int height)
 		{
 		    if (columnStart + width <= leftIlm.width())
 		    {

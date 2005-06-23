@@ -49,8 +49,9 @@ public final class DoubleIlmFill
 		    this.value = value;
 		}
 
-		protected void toArrayImpl(double[][] array, int rowOffset, int columnOffset,
-			long rowStart, long columnStart, int width, int height)
+		protected void toArrayImpl(double[][] array, int rowOffset,
+			int columnOffset, long rowStart, long columnStart,
+			int width, int height)
 		{
 			for (int r=0 ; r < height ; r++)
 			{

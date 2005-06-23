@@ -26,7 +26,8 @@ package tfw.immutable.ila.floatila;
 
 import tfw.immutable.ila.AbstractIla;
 
-public abstract class AbstractFloatIla extends AbstractIla implements FloatIla
+public abstract class AbstractFloatIla extends AbstractIla
+	implements FloatIla
 {
     protected abstract void toArrayImpl(float[] array, int offset,
 			long start, int length);
@@ -54,7 +55,8 @@ public abstract class AbstractFloatIla extends AbstractIla implements FloatIla
     	return result;
     }
 
-    public final void toArray(float[] array, int offset, long start, int length)
+    public final void toArray(float[] array, int offset,
+    	long start, int length)
     {
     	if (length == 0)
     	{

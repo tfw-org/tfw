@@ -56,7 +56,7 @@ public final class BooleanIlaConcatenate
 		}
 		
 		protected void toArrayImpl(boolean[] array, int offset,
-					   long start, int length)
+			long start, int length)
 		{
 		    if (start + length <= leftIlaLength)
 		    {

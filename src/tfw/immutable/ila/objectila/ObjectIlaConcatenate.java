@@ -56,7 +56,7 @@ public final class ObjectIlaConcatenate
 		}
 		
 		protected void toArrayImpl(Object[] array, int offset,
-					   long start, int length)
+			long start, int length)
 		{
 		    if (start + length <= leftIlaLength)
 		    {

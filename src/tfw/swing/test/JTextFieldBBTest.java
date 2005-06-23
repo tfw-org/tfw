@@ -25,18 +25,19 @@
 package tfw.swing.test;
 
 import java.awt.BorderLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 
-import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import tfw.swing.JLabelBB;
+import tfw.swing.JTextFieldBB;
 import tfw.tsm.AWTTransactionQueue;
+import tfw.tsm.Commit;
 import tfw.tsm.Initiator;
 import tfw.tsm.Root;
 import tfw.tsm.RootFactory;
@@ -48,8 +49,6 @@ public class JTextFieldBBTest
 {
 	private static final StringECD TEXT_ECD =
 		new StringECD("text");
-	private static final BooleanECD ENABLE_ECD =
-		new BooleanECD("enable");
 	
 	private static long buttonPresses = 0;
 	
@@ -57,53 +56,70 @@ public class JTextFieldBBTest
 	
 	public static final void main(String[] args)
 	{
-		final Initiator initiator = new Initiator("JButtonBBTest",
-			new EventChannelDescription[] {TEXT_ECD, ENABLE_ECD});
+		JFrame f = new JFrame();
 		
-		JLabelBB l = new JLabelBB("JButtonBBTest", TEXT_ECD, ENABLE_ECD);
-		l.setText("Set Label Value");
-		final JTextField tf = new JTextField(16);
-		JButton b = new JButton("Set Label");
+		final StringECD textECD = new StringECD("text");
+		final BooleanECD enabledECD = new BooleanECD("enabled");
 		
-		ActionListener al = new ActionListener()
+		RootFactory rf = new RootFactory();
+		rf.addTerminator(textECD, "Initial Value");
+		rf.addTerminator(enabledECD, Boolean.FALSE);
+		Root root = rf.create("JTextFieldBBTest", new AWTTransactionQueue());
+		
+		final Initiator initiator = new Initiator("JTextFieldBBTest",
+				new EventChannelDescription[] {textECD, enabledECD});
+			root.add(initiator);
+
+		final JTextField tf = new JTextField();
+		tf.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				initiator.set(TEXT_ECD, tf.getText());
-			}
-		};
-		tf.addActionListener(al);
-		b.addActionListener(al);
-		
-		JPanel c = new JPanel();
-		c.setLayout(new BorderLayout());
-		c.add(tf, BorderLayout.CENTER);
-		c.add(b, BorderLayout.EAST);
-		
-		final JPanel p = new JPanel();
-		p.setLayout(new BorderLayout());
-		p.add(l, BorderLayout.NORTH);
-		p.add(c, BorderLayout.CENTER);
-		
-		RootFactory rf = new RootFactory();
-		rf.addTerminator(ENABLE_ECD);
-		rf.addTerminator(TEXT_ECD);
-		Root r = rf.create("JButtonBBTest", new AWTTransactionQueue());
-		r.add(initiator);
-		r.add(l);
-		
-		final JFrame f = new JFrame();
-		f.getContentPane().add(p, BorderLayout.CENTER);
-		f.addWindowListener(new WindowAdapter()
-		{
-			public void windowClosing(WindowEvent e)
-			{
-				System.exit(0);
+				initiator.set(textECD, tf.getText());
 			}
 		});
-		f.pack();
-		f.setVisible(true);
+		final JCheckBox cb = new JCheckBox("Enabled");
+		cb.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				initiator.set(enabledECD, new Boolean(cb.isSelected()));
+			}
+		});
 		
-		initiator.set(TEXT_ECD, "Initial Label Value");
+		JTextFieldBB tfb = new JTextFieldBB(
+			"JTextFieldBBTest", textECD, enabledECD);
+		root.add(tfb);
+		root.add(new Commit(
+			"JTextFieldBBTestCommit",
+			new EventChannelDescription[] {textECD},
+			null,
+			null)
+		{
+			protected void commit()
+			{
+				tf.setText((String)get(textECD));
+			}
+		});
+		
+		JPanel lp = new JPanel();
+		lp.setLayout(new GridLayout(3, 1));
+		lp.add(new JLabel("TextField to Test:"));
+		lp.add(new JLabel("value of TextField:"));
+		
+		JPanel tfp = new JPanel();
+		tfp.setLayout(new GridLayout(3, 1));
+		tfp.add(tfb);
+		tfp.add(tf);
+		tfp.add(cb);
+		
+		JPanel cp = new JPanel();
+		cp.setLayout(new BorderLayout());
+		cp.add(lp, BorderLayout.WEST);
+		cp.add(tfp, BorderLayout.CENTER);
+		
+		f.setSize(300, 100);
+		f.setContentPane(cp);
+		f.setVisible(true);
 	}
 }

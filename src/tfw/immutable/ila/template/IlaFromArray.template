@@ -24,7 +24,7 @@
  */
 package tfw.immutable.ila.%%PACKAGE%%ila;
 
-import tfw.check.CheckArg;
+import tfw.check.Argument;
 
 public final class %%NAME%%IlaFromArray
 {
@@ -32,7 +32,7 @@ public final class %%NAME%%IlaFromArray
 
     public static %%NAME%%Ila create(%%TYPE%%[] array)
     {
-    	CheckArg.isNull(array, "array");
+    	Argument.assertNotNull(array, "array");
 
 		return new My%%NAME%%Ila(array);
     }

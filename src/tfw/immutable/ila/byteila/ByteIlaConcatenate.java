@@ -56,7 +56,7 @@ public final class ByteIlaConcatenate
 		}
 		
 		protected void toArrayImpl(byte[] array, int offset,
-					   long start, int length)
+			long start, int length)
 		{
 		    if (start + length <= leftIlaLength)
 		    {

@@ -24,7 +24,7 @@
  */
 package tfw.immutable.ila.%%PACKAGE%%ila;
 
-import tfw.check.CheckArg;
+import tfw.check.Argument;
 
 public final class %%NAME%%IlaMultiply
 {
@@ -32,9 +32,9 @@ public final class %%NAME%%IlaMultiply
 
     public static %%NAME%%Ila create(%%NAME%%Ila leftIla, %%NAME%%Ila rightIla)
     {
-    	CheckArg.isNull(leftIla, "leftIla");
-    	CheckArg.isNull(rightIla, "rightIla");
-    	CheckArg.isNotEqual(leftIla.length(), rightIla.length(),
+    	Argument.assertNotNull(leftIla, "leftIla");
+    	Argument.assertNotNull(rightIla, "rightIla");
+    	Argument.assertEquals(leftIla.length(), rightIla.length(),
     		"leftIla.length()", "rightIla.length()");
 
 		return new My%%NAME%%Ila(leftIla, rightIla);

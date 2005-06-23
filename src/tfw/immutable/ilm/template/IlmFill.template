@@ -24,7 +24,7 @@
  */
 package tfw.immutable.ilm.%%PACKAGE%%ilm;
 
-import tfw.check.CheckArg;
+import tfw.check.Argument;
 
 public final class %%NAME%%IlmFill
 {
@@ -32,8 +32,8 @@ public final class %%NAME%%IlmFill
 
     public static %%NAME%%Ilm create(%%TYPE%% value, long width, long height)
     {
-    	CheckArg.isLessThanConstant(width, 0, "width");
-    	CheckArg.isLessThanConstant(height, 0, "height");
+    	Argument.assertNotLessThan(width, 0, "width");
+    	Argument.assertNotLessThan(height, 0, "height");
 
 		return new My%%NAME%%Ilm(width, height, value);
     }
@@ -49,8 +49,9 @@ public final class %%NAME%%IlmFill
 		    this.value = value;
 		}
 
-		protected void toArrayImpl(%%TYPE%%[][] array, int rowOffset, int columnOffset,
-			long rowStart, long columnStart, int width, int height)
+		protected void toArrayImpl(%%TYPE%%[][] array, int rowOffset,
+			int columnOffset, long rowStart, long columnStart,
+			int width, int height)
 		{
 			for (int r=0 ; r < height ; r++)
 			{

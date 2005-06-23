@@ -56,7 +56,7 @@ public final class FloatIlaConcatenate
 		}
 		
 		protected void toArrayImpl(float[] array, int offset,
-					   long start, int length)
+			long start, int length)
 		{
 		    if (start + length <= leftIlaLength)
 		    {

@@ -26,7 +26,8 @@ package tfw.immutable.ila.objectila;
 
 import tfw.immutable.ila.AbstractIla;
 
-public abstract class AbstractObjectIla extends AbstractIla implements ObjectIla
+public abstract class AbstractObjectIla extends AbstractIla
+	implements ObjectIla
 {
     protected abstract void toArrayImpl(Object[] array, int offset,
 			long start, int length);
@@ -54,7 +55,8 @@ public abstract class AbstractObjectIla extends AbstractIla implements ObjectIla
     	return result;
     }
 
-    public final void toArray(Object[] array, int offset, long start, int length)
+    public final void toArray(Object[] array, int offset,
+    	long start, int length)
     {
     	if (length == 0)
     	{

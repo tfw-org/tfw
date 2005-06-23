@@ -35,7 +35,8 @@ public final class ByteIlaInsert
     {
     	Argument.assertNotNull(ila, "ila");
     	Argument.assertNotLessThan(index, 0, "index");
-    	Argument.assertNotGreaterThan(index, ila.length(), "index", "ila.length()");
+    	Argument.assertNotGreaterThan(index, ila.length(),
+    		"index", "ila.length()");
 
 		return new MyByteIla(ila, index, value);
     }

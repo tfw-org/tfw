@@ -53,8 +53,9 @@ public final class LongIlmConcatenateHorizontal
 		    this.rightIlm = rightIlm;
 		}
 		
-		protected void toArrayImpl(long[][] array, int rowOffset, int columnOffset,
-			long rowStart, long columnStart, int width, int height)
+		protected void toArrayImpl(long[][] array, int rowOffset,
+			int columnOffset, long rowStart, long columnStart,
+			int width, int height)
 		{
 		    if (columnStart + width <= leftIlm.width())
 		    {

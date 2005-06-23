@@ -26,7 +26,8 @@ package tfw.immutable.ila.shortila;
 
 import tfw.immutable.ila.AbstractIla;
 
-public abstract class AbstractShortIla extends AbstractIla implements ShortIla
+public abstract class AbstractShortIla extends AbstractIla
+	implements ShortIla
 {
     protected abstract void toArrayImpl(short[] array, int offset,
 			long start, int length);
@@ -54,7 +55,8 @@ public abstract class AbstractShortIla extends AbstractIla implements ShortIla
     	return result;
     }
 
-    public final void toArray(short[] array, int offset, long start, int length)
+    public final void toArray(short[] array, int offset,
+    	long start, int length)
     {
     	if (length == 0)
     	{

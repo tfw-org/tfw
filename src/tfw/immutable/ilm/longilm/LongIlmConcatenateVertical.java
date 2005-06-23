@@ -53,8 +53,9 @@ public final class LongIlmConcatenateVertical
 		    this.bottomIlm = bottomIlm;
 		}
 		
-		protected void toArrayImpl(long[][] array, int rowOffset, int columnOffset,
-			long rowStart, long columnStart, int width, int height)
+		protected void toArrayImpl(long[][] array, int rowOffset,
+			int columnOffset, long rowStart, long columnStart,
+			int width, int height)
 		{
 		    if (rowStart + height <= topIlm.height())
 		    {

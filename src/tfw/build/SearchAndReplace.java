@@ -59,24 +59,43 @@ System.out.println("input = "+args[i]);
 
 			File iFile = new File(args[i]);
 			FileInputStream ifr = new FileInputStream(iFile);
-			byte[] b = new byte[(int)iFile.length()];
-			ifr.read(b);
+			byte[] ib = new byte[(int)iFile.length()];
+			ifr.read(ib);
 			ifr.close();
-			String s = new String(b);
+			String is = new String(ib);
 
 			for (Enumeration e = p.propertyNames() ; e.hasMoreElements() ; )
 			{
 				String k = (String)e.nextElement();
 
-				s = s.replaceAll(k, p.getProperty(k));
+				is = is.replaceAll(k, p.getProperty(k));
 			}
 
 System.out.println("output = "+args[i+offset]);
 
+			String os = null;
 			File oFile = new File(args[i+offset]);
-			FileOutputStream ofos = new FileOutputStream(oFile);
-			ofos.write(s.getBytes());
-			ofos.close();
+			
+			if (oFile.exists())
+			{
+				FileInputStream ofis = new FileInputStream(oFile);
+				byte[] ob = new byte[(int)oFile.length()];
+				ofis.read(ob);
+				ofis.close();
+				os = new String(ob);
+			}
+			
+			if (is.equals(os))
+			{
+System.out.println("  skipping due to no changes...");
+			}
+			else
+			{
+System.out.println("  writing new file...");
+				FileOutputStream ofos = new FileOutputStream(oFile);
+				ofos.write(is.getBytes());
+				ofos.close();
+			}
 		}
 	}
 }

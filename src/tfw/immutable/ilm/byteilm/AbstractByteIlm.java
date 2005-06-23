@@ -27,10 +27,12 @@ package tfw.immutable.ilm.byteilm;
 import tfw.check.Argument;
 import tfw.immutable.ilm.AbstractIlm;
 
-public abstract class AbstractByteIlm extends AbstractIlm implements ByteIlm
+public abstract class AbstractByteIlm extends AbstractIlm
+	implements ByteIlm
 {
-    protected abstract void toArrayImpl(byte[][] array, int xOffset, int yOffset,
-			long xStart, long yStart, int xLength, int yLength);
+    protected abstract void toArrayImpl(byte[][] array,
+    	int xOffset, int yOffset, long xStart, long yStart,
+    	int xLength, int yLength);
 
     protected AbstractByteIlm(long width, long height)
     {
@@ -60,8 +62,9 @@ public abstract class AbstractByteIlm extends AbstractIlm implements ByteIlm
     	return result;
     }
 
-    public final void toArray(byte[][] array, int rowOffset, int columnOffset,
-    	long rowStart, long columnStart, int width, int height)
+    public final void toArray(byte[][] array, int rowOffset,
+    	int columnOffset, long rowStart, long columnStart,
+    	int width, int height)
     {
     	Argument.assertNotNull(array, "array");
     	

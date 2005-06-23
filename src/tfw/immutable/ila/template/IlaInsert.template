@@ -24,7 +24,7 @@
  */
 package tfw.immutable.ila.%%PACKAGE%%ila;
 
-import tfw.check.CheckArg;
+import tfw.check.Argument;
 
 public final class %%NAME%%IlaInsert
 {
@@ -33,9 +33,10 @@ public final class %%NAME%%IlaInsert
     public static %%NAME%%Ila create(%%NAME%%Ila ila, long index,
 		%%TYPE%% value)
     {
-    	CheckArg.isNull(ila, "ila");
-    	CheckArg.isLessThanConstant(index, 0, "index");
-    	CheckArg.isGreaterThan(index, ila.length(), "index", "ila.length()");
+    	Argument.assertNotNull(ila, "ila");
+    	Argument.assertNotLessThan(index, 0, "index");
+    	Argument.assertNotGreaterThan(index, ila.length(),
+    		"index", "ila.length()");
 
 		return new My%%NAME%%Ila(ila, index, value);
     }

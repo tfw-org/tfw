@@ -57,13 +57,15 @@ public final class ByteIlmFromArray
 		    }
 		}
 
-		protected void toArrayImpl(byte[][] array, int rowOffset, int columnOffset,
-			long rowStart, long columnStart, int width, int height)
+		protected void toArrayImpl(byte[][] array, int rowOffset,
+			int columnOffset, long rowStart, long columnStart,
+			int width, int height)
 		{
 			for (int i=0 ; i < height ; i++)
 			{
-				System.arraycopy(this.array[(int)(rowStart + i)], (int)columnStart,
-					array[rowOffset+i], columnOffset, width);
+				System.arraycopy(this.array[(int)(rowStart + i)],
+					(int)columnStart, array[rowOffset+i],
+					columnOffset, width);
 			} 
 		}
     }

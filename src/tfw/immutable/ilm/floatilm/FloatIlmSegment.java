@@ -30,7 +30,8 @@ public final class FloatIlmSegment
 {
     private FloatIlmSegment() { }
 
-    public static FloatIlm create(FloatIlm instance, long rowStart, long columnStart)
+    public static FloatIlm create(FloatIlm instance,
+    	long rowStart, long columnStart)
     {
 		return create(instance, rowStart, columnStart,
 			instance.width() - columnStart, instance.height() - rowStart);
@@ -68,11 +69,13 @@ public final class FloatIlmSegment
 		    this.columnStart = columnStart;
 		}
 
-		protected void toArrayImpl(float[][] array, int rowOffset, int columnOffset,
-			long rowStart, long columnStart, int width, int height)
+		protected void toArrayImpl(float[][] array, int rowOffset,
+			int columnOffset, long rowStart, long columnStart,
+			int width, int height)
 		{
-			instance.toArray(array, rowOffset, columnOffset, this.rowStart + rowStart,
-				this.columnStart + columnStart, width, height);
+			instance.toArray(array, rowOffset, columnOffset,
+				this.rowStart + rowStart, this.columnStart + columnStart,
+				width, height);
 		}
     }
 }

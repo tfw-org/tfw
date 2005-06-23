@@ -48,7 +48,8 @@ public final class BooleanIlmFromIncrementBooleanIla
 		private final BigDecimal rowIncrement;
 		private final boolean noDataValue;
 
-		MyBooleanIlm(BooleanIla ila, BigDecimal rowIncrement, boolean noDataValue)
+		MyBooleanIlm(BooleanIla ila, BigDecimal rowIncrement,
+			boolean noDataValue)
 		{
 		    super(ila.length(), new BigDecimal(ila.length()).divide(
 		    	rowIncrement, BigDecimal.ROUND_UP).longValue());
@@ -58,29 +59,35 @@ public final class BooleanIlmFromIncrementBooleanIla
 		    this.noDataValue = noDataValue;
 		}
 		
-		protected void toArrayImpl(boolean[][] array, int rowOffset, int columnOffset,
-			long rowStart, long columnStart, int width, int height)
+		protected void toArrayImpl(boolean[][] array, int rowOffset,
+			int columnOffset, long rowStart, long columnStart,
+			int width, int height)
 		{
 			for (int r=0 ; r < height ; r++)
 			{
-				long startIlaFromRowIndex = new BigDecimal(r+rowStart).multiply(rowIncrement).longValue();
+				long startIlaFromRowIndex = new BigDecimal(r+rowStart)
+					.multiply(rowIncrement).longValue();
 				long ilaEndIndex = ila.length() - startIlaFromRowIndex - 1;
 				long ilaStart = startIlaFromRowIndex + columnStart;
 
 			    if (columnStart + width - 1 <= ilaEndIndex)
 			    {
-					ila.toArray(array[r+rowOffset], columnOffset, ilaStart, width);
+					ila.toArray(array[r+rowOffset], columnOffset,
+						ilaStart, width);
 			    }
 			    else if (columnStart > ilaEndIndex)
 				{
-					Arrays.fill(array[r+rowOffset], columnOffset, columnOffset + width, noDataValue);
+					Arrays.fill(array[r+rowOffset], columnOffset,
+						columnOffset + width, noDataValue);
 			    }
 			    else
 				{
 					int ilaSubsetLength = (int)(ilaEndIndex - columnStart + 1);
 
-					ila.toArray(array[r+rowOffset], columnOffset, ilaStart, ilaSubsetLength);
-					Arrays.fill(array[r+rowOffset], columnOffset + ilaSubsetLength,
+					ila.toArray(array[r+rowOffset], columnOffset,
+						ilaStart, ilaSubsetLength);
+					Arrays.fill(array[r+rowOffset],
+						columnOffset + ilaSubsetLength,
 						columnOffset + width, noDataValue);
 				}
 	    	}

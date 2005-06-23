@@ -24,20 +24,18 @@
  */
 package tfw.swing.test;
 
-import	java.awt.BorderLayout;
-import	java.awt.event.ActionEvent;
-import	java.awt.event.ActionListener;
-import	java.awt.event.WindowAdapter;
-import	java.awt.event.WindowEvent;
-import	javax.swing.JButton;
-import	javax.swing.JFrame;
-import	javax.swing.JPanel;
-import	javax.swing.JTextField;
-
+import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 import tfw.swing.JLabelBB;
 import tfw.tsm.AWTTransactionQueue;
 import tfw.tsm.Initiator;
-import tfw.tsm.ecd.BooleanECD;
 import tfw.tsm.ecd.EventChannelDescription;
 import tfw.tsm.ecd.StringECD;
 import tfw.tsm.Root;
@@ -47,8 +45,6 @@ public class JLabelBBTest
 {
 	private static final StringECD TEXT_ECD =
 		new StringECD("text");
-	private static final BooleanECD ENABLE_ECD =
-		new BooleanECD("enable");
 	
 	private static long buttonPresses = 0;
 	
@@ -57,9 +53,9 @@ public class JLabelBBTest
 	public static final void main(String[] args)
 	{
 		final Initiator initiator = new Initiator("JButtonBBTest",
-			new EventChannelDescription[] {TEXT_ECD, ENABLE_ECD});
+			new EventChannelDescription[] {TEXT_ECD});
 		
-		JLabelBB l = new JLabelBB("JButtonBBTest", TEXT_ECD, ENABLE_ECD);
+		JLabelBB l = new JLabelBB("JButtonBBTest", TEXT_ECD);
 		l.setText("Set Label Value");
 		final JTextField tf = new JTextField(16);
 		JButton b = new JButton("Set Label");
@@ -85,7 +81,6 @@ public class JLabelBBTest
 		p.add(c, BorderLayout.CENTER);
 		
 		RootFactory rf = new RootFactory();
-		rf.addTerminator(ENABLE_ECD);
 		rf.addTerminator(TEXT_ECD);
 		Root r = rf.create("JButtonBBTest", new AWTTransactionQueue());
 		r.add(initiator);

@@ -24,8 +24,8 @@
  */
 package tfw.swing;
 
+import java.awt.event.ActionListener;
 import javax.swing.JTextField;
-
 import tfw.awt.component.EnabledCommit;
 import tfw.check.Argument;
 import tfw.swing.event.DocumentInitiator;
@@ -33,6 +33,7 @@ import tfw.swing.textcomponent.SetTextCommit;
 import tfw.tsm.Branch;
 import tfw.tsm.BranchBox;
 import tfw.tsm.Initiator;
+import tfw.tsm.TreeComponent;
 import tfw.tsm.ecd.BooleanECD;
 import tfw.tsm.ecd.StringECD;
 
@@ -61,6 +62,25 @@ public class JTextFieldBB extends JTextField implements BranchBox
 			initiator, new Initiator[] {initiator}));
 	}
 		
+	public final void addActionListenerToBoth(ActionListener listener)
+	{
+	    addActionListener(listener);
+	    
+	    if (listener instanceof BranchBox)
+	    {
+	        branch.add((BranchBox)listener);
+	    }
+	    else if (listener instanceof TreeComponent)
+	    {
+	        branch.add((TreeComponent)listener);
+	    }
+	    else
+	    {
+	        throw new IllegalArgumentException(
+	            "listener != BranchBox || TreeComponent not allowed!");
+	    }
+	}
+	
 	public final Branch getBranch()
 	{
 		return(branch);

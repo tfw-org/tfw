@@ -24,7 +24,7 @@
  */
 package tfw.immutable.ila.%%PACKAGE%%ila;
 
-import tfw.check.CheckArg;
+import tfw.check.Argument;
 
 public final class %%NAME%%IlaConcatenate
 {
@@ -32,8 +32,8 @@ public final class %%NAME%%IlaConcatenate
 
     public static %%NAME%%Ila create(%%NAME%%Ila leftIla, %%NAME%%Ila rightIla)
     {
-    	CheckArg.isNull(leftIla, "leftIla");
-    	CheckArg.isNull(rightIla, "rightIla");
+    	Argument.assertNotNull(leftIla, "leftIla");
+    	Argument.assertNotNull(rightIla, "rightIla");
 
 		return new My%%NAME%%Ila(leftIla, rightIla);
     }
@@ -56,7 +56,7 @@ public final class %%NAME%%IlaConcatenate
 		}
 		
 		protected void toArrayImpl(%%TYPE%%[] array, int offset,
-					   long start, int length)
+			long start, int length)
 		{
 		    if (start + length <= leftIlaLength)
 		    {

@@ -25,7 +25,7 @@
 package tfw.immutable.ila.%%PACKAGE%%ila;
 
 import java.util.Arrays;
-import tfw.check.CheckArg;
+import tfw.check.Argument;
 
 public final class %%NAME%%IlaFill
 {
@@ -33,7 +33,7 @@ public final class %%NAME%%IlaFill
 
     public static %%NAME%%Ila create(%%TYPE%% value, long length)
     {
-    	CheckArg.isLessThanConstant(length, 0, "length");
+    	Argument.assertNotLessThan(length, 0, "length");
 
 		return new My%%NAME%%Ila(value, length);
     }

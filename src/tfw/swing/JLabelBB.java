@@ -26,28 +26,25 @@ package tfw.swing;
 
 import javax.swing.JLabel;
 
-import tfw.awt.component.EnabledCommit;
 import tfw.swing.label.SetTextCommit;
 import tfw.tsm.Branch;
 import tfw.tsm.BranchBox;
-import tfw.tsm.ecd.BooleanECD;
 import tfw.tsm.ecd.StringECD;
 
 public class JLabelBB extends JLabel implements BranchBox
 {
 	private final Branch branch;
 	
-	public JLabelBB(String name, StringECD textECD, BooleanECD enabledECD)
+	public JLabelBB(String name, StringECD textECD)
 	{
-		this(new Branch("JLabelBB["+name+"]"), textECD, enabledECD);
+		this(new Branch("JLabelBB["+name+"]"), textECD);
 	}
 	
-	public JLabelBB(Branch branch, StringECD textECD, BooleanECD enabledECD)
+	public JLabelBB(Branch branch, StringECD textECD)
 	{
 		this.branch = branch;
 		
 		branch.add(new SetTextCommit("JLabelBB", textECD, this, null));
-		branch.add(new EnabledCommit("JLabelBB", enabledECD, this, null));
 	}
 	
 	public final Branch getBranch()

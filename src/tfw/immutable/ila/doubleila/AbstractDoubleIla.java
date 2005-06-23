@@ -26,7 +26,8 @@ package tfw.immutable.ila.doubleila;
 
 import tfw.immutable.ila.AbstractIla;
 
-public abstract class AbstractDoubleIla extends AbstractIla implements DoubleIla
+public abstract class AbstractDoubleIla extends AbstractIla
+	implements DoubleIla
 {
     protected abstract void toArrayImpl(double[] array, int offset,
 			long start, int length);
@@ -54,7 +55,8 @@ public abstract class AbstractDoubleIla extends AbstractIla implements DoubleIla
     	return result;
     }
 
-    public final void toArray(double[] array, int offset, long start, int length)
+    public final void toArray(double[] array, int offset,
+    	long start, int length)
     {
     	if (length == 0)
     	{

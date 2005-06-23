@@ -24,13 +24,14 @@
  */
 package tfw.immutable.ilm.%%PACKAGE%%ilm;
 
-import tfw.check.CheckArg;
+import tfw.check.Argument;
 
 public final class %%NAME%%IlmSegment
 {
     private %%NAME%%IlmSegment() { }
 
-    public static %%NAME%%Ilm create(%%NAME%%Ilm instance, long rowStart, long columnStart)
+    public static %%NAME%%Ilm create(%%NAME%%Ilm instance,
+    	long rowStart, long columnStart)
     {
 		return create(instance, rowStart, columnStart,
 			instance.width() - columnStart, instance.height() - rowStart);
@@ -39,14 +40,14 @@ public final class %%NAME%%IlmSegment
     public static %%NAME%%Ilm create(%%NAME%%Ilm instance, long rowStart,
     	long columnStart, long width, long height)
     {
-    	CheckArg.isNull(instance, "instance");
-    	CheckArg.isLessThanConstant(rowStart, 0, "rowStart");
-    	CheckArg.isLessThanConstant(columnStart, 0, "columnStart");
-    	CheckArg.isLessThanConstant(width, 0, "width");
-    	CheckArg.isLessThanConstant(height, 0, "height");
-    	CheckArg.isGreaterThan((rowStart + height), instance.height(),
+    	Argument.assertNotNull(instance, "instance");
+    	Argument.assertNotLessThan(rowStart, 0, "rowStart");
+    	Argument.assertNotLessThan(columnStart, 0, "columnStart");
+    	Argument.assertNotLessThan(width, 0, "width");
+    	Argument.assertNotLessThan(height, 0, "height");
+    	Argument.assertNotGreaterThan((rowStart + height), instance.height(),
     		"rowStart + height", "instance.height()");
-    	CheckArg.isGreaterThan((columnStart + width), instance.width(),
+    	Argument.assertNotGreaterThan((columnStart + width), instance.width(),
     		"columnStart + width", "instance.width()");
 
 		return new My%%NAME%%Ilm(instance, rowStart, columnStart, width, height);
@@ -68,11 +69,13 @@ public final class %%NAME%%IlmSegment
 		    this.columnStart = columnStart;
 		}
 
-		protected void toArrayImpl(%%TYPE%%[][] array, int rowOffset, int columnOffset,
-			long rowStart, long columnStart, int width, int height)
+		protected void toArrayImpl(%%TYPE%%[][] array, int rowOffset,
+			int columnOffset, long rowStart, long columnStart,
+			int width, int height)
 		{
-			instance.toArray(array, rowOffset, columnOffset, this.rowStart + rowStart,
-				this.columnStart + columnStart, width, height);
+			instance.toArray(array, rowOffset, columnOffset,
+				this.rowStart + rowStart, this.columnStart + columnStart,
+				width, height);
 		}
     }
 }
