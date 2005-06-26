@@ -36,18 +36,17 @@ import tfw.tsm.TransactionExceptionHandler;
 import tfw.tsm.ecd.EventChannelDescription;
 import tfw.tsm.ecd.StringECD;
 
-
 /**
- *
+ *  
  */
 public class InitiatorTest extends TestCase
 {
     EventChannelDescription channel1 = new StringECD("aaa");
+
     EventChannelDescription channel2 = new StringECD("bbb");
-    EventChannelDescription[] channels = new EventChannelDescription[]
-        {
-            channel1, channel2
-        };
+
+    EventChannelDescription[] channels = new EventChannelDescription[] {
+            channel1, channel2 };
 
     public void testInitiatorConstruction()
     {
@@ -127,13 +126,13 @@ public class InitiatorTest extends TestCase
         }
 
         RootFactory rf = new RootFactory();
-		rf.setTransactionExceptionHandler(new TransactionExceptionHandler()
-			{
-				public void handle(Exception exception)
-				{
-					fail("Exception: " + exception.getMessage());
-				}
-			});
+        rf.setTransactionExceptionHandler(new TransactionExceptionHandler()
+        {
+            public void handle(Exception exception)
+            {
+                fail("Exception: " + exception.getMessage());
+            }
+        });
         rf.addTerminator(channel1);
         rf.addTerminator(channel2);
 
@@ -152,15 +151,15 @@ public class InitiatorTest extends TestCase
         queue.waitTilEmpty();
         assertNotNull("debugCommit() was not called", commit.debugCommitState);
         assertEquals("debugCommit() received wrong state", state1,
-            commit.debugCommitState.get(channel1));
+                commit.debugCommitState.get(channel1));
         commit.debugCommitState = null;
         initiator.set(channel2, state2);
         queue.waitTilEmpty();
         assertNotNull("commit() not called", commit.commitState);
         assertEquals("commit() received wrong state1", state1,
-            commit.commitState.get(channel1));
+                commit.commitState.get(channel1));
         assertEquals("commit() received wrong state2", state2,
-            commit.commitState.get(channel2));
+                commit.commitState.get(channel2));
 
         assertNull("debugCommit() was called", commit.debugCommitState);
 
@@ -169,9 +168,9 @@ public class InitiatorTest extends TestCase
         root.remove(commit);
         commit.commitState = null;
         commit.debugCommitState = null;
-//        rf = new RootFactory();
-//        rf.addTerminator(channel1);
-//        rf.addTerminator(channel2);
+        //        rf = new RootFactory();
+        //        rf.addTerminator(channel1);
+        //        rf.addTerminator(channel2);
         root.add(initiator);
         root.add(commit);
 
@@ -183,9 +182,9 @@ public class InitiatorTest extends TestCase
         queue.waitTilEmpty();
         assertNotNull("commit() not called", commit.commitState);
         assertEquals("commit() received wrong state1", state1,
-            commit.commitState.get(channel1));
+                commit.commitState.get(channel1));
         assertEquals("commit() received wrong state2", state2,
-            commit.commitState.get(channel2));
+                commit.commitState.get(channel2));
 
         assertNull("debugCommit() was called", commit.debugCommitState);
 
@@ -200,36 +199,37 @@ public class InitiatorTest extends TestCase
         queue.waitTilEmpty();
         assertNotNull("commit() not called", commit.commitState);
         assertEquals("commit() received wrong state1", state1,
-            commit.commitState.get(channel1));
+                commit.commitState.get(channel1));
         assertEquals("commit() received wrong state2", state2,
-            commit.commitState.get(channel2));
+                commit.commitState.get(channel2));
 
         assertNull("debugCommit() was called", commit.debugCommitState);
-        
-        //TODO: fix or delete test.
-        //		
-        //		// Test set(EventChannelName, State) before connection...
-        //		commit.commitState = null;
-        //		commit.debugCommitState = null;
-        //		root.remove(initiator);
-        //		initiator = new Initiator("test", channels);
-        //		initiator.set(channel1, state1);
-        //		initiator.set(channel2, state2);
-        //		System.out.println("**********************");
-        //		root.add(initiator);
-        //
-        //		assertNotNull("commit() not called", commit.commitState);
-        //		assertEquals("commit() received wrong state1", state1,
-        //			commit.commitState.get(channel1.getEventChannelName()));
-        //		assertEquals("commit() received wrong state2", state2,
-        //			commit.commitState.get(channel2.getEventChannelName()));
-        //        
-        //		assertNull("debugCommit() was called", commit.debugCommitState);
+
+        // Test set(EventChannelName, State) before connection...
+        //  This tests the delay fire requirement for an intiator.
+        commit.commitState = null;
+        commit.debugCommitState = null;
+        root.remove(initiator);
+        initiator = new Initiator("test", channels);
+        initiator.set(channel1, state1);
+        initiator.set(channel2, state2);
+
+        root.add(initiator);
+        queue.waitTilEmpty();
+
+        assertNotNull("commit() not called", commit.commitState);
+        assertEquals("commit() received wrong state1", state1,
+                commit.commitState.get(channel1));
+        assertEquals("commit() received wrong state2", state2,
+                commit.commitState.get(channel2));
+
+        assertNull("debugCommit() was called", commit.debugCommitState);
     }
 
     private class TestCommit extends Commit
     {
         public StateMap commitState = null;
+
         public StateMap debugCommitState = null;
 
         public TestCommit(String name, EventChannelDescription[] ecds)
