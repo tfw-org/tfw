@@ -24,6 +24,11 @@
  */
 package tfw.tsm.test;
 
+import java.lang.reflect.InvocationTargetException;
+
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
 import tfw.tsm.BasicTransactionQueue;
 import tfw.tsm.Branch;
 import tfw.tsm.BranchFactory;
@@ -33,13 +38,8 @@ import tfw.tsm.Root;
 import tfw.tsm.RootFactory;
 import tfw.tsm.TransactionExceptionHandler;
 import tfw.tsm.ecd.EventChannelDescription;
+import tfw.tsm.ecd.IntegerECD;
 import tfw.tsm.ecd.StringECD;
-
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
-import java.lang.reflect.InvocationTargetException;
 
 
 public class TranslatorTest extends TestCase
@@ -61,8 +61,6 @@ public class TranslatorTest extends TestCase
             }
         };
 
-    // TODO: add test of BrachFactory.addTranslation() incompatible
-    // event channels.
     public void testTranslation()
         throws InterruptedException, InvocationTargetException
     {
@@ -134,6 +132,24 @@ public class TranslatorTest extends TestCase
         checkHandler(handler);
     }
 
+    public void testIncompatableTranslation(){
+        BranchFactory bf = new BranchFactory();
+        StringECD stringECD = new StringECD("StringECD");
+        IntegerECD integerECD1 = new IntegerECD("integerECD1", 1, 5);
+        IntegerECD integerECD2 = new IntegerECD("integerECD2", 0, 6);
+        try{
+            bf.addTranslation(integerECD1, integerECD2);
+            fail("addTranslation() accepted incompatible ecds");
+        } catch (IllegalArgumentException expected){
+            //System.out.println(expected);
+        }
+        try{
+            bf.addTranslation(integerECD2, integerECD1);
+            fail("addTranslation() accepted incompatible ecds");
+        } catch (IllegalArgumentException expected){
+            //System.out.println(expected);
+        }
+    }
     private void checkHandler(MyExceptionHandler handler)
     {
         String message = "No exception";
