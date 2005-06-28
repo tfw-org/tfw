@@ -1,0 +1,46 @@
+<project name="TheFramework" default="help" basedir=".">
+	<description>
+		The primary build file for TFW.
+	</description>
+	
+	<!-- The global properties for this build file. -->
+	<property name="src" location="src"/>
+	<property name="build" location="build"/>
+	<property name="buildclasses" location="build/classes"/>
+	<property name="buildjars" location="build/jars"/>
+	<property name="lib" location="lib"/>
+	
+	<path id="compile.path">
+		<fileset dir="lib">
+			<include name="junit.jar"/>
+			<include name="prefuse_20050401_class.jar"/>
+		</fileset>
+	</path>
+	
+	<target name="help">
+		<echo message="Usage for TFW ANT build"/>
+	</target>
+	
+	
+	<target name="init" description="creates the time stamp and build directory">
+		<!-- Create the time stamp -->
+		<tstamp/>
+		<!-- Create the build directory structure used by compile -->
+		<mkdir dir="${buildclasses}"/>
+		<mkdir dir="${buildjars}"/>
+	</target>
+	
+	<target name="compile" depends="init" description="compile the source " >
+		<!-- Compile the java code from ${src} into ${build} -->
+		<javac srcdir="${src}" destdir="${buildclasses}" 
+			classpathref="compile.path"/>
+	</target>
+	
+	<target name="jarclasses" depends="compile" description="creates class jar file">
+		<jar basedir="${buildclasses}" destfile="${buildjars}/tfw_classes.zip"/>
+	</target>
+	
+	<target name="jarsrc" depends="init" description="creates source jar file">
+		<jar basedir="${src}" destfile="${buildjars}/tfw_src.zip"/>
+	</target>
+</project>
