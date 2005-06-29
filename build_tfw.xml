@@ -5,9 +5,9 @@
 	
 	<!-- The global properties for this build file. -->
 	<property name="src" location="src"/>
-	<property name="build" location="build"/>
 	<property name="buildclasses" location="build/classes"/>
 	<property name="buildjars" location="build/jars"/>
+	<property name="builddoc" location="build/doc"/>
 	<property name="lib" location="lib"/>
 	
 	<path id="compile.path">
@@ -28,6 +28,7 @@
 		<!-- Create the build directory structure used by compile -->
 		<mkdir dir="${buildclasses}"/>
 		<mkdir dir="${buildjars}"/>
+		<mkdir dir="${builddoc}"/>
 	</target>
 	
 	<target name="compile" depends="init" description="compile the source " >
@@ -42,5 +43,14 @@
 	
 	<target name="jarsrc" depends="init" description="creates source jar file">
 		<jar basedir="${src}" destfile="${buildjars}/tfw_src.zip"/>
+	</target>
+	
+	<target name="javadoc" depends="compile" description="generates the javadoc.">
+		<javadoc  destdir="${builddoc}" classpathref="compile.path" useexternalfile="yes">
+			<packageset dir="src" defaultexcludes="yes">
+				<include name="tfw/**"/>
+				<exclude name="**/*Test.java"/>
+			</packageset>
+		</javadoc>
 	</target>
 </project>
