@@ -31,8 +31,6 @@ import tfw.check.Argument;
 
 
 /**
- * @author TheCovers
- *
  * A basic transaction queue and event dispatch thread. This queue should
  * not be used with AWT or Swing compoents. Use the {@link AWTTransactionQueue}
  * for AWT and Swing components.

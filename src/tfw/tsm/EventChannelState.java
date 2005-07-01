@@ -99,9 +99,13 @@ public class EventChannelState
     	return ecd.equals(ecs.ecd) && state.equals(ecs.state);
     }
     
+    /**
+     * Returns a string representation of this event channel state.
+     * @return a string representation of this event channel state.
+     */
     public String toString(){
     	StringBuffer sb = new StringBuffer();
-    	sb.append("TreeState[");
+    	sb.append("EventChannelState[");
     	sb.append(ecd.getEventChannelName()).append(" = ").append(state);
     	sb.append("]");
     	return sb.toString();

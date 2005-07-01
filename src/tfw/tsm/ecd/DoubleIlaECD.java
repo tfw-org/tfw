@@ -29,7 +29,7 @@ import tfw.value.ClassValueConstraint;
 
 
 /**
- * A {@link immutable.ila.doubleila.DoubleIla} event channel descritpion.
+ * A {@link tfw.immutable.ila.doubleila.DoubleIla} event channel descritpion.
  */
 public class DoubleIlaECD extends EventChannelDescription
 {

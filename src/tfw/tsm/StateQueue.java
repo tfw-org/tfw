@@ -28,7 +28,7 @@ import java.util.NoSuchElementException;
 
 /**
  * Defines a queue which implements the state queuing strategy for an 
- * {@link Initiator}.
+ * {@link Initiator}. See {@link StateQueueFactory}.
  */
 public interface StateQueue {
 	/**

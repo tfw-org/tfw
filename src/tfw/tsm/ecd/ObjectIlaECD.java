@@ -27,15 +27,18 @@ package tfw.tsm.ecd;
 import tfw.value.ClassValueConstraint;
 
 /**
- * An {@link immutable.ila.objectila.ObjectIla} event channel description.
+ * An {@link tfw.immutable.ila.objectila.ObjectIla}event channel description.
  */
-public class ObjectIlaECD extends EventChannelDescription {
-	/**
-	 * Creates an event channel description with the specified name.
-	 * @param name the name of the event channel.
-	 */
-	public ObjectIlaECD(String name)
-	{
-		super(name, ClassValueConstraint.OBJECTILA, null);
-	}
+public class ObjectIlaECD extends EventChannelDescription
+{
+    /**
+     * Creates an event channel description with the specified name.
+     * 
+     * @param name
+     *            the name of the event channel.
+     */
+    public ObjectIlaECD(String name)
+    {
+        super(name, ClassValueConstraint.OBJECTILA, null);
+    }
 }

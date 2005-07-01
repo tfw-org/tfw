@@ -26,16 +26,20 @@ package tfw.tsm;
 
 import tfw.check.Argument;
 
-
 /**
- * Branch is the communications backbone of the framework.
- *
+ * The framework uses a tree metaphor to describe its hierarchical
+ * communications structure. The structure consists of a single root, branches
+ * and leaves.
+ *  
  */
 public class Branch extends TreeComponent
 {
     /**
-     * Constructs a trivial branch with no event channels or ports.
-     * @param name    The name of the branch.
+     * Constructs a trivial branch with no event channels or ports. To create a
+     * non-trival branch see {@link BranchFactory}.
+     * 
+     * @param name
+     *            The name of the branch.
      */
     public Branch(String name)
     {
@@ -44,33 +48,41 @@ public class Branch extends TreeComponent
 
     /**
      * Constructs a branch with the specified event channels and ports.
-     * @param name the name of the branch.
-     * @param eventChannels the set of event channels positioned at this branch.
-     * @param isMultiplexed boolean indicating whether the event channels are
-     * to be multiplexed.
-     * @param ports the set of ports for this branch. These are the multiplexer
-     * and translator ports which are local to this branch.
+     * 
+     * @param name
+     *            the name of the branch.
+     * @param eventChannels
+     *            the set of event channels positioned at this branch.
+     * @param isMultiplexed
+     *            boolean indicating whether the event channels are to be
+     *            multiplexed.
+     * @param ports
+     *            the set of ports for this branch. These are the multiplexer
+     *            and translator ports which are local to this branch.
      */
     Branch(String name, Sink[] sinks, Source[] sources,
-        EventChannel[] eventChannels)
+            EventChannel[] eventChannels)
     {
         super(name, sinks, sources, eventChannels);
     }
 
     /**
      * Adds a child component to this branch.
-     * @param child the child component.
+     * 
+     * @param child
+     *            the child component.
      */
     public final void add(final TreeComponent child)
     {
         super.add(child);
     }
-	
-	/**
-	 * Adds branch contained in the branch box to this branch as a child.
-	 * @param branchBox The branch box containing the child branch to be 
-	 * added.
-	 */
+
+    /**
+     * Adds branch contained in the branch box to this branch as a child.
+     * 
+     * @param branchBox
+     *            The branch box containing the child branch to be added.
+     */
     public final void add(BranchBox branchBox)
     {
         Argument.assertNotNull(branchBox, "branchBox");
@@ -80,13 +92,21 @@ public class Branch extends TreeComponent
 
     /**
      * Removes a child component.
-     * @param child the component to be removed.
+     * 
+     * @param child
+     *            the component to be removed.
      */
     public final void remove(final TreeComponent child)
     {
         super.remove(child);
     }
 
+    /**
+     * Removes the specified branch box from this branch.
+     * 
+     * @param branchBox
+     *            the branch box to be removed.
+     */
     public final void remove(BranchBox branchBox)
     {
         Argument.assertNotNull(branchBox, "branchBox");

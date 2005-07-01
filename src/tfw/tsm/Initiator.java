@@ -39,7 +39,11 @@ import tfw.value.ValueException;
  * the state of event channels in that transaction. The initiator will queue
  * state changes if it is not rooted. The queueing strategy can be set
  * by providing the appropriate {@link StateQueueFactory} on the constructor
- * {@link #Initiator(String, EventChannelDescription[], StateQueueFactory)}.
+ * {@link #Initiator(String, EventChannelDescription[], StateQueueFactory)}. 
+ * The default queuing strategy employs an unbounded queue which will store up
+ * state changes until the initiator becomes rooted and can begin to fire its
+ * state changes. Note that a component is said to be rooted when it is attached 
+ * to a root component or its parent is rooted.
  */
 public class Initiator extends Leaf
 {

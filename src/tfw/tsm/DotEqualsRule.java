@@ -50,7 +50,8 @@ public class DotEqualsRule implements StateChangeRule {
 
 	
 	/**
-	 * Returns <code>!newState.equals(currentState)</code>.
+	 * Returns true if the new state is different from the current state based
+	 * on the equals method, otherwise returns false.
 	 * @return <code>!newState.equals(currentState)</code>.
 	 * @throws IllegalArgumentException if <code>newState == null</code>
 	 */
