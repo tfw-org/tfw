@@ -144,6 +144,10 @@ abstract class Processor extends RollbackHandler
         }
     }
 
+    /**
+     * Causes a state-less event channel to fire.
+     * @param triggerECD the event channel to be fired.
+     */
     protected final void trigger(StatelessTriggerECD triggerECD)
     {
         set(triggerECD, null);
