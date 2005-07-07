@@ -32,7 +32,7 @@ import tfw.immutable.ila.objectila.ObjectIlaFromArray;
 import tfw.tsm.BasicTransactionQueue;
 import tfw.tsm.Commit;
 import tfw.tsm.Initiator;
-import tfw.tsm.MultiplexBranchFactory;
+import tfw.tsm.MultiplexedBranchFactory;
 import tfw.tsm.MultiplexedBranch;
 import tfw.tsm.Root;
 import tfw.tsm.RootFactory;
@@ -54,7 +54,7 @@ public class MultiplexerTest extends TestCase
 
         Root root = rf.create("MultiplexerTestRoot",queue);
 
-        MultiplexBranchFactory mbf = new MultiplexBranchFactory();
+        MultiplexedBranchFactory mbf = new MultiplexedBranchFactory();
         mbf.addMultiplexer(valueECD, multiValueECD);
 
         MultiplexedBranch multiBranch = mbf.create("Multiplexer");

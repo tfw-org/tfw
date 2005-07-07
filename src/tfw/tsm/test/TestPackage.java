@@ -43,7 +43,7 @@ public class TestPackage
 		suite.addTestSuite(ImportExportTreeStateTest.class);
 		suite.addTestSuite(InfiniteLoopTest.class);
 		suite.addTestSuite(InitiatorTest.class);
-		suite.addTestSuite(MultiplexBranchFactoryTest.class);
+		suite.addTestSuite(MultiplexedBranchFactoryTest.class);
 		suite.addTestSuite(MultiplexerTest.class);
 		suite.addTestSuite(OneDeepStateQueueFactoryTest.class);
 		suite.addTestSuite(ConverterTest.class);

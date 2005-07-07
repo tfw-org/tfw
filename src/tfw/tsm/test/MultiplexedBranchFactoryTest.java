@@ -25,7 +25,7 @@
 package tfw.tsm.test;
 
 import junit.framework.TestCase;
-import tfw.tsm.MultiplexBranchFactory;
+import tfw.tsm.MultiplexedBranchFactory;
 import tfw.tsm.MultiplexedBranch;
 import tfw.tsm.ecd.EventChannelDescription;
 import tfw.tsm.ecd.ObjectIlaECD;
@@ -37,14 +37,14 @@ import tfw.tsm.ecd.StringECD;
 /**
  *
  */
-public class MultiplexBranchFactoryTest extends TestCase
+public class MultiplexedBranchFactoryTest extends TestCase
 {
     private EventChannelDescription valueECD = new StringECD("value");
     private ObjectIlaECD multiValueECD = new ObjectIlaECD("multiValue");
 
     public void testAddMultiplexer()
     {
-        MultiplexBranchFactory mbf = new MultiplexBranchFactory();
+        MultiplexedBranchFactory mbf = new MultiplexedBranchFactory();
 
         try
         {
@@ -85,7 +85,7 @@ public class MultiplexBranchFactoryTest extends TestCase
 
     public void testCreate()
     {
-        MultiplexBranchFactory mbf = new MultiplexBranchFactory();
+        MultiplexedBranchFactory mbf = new MultiplexedBranchFactory();
 
         try
         {

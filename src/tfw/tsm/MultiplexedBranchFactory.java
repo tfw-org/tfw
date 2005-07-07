@@ -37,7 +37,7 @@ import java.util.List;
 /**
  * A factory for creating a {@link MultiplexedBranch}.
  */
-public class MultiplexBranchFactory
+public class MultiplexedBranchFactory
 {
     /** A map of multi value event channel discriptions. */
     HashMap multiValueECDMap = new HashMap();

@@ -33,7 +33,7 @@ import java.util.Set;
  * A branch which will multiplex child event channels into a single parent 
  * event channel and demultiplex the single parent event channel into multiple
  * child event channels. To create one you must use 
- * {@link MultiplexBranchFactory}.
+ * {@link MultiplexedBranchFactory}.
  */
 public class MultiplexedBranch extends TreeComponent
 {
