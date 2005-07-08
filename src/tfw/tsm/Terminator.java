@@ -284,7 +284,7 @@ class Terminator implements EventChannel, CommitRollbackListener {
 			throw new IllegalStateException(
 					"Attempt to change the state of event channel '"
 							+ getECD().getEventChannelName()
-							+ "' twice in the same state change cycle is not allowed."
+							+ "' twice in the same state change cycle is not allowed. "
 							+ "The first state change source is "
 							+ stateSource.getTreeComponent().getName()
 							+ " and the state value is " + previousState
