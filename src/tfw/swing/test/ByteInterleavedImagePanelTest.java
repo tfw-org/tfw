@@ -41,6 +41,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import tfw.awt.ecd.ColorModelECD;
 import tfw.immutable.ilm.byteilm.ByteIlmFill;
 import tfw.swing.ByteInterleavedImagePanel;
 import tfw.tsm.AWTTransactionQueue;
@@ -50,7 +51,6 @@ import tfw.tsm.Root;
 import tfw.tsm.RootFactory;
 import tfw.tsm.ecd.EventChannelDescription;
 import tfw.tsm.ecd.IntegerECD;
-import tfw.tsm.ecd.awt.ColorModelECD;
 import tfw.tsm.ecd.ilm.ByteIlmECD;
 
 public class ByteInterleavedImagePanelTest
