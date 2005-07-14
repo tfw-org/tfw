@@ -24,7 +24,11 @@
  */
 package tfw.immutable.ila.byteila;
 
+import java.util.HashMap;
+import java.util.Map;
 import tfw.check.Argument;
+import tfw.immutable.DataInvalidException;
+import tfw.immutable.ImmutableProxy;
 
 public final class ByteIlaInsert
 {
@@ -42,6 +46,7 @@ public final class ByteIlaInsert
     }
 
     private static class MyByteIla extends AbstractByteIla
+    	implements ImmutableProxy
     {
 		private ByteIla ila;
 		private long index;
@@ -57,7 +62,7 @@ public final class ByteIlaInsert
 		}
 
 		protected void toArrayImpl(byte[] array, int offset,
-			long start, int length)
+			long start, int length) throws DataInvalidException
 		{
 	    	if(index < start)
 			{
@@ -84,6 +89,19 @@ public final class ByteIlaInsert
 						(length - indexMinusStart - 1));
 				}
 			}
+		}
+		
+		public Map getParameters()
+		{
+			HashMap map = new HashMap();
+			
+			map.put("name", "ByteIlaInsert");
+			map.put("ila", getImmutableInfo(ila));
+			map.put("index", new Long(index));
+			map.put("value", new Byte(value));
+			map.put("length", new Long(length()));
+			
+			return(map);
 		}
     }
 }

@@ -24,11 +24,15 @@
  */
 package tfw.immutable.ila.charila;
 
+import tfw.immutable.DataInvalidException;
 import tfw.immutable.ila.ImmutableLongArray;
 
 public interface CharIla extends ImmutableLongArray
 {
-    public char[] toArray();
-    public char[] toArray(long start, int length);
-    public void toArray(char[] array, int offset, long start, int length);
+    public char[] toArray()
+    	throws DataInvalidException;
+    public char[] toArray(long start, int length)
+    	throws DataInvalidException;
+    public void toArray(char[] array, int offset, long start, int length)
+    	throws DataInvalidException;
 }

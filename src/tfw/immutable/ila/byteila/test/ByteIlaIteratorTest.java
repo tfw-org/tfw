@@ -27,6 +27,7 @@ package tfw.immutable.ila.byteila.test;
 
 import java.util.Random;
 import junit.framework.TestCase;
+import tfw.immutable.DataInvalidException;
 import tfw.immutable.ila.byteila.ByteIla;
 import tfw.immutable.ila.byteila.ByteIlaIterator;
 import tfw.immutable.ila.byteila.ByteIlaFromArray;
@@ -34,6 +35,7 @@ import tfw.immutable.ila.byteila.ByteIlaFromArray;
 public class ByteIlaIteratorTest extends TestCase
 {
 	public void testByteIlaFill()
+		throws DataInvalidException
 	{
 		final Random random = new Random();
 		final int LENGTH = 29;	

@@ -27,6 +27,7 @@ package tfw.immutable.ila.booleanila.test;
 
 import java.util.Random;
 import junit.framework.TestCase;
+import tfw.immutable.DataInvalidException;
 import tfw.immutable.ila.booleanila.BooleanIla;
 import tfw.immutable.ila.booleanila.BooleanIlaIterator;
 import tfw.immutable.ila.booleanila.BooleanIlaFromArray;
@@ -34,6 +35,7 @@ import tfw.immutable.ila.booleanila.BooleanIlaFromArray;
 public class BooleanIlaIteratorTest extends TestCase
 {
 	public void testBooleanIlaFill()
+		throws DataInvalidException
 	{
 		final Random random = new Random();
 		final int LENGTH = 29;	

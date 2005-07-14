@@ -27,6 +27,7 @@ package tfw.immutable.ila.intila.test;
 
 import java.util.Random;
 import junit.framework.TestCase;
+import tfw.immutable.DataInvalidException;
 import tfw.immutable.ila.intila.IntIla;
 import tfw.immutable.ila.intila.IntIlaIterator;
 import tfw.immutable.ila.intila.IntIlaFromArray;
@@ -34,6 +35,7 @@ import tfw.immutable.ila.intila.IntIlaFromArray;
 public class IntIlaIteratorTest extends TestCase
 {
 	public void testIntIlaFill()
+		throws DataInvalidException
 	{
 		final Random random = new Random();
 		final int LENGTH = 29;	

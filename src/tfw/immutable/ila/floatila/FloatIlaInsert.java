@@ -24,7 +24,11 @@
  */
 package tfw.immutable.ila.floatila;
 
+import java.util.HashMap;
+import java.util.Map;
 import tfw.check.Argument;
+import tfw.immutable.DataInvalidException;
+import tfw.immutable.ImmutableProxy;
 
 public final class FloatIlaInsert
 {
@@ -42,6 +46,7 @@ public final class FloatIlaInsert
     }
 
     private static class MyFloatIla extends AbstractFloatIla
+    	implements ImmutableProxy
     {
 		private FloatIla ila;
 		private long index;
@@ -57,7 +62,7 @@ public final class FloatIlaInsert
 		}
 
 		protected void toArrayImpl(float[] array, int offset,
-			long start, int length)
+			long start, int length) throws DataInvalidException
 		{
 	    	if(index < start)
 			{
@@ -84,6 +89,19 @@ public final class FloatIlaInsert
 						(length - indexMinusStart - 1));
 				}
 			}
+		}
+		
+		public Map getParameters()
+		{
+			HashMap map = new HashMap();
+			
+			map.put("name", "FloatIlaInsert");
+			map.put("ila", getImmutableInfo(ila));
+			map.put("index", new Long(index));
+			map.put("value", new Float(value));
+			map.put("length", new Long(length()));
+			
+			return(map);
 		}
     }
 }

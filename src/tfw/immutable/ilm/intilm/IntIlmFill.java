@@ -24,7 +24,10 @@
  */
 package tfw.immutable.ilm.intilm;
 
+import java.util.HashMap;
+import java.util.Map;
 import tfw.check.Argument;
+import tfw.immutable.ImmutableProxy;
 
 public final class IntIlmFill
 {
@@ -39,6 +42,7 @@ public final class IntIlmFill
     }
 
     private static class MyIntIlm extends AbstractIntIlm
+    	implements ImmutableProxy
     {
 		private final int value;
 
@@ -60,6 +64,18 @@ public final class IntIlmFill
 					array[rowOffset+r][columnOffset+c] = value;
 				}
 			} 
+		}
+		
+		public Map getParameters()
+		{
+			HashMap map = new HashMap();
+			
+			map.put("name", "IntIlmFill");
+			map.put("value", new Integer(value));
+			map.put("width", new Long(width()));
+			map.put("height", new Long(height()));
+			
+			return(map);
 		}
     }
 }

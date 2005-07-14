@@ -26,7 +26,12 @@ package tfw.immutable.ilm.byteilm;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import tfw.check.Argument;
+import tfw.immutable.DataInvalidException;
+import tfw.immutable.ImmutableProxy;
+import tfw.immutable.ila.byteila.AbstractByteIla;
 import tfw.immutable.ila.byteila.ByteIla;
 
 public final class ByteIlmFromIncrementByteIla
@@ -43,6 +48,7 @@ public final class ByteIlmFromIncrementByteIla
     }
 
     private static class MyByteIlm extends AbstractByteIlm
+    	implements ImmutableProxy
     {
 		private final ByteIla ila;
 		private final BigDecimal rowIncrement;
@@ -61,7 +67,7 @@ public final class ByteIlmFromIncrementByteIla
 		
 		protected void toArrayImpl(byte[][] array, int rowOffset,
 			int columnOffset, long rowStart, long columnStart,
-			int width, int height)
+			int width, int height) throws DataInvalidException
 		{
 			for (int r=0 ; r < height ; r++)
 			{
@@ -91,6 +97,20 @@ public final class ByteIlmFromIncrementByteIla
 						columnOffset + width, noDataValue);
 				}
 	    	}
+		}
+		
+		public Map getParameters()
+		{
+			HashMap map = new HashMap();
+			
+			map.put("name", "ByteIlmFromIncrementByteIla");
+			map.put("ila", AbstractByteIla.getImmutableInfo(ila));
+			map.put("rowIncrement", rowIncrement);
+			map.put("noDataValue", new Byte(noDataValue));
+			map.put("width", new Long(width()));
+			map.put("height", new Long(height()));
+			
+			return(map);
 		}
     }
 }

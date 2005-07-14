@@ -24,7 +24,11 @@
  */
 package tfw.immutable.ilm.doubleilm;
 
+import java.util.HashMap;
+import java.util.Map;
 import tfw.check.Argument;
+import tfw.immutable.DataInvalidException;
+import tfw.immutable.ImmutableProxy;
 
 public final class DoubleIlmSegment
 {
@@ -54,6 +58,7 @@ public final class DoubleIlmSegment
     }
 
     private static class MyDoubleIlm extends AbstractDoubleIlm
+    	implements ImmutableProxy
     {
 		private final DoubleIlm instance;
 		private final long rowStart;
@@ -71,11 +76,24 @@ public final class DoubleIlmSegment
 
 		protected void toArrayImpl(double[][] array, int rowOffset,
 			int columnOffset, long rowStart, long columnStart,
-			int width, int height)
+			int width, int height) throws DataInvalidException
 		{
 			instance.toArray(array, rowOffset, columnOffset,
 				this.rowStart + rowStart, this.columnStart + columnStart,
 				width, height);
+		}
+		
+		public Map getParameters()
+		{
+			HashMap map = new HashMap();
+			
+			map.put("name", "DoubleIlmSegment");
+			map.put("rowStart", new Long(rowStart));
+			map.put("columnStart", new Long(columnStart));
+			map.put("width", new Long(width()));
+			map.put("height", new Long(height()));
+			
+			return(map);
 		}
     }
 }

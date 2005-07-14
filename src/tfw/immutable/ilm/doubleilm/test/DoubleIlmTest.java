@@ -26,6 +26,7 @@
 package tfw.immutable.ilm.doubleilm.test;
 
 import tfw.check.Argument;
+import tfw.immutable.DataInvalidException;
 import tfw.immutable.ilm.doubleilm.DoubleIlm;
 
 public class DoubleIlmTest
@@ -44,8 +45,19 @@ public class DoubleIlmTest
 		
 		final int width = (int)ilm1.width();
 		final int height = (int)ilm1.height();
-		double[][] a1 = ilm1.toArray();
-		double[][] a2 = ilm2.toArray();
+		double[][] a1 = null;
+		double[][] a2 = null;
+		
+		try
+		{
+			a1 = ilm1.toArray();
+			a2 = ilm2.toArray();
+		}
+		catch(DataInvalidException die)
+		{
+			throw new IllegalArgumentException(
+				die.toString());
+		}
 		
 		for (int r=0 ; r < height ; r++)
 		{
@@ -74,8 +86,16 @@ public class DoubleIlmTest
 				{
 					for (int w=0 ; w < remainingWidth ; w++)
 					{
-						a1 = ilm1.toArray(sr, sc, w, h);
-						a2 = ilm2.toArray(sr, sc, w, h);
+						try
+						{
+							a1 = ilm1.toArray(sr, sc, w, h);
+							a2 = ilm2.toArray(sr, sc, w, h);
+						}
+						catch(DataInvalidException die)
+						{
+							throw new IllegalArgumentException(
+								die.toString());
+						}
 						
 						for (int r=0 ; r < h ; r++)
 						{

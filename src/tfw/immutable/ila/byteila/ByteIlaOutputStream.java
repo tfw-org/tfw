@@ -27,6 +27,7 @@ package tfw.immutable.ila.byteila;
 import java.io.IOException;
 import java.io.OutputStream;
 import tfw.check.Argument;
+import tfw.immutable.DataInvalidException;
 
 public class ByteIlaOutputStream extends OutputStream
 {
@@ -60,7 +61,8 @@ public class ByteIlaOutputStream extends OutputStream
 		outputStream.write(b, offset, length);
 	}
 	
-	public void writeByteIla(ByteIla byteIla, int bufferSize) throws IOException
+	public void writeByteIla(ByteIla byteIla, int bufferSize)
+		throws IOException, DataInvalidException
 	{
 		checkClosed();
 		

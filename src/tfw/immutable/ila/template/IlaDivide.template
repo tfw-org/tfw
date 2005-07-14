@@ -24,7 +24,11 @@
  */
 package tfw.immutable.ila.%%PACKAGE%%ila;
 
+import java.util.HashMap;
+import java.util.Map;
 import tfw.check.Argument;
+import tfw.immutable.DataInvalidException;
+import tfw.immutable.ImmutableProxy;
 
 public final class %%NAME%%IlaDivide
 {
@@ -41,6 +45,7 @@ public final class %%NAME%%IlaDivide
     }
 
     private static class My%%NAME%%Ila extends Abstract%%NAME%%Ila
+    	implements ImmutableProxy
     {
 		private %%NAME%%Ila leftIla;
 		private %%NAME%%Ila rightIla;
@@ -54,7 +59,7 @@ public final class %%NAME%%IlaDivide
 		}
 
 		protected void toArrayImpl(%%TYPE%%[] array, int offset,
-			long start, int length)
+			long start, int length) throws DataInvalidException
 		{
 		    %%NAME%%IlaIterator li = new %%NAME%%IlaIterator(
 		    	%%NAME%%IlaSegment.create(leftIla, start, length));
@@ -65,6 +70,18 @@ public final class %%NAME%%IlaDivide
 		    {
 		    	array[offset+i] = li.next() / ri.next();
 		    }
+		}
+		
+		public Map getParameters()
+		{
+			HashMap map = new HashMap();
+			
+			map.put("name", "%%NAME%%IlaDivide");
+			map.put("leftIla", getImmutableInfo(leftIla));
+			map.put("rightIla", getImmutableInfo(rightIla));
+			map.put("length", new Long(length()));
+			
+			return(map);
 		}
     }
 }

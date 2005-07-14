@@ -24,7 +24,10 @@
  */
 package tfw.immutable.ilm.objectilm;
 
+import java.util.HashMap;
+import java.util.Map;
 import tfw.check.Argument;
+import tfw.immutable.ImmutableProxy;
 
 public final class ObjectIlmFromArray
 {
@@ -38,6 +41,7 @@ public final class ObjectIlmFromArray
     }
 
     private static class MyObjectIlm extends AbstractObjectIlm
+    	implements ImmutableProxy
     {
 		private final Object[][] array;
 
@@ -67,6 +71,17 @@ public final class ObjectIlmFromArray
 					(int)columnStart, array[rowOffset+i],
 					columnOffset, width);
 			} 
+		}
+		
+		public Map getParameters()
+		{
+			HashMap map = new HashMap();
+			
+			map.put("name", "ObjectIlmFromArray");
+			map.put("width", new Long(width()));
+			map.put("height", new Long(height()));
+			
+			return(map);
 		}
     }
 }

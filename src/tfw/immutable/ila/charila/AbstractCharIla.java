@@ -24,20 +24,36 @@
  */
 package tfw.immutable.ila.charila;
 
+import tfw.immutable.DataInvalidException;
+import tfw.immutable.ImmutableProxy;
 import tfw.immutable.ila.AbstractIla;
+import tfw.immutable.ila.ImmutableLongArray;
 
 public abstract class AbstractCharIla extends AbstractIla
 	implements CharIla
 {
     protected abstract void toArrayImpl(char[] array, int offset,
-			long start, int length);
+			long start, int length) throws DataInvalidException;
 
     protected AbstractCharIla(long length)
     {
     	super(length);
     }
+    
+    public static Object getImmutableInfo(ImmutableLongArray ila)
+    {
+    	if (ila instanceof ImmutableProxy)
+    	{
+    		return(((ImmutableProxy)ila).getParameters());
+    	}
+    	else
+    	{
+    		return(ila.toString());
+    	}
+    }
 
     public final char[] toArray()
+    	throws DataInvalidException
     {
     	if(length() > (long) Integer.MAX_VALUE)
     		throw new ArrayIndexOutOfBoundsException
@@ -47,6 +63,7 @@ public abstract class AbstractCharIla extends AbstractIla
     }
 
     public final char[] toArray(long start, int length)
+    	throws DataInvalidException
     {
     	char[] result = new char[length];
     	
@@ -56,7 +73,7 @@ public abstract class AbstractCharIla extends AbstractIla
     }
 
     public final void toArray(char[] array, int offset,
-    	long start, int length)
+    	long start, int length) throws DataInvalidException
     {
     	if (length == 0)
     	{

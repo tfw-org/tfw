@@ -24,7 +24,12 @@
  */
 package tfw.immutable.ila.%%PACKAGE%%ila;
 
+import java.util.HashMap;
+import java.util.Map;
 import tfw.check.Argument;
+import tfw.immutable.DataInvalidException;
+import tfw.immutable.ImmutableProxy;
+import tfw.immutable.ilm.%%PACKAGE%%ilm.Abstract%%NAME%%Ilm;
 import tfw.immutable.ilm.%%PACKAGE%%ilm.%%NAME%%Ilm;
 
 public final class %%NAME%%IlaFrom%%NAME%%Ilm
@@ -39,6 +44,7 @@ public final class %%NAME%%IlaFrom%%NAME%%Ilm
     }
 
     private static class My%%NAME%%Ila extends Abstract%%NAME%%Ila
+    	implements ImmutableProxy
     {
 		private %%NAME%%Ilm ilm;
 
@@ -50,7 +56,7 @@ public final class %%NAME%%IlaFrom%%NAME%%Ilm
 		}
 
 		protected void toArrayImpl(%%TYPE%%[] array, int offset,
-			long start, int length)
+			long start, int length) throws DataInvalidException
 		{
 			%%TYPE%%[][] tempArray = new %%TYPE%%[][] {array};
 			long row = start / ilm.width();
@@ -68,6 +74,17 @@ public final class %%NAME%%IlaFrom%%NAME%%Ilm
 				row++;
 				totalElements += elementsInRow;
 			}
+		}
+		
+		public Map getParameters()
+		{
+			HashMap map = new HashMap();
+			
+			map.put("name", "%%NAME%%IlaFrom%%NAME%%Ilm");
+			map.put("ilm", Abstract%%NAME%%Ilm.getImmutableInfo(ilm));
+			map.put("length", new Long(length()));
+			
+			return(map);
 		}
     }
 }

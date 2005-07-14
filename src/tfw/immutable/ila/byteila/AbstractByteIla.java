@@ -24,20 +24,36 @@
  */
 package tfw.immutable.ila.byteila;
 
+import tfw.immutable.DataInvalidException;
+import tfw.immutable.ImmutableProxy;
 import tfw.immutable.ila.AbstractIla;
+import tfw.immutable.ila.ImmutableLongArray;
 
 public abstract class AbstractByteIla extends AbstractIla
 	implements ByteIla
 {
     protected abstract void toArrayImpl(byte[] array, int offset,
-			long start, int length);
+			long start, int length) throws DataInvalidException;
 
     protected AbstractByteIla(long length)
     {
     	super(length);
     }
+    
+    public static Object getImmutableInfo(ImmutableLongArray ila)
+    {
+    	if (ila instanceof ImmutableProxy)
+    	{
+    		return(((ImmutableProxy)ila).getParameters());
+    	}
+    	else
+    	{
+    		return(ila.toString());
+    	}
+    }
 
     public final byte[] toArray()
+    	throws DataInvalidException
     {
     	if(length() > (long) Integer.MAX_VALUE)
     		throw new ArrayIndexOutOfBoundsException
@@ -47,6 +63,7 @@ public abstract class AbstractByteIla extends AbstractIla
     }
 
     public final byte[] toArray(long start, int length)
+    	throws DataInvalidException
     {
     	byte[] result = new byte[length];
     	
@@ -56,7 +73,7 @@ public abstract class AbstractByteIla extends AbstractIla
     }
 
     public final void toArray(byte[] array, int offset,
-    	long start, int length)
+    	long start, int length) throws DataInvalidException
     {
     	if (length == 0)
     	{

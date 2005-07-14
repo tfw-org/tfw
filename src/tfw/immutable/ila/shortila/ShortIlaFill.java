@@ -25,7 +25,10 @@
 package tfw.immutable.ila.shortila;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import tfw.check.Argument;
+import tfw.immutable.ImmutableProxy;
 
 public final class ShortIlaFill
 {
@@ -39,6 +42,7 @@ public final class ShortIlaFill
     }
 
     private static class MyShortIla extends AbstractShortIla
+    	implements ImmutableProxy
     {
 		private short value;
 
@@ -53,6 +57,17 @@ public final class ShortIlaFill
 			long start, int length)
 		{
 		    Arrays.fill(array, offset, offset + length, value);
+		}
+		
+		public Map getParameters()
+		{
+			HashMap map = new HashMap();
+			
+			map.put("name", "ShortIlaFill");
+			map.put("value", new Short(value));
+			map.put("length", new Long(length()));
+			
+			return(map);
 		}
     }
 }

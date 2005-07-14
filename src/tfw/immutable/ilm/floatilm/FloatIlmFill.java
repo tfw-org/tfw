@@ -24,7 +24,10 @@
  */
 package tfw.immutable.ilm.floatilm;
 
+import java.util.HashMap;
+import java.util.Map;
 import tfw.check.Argument;
+import tfw.immutable.ImmutableProxy;
 
 public final class FloatIlmFill
 {
@@ -39,6 +42,7 @@ public final class FloatIlmFill
     }
 
     private static class MyFloatIlm extends AbstractFloatIlm
+    	implements ImmutableProxy
     {
 		private final float value;
 
@@ -60,6 +64,18 @@ public final class FloatIlmFill
 					array[rowOffset+r][columnOffset+c] = value;
 				}
 			} 
+		}
+		
+		public Map getParameters()
+		{
+			HashMap map = new HashMap();
+			
+			map.put("name", "FloatIlmFill");
+			map.put("value", new Float(value));
+			map.put("width", new Long(width()));
+			map.put("height", new Long(height()));
+			
+			return(map);
 		}
     }
 }

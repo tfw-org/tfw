@@ -27,12 +27,14 @@ package tfw.immutable.ilm.longilm.test;
 
 import java.util.Random;
 import junit.framework.TestCase;
+import tfw.immutable.DataInvalidException;
 import tfw.immutable.ilm.longilm.LongIlm;
 import tfw.immutable.ilm.longilm.LongIlmFromArray;
 
 public class LongIlmFromArrayTest extends TestCase
 {
 	public void testLongIlmFromArray()
+		throws DataInvalidException
 	{
 		final int WIDTH = 20;
 		final int HEIGHT = 25;

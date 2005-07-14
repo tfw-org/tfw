@@ -24,7 +24,11 @@
  */
 package tfw.immutable.ila.floatila;
 
+import java.util.HashMap;
+import java.util.Map;
 import tfw.check.Argument;
+import tfw.immutable.DataInvalidException;
+import tfw.immutable.ImmutableProxy;
 import tfw.immutable.ila.intila.IntIla;
 import tfw.immutable.ila.intila.IntIlaIterator;
 import tfw.immutable.ila.intila.IntIlaSegment;
@@ -41,6 +45,7 @@ public final class FloatIlaFromIntIla
     }
 
     private static class MyFloatIla extends AbstractFloatIla
+		implements ImmutableProxy
     {
 		private IntIla intIla;
 
@@ -52,7 +57,7 @@ public final class FloatIlaFromIntIla
 		}
 
 		protected void toArrayImpl(float[] array, int offset,
-			long start, int length)
+			long start, int length) throws DataInvalidException
 		{
 			IntIlaIterator iii = new IntIlaIterator(
 				IntIlaSegment.create(intIla, start, length));
@@ -63,16 +68,15 @@ public final class FloatIlaFromIntIla
 		    }
 		}
 		
-		public String toString()
+		public Map getParameters()
 		{
-			StringBuffer sb = new StringBuffer();
+			HashMap map = new HashMap();
 			
-			sb.append("FloatIlaFromIntIla: length=");
-			sb.append(length);
-			sb.append("\n");
-			sb.append(intIla.toString());
+			map.put("name", "FloatIlaFromIntIla");
+			map.put("intIla", getImmutableInfo(intIla));
+			map.put("length", new Long(length()));
 			
-			return(sb.toString());
+			return(map);
 		}
     }
 }

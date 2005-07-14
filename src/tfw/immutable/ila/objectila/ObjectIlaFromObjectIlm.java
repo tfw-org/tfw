@@ -24,7 +24,12 @@
  */
 package tfw.immutable.ila.objectila;
 
+import java.util.HashMap;
+import java.util.Map;
 import tfw.check.Argument;
+import tfw.immutable.DataInvalidException;
+import tfw.immutable.ImmutableProxy;
+import tfw.immutable.ilm.objectilm.AbstractObjectIlm;
 import tfw.immutable.ilm.objectilm.ObjectIlm;
 
 public final class ObjectIlaFromObjectIlm
@@ -39,6 +44,7 @@ public final class ObjectIlaFromObjectIlm
     }
 
     private static class MyObjectIla extends AbstractObjectIla
+    	implements ImmutableProxy
     {
 		private ObjectIlm ilm;
 
@@ -50,7 +56,7 @@ public final class ObjectIlaFromObjectIlm
 		}
 
 		protected void toArrayImpl(Object[] array, int offset,
-			long start, int length)
+			long start, int length) throws DataInvalidException
 		{
 			Object[][] tempArray = new Object[][] {array};
 			long row = start / ilm.width();
@@ -68,6 +74,17 @@ public final class ObjectIlaFromObjectIlm
 				row++;
 				totalElements += elementsInRow;
 			}
+		}
+		
+		public Map getParameters()
+		{
+			HashMap map = new HashMap();
+			
+			map.put("name", "ObjectIlaFromObjectIlm");
+			map.put("ilm", AbstractObjectIlm.getImmutableInfo(ilm));
+			map.put("length", new Long(length()));
+			
+			return(map);
 		}
     }
 }

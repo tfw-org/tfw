@@ -24,7 +24,11 @@
  */
 package tfw.immutable.ilm.byteilm;
 
+import java.util.HashMap;
+import java.util.Map;
 import tfw.check.Argument;
+import tfw.immutable.DataInvalidException;
+import tfw.immutable.ImmutableProxy;
 
 public final class ByteIlmConcatenateHorizontal
 {
@@ -41,6 +45,7 @@ public final class ByteIlmConcatenateHorizontal
     }
 
     private static class MyByteIlm extends AbstractByteIlm
+    	implements ImmutableProxy
     {
 		private ByteIlm leftIlm;
 		private ByteIlm rightIlm;
@@ -55,7 +60,7 @@ public final class ByteIlmConcatenateHorizontal
 		
 		protected void toArrayImpl(byte[][] array, int rowOffset,
 			int columnOffset, long rowStart, long columnStart,
-			int width, int height)
+			int width, int height) throws DataInvalidException
 		{
 		    if (columnStart + width <= leftIlm.width())
 		    {
@@ -75,6 +80,19 @@ public final class ByteIlmConcatenateHorizontal
 				rightIlm.toArray(array, rowOffset, columnOffset + firstamount,
 					rowStart, 0, width - firstamount, height);
 	    	}
+		}
+		
+		public Map getParameters()
+		{
+			HashMap map = new HashMap();
+			
+			map.put("name", "ByteIlmConcatenateHorizontal");
+			map.put("leftIlm", getImmutableInfo(leftIlm));
+			map.put("rightIlm", getImmutableInfo(rightIlm));
+			map.put("width", new Long(width()));
+			map.put("height", new Long(height()));
+			
+			return(map);
 		}
     }
 }

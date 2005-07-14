@@ -24,53 +24,70 @@
  */
 package tfw.immutable.ila.doubleila;
 
+import java.util.HashMap;
+import java.util.Map;
 import tfw.check.Argument;
+import tfw.immutable.DataInvalidException;
+import tfw.immutable.ImmutableProxy;
 
 public final class DoubleIlaRemove
 {
     private DoubleIlaRemove() {}
 
-    public static DoubleIla create(DoubleIla instance, long index)
+    public static DoubleIla create(DoubleIla ila, long index)
     {
-    	Argument.assertNotNull(instance, "instance");
+    	Argument.assertNotNull(ila, "ila");
     	Argument.assertNotLessThan(index, 0, "index");
-    	Argument.assertLessThan(index, instance.length(),
-    		"index", "instance.length()");
+    	Argument.assertLessThan(index, ila.length(),
+    		"index", "ila.length()");
 
-		return new MyDoubleIla(instance, index);
+		return new MyDoubleIla(ila, index);
     }
 
     private static class MyDoubleIla extends AbstractDoubleIla
+    	implements ImmutableProxy
     {
-		private DoubleIla instance;
+		private DoubleIla ila;
 		private long index;
 
-		MyDoubleIla(DoubleIla instance, long index)
+		MyDoubleIla(DoubleIla ila, long index)
 		{
-		    super(instance.length() - 1);
+		    super(ila.length() - 1);
 		    
-		    this.instance = instance;
+		    this.ila = ila;
 		    this.index = index;
 		}
 
 		protected void toArrayImpl(double[] array, int offset,
-			long start, int length)
+			long start, int length) throws DataInvalidException
 		{
 		    if(index <= start)
 		    {
-				instance.toArray(array, offset, start + 1, length);
+				ila.toArray(array, offset, start + 1, length);
 		    }
 		    else if(index >= start + length)
 		    {
-				instance.toArray(array, offset, start, length);
+				ila.toArray(array, offset, start, length);
 		    }
 		    else
 		    {
 				long indexMinusStart = index - start;
-				instance.toArray(array, offset, start, (int) indexMinusStart);
-				instance.toArray(array, (int) (offset + indexMinusStart),
+				ila.toArray(array, offset, start, (int) indexMinusStart);
+				ila.toArray(array, (int) (offset + indexMinusStart),
 					index + 1, (int) (length - indexMinusStart));
 	    	}
+		}
+		
+		public Map getParameters()
+		{
+			HashMap map = new HashMap();
+			
+			map.put("name", "DoubleIlaRemove");
+			map.put("ila", getImmutableInfo(ila));
+			map.put("index", new Long(index));
+			map.put("length", new Long(length()));
+			
+			return(map);
 		}
     }
 }

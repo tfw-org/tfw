@@ -26,6 +26,7 @@
 package tfw.immutable.ilm.shortilm.test;
 
 import tfw.check.Argument;
+import tfw.immutable.DataInvalidException;
 import tfw.immutable.ilm.shortilm.ShortIlm;
 
 public class ShortIlmTest
@@ -44,8 +45,19 @@ public class ShortIlmTest
 		
 		final int width = (int)ilm1.width();
 		final int height = (int)ilm1.height();
-		short[][] a1 = ilm1.toArray();
-		short[][] a2 = ilm2.toArray();
+		short[][] a1 = null;
+		short[][] a2 = null;
+		
+		try
+		{
+			a1 = ilm1.toArray();
+			a2 = ilm2.toArray();
+		}
+		catch(DataInvalidException die)
+		{
+			throw new IllegalArgumentException(
+				die.toString());
+		}
 		
 		for (int r=0 ; r < height ; r++)
 		{
@@ -74,8 +86,16 @@ public class ShortIlmTest
 				{
 					for (int w=0 ; w < remainingWidth ; w++)
 					{
-						a1 = ilm1.toArray(sr, sc, w, h);
-						a2 = ilm2.toArray(sr, sc, w, h);
+						try
+						{
+							a1 = ilm1.toArray(sr, sc, w, h);
+							a2 = ilm2.toArray(sr, sc, w, h);
+						}
+						catch(DataInvalidException die)
+						{
+							throw new IllegalArgumentException(
+								die.toString());
+						}
 						
 						for (int r=0 ; r < h ; r++)
 						{

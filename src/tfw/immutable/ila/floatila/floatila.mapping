@@ -3,3 +3,5 @@
 %%PACKAGE%% = float
 %%RANDOM_VALUE%% = random.nextFloat()
 %%ASSERT_EQUALS_DELTA%% = , 0f
+%%CREATE_IMMUTABLE_START%% = new Float(
+%%CREATE_IMMUTABLE_END%% = )

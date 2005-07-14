@@ -24,64 +24,82 @@
  */
 package tfw.immutable.ila.shortila;
 
+import java.util.HashMap;
+import java.util.Map;
 import tfw.check.Argument;
+import tfw.immutable.DataInvalidException;
+import tfw.immutable.ImmutableProxy;
 
 public final class ShortIlaMutate
 {
     private ShortIlaMutate() {}
 
-    public static ShortIla create(ShortIla instance, long index,
+    public static ShortIla create(ShortIla ila, long index,
 		short value)
     {
-    	Argument.assertNotNull(instance, "instance");
+    	Argument.assertNotNull(ila, "ila");
     	Argument.assertNotLessThan(index, 0, "index");
-    	Argument.assertLessThan(index, instance.length(),
-    		"index", "instance.length()");
+    	Argument.assertLessThan(index, ila.length(),
+    		"index", "ila.length()");
 
-		return new MyShortIla(instance, index, value);
+		return new MyShortIla(ila, index, value);
     }
 
     private static class MyShortIla extends AbstractShortIla
+    	implements ImmutableProxy
     {
-		private ShortIla instance;
+		private ShortIla ila;
 		private long index;
 		private short value;
 
-		MyShortIla(ShortIla instance, long index, short value)
+		MyShortIla(ShortIla ila, long index, short value)
 		{
-		    super(instance.length());
+		    super(ila.length());
 		    
-		    this.instance = instance;
+		    this.ila = ila;
 		    this.index = index;
 		    this.value = value;
 		}
 
 		protected void toArrayImpl(short[] array, int offset,
-			long start, int length)
+			long start, int length) throws DataInvalidException
 		{
 			long startPlusLength = start + length;
 			
 			if(index < start || index >= startPlusLength)
 			{
-				instance.toArray(array, offset, start, length);
+				ila.toArray(array, offset, start, length);
 			}
 			else
 			{
 				long indexMinusStart = index - start;
 				if(index > start)
 				{
-				    instance.toArray(array, offset, start,
+				    ila.toArray(array, offset, start,
 						(int) indexMinusStart);
 				}
 				array[offset + (int) indexMinusStart] = value;
 				if(index <= startPlusLength)
 				{
-					instance.toArray(array, (int)
+					ila.toArray(array, (int)
 						(offset + indexMinusStart + 1),
 						index + 1,
 						(int) (length - indexMinusStart - 1));
 				}
 	    	}
+		}
+		
+		public Map getParameters()
+		{
+			HashMap map = new HashMap();
+			
+			map.put("name", "ShortIlaMutate");
+			map.put("ila", getImmutableInfo(ila));
+			map.put("index", new Long(index));
+			map.put("value", new Short(value));
+			map.put("length", new Long(length()));
+			
+			return(map);
 		}
     }
 }

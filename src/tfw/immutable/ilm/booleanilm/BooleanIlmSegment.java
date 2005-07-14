@@ -24,7 +24,11 @@
  */
 package tfw.immutable.ilm.booleanilm;
 
+import java.util.HashMap;
+import java.util.Map;
 import tfw.check.Argument;
+import tfw.immutable.DataInvalidException;
+import tfw.immutable.ImmutableProxy;
 
 public final class BooleanIlmSegment
 {
@@ -54,6 +58,7 @@ public final class BooleanIlmSegment
     }
 
     private static class MyBooleanIlm extends AbstractBooleanIlm
+    	implements ImmutableProxy
     {
 		private final BooleanIlm instance;
 		private final long rowStart;
@@ -71,11 +76,24 @@ public final class BooleanIlmSegment
 
 		protected void toArrayImpl(boolean[][] array, int rowOffset,
 			int columnOffset, long rowStart, long columnStart,
-			int width, int height)
+			int width, int height) throws DataInvalidException
 		{
 			instance.toArray(array, rowOffset, columnOffset,
 				this.rowStart + rowStart, this.columnStart + columnStart,
 				width, height);
+		}
+		
+		public Map getParameters()
+		{
+			HashMap map = new HashMap();
+			
+			map.put("name", "BooleanIlmSegment");
+			map.put("rowStart", new Long(rowStart));
+			map.put("columnStart", new Long(columnStart));
+			map.put("width", new Long(width()));
+			map.put("height", new Long(height()));
+			
+			return(map);
 		}
     }
 }

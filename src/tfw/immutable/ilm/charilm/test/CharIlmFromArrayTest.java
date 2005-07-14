@@ -27,12 +27,14 @@ package tfw.immutable.ilm.charilm.test;
 
 import java.util.Random;
 import junit.framework.TestCase;
+import tfw.immutable.DataInvalidException;
 import tfw.immutable.ilm.charilm.CharIlm;
 import tfw.immutable.ilm.charilm.CharIlmFromArray;
 
 public class CharIlmFromArrayTest extends TestCase
 {
 	public void testCharIlmFromArray()
+		throws DataInvalidException
 	{
 		final int WIDTH = 20;
 		final int HEIGHT = 25;

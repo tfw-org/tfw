@@ -24,7 +24,11 @@
  */
 package tfw.immutable.ila.longila;
 
+import java.util.HashMap;
+import java.util.Map;
 import tfw.check.Argument;
+import tfw.immutable.DataInvalidException;
+import tfw.immutable.ImmutableProxy;
 
 public final class LongIlaInsert
 {
@@ -42,6 +46,7 @@ public final class LongIlaInsert
     }
 
     private static class MyLongIla extends AbstractLongIla
+    	implements ImmutableProxy
     {
 		private LongIla ila;
 		private long index;
@@ -57,7 +62,7 @@ public final class LongIlaInsert
 		}
 
 		protected void toArrayImpl(long[] array, int offset,
-			long start, int length)
+			long start, int length) throws DataInvalidException
 		{
 	    	if(index < start)
 			{
@@ -84,6 +89,19 @@ public final class LongIlaInsert
 						(length - indexMinusStart - 1));
 				}
 			}
+		}
+		
+		public Map getParameters()
+		{
+			HashMap map = new HashMap();
+			
+			map.put("name", "LongIlaInsert");
+			map.put("ila", getImmutableInfo(ila));
+			map.put("index", new Long(index));
+			map.put("value", new Long(value));
+			map.put("length", new Long(length()));
+			
+			return(map);
 		}
     }
 }

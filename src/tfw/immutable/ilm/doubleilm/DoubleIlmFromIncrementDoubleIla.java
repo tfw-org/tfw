@@ -26,7 +26,12 @@ package tfw.immutable.ilm.doubleilm;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import tfw.check.Argument;
+import tfw.immutable.DataInvalidException;
+import tfw.immutable.ImmutableProxy;
+import tfw.immutable.ila.doubleila.AbstractDoubleIla;
 import tfw.immutable.ila.doubleila.DoubleIla;
 
 public final class DoubleIlmFromIncrementDoubleIla
@@ -43,6 +48,7 @@ public final class DoubleIlmFromIncrementDoubleIla
     }
 
     private static class MyDoubleIlm extends AbstractDoubleIlm
+    	implements ImmutableProxy
     {
 		private final DoubleIla ila;
 		private final BigDecimal rowIncrement;
@@ -61,7 +67,7 @@ public final class DoubleIlmFromIncrementDoubleIla
 		
 		protected void toArrayImpl(double[][] array, int rowOffset,
 			int columnOffset, long rowStart, long columnStart,
-			int width, int height)
+			int width, int height) throws DataInvalidException
 		{
 			for (int r=0 ; r < height ; r++)
 			{
@@ -91,6 +97,20 @@ public final class DoubleIlmFromIncrementDoubleIla
 						columnOffset + width, noDataValue);
 				}
 	    	}
+		}
+		
+		public Map getParameters()
+		{
+			HashMap map = new HashMap();
+			
+			map.put("name", "DoubleIlmFromIncrementDoubleIla");
+			map.put("ila", AbstractDoubleIla.getImmutableInfo(ila));
+			map.put("rowIncrement", rowIncrement);
+			map.put("noDataValue", new Double(noDataValue));
+			map.put("width", new Long(width()));
+			map.put("height", new Long(height()));
+			
+			return(map);
 		}
     }
 }

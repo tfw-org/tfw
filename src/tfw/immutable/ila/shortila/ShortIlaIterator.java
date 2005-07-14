@@ -25,6 +25,7 @@
 package tfw.immutable.ila.shortila;
 
 import tfw.check.Argument;
+import tfw.immutable.DataInvalidException;
 
 public final class ShortIlaIterator
 {
@@ -65,7 +66,7 @@ public final class ShortIlaIterator
        Either know the length of the DoubleIla, or use hasNext()
        properly.
      */
-    public short next()
+    public short next() throws DataInvalidException
     {
 		// do we need to fetch into buffer?
 		if (bufferIndex == bufferSize)

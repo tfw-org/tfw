@@ -24,7 +24,11 @@
  */
 package tfw.immutable.ila.booleanila;
 
+import java.util.HashMap;
+import java.util.Map;
 import tfw.check.Argument;
+import tfw.immutable.DataInvalidException;
+import tfw.immutable.ImmutableProxy;
 
 public final class BooleanIlaConcatenate
 {
@@ -39,6 +43,7 @@ public final class BooleanIlaConcatenate
     }
 
     private static class MyBooleanIla extends AbstractBooleanIla
+    	implements ImmutableProxy
     {
 		private BooleanIla leftIla;
 		private BooleanIla rightIla;
@@ -56,7 +61,7 @@ public final class BooleanIlaConcatenate
 		}
 		
 		protected void toArrayImpl(boolean[] array, int offset,
-			long start, int length)
+			long start, int length) throws DataInvalidException
 		{
 		    if (start + length <= leftIlaLength)
 		    {
@@ -73,6 +78,18 @@ public final class BooleanIlaConcatenate
 				rightIla.toArray(array, offset + firstamount, 0,
 					length - firstamount);
 	    	}
+		}
+		
+		public Map getParameters()
+		{
+			HashMap map = new HashMap();
+			
+			map.put("name", "BooleanIlaConcatenate");
+			map.put("leftIla", getImmutableInfo(leftIla));
+			map.put("rightIla", getImmutableInfo(rightIla));
+			map.put("length", new Long(length()));
+			
+			return(map);
 		}
     }
 }

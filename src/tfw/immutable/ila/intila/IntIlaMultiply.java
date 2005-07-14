@@ -24,7 +24,11 @@
  */
 package tfw.immutable.ila.intila;
 
+import java.util.HashMap;
+import java.util.Map;
 import tfw.check.Argument;
+import tfw.immutable.DataInvalidException;
+import tfw.immutable.ImmutableProxy;
 
 public final class IntIlaMultiply
 {
@@ -41,6 +45,7 @@ public final class IntIlaMultiply
     }
 
     private static class MyIntIla extends AbstractIntIla
+    	implements ImmutableProxy
     {
 		private IntIla leftIla;
 		private IntIla rightIla;
@@ -54,7 +59,7 @@ public final class IntIlaMultiply
 		}
 
 		protected void toArrayImpl(int[] array, int offset,
-			long start, int length)
+			long start, int length) throws DataInvalidException
 		{
 		    IntIlaIterator li = new IntIlaIterator(
 		    	IntIlaSegment.create(leftIla, start, length));
@@ -65,6 +70,18 @@ public final class IntIlaMultiply
 		    {
 		    	array[offset+i] = li.next() * ri.next();
 		    }
+		}
+		
+		public Map getParameters()
+		{
+			HashMap map = new HashMap();
+			
+			map.put("name", "IntIlaMultiply");
+			map.put("leftIla", getImmutableInfo(leftIla));
+			map.put("rightIla", getImmutableInfo(rightIla));
+			map.put("length", new Long(length()));
+			
+			return(map);
 		}
     }
 }

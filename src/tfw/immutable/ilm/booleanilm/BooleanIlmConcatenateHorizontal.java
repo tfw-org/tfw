@@ -24,7 +24,11 @@
  */
 package tfw.immutable.ilm.booleanilm;
 
+import java.util.HashMap;
+import java.util.Map;
 import tfw.check.Argument;
+import tfw.immutable.DataInvalidException;
+import tfw.immutable.ImmutableProxy;
 
 public final class BooleanIlmConcatenateHorizontal
 {
@@ -41,6 +45,7 @@ public final class BooleanIlmConcatenateHorizontal
     }
 
     private static class MyBooleanIlm extends AbstractBooleanIlm
+    	implements ImmutableProxy
     {
 		private BooleanIlm leftIlm;
 		private BooleanIlm rightIlm;
@@ -55,7 +60,7 @@ public final class BooleanIlmConcatenateHorizontal
 		
 		protected void toArrayImpl(boolean[][] array, int rowOffset,
 			int columnOffset, long rowStart, long columnStart,
-			int width, int height)
+			int width, int height) throws DataInvalidException
 		{
 		    if (columnStart + width <= leftIlm.width())
 		    {
@@ -75,6 +80,19 @@ public final class BooleanIlmConcatenateHorizontal
 				rightIlm.toArray(array, rowOffset, columnOffset + firstamount,
 					rowStart, 0, width - firstamount, height);
 	    	}
+		}
+		
+		public Map getParameters()
+		{
+			HashMap map = new HashMap();
+			
+			map.put("name", "BooleanIlmConcatenateHorizontal");
+			map.put("leftIlm", getImmutableInfo(leftIlm));
+			map.put("rightIlm", getImmutableInfo(rightIlm));
+			map.put("width", new Long(width()));
+			map.put("height", new Long(height()));
+			
+			return(map);
 		}
     }
 }

@@ -26,6 +26,7 @@
 package tfw.immutable.ilm.byteilm.test;
 
 import tfw.check.Argument;
+import tfw.immutable.DataInvalidException;
 import tfw.immutable.ilm.byteilm.ByteIlm;
 
 public class ByteIlmTest
@@ -44,8 +45,19 @@ public class ByteIlmTest
 		
 		final int width = (int)ilm1.width();
 		final int height = (int)ilm1.height();
-		byte[][] a1 = ilm1.toArray();
-		byte[][] a2 = ilm2.toArray();
+		byte[][] a1 = null;
+		byte[][] a2 = null;
+		
+		try
+		{
+			a1 = ilm1.toArray();
+			a2 = ilm2.toArray();
+		}
+		catch(DataInvalidException die)
+		{
+			throw new IllegalArgumentException(
+				die.toString());
+		}
 		
 		for (int r=0 ; r < height ; r++)
 		{
@@ -74,8 +86,16 @@ public class ByteIlmTest
 				{
 					for (int w=0 ; w < remainingWidth ; w++)
 					{
-						a1 = ilm1.toArray(sr, sc, w, h);
-						a2 = ilm2.toArray(sr, sc, w, h);
+						try
+						{
+							a1 = ilm1.toArray(sr, sc, w, h);
+							a2 = ilm2.toArray(sr, sc, w, h);
+						}
+						catch(DataInvalidException die)
+						{
+							throw new IllegalArgumentException(
+								die.toString());
+						}
 						
 						for (int r=0 ; r < h ; r++)
 						{

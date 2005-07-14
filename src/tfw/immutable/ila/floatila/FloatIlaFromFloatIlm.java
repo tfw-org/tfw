@@ -24,7 +24,12 @@
  */
 package tfw.immutable.ila.floatila;
 
+import java.util.HashMap;
+import java.util.Map;
 import tfw.check.Argument;
+import tfw.immutable.DataInvalidException;
+import tfw.immutable.ImmutableProxy;
+import tfw.immutable.ilm.floatilm.AbstractFloatIlm;
 import tfw.immutable.ilm.floatilm.FloatIlm;
 
 public final class FloatIlaFromFloatIlm
@@ -39,6 +44,7 @@ public final class FloatIlaFromFloatIlm
     }
 
     private static class MyFloatIla extends AbstractFloatIla
+    	implements ImmutableProxy
     {
 		private FloatIlm ilm;
 
@@ -50,7 +56,7 @@ public final class FloatIlaFromFloatIlm
 		}
 
 		protected void toArrayImpl(float[] array, int offset,
-			long start, int length)
+			long start, int length) throws DataInvalidException
 		{
 			float[][] tempArray = new float[][] {array};
 			long row = start / ilm.width();
@@ -68,6 +74,17 @@ public final class FloatIlaFromFloatIlm
 				row++;
 				totalElements += elementsInRow;
 			}
+		}
+		
+		public Map getParameters()
+		{
+			HashMap map = new HashMap();
+			
+			map.put("name", "FloatIlaFromFloatIlm");
+			map.put("ilm", AbstractFloatIlm.getImmutableInfo(ilm));
+			map.put("length", new Long(length()));
+			
+			return(map);
 		}
     }
 }

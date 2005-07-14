@@ -24,11 +24,15 @@
  */
 package tfw.immutable.ila.objectila;
 
+import tfw.immutable.DataInvalidException;
 import tfw.immutable.ila.ImmutableLongArray;
 
 public interface ObjectIla extends ImmutableLongArray
 {
-    public Object[] toArray();
-    public Object[] toArray(long start, int length);
-    public void toArray(Object[] array, int offset, long start, int length);
+    public Object[] toArray()
+    	throws DataInvalidException;
+    public Object[] toArray(long start, int length)
+    	throws DataInvalidException;
+    public void toArray(Object[] array, int offset, long start, int length)
+    	throws DataInvalidException;
 }

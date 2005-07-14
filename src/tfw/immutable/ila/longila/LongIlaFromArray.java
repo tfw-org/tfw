@@ -24,7 +24,10 @@
  */
 package tfw.immutable.ila.longila;
 
+import java.util.HashMap;
+import java.util.Map;
 import tfw.check.Argument;
+import tfw.immutable.ImmutableProxy;
 
 public final class LongIlaFromArray
 {
@@ -38,6 +41,7 @@ public final class LongIlaFromArray
     }
 
     private static class MyLongIla extends AbstractLongIla
+    	implements ImmutableProxy
     {
 		private final long[] array;
 
@@ -52,6 +56,16 @@ public final class LongIlaFromArray
 			long start, int length)
 		{
 		    System.arraycopy(this.array, (int) start, array, offset, length);
+		}
+		
+		public Map getParameters()
+		{
+			HashMap map = new HashMap();
+			
+			map.put("name", "LongIlaFromArray");
+			map.put("length", new Long(length()));
+			
+			return(map);
 		}
     }
 }

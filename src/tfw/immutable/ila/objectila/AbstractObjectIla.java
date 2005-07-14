@@ -24,20 +24,36 @@
  */
 package tfw.immutable.ila.objectila;
 
+import tfw.immutable.DataInvalidException;
+import tfw.immutable.ImmutableProxy;
 import tfw.immutable.ila.AbstractIla;
+import tfw.immutable.ila.ImmutableLongArray;
 
 public abstract class AbstractObjectIla extends AbstractIla
 	implements ObjectIla
 {
     protected abstract void toArrayImpl(Object[] array, int offset,
-			long start, int length);
+			long start, int length) throws DataInvalidException;
 
     protected AbstractObjectIla(long length)
     {
     	super(length);
     }
+    
+    public static Object getImmutableInfo(ImmutableLongArray ila)
+    {
+    	if (ila instanceof ImmutableProxy)
+    	{
+    		return(((ImmutableProxy)ila).getParameters());
+    	}
+    	else
+    	{
+    		return(ila.toString());
+    	}
+    }
 
     public final Object[] toArray()
+    	throws DataInvalidException
     {
     	if(length() > (long) Integer.MAX_VALUE)
     		throw new ArrayIndexOutOfBoundsException
@@ -47,6 +63,7 @@ public abstract class AbstractObjectIla extends AbstractIla
     }
 
     public final Object[] toArray(long start, int length)
+    	throws DataInvalidException
     {
     	Object[] result = new Object[length];
     	
@@ -56,7 +73,7 @@ public abstract class AbstractObjectIla extends AbstractIla
     }
 
     public final void toArray(Object[] array, int offset,
-    	long start, int length)
+    	long start, int length) throws DataInvalidException
     {
     	if (length == 0)
     	{

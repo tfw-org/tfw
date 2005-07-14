@@ -25,6 +25,7 @@
 package tfw.immutable.ila.demo;
 
 import java.io.File;
+import tfw.immutable.DataInvalidException;
 import tfw.immutable.ila.byteila.ByteIla;
 import tfw.immutable.ila.byteila.ByteIlaFromFile;
 import tfw.immutable.ila.byteila.ByteIlaIterator;
@@ -57,6 +58,7 @@ import tfw.immutable.ila.shortila.ShortIlaSegment;
 public class OctalDump
 {
 	public static void main(String[] args)
+		throws DataInvalidException
 	{
 		if (args.length != 3 || args[1].length() != 2)
 		{
@@ -173,7 +175,7 @@ public class OctalDump
 			}
 			
 			protected void toArrayImpl(Object[] array, int offset,
-					long start, int length)
+					long start, int length) throws DataInvalidException
 			{
 				ByteIlaIterator bii = new ByteIlaIterator(
 					ByteIlaSegment.create(byteIla, start,
@@ -256,7 +258,7 @@ public class OctalDump
 			}
 			
 			protected void toArrayImpl(Object[] array, int offset,
-					long start, int length)
+					long start, int length) throws DataInvalidException
 			{
 				ShortIlaIterator sii = new ShortIlaIterator(
 					ShortIlaSegment.create(shortIla, start * 2,
@@ -339,7 +341,7 @@ public class OctalDump
 			}
 			
 			protected void toArrayImpl(Object[] array, int offset,
-					long start, int length)
+					long start, int length) throws DataInvalidException
 			{
 				IntIlaIterator iii = new IntIlaIterator(
 					IntIlaSegment.create(intIla, start * 4,
@@ -417,7 +419,7 @@ public class OctalDump
 			}
 			
 			protected void toArrayImpl(Object[] array, int offset,
-					long start, int length)
+					long start, int length) throws DataInvalidException
 			{
 				LongIlaIterator lii = new LongIlaIterator(
 					LongIlaSegment.create(longIla, start * 8,
@@ -493,7 +495,7 @@ public class OctalDump
 			}
 			
 			protected void toArrayImpl(Object[] array, int offset,
-					long start, int length)
+					long start, int length) throws DataInvalidException
 			{
 				FloatIlaIterator fii = new FloatIlaIterator(
 					FloatIlaSegment.create(floatIla, start * 4,
@@ -555,7 +557,7 @@ public class OctalDump
 			}
 			
 			protected void toArrayImpl(Object[] array, int offset,
-					long start, int length)
+					long start, int length) throws DataInvalidException
 			{
 				DoubleIlaIterator dii = new DoubleIlaIterator(
 					DoubleIlaSegment.create(doubleIla, start * 4,

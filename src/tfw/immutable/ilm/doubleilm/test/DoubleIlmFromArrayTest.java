@@ -27,12 +27,14 @@ package tfw.immutable.ilm.doubleilm.test;
 
 import java.util.Random;
 import junit.framework.TestCase;
+import tfw.immutable.DataInvalidException;
 import tfw.immutable.ilm.doubleilm.DoubleIlm;
 import tfw.immutable.ilm.doubleilm.DoubleIlmFromArray;
 
 public class DoubleIlmFromArrayTest extends TestCase
 {
 	public void testDoubleIlmFromArray()
+		throws DataInvalidException
 	{
 		final int WIDTH = 20;
 		final int HEIGHT = 25;

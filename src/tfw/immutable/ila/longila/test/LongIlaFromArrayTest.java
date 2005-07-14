@@ -28,12 +28,14 @@ package tfw.immutable.ila.longila.test;
 import java.util.Arrays;
 import java.util.Random;
 import junit.framework.TestCase;
+import tfw.immutable.DataInvalidException;
 import tfw.immutable.ila.longila.LongIla;
 import tfw.immutable.ila.longila.LongIlaFromArray;
 
 public class LongIlaFromArrayTest extends TestCase
 {
 	public void testLongIlaFromArray()
+		throws DataInvalidException
 	{
 		final int LENGTH = 25;
 		final Random random = new Random();

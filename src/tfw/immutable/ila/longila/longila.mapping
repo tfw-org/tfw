@@ -3,3 +3,5 @@
 %%PACKAGE%% = long
 %%RANDOM_VALUE%% = random.nextLong()
 %%ASSERT_EQUALS_DELTA%% =
+%%CREATE_IMMUTABLE_START%% = new Long(
+%%CREATE_IMMUTABLE_END%% = )

@@ -24,7 +24,10 @@
  */
 package tfw.immutable.ilm.longilm;
 
+import java.util.HashMap;
+import java.util.Map;
 import tfw.check.Argument;
+import tfw.immutable.ImmutableProxy;
 
 public final class LongIlmFromArray
 {
@@ -38,6 +41,7 @@ public final class LongIlmFromArray
     }
 
     private static class MyLongIlm extends AbstractLongIlm
+    	implements ImmutableProxy
     {
 		private final long[][] array;
 
@@ -67,6 +71,17 @@ public final class LongIlmFromArray
 					(int)columnStart, array[rowOffset+i],
 					columnOffset, width);
 			} 
+		}
+		
+		public Map getParameters()
+		{
+			HashMap map = new HashMap();
+			
+			map.put("name", "LongIlmFromArray");
+			map.put("width", new Long(width()));
+			map.put("height", new Long(height()));
+			
+			return(map);
 		}
     }
 }

@@ -26,6 +26,7 @@
 package tfw.immutable.ilm.longilm.test;
 
 import tfw.check.Argument;
+import tfw.immutable.DataInvalidException;
 import tfw.immutable.ilm.longilm.LongIlm;
 
 public class LongIlmTest
@@ -44,8 +45,19 @@ public class LongIlmTest
 		
 		final int width = (int)ilm1.width();
 		final int height = (int)ilm1.height();
-		long[][] a1 = ilm1.toArray();
-		long[][] a2 = ilm2.toArray();
+		long[][] a1 = null;
+		long[][] a2 = null;
+		
+		try
+		{
+			a1 = ilm1.toArray();
+			a2 = ilm2.toArray();
+		}
+		catch(DataInvalidException die)
+		{
+			throw new IllegalArgumentException(
+				die.toString());
+		}
 		
 		for (int r=0 ; r < height ; r++)
 		{
@@ -74,8 +86,16 @@ public class LongIlmTest
 				{
 					for (int w=0 ; w < remainingWidth ; w++)
 					{
-						a1 = ilm1.toArray(sr, sc, w, h);
-						a2 = ilm2.toArray(sr, sc, w, h);
+						try
+						{
+							a1 = ilm1.toArray(sr, sc, w, h);
+							a2 = ilm2.toArray(sr, sc, w, h);
+						}
+						catch(DataInvalidException die)
+						{
+							throw new IllegalArgumentException(
+								die.toString());
+						}
 						
 						for (int r=0 ; r < h ; r++)
 						{

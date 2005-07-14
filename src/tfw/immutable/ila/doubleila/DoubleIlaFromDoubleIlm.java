@@ -24,7 +24,12 @@
  */
 package tfw.immutable.ila.doubleila;
 
+import java.util.HashMap;
+import java.util.Map;
 import tfw.check.Argument;
+import tfw.immutable.DataInvalidException;
+import tfw.immutable.ImmutableProxy;
+import tfw.immutable.ilm.doubleilm.AbstractDoubleIlm;
 import tfw.immutable.ilm.doubleilm.DoubleIlm;
 
 public final class DoubleIlaFromDoubleIlm
@@ -39,6 +44,7 @@ public final class DoubleIlaFromDoubleIlm
     }
 
     private static class MyDoubleIla extends AbstractDoubleIla
+    	implements ImmutableProxy
     {
 		private DoubleIlm ilm;
 
@@ -50,7 +56,7 @@ public final class DoubleIlaFromDoubleIlm
 		}
 
 		protected void toArrayImpl(double[] array, int offset,
-			long start, int length)
+			long start, int length) throws DataInvalidException
 		{
 			double[][] tempArray = new double[][] {array};
 			long row = start / ilm.width();
@@ -68,6 +74,17 @@ public final class DoubleIlaFromDoubleIlm
 				row++;
 				totalElements += elementsInRow;
 			}
+		}
+		
+		public Map getParameters()
+		{
+			HashMap map = new HashMap();
+			
+			map.put("name", "DoubleIlaFromDoubleIlm");
+			map.put("ilm", AbstractDoubleIlm.getImmutableInfo(ilm));
+			map.put("length", new Long(length()));
+			
+			return(map);
 		}
     }
 }

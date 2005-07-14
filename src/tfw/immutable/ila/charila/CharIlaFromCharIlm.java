@@ -24,7 +24,12 @@
  */
 package tfw.immutable.ila.charila;
 
+import java.util.HashMap;
+import java.util.Map;
 import tfw.check.Argument;
+import tfw.immutable.DataInvalidException;
+import tfw.immutable.ImmutableProxy;
+import tfw.immutable.ilm.charilm.AbstractCharIlm;
 import tfw.immutable.ilm.charilm.CharIlm;
 
 public final class CharIlaFromCharIlm
@@ -39,6 +44,7 @@ public final class CharIlaFromCharIlm
     }
 
     private static class MyCharIla extends AbstractCharIla
+    	implements ImmutableProxy
     {
 		private CharIlm ilm;
 
@@ -50,7 +56,7 @@ public final class CharIlaFromCharIlm
 		}
 
 		protected void toArrayImpl(char[] array, int offset,
-			long start, int length)
+			long start, int length) throws DataInvalidException
 		{
 			char[][] tempArray = new char[][] {array};
 			long row = start / ilm.width();
@@ -68,6 +74,17 @@ public final class CharIlaFromCharIlm
 				row++;
 				totalElements += elementsInRow;
 			}
+		}
+		
+		public Map getParameters()
+		{
+			HashMap map = new HashMap();
+			
+			map.put("name", "CharIlaFromCharIlm");
+			map.put("ilm", AbstractCharIlm.getImmutableInfo(ilm));
+			map.put("length", new Long(length()));
+			
+			return(map);
 		}
     }
 }

@@ -28,12 +28,14 @@ package tfw.immutable.ila.doubleila.test;
 import java.util.Arrays;
 import java.util.Random;
 import junit.framework.TestCase;
+import tfw.immutable.DataInvalidException;
 import tfw.immutable.ila.doubleila.DoubleIla;
 import tfw.immutable.ila.doubleila.DoubleIlaFromArray;
 
 public class DoubleIlaFromArrayTest extends TestCase
 {
 	public void testDoubleIlaFromArray()
+		throws DataInvalidException
 	{
 		final int LENGTH = 25;
 		final Random random = new Random();

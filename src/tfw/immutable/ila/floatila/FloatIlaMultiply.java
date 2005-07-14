@@ -24,7 +24,11 @@
  */
 package tfw.immutable.ila.floatila;
 
+import java.util.HashMap;
+import java.util.Map;
 import tfw.check.Argument;
+import tfw.immutable.DataInvalidException;
+import tfw.immutable.ImmutableProxy;
 
 public final class FloatIlaMultiply
 {
@@ -41,6 +45,7 @@ public final class FloatIlaMultiply
     }
 
     private static class MyFloatIla extends AbstractFloatIla
+    	implements ImmutableProxy
     {
 		private FloatIla leftIla;
 		private FloatIla rightIla;
@@ -54,7 +59,7 @@ public final class FloatIlaMultiply
 		}
 
 		protected void toArrayImpl(float[] array, int offset,
-			long start, int length)
+			long start, int length) throws DataInvalidException
 		{
 		    FloatIlaIterator li = new FloatIlaIterator(
 		    	FloatIlaSegment.create(leftIla, start, length));
@@ -65,6 +70,18 @@ public final class FloatIlaMultiply
 		    {
 		    	array[offset+i] = li.next() * ri.next();
 		    }
+		}
+		
+		public Map getParameters()
+		{
+			HashMap map = new HashMap();
+			
+			map.put("name", "FloatIlaMultiply");
+			map.put("leftIla", getImmutableInfo(leftIla));
+			map.put("rightIla", getImmutableInfo(rightIla));
+			map.put("length", new Long(length()));
+			
+			return(map);
 		}
     }
 }

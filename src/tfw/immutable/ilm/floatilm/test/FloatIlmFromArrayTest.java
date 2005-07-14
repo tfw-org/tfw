@@ -27,12 +27,14 @@ package tfw.immutable.ilm.floatilm.test;
 
 import java.util.Random;
 import junit.framework.TestCase;
+import tfw.immutable.DataInvalidException;
 import tfw.immutable.ilm.floatilm.FloatIlm;
 import tfw.immutable.ilm.floatilm.FloatIlmFromArray;
 
 public class FloatIlmFromArrayTest extends TestCase
 {
 	public void testFloatIlmFromArray()
+		throws DataInvalidException
 	{
 		final int WIDTH = 20;
 		final int HEIGHT = 25;

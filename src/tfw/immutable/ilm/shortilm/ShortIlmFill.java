@@ -24,7 +24,10 @@
  */
 package tfw.immutable.ilm.shortilm;
 
+import java.util.HashMap;
+import java.util.Map;
 import tfw.check.Argument;
+import tfw.immutable.ImmutableProxy;
 
 public final class ShortIlmFill
 {
@@ -39,6 +42,7 @@ public final class ShortIlmFill
     }
 
     private static class MyShortIlm extends AbstractShortIlm
+    	implements ImmutableProxy
     {
 		private final short value;
 
@@ -60,6 +64,18 @@ public final class ShortIlmFill
 					array[rowOffset+r][columnOffset+c] = value;
 				}
 			} 
+		}
+		
+		public Map getParameters()
+		{
+			HashMap map = new HashMap();
+			
+			map.put("name", "ShortIlmFill");
+			map.put("value", new Short(value));
+			map.put("width", new Long(width()));
+			map.put("height", new Long(height()));
+			
+			return(map);
 		}
     }
 }

@@ -24,11 +24,15 @@
  */
 package tfw.immutable.ila.doubleila;
 
+import tfw.immutable.DataInvalidException;
 import tfw.immutable.ila.ImmutableLongArray;
 
 public interface DoubleIla extends ImmutableLongArray
 {
-    public double[] toArray();
-    public double[] toArray(long start, int length);
-    public void toArray(double[] array, int offset, long start, int length);
+    public double[] toArray()
+    	throws DataInvalidException;
+    public double[] toArray(long start, int length)
+    	throws DataInvalidException;
+    public void toArray(double[] array, int offset, long start, int length)
+    	throws DataInvalidException;
 }

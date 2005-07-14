@@ -24,45 +24,62 @@
  */
 package tfw.immutable.ila.byteila;
 
+import java.util.HashMap;
+import java.util.Map;
 import tfw.check.Argument;
+import tfw.immutable.DataInvalidException;
+import tfw.immutable.ImmutableProxy;
 
 public final class ByteIlaSegment
 {
     private ByteIlaSegment() { }
 
-    public static ByteIla create(ByteIla instance, long start)
+    public static ByteIla create(ByteIla ila, long start)
     {
-		return create(instance, start, instance.length() - start);
+		return create(ila, start, ila.length() - start);
     }
 
-    public static ByteIla create(ByteIla instance, long start, long length)
+    public static ByteIla create(ByteIla ila, long start, long length)
     {
-    	Argument.assertNotNull(instance, "instance");
+    	Argument.assertNotNull(ila, "ila");
     	Argument.assertNotLessThan(start, 0, "start");
     	Argument.assertNotLessThan(length, 0, "length");
-    	Argument.assertNotGreaterThan((start + length), instance.length(),
-    		"start + length", "instance.length()");
+    	Argument.assertNotGreaterThan((start + length), ila.length(),
+    		"start + length", "ila.length()");
 
-		return new MyByteIla(instance, start, length);
+		return new MyByteIla(ila, start, length);
     }
 
     private static class MyByteIla extends AbstractByteIla
+    	implements ImmutableProxy
     {
-		private ByteIla instance;
+		private ByteIla ila;
 		private long start;
 
-		MyByteIla(ByteIla instance, long start, long length)
+		MyByteIla(ByteIla ila, long start, long length)
 		{
 		    super(length);
 		    
-		    this.instance = instance;
+		    this.ila = ila;
 		    this.start = start;
 		}
 
 		protected void toArrayImpl(byte[] array, int offset,
-			long start, int length)
+			long start, int length) throws DataInvalidException
 		{
-		    instance.toArray(array, offset, this.start + start, length);
+		    ila.toArray(array, offset, this.start + start, length);
+		}
+		
+		public Map getParameters()
+		{
+			HashMap map = new HashMap();
+			
+			map.put("name", "ByteIlaSegment");
+			map.put("ila", getImmutableInfo(ila));
+			map.put("start", new Long(start));
+			map.put("length", new Long(length()));
+			
+			return(map);
 		}
     }
 }

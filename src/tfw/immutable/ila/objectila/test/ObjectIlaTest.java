@@ -24,8 +24,9 @@
  */
 package tfw.immutable.ila.objectila.test;
 
-import	java.util.Arrays;
-import	tfw.immutable.ila.objectila.ObjectIla;
+import java.util.Arrays;
+import tfw.immutable.DataInvalidException;
+import tfw.immutable.ila.objectila.ObjectIla;
 
 public class ObjectIlaTest
 {
@@ -44,8 +45,18 @@ public class ObjectIlaTest
 		// Check to see if the zero argument toArray() methods return
 		// the same result.
 		
-		Object[] o1 = ila1.toArray();
-		Object[] o2 = ila2.toArray();
+		Object[] o1 = null;
+		Object[] o2 = null;
+		
+		try
+		{
+			o1 = ila1.toArray();
+			o2 = ila2.toArray();
+		}
+		catch(DataInvalidException die)
+		{
+			return(die.toString());
+		}
 		
 		if (!Arrays.equals(o1, o2))
 		{
@@ -61,8 +72,15 @@ public class ObjectIlaTest
 			
 			for (int l=0 ; l < remainingLength ; l++)
 			{
-				o1 = ila1.toArray(s, l);
-				o2 = ila2.toArray(s, l);
+				try
+				{
+					o1 = ila1.toArray(s, l);
+					o2 = ila2.toArray(s, l);
+				}
+				catch(DataInvalidException die)
+				{
+					return(die.toString());
+				}
 				
 				if (!Arrays.equals(o1, o2))
 				{
@@ -84,8 +102,15 @@ public class ObjectIlaTest
 					o1 = new Object[length];
 					o2 = new Object[length];
 
-					ila1.toArray(o1, o, s, l);
-					ila2.toArray(o2, o, s, l);
+					try
+					{
+						ila1.toArray(o1, o, s, l);
+						ila2.toArray(o2, o, s, l);
+					}
+					catch(DataInvalidException die)
+					{
+						return(die.toString());
+					}
 					
 					if (!Arrays.equals(o1, o2))
 					{

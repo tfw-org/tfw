@@ -24,7 +24,10 @@
  */
 package tfw.immutable.ila.%%PACKAGE%%ila;
 
+import java.util.HashMap;
+import java.util.Map;
 import tfw.check.Argument;
+import tfw.immutable.ImmutableProxy;
 
 public final class %%NAME%%IlaFromArray
 {
@@ -38,6 +41,7 @@ public final class %%NAME%%IlaFromArray
     }
 
     private static class My%%NAME%%Ila extends Abstract%%NAME%%Ila
+    	implements ImmutableProxy
     {
 		private final %%TYPE%%[] array;
 
@@ -52,6 +56,16 @@ public final class %%NAME%%IlaFromArray
 			long start, int length)
 		{
 		    System.arraycopy(this.array, (int) start, array, offset, length);
+		}
+		
+		public Map getParameters()
+		{
+			HashMap map = new HashMap();
+			
+			map.put("name", "%%NAME%%IlaFromArray");
+			map.put("length", new Long(length()));
+			
+			return(map);
 		}
     }
 }

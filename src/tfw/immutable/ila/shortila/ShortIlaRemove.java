@@ -24,53 +24,70 @@
  */
 package tfw.immutable.ila.shortila;
 
+import java.util.HashMap;
+import java.util.Map;
 import tfw.check.Argument;
+import tfw.immutable.DataInvalidException;
+import tfw.immutable.ImmutableProxy;
 
 public final class ShortIlaRemove
 {
     private ShortIlaRemove() {}
 
-    public static ShortIla create(ShortIla instance, long index)
+    public static ShortIla create(ShortIla ila, long index)
     {
-    	Argument.assertNotNull(instance, "instance");
+    	Argument.assertNotNull(ila, "ila");
     	Argument.assertNotLessThan(index, 0, "index");
-    	Argument.assertLessThan(index, instance.length(),
-    		"index", "instance.length()");
+    	Argument.assertLessThan(index, ila.length(),
+    		"index", "ila.length()");
 
-		return new MyShortIla(instance, index);
+		return new MyShortIla(ila, index);
     }
 
     private static class MyShortIla extends AbstractShortIla
+    	implements ImmutableProxy
     {
-		private ShortIla instance;
+		private ShortIla ila;
 		private long index;
 
-		MyShortIla(ShortIla instance, long index)
+		MyShortIla(ShortIla ila, long index)
 		{
-		    super(instance.length() - 1);
+		    super(ila.length() - 1);
 		    
-		    this.instance = instance;
+		    this.ila = ila;
 		    this.index = index;
 		}
 
 		protected void toArrayImpl(short[] array, int offset,
-			long start, int length)
+			long start, int length) throws DataInvalidException
 		{
 		    if(index <= start)
 		    {
-				instance.toArray(array, offset, start + 1, length);
+				ila.toArray(array, offset, start + 1, length);
 		    }
 		    else if(index >= start + length)
 		    {
-				instance.toArray(array, offset, start, length);
+				ila.toArray(array, offset, start, length);
 		    }
 		    else
 		    {
 				long indexMinusStart = index - start;
-				instance.toArray(array, offset, start, (int) indexMinusStart);
-				instance.toArray(array, (int) (offset + indexMinusStart),
+				ila.toArray(array, offset, start, (int) indexMinusStart);
+				ila.toArray(array, (int) (offset + indexMinusStart),
 					index + 1, (int) (length - indexMinusStart));
 	    	}
+		}
+		
+		public Map getParameters()
+		{
+			HashMap map = new HashMap();
+			
+			map.put("name", "ShortIlaRemove");
+			map.put("ila", getImmutableInfo(ila));
+			map.put("index", new Long(index));
+			map.put("length", new Long(length()));
+			
+			return(map);
 		}
     }
 }

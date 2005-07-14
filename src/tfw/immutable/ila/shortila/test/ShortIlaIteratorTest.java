@@ -27,6 +27,7 @@ package tfw.immutable.ila.shortila.test;
 
 import java.util.Random;
 import junit.framework.TestCase;
+import tfw.immutable.DataInvalidException;
 import tfw.immutable.ila.shortila.ShortIla;
 import tfw.immutable.ila.shortila.ShortIlaIterator;
 import tfw.immutable.ila.shortila.ShortIlaFromArray;
@@ -34,6 +35,7 @@ import tfw.immutable.ila.shortila.ShortIlaFromArray;
 public class ShortIlaIteratorTest extends TestCase
 {
 	public void testShortIlaFill()
+		throws DataInvalidException
 	{
 		final Random random = new Random();
 		final int LENGTH = 29;	

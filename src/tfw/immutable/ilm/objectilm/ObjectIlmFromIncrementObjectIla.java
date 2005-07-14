@@ -26,7 +26,12 @@ package tfw.immutable.ilm.objectilm;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import tfw.check.Argument;
+import tfw.immutable.DataInvalidException;
+import tfw.immutable.ImmutableProxy;
+import tfw.immutable.ila.objectila.AbstractObjectIla;
 import tfw.immutable.ila.objectila.ObjectIla;
 
 public final class ObjectIlmFromIncrementObjectIla
@@ -43,6 +48,7 @@ public final class ObjectIlmFromIncrementObjectIla
     }
 
     private static class MyObjectIlm extends AbstractObjectIlm
+    	implements ImmutableProxy
     {
 		private final ObjectIla ila;
 		private final BigDecimal rowIncrement;
@@ -61,7 +67,7 @@ public final class ObjectIlmFromIncrementObjectIla
 		
 		protected void toArrayImpl(Object[][] array, int rowOffset,
 			int columnOffset, long rowStart, long columnStart,
-			int width, int height)
+			int width, int height) throws DataInvalidException
 		{
 			for (int r=0 ; r < height ; r++)
 			{
@@ -91,6 +97,20 @@ public final class ObjectIlmFromIncrementObjectIla
 						columnOffset + width, noDataValue);
 				}
 	    	}
+		}
+		
+		public Map getParameters()
+		{
+			HashMap map = new HashMap();
+			
+			map.put("name", "ObjectIlmFromIncrementObjectIla");
+			map.put("ila", AbstractObjectIla.getImmutableInfo(ila));
+			map.put("rowIncrement", rowIncrement);
+			map.put("noDataValue", noDataValue);
+			map.put("width", new Long(width()));
+			map.put("height", new Long(height()));
+			
+			return(map);
 		}
     }
 }

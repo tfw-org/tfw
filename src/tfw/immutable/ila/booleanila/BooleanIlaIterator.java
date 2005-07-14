@@ -25,6 +25,7 @@
 package tfw.immutable.ila.booleanila;
 
 import tfw.check.Argument;
+import tfw.immutable.DataInvalidException;
 
 public final class BooleanIlaIterator
 {
@@ -65,7 +66,7 @@ public final class BooleanIlaIterator
        Either know the length of the DoubleIla, or use hasNext()
        properly.
      */
-    public boolean next()
+    public boolean next() throws DataInvalidException
     {
 		// do we need to fetch into buffer?
 		if (bufferIndex == bufferSize)

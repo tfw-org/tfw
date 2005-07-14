@@ -24,7 +24,11 @@
  */
 package tfw.immutable.ilm.floatilm;
 
+import java.util.HashMap;
+import java.util.Map;
 import tfw.check.Argument;
+import tfw.immutable.DataInvalidException;
+import tfw.immutable.ImmutableProxy;
 
 public final class FloatIlmConcatenateHorizontal
 {
@@ -41,6 +45,7 @@ public final class FloatIlmConcatenateHorizontal
     }
 
     private static class MyFloatIlm extends AbstractFloatIlm
+    	implements ImmutableProxy
     {
 		private FloatIlm leftIlm;
 		private FloatIlm rightIlm;
@@ -55,7 +60,7 @@ public final class FloatIlmConcatenateHorizontal
 		
 		protected void toArrayImpl(float[][] array, int rowOffset,
 			int columnOffset, long rowStart, long columnStart,
-			int width, int height)
+			int width, int height) throws DataInvalidException
 		{
 		    if (columnStart + width <= leftIlm.width())
 		    {
@@ -75,6 +80,19 @@ public final class FloatIlmConcatenateHorizontal
 				rightIlm.toArray(array, rowOffset, columnOffset + firstamount,
 					rowStart, 0, width - firstamount, height);
 	    	}
+		}
+		
+		public Map getParameters()
+		{
+			HashMap map = new HashMap();
+			
+			map.put("name", "FloatIlmConcatenateHorizontal");
+			map.put("leftIlm", getImmutableInfo(leftIlm));
+			map.put("rightIlm", getImmutableInfo(rightIlm));
+			map.put("width", new Long(width()));
+			map.put("height", new Long(height()));
+			
+			return(map);
 		}
     }
 }

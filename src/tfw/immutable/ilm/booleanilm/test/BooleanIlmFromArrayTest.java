@@ -27,12 +27,14 @@ package tfw.immutable.ilm.booleanilm.test;
 
 import java.util.Random;
 import junit.framework.TestCase;
+import tfw.immutable.DataInvalidException;
 import tfw.immutable.ilm.booleanilm.BooleanIlm;
 import tfw.immutable.ilm.booleanilm.BooleanIlmFromArray;
 
 public class BooleanIlmFromArrayTest extends TestCase
 {
 	public void testBooleanIlmFromArray()
+		throws DataInvalidException
 	{
 		final int WIDTH = 20;
 		final int HEIGHT = 25;

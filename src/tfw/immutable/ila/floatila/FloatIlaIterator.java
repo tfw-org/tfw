@@ -25,6 +25,7 @@
 package tfw.immutable.ila.floatila;
 
 import tfw.check.Argument;
+import tfw.immutable.DataInvalidException;
 
 public final class FloatIlaIterator
 {
@@ -65,7 +66,7 @@ public final class FloatIlaIterator
        Either know the length of the DoubleIla, or use hasNext()
        properly.
      */
-    public float next()
+    public float next() throws DataInvalidException
     {
 		// do we need to fetch into buffer?
 		if (bufferIndex == bufferSize)

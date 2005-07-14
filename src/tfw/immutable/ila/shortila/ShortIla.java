@@ -24,11 +24,15 @@
  */
 package tfw.immutable.ila.shortila;
 
+import tfw.immutable.DataInvalidException;
 import tfw.immutable.ila.ImmutableLongArray;
 
 public interface ShortIla extends ImmutableLongArray
 {
-    public short[] toArray();
-    public short[] toArray(long start, int length);
-    public void toArray(short[] array, int offset, long start, int length);
+    public short[] toArray()
+    	throws DataInvalidException;
+    public short[] toArray(long start, int length)
+    	throws DataInvalidException;
+    public void toArray(short[] array, int offset, long start, int length)
+    	throws DataInvalidException;
 }

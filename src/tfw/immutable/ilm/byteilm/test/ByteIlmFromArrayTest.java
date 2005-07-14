@@ -27,12 +27,14 @@ package tfw.immutable.ilm.byteilm.test;
 
 import java.util.Random;
 import junit.framework.TestCase;
+import tfw.immutable.DataInvalidException;
 import tfw.immutable.ilm.byteilm.ByteIlm;
 import tfw.immutable.ilm.byteilm.ByteIlmFromArray;
 
 public class ByteIlmFromArrayTest extends TestCase
 {
 	public void testByteIlmFromArray()
+		throws DataInvalidException
 	{
 		final int WIDTH = 20;
 		final int HEIGHT = 25;

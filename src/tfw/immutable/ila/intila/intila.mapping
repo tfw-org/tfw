@@ -3,3 +3,5 @@
 %%PACKAGE%% = int
 %%RANDOM_VALUE%% = random.nextInt()
 %%ASSERT_EQUALS_DELTA%% =
+%%CREATE_IMMUTABLE_START%% = new Integer(
+%%CREATE_IMMUTABLE_END%% = )

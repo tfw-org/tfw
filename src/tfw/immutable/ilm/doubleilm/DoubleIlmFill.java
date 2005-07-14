@@ -24,7 +24,10 @@
  */
 package tfw.immutable.ilm.doubleilm;
 
+import java.util.HashMap;
+import java.util.Map;
 import tfw.check.Argument;
+import tfw.immutable.ImmutableProxy;
 
 public final class DoubleIlmFill
 {
@@ -39,6 +42,7 @@ public final class DoubleIlmFill
     }
 
     private static class MyDoubleIlm extends AbstractDoubleIlm
+    	implements ImmutableProxy
     {
 		private final double value;
 
@@ -60,6 +64,18 @@ public final class DoubleIlmFill
 					array[rowOffset+r][columnOffset+c] = value;
 				}
 			} 
+		}
+		
+		public Map getParameters()
+		{
+			HashMap map = new HashMap();
+			
+			map.put("name", "DoubleIlmFill");
+			map.put("value", new Double(value));
+			map.put("width", new Long(width()));
+			map.put("height", new Long(height()));
+			
+			return(map);
 		}
     }
 }

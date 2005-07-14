@@ -28,7 +28,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.util.HashMap;
+import java.util.Map;
 import tfw.check.Argument;
+import tfw.immutable.ImmutableProxy;
 
 public final class ByteIlaFromFile
 {
@@ -49,6 +52,7 @@ public final class ByteIlaFromFile
 	}
 	
 	private static class MyByteIla extends AbstractByteIla
+		implements ImmutableProxy
 	{
 		private final File file;
 		
@@ -114,16 +118,15 @@ public final class ByteIlaFromFile
     		timerRunnable = null;
 	    }
 	    
-	    public String toString()
+	    public Map getParameters()
 	    {
-	    	StringBuffer sb = new StringBuffer();
+	    	HashMap map = new HashMap();
 	    	
-	    	sb.append("ByteIlaFromFile: length=");
-	    	sb.append(length());
-	    	sb.append(" file=");
-	    	sb.append(file);
+	    	map.put("name", "ByteIlaFromFile");
+	    	map.put("file", file);
+	    	map.put("length", new Long(length()));
 	    	
-	    	return(sb.toString());
+	    	return(map);
 	    }
 	}
 	

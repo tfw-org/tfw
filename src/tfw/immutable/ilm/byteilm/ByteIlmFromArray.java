@@ -24,7 +24,10 @@
  */
 package tfw.immutable.ilm.byteilm;
 
+import java.util.HashMap;
+import java.util.Map;
 import tfw.check.Argument;
+import tfw.immutable.ImmutableProxy;
 
 public final class ByteIlmFromArray
 {
@@ -38,6 +41,7 @@ public final class ByteIlmFromArray
     }
 
     private static class MyByteIlm extends AbstractByteIlm
+    	implements ImmutableProxy
     {
 		private final byte[][] array;
 
@@ -67,6 +71,17 @@ public final class ByteIlmFromArray
 					(int)columnStart, array[rowOffset+i],
 					columnOffset, width);
 			} 
+		}
+		
+		public Map getParameters()
+		{
+			HashMap map = new HashMap();
+			
+			map.put("name", "ByteIlmFromArray");
+			map.put("width", new Long(width()));
+			map.put("height", new Long(height()));
+			
+			return(map);
 		}
     }
 }

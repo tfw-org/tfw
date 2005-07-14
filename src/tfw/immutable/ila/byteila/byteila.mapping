@@ -3,3 +3,5 @@
 %%PACKAGE%% = byte
 %%RANDOM_VALUE%% = (byte)random.nextInt()
 %%ASSERT_EQUALS_DELTA%% =
+%%CREATE_IMMUTABLE_START%% = new Byte(
+%%CREATE_IMMUTABLE_END%% = )

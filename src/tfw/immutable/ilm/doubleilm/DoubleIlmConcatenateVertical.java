@@ -24,7 +24,11 @@
  */
 package tfw.immutable.ilm.doubleilm;
 
+import java.util.HashMap;
+import java.util.Map;
 import tfw.check.Argument;
+import tfw.immutable.DataInvalidException;
+import tfw.immutable.ImmutableProxy;
 
 public final class DoubleIlmConcatenateVertical
 {
@@ -41,6 +45,7 @@ public final class DoubleIlmConcatenateVertical
     }
 
     private static class MyDoubleIlm extends AbstractDoubleIlm
+    	implements ImmutableProxy
     {
 		private DoubleIlm topIlm;
 		private DoubleIlm bottomIlm;
@@ -55,7 +60,7 @@ public final class DoubleIlmConcatenateVertical
 		
 		protected void toArrayImpl(double[][] array, int rowOffset,
 			int columnOffset, long rowStart, long columnStart,
-			int width, int height)
+			int width, int height) throws DataInvalidException
 		{
 		    if (rowStart + height <= topIlm.height())
 		    {
@@ -75,6 +80,19 @@ public final class DoubleIlmConcatenateVertical
 				bottomIlm.toArray(array, rowOffset + firstamount, columnOffset,
 					0, columnStart, width, height - firstamount);
 	    	}
+		}
+		
+		public Map getParameters()
+		{
+			HashMap map = new HashMap();
+			
+			map.put("name", "DoubleIlmConcatenateVertical");
+			map.put("topIlm", getImmutableInfo(topIlm));
+			map.put("bottomIlm", getImmutableInfo(bottomIlm));
+			map.put("width", new Long(width()));
+			map.put("height", new Long(height()));
+			
+			return(map);
 		}
     }
 }

@@ -24,20 +24,36 @@
  */
 package tfw.immutable.ila.booleanila;
 
+import tfw.immutable.DataInvalidException;
+import tfw.immutable.ImmutableProxy;
 import tfw.immutable.ila.AbstractIla;
+import tfw.immutable.ila.ImmutableLongArray;
 
 public abstract class AbstractBooleanIla extends AbstractIla
 	implements BooleanIla
 {
     protected abstract void toArrayImpl(boolean[] array, int offset,
-			long start, int length);
+			long start, int length) throws DataInvalidException;
 
     protected AbstractBooleanIla(long length)
     {
     	super(length);
     }
+    
+    public static Object getImmutableInfo(ImmutableLongArray ila)
+    {
+    	if (ila instanceof ImmutableProxy)
+    	{
+    		return(((ImmutableProxy)ila).getParameters());
+    	}
+    	else
+    	{
+    		return(ila.toString());
+    	}
+    }
 
     public final boolean[] toArray()
+    	throws DataInvalidException
     {
     	if(length() > (long) Integer.MAX_VALUE)
     		throw new ArrayIndexOutOfBoundsException
@@ -47,6 +63,7 @@ public abstract class AbstractBooleanIla extends AbstractIla
     }
 
     public final boolean[] toArray(long start, int length)
+    	throws DataInvalidException
     {
     	boolean[] result = new boolean[length];
     	
@@ -56,7 +73,7 @@ public abstract class AbstractBooleanIla extends AbstractIla
     }
 
     public final void toArray(boolean[] array, int offset,
-    	long start, int length)
+    	long start, int length) throws DataInvalidException
     {
     	if (length == 0)
     	{

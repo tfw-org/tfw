@@ -25,7 +25,10 @@
 package tfw.immutable.ila.intila;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import tfw.check.Argument;
+import tfw.immutable.ImmutableProxy;
 
 public final class IntIlaFill
 {
@@ -39,6 +42,7 @@ public final class IntIlaFill
     }
 
     private static class MyIntIla extends AbstractIntIla
+    	implements ImmutableProxy
     {
 		private int value;
 
@@ -53,6 +57,17 @@ public final class IntIlaFill
 			long start, int length)
 		{
 		    Arrays.fill(array, offset, offset + length, value);
+		}
+		
+		public Map getParameters()
+		{
+			HashMap map = new HashMap();
+			
+			map.put("name", "IntIlaFill");
+			map.put("value", new Integer(value));
+			map.put("length", new Long(length()));
+			
+			return(map);
 		}
     }
 }

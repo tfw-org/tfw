@@ -26,7 +26,12 @@ package tfw.immutable.ilm.booleanilm;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import tfw.check.Argument;
+import tfw.immutable.DataInvalidException;
+import tfw.immutable.ImmutableProxy;
+import tfw.immutable.ila.booleanila.AbstractBooleanIla;
 import tfw.immutable.ila.booleanila.BooleanIla;
 
 public final class BooleanIlmFromIncrementBooleanIla
@@ -43,6 +48,7 @@ public final class BooleanIlmFromIncrementBooleanIla
     }
 
     private static class MyBooleanIlm extends AbstractBooleanIlm
+    	implements ImmutableProxy
     {
 		private final BooleanIla ila;
 		private final BigDecimal rowIncrement;
@@ -61,7 +67,7 @@ public final class BooleanIlmFromIncrementBooleanIla
 		
 		protected void toArrayImpl(boolean[][] array, int rowOffset,
 			int columnOffset, long rowStart, long columnStart,
-			int width, int height)
+			int width, int height) throws DataInvalidException
 		{
 			for (int r=0 ; r < height ; r++)
 			{
@@ -91,6 +97,20 @@ public final class BooleanIlmFromIncrementBooleanIla
 						columnOffset + width, noDataValue);
 				}
 	    	}
+		}
+		
+		public Map getParameters()
+		{
+			HashMap map = new HashMap();
+			
+			map.put("name", "BooleanIlmFromIncrementBooleanIla");
+			map.put("ila", AbstractBooleanIla.getImmutableInfo(ila));
+			map.put("rowIncrement", rowIncrement);
+			map.put("noDataValue", new Boolean(noDataValue));
+			map.put("width", new Long(width()));
+			map.put("height", new Long(height()));
+			
+			return(map);
 		}
     }
 }

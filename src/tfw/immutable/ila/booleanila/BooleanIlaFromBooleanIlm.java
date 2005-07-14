@@ -24,7 +24,12 @@
  */
 package tfw.immutable.ila.booleanila;
 
+import java.util.HashMap;
+import java.util.Map;
 import tfw.check.Argument;
+import tfw.immutable.DataInvalidException;
+import tfw.immutable.ImmutableProxy;
+import tfw.immutable.ilm.booleanilm.AbstractBooleanIlm;
 import tfw.immutable.ilm.booleanilm.BooleanIlm;
 
 public final class BooleanIlaFromBooleanIlm
@@ -39,6 +44,7 @@ public final class BooleanIlaFromBooleanIlm
     }
 
     private static class MyBooleanIla extends AbstractBooleanIla
+    	implements ImmutableProxy
     {
 		private BooleanIlm ilm;
 
@@ -50,7 +56,7 @@ public final class BooleanIlaFromBooleanIlm
 		}
 
 		protected void toArrayImpl(boolean[] array, int offset,
-			long start, int length)
+			long start, int length) throws DataInvalidException
 		{
 			boolean[][] tempArray = new boolean[][] {array};
 			long row = start / ilm.width();
@@ -68,6 +74,17 @@ public final class BooleanIlaFromBooleanIlm
 				row++;
 				totalElements += elementsInRow;
 			}
+		}
+		
+		public Map getParameters()
+		{
+			HashMap map = new HashMap();
+			
+			map.put("name", "BooleanIlaFromBooleanIlm");
+			map.put("ilm", AbstractBooleanIlm.getImmutableInfo(ilm));
+			map.put("length", new Long(length()));
+			
+			return(map);
 		}
     }
 }

@@ -24,8 +24,9 @@
  */
 package tfw.immutable.ila.byteila.test;
 
-import	java.util.Arrays;
-import	tfw.immutable.ila.byteila.ByteIla;
+import java.util.Arrays;
+import tfw.immutable.DataInvalidException;
+import tfw.immutable.ila.byteila.ByteIla;
 
 public class ByteIlaTest
 {
@@ -44,8 +45,18 @@ public class ByteIlaTest
 		// Check to see if the zero argument toArray() methods return
 		// the same result.
 		
-		byte[] o1 = ila1.toArray();
-		byte[] o2 = ila2.toArray();
+		byte[] o1 = null;
+		byte[] o2 = null;
+		
+		try
+		{
+			o1 = ila1.toArray();
+			o2 = ila2.toArray();
+		}
+		catch(DataInvalidException die)
+		{
+			return(die.toString());
+		}
 		
 		if (!Arrays.equals(o1, o2))
 		{
@@ -61,8 +72,15 @@ public class ByteIlaTest
 			
 			for (int l=0 ; l < remainingLength ; l++)
 			{
-				o1 = ila1.toArray(s, l);
-				o2 = ila2.toArray(s, l);
+				try
+				{
+					o1 = ila1.toArray(s, l);
+					o2 = ila2.toArray(s, l);
+				}
+				catch(DataInvalidException die)
+				{
+					return(die.toString());
+				}
 				
 				if (!Arrays.equals(o1, o2))
 				{
@@ -84,8 +102,15 @@ public class ByteIlaTest
 					o1 = new byte[length];
 					o2 = new byte[length];
 
-					ila1.toArray(o1, o, s, l);
-					ila2.toArray(o2, o, s, l);
+					try
+					{
+						ila1.toArray(o1, o, s, l);
+						ila2.toArray(o2, o, s, l);
+					}
+					catch(DataInvalidException die)
+					{
+						return(die.toString());
+					}
 					
 					if (!Arrays.equals(o1, o2))
 					{

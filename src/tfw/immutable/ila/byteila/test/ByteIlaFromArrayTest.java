@@ -28,12 +28,14 @@ package tfw.immutable.ila.byteila.test;
 import java.util.Arrays;
 import java.util.Random;
 import junit.framework.TestCase;
+import tfw.immutable.DataInvalidException;
 import tfw.immutable.ila.byteila.ByteIla;
 import tfw.immutable.ila.byteila.ByteIlaFromArray;
 
 public class ByteIlaFromArrayTest extends TestCase
 {
 	public void testByteIlaFromArray()
+		throws DataInvalidException
 	{
 		final int LENGTH = 25;
 		final Random random = new Random();

@@ -25,6 +25,7 @@
 package tfw.immutable.ila.charila;
 
 import tfw.check.Argument;
+import tfw.immutable.DataInvalidException;
 
 public final class CharIlaIterator
 {
@@ -65,7 +66,7 @@ public final class CharIlaIterator
        Either know the length of the DoubleIla, or use hasNext()
        properly.
      */
-    public char next()
+    public char next() throws DataInvalidException
     {
 		// do we need to fetch into buffer?
 		if (bufferIndex == bufferSize)

@@ -24,53 +24,70 @@
  */
 package tfw.immutable.ila.byteila;
 
+import java.util.HashMap;
+import java.util.Map;
 import tfw.check.Argument;
+import tfw.immutable.DataInvalidException;
+import tfw.immutable.ImmutableProxy;
 
 public final class ByteIlaRemove
 {
     private ByteIlaRemove() {}
 
-    public static ByteIla create(ByteIla instance, long index)
+    public static ByteIla create(ByteIla ila, long index)
     {
-    	Argument.assertNotNull(instance, "instance");
+    	Argument.assertNotNull(ila, "ila");
     	Argument.assertNotLessThan(index, 0, "index");
-    	Argument.assertLessThan(index, instance.length(),
-    		"index", "instance.length()");
+    	Argument.assertLessThan(index, ila.length(),
+    		"index", "ila.length()");
 
-		return new MyByteIla(instance, index);
+		return new MyByteIla(ila, index);
     }
 
     private static class MyByteIla extends AbstractByteIla
+    	implements ImmutableProxy
     {
-		private ByteIla instance;
+		private ByteIla ila;
 		private long index;
 
-		MyByteIla(ByteIla instance, long index)
+		MyByteIla(ByteIla ila, long index)
 		{
-		    super(instance.length() - 1);
+		    super(ila.length() - 1);
 		    
-		    this.instance = instance;
+		    this.ila = ila;
 		    this.index = index;
 		}
 
 		protected void toArrayImpl(byte[] array, int offset,
-			long start, int length)
+			long start, int length) throws DataInvalidException
 		{
 		    if(index <= start)
 		    {
-				instance.toArray(array, offset, start + 1, length);
+				ila.toArray(array, offset, start + 1, length);
 		    }
 		    else if(index >= start + length)
 		    {
-				instance.toArray(array, offset, start, length);
+				ila.toArray(array, offset, start, length);
 		    }
 		    else
 		    {
 				long indexMinusStart = index - start;
-				instance.toArray(array, offset, start, (int) indexMinusStart);
-				instance.toArray(array, (int) (offset + indexMinusStart),
+				ila.toArray(array, offset, start, (int) indexMinusStart);
+				ila.toArray(array, (int) (offset + indexMinusStart),
 					index + 1, (int) (length - indexMinusStart));
 	    	}
+		}
+		
+		public Map getParameters()
+		{
+			HashMap map = new HashMap();
+			
+			map.put("name", "ByteIlaRemove");
+			map.put("ila", getImmutableInfo(ila));
+			map.put("index", new Long(index));
+			map.put("length", new Long(length()));
+			
+			return(map);
 		}
     }
 }

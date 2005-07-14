@@ -24,7 +24,10 @@
  */
 package tfw.immutable.ila.doubleila;
 
+import java.util.HashMap;
+import java.util.Map;
 import tfw.check.Argument;
+import tfw.immutable.ImmutableProxy;
 
 public final class DoubleIlaRamp
 {
@@ -39,6 +42,7 @@ public final class DoubleIlaRamp
     }
 
     private static class MyDoubleIla extends AbstractDoubleIla
+    	implements ImmutableProxy
     {
 		private final double startValue;
 		private final double increment;
@@ -60,6 +64,18 @@ public final class DoubleIlaRamp
 			{
 				array[offset+i] = v;
 			}
+		}
+		
+		public Map getParameters()
+		{
+			HashMap map = new HashMap();
+			
+			map.put("name", "DoubleIlaRamp");
+			map.put("startValue", new Double(startValue));
+			map.put("increment", new Double(increment));
+			map.put("length", new Long(length()));
+			
+			return(map);
 		}
     }
 }

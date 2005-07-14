@@ -24,7 +24,10 @@
  */
 package tfw.immutable.ila.floatila;
 
+import java.util.HashMap;
+import java.util.Map;
 import tfw.check.Argument;
+import tfw.immutable.ImmutableProxy;
 
 public final class FloatIlaRamp
 {
@@ -39,6 +42,7 @@ public final class FloatIlaRamp
     }
 
     private static class MyFloatIla extends AbstractFloatIla
+    	implements ImmutableProxy
     {
 		private final float startValue;
 		private final float increment;
@@ -60,6 +64,18 @@ public final class FloatIlaRamp
 			{
 				array[offset+i] = v;
 			}
+		}
+		
+		public Map getParameters()
+		{
+			HashMap map = new HashMap();
+			
+			map.put("name", "FloatIlaRamp");
+			map.put("startValue", new Float(startValue));
+			map.put("increment", new Float(increment));
+			map.put("length", new Long(length()));
+			
+			return(map);
 		}
     }
 }

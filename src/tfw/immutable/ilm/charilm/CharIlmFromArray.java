@@ -24,7 +24,10 @@
  */
 package tfw.immutable.ilm.charilm;
 
+import java.util.HashMap;
+import java.util.Map;
 import tfw.check.Argument;
+import tfw.immutable.ImmutableProxy;
 
 public final class CharIlmFromArray
 {
@@ -38,6 +41,7 @@ public final class CharIlmFromArray
     }
 
     private static class MyCharIlm extends AbstractCharIlm
+    	implements ImmutableProxy
     {
 		private final char[][] array;
 
@@ -67,6 +71,17 @@ public final class CharIlmFromArray
 					(int)columnStart, array[rowOffset+i],
 					columnOffset, width);
 			} 
+		}
+		
+		public Map getParameters()
+		{
+			HashMap map = new HashMap();
+			
+			map.put("name", "CharIlmFromArray");
+			map.put("width", new Long(width()));
+			map.put("height", new Long(height()));
+			
+			return(map);
 		}
     }
 }

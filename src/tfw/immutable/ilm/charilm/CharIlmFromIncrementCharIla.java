@@ -26,7 +26,12 @@ package tfw.immutable.ilm.charilm;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import tfw.check.Argument;
+import tfw.immutable.DataInvalidException;
+import tfw.immutable.ImmutableProxy;
+import tfw.immutable.ila.charila.AbstractCharIla;
 import tfw.immutable.ila.charila.CharIla;
 
 public final class CharIlmFromIncrementCharIla
@@ -43,6 +48,7 @@ public final class CharIlmFromIncrementCharIla
     }
 
     private static class MyCharIlm extends AbstractCharIlm
+    	implements ImmutableProxy
     {
 		private final CharIla ila;
 		private final BigDecimal rowIncrement;
@@ -61,7 +67,7 @@ public final class CharIlmFromIncrementCharIla
 		
 		protected void toArrayImpl(char[][] array, int rowOffset,
 			int columnOffset, long rowStart, long columnStart,
-			int width, int height)
+			int width, int height) throws DataInvalidException
 		{
 			for (int r=0 ; r < height ; r++)
 			{
@@ -91,6 +97,20 @@ public final class CharIlmFromIncrementCharIla
 						columnOffset + width, noDataValue);
 				}
 	    	}
+		}
+		
+		public Map getParameters()
+		{
+			HashMap map = new HashMap();
+			
+			map.put("name", "CharIlmFromIncrementCharIla");
+			map.put("ila", AbstractCharIla.getImmutableInfo(ila));
+			map.put("rowIncrement", rowIncrement);
+			map.put("noDataValue", new Character(noDataValue));
+			map.put("width", new Long(width()));
+			map.put("height", new Long(height()));
+			
+			return(map);
 		}
     }
 }

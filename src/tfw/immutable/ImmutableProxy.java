@@ -22,17 +22,11 @@
  * Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307 USA
  */
-package tfw.immutable.ila.longila;
+package tfw.immutable;
 
-import tfw.immutable.DataInvalidException;
-import tfw.immutable.ila.ImmutableLongArray;
+import java.util.Map;
 
-public interface LongIla extends ImmutableLongArray
+public interface ImmutableProxy
 {
-    public long[] toArray()
-    	throws DataInvalidException;
-    public long[] toArray(long start, int length)
-    	throws DataInvalidException;
-    public void toArray(long[] array, int offset, long start, int length)
-    	throws DataInvalidException;
+	public Map getParameters();
 }

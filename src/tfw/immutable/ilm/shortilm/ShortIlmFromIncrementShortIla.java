@@ -26,7 +26,12 @@ package tfw.immutable.ilm.shortilm;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import tfw.check.Argument;
+import tfw.immutable.DataInvalidException;
+import tfw.immutable.ImmutableProxy;
+import tfw.immutable.ila.shortila.AbstractShortIla;
 import tfw.immutable.ila.shortila.ShortIla;
 
 public final class ShortIlmFromIncrementShortIla
@@ -43,6 +48,7 @@ public final class ShortIlmFromIncrementShortIla
     }
 
     private static class MyShortIlm extends AbstractShortIlm
+    	implements ImmutableProxy
     {
 		private final ShortIla ila;
 		private final BigDecimal rowIncrement;
@@ -61,7 +67,7 @@ public final class ShortIlmFromIncrementShortIla
 		
 		protected void toArrayImpl(short[][] array, int rowOffset,
 			int columnOffset, long rowStart, long columnStart,
-			int width, int height)
+			int width, int height) throws DataInvalidException
 		{
 			for (int r=0 ; r < height ; r++)
 			{
@@ -91,6 +97,20 @@ public final class ShortIlmFromIncrementShortIla
 						columnOffset + width, noDataValue);
 				}
 	    	}
+		}
+		
+		public Map getParameters()
+		{
+			HashMap map = new HashMap();
+			
+			map.put("name", "ShortIlmFromIncrementShortIla");
+			map.put("ila", AbstractShortIla.getImmutableInfo(ila));
+			map.put("rowIncrement", rowIncrement);
+			map.put("noDataValue", new Short(noDataValue));
+			map.put("width", new Long(width()));
+			map.put("height", new Long(height()));
+			
+			return(map);
 		}
     }
 }

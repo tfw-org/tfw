@@ -24,8 +24,9 @@
  */
 package tfw.immutable.ila.longila.test;
 
-import	java.util.Arrays;
-import	tfw.immutable.ila.longila.LongIla;
+import java.util.Arrays;
+import tfw.immutable.DataInvalidException;
+import tfw.immutable.ila.longila.LongIla;
 
 public class LongIlaTest
 {
@@ -44,8 +45,18 @@ public class LongIlaTest
 		// Check to see if the zero argument toArray() methods return
 		// the same result.
 		
-		long[] o1 = ila1.toArray();
-		long[] o2 = ila2.toArray();
+		long[] o1 = null;
+		long[] o2 = null;
+		
+		try
+		{
+			o1 = ila1.toArray();
+			o2 = ila2.toArray();
+		}
+		catch(DataInvalidException die)
+		{
+			return(die.toString());
+		}
 		
 		if (!Arrays.equals(o1, o2))
 		{
@@ -61,8 +72,15 @@ public class LongIlaTest
 			
 			for (int l=0 ; l < remainingLength ; l++)
 			{
-				o1 = ila1.toArray(s, l);
-				o2 = ila2.toArray(s, l);
+				try
+				{
+					o1 = ila1.toArray(s, l);
+					o2 = ila2.toArray(s, l);
+				}
+				catch(DataInvalidException die)
+				{
+					return(die.toString());
+				}
 				
 				if (!Arrays.equals(o1, o2))
 				{
@@ -84,8 +102,15 @@ public class LongIlaTest
 					o1 = new long[length];
 					o2 = new long[length];
 
-					ila1.toArray(o1, o, s, l);
-					ila2.toArray(o2, o, s, l);
+					try
+					{
+						ila1.toArray(o1, o, s, l);
+						ila2.toArray(o2, o, s, l);
+					}
+					catch(DataInvalidException die)
+					{
+						return(die.toString());
+					}
 					
 					if (!Arrays.equals(o1, o2))
 					{

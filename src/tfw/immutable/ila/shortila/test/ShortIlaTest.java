@@ -24,8 +24,9 @@
  */
 package tfw.immutable.ila.shortila.test;
 
-import	java.util.Arrays;
-import	tfw.immutable.ila.shortila.ShortIla;
+import java.util.Arrays;
+import tfw.immutable.DataInvalidException;
+import tfw.immutable.ila.shortila.ShortIla;
 
 public class ShortIlaTest
 {
@@ -44,8 +45,18 @@ public class ShortIlaTest
 		// Check to see if the zero argument toArray() methods return
 		// the same result.
 		
-		short[] o1 = ila1.toArray();
-		short[] o2 = ila2.toArray();
+		short[] o1 = null;
+		short[] o2 = null;
+		
+		try
+		{
+			o1 = ila1.toArray();
+			o2 = ila2.toArray();
+		}
+		catch(DataInvalidException die)
+		{
+			return(die.toString());
+		}
 		
 		if (!Arrays.equals(o1, o2))
 		{
@@ -61,8 +72,15 @@ public class ShortIlaTest
 			
 			for (int l=0 ; l < remainingLength ; l++)
 			{
-				o1 = ila1.toArray(s, l);
-				o2 = ila2.toArray(s, l);
+				try
+				{
+					o1 = ila1.toArray(s, l);
+					o2 = ila2.toArray(s, l);
+				}
+				catch(DataInvalidException die)
+				{
+					return(die.toString());
+				}
 				
 				if (!Arrays.equals(o1, o2))
 				{
@@ -84,8 +102,15 @@ public class ShortIlaTest
 					o1 = new short[length];
 					o2 = new short[length];
 
-					ila1.toArray(o1, o, s, l);
-					ila2.toArray(o2, o, s, l);
+					try
+					{
+						ila1.toArray(o1, o, s, l);
+						ila2.toArray(o2, o, s, l);
+					}
+					catch(DataInvalidException die)
+					{
+						return(die.toString());
+					}
 					
 					if (!Arrays.equals(o1, o2))
 					{

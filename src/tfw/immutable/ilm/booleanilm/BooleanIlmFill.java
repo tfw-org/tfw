@@ -24,7 +24,10 @@
  */
 package tfw.immutable.ilm.booleanilm;
 
+import java.util.HashMap;
+import java.util.Map;
 import tfw.check.Argument;
+import tfw.immutable.ImmutableProxy;
 
 public final class BooleanIlmFill
 {
@@ -39,6 +42,7 @@ public final class BooleanIlmFill
     }
 
     private static class MyBooleanIlm extends AbstractBooleanIlm
+    	implements ImmutableProxy
     {
 		private final boolean value;
 
@@ -60,6 +64,18 @@ public final class BooleanIlmFill
 					array[rowOffset+r][columnOffset+c] = value;
 				}
 			} 
+		}
+		
+		public Map getParameters()
+		{
+			HashMap map = new HashMap();
+			
+			map.put("name", "BooleanIlmFill");
+			map.put("value", new Boolean(value));
+			map.put("width", new Long(width()));
+			map.put("height", new Long(height()));
+			
+			return(map);
 		}
     }
 }

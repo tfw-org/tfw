@@ -24,7 +24,12 @@
  */
 package tfw.immutable.ilm.longilm;
 
+import java.util.HashMap;
+import java.util.Map;
 import tfw.check.Argument;
+import tfw.immutable.DataInvalidException;
+import tfw.immutable.ImmutableProxy;
+import tfw.immutable.ila.longila.AbstractLongIla;
 import tfw.immutable.ila.longila.LongIla;
 
 public final class LongIlmFromLongIla
@@ -42,6 +47,7 @@ public final class LongIlmFromLongIla
     }
 
     private static class MyLongIlm extends AbstractLongIlm
+    	implements ImmutableProxy
     {
 		private LongIla ila;
 
@@ -54,13 +60,25 @@ public final class LongIlmFromLongIla
 		
 		protected void toArrayImpl(long[][] array, int rowOffset,
 			int columnOffset, long rowStart, long columnStart,
-			int width, int height)
+			int width, int height) throws DataInvalidException
 		{
 			for (int r=0 ; r < height ; r++)
 			{
 				ila.toArray(array[rowOffset+r], columnOffset,
 					(rowStart + r) * this.width + columnStart, width);
 			}
+		}
+		
+		public Map getParameters()
+		{
+			HashMap map = new HashMap();
+			
+			map.put("name", "LongIlmFromLongIla");
+			map.put("ila", AbstractLongIla.getImmutableInfo(ila));
+			map.put("width", new Long(width()));
+			map.put("height", new Long(height()));
+			
+			return(map);
 		}
     }
 }

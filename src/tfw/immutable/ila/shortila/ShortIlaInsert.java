@@ -24,7 +24,11 @@
  */
 package tfw.immutable.ila.shortila;
 
+import java.util.HashMap;
+import java.util.Map;
 import tfw.check.Argument;
+import tfw.immutable.DataInvalidException;
+import tfw.immutable.ImmutableProxy;
 
 public final class ShortIlaInsert
 {
@@ -42,6 +46,7 @@ public final class ShortIlaInsert
     }
 
     private static class MyShortIla extends AbstractShortIla
+    	implements ImmutableProxy
     {
 		private ShortIla ila;
 		private long index;
@@ -57,7 +62,7 @@ public final class ShortIlaInsert
 		}
 
 		protected void toArrayImpl(short[] array, int offset,
-			long start, int length)
+			long start, int length) throws DataInvalidException
 		{
 	    	if(index < start)
 			{
@@ -84,6 +89,19 @@ public final class ShortIlaInsert
 						(length - indexMinusStart - 1));
 				}
 			}
+		}
+		
+		public Map getParameters()
+		{
+			HashMap map = new HashMap();
+			
+			map.put("name", "ShortIlaInsert");
+			map.put("ila", getImmutableInfo(ila));
+			map.put("index", new Long(index));
+			map.put("value", new Short(value));
+			map.put("length", new Long(length()));
+			
+			return(map);
 		}
     }
 }

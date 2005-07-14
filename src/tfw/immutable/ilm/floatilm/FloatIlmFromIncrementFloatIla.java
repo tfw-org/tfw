@@ -26,7 +26,12 @@ package tfw.immutable.ilm.floatilm;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import tfw.check.Argument;
+import tfw.immutable.DataInvalidException;
+import tfw.immutable.ImmutableProxy;
+import tfw.immutable.ila.floatila.AbstractFloatIla;
 import tfw.immutable.ila.floatila.FloatIla;
 
 public final class FloatIlmFromIncrementFloatIla
@@ -43,6 +48,7 @@ public final class FloatIlmFromIncrementFloatIla
     }
 
     private static class MyFloatIlm extends AbstractFloatIlm
+    	implements ImmutableProxy
     {
 		private final FloatIla ila;
 		private final BigDecimal rowIncrement;
@@ -61,7 +67,7 @@ public final class FloatIlmFromIncrementFloatIla
 		
 		protected void toArrayImpl(float[][] array, int rowOffset,
 			int columnOffset, long rowStart, long columnStart,
-			int width, int height)
+			int width, int height) throws DataInvalidException
 		{
 			for (int r=0 ; r < height ; r++)
 			{
@@ -91,6 +97,20 @@ public final class FloatIlmFromIncrementFloatIla
 						columnOffset + width, noDataValue);
 				}
 	    	}
+		}
+		
+		public Map getParameters()
+		{
+			HashMap map = new HashMap();
+			
+			map.put("name", "FloatIlmFromIncrementFloatIla");
+			map.put("ila", AbstractFloatIla.getImmutableInfo(ila));
+			map.put("rowIncrement", rowIncrement);
+			map.put("noDataValue", new Float(noDataValue));
+			map.put("width", new Long(width()));
+			map.put("height", new Long(height()));
+			
+			return(map);
 		}
     }
 }

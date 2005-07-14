@@ -27,6 +27,7 @@ package tfw.immutable.ila.floatila.test;
 
 import java.util.Random;
 import junit.framework.TestCase;
+import tfw.immutable.DataInvalidException;
 import tfw.immutable.ila.floatila.FloatIla;
 import tfw.immutable.ila.floatila.FloatIlaIterator;
 import tfw.immutable.ila.floatila.FloatIlaFromArray;
@@ -34,6 +35,7 @@ import tfw.immutable.ila.floatila.FloatIlaFromArray;
 public class FloatIlaIteratorTest extends TestCase
 {
 	public void testFloatIlaFill()
+		throws DataInvalidException
 	{
 		final Random random = new Random();
 		final int LENGTH = 29;	

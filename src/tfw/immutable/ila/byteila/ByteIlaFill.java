@@ -25,7 +25,10 @@
 package tfw.immutable.ila.byteila;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import tfw.check.Argument;
+import tfw.immutable.ImmutableProxy;
 
 public final class ByteIlaFill
 {
@@ -39,6 +42,7 @@ public final class ByteIlaFill
     }
 
     private static class MyByteIla extends AbstractByteIla
+    	implements ImmutableProxy
     {
 		private byte value;
 
@@ -53,6 +57,17 @@ public final class ByteIlaFill
 			long start, int length)
 		{
 		    Arrays.fill(array, offset, offset + length, value);
+		}
+		
+		public Map getParameters()
+		{
+			HashMap map = new HashMap();
+			
+			map.put("name", "ByteIlaFill");
+			map.put("value", new Byte(value));
+			map.put("length", new Long(length()));
+			
+			return(map);
 		}
     }
 }
