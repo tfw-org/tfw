@@ -18,12 +18,12 @@ import javax.swing.colorchooser.AbstractColorChooserPanel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import tfw.awt.ecd.ColorECD;
 import tfw.tsm.Branch;
 import tfw.tsm.BranchBox;
 import tfw.tsm.Commit;
 import tfw.tsm.Initiator;
 import tfw.tsm.ecd.BooleanECD;
-import tfw.tsm.ecd.ColorECD;
 import tfw.tsm.ecd.EventChannelDescription;
 
 

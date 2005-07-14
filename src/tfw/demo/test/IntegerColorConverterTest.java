@@ -6,9 +6,9 @@ import java.util.HashMap;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+import tfw.awt.ecd.ColorECD;
 import tfw.demo.IntegerColorConverter;
 import tfw.demo.RedGreenBlueECD;
-import tfw.tsm.ecd.ColorECD;
 
 public class IntegerColorConverterTest extends TestCase
 {

@@ -9,6 +9,7 @@ import java.awt.event.WindowEvent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
+import tfw.awt.ecd.ColorECD;
 import tfw.component.TriggeredEventChannelCopy;
 import tfw.swing.JButtonBB;
 import tfw.swing.JPanelBB;
@@ -17,7 +18,6 @@ import tfw.tsm.AWTTransactionQueue;
 import tfw.tsm.Branch;
 import tfw.tsm.RootFactory;
 import tfw.tsm.ecd.BooleanECD;
-import tfw.tsm.ecd.ColorECD;
 import tfw.tsm.ecd.EventChannelDescription;
 import tfw.tsm.ecd.IntegerECD;
 import tfw.tsm.ecd.StatelessTriggerECD;

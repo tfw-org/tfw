@@ -2,8 +2,8 @@ package tfw.demo;
 
 import java.awt.Color;
 
+import tfw.awt.ecd.ColorECD;
 import tfw.tsm.Synchronizer;
-import tfw.tsm.ecd.ColorECD;
 import tfw.tsm.ecd.EventChannelDescription;
 import tfw.value.IntegerConstraint;
 
