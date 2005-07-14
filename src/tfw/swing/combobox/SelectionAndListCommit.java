@@ -26,6 +26,7 @@ package tfw.swing.combobox;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
+import tfw.immutable.DataInvalidException;
 import tfw.immutable.ila.objectila.ObjectIla;
 import tfw.tsm.Commit;
 import tfw.tsm.Initiator;
@@ -61,9 +62,13 @@ public class SelectionAndListCommit extends Commit
 	{
 		if (isStateChanged(listECD))
 		{
-			Object[] list = ((ObjectIla)get(listECD)).toArray();
+			try
+			{
+				Object[] list = ((ObjectIla)get(listECD)).toArray();
 			
-			comboBox.setModel(new DefaultComboBoxModel(list));
+				comboBox.setModel(new DefaultComboBoxModel(list));
+			}
+			catch(DataInvalidException die) {}
 		}
 		if (selectedItemECD != null)
 		{
