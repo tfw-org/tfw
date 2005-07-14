@@ -38,8 +38,8 @@ import tfw.tsm.Branch;
 import tfw.tsm.BranchBox;
 import tfw.tsm.Commit;
 import tfw.tsm.Initiator;
-import tfw.tsm.MultiplexBranchFactory;
 import tfw.tsm.MultiplexedBranch;
+import tfw.tsm.MultiplexedBranchFactory;
 import tfw.tsm.TreeComponent;
 import tfw.tsm.ecd.EventChannelDescription;
 import tfw.tsm.ecd.StatelessTriggerECD;
@@ -70,7 +70,7 @@ public class PlotPanel extends JPanel implements BranchBox
 	{
 		this.branch = branch;
 
-		MultiplexBranchFactory mbf = new MultiplexBranchFactory();
+		MultiplexedBranchFactory mbf = new MultiplexedBranchFactory();
 		mbf.addMultiplexer(GRAPHIC_ECD, MULTI_GRAPHIC_ECD);
 		multiplexedBranch = mbf.create("PlotPanelPainters");
 		branch.add(multiplexedBranch);
