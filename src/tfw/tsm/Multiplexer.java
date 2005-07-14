@@ -30,6 +30,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import tfw.immutable.DataInvalidException;
 import tfw.immutable.ila.objectila.ObjectIla;
 import tfw.immutable.ila.objectila.ObjectIlaFromArray;
 import tfw.tsm.ecd.EventChannelDescription;
@@ -261,21 +262,30 @@ class Multiplexer implements EventChannel
      */
     private static ObjectIla newObjects(int index, Object state, ObjectIla objs)
     {
-        Object[] array;
+        Object[] array = null;
 
-        if (objs == null)
-        {
-            array = new Object[index + 1];
-        }
-        else if (index >= objs.length())
-        {
-            array = new Object[index + 1];
-            objs.toArray(array, 0, 0L, (int) objs.length());
-        }
-        else
-        {
-            array = objs.toArray();
-        }
+        try
+		{
+			if (objs == null)
+			{
+			    array = new Object[index + 1];
+			}
+			else if (index >= objs.length())
+			{
+			    array = new Object[index + 1];
+			    objs.toArray(array, 0, 0L, (int) objs.length());
+			}
+			else
+			{
+			    array = objs.toArray();
+			}
+		}
+		catch (DataInvalidException e)
+		{
+			throw new RuntimeException(
+				"Multiplexer received DataInvalidException: " +
+				e.getMessage(), e);
+		}
 
         array[index] = state;
 
@@ -384,7 +394,16 @@ class Multiplexer implements EventChannel
                 return null;
             }
 
-            return (objects.toArray((long) index, 1)[0]);
+            try
+			{
+				return (objects.toArray((long) index, 1)[0]);
+			}
+			catch (DataInvalidException e)
+			{
+				throw new RuntimeException(
+						"Multiplexer received DataInvalidException: " +
+						e.getMessage(), e);
+			}
         }
 
         public Object getState()

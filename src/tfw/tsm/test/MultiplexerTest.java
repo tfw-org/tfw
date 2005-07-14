@@ -46,7 +46,7 @@ public class MultiplexerTest extends TestCase
     private EventChannelDescription valueECD = new StringECD("value");
     private ObjectIlaECD multiValueECD = new ObjectIlaECD("multiValue");
 
-    public void testMultiplexing()
+    public void testMultiplexing() throws Exception
     {
         RootFactory rf = new RootFactory();
         rf.addTerminator(multiValueECD);
