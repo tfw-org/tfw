@@ -27,10 +27,14 @@ package tfw.visualizer.prefuse;
 import java.awt.Color;
 import java.awt.Paint;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import tfw.tsm.Branch;
 import tfw.tsm.BranchBox;
+import tfw.tsm.Converter;
 import tfw.tsm.TreeComponent;
+import tfw.tsm.ecd.BooleanECD;
+import tfw.tsm.ecd.EventChannelDescription;
 import edu.berkeley.guir.prefuse.AggregateItem;
 import edu.berkeley.guir.prefuse.Display;
 import edu.berkeley.guir.prefuse.EdgeItem;
@@ -42,7 +46,6 @@ import edu.berkeley.guir.prefuse.action.RepaintAction;
 import edu.berkeley.guir.prefuse.action.animate.ColorAnimator;
 import edu.berkeley.guir.prefuse.action.animate.PolarLocationAnimator;
 import edu.berkeley.guir.prefuse.action.assignment.ColorFunction;
-import edu.berkeley.guir.prefuse.action.filter.TreeFilter;
 import edu.berkeley.guir.prefuse.activity.ActionList;
 import edu.berkeley.guir.prefuse.activity.SlowInSlowOutPacer;
 import edu.berkeley.guir.prefuse.collections.DOIItemComparator;
@@ -54,7 +57,7 @@ import edu.berkeley.guir.prefuse.render.DefaultRendererFactory;
 import edu.berkeley.guir.prefuse.render.Renderer;
 import edu.berkeley.guir.prefuse.render.TextItemRenderer;
 import edu.berkeley.guir.prefuse.util.ColorMap;
-import edu.berkeley.guir.prefuse.util.StringAbbreviator;
+//import edu.berkeley.guir.prefuse.util.StringAbbreviator;
 import edu.berkeley.guir.prefusex.controls.DragControl;
 import edu.berkeley.guir.prefusex.controls.FocusControl;
 import edu.berkeley.guir.prefusex.controls.NeighborHighlightControl;
@@ -65,6 +68,7 @@ import edu.berkeley.guir.prefusex.layout.RadialTreeLayout;
 public class RadialGraphDisplay extends Display implements BranchBox
 {
     private final Branch branch;
+    private final TFWTreeFilter tfwTreeFilter;
     
     public RadialGraphDisplay(String name, TreeComponent treeComponent)
     {
@@ -72,9 +76,11 @@ public class RadialGraphDisplay extends Display implements BranchBox
         
         DefaultTreeNode rootNode = new DefaultTreeNode();
         rootNode.setAttribute("label", treeComponent.getName());
+        rootNode.setAttribute("tfw_type", "root");
         ArrayList nodes = new ArrayList();
+        HashMap proxies = new HashMap();
         nodes.add(rootNode);
-        PrefuseUtil.createNodes(treeComponent, rootNode, nodes);
+        PrefuseUtil.createNodes(treeComponent, rootNode, nodes, proxies);
         ItemRegistry registry = new ItemRegistry(
         	new DefaultGraph(nodes, false));
         registry.setItemComparator(new DOIItemComparator());
@@ -82,8 +88,8 @@ public class RadialGraphDisplay extends Display implements BranchBox
         setItemRegistry(registry);
 
 		TextItemRenderer nodeRenderer = new TextItemRenderer();
-		nodeRenderer.setMaxTextWidth(150);
-		nodeRenderer.setAbbrevType(StringAbbreviator.NAME);
+//		nodeRenderer.setMaxTextWidth(150);
+//		nodeRenderer.setAbbrevType(StringAbbreviator.NAME);
         nodeRenderer.setRoundedCorner(8,8);
 		
 		Renderer edgeRenderer = new DefaultEdgeRenderer();
@@ -91,8 +97,9 @@ public class RadialGraphDisplay extends Display implements BranchBox
 		registry.setRendererFactory(new DefaultRendererFactory(
 			nodeRenderer, edgeRenderer));
 
+		tfwTreeFilter = new TFWTreeFilter(true);
 		ActionList layout = new ActionList(registry);
-        layout.add(new TreeFilter(true));
+        layout.add(tfwTreeFilter);
         layout.add(new RadialTreeLayout());
         layout.add(new DemoColorFunction(3));
         
@@ -116,6 +123,19 @@ public class RadialGraphDisplay extends Display implements BranchBox
         
         registry.getFocusManager().putFocusSet(
                 FocusManager.HOVER_KEY, new DefaultFocusSet());
+        
+        getBranch().add(new TFWTreeFilterConverter(
+        	new BooleanECD("branchSelected"),
+        	new BooleanECD("commitSelected"),
+        	new BooleanECD("converterSelected"),
+        	new BooleanECD("initiatorSelected"),
+        	new BooleanECD("rootSelected"),
+        	new BooleanECD("synchronizerSelected"),
+			new BooleanECD("terminatorSelected"),
+        	new BooleanECD("triggeredCommitSelected"),
+        	new BooleanECD("triggeredConverterSelected"),
+        	new BooleanECD("validatorSelected"),
+			tfwTreeFilter, layout));
 
         layout.runNow();
     }
@@ -185,6 +205,82 @@ public class RadialGraphDisplay extends Display implements BranchBox
             }
         }
     }
+    
+    private static class TFWTreeFilterConverter extends Converter
+	{
+    	private final BooleanECD branchSelectedECD;
+    	private final BooleanECD commitSelectedECD;
+    	private final BooleanECD converterSelectedECD;
+    	private final BooleanECD initiatorSelectedECD;
+    	private final BooleanECD rootSelectedECD;
+    	private final BooleanECD synchronizerSelectedECD;
+    	private final BooleanECD terminatorSelectedECD;
+    	private final BooleanECD triggeredCommitSelectedECD;
+    	private final BooleanECD triggeredConverterSelectedECD;
+    	private final BooleanECD validatorSelectedECD;
+    	private final TFWTreeFilter tfwTreeFilter;
+    	private final ActionList actionList;
+    	
+    	public TFWTreeFilterConverter(BooleanECD branchSelectedECD,
+    		BooleanECD commitSelectedECD, BooleanECD converterSelectedECD,
+			BooleanECD initiatorSelectedECD, BooleanECD rootSelectedECD,
+			BooleanECD synchronizerSelectedECD,
+			BooleanECD terminatorSelectedECD,
+			BooleanECD triggeredCommitSelectedECD,
+			BooleanECD triggeredConverterSelectedECD,
+			BooleanECD validatorSelectedECD, TFWTreeFilter tfwTreeFilter,
+			ActionList actionList)
+    	{
+    		super("TFWTreeFilterConverter",
+    			new EventChannelDescription[] {branchSelectedECD,
+    				commitSelectedECD, converterSelectedECD,
+					initiatorSelectedECD, rootSelectedECD,
+					synchronizerSelectedECD, terminatorSelectedECD,
+					triggeredCommitSelectedECD, triggeredConverterSelectedECD,
+					validatorSelectedECD},
+				null,
+				null);
+    		
+    		this.branchSelectedECD = branchSelectedECD;
+    		this.commitSelectedECD = commitSelectedECD;
+    		this.converterSelectedECD = converterSelectedECD;
+    		this.initiatorSelectedECD = initiatorSelectedECD;
+    		this.rootSelectedECD = rootSelectedECD;
+    		this.synchronizerSelectedECD = synchronizerSelectedECD;
+    		this.terminatorSelectedECD = terminatorSelectedECD;
+    		this.triggeredCommitSelectedECD = triggeredCommitSelectedECD;
+    		this.triggeredConverterSelectedECD = triggeredConverterSelectedECD;
+    		this.validatorSelectedECD = validatorSelectedECD;
+    		this.tfwTreeFilter = tfwTreeFilter;
+    		this.actionList = actionList;
+    	}
+    	
+    	protected void convert()
+    	{
+    		tfwTreeFilter.setBranchSelected(
+    			((Boolean)get(branchSelectedECD)).booleanValue());
+    		tfwTreeFilter.setCommitSelected(
+    			((Boolean)get(commitSelectedECD)).booleanValue());
+    		tfwTreeFilter.setConverterSelected(
+    			((Boolean)get(converterSelectedECD)).booleanValue());
+    		tfwTreeFilter.setInitiatorSelected(
+    			((Boolean)get(initiatorSelectedECD)).booleanValue());
+    		tfwTreeFilter.setRootSelected(
+    			((Boolean)get(rootSelectedECD)).booleanValue());
+    		tfwTreeFilter.setSynchronizerSelected(
+    			((Boolean)get(synchronizerSelectedECD)).booleanValue());
+    		tfwTreeFilter.setTerminatorSelected(
+    			((Boolean)get(terminatorSelectedECD)).booleanValue());
+    		tfwTreeFilter.setTriggeredCommitSelected(
+    			((Boolean)get(triggeredCommitSelectedECD)).booleanValue());
+    		tfwTreeFilter.setTriggeredConverterSelected(
+    			((Boolean)get(triggeredConverterSelectedECD)).booleanValue());
+    		tfwTreeFilter.setValidatorSelected(
+    			((Boolean)get(validatorSelectedECD)).booleanValue());
+    		
+    		actionList.runNow();
+    	}
+	}
 
     public final Branch getBranch()
     {

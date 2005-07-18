@@ -27,6 +27,7 @@ package tfw.visualizer.prefuse;
 import java.awt.Color;
 import java.awt.Paint;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import tfw.tsm.Branch;
 import tfw.tsm.BranchBox;
@@ -67,8 +68,9 @@ public class ForceDisplay extends Display implements BranchBox
         DefaultTreeNode rootNode = new DefaultTreeNode();
         rootNode.setAttribute("label", treeComponent.getName());
         ArrayList nodes = new ArrayList();
+        HashMap proxies = new HashMap();
         nodes.add(rootNode);
-        PrefuseUtil.createNodes(treeComponent, rootNode, nodes);
+        PrefuseUtil.createNodes(treeComponent, rootNode, nodes, proxies);
         ItemRegistry registry = new ItemRegistry(
         	new DefaultGraph(nodes, false));
 

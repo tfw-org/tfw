@@ -32,7 +32,9 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.Iterator;
+
 import tfw.tsm.Branch;
 import tfw.tsm.BranchBox;
 import tfw.tsm.TreeComponent;
@@ -66,8 +68,9 @@ public class TreeMapDisplay extends Display implements BranchBox
         DefaultTreeNode rootNode = new DefaultTreeNode();
         rootNode.setAttribute("label", treeComponent.getName());
         ArrayList nodes = new ArrayList();
+        HashMap proxies = new HashMap();
         nodes.add(rootNode);
-        PrefuseUtil.createNodes(treeComponent, rootNode, nodes);
+        PrefuseUtil.createNodes(treeComponent, rootNode, nodes, proxies);
         ItemRegistry registry = new ItemRegistry(
         	new DefaultGraph(nodes, false));
         
