@@ -25,10 +25,15 @@
 package tfw.swing;
 
 import javax.swing.JMenuItem;
+
 import tfw.awt.component.EnabledCommit;
 import tfw.awt.event.ActionInitiator;
+import tfw.component.Connector;
+import tfw.tsm.AWTTransactionQueue;
 import tfw.tsm.Branch;
 import tfw.tsm.BranchBox;
+import tfw.tsm.Root;
+import tfw.tsm.RootFactory;
 import tfw.tsm.ecd.BooleanECD;
 import tfw.tsm.ecd.StatelessTriggerECD;
 
@@ -52,9 +57,17 @@ public class JMenuItemBB extends JMenuItem implements BranchBox
 		addActionListener(actionInitiator);
 		branch.add(actionInitiator);
 		
+		RootFactory rootFactory = new RootFactory();
+		rootFactory.addTerminator(enabledECD);
+		Root awtRoot = rootFactory.create(branch.getName()+"_AWT_ROOT",
+			new AWTTransactionQueue());
+		
 		EnabledCommit enabledCommit = new EnabledCommit(
 		    "JMenuItemBB", enabledECD, this, null);
-		branch.add(enabledCommit);
+		awtRoot.add(enabledCommit);
+		
+		new Connector(enabledECD.getEventChannelName(),
+			branch, awtRoot, enabledECD);
 	}
 	
 	public final Branch getBranch()
