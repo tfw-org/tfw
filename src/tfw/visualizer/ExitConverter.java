@@ -29,16 +29,12 @@ import tfw.tsm.ecd.StatelessTriggerECD;
 
 public class ExitConverter extends TriggeredConverter
 {
-    private final StatelessTriggerECD triggerECD;
-    
     public ExitConverter(StatelessTriggerECD triggerECD)
     {
         super("ExitConverter",
             triggerECD,
             null,
             null);
-        
-        this.triggerECD = triggerECD;
     }
     
     protected void convert()
