@@ -24,169 +24,103 @@
  */
 package tfw.visualizer;
 
+import java.awt.Color;
+
+import javax.swing.JPanel;
+
+import tfw.awt.ecd.ColorECD;
+import tfw.awt.ecd.FontECD;
+import tfw.awt.ecd.GraphicECD;
+import tfw.awt.event.ComponentInitiator;
+import tfw.awt.event.MouseInitiator;
 import tfw.awt.event.WindowInitiator;
-import tfw.swing.JCheckBoxMenuItemBB;
+import tfw.plot.BackgroundGraphicConverter;
+import tfw.plot.PlotPanel;
 import tfw.swing.JFrameBB;
 import tfw.swing.JMenuBB;
 import tfw.swing.JMenuBarBB;
 import tfw.swing.JMenuItemBB;
-import tfw.tsm.AWTTransactionQueue;
+import tfw.tsm.BasicTransactionQueue;
 import tfw.tsm.Root;
 import tfw.tsm.RootFactory;
 import tfw.tsm.TreeComponent;
 import tfw.tsm.ecd.BooleanECD;
+import tfw.tsm.ecd.IntegerECD;
 import tfw.tsm.ecd.StatelessTriggerECD;
-import tfw.visualizer.prefuse.BalloonGraphDisplayCommit;
-import tfw.visualizer.prefuse.ForceDisplayCommit;
-import tfw.visualizer.prefuse.RadialGraphDisplayCommit;
-import tfw.visualizer.prefuse.TreeMapDisplayCommit;
+import tfw.tsm.ecd.ila.DoubleIlaECD;
+import tfw.tsm.ecd.ila.ObjectIlaECD;
 
 public class Visualizer extends JFrameBB
 {
-	private static final BooleanECD BALLOON_GRAPH_ENABLED_ECD =
-		new BooleanECD("balloonGraphEnabled");
-	private static final StatelessTriggerECD BALLOON_GRAPH_TRIGGER_ECD =
-		new StatelessTriggerECD("balloonGraphTrigger");
-	private static final BooleanECD BRANCH_ENABLED_ECD =
-		new BooleanECD("branchEnabled");
-	private static final BooleanECD BRANCH_SELECTED_ECD =
-		new BooleanECD("branchSelected");
-	private static final BooleanECD COMMIT_ENABLED_ECD =
-		new BooleanECD("commitEnabled");
-	private static final BooleanECD COMMIT_SELECTED_ECD =
-		new BooleanECD("commitSelected");
-	private static final BooleanECD CONVERTER_ENABLED_ECD =
-		new BooleanECD("converterEnabled");
-	private static final BooleanECD CONVERTER_SELECTED_ECD =
-		new BooleanECD("converterSelected");
+	private static final ColorECD BACKGROUND_COLOR_ECD =
+		new ColorECD("backgroundColor");
+	private static final BooleanECD BUTTON_ONE_ECD =
+		new BooleanECD("buttonOne");
+	private static final BooleanECD BUTTON_TWO_ECD =
+		new BooleanECD("buttonTwo");
+	private static final BooleanECD BUTTON_THREE_ECD =
+		new BooleanECD("buttonThree");
+	private static final ObjectIlaECD EDGE_FROMS_ECD =
+		new ObjectIlaECD("edgeFroms");
+	private static final ObjectIlaECD EDGE_TOS_ECD =
+		new ObjectIlaECD("edgeTos");
     private static final BooleanECD EXIT_ENABLED_ECD =
         new BooleanECD("exitEnabled");
     private static final StatelessTriggerECD EXIT_TRIGGER_ECD =
         new StatelessTriggerECD("exitTrigger");
-    private static final BooleanECD FORCE_ENABLED_ECD =
-    	new BooleanECD("forceEnabled");
-    private static final StatelessTriggerECD FORCE_TRIGGER_ECD =
-    	new StatelessTriggerECD("forceTrigger");
-    private static final BooleanECD INITIATOR_ENABLED_ECD =
-    	new BooleanECD("initiatorEnabled");
-    private static final BooleanECD INITIATOR_SELECTED_ECD =
-    	new BooleanECD("initiatorSelected");
-    private static final BooleanECD RADIAL_GRAPH_ENABLED_ECD =
-    	new BooleanECD("radialGraphEnabled");
-    private static final StatelessTriggerECD RADIAL_GRAPH_TRIGGER_ECD =
-    	new StatelessTriggerECD("radialGraphTrigger");
-    private static final BooleanECD ROOT_ENABLED_ECD =
-    	new BooleanECD("rootEnabled");
-    private static final BooleanECD ROOT_SELECTED_ECD =
-    	new BooleanECD("rootSelected");
-    private static final BooleanECD SYNCHRONIZER_ENABLED_ECD =
-    	new BooleanECD("synchronizerEnabled");
-    private static final BooleanECD SYNCHRONIZER_SELECTED_ECD =
-    	new BooleanECD("synchronizerSelected");
-    private static final BooleanECD TERMINATOR_ENABLED_ECD =
-    	new BooleanECD("terminatorEnabled");
-    private static final BooleanECD TERMINATOR_SELECTED_ECD =
-    	new BooleanECD("terminatorSelected");
-    private static final BooleanECD TREE_MAP_ENABLED_ECD =
-    	new BooleanECD("treeMapEnabled");
-    private static final StatelessTriggerECD TREE_MAP_TRIGGER_ECD =
-    	new StatelessTriggerECD("treeMapTrigger");
-    private static final BooleanECD TRIGGERED_COMMIT_ENABLED_ECD =
-    	new BooleanECD("triggeredCommitEnabled");
-    private static final BooleanECD TRIGGERED_COMMIT_SELECTED_ECD =
-    	new BooleanECD("triggeredCommitSelected");
-    private static final BooleanECD TRIGGERED_CONVERTER_ENABLED_ECD =
-    	new BooleanECD("triggeredConverterEnabled");
-    private static final BooleanECD TRIGGERED_CONVERTER_SELECTED_ECD =
-    	new BooleanECD("triggeredConverterSelected");
-    private static final BooleanECD VALIDATOR_ENABLED_ECD =
-    	new BooleanECD("validatorEnabled");
-    private static final BooleanECD VALIDATOR_SELECTED_ECD =
-    	new BooleanECD("validatorSelected");
+    private static final FontECD FONT_ECD =
+    	new FontECD("font");
+    private static final StatelessTriggerECD GENERATE_GRAPHIC_TRIGGER_ECD =
+    	new StatelessTriggerECD("generateGraphicTrigger");
+    private static final IntegerECD GRAPH_HEIGHT_ECD =
+    	new IntegerECD("graphHeight");
+    private static final IntegerECD GRAPH_WIDTH_ECD =
+    	new IntegerECD("graphWidth");
+    private static final GraphicECD GRAPHIC_ECD =
+    	new GraphicECD("graphic");
+    private static final IntegerECD HEIGHT_ECD =
+    	new IntegerECD("height");
+    private static final tfw.tsm.ecd.ObjectIlaECD MULTI_GRAPHIC_ECD =
+    	new tfw.tsm.ecd.ObjectIlaECD("multiGraphic");
+    private static final ObjectIlaECD NODES_ECD =
+    	new ObjectIlaECD("nodes");
+    private static final DoubleIlaECD NODES_X_ECD =
+    	new DoubleIlaECD("nodeXs");
+    private static final DoubleIlaECD NODES_Y_ECD =
+    	new DoubleIlaECD("nodeYs");
+    private static final BooleanECD REFRESH_ENABLED_ECD =
+    	new BooleanECD("refreshEnabled");
+    private static final StatelessTriggerECD REFRESH_TRIGGER_ECD =
+    	new StatelessTriggerECD("refreshTrigger");
+    private static final IntegerECD WIDTH_ECD =
+    	new IntegerECD("width");
+    private static final IntegerECD X_OFFSET_ECD =
+    	new IntegerECD("xOffset");
+    private static final IntegerECD X_MOUSE_ECD =
+    	new IntegerECD("xMouse");
+    private static final IntegerECD Y_OFFSET_ECD =
+    	new IntegerECD("yOffset");
+    private static final IntegerECD Y_MOUSE_ECD =
+    	new IntegerECD("yMouse");
     
     public Visualizer(TreeComponent treeComponent)
     {
         super(createRoot("Visualizer["+treeComponent.getName()+"]"));
         
+        JMenuItemBB refreshMI = new JMenuItemBB("Refresh", REFRESH_TRIGGER_ECD,
+        	REFRESH_ENABLED_ECD);
+        refreshMI.setText("Refresh");
         JMenuItemBB exitMI = new JMenuItemBB("Exit", EXIT_TRIGGER_ECD,
             EXIT_ENABLED_ECD);
         exitMI.setText("Exit");
         
         JMenuBB fileM = new JMenuBB("File");
         fileM.setText("File");
+        fileM.addToBoth(refreshMI);
         fileM.addToBoth(exitMI);
-        
-        JMenuItemBB balloonGraphMI = new JMenuItemBB("BalloonGrph",
-			BALLOON_GRAPH_TRIGGER_ECD, BALLOON_GRAPH_ENABLED_ECD);
-        balloonGraphMI.setText("Balloon Graph");
-        JMenuItemBB forceMI = new JMenuItemBB("Force", FORCE_TRIGGER_ECD,
-        	FORCE_ENABLED_ECD);
-        forceMI.setText("Force");
-        JMenuItemBB radialGraphMI = new JMenuItemBB("RadialGraph",
-        	RADIAL_GRAPH_TRIGGER_ECD, RADIAL_GRAPH_ENABLED_ECD);
-        radialGraphMI.setText("Radial Graph");
-        JMenuItemBB treeMapMI = new JMenuItemBB("TreeMap", TREE_MAP_TRIGGER_ECD,
-            	TREE_MAP_ENABLED_ECD);
-            treeMapMI.setText("TreeMap");
-       
-        JMenuBB viewM = new JMenuBB("View");
-        viewM.setText("View");
-        viewM.addToBoth(balloonGraphMI);
-        viewM.addToBoth(forceMI);
-        viewM.addToBoth(radialGraphMI);
-        viewM.addToBoth(treeMapMI);
-        
-        JCheckBoxMenuItemBB showBranchMI = new JCheckBoxMenuItemBB(
-        	"ShowBranch", BRANCH_SELECTED_ECD, BRANCH_ENABLED_ECD);
-        showBranchMI.setText("Branch");
-        JCheckBoxMenuItemBB showCommitMI = new JCheckBoxMenuItemBB(
-        	"showCommit", COMMIT_SELECTED_ECD, COMMIT_ENABLED_ECD);
-        showCommitMI.setText("Commit");
-        JCheckBoxMenuItemBB showConverterMI = new JCheckBoxMenuItemBB(
-        	"showConverter", CONVERTER_SELECTED_ECD, CONVERTER_ENABLED_ECD);
-        showConverterMI.setText("Converter");
-        JCheckBoxMenuItemBB showInitiatorMI = new JCheckBoxMenuItemBB(
-        	"showInitiator", INITIATOR_SELECTED_ECD, INITIATOR_ENABLED_ECD);
-        showInitiatorMI.setText("Initiator");
-        JCheckBoxMenuItemBB showRootMI = new JCheckBoxMenuItemBB(
-        	"showRoot", ROOT_SELECTED_ECD, ROOT_ENABLED_ECD);
-        showRootMI.setText("Root");
-        JCheckBoxMenuItemBB showSynchronizerMI = new JCheckBoxMenuItemBB(
-        	"showSynchronizer", SYNCHRONIZER_SELECTED_ECD,
-			SYNCHRONIZER_ENABLED_ECD);
-        showSynchronizerMI.setText("Synchronizer");
-        JCheckBoxMenuItemBB showTerminatorMI = new JCheckBoxMenuItemBB(
-        	"showTerminator", TERMINATOR_ENABLED_ECD, TERMINATOR_SELECTED_ECD);
-        showTerminatorMI.setText("Terminator");
-        JCheckBoxMenuItemBB showTriggeredCommitMI = new JCheckBoxMenuItemBB(
-        	"showTriggeredCommit", TRIGGERED_COMMIT_SELECTED_ECD,
-			TRIGGERED_COMMIT_ENABLED_ECD);
-        showTriggeredCommitMI.setText("TriggeredCommit");
-        JCheckBoxMenuItemBB showTriggeredConverterMI = new JCheckBoxMenuItemBB(
-        	"showTriggeredConverter", TRIGGERED_CONVERTER_SELECTED_ECD,
-			TRIGGERED_CONVERTER_ENABLED_ECD);
-        showTriggeredConverterMI.setText("TriggeredConverter");
-        JCheckBoxMenuItemBB showValidatorMI = new JCheckBoxMenuItemBB(
-        	"showValidator", VALIDATOR_SELECTED_ECD, VALIDATOR_ENABLED_ECD);
-        showValidatorMI.setText("Validator");
-        
-        JMenuBB showM = new JMenuBB("Show");
-        showM.setText("Show");
-        showM.addToBoth(showBranchMI);
-        showM.addToBoth(showCommitMI);
-        showM.addToBoth(showConverterMI);
-        showM.addToBoth(showInitiatorMI);
-        showM.addToBoth(showRootMI);
-        showM.addToBoth(showSynchronizerMI);
-        showM.addToBoth(showTerminatorMI);
-        showM.addToBoth(showTriggeredCommitMI);
-        showM.addToBoth(showTriggeredConverterMI);
-        showM.addToBoth(showValidatorMI);
         
         JMenuBarBB menuBar = new JMenuBarBB("Visualizer");
         menuBar.addToBoth(fileM);
-        menuBar.addToBoth(viewM);
-        menuBar.addToBoth(showM);
         
         setJMenuBarForBoth(menuBar);
         
@@ -194,52 +128,70 @@ public class Visualizer extends JFrameBB
             EXIT_TRIGGER_ECD, null, null, null, null));
         
         getBranch().add(new ExitConverter(EXIT_TRIGGER_ECD));
-        getBranch().add(new BalloonGraphDisplayCommit(
-        	"Visualizer", BALLOON_GRAPH_TRIGGER_ECD, treeComponent, this));
-        getBranch().add(new ForceDisplayCommit(
-        	"Visualizer", FORCE_TRIGGER_ECD, treeComponent, this));
-        getBranch().add(new RadialGraphDisplayCommit(
-        	"Visualizer", RADIAL_GRAPH_TRIGGER_ECD, treeComponent, this));
-        getBranch().add(new TreeMapDisplayCommit(
-            "Visualizer", TREE_MAP_TRIGGER_ECD, treeComponent, this));
+        getBranch().add(new NodeEdgeConverter(
+        	(Root)treeComponent, REFRESH_TRIGGER_ECD, NODES_ECD, NODES_X_ECD,
+			NODES_Y_ECD, EDGE_FROMS_ECD, EDGE_TOS_ECD));
+        getBranch().add(new MovePlotConverter(X_MOUSE_ECD, Y_MOUSE_ECD,
+        	BUTTON_ONE_ECD, BUTTON_TWO_ECD, BUTTON_THREE_ECD,
+        	X_OFFSET_ECD, Y_OFFSET_ECD));
+        getBranch().add(new ResizePlotConverter(X_MOUSE_ECD, Y_MOUSE_ECD,
+            BUTTON_ONE_ECD, BUTTON_TWO_ECD, BUTTON_THREE_ECD,
+            GRAPH_WIDTH_ECD, GRAPH_HEIGHT_ECD));
+        
+        PlotPanel plotPanel = new PlotPanel("Visualizer");
+        
+		plotPanel.addComponentListenerToBoth(new ComponentInitiator(
+			"PlotPanel", null, null, null, WIDTH_ECD, HEIGHT_ECD));
+				MouseInitiator mouseInitiator = new MouseInitiator("PlotPanel",
+			X_MOUSE_ECD, Y_MOUSE_ECD, BUTTON_ONE_ECD, BUTTON_TWO_ECD,
+			BUTTON_THREE_ECD, null);
+		plotPanel.addMouseListenerToBoth(mouseInitiator);
+		plotPanel.addMouseMotionListener(mouseInitiator);
+        
+		BackgroundGraphicConverter backgroundGraphicConverter =
+			new BackgroundGraphicConverter("PlotPanel", BACKGROUND_COLOR_ECD,
+			WIDTH_ECD, HEIGHT_ECD, GRAPHIC_ECD);
+		plotPanel.addGraphicProducer(backgroundGraphicConverter, 0);
+		NodeEdgeToGraphicConverter nodeEdgeToGraphicConverter =
+			new NodeEdgeToGraphicConverter(this, NODES_ECD, NODES_X_ECD,
+			NODES_Y_ECD, X_OFFSET_ECD, Y_OFFSET_ECD, GRAPH_WIDTH_ECD,
+			GRAPH_HEIGHT_ECD, FONT_ECD, GRAPHIC_ECD);
+		plotPanel.addGraphicProducer(nodeEdgeToGraphicConverter, 1);
+		
+        setContentPaneForBoth(plotPanel);
     }
     
     private static Root createRoot(String name)
     {
         RootFactory rf = new RootFactory();
         
-        rf.addTerminator(BALLOON_GRAPH_ENABLED_ECD, Boolean.TRUE);
-        rf.addTerminator(BALLOON_GRAPH_TRIGGER_ECD);
-        rf.addTerminator(BRANCH_ENABLED_ECD, Boolean.TRUE);
-        rf.addTerminator(BRANCH_SELECTED_ECD, Boolean.TRUE);
-        rf.addTerminator(COMMIT_ENABLED_ECD, Boolean.TRUE);
-        rf.addTerminator(COMMIT_SELECTED_ECD, Boolean.TRUE);
-        rf.addTerminator(CONVERTER_ENABLED_ECD, Boolean.TRUE);
-        rf.addTerminator(CONVERTER_SELECTED_ECD, Boolean.TRUE);
+        rf.setLogging(true);
+        rf.addTerminator(BACKGROUND_COLOR_ECD, Color.white);
+        rf.addTerminator(BUTTON_ONE_ECD);
+        rf.addTerminator(BUTTON_TWO_ECD);
+        rf.addTerminator(BUTTON_THREE_ECD);
+        rf.addTerminator(EDGE_FROMS_ECD);
+        rf.addTerminator(EDGE_TOS_ECD);
         rf.addTerminator(EXIT_ENABLED_ECD, Boolean.TRUE);
         rf.addTerminator(EXIT_TRIGGER_ECD);
-        rf.addTerminator(FORCE_ENABLED_ECD, Boolean.TRUE);
-        rf.addTerminator(FORCE_TRIGGER_ECD);
-        rf.addTerminator(INITIATOR_ENABLED_ECD, Boolean.TRUE);
-        rf.addTerminator(INITIATOR_SELECTED_ECD, Boolean.TRUE);
-        rf.addTerminator(RADIAL_GRAPH_ENABLED_ECD, Boolean.TRUE);
-        rf.addTerminator(RADIAL_GRAPH_TRIGGER_ECD);
-        rf.addTerminator(ROOT_ENABLED_ECD, Boolean.TRUE);
-        rf.addTerminator(ROOT_SELECTED_ECD, Boolean.TRUE);
-        rf.addTerminator(SYNCHRONIZER_ENABLED_ECD, Boolean.TRUE);
-        rf.addTerminator(SYNCHRONIZER_SELECTED_ECD, Boolean.TRUE);
-        rf.addTerminator(TERMINATOR_ENABLED_ECD, Boolean.TRUE);
-        rf.addTerminator(TERMINATOR_SELECTED_ECD, Boolean.TRUE);
-        rf.addTerminator(TREE_MAP_ENABLED_ECD, Boolean.TRUE);
-        rf.addTerminator(TREE_MAP_TRIGGER_ECD);
-        rf.addTerminator(TRIGGERED_COMMIT_ENABLED_ECD, Boolean.TRUE);
-        rf.addTerminator(TRIGGERED_COMMIT_SELECTED_ECD, Boolean.TRUE);
-        rf.addTerminator(TRIGGERED_CONVERTER_ENABLED_ECD, Boolean.TRUE);
-        rf.addTerminator(TRIGGERED_CONVERTER_SELECTED_ECD, Boolean.TRUE);
-        rf.addTerminator(VALIDATOR_ENABLED_ECD, Boolean.TRUE);
-        rf.addTerminator(VALIDATOR_SELECTED_ECD, Boolean.TRUE);
+        rf.addTerminator(FONT_ECD, new JPanel().getFont());
+        rf.addTerminator(GENERATE_GRAPHIC_TRIGGER_ECD);
+        rf.addTerminator(GRAPH_HEIGHT_ECD, new Integer(500));
+        rf.addTerminator(GRAPH_WIDTH_ECD, new Integer(1500));
+        rf.addTerminator(HEIGHT_ECD);
+        rf.addTerminator(MULTI_GRAPHIC_ECD);
+        rf.addTerminator(NODES_ECD);
+        rf.addTerminator(NODES_X_ECD);
+        rf.addTerminator(NODES_Y_ECD);
+        rf.addTerminator(REFRESH_ENABLED_ECD, Boolean.TRUE);
+        rf.addTerminator(REFRESH_TRIGGER_ECD);
+        rf.addTerminator(WIDTH_ECD);
+        rf.addTerminator(X_OFFSET_ECD, new Integer(0));
+        rf.addTerminator(X_MOUSE_ECD);
+        rf.addTerminator(Y_OFFSET_ECD, new Integer(0));
+        rf.addTerminator(Y_MOUSE_ECD);
         
-        return(rf.create(name, new AWTTransactionQueue()));
+        return(rf.create(name, new BasicTransactionQueue()));
     }
     
     public static void main(String[] args)
