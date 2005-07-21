@@ -46,8 +46,6 @@ public class JLabelBBTest
 	private static final StringECD TEXT_ECD =
 		new StringECD("text");
 	
-	private static long buttonPresses = 0;
-	
 	private JLabelBBTest() {}
 	
 	public static final void main(String[] args)

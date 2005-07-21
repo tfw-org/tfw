@@ -47,11 +47,6 @@ import tfw.tsm.ecd.StringECD;
 
 public class JTextFieldBBTest
 {
-	private static final StringECD TEXT_ECD =
-		new StringECD("text");
-	
-	private static long buttonPresses = 0;
-	
 	private JTextFieldBBTest() {}
 	
 	public static final void main(String[] args)
