@@ -27,6 +27,8 @@ package tfw.plot;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.ComponentListener;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 
 import javax.swing.JPanel;
 
@@ -47,8 +49,6 @@ import tfw.tsm.ecd.ila.ObjectIlaECD;
 
 public class PlotPanel extends JPanel implements BranchBox
 {
-	private static final ObjectIla EMPTY_OBJECT_ILA =
-		ObjectIlaFromArray.create(new Object[0]);
 	private static final ObjectIlaECD GRAPHIC_ECD =
 		new ObjectIlaECD("graphic");
 	private static final tfw.tsm.ecd.ObjectIlaECD MULTI_GRAPHIC_ECD =
@@ -100,47 +100,41 @@ public class PlotPanel extends JPanel implements BranchBox
 		
 		protected void commit()
 		{
-System.out.println("Inside PlotPanelCommit");
 			synchronized(plotPanel)
 			{
 				multiGraphic = (ObjectIla)get(MULTI_GRAPHIC_ECD);
-System.out.println("NotifyingAll");
-				plotPanel.notifyAll();
+				plotPanel.repaint();
 			}
 		}
 	}
 	
 	public final void paint(Graphics graphics)
 	{
-System.out.println("Graphics class="+graphics.getClass());
+		Object[] mg = null;
+
 		synchronized(this)
 		{
-			initiator.trigger(GENERATE_GRAPHIC_TRIGGER_ECD);
+			if (multiGraphic == null)
+			{
+				return;
+			}
 			try
 			{
-System.out.println("Before wait");
-				wait();
-System.out.println("After wait");
-				
-				Object[] mg = null;
-				
-				try
-				{
-					mg = multiGraphic.toArray();
-				}
-				catch(DataInvalidException die)
-				{
-					return;
-				}
-				
-				for (int i=0 ; i < mg.length ; i++)
-				{
-System.out.println("  mg["+i+"]="+mg[i]);
-					Graphic g = (Graphic)mg[i];
-					g.paint((Graphics2D)graphics);
-				}
+				mg = multiGraphic.toArray();
 			}
-			catch(InterruptedException ie) {}
+			catch(DataInvalidException die)
+			{
+				return;
+			}
+		}
+		
+		for (int i=0 ; i < mg.length ; i++)
+		{
+			Graphic g = (Graphic)mg[i];
+			if (g != null)
+			{
+				g.paint((Graphics2D)graphics.create());
+			}
 		}
 	}
 	
@@ -153,6 +147,30 @@ System.out.println("  mg["+i+"]="+mg[i]);
 	public final void removeComponentListenerFromBoth(ComponentListener listener)
 	{
 		removeComponentListener(listener);
+		branch.remove((TreeComponent)listener);
+	}
+	
+	public final void addMouseListenerToBoth(MouseListener listener)
+	{
+		addMouseListener(listener);
+		branch.add((TreeComponent)listener);
+	}
+	
+	public final void removeMouseListenerFromBoth(MouseListener listener)
+	{
+		removeMouseListener(listener);
+		branch.remove((TreeComponent)listener);
+	}
+	
+	public final void addMouseMotionListenerToBoth(MouseMotionListener listener)
+	{
+		addMouseMotionListener(listener);
+		branch.add((TreeComponent)listener);
+	}
+	
+	public final void removeMouseMotionListenerFromBoth(MouseMotionListener listener)
+	{
+		removeMouseMotionListener(listener);
 		branch.remove((TreeComponent)listener);
 	}
 	
