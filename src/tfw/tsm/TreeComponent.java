@@ -55,13 +55,13 @@ public class TreeComponent
     private Map children = null;
 
     /** This components sinks. */
-    private final PortMap sinks;
+    final PortMap sinks;
 
     /** This components sources.*/
-    private final Map sources;
+    final Map sources;
 
     /** This components event channels. */
-    private final Map eventChannels;
+    final Map eventChannels;
 
     /** The transaction manager for the parent tree. */
     private TransactionMgr transactionMgr = null;
