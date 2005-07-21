@@ -34,11 +34,10 @@ import tfw.awt.ecd.GraphicECD;
 import tfw.awt.ecd.ImageECD;
 import tfw.awt.ecd.ImageObserverECD;
 import tfw.awt.event.ComponentInitiator;
-import tfw.plot.BackgroundConverter;
+import tfw.plot.BackgroundGraphicConverter;
 import tfw.plot.DrawImageConverter;
 import tfw.plot.PlotPanel;
 import tfw.swing.JFrameBB;
-import tfw.tsm.AWTTransactionQueue;
 import tfw.tsm.BasicTransactionQueue;
 import tfw.tsm.Root;
 import tfw.tsm.RootFactory;
@@ -51,10 +50,6 @@ public final class PlotPanelTest
 	
 	public static void main(String[] args)
 	{
-		RootFactory rf1 = new RootFactory();
-		Root root1 = rf1.create("PlotPanelTest", new AWTTransactionQueue());
-		
-		JFrameBB frame = new JFrameBB(root1);
 		
 		final ColorECD BACKGROUND_COLOR_ECD =
 			new ColorECD("backgroundColor");
@@ -77,6 +72,8 @@ public final class PlotPanelTest
 		final IntegerECD WIDTH_ECD =
 			new IntegerECD("width");
 
+		JFrameBB frame = new JFrameBB("PlotPanelTest");
+		
 		RootFactory rf2 = new RootFactory();
 //		rf2.setLogging(true);
 		rf2.addTerminator(BACKGROUND_COLOR_ECD, Color.blue);
@@ -94,15 +91,15 @@ public final class PlotPanelTest
 		plotPanel.addComponentListenerToBoth(new ComponentInitiator(
 			"PlotPanel", null, null, null, WIDTH_ECD, HEIGHT_ECD));
 		
-		BackgroundConverter backgroundConverter = new BackgroundConverter(
-			"PlotPanel", GENERATE_GRAPHIC_TRIGGER_ECD, BACKGROUND_COLOR_ECD,
-			WIDTH_ECD, HEIGHT_ECD, GRAPHIC_ECD);
-		plotPanel.addGraphicProducer(backgroundConverter, 0);
-		
-		DrawImageConverter drawImageConverter = new DrawImageConverter(
-			"PlotPanel", GENERATE_GRAPHIC_TRIGGER_ECD, IMAGE_ECD, IMAGE_X_ECD,
-			IMAGE_Y_ECD, IMAGE_OBSERVER_ECD, GRAPHIC_ECD);
-		plotPanel.addGraphicProducer(drawImageConverter, 1);
+//		BackgroundGraphicConverter backgroundConverter = new BackgroundGraphicConverter(
+//			"PlotPanel", GENERATE_GRAPHIC_TRIGGER_ECD, BACKGROUND_COLOR_ECD,
+//			WIDTH_ECD, HEIGHT_ECD, GRAPHIC_ECD);
+//		plotPanel.addGraphicProducer(backgroundConverter, 0);
+//		
+//		DrawImageConverter drawImageConverter = new DrawImageConverter(
+//			"PlotPanel", GENERATE_GRAPHIC_TRIGGER_ECD, IMAGE_ECD, IMAGE_X_ECD,
+//			IMAGE_Y_ECD, IMAGE_OBSERVER_ECD, GRAPHIC_ECD);
+//		plotPanel.addGraphicProducer(drawImageConverter, 1);
 		
 		frame.setContentPane(plotPanel);
 		
