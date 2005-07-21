@@ -66,8 +66,6 @@ public final class ByteIlaFromLongIla
 				
 			for (int totalElements=0 ; totalElements < length ; )
 			{
-				int elementsInRow = (int)Math.min(8 - col,
-					length - totalElements);
 				long value = lii.next();
 					
 				for (int c=col ; c < 8 && totalElements < length ; c++)

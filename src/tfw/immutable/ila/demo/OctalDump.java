@@ -180,7 +180,6 @@ public class OctalDump
 				ByteIlaIterator bii = new ByteIlaIterator(
 					ByteIlaSegment.create(byteIla, start,
 						byteIla.length() - start));
-				long end = start + length;
 				
 				for (int i=0 ; i < length ; i++)
 				{
@@ -263,7 +262,6 @@ public class OctalDump
 				ShortIlaIterator sii = new ShortIlaIterator(
 					ShortIlaSegment.create(shortIla, start * 2,
 						shortIla.length() - start * 2));
-				long end = start + length;
 				
 				for (int i=0 ; i < length ; i++)
 				{
@@ -346,7 +344,6 @@ public class OctalDump
 				IntIlaIterator iii = new IntIlaIterator(
 					IntIlaSegment.create(intIla, start * 4,
 						intIla.length() - start * 4));
-				long end = start + length;
 				
 				for (int i=0 ; i < length ; i++)
 				{
@@ -424,7 +421,6 @@ public class OctalDump
 				LongIlaIterator lii = new LongIlaIterator(
 					LongIlaSegment.create(longIla, start * 8,
 						longIla.length() - start * 8));
-				long end = start + length;
 				
 				for (int i=0 ; i < length ; i++)
 				{
@@ -500,7 +496,6 @@ public class OctalDump
 				FloatIlaIterator fii = new FloatIlaIterator(
 					FloatIlaSegment.create(floatIla, start * 4,
 						floatIla.length() - start * 4));
-				long end = start + length;
 				
 				for (int i=0 ; i < length ; i++)
 				{
@@ -562,7 +557,6 @@ public class OctalDump
 				DoubleIlaIterator dii = new DoubleIlaIterator(
 					DoubleIlaSegment.create(doubleIla, start * 4,
 						doubleIla.length() - start * 4));
-				long end = start + length;
 				
 				for (int i=0 ; i < length ; i++)
 				{

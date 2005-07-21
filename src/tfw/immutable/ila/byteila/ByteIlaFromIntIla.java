@@ -66,8 +66,6 @@ public final class ByteIlaFromIntIla
 			
 			for (int totalElements=0 ; totalElements < length ; )
 			{
-				int elementsInRow = (int)Math.min(4 - col,
-					length - totalElements);
 				int value = iii.next();
 				
 				for (int c=col ; c < 4 && totalElements < length ; c++)

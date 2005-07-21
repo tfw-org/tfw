@@ -39,7 +39,6 @@ public class LongIlaRemoveTest extends TestCase
 		final int LENGTH = 29;
 		
 		long[] array = new long[LENGTH];
-		long element = random.nextLong();
 		
 		for (int i=0 ; i < LENGTH ; i++)
 		{

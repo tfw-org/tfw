@@ -48,7 +48,6 @@ public final class ShortIlaConcatenate
 		private ShortIla leftIla;
 		private ShortIla rightIla;
 		private long leftIlaLength;
-		private long rightIlaLength;
 
 		MyShortIla(ShortIla leftIla, ShortIla rightIla)
 		{
@@ -57,7 +56,6 @@ public final class ShortIlaConcatenate
 		    this.leftIla = leftIla;
 		    this.rightIla = rightIla;
 		    this.leftIlaLength = leftIla.length();
-		    this.rightIlaLength = rightIla.length();
 		}
 		
 		protected void toArrayImpl(short[] array, int offset,

@@ -39,7 +39,6 @@ public class ByteIlaRemoveTest extends TestCase
 		final int LENGTH = 29;
 		
 		byte[] array = new byte[LENGTH];
-		byte element = (byte)random.nextInt();
 		
 		for (int i=0 ; i < LENGTH ; i++)
 		{

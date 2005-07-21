@@ -48,7 +48,6 @@ public final class CharIlaConcatenate
 		private CharIla leftIla;
 		private CharIla rightIla;
 		private long leftIlaLength;
-		private long rightIlaLength;
 
 		MyCharIla(CharIla leftIla, CharIla rightIla)
 		{
@@ -57,7 +56,6 @@ public final class CharIlaConcatenate
 		    this.leftIla = leftIla;
 		    this.rightIla = rightIla;
 		    this.leftIlaLength = leftIla.length();
-		    this.rightIlaLength = rightIla.length();
 		}
 		
 		protected void toArrayImpl(char[] array, int offset,

@@ -39,7 +39,6 @@ public class BooleanIlaRemoveTest extends TestCase
 		final int LENGTH = 29;
 		
 		boolean[] array = new boolean[LENGTH];
-		boolean element = random.nextBoolean();
 		
 		for (int i=0 ; i < LENGTH ; i++)
 		{

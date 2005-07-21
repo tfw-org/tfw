@@ -39,7 +39,6 @@ public class FloatIlaRemoveTest extends TestCase
 		final int LENGTH = 29;
 		
 		float[] array = new float[LENGTH];
-		float element = random.nextFloat();
 		
 		for (int i=0 ; i < LENGTH ; i++)
 		{

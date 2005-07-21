@@ -48,7 +48,6 @@ public final class BooleanIlaConcatenate
 		private BooleanIla leftIla;
 		private BooleanIla rightIla;
 		private long leftIlaLength;
-		private long rightIlaLength;
 
 		MyBooleanIla(BooleanIla leftIla, BooleanIla rightIla)
 		{
@@ -57,7 +56,6 @@ public final class BooleanIlaConcatenate
 		    this.leftIla = leftIla;
 		    this.rightIla = rightIla;
 		    this.leftIlaLength = leftIla.length();
-		    this.rightIlaLength = rightIla.length();
 		}
 		
 		protected void toArrayImpl(boolean[] array, int offset,

@@ -39,7 +39,6 @@ public class DoubleIlaRemoveTest extends TestCase
 		final int LENGTH = 29;
 		
 		double[] array = new double[LENGTH];
-		double element = random.nextDouble();
 		
 		for (int i=0 ; i < LENGTH ; i++)
 		{

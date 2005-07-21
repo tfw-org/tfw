@@ -48,7 +48,6 @@ public final class %%NAME%%IlaConcatenate
 		private %%NAME%%Ila leftIla;
 		private %%NAME%%Ila rightIla;
 		private long leftIlaLength;
-		private long rightIlaLength;
 
 		My%%NAME%%Ila(%%NAME%%Ila leftIla, %%NAME%%Ila rightIla)
 		{
@@ -57,7 +56,6 @@ public final class %%NAME%%IlaConcatenate
 		    this.leftIla = leftIla;
 		    this.rightIla = rightIla;
 		    this.leftIlaLength = leftIla.length();
-		    this.rightIlaLength = rightIla.length();
 		}
 		
 		protected void toArrayImpl(%%TYPE%%[] array, int offset,

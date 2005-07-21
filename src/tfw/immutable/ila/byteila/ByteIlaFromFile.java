@@ -133,7 +133,6 @@ public final class ByteIlaFromFile
 	private static class TimerRunnable implements Runnable
 	{
 		private boolean resetTimer = true;
-		private Thread thread = null;
 		private MyByteIla myByteIla = null;
 		
 		public TimerRunnable(MyByteIla myByteIla)

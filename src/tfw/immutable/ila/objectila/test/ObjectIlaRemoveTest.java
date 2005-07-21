@@ -39,7 +39,6 @@ public class ObjectIlaRemoveTest extends TestCase
 		final int LENGTH = 29;
 		
 		Object[] array = new Object[LENGTH];
-		Object element = new Object();
 		
 		for (int i=0 ; i < LENGTH ; i++)
 		{

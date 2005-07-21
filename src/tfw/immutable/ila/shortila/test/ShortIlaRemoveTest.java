@@ -39,7 +39,6 @@ public class ShortIlaRemoveTest extends TestCase
 		final int LENGTH = 29;
 		
 		short[] array = new short[LENGTH];
-		short element = (short)random.nextInt();
 		
 		for (int i=0 ; i < LENGTH ; i++)
 		{

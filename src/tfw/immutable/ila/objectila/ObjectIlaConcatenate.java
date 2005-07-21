@@ -48,7 +48,6 @@ public final class ObjectIlaConcatenate
 		private ObjectIla leftIla;
 		private ObjectIla rightIla;
 		private long leftIlaLength;
-		private long rightIlaLength;
 
 		MyObjectIla(ObjectIla leftIla, ObjectIla rightIla)
 		{
@@ -57,7 +56,6 @@ public final class ObjectIlaConcatenate
 		    this.leftIla = leftIla;
 		    this.rightIla = rightIla;
 		    this.leftIlaLength = leftIla.length();
-		    this.rightIlaLength = rightIla.length();
 		}
 		
 		protected void toArrayImpl(Object[] array, int offset,

@@ -39,7 +39,6 @@ public class %%NAME%%IlaRemoveTest extends TestCase
 		final int LENGTH = 29;
 		
 		%%TYPE%%[] array = new %%TYPE%%[LENGTH];
-		%%TYPE%% element = %%RANDOM_VALUE%%;
 		
 		for (int i=0 ; i < LENGTH ; i++)
 		{

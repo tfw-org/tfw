@@ -48,7 +48,6 @@ public final class DoubleIlaConcatenate
 		private DoubleIla leftIla;
 		private DoubleIla rightIla;
 		private long leftIlaLength;
-		private long rightIlaLength;
 
 		MyDoubleIla(DoubleIla leftIla, DoubleIla rightIla)
 		{
@@ -57,7 +56,6 @@ public final class DoubleIlaConcatenate
 		    this.leftIla = leftIla;
 		    this.rightIla = rightIla;
 		    this.leftIlaLength = leftIla.length();
-		    this.rightIlaLength = rightIla.length();
 		}
 		
 		protected void toArrayImpl(double[] array, int offset,

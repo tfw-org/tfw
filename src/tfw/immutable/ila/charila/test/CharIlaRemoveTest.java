@@ -39,7 +39,6 @@ public class CharIlaRemoveTest extends TestCase
 		final int LENGTH = 29;
 		
 		char[] array = new char[LENGTH];
-		char element = (char)random.nextInt();
 		
 		for (int i=0 ; i < LENGTH ; i++)
 		{

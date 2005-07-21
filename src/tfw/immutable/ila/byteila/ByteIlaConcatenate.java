@@ -48,7 +48,6 @@ public final class ByteIlaConcatenate
 		private ByteIla leftIla;
 		private ByteIla rightIla;
 		private long leftIlaLength;
-		private long rightIlaLength;
 
 		MyByteIla(ByteIla leftIla, ByteIla rightIla)
 		{
@@ -57,7 +56,6 @@ public final class ByteIlaConcatenate
 		    this.leftIla = leftIla;
 		    this.rightIla = rightIla;
 		    this.leftIlaLength = leftIla.length();
-		    this.rightIlaLength = rightIla.length();
 		}
 		
 		protected void toArrayImpl(byte[] array, int offset,

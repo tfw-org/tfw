@@ -39,7 +39,6 @@ public class IntIlaRemoveTest extends TestCase
 		final int LENGTH = 29;
 		
 		int[] array = new int[LENGTH];
-		int element = random.nextInt();
 		
 		for (int i=0 ; i < LENGTH ; i++)
 		{
