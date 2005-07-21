@@ -24,13 +24,16 @@
  */
 package tfw.awt.event;
 
-import	java.awt.event.MouseEvent;
-import	java.awt.event.MouseListener;
-import	java.awt.event.MouseMotionListener;
-import	tfw.tsm.Initiator;
-import	tfw.tsm.ecd.BooleanECD;
-import	tfw.tsm.ecd.EventChannelDescription;
-import	tfw.tsm.ecd.IntegerECD;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+
+import tfw.tsm.EventChannelStateBuffer;
+import tfw.tsm.Initiator;
+import tfw.tsm.ecd.BooleanECD;
+import tfw.tsm.ecd.EventChannelDescription;
+import tfw.tsm.ecd.EventChannelDescriptionUtil;
+import tfw.tsm.ecd.IntegerECD;
 
 public class MouseInitiator extends Initiator
 	implements MouseListener,MouseMotionListener
@@ -42,12 +45,16 @@ public class MouseInitiator extends Initiator
 	private final BooleanECD button3PressedECD;
 	private final BooleanECD insideComponentECD;
 	
+	private boolean insideComponent = false;
+	
 	public MouseInitiator(String name, IntegerECD xECD, IntegerECD yECD,
 		BooleanECD button1PressedECD, BooleanECD button2PressedECD,
 		BooleanECD button3PressedECD, BooleanECD insideComponentECD)
 	{
 		super("MouseInitiator["+name+"]",
-			new EventChannelDescription[] {});
+			EventChannelDescriptionUtil.create(new EventChannelDescription[] {
+				xECD, yECD, button1PressedECD, button2PressedECD,
+				button3PressedECD, insideComponentECD}));
 		
 		this.xECD = xECD;
 		this.yECD = yECD;
@@ -64,70 +71,74 @@ public class MouseInitiator extends Initiator
 	
 	public void mouseEntered(MouseEvent e)
 	{
-		if (insideComponentECD != null)
-		{
-			set(insideComponentECD, new Boolean(true));
-		}
+		insideComponent = true;
+		
+		send(e);
 	}
 	
 	public void mouseExited(MouseEvent e)
-	{	
-		if (insideComponentECD != null)
-		{
-			set(insideComponentECD, new Boolean(false));
-		}
+	{
+		insideComponent = false;
+		
+		send(e);
 	}
 	
 	public void mousePressed(MouseEvent e)
 	{
-		sendButtonState(e);
+		send(e);
 	}
 	
 	public void mouseReleased(MouseEvent e)
 	{
-		sendButtonState(e);
+		send(e);
 	}
 	
 	public void mouseDragged(MouseEvent e)
 	{
-		sendPosition(e);
+		send(e);
 	}
 	
 	public void mouseMoved(MouseEvent e)
 	{
-		sendPosition(e);
+		send(e);
 	}
 
-	private void sendPosition(MouseEvent e)
+	private void send(MouseEvent e)
 	{
+		EventChannelStateBuffer ecsb = new EventChannelStateBuffer();
+		
 		if (xECD != null)
 		{
-			set(xECD, new Integer(e.getX()));
+			ecsb.put(xECD, new Integer(e.getX()));
 		}
 		if (yECD != null)
 		{
-			set(yECD, new Integer(e.getY()));
+			ecsb.put(yECD, new Integer(e.getY()));
 		}
-	}
-	private void sendButtonState(MouseEvent e)
-	{
 		if (button1PressedECD != null)
 		{
-			set(button1PressedECD, new Boolean(
-				((e.getModifiers() & MouseEvent.BUTTON1_DOWN_MASK) ==
+			ecsb.put(button1PressedECD, new Boolean(
+				((e.getModifiersEx() & MouseEvent.BUTTON1_DOWN_MASK) ==
 				MouseEvent.BUTTON1_DOWN_MASK)));
 		}
 		if (button2PressedECD != null)
 		{
-			set(button2PressedECD, new Boolean(
-				((e.getModifiers() & MouseEvent.BUTTON2_DOWN_MASK) ==
+			ecsb.put(button2PressedECD, new Boolean(
+				((e.getModifiersEx() & MouseEvent.BUTTON2_DOWN_MASK) ==
 				MouseEvent.BUTTON2_DOWN_MASK)));
 		}
 		if (button3PressedECD != null)
 		{
-			set(button3PressedECD, new Boolean(
-				((e.getModifiers() & MouseEvent.BUTTON3_DOWN_MASK) ==
+			ecsb.put(button3PressedECD, new Boolean(
+				((e.getModifiersEx() & MouseEvent.BUTTON3_DOWN_MASK) ==
 				MouseEvent.BUTTON3_DOWN_MASK)));
 		}
+		if (insideComponentECD != null)
+		{
+			ecsb.put(insideComponentECD,
+				insideComponent ? Boolean.TRUE : Boolean.FALSE);
+		}
+		
+		set(ecsb.toArray());
 	}
 }
