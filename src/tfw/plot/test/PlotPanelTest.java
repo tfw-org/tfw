@@ -26,9 +26,7 @@ package tfw.plot.test;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
-
 import javax.swing.JFrame;
-
 import tfw.awt.ecd.ColorECD;
 import tfw.awt.ecd.GraphicECD;
 import tfw.awt.ecd.ImageECD;
@@ -41,6 +39,7 @@ import tfw.tsm.Root;
 import tfw.tsm.RootFactory;
 import tfw.tsm.ecd.IntegerECD;
 import tfw.tsm.ecd.StatelessTriggerECD;
+import tfw.tsm.ecd.ila.ObjectIlaECD;
 
 public final class PlotPanelTest
 {
@@ -65,8 +64,8 @@ public final class PlotPanelTest
 			new IntegerECD("imageX");
 		final IntegerECD IMAGE_Y_ECD =
 			new IntegerECD("imageY");
-		final tfw.tsm.ecd.ObjectIlaECD MULTI_GRAPHIC_ECD =
-			new tfw.tsm.ecd.ObjectIlaECD("multiGraphic");
+		final ObjectIlaECD MULTI_GRAPHIC_ECD =
+			new ObjectIlaECD("multiGraphic");
 		final IntegerECD WIDTH_ECD =
 			new IntegerECD("width");
 

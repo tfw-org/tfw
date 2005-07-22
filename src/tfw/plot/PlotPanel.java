@@ -29,9 +29,7 @@ import java.awt.Graphics2D;
 import java.awt.event.ComponentListener;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-
 import javax.swing.JPanel;
-
 import tfw.awt.graphic.Graphic;
 import tfw.immutable.DataInvalidException;
 import tfw.immutable.ila.objectila.ObjectIla;
@@ -50,8 +48,8 @@ public class PlotPanel extends JPanel implements BranchBox
 {
 	private static final ObjectIlaECD GRAPHIC_ECD =
 		new ObjectIlaECD("graphic");
-	private static final tfw.tsm.ecd.ObjectIlaECD MULTI_GRAPHIC_ECD =
-		new tfw.tsm.ecd.ObjectIlaECD("multiGraphic");
+	private static final ObjectIlaECD MULTI_GRAPHIC_ECD =
+		new ObjectIlaECD("multiGraphic");
 	private static final StatelessTriggerECD GENERATE_GRAPHIC_TRIGGER_ECD =
 		new StatelessTriggerECD("generateGraphicTrigger");
 	
