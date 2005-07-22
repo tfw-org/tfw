@@ -27,24 +27,26 @@ package tfw.tsm;
 import java.util.Map;
 import java.util.Set;
 
+import tfw.check.Argument;
 import tfw.tsm.ecd.EventChannelDescription;
 import tfw.tsm.ecd.StatelessTriggerECD;
 import tfw.value.ValueException;
 
-
 /**
- * The base class for all event handling components which participate in
- * the processing phase of transactions.
+ * The base class for all event handling components which participate in the
+ * processing phase of transactions.
  */
 abstract class Processor extends RollbackHandler
 {
-	private final EventChannelDescription[] triggeringSinks;
+    private final EventChannelDescription[] triggeringSinks;
+
     Processor(String name, EventChannelDescription[] triggeringSinks,
-        EventChannelDescription[] nonTriggeringSinks,
-        EventChannelDescription[] sources)
+            EventChannelDescription[] nonTriggeringSinks,
+            EventChannelDescription[] sources)
     {
         super(name, triggeringSinks, nonTriggeringSinks, sources);
-		this.triggeringSinks = (EventChannelDescription[]) triggeringSinks.clone();
+        this.triggeringSinks = (EventChannelDescription[]) triggeringSinks
+                .clone();
     }
 
     void stateChange(EventChannel eventChannel)
@@ -53,45 +55,85 @@ abstract class Processor extends RollbackHandler
     }
 
     /**
-     * Returns true if the specified processor publishes to one or more
-     * event channels for which this processor has triggering sinks.
-     * @param processor The processor to check for dependency.
-     * @return true if the specified processor publishes to one or more
-     * event channels for which this processor has triggering sinks.
+     * Returns true if the specified processor publishes to one or more event
+     * channels for which this processor has triggering sinks.
+     * 
+     * @param processor
+     *            The processor to check for dependency.
+     * @return true if the specified processor publishes to one or more event
+     *         channels for which this processor has triggering sinks.
      */
     boolean isDependent(Processor processor)
     {
-    	Map sources = processor.getSources();
-    	for (int i = 0; i < this.triggeringSinks.length; i++){
-    		if (sources.containsKey(triggeringSinks[i].getEventChannelName())){
-    			return true;
-    		}
-    	}
+        Map sources = processor.getSources();
+        for (int i = 0; i < this.triggeringSinks.length; i++)
+        {
+            if (sources.containsKey(triggeringSinks[i].getEventChannelName()))
+            {
+                return true;
+            }
+        }
         return false;
     }
-    
-    boolean isDependent(Set sources){
-    	for(int i = 0; i < triggeringSinks.length; i++){
-    		if (sources.contains(triggeringSinks[i].getEventChannelName())){
-    			return true;
-    		}
-    	}
-    	return false;
+
+    boolean isDependent(Set sources)
+    {
+        for (int i = 0; i < triggeringSinks.length; i++)
+        {
+            if (sources.contains(triggeringSinks[i].getEventChannelName()))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
-     * Returns true if the specified sink event channel state has changed
-     * during the current transaction state change cycle, otherwise returns
-     * false. Note that <code>equals()</code> is used to determine if the
-     * state has changed.
-     *
-     * @param sinkEventChannel the name of the event channel to check.
-     * @return true if the specified sink event channel state has changed
-     * during the current transaction state change cycle, otherwise returns
-     * false.
+     * Returns the state of the specified event channel prior to the current
+     * state change cycle.
+     * 
+     * @param sinkEventChannel
+     *            the sink event channel whose state is to be returned.
+     * @return the state of the event channel during the previous state change
+     *         cycle.
+     */
+    protected final Object getPreviousCycleState(
+            EventChannelDescription sinkEventChannel)
+    {
+        Argument.assertNotNull(sinkEventChannel, "sinkEventChannel");
+        assertNotStateless(sinkEventChannel);
+        Sink sink = getSink(sinkEventChannel);
+
+        if (sink == null)
+        {
+            throw new IllegalArgumentException(sinkEventChannel
+                    .getEventChannelName()
+                    + " not found");
+        }
+
+        if (sink.getEventChannel() == null)
+        {
+            throw new IllegalStateException(sinkEventChannel
+                    + " is not connected to an event channel");
+        }
+
+        return (sink.getEventChannel().getPreviousCycleState());
+    }
+
+    /**
+     * Returns true if the specified sink event channel state has changed during
+     * the current transaction state change cycle, otherwise returns false. Note
+     * that <code>equals()</code> is used to determine if the state has
+     * changed.
+     * 
+     * @param sinkEventChannel
+     *            the name of the event channel to check.
+     * @return true if the specified sink event channel state has changed during
+     *         the current transaction state change cycle, otherwise returns
+     *         false.
      */
     protected final boolean isStateChanged(
-        EventChannelDescription sinkEventChannel)
+            EventChannelDescription sinkEventChannel)
     {
         Sink sink = getSink(sinkEventChannel);
 
@@ -118,20 +160,24 @@ abstract class Processor extends RollbackHandler
 
     /**
      * Asynchronously changes the state of the specified event channel.
-     * @param sourceEventChannel the name of the event channel.
-     * @param state the new value for the event channel.
-     * @throws IllegalArgumentException if the specified state violates
-     * the value constraints of the event channel.
+     * 
+     * @param sourceEventChannel
+     *            the name of the event channel.
+     * @param state
+     *            the new value for the event channel.
+     * @throws IllegalArgumentException
+     *             if the specified state violates the value constraints of the
+     *             event channel.
      */
     protected final void set(EventChannelDescription sourceEventChannel,
-        Object state)
+            Object state)
     {
         Source source = getSource(sourceEventChannel.getEventChannelName());
 
         if (source == null)
         {
-            throw new IllegalArgumentException("Source event channel '" +
-                sourceEventChannel + "' not found");
+            throw new IllegalArgumentException("Source event channel '"
+                    + sourceEventChannel + "' not found");
         }
 
         try
@@ -146,7 +192,9 @@ abstract class Processor extends RollbackHandler
 
     /**
      * Causes a state-less event channel to fire.
-     * @param triggerECD the event channel to be fired.
+     * 
+     * @param triggerECD
+     *            the event channel to be fired.
      */
     protected final void trigger(StatelessTriggerECD triggerECD)
     {

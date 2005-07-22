@@ -73,6 +73,38 @@ public abstract class Validator extends RollbackHandler
         return triggeringSinks;
     }
 
+    /**
+     * Returns the state of the specified event channel prior to the current
+     * state change cycle.
+     * 
+     * @param sinkEventChannel
+     *            the sink event channel whose state is to be returned.
+     * @return the state of the event channel during the previous state change
+     *         cycle.
+     */
+    protected final Object getPreviousCycleState(
+            EventChannelDescription sinkEventChannel)
+    {
+        Argument.assertNotNull(sinkEventChannel, "sinkEventChannel");
+        assertNotStateless(sinkEventChannel);
+        Sink sink = getSink(sinkEventChannel);
+
+        if (sink == null)
+        {
+            throw new IllegalArgumentException(sinkEventChannel
+                    .getEventChannelName()
+                    + " not found");
+        }
+
+        if (sink.getEventChannel() == null)
+        {
+            throw new IllegalStateException(sinkEventChannel
+                    + " is not connected to an event channel");
+        }
+
+        return (sink.getEventChannel().getPreviousCycleState());
+    }
+
     final void stateChange(EventChannel eventChannel)
     {
         getTransactionManager().addValidator(this);
