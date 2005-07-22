@@ -34,8 +34,6 @@ import tfw.awt.ecd.GraphicECD;
 import tfw.awt.ecd.ImageECD;
 import tfw.awt.ecd.ImageObserverECD;
 import tfw.awt.event.ComponentInitiator;
-import tfw.plot.BackgroundGraphicConverter;
-import tfw.plot.DrawImageConverter;
 import tfw.plot.PlotPanel;
 import tfw.swing.JFrameBB;
 import tfw.tsm.BasicTransactionQueue;

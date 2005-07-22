@@ -35,7 +35,6 @@ import javax.swing.JPanel;
 import tfw.awt.graphic.Graphic;
 import tfw.immutable.DataInvalidException;
 import tfw.immutable.ila.objectila.ObjectIla;
-import tfw.immutable.ila.objectila.ObjectIlaFromArray;
 import tfw.tsm.Branch;
 import tfw.tsm.BranchBox;
 import tfw.tsm.Commit;
