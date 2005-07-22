@@ -24,7 +24,6 @@
  */
 package tfw.tsm;
 
-
 import tfw.check.Argument;
 import tfw.tsm.ecd.EventChannelDescription;
 import tfw.tsm.ecd.RollbackECD;
@@ -36,7 +35,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-
 /**
  * The base class for event handling leaf components.
  */
@@ -46,29 +44,35 @@ abstract class EventHandler extends Leaf
 
     /**
      * Creates an event handler with the specified attributes.
-     * @param name the name of  the event handler.
-     * @param sinkDescriptions the set of sink event channels.
-     * @param sourceEventChannels the set of source event channels.
-     * @throws IllegalArgumentException if there are no sources or sinks
-     * specified.
+     * 
+     * @param name
+     *            the name of the event handler.
+     * @param sinkDescriptions
+     *            the set of sink event channels.
+     * @param sourceEventChannels
+     *            the set of source event channels.
+     * @throws IllegalArgumentException
+     *             if there are no sources or sinks specified.
      */
     EventHandler(String name, EventChannelDescription[] triggeringSinks,
-        EventChannelDescription[] nonTriggeringSinks,
-        EventChannelDescription[] sources)
+            EventChannelDescription[] nonTriggeringSinks,
+            EventChannelDescription[] sources)
     {
         super(name, createSinks(name, triggeringSinks, nonTriggeringSinks),
-            createSources(name, sources));
+                createSources(name, sources));
 
         int portCount = (sources == null) ? 0 : sources.length;
 
-        portCount += ((nonTriggeringSinks == null) ? 0 : nonTriggeringSinks.length);
+        portCount += ((nonTriggeringSinks == null) ? 0
+                : nonTriggeringSinks.length);
         portCount += ((triggeringSinks == null) ? 0 : triggeringSinks.length);
 
         if (portCount == 0)
         {
             throw new IllegalArgumentException(
-                "(nonTriggeringSinks.length + nonTriggeringSinks.length" +
-                " + triggeringSinks.length)" + " == 0 not allowed");
+                    "(nonTriggeringSinks.length + nonTriggeringSinks.length"
+                            + " + triggeringSinks.length)"
+                            + " == 0 not allowed");
         }
 
         Iterator sinks = getSinks().values().iterator();
@@ -80,19 +84,20 @@ abstract class EventHandler extends Leaf
     }
 
     private static Sink[] createSinks(String name,
-        EventChannelDescription[] triggeringSinks,
-        EventChannelDescription[] nonTriggeringSinks)
+            EventChannelDescription[] triggeringSinks,
+            EventChannelDescription[] nonTriggeringSinks)
     {
         ArrayList list = new ArrayList();
 
         if (nonTriggeringSinks != null)
         {
             Argument.assertElementNotNull(nonTriggeringSinks,
-                "nonTriggeringSinks");
+                    "nonTriggeringSinks");
 
             for (int i = 0; i < nonTriggeringSinks.length; i++)
             {
-                list.add(new EventHandlerSink(name, nonTriggeringSinks[i], false));
+                list.add(new EventHandlerSink(name, nonTriggeringSinks[i],
+                        false));
             }
         }
 
@@ -117,7 +122,7 @@ abstract class EventHandler extends Leaf
     }
 
     private static Source[] createSources(String name,
-        EventChannelDescription[] sources)
+            EventChannelDescription[] sources)
     {
         List list = new ArrayList();
 
@@ -131,8 +136,8 @@ abstract class EventHandler extends Leaf
             {
                 if (sources[i] instanceof RollbackECD)
                 {
-                    list.add(new InitiatorSource(name, sources[i],
-                            factory.create()));
+                    list.add(new InitiatorSource(name, sources[i], factory
+                            .create()));
                 }
                 else
                 {
@@ -144,58 +149,81 @@ abstract class EventHandler extends Leaf
         return (Source[]) list.toArray(new Source[list.size()]);
     }
 
+    static void assertNotStateless(EventChannelDescription ecd)
+    {
+        if (ecd instanceof StatelessTriggerECD)
+        {
+            throw new IllegalArgumentException("The event channel '"
+                    + ecd.getEventChannelName()
+                    + "' is stateless, no state available.");
+        }
+    }
+
+    /**
+     * Returns the state of the specified event channel at the conclusion of
+     * transaction prior to the current transaction.
+     * 
+     * @param sinkEventChannel
+     *            the sink event channel whose state is to be returned.
+     * @return The stat of the event channel prior to the current transaction.
+     */
+    protected final Object getPreviousTransactionState(
+            EventChannelDescription sinkEventChannel)
+    {
+        Argument.assertNotNull(sinkEventChannel, "sinkEventChannel");
+        assertNotStateless(sinkEventChannel);
+        Sink sink = getSink(sinkEventChannel);
+
+        if (sink == null)
+        {
+            throw new IllegalArgumentException(sinkEventChannel
+                    .getEventChannelName()
+                    + " not found");
+        }
+
+        if (sink.getEventChannel() == null)
+        {
+            throw new IllegalStateException(sinkEventChannel
+                    + " is not connected to an event channel");
+        }
+
+        return (sink.getEventChannel().getPreviousTransactionState());
+    }
+
     /**
      * Returns the current state for the specified event channel.
-     *
-     * @param sinkEventChannel the event channel whose state is to be returned.
+     * 
+     * @param sinkEventChannel
+     *            the event channel whose state is to be returned.
      * @return the current state for the specified event channel.
      */
     protected final Object get(EventChannelDescription sinkEventChannel)
     {
         Argument.assertNotNull(sinkEventChannel, "sinkEventChannel");
-
-        if (sinkEventChannel instanceof StatelessTriggerECD)
-        {
-            throw new IllegalArgumentException("The event channel '" +
-                sinkEventChannel.getEventChannelName() +
-                "' is stateless. Calling the 'get' method on a stateless event channel is not allowed");
-        }
+        assertNotStateless(sinkEventChannel);
 
         Sink sink = getSink(sinkEventChannel);
 
         if (sink == null)
         {
-            throw new IllegalArgumentException(sinkEventChannel.getEventChannelName() +
-                " not found");
+            throw new IllegalArgumentException(sinkEventChannel
+                    .getEventChannelName()
+                    + " not found");
         }
 
         if (sink.getEventChannel() == null)
         {
-            throw new IllegalStateException(sinkEventChannel +
-                " is not connected to an event channel");
+            throw new IllegalStateException(sinkEventChannel
+                    + " is not connected to an event channel");
         }
 
         return (sink.getEventChannel().getState());
     }
 
-    //
-    //    /**
-    //     * Returns the current state for the specified event channel.
-    //     * @param ecd the event channel whose state is to be returned.
-    //     * @return the current state for the specified event channel.
-    //     */
-    //    protected final Object get(EventChannelDescription ecd)
-    //    {
-    //        CheckArgument.checkNull(ecd, "ecd");
-    //
-    //        return get(ecd.getEventChannelName());
-    //    }
-
     /**
-     * Returns the state of all of the sink event channels for this
-     * component.
-     * @return the state of all of the sink event channels for this
-     * component.
+     * Returns the state of all of the sink event channels for this component.
+     * 
+     * @return the state of all of the sink event channels for this component.
      */
     protected final StateMap get()
     {
@@ -204,7 +232,8 @@ abstract class EventHandler extends Leaf
 
         for (Iterator itr = map.keySet().iterator(); itr.hasNext();)
         {
-            EventChannelDescription sinkEventChannel = (EventChannelDescription) itr.next();
+            EventChannelDescription sinkEventChannel = (EventChannelDescription) itr
+                    .next();
 
             if (!(sinkEventChannel instanceof StatelessTriggerECD))
             {
@@ -217,15 +246,19 @@ abstract class EventHandler extends Leaf
 
     /**
      * Set the state of the specified event channel in a new transaction.
-     * @param initiateECD the event channel.
-     * @param state the new state for the event channel.
+     * 
+     * @param initiateECD
+     *            the event channel.
+     * @param state
+     *            the new state for the event channel.
      */
     final void initiatorSet(RollbackECD initiateECD, Object state)
     {
         Argument.assertNotNull(initiateECD, "initiateECD");
         Argument.assertNotNull(state, "state");
 
-        InitiatorSource source = (InitiatorSource) getSource(initiateECD.getEventChannelName());
+        InitiatorSource source = (InitiatorSource) getSource(initiateECD
+                .getEventChannelName());
 
         try
         {
@@ -236,7 +269,7 @@ abstract class EventHandler extends Leaf
             throw new IllegalArgumentException(ve.getMessage());
         }
 
-        newTransaction(new InitiatorSource[]{ source });
+        newTransaction(new InitiatorSource[] { source });
     }
 
     final void initiatorSet(EventChannelState[] eventChannelState)
@@ -253,9 +286,9 @@ abstract class EventHandler extends Leaf
 
             if (sources[i] == null)
             {
-                throw new IllegalArgumentException("eventChannelState[" + i +
-                    "].getECD().getEventChannelName() == " + ecName +
-                    " is not a known event channel");
+                throw new IllegalArgumentException("eventChannelState[" + i
+                        + "].getECD().getEventChannelName() == " + ecName
+                        + " is not a known event channel");
             }
 
             try
@@ -276,14 +309,14 @@ abstract class EventHandler extends Leaf
         if (!isRooted())
         {
             throw new IllegalStateException(
-                "This component is not connected to a root");
+                    "This component is not connected to a root");
         }
 
         getTransactionManager().addStateChange(sources);
     }
 
     static void checkForStatelessTrigger(EventChannelDescription[] ecds,
-        String name)
+            String name)
     {
         if (ecds == null)
         {
@@ -294,17 +327,19 @@ abstract class EventHandler extends Leaf
         {
             if (ecds[i] instanceof StatelessTriggerECD)
             {
-                throw new IllegalArgumentException(name + "[" + i +
-                    "] instanceof " + StatelessTriggerECD.class.getName() +
-                    " not allowed");
+                throw new IllegalArgumentException(name + "[" + i
+                        + "] instanceof " + StatelessTriggerECD.class.getName()
+                        + " not allowed");
             }
         }
     }
 
     /**
-     * Called when a sink event channels state changes. Must be implemented
-     * by sub-classes to receive state change notification.
-     * @param eventChannel the event channel who's sate has changed.
+     * Called when a sink event channels state changes. Must be implemented by
+     * sub-classes to receive state change notification.
+     * 
+     * @param eventChannel
+     *            the event channel who's sate has changed.
      */
     abstract void stateChange(EventChannel eventChannel);
 
@@ -313,7 +348,7 @@ abstract class EventHandler extends Leaf
         private EventHandler handler = null;
 
         EventHandlerSink(String name, EventChannelDescription description,
-            boolean isTriggering)
+                boolean isTriggering)
         {
             super(name, description, isTriggering);
         }
