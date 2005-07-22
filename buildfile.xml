@@ -46,6 +46,7 @@
 		<property name="intdir" value="${basedir}/src/tfw/immutable/ila/intila"/>
 		<property name="objectdir" value="${basedir}/src/tfw/immutable/ila/objectila"/>
 		<property name="shortdir" value="${basedir}/src/tfw/immutable/ila/shortila"/>
+		<property name="stringdir" value="${basedir}/src/tfw/immutable/ila/stringila"/>
 		
 		<property name="booleantestdir" value="${booleandir}/test"/>
 		<property name="bytetestdir" value="${bytedir}/test"/>
@@ -56,6 +57,7 @@
 		<property name="inttestdir" value="${intdir}/test"/>
 		<property name="objecttestdir" value="${objectdir}/test"/>
 		<property name="shorttestdir" value="${shortdir}/test"/>
+		<property name="stringtestdir" value="${stringdir}/test"/>
 		
 		<java classname="tfw.build.SearchAndReplace">
 			<arg value="${booleandir}/booleanila.mapping"/>
@@ -347,6 +349,34 @@
 				<pathelement path="bin"/>
 			</classpath>
 		</java>
+		<java classname="tfw.build.SearchAndReplace">
+			<arg value="${stringdir}/stringila.mapping"/>
+			<arg value="${templatedir}/AbstractIla.template"/>
+			<arg value="${templatedir}/Ila.template"/>
+			<arg value="${templatedir}/IlaConcatenate.template"/>
+			<arg value="${templatedir}/IlaFill.template"/>
+			<arg value="${templatedir}/IlaFromArray.template"/>
+			<arg value="${templatedir}/IlaFromIlm.template"/>
+			<arg value="${templatedir}/IlaInsert.template"/>
+			<arg value="${templatedir}/IlaIterator.template"/>
+			<arg value="${templatedir}/IlaMutate.template"/>
+			<arg value="${templatedir}/IlaRemove.template"/>
+			<arg value="${templatedir}/IlaSegment.template"/>
+			<arg value="${stringdir}/AbstractStringIla.java"/>
+			<arg value="${stringdir}/StringIla.java"/>
+			<arg value="${stringdir}/StringIlaConcatenate.java"/>
+			<arg value="${stringdir}/StringIlaFill.java"/>
+			<arg value="${stringdir}/StringIlaFromArray.java"/>
+			<arg value="${stringdir}/StringIlaFromStringIlm.java"/>
+			<arg value="${stringdir}/StringIlaInsert.java"/>
+			<arg value="${stringdir}/StringIlaIterator.java"/>
+			<arg value="${stringdir}/StringIlaMutate.java"/>
+			<arg value="${stringdir}/StringIlaRemove.java"/>
+			<arg value="${stringdir}/StringIlaSegment.java"/>
+			<classpath>
+				<pathelement path="bin"/>
+			</classpath>
+		</java>
 		
 		<java classname="tfw.build.SearchAndReplace">
 			<arg value="${booleandir}/booleanila.mapping"/>
@@ -614,7 +644,34 @@
 				<pathelement path="bin"/>
 			</classpath>
 		</java>
+		<java classname="tfw.build.SearchAndReplace">
+			<arg value="${stringdir}/stringila.mapping"/>
+			<arg value="${templatetestdir}/IlaConcatenateTest.template"/>
+			<arg value="${templatetestdir}/IlaFillTest.template"/>
+			<arg value="${templatetestdir}/IlaFromArrayTest.template"/>
+			<arg value="${templatetestdir}/IlaFromIlmTest.template"/>
+			<arg value="${templatetestdir}/IlaInsertTest.template"/>
+			<arg value="${templatetestdir}/IlaIteratorTest.template"/>
+			<arg value="${templatetestdir}/IlaMutateTest.template"/>
+			<arg value="${templatetestdir}/IlaRemoveTest.template"/>
+			<arg value="${templatetestdir}/IlaSegmentTest.template"/>
+			<arg value="${templatetestdir}/IlaTest.template"/>
+			<arg value="${stringtestdir}/StringIlaConcatenateTest.java"/>
+			<arg value="${stringtestdir}/StringIlaFillTest.java"/>
+			<arg value="${stringtestdir}/StringIlaFromArrayTest.java"/>
+			<arg value="${stringtestdir}/StringIlaFromStringIlmTest.java"/>
+			<arg value="${stringtestdir}/StringIlaInsertTest.java"/>
+			<arg value="${stringtestdir}/StringIlaIteratorTest.java"/>
+			<arg value="${stringtestdir}/StringIlaMutateTest.java"/>
+			<arg value="${stringtestdir}/StringIlaRemoveTest.java"/>
+			<arg value="${stringtestdir}/StringIlaSegmentTest.java"/>
+			<arg value="${stringtestdir}/StringIlaTest.java"/>
+			<classpath>
+				<pathelement path="bin"/>
+			</classpath>
+		</java>
 	</target>
+	
 	<target name="createIlm">
 		<property name="templatedir" value="${basedir}/src/tfw/immutable/ilm/template"/>
 		<property name="templatetestdir" value="${templatedir}/test"/>
@@ -628,6 +685,7 @@
 		<property name="intdir" value="${basedir}/src/tfw/immutable/ilm/intilm"/>
 		<property name="objectdir" value="${basedir}/src/tfw/immutable/ilm/objectilm"/>
 		<property name="shortdir" value="${basedir}/src/tfw/immutable/ilm/shortilm"/>
+		<property name="stringdir" value="${basedir}/src/tfw/immutable/ilm/stringilm"/>
 		
 		<property name="booleantestdir" value="${booleandir}/test"/>
 		<property name="bytetestdir" value="${bytedir}/test"/>
@@ -638,6 +696,7 @@
 		<property name="inttestdir" value="${intdir}/test"/>
 		<property name="objecttestdir" value="${objectdir}/test"/>
 		<property name="shorttestdir" value="${shortdir}/test"/>
+		<property name="stringtestdir" value="${stringdir}/test"/>
 		
 		<java classname="tfw.build.SearchAndReplace">
 			<arg value="${booleandir}/booleanilm.mapping"/>
@@ -856,6 +915,31 @@
 			</classpath>
 		</java>
 		<java classname="tfw.build.SearchAndReplace">
+			<arg value="${stringdir}/stringilm.mapping"/>
+			<arg value="${templatedir}/AbstractIlm.template"/>
+			<arg value="${templatedir}/Ilm.template"/>
+			<arg value="${templatedir}/IlmConcatenateHorizontal.template"/>
+			<arg value="${templatedir}/IlmConcatenateVertical.template"/>
+			<arg value="${templatedir}/IlmFill.template"/>
+			<arg value="${templatedir}/IlmFromArray.template"/>
+			<arg value="${templatedir}/IlmFromIla.template"/>
+			<arg value="${templatedir}/IlmFromIncrementIla.template"/>
+			<arg value="${templatedir}/IlmSegment.template"/>
+			<arg value="${stringdir}/AbstractStringIlm.java"/>
+			<arg value="${stringdir}/StringIlm.java"/>
+			<arg value="${stringdir}/StringIlmConcatenateHorizontal.java"/>
+			<arg value="${stringdir}/StringIlmConcatenateVertical.java"/>
+			<arg value="${stringdir}/StringIlmFill.java"/>
+			<arg value="${stringdir}/StringIlmFromArray.java"/>
+			<arg value="${stringdir}/StringIlmFromStringIla.java"/>
+			<arg value="${stringdir}/StringIlmFromIncrementStringIla.java"/>
+			<arg value="${stringdir}/StringIlmSegment.java"/>
+			<classpath>
+				<pathelement path="bin"/>
+			</classpath>
+		</java>
+		
+		<java classname="tfw.build.SearchAndReplace">
 			<arg value="${booleandir}/booleanilm.mapping"/>
 			<arg value="${templatetestdir}/IlmConcatenateHorizontalTest.template"/>
 			<arg value="${templatetestdir}/IlmConcatenateVerticalTest.template"/>
@@ -1035,7 +1119,28 @@
 				<pathelement path="bin"/>
 			</classpath>
 		</java>
+		<java classname="tfw.build.SearchAndReplace">
+			<arg value="${stringdir}/stringilm.mapping"/>
+			<arg value="${templatetestdir}/IlmConcatenateHorizontalTest.template"/>
+			<arg value="${templatetestdir}/IlmConcatenateVerticalTest.template"/>
+			<arg value="${templatetestdir}/IlmFillTest.template"/>
+			<arg value="${templatetestdir}/IlmFromArrayTest.template"/>
+			<arg value="${templatetestdir}/IlmFromIlaTest.template"/>
+			<arg value="${templatetestdir}/IlmFromIncrementIlaTest.template"/>
+			<arg value="${templatetestdir}/IlmTest.template"/>
+			<arg value="${stringtestdir}/StringIlmConcatenateHorizontalTest.java"/>
+			<arg value="${stringtestdir}/StringIlmConcatenateVerticalTest.java"/>
+			<arg value="${stringtestdir}/StringIlmFillTest.java"/>
+			<arg value="${stringtestdir}/StringIlmFromArrayTest.java"/>
+			<arg value="${stringtestdir}/StringIlmFromStringIlaTest.java"/>
+			<arg value="${stringtestdir}/StringIlmFromIncrementStringIlaTest.java"/>
+			<arg value="${stringtestdir}/StringIlmTest.java"/>
+			<classpath>
+				<pathelement path="bin"/>
+			</classpath>
+		</java>
 	</target>
+	
 	<target name="createIlaECD">
 		<property name="ecddir" value="${basedir}/src/tfw/tsm/ecd/ila"/>
 		<property name="templatedir" value="${basedir}/src/tfw/tsm/ecd/ila/template"/>
@@ -1049,6 +1154,7 @@
 		<property name="intdir" value="${basedir}/src/tfw/immutable/ila/intila"/>
 		<property name="objectdir" value="${basedir}/src/tfw/immutable/ila/objectila"/>
 		<property name="shortdir" value="${basedir}/src/tfw/immutable/ila/shortila"/>
+		<property name="stringdir" value="${basedir}/src/tfw/immutable/ila/stringila"/>
 		
 		<java classname="tfw.build.SearchAndReplace">
 			<arg value="${booleandir}/booleanila.mapping"/>
@@ -1122,6 +1228,14 @@
 				<pathelement path="bin"/>
 			</classpath>
 		</java>
+		<java classname="tfw.build.SearchAndReplace">
+			<arg value="${stringdir}/stringila.mapping"/>
+			<arg value="${templatedir}/IlaECD.template"/>
+			<arg value="${ecddir}/StringIlaECD.java"/>
+			<classpath>
+				<pathelement path="bin"/>
+			</classpath>
+		</java>
 	</target>	
 	<target name="createilmECD">
 		<property name="ecddir" value="${basedir}/src/tfw/tsm/ecd/ilm"/>
@@ -1136,6 +1250,7 @@
 		<property name="intdir" value="${basedir}/src/tfw/immutable/ilm/intilm"/>
 		<property name="objectdir" value="${basedir}/src/tfw/immutable/ilm/objectilm"/>
 		<property name="shortdir" value="${basedir}/src/tfw/immutable/ilm/shortilm"/>
+		<property name="stringdir" value="${basedir}/src/tfw/immutable/ilm/stringilm"/>
 		
 		<java classname="tfw.build.SearchAndReplace">
 			<arg value="${booleandir}/booleanilm.mapping"/>
@@ -1205,6 +1320,14 @@
 			<arg value="${shortdir}/shortilm.mapping"/>
 			<arg value="${templatedir}/IlmECD.template"/>
 			<arg value="${ecddir}/ShortIlmECD.java"/>
+			<classpath>
+				<pathelement path="bin"/>
+			</classpath>
+		</java>
+		<java classname="tfw.build.SearchAndReplace">
+			<arg value="${stringdir}/stringilm.mapping"/>
+			<arg value="${templatedir}/IlmECD.template"/>
+			<arg value="${ecddir}/StringIlmECD.java"/>
 			<classpath>
 				<pathelement path="bin"/>
 			</classpath>
