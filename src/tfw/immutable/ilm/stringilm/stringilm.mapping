@@ -1,0 +1,8 @@
+%%TYPE%% = String
+%%NAME%% = String
+%%PACKAGE%% = string
+%%RANDOM_VALUE%% = new String()
+%%ASSERT_EQUALS_DELTA%% =
+%%DEFAULT_VALUE%% = ""
+%%CREATE_IMMUTABLE_START%% =
+%%CREATE_IMMUTABLE_END%% =
