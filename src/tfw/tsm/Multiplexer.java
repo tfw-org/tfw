@@ -34,8 +34,7 @@ import tfw.immutable.DataInvalidException;
 import tfw.immutable.ila.objectila.ObjectIla;
 import tfw.immutable.ila.objectila.ObjectIlaFromArray;
 import tfw.tsm.ecd.EventChannelDescription;
-import tfw.tsm.ecd.ObjectIlaECD;
-
+import tfw.tsm.ecd.ila.ObjectIlaECD;
 
 /**
  *

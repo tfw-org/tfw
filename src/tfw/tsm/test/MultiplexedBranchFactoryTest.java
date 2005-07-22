@@ -28,9 +28,8 @@ import junit.framework.TestCase;
 import tfw.tsm.MultiplexedBranchFactory;
 import tfw.tsm.MultiplexedBranch;
 import tfw.tsm.ecd.EventChannelDescription;
-import tfw.tsm.ecd.ObjectIlaECD;
 import tfw.tsm.ecd.StringECD;
-
+import tfw.tsm.ecd.ila.ObjectIlaECD;
 
 // TODO: test compatibility between multiValueECD and valueECD
 

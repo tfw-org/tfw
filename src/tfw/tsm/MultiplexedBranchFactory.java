@@ -27,12 +27,10 @@ package tfw.tsm;
 
 import tfw.check.Argument;
 import tfw.tsm.ecd.EventChannelDescription;
-import tfw.tsm.ecd.ObjectIlaECD;
-
+import tfw.tsm.ecd.ila.ObjectIlaECD;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
 
 /**
  * A factory for creating a {@link MultiplexedBranch}.

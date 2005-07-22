@@ -37,9 +37,8 @@ import tfw.tsm.MultiplexedBranch;
 import tfw.tsm.Root;
 import tfw.tsm.RootFactory;
 import tfw.tsm.ecd.EventChannelDescription;
-import tfw.tsm.ecd.ObjectIlaECD;
 import tfw.tsm.ecd.StringECD;
-
+import tfw.tsm.ecd.ila.ObjectIlaECD;
 
 public class MultiplexerTest extends TestCase
 {

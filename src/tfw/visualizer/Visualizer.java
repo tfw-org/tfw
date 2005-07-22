@@ -80,8 +80,8 @@ public class Visualizer extends JFrameBB
     	new GraphicECD("graphic");
     private static final IntegerECD HEIGHT_ECD =
     	new IntegerECD("height");
-    private static final tfw.tsm.ecd.ObjectIlaECD MULTI_GRAPHIC_ECD =
-    	new tfw.tsm.ecd.ObjectIlaECD("multiGraphic");
+    private static final ObjectIlaECD MULTI_GRAPHIC_ECD =
+    	new ObjectIlaECD("multiGraphic");
     private static final ObjectIlaECD NODES_ECD =
     	new ObjectIlaECD("nodes");
     private static final DoubleIlaECD NODES_X_ECD =
