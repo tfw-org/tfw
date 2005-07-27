@@ -39,7 +39,7 @@ import tfw.tsm.Root;
 import tfw.tsm.SinkProxy;
 import tfw.tsm.SourceProxy;
 import tfw.tsm.Synchronizer;
-import tfw.tsm.TerminatorProxy;
+import tfw.tsm.EventChannelProxy;
 import tfw.tsm.TreeComponent;
 import tfw.tsm.TriggeredCommit;
 import tfw.tsm.TriggeredCommitProxy;
@@ -65,7 +65,7 @@ public class PrefuseUtil
     		{
     			Branch b = (Branch)treeComponentParent;
     			BranchProxy bp = new BranchProxy(b);
-    			TerminatorProxy[] tp = bp.getTerminatorProxies();
+    			EventChannelProxy[] tp = bp.getEventChannelProxies();
     			
     			for (int i=0 ; i < tp.length ; i++)
     			{
@@ -164,7 +164,7 @@ public class PrefuseUtil
 		{
 			DefaultTreeNode terminatorNode =
 				(DefaultTreeNode)proxies.get(
-				sourceProxies[i].getTerminatorProxy());
+				sourceProxies[i].getEventChannelProxy());
 			
 			if (terminatorNode == null)
 				throw new IllegalStateException(
@@ -183,7 +183,7 @@ public class PrefuseUtil
 		{
 			DefaultTreeNode terminatorNode =
 				(DefaultTreeNode)proxies.get(
-    			sinkProxies[i].getTerminatorProxy());
+    			sinkProxies[i].getEventChannelProxy());
     				
 			if (terminatorNode == null)
 				throw new IllegalStateException(

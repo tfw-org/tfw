@@ -45,6 +45,21 @@ public final class RootProxy
 		return(root.getName());
 	}
 	
+	public EventChannelProxy[] getEventChannelProxies()
+	{
+		EventChannelProxy[] eventChannelProxies =
+			new EventChannelProxy[root.eventChannels.size()];
+		Iterator iterator = root.eventChannels.values().iterator();
+
+		for (int i=0 ; iterator.hasNext() ; i++)
+		{
+			eventChannelProxies[i] =
+				new EventChannelProxy((EventChannel)iterator.next());
+		}
+		
+		return(eventChannelProxies);
+	}
+	
 	public Object[] getChildProxies()
 	{
 		Map children = root.getChildren();

@@ -37,9 +37,9 @@ public final class SinkProxy
 		this.sink = sink;
 	}
 	
-	public TerminatorProxy getTerminatorProxy()
+	public EventChannelProxy getEventChannelProxy()
 	{
-		return(new TerminatorProxy((Terminator)sink.getEventChannel()));
+		return(new EventChannelProxy((Terminator)sink.getEventChannel()));
 	}
 	
 	public boolean equals(Object obj)

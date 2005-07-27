@@ -24,7 +24,6 @@
  */
 package tfw.tsm;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -45,21 +44,19 @@ public final class BranchProxy
 		return(branch.getName());
 	}
 	
-	public TerminatorProxy[] getTerminatorProxies()
+	public EventChannelProxy[] getEventChannelProxies()
 	{
-		ArrayList tp = new ArrayList();
+		EventChannelProxy[] eventChannelProxies =
+			new EventChannelProxy[branch.eventChannels.size()];
+		Iterator iterator = branch.eventChannels.values().iterator();
 
-		for (Iterator i=branch.eventChannels.values().iterator(); i.hasNext(); )
+		for (int i=0 ; iterator.hasNext() ; i++)
 		{
-			Object o = i.next();
-
-			if (o instanceof Terminator)
-			{
-				tp.add(new TerminatorProxy((Terminator)o));
-			}
+			eventChannelProxies[i] =
+				new EventChannelProxy((EventChannel)iterator.next());
 		}
 		
-		return((TerminatorProxy[])tp.toArray(new TerminatorProxy[tp.size()]));
+		return(eventChannelProxies);
 	}
 	
 	public Object[] getChildProxies()

@@ -37,9 +37,9 @@ public final class SourceProxy
 		this.source = source;
 	}
 	
-	public TerminatorProxy getTerminatorProxy()
+	public EventChannelProxy getEventChannelProxy()
 	{
-		return(new TerminatorProxy((Terminator)source.getEventChannel()));
+		return(new EventChannelProxy((Terminator)source.getEventChannel()));
 	}
 	
 	public boolean equals(Object obj)
