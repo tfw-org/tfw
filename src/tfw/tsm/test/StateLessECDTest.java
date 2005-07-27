@@ -44,7 +44,7 @@ public class StateLessECDTest extends TestCase
     {
         RootFactory rf = new RootFactory();
         StatelessTriggerECD trigger = new StatelessTriggerECD("test");
-        rf.addTerminator(trigger);
+        rf.addEventChannel(trigger);
 
         BasicTransactionQueue queue = new BasicTransactionQueue();
         Root root = rf.create("getStateTest", queue);

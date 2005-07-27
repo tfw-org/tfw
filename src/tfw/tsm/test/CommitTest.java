@@ -154,10 +154,10 @@ public class CommitTest extends TestCase
     public void testTriggerBehavior() throws Exception
     {
         RootFactory rf = new RootFactory();
-        rf.addTerminator(portA, "avalue");
-        rf.addTerminator(portB, "bvalue");
-        rf.addTerminator(portC, "cvalue");
-        rf.addTerminator(portD, "dvalue");
+        rf.addEventChannel(portA, "avalue");
+        rf.addEventChannel(portB, "bvalue");
+        rf.addEventChannel(portC, "cvalue");
+        rf.addEventChannel(portD, "dvalue");
 
         BasicTransactionQueue queue = new BasicTransactionQueue();
         Branch branch = rf.create("TestBranch", queue);

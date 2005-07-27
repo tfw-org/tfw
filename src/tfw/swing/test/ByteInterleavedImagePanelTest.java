@@ -68,10 +68,10 @@ public class ByteInterleavedImagePanelTest
 		
 		final Color initialColor = Color.red;
 		RootFactory rf = new RootFactory();
-		rf.addTerminator(xECD);
-		rf.addTerminator(yECD);
-		rf.addTerminator(ilmECD);
-		rf.addTerminator(cmECD, new IndexColorModel(8, 2,
+		rf.addEventChannel(xECD);
+		rf.addEventChannel(yECD);
+		rf.addEventChannel(ilmECD);
+		rf.addEventChannel(cmECD, new IndexColorModel(8, 2,
 				new byte[] {(byte)0, (byte)initialColor.getRed()},
 				new byte[] {(byte)0, (byte)initialColor.getGreen()},
 				new byte[] {(byte)0, (byte)initialColor.getBlue()}, 0));

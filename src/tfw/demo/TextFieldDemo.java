@@ -158,25 +158,25 @@ public class TextFieldDemo extends JPanelBB {
 		RootFactory rf = new RootFactory();
 
 		try {
-			rf.addTerminator(RED_STRING, "0");
-			rf.addTerminator(RED_STRING_ADJ, "0");
-			rf.addTerminator(RED_INTEGER);
+			rf.addEventChannel(RED_STRING, "0");
+			rf.addEventChannel(RED_STRING_ADJ, "0");
+			rf.addEventChannel(RED_INTEGER);
 
-			rf.addTerminator(GREEN_STRING, "1");
-			rf.addTerminator(GREEN_STRING_ADJ);
-			rf.addTerminator(GREEN_INTEGER);
+			rf.addEventChannel(GREEN_STRING, "1");
+			rf.addEventChannel(GREEN_STRING_ADJ);
+			rf.addEventChannel(GREEN_INTEGER);
 
-			rf.addTerminator(BLUE_STRING, "2");
-			rf.addTerminator(BLUE_STRING_ADJ, "2");
-			rf.addTerminator(BLUE_INTEGER);
+			rf.addEventChannel(BLUE_STRING, "2");
+			rf.addEventChannel(BLUE_STRING_ADJ, "2");
+			rf.addEventChannel(BLUE_INTEGER);
 
-			rf.addTerminator(APPLY_TRIGGER);
-			rf.addTerminator(APPLY_ENABLE);
-			rf.addTerminator(COLOR_BUTTON_ENABLE_NAME, Boolean.TRUE);
-			rf.addTerminator(ERROR_NAME);
-			rf.addTerminator(COLOR_NAME);
-			rf.addTerminator(RESET_TRIGGER);
-			rf.addTerminator(RESET_ENABLE);
+			rf.addEventChannel(APPLY_TRIGGER);
+			rf.addEventChannel(APPLY_ENABLE);
+			rf.addEventChannel(COLOR_BUTTON_ENABLE_NAME, Boolean.TRUE);
+			rf.addEventChannel(ERROR_NAME);
+			rf.addEventChannel(COLOR_NAME);
+			rf.addEventChannel(RESET_TRIGGER);
+			rf.addEventChannel(RESET_ENABLE);
 			//rf.setLogging(true);
 		} catch (ValueException e) {
 			// This exception should not happen. So we convert it

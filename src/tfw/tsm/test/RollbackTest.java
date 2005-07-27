@@ -207,11 +207,11 @@ public class RollbackTest extends TestCase
     public void testConverter() throws Exception
     {
         RootFactory rf = new RootFactory();
-        rf.addTerminator(error1ECD, "no errors");
-        rf.addTerminator(error2ECD, "no errors");
-        rf.addTerminator(aECD, aInitialState);
-        rf.addTerminator(bECD, bInitialState);
-        rf.addTerminator(cECD, cInitialState);
+        rf.addEventChannel(error1ECD, "no errors");
+        rf.addEventChannel(error2ECD, "no errors");
+        rf.addEventChannel(aECD, aInitialState);
+        rf.addEventChannel(bECD, bInitialState);
+        rf.addEventChannel(cECD, cInitialState);
 
         //rf.setLogging(true);
         BasicTransactionQueue queue = new BasicTransactionQueue();
@@ -269,8 +269,8 @@ public class RollbackTest extends TestCase
         Validator validator = new TestValidator(aECD, error1ECD, errorMsg);
         Initiator initiator = new Initiator("Test initiator", aECD);
         RootFactory rf = new RootFactory();
-        rf.addTerminator(aECD);
-        rf.addTerminator(error1ECD);
+        rf.addEventChannel(aECD);
+        rf.addEventChannel(error1ECD);
 
         BasicTransactionQueue queue = new BasicTransactionQueue();
         Root root = rf.create("SimpleRollbackTest", queue);
@@ -308,10 +308,10 @@ public class RollbackTest extends TestCase
                 new StringECD[]{ aECD, bECD, cECD });
 
         RootFactory rf = new RootFactory();
-        rf.addTerminator(aECD);
-        rf.addTerminator(bECD);
-        rf.addTerminator(cECD);
-        rf.addTerminator(error1ECD);
+        rf.addEventChannel(aECD);
+        rf.addEventChannel(bECD);
+        rf.addEventChannel(cECD);
+        rf.addEventChannel(error1ECD);
 
         BasicTransactionQueue queue = new BasicTransactionQueue();
         Root root = rf.create("SimpleRollbackTest", queue);
@@ -366,9 +366,9 @@ public class RollbackTest extends TestCase
         TestCommit errorCommit2 = new TestCommit(error2ECD, null);
 
         RootFactory rf = new RootFactory();
-        rf.addTerminator(aECD);
-        rf.addTerminator(error1ECD);
-        rf.addTerminator(error2ECD);
+        rf.addEventChannel(aECD);
+        rf.addEventChannel(error1ECD);
+        rf.addEventChannel(error2ECD);
 
         BasicTransactionQueue queue = new BasicTransactionQueue();
         Root root = rf.create("SimpleRollbackTest", queue);

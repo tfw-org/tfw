@@ -65,7 +65,7 @@ public class TranslatorTest extends TestCase
         throws InterruptedException, InvocationTargetException
     {
         RootFactory rf = new RootFactory();
-        rf.addTerminator(portB);
+        rf.addEventChannel(portB);
 
         MyExceptionHandler handler = new MyExceptionHandler();
         rf.setTransactionExceptionHandler(handler);

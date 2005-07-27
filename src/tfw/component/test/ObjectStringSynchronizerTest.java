@@ -120,9 +120,9 @@ public class ObjectStringSynchronizerTest extends TestCase
         StringECD stringECD = new StringECD("String");
         StringRollbackECD errorECD = new StringRollbackECD("Error");
         RootFactory rf = new RootFactory();
-        rf.addTerminator(integerECD);
-        rf.addTerminator(stringECD);
-        rf.addTerminator(errorECD);
+        rf.addEventChannel(integerECD);
+        rf.addEventChannel(stringECD);
+        rf.addEventChannel(errorECD);
 
         BasicTransactionQueue queue = new BasicTransactionQueue();
         Root root = rf.create("Test", queue);

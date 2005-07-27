@@ -79,7 +79,7 @@ public class JLabelBBTest
 		p.add(c, BorderLayout.CENTER);
 		
 		RootFactory rf = new RootFactory();
-		rf.addTerminator(TEXT_ECD);
+		rf.addEventChannel(TEXT_ECD);
 		Root r = rf.create("JButtonBBTest", new AWTTransactionQueue());
 		r.add(initiator);
 		r.add(l);

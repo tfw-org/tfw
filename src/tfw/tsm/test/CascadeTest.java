@@ -118,9 +118,9 @@ public class CascadeTest extends TestCase
 		throws InterruptedException, InvocationTargetException
 	{
 		RootFactory rf = new RootFactory();
-		rf.addTerminator(portA);
-		rf.addTerminator(portB);
-		rf.addTerminator(portC);
+		rf.addEventChannel(portA);
+		rf.addEventChannel(portB);
+		rf.addEventChannel(portC);
 		BasicTransactionQueue queue = new BasicTransactionQueue();
 		
 		Branch branch = rf.create("Test branch", queue);

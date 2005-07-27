@@ -57,8 +57,8 @@ public class JTextFieldBBTest
 		final BooleanECD enabledECD = new BooleanECD("enabled");
 		
 		RootFactory rf = new RootFactory();
-		rf.addTerminator(textECD, "Initial Value");
-		rf.addTerminator(enabledECD, Boolean.FALSE);
+		rf.addEventChannel(textECD, "Initial Value");
+		rf.addEventChannel(enabledECD, Boolean.FALSE);
 		Root root = rf.create("JTextFieldBBTest", new AWTTransactionQueue());
 		
 		final Initiator initiator = new Initiator("JTextFieldBBTest",

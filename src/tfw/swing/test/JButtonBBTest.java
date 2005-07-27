@@ -95,8 +95,8 @@ public class JButtonBBTest
 		p.add(l, BorderLayout.SOUTH);
 		
 		RootFactory rf = new RootFactory();
-		rf.addTerminator(ENABLE_ECD, Boolean.FALSE);
-		rf.addTerminator(TRIGGER_ECD);
+		rf.addEventChannel(ENABLE_ECD, Boolean.FALSE);
+		rf.addEventChannel(TRIGGER_ECD);
 		Root r = rf.create("JButtonBBTest", new AWTTransactionQueue());
 		r.add(commit);
 		r.add(initiator);

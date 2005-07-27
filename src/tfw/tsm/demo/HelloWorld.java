@@ -39,7 +39,7 @@ public class HelloWorld
 		StatelessTriggerECD triggerECD = new StatelessTriggerECD("trigger");
 		
 		RootFactory rf = new RootFactory();
-		rf.addTerminator(triggerECD);
+		rf.addEventChannel(triggerECD);
 		Root r = rf.create("Hello World Root", new BasicTransactionQueue());
 		
 		Initiator i = new Initiator("Hello World Initiator",

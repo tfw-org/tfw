@@ -42,8 +42,8 @@ public class ReconnectTest extends TestCase
         EventChannelDescription a1Port = new StringECD("a1");
         EventChannelDescription a2Port = new StringECD("a1");
         RootFactory rf = new RootFactory();
-        rf.addTerminator(a1Port, null);
-        rf.addTerminator(a2Port, null);
+        rf.addEventChannel(a1Port, null);
+        rf.addEventChannel(a2Port, null);
 
         Branch branch = rf.create("test", new BasicTransactionQueue());
 

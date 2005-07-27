@@ -114,9 +114,9 @@ public class InfiniteLoopTest extends TestCase
         RootFactory rf = new RootFactory();
         BasicTransactionQueue queue = new BasicTransactionQueue();
 //        SynchronousAWTTransactionQueue syncQueue = new SynchronousAWTTransactionQueue();
-        rf.addTerminator(porta);
-        rf.addTerminator(portb);
-        rf.addTerminator(portc);
+        rf.addEventChannel(porta);
+        rf.addEventChannel(portb);
+        rf.addEventChannel(portc);
 
         Root root = rf.create("Infinite loop test", queue);
         root.add(initiator);

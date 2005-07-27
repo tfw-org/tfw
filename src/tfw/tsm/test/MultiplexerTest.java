@@ -48,7 +48,7 @@ public class MultiplexerTest extends TestCase
     public void testMultiplexing() throws Exception
     {
         RootFactory rf = new RootFactory();
-        rf.addTerminator(multiValueECD);
+        rf.addEventChannel(multiValueECD);
         BasicTransactionQueue queue = new BasicTransactionQueue();
 
         Root root = rf.create("MultiplexerTestRoot",queue);

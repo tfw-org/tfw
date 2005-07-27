@@ -123,7 +123,7 @@ System.out.println("Creating dialog");
 						}
 
 						BranchFactory branchFactory = new BranchFactory();
-						branchFactory.addTerminator(WINDOW_CLOSING_ECD);
+						branchFactory.addEventChannel(WINDOW_CLOSING_ECD);
 						Branch branch = branchFactory.create(
 							"JDialogBB["+contentPane.getBranch().getName()+"]");
 						

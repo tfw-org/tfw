@@ -53,8 +53,8 @@ public class JCheckBoxMenuItemBB extends JCheckBoxMenuItem implements BranchBox
 		branch.add(buttonSelectedInitiator);
 		
 		RootFactory rootFactory = new RootFactory();
-		rootFactory.addTerminator(enabledECD);
-		rootFactory.addTerminator(selectedECD);
+		rootFactory.addEventChannel(enabledECD);
+		rootFactory.addEventChannel(selectedECD);
 		Root awtRoot = rootFactory.create(branch.getName()+"_AWT_ROOT",
 			new AWTTransactionQueue());
 

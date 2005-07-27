@@ -88,9 +88,9 @@ public class ConverterTest extends TestCase
     public void testConverter()
     {
         RootFactory rf = new RootFactory();
-        rf.addTerminator(porta);
-        rf.addTerminator(portb);
-        rf.addTerminator(portc);
+        rf.addEventChannel(porta);
+        rf.addEventChannel(portb);
+        rf.addEventChannel(portc);
 
         BasicTransactionQueue queue = new BasicTransactionQueue();
 

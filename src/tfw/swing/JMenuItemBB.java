@@ -58,7 +58,7 @@ public class JMenuItemBB extends JMenuItem implements BranchBox
 		branch.add(actionInitiator);
 		
 		RootFactory rootFactory = new RootFactory();
-		rootFactory.addTerminator(enabledECD);
+		rootFactory.addEventChannel(enabledECD);
 		Root awtRoot = rootFactory.create(branch.getName()+"_AWT_ROOT",
 			new AWTTransactionQueue());
 		

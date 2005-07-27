@@ -57,9 +57,9 @@ public class StateChangeCycleDelayTest extends TestCase
                 new StringECD[]{ ecI }, ecA);
         MyConverter converterB = new MyConverter("ConverterB",
                 new StringECD[]{ ecI, ecA }, ecB);
-        rf.addTerminator(ecI);
-        rf.addTerminator(ecA, "A initial");
-        rf.addTerminator(ecB, "B initial");
+        rf.addEventChannel(ecI);
+        rf.addEventChannel(ecA, "A initial");
+        rf.addEventChannel(ecB, "B initial");
 
         Root root = rf.create("Test", queue);
         root.add(converterA);
@@ -93,10 +93,10 @@ public class StateChangeCycleDelayTest extends TestCase
                 new StringECD[]{ ecA }, ecB);
         MyConverter converterC = new MyConverter("ConverterC",
                 new StringECD[]{ ecI, ecB }, ecC);
-        rf.addTerminator(ecI);
-        rf.addTerminator(ecA, "A initial");
-        rf.addTerminator(ecB, "B initial");
-        rf.addTerminator(ecC, "C initial");
+        rf.addEventChannel(ecI);
+        rf.addEventChannel(ecA, "A initial");
+        rf.addEventChannel(ecB, "B initial");
+        rf.addEventChannel(ecC, "C initial");
 
         //rf.setLogging(true);
         Root root = rf.create("Test", queue);
@@ -139,11 +139,11 @@ public class StateChangeCycleDelayTest extends TestCase
                 new StringECD[]{ ecB }, ecC);
         MyConverter converterD = new MyConverter("ConverterD",
                 new StringECD[]{ ecI, ecC }, ecD);
-        rf.addTerminator(ecI);
-        rf.addTerminator(ecA, "A initial");
-        rf.addTerminator(ecB, "B initial");
-        rf.addTerminator(ecC, "C initial");
-        rf.addTerminator(ecD, "D initial");
+        rf.addEventChannel(ecI);
+        rf.addEventChannel(ecA, "A initial");
+        rf.addEventChannel(ecB, "B initial");
+        rf.addEventChannel(ecC, "C initial");
+        rf.addEventChannel(ecD, "D initial");
 
         //rf.setLogging(true);
         Root root = rf.create("Test", queue);
@@ -190,10 +190,10 @@ public class StateChangeCycleDelayTest extends TestCase
                 new StringECD[]{ ecA }, ecB);
         MyConverter converterC = new MyConverter("ConverterC",
                 new StringECD[]{ ecI, ecB }, ecA, false);
-        rf.addTerminator(ecI);
-        rf.addTerminator(ecA, "A initial");
-        rf.addTerminator(ecB, "B initial");
-        rf.addTerminator(ecC, "C initial");
+        rf.addEventChannel(ecI);
+        rf.addEventChannel(ecA, "A initial");
+        rf.addEventChannel(ecB, "B initial");
+        rf.addEventChannel(ecC, "C initial");
 
         MyHandler handler = new MyHandler();
         rf.setTransactionExceptionHandler(handler);
@@ -228,10 +228,10 @@ public class StateChangeCycleDelayTest extends TestCase
 				new StringECD[]{ ecI, ecA }, ecB);
 		MyConverter converterC = new MyConverter("ConverterC",
 				new StringECD[]{ ecI, ecA, ecB }, ecC);
-		rf.addTerminator(ecI);
-		rf.addTerminator(ecA, "A initial");
-		rf.addTerminator(ecB, "B initial");
-		rf.addTerminator(ecC, "C initial");
+		rf.addEventChannel(ecI);
+		rf.addEventChannel(ecA, "A initial");
+		rf.addEventChannel(ecB, "B initial");
+		rf.addEventChannel(ecC, "C initial");
 
 		//rf.setLogging(true);
 		Root root = rf.create("Test", queue);

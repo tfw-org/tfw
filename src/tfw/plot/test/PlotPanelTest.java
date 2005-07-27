@@ -73,15 +73,15 @@ public final class PlotPanelTest
 		
 		RootFactory rf2 = new RootFactory();
 //		rf2.setLogging(true);
-		rf2.addTerminator(BACKGROUND_COLOR_ECD, Color.blue);
-		rf2.addTerminator(GENERATE_GRAPHIC_TRIGGER_ECD);
-		rf2.addTerminator(HEIGHT_ECD);
-		rf2.addTerminator(IMAGE_ECD, new BufferedImage(30, 30, BufferedImage.TYPE_INT_RGB));
-		rf2.addTerminator(IMAGE_OBSERVER_ECD, frame);
-		rf2.addTerminator(IMAGE_X_ECD, new Integer(10));
-		rf2.addTerminator(IMAGE_Y_ECD, new Integer(10));
-		rf2.addTerminator(MULTI_GRAPHIC_ECD);
-		rf2.addTerminator(WIDTH_ECD);
+		rf2.addEventChannel(BACKGROUND_COLOR_ECD, Color.blue);
+		rf2.addEventChannel(GENERATE_GRAPHIC_TRIGGER_ECD);
+		rf2.addEventChannel(HEIGHT_ECD);
+		rf2.addEventChannel(IMAGE_ECD, new BufferedImage(30, 30, BufferedImage.TYPE_INT_RGB));
+		rf2.addEventChannel(IMAGE_OBSERVER_ECD, frame);
+		rf2.addEventChannel(IMAGE_X_ECD, new Integer(10));
+		rf2.addEventChannel(IMAGE_Y_ECD, new Integer(10));
+		rf2.addEventChannel(MULTI_GRAPHIC_ECD);
+		rf2.addEventChannel(WIDTH_ECD);
 		Root root2 = rf2.create("PlotPanelTest", new BasicTransactionQueue());
 		
 		PlotPanel plotPanel = new PlotPanel(root2);

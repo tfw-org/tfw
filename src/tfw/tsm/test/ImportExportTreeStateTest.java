@@ -53,7 +53,7 @@ public class ImportExportTreeStateTest extends TestCase
         BasicTransactionQueue queue = new BasicTransactionQueue();
 
         RootFactory rf = new RootFactory();
-        rf.addTerminator(stringECD, state.getState());
+        rf.addEventChannel(stringECD, state.getState());
 
         final Root root = rf.create(rootName, queue);
 
@@ -88,7 +88,7 @@ public class ImportExportTreeStateTest extends TestCase
         IntegerECD integerECD = new IntegerECD("integer");
         Integer integerState = new Integer(123456);
         BranchFactory bf = new BranchFactory();
-        bf.addTerminator(integerECD, integerState);
+        bf.addEventChannel(integerECD, integerState);
 
         Branch branch = bf.create("Child Tree");
         root.add(branch);

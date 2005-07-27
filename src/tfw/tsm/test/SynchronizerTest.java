@@ -238,12 +238,12 @@ public class SynchronizerTest extends TestCase
         RootFactory rf = new RootFactory();
 
         //rf.setLogging(true);
-        rf.addTerminator(a1Port);
-        rf.addTerminator(a2Port);
-        rf.addTerminator(b1Port);
-        rf.addTerminator(b2Port);
-        rf.addTerminator(source);
-        rf.addTerminator(sink);
+        rf.addEventChannel(a1Port);
+        rf.addEventChannel(a2Port);
+        rf.addEventChannel(b1Port);
+        rf.addEventChannel(b2Port);
+        rf.addEventChannel(source);
+        rf.addEventChannel(sink);
         if (handler != null){
         	rf.setTransactionExceptionHandler(handler);
         }

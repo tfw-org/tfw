@@ -232,73 +232,73 @@ public class Visualizer extends JFrameBB
         RootFactory rf = new RootFactory();
         
         rf.setLogging(true);
-        rf.addTerminator(BACKGROUND_COLOR_ECD, Color.white);
-        rf.addTerminator(BUTTON_ONE_ECD);
-        rf.addTerminator(BUTTON_TWO_ECD);
-        rf.addTerminator(BUTTON_THREE_ECD);
-        rf.addTerminator(CLUSTER_XS_ECD);
-        rf.addTerminator(CLUSTER_YS_ECD);
-        rf.addTerminator(CLUSTER_WIDTHS_ECD);
-        rf.addTerminator(CLUSTER_HEIGHTS_ECD);
-        rf.addTerminator(EDGE_FROMS_ECD);
-        rf.addTerminator(EDGE_TOS_ECD);
-        rf.addTerminator(EXIT_ENABLED_ECD, Boolean.TRUE);
-        rf.addTerminator(EXIT_TRIGGER_ECD);
-        rf.addTerminator(FONT_ECD, new JPanel().getFont());
-        rf.addTerminator(GENERATE_GRAPHIC_TRIGGER_ECD);
-        rf.addTerminator(GRAPH_HEIGHT_ECD, new Integer(500));
-        rf.addTerminator(GRAPH_WIDTH_ECD, new Integer(1500));
-        rf.addTerminator(HEIGHT_ECD);
-        rf.addTerminator(MULTI_GRAPHIC_ECD);
-        rf.addTerminator(NODE_CLUSTERS_ECD);
-        rf.addTerminator(NODE_CLUSTER_FROMS_ECD);
-        rf.addTerminator(NODE_CLUSTER_PIXEL_XS_ECD);
-        rf.addTerminator(NODE_CLUSTER_PIXEL_YS_ECD);
-        rf.addTerminator(NODE_CLUSTER_TOS_ECD);
-        rf.addTerminator(NODE_CLUSTER_XS_ECD);
-        rf.addTerminator(NODE_CLUSTER_YS_ECD);
-        rf.addTerminator(NODES_ECD);
-        rf.addTerminator(NODES_X_ECD);
-        rf.addTerminator(NODES_Y_ECD);
-        rf.addTerminator(PROPERTIES_TRIGGER_ECD);
-        rf.addTerminator(PROPERTIES_ENABLED_ECD, Boolean.TRUE);
-        rf.addTerminator(REFRESH_ENABLED_ECD, Boolean.TRUE);
-        rf.addTerminator(REFRESH_TRIGGER_ECD);
-        rf.addTerminator(WIDTH_ECD);
-        rf.addTerminator(X_OFFSET_ECD, new Integer(0));
-        rf.addTerminator(X_MOUSE_ECD);
-        rf.addTerminator(Y_OFFSET_ECD, new Integer(0));
-        rf.addTerminator(Y_MOUSE_ECD);
+        rf.addEventChannel(BACKGROUND_COLOR_ECD, Color.white);
+        rf.addEventChannel(BUTTON_ONE_ECD);
+        rf.addEventChannel(BUTTON_TWO_ECD);
+        rf.addEventChannel(BUTTON_THREE_ECD);
+        rf.addEventChannel(CLUSTER_XS_ECD);
+        rf.addEventChannel(CLUSTER_YS_ECD);
+        rf.addEventChannel(CLUSTER_WIDTHS_ECD);
+        rf.addEventChannel(CLUSTER_HEIGHTS_ECD);
+        rf.addEventChannel(EDGE_FROMS_ECD);
+        rf.addEventChannel(EDGE_TOS_ECD);
+        rf.addEventChannel(EXIT_ENABLED_ECD, Boolean.TRUE);
+        rf.addEventChannel(EXIT_TRIGGER_ECD);
+        rf.addEventChannel(FONT_ECD, new JPanel().getFont());
+        rf.addEventChannel(GENERATE_GRAPHIC_TRIGGER_ECD);
+        rf.addEventChannel(GRAPH_HEIGHT_ECD, new Integer(500));
+        rf.addEventChannel(GRAPH_WIDTH_ECD, new Integer(1500));
+        rf.addEventChannel(HEIGHT_ECD);
+        rf.addEventChannel(MULTI_GRAPHIC_ECD);
+        rf.addEventChannel(NODE_CLUSTERS_ECD);
+        rf.addEventChannel(NODE_CLUSTER_FROMS_ECD);
+        rf.addEventChannel(NODE_CLUSTER_PIXEL_XS_ECD);
+        rf.addEventChannel(NODE_CLUSTER_PIXEL_YS_ECD);
+        rf.addEventChannel(NODE_CLUSTER_TOS_ECD);
+        rf.addEventChannel(NODE_CLUSTER_XS_ECD);
+        rf.addEventChannel(NODE_CLUSTER_YS_ECD);
+        rf.addEventChannel(NODES_ECD);
+        rf.addEventChannel(NODES_X_ECD);
+        rf.addEventChannel(NODES_Y_ECD);
+        rf.addEventChannel(PROPERTIES_TRIGGER_ECD);
+        rf.addEventChannel(PROPERTIES_ENABLED_ECD, Boolean.TRUE);
+        rf.addEventChannel(REFRESH_ENABLED_ECD, Boolean.TRUE);
+        rf.addEventChannel(REFRESH_TRIGGER_ECD);
+        rf.addEventChannel(WIDTH_ECD);
+        rf.addEventChannel(X_OFFSET_ECD, new Integer(0));
+        rf.addEventChannel(X_MOUSE_ECD);
+        rf.addEventChannel(Y_OFFSET_ECD, new Integer(0));
+        rf.addEventChannel(Y_MOUSE_ECD);
         
-        rf.addTerminator(VisualizerProperties.BRANCH_COLOR_ECD, Color.black);
-        rf.addTerminator(VisualizerProperties.BRANCH_COLOR_ENABLED_ECD,
+        rf.addEventChannel(VisualizerProperties.BRANCH_COLOR_ECD, Color.black);
+        rf.addEventChannel(VisualizerProperties.BRANCH_COLOR_ENABLED_ECD,
         	Boolean.TRUE);
-        rf.addTerminator(VisualizerProperties.COMMIT_COLOR_ECD, Color.magenta);
-        rf.addTerminator(VisualizerProperties.COMMIT_COLOR_ENABLED_ECD,
+        rf.addEventChannel(VisualizerProperties.COMMIT_COLOR_ECD, Color.magenta);
+        rf.addEventChannel(VisualizerProperties.COMMIT_COLOR_ENABLED_ECD,
         	Boolean.TRUE);
-        rf.addTerminator(VisualizerProperties.CONVERTER_COLOR_ECD, Color.yellow);
-        rf.addTerminator(VisualizerProperties.CONVERTER_COLOR_ENABLED_ECD,
+        rf.addEventChannel(VisualizerProperties.CONVERTER_COLOR_ECD, Color.yellow);
+        rf.addEventChannel(VisualizerProperties.CONVERTER_COLOR_ENABLED_ECD,
         	Boolean.TRUE);
-        rf.addTerminator(VisualizerProperties.INITIATOR_COLOR_ECD, Color.red);
-        rf.addTerminator(VisualizerProperties.INITIATOR_COLOR_ENABLED_ECD,
+        rf.addEventChannel(VisualizerProperties.INITIATOR_COLOR_ECD, Color.red);
+        rf.addEventChannel(VisualizerProperties.INITIATOR_COLOR_ENABLED_ECD,
         	Boolean.TRUE);
-        rf.addTerminator(VisualizerProperties.MULTIPLEXEDBRANCH_COLOR_ECD, Color.gray);
-        rf.addTerminator(VisualizerProperties.MULTIPLEXEDBRANCH_COLOR_ENABLED_ECD,
+        rf.addEventChannel(VisualizerProperties.MULTIPLEXEDBRANCH_COLOR_ECD, Color.gray);
+        rf.addEventChannel(VisualizerProperties.MULTIPLEXEDBRANCH_COLOR_ENABLED_ECD,
         	Boolean.TRUE);
-        rf.addTerminator(VisualizerProperties.ROOT_COLOR_ECD, Color.pink);
-        rf.addTerminator(VisualizerProperties.ROOT_COLOR_ENABLED_ECD,
+        rf.addEventChannel(VisualizerProperties.ROOT_COLOR_ECD, Color.pink);
+        rf.addEventChannel(VisualizerProperties.ROOT_COLOR_ENABLED_ECD,
         	Boolean.TRUE);
-        rf.addTerminator(VisualizerProperties.SYNCHRONIZER_COLOR_ECD, Color.blue);
-        rf.addTerminator(VisualizerProperties.SYNCHRONIZER_COLOR_ENABLED_ECD,
+        rf.addEventChannel(VisualizerProperties.SYNCHRONIZER_COLOR_ECD, Color.blue);
+        rf.addEventChannel(VisualizerProperties.SYNCHRONIZER_COLOR_ENABLED_ECD,
         	Boolean.TRUE);
-        rf.addTerminator(VisualizerProperties.TRIGGEREDCOMMIT_COLOR_ECD, Color.cyan);
-        rf.addTerminator(VisualizerProperties.TRIGGEREDCOMMIT_COLOR_ENABLED_ECD,
+        rf.addEventChannel(VisualizerProperties.TRIGGEREDCOMMIT_COLOR_ECD, Color.cyan);
+        rf.addEventChannel(VisualizerProperties.TRIGGEREDCOMMIT_COLOR_ENABLED_ECD,
         	Boolean.TRUE);
-        rf.addTerminator(VisualizerProperties.TRIGGEREDCONVERTER_COLOR_ECD, Color.green);
-        rf.addTerminator(VisualizerProperties.TRIGGEREDCONVERTER_COLOR_ENABLED_ECD,
+        rf.addEventChannel(VisualizerProperties.TRIGGEREDCONVERTER_COLOR_ECD, Color.green);
+        rf.addEventChannel(VisualizerProperties.TRIGGEREDCONVERTER_COLOR_ENABLED_ECD,
         	Boolean.TRUE);
-        rf.addTerminator(VisualizerProperties.VALIDATOR_COLOR_ECD, Color.orange);
-        rf.addTerminator(VisualizerProperties.VALIDATOR_COLOR_ENABLED_ECD,
+        rf.addEventChannel(VisualizerProperties.VALIDATOR_COLOR_ECD, Color.orange);
+        rf.addEventChannel(VisualizerProperties.VALIDATOR_COLOR_ENABLED_ECD,
         	Boolean.TRUE);
         
         return(rf.create(name, new BasicTransactionQueue()));

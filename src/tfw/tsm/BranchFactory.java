@@ -158,7 +158,7 @@ public class BranchFactory extends BaseBranchFactory
      * channel.
      * @param rule The state change rule for the event channel.
      */
-    public void addTerminator(EventChannelDescription eventChannelDescription,
+    public void addEventChannel(EventChannelDescription eventChannelDescription,
         Object initialState, StateChangeRule rule) throws ValueException
     {
         if ((eventChannelDescription != null) &&
@@ -170,7 +170,7 @@ public class BranchFactory extends BaseBranchFactory
                 "', which is already transalated.");
         }
 
-        super.addTerminator(eventChannelDescription, initialState, rule);
+        super.addEventChannel(eventChannelDescription, initialState, rule);
     }
 
     private boolean isTranslated(EventChannelDescription ecd)

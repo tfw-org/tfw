@@ -133,8 +133,8 @@ public class InitiatorTest extends TestCase
                 fail("Exception: " + exception.getMessage());
             }
         });
-        rf.addTerminator(channel1);
-        rf.addTerminator(channel2);
+        rf.addEventChannel(channel1);
+        rf.addEventChannel(channel2);
 
         BasicTransactionQueue queue = new BasicTransactionQueue();
 

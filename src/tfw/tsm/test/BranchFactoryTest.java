@@ -44,7 +44,7 @@ public class BranchFactoryTest extends TestCase
 
         try
         {
-            bf.addTerminator(null);
+            bf.addEventChannel(null);
             fail("addTerminator() accepted null event channel description");
         }
         catch (IllegalArgumentException expected)
@@ -56,7 +56,7 @@ public class BranchFactoryTest extends TestCase
 
         try
         {
-            bf.addTerminator(null, new Object());
+            bf.addEventChannel(null, new Object());
             fail("addTerminator() accepted null event channel description");
         }
         catch (IllegalArgumentException expected)
@@ -66,7 +66,7 @@ public class BranchFactoryTest extends TestCase
 
         try
         {
-            bf.addTerminator(stringECD, new Object());
+            bf.addEventChannel(stringECD, new Object());
             fail("addTerminator() accepted null event channel description");
         }
         catch (ValueException expected)
@@ -76,7 +76,7 @@ public class BranchFactoryTest extends TestCase
 
         try
         {
-            bf.addTerminator(stringECD, "myString", null);
+            bf.addEventChannel(stringECD, "myString", null);
             fail("addTerminator() accepted null state change rule");
         }
         catch (IllegalArgumentException expected)
@@ -84,11 +84,11 @@ public class BranchFactoryTest extends TestCase
             //System.out.println(expected);
         }
 
-        bf.addTerminator(stringECD);
+        bf.addEventChannel(stringECD);
 
         try
         {
-            bf.addTerminator(stringECD);
+            bf.addEventChannel(stringECD);
             fail("addTerminator() accepted duplicate terminator");
         }
         catch (IllegalArgumentException expected)
@@ -143,7 +143,7 @@ public class BranchFactoryTest extends TestCase
 
         try
         {
-            bf.addTerminator(childECD);
+            bf.addEventChannel(childECD);
             fail("addTerminator() accepted translated event channel");
         }
         catch (IllegalStateException expected)

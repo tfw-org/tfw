@@ -75,9 +75,9 @@ class BaseBranchFactory
      * Adds an event channel terminator based on the specified description
      * @param eventChannelDescription a description of the event channel.
      */
-    public void addTerminator(EventChannelDescription eventChannelDescription)
+    public void addEventChannel(EventChannelDescription eventChannelDescription)
     {
-        addTerminator(eventChannelDescription, null, AlwaysChangeRule.RULE);
+        addEventChannel(eventChannelDescription, null, AlwaysChangeRule.RULE);
     }
 
     /**
@@ -88,10 +88,10 @@ class BaseBranchFactory
      * @throws ValueException if the <code>initialState</code> value is
      * incompatible with the event channel.
      */
-    public void addTerminator(EventChannelDescription eventChannelDescription,
+    public void addEventChannel(EventChannelDescription eventChannelDescription,
         Object initialState) throws ValueException
     {
-        addTerminator(eventChannelDescription, initialState,
+        addEventChannel(eventChannelDescription, initialState,
             AlwaysChangeRule.RULE);
     }
 
@@ -102,7 +102,7 @@ class BaseBranchFactory
      * @throws ValueException if the <code>initialState</code> value is
      * incompatible with the event channel.
      */
-    public void addTerminator(EventChannelDescription eventChannelDescription,
+    public void addEventChannel(EventChannelDescription eventChannelDescription,
         Object initialState, StateChangeRule rule) throws ValueException
     {
         Argument.assertNotNull(eventChannelDescription,

@@ -78,9 +78,9 @@ public class TriggeredConverterTest extends TestCase
     public void testConverter() throws Exception
     {
         RootFactory rf = new RootFactory();
-        rf.addTerminator(channel1);
-        rf.addTerminator(channel2);
-        rf.addTerminator(trigger);
+        rf.addEventChannel(channel1);
+        rf.addEventChannel(channel2);
+        rf.addEventChannel(trigger);
 
         BasicTransactionQueue queue = new BasicTransactionQueue();
 
