@@ -24,6 +24,9 @@
  */
 package tfw.tsm;
 
+import java.util.Collection;
+import java.util.Iterator;
+
 import tfw.check.Argument;
 
 public final class ValidatorProxy
@@ -40,6 +43,20 @@ public final class ValidatorProxy
 	public String getName()
 	{
 		return(validator.getName());
+	}
+	
+	public SinkProxy[] getSinkProxies()
+	{
+		Collection collection = validator.sinks.values();
+		Iterator iterator = collection.iterator();
+		SinkProxy[] sp = new SinkProxy[collection.size()];
+		
+		for (int i=0 ; iterator.hasNext() ; i++)
+		{
+			Object o = iterator.next();
+			sp[i] = new SinkProxy((Sink)o);
+		}
+		return(sp);
 	}
 	
 	public boolean equals(Object obj)
