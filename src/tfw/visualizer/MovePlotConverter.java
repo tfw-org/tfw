@@ -66,11 +66,15 @@ public class MovePlotConverter extends Converter
 
 		if (button1 && !button2 && !button3)
 		{
+			int x = ((Integer)get(xECD)).intValue();
+			int y = ((Integer)get(yECD)).intValue();
+			int previousX = ((Integer)getPreviousCycleState(xECD)).intValue();
+			int previousY = ((Integer)getPreviousCycleState(yECD)).intValue();
 			int xOffset = ((Integer)get(xOffsetECD)).intValue();
 			int yOffset = ((Integer)get(yOffsetECD)).intValue();
 			
-			set(xOffsetECD, new Integer(xOffset+1));
-			set(yOffsetECD, new Integer(yOffset+1));
+			set(xOffsetECD, new Integer(xOffset+(x - previousX)));
+			set(yOffsetECD, new Integer(yOffset+(y - previousY)));
 		}
 	}
 }

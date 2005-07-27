@@ -66,11 +66,15 @@ public class ResizePlotConverter extends Converter
 
 		if (!button1 && !button2 && button3)
 		{
+			int x = ((Integer)get(xECD)).intValue();
+			int y = ((Integer)get(yECD)).intValue();
+			int previousX = ((Integer)getPreviousCycleState(xECD)).intValue();
+			int previousY = ((Integer)getPreviousCycleState(yECD)).intValue();
 			int graphWidth = ((Integer)get(graphWidthECD)).intValue();
 			int graphHeight = ((Integer)get(graphHeightECD)).intValue();
 			
-			set(graphWidthECD, new Integer(graphWidth+1));
-			set(graphHeightECD, new Integer(graphHeight+1));
+			set(graphWidthECD, new Integer(graphWidth+(x - previousX)));
+			set(graphHeightECD, new Integer(graphHeight+(y - previousY)));
 		}
 	}
 }
