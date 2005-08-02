@@ -109,6 +109,15 @@ public class Argument
         }
     }
 
+	public static final void assertEquals(int left, int right,
+			String leftName, String rightName)
+		{
+			if (left != right)
+				throw new IllegalArgumentException(
+					leftName + " (=" + left + ") != " +
+					rightName + " (=" + right + ") not allowed!");
+		}
+
 	public static final void assertEquals(long left, long right,
 		String leftName, String rightName)
 	{
