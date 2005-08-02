@@ -42,6 +42,11 @@ public final class SinkProxy
 		return(new EventChannelProxy((Terminator)sink.getEventChannel()));
 	}
 	
+	public boolean isTriggering()
+	{
+		return(sink.isTriggering());
+	}
+	
 	public boolean equals(Object obj)
 	{
 		if (obj instanceof SinkProxy)
