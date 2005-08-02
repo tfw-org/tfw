@@ -29,7 +29,7 @@ import java.util.Iterator;
 
 import tfw.check.Argument;
 
-public final class SynchronizerProxy
+public final class SynchronizerProxy implements Proxy
 {
 	private final Synchronizer synchronizer;
 	

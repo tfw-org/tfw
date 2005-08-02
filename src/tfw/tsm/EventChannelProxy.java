@@ -27,7 +27,7 @@ package tfw.tsm;
 import tfw.check.Argument;
 import tfw.tsm.ecd.EventChannelDescription;
 
-public final class EventChannelProxy
+public final class EventChannelProxy implements Proxy
 {
 	private final EventChannel eventChannel;
 	
@@ -36,6 +36,11 @@ public final class EventChannelProxy
 		Argument.assertNotNull(eventChannel, "eventChannel");
 		
 		this.eventChannel = eventChannel;
+	}
+	
+	public String getName()
+	{
+		return(eventChannel.getECD().getEventChannelName());
 	}
 	
 	public EventChannelDescription getEventChannelDescription()

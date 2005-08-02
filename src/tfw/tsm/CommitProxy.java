@@ -29,7 +29,7 @@ import java.util.Iterator;
 
 import tfw.check.Argument;
 
-public final class CommitProxy
+public final class CommitProxy implements Proxy
 {
 	private final Commit commit;
 	

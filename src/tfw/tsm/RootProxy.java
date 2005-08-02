@@ -29,7 +29,7 @@ import java.util.Map;
 
 import tfw.check.Argument;
 
-public final class RootProxy
+public final class RootProxy implements Proxy
 {
 	private final Root root;
 	

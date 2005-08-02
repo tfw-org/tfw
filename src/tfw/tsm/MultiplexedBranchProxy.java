@@ -26,7 +26,7 @@ package tfw.tsm;
 
 import tfw.check.Argument;
 
-public final class MultiplexedBranchProxy
+public final class MultiplexedBranchProxy implements Proxy
 {
 	private final MultiplexedBranch multiplexedBranch;
 	

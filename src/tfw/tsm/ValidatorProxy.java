@@ -29,7 +29,7 @@ import java.util.Iterator;
 
 import tfw.check.Argument;
 
-public final class ValidatorProxy
+public final class ValidatorProxy implements Proxy
 {
 	private final Validator validator;
 	

@@ -29,7 +29,7 @@ import java.util.Map;
 
 import tfw.check.Argument;
 
-public final class BranchProxy
+public final class BranchProxy implements Proxy
 {
 	private final Branch branch;
 	

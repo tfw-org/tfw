@@ -29,7 +29,7 @@ import java.util.Iterator;
 
 import tfw.check.Argument;
 
-public final class TriggeredCommitProxy
+public final class TriggeredCommitProxy implements Proxy
 {
 	private final TriggeredCommit triggeredCommit;
 	

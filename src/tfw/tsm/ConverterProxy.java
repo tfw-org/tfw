@@ -29,7 +29,7 @@ import java.util.Iterator;
 
 import tfw.check.Argument;
 
-public final class ConverterProxy
+public final class ConverterProxy implements Proxy
 {
 	private final Converter converter;
 	

@@ -29,7 +29,7 @@ import java.util.Iterator;
 
 import tfw.check.Argument;
 
-public final class InitiatorProxy
+public final class InitiatorProxy implements Proxy
 {
 	private final Initiator initiator;
 	
