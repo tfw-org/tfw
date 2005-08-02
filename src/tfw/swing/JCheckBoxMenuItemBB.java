@@ -18,17 +18,12 @@
 package tfw.swing;
 
 import javax.swing.JCheckBoxMenuItem;
-
 import tfw.awt.component.EnabledCommit;
-import tfw.component.Connector;
 import tfw.swing.button.ButtonSelectedCommit;
 import tfw.swing.button.ButtonSelectedInitiator;
-import tfw.tsm.AWTTransactionQueue;
 import tfw.tsm.Branch;
 import tfw.tsm.BranchBox;
 import tfw.tsm.Initiator;
-import tfw.tsm.Root;
-import tfw.tsm.RootFactory;
 import tfw.tsm.ecd.BooleanECD;
 
 public class JCheckBoxMenuItemBB extends JCheckBoxMenuItem implements BranchBox
@@ -51,21 +46,10 @@ public class JCheckBoxMenuItemBB extends JCheckBoxMenuItem implements BranchBox
 
 		addChangeListener(buttonSelectedInitiator);
 		branch.add(buttonSelectedInitiator);
-		
-		RootFactory rootFactory = new RootFactory();
-		rootFactory.addEventChannel(enabledECD);
-		rootFactory.addEventChannel(selectedECD);
-		Root awtRoot = rootFactory.create(branch.getName()+"_AWT_ROOT",
-			new AWTTransactionQueue());
 
-		awtRoot.add(new EnabledCommit("JCheckBoxBB", enabledECD, this, null));
-		awtRoot.add(new ButtonSelectedCommit("JCheckBoxBB", selectedECD,
+		branch.add(new EnabledCommit("JCheckBoxBB", enabledECD, this, null));
+		branch.add(new ButtonSelectedCommit("JCheckBoxBB", selectedECD,
 				new Initiator[] { buttonSelectedInitiator }, this));
-		
-		new Connector(enabledECD.getEventChannelName(),
-			branch, awtRoot, enabledECD);
-		new Connector(selectedECD.getEventChannelName(),
-			branch, awtRoot, selectedECD);
 	}
 
 	public final Branch getBranch()
