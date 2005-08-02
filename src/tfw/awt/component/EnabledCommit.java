@@ -24,11 +24,12 @@
  */
 package tfw.awt.component;
 
-import	java.awt.Component;
-import	tfw.tsm.Commit;
-import	tfw.tsm.Initiator;
-import	tfw.tsm.ecd.BooleanECD;
-import	tfw.tsm.ecd.EventChannelDescription;
+import java.awt.Component;
+import java.awt.EventQueue;
+import tfw.tsm.Commit;
+import tfw.tsm.Initiator;
+import tfw.tsm.ecd.BooleanECD;
+import tfw.tsm.ecd.EventChannelDescription;
 
 public class EnabledCommit extends Commit
 {
@@ -49,8 +50,14 @@ public class EnabledCommit extends Commit
 	
 	protected final void commit()
 	{
-		boolean enabled = ((Boolean)get(enabledECD)).booleanValue();
+		final boolean enabled = ((Boolean)get(enabledECD)).booleanValue();
 		
-		component.setEnabled(enabled);
+		EventQueue.invokeLater(new Runnable()
+		{
+			public void run()
+			{
+				component.setEnabled(enabled);
+			}
+		});
 	}
 }
