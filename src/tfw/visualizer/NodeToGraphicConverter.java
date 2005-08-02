@@ -24,6 +24,7 @@
  */
 package tfw.visualizer;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.FontMetrics;
@@ -31,8 +32,11 @@ import java.awt.FontMetrics;
 import tfw.awt.ecd.ColorECD;
 import tfw.awt.ecd.FontECD;
 import tfw.awt.ecd.GraphicECD;
+import tfw.awt.graphic.DrawRectGraphic;
 import tfw.awt.graphic.DrawStringGraphic;
+import tfw.awt.graphic.FillRectGraphic;
 import tfw.awt.graphic.Graphic;
+import tfw.awt.graphic.SetColorGraphic;
 import tfw.awt.graphic.SetFontGraphic;
 import tfw.immutable.DataInvalidException;
 import tfw.immutable.ila.intila.IntIla;
@@ -45,6 +49,7 @@ import tfw.tsm.ConverterProxy;
 import tfw.tsm.EventChannelProxy;
 import tfw.tsm.InitiatorProxy;
 import tfw.tsm.MultiplexedBranchProxy;
+import tfw.tsm.Proxy;
 import tfw.tsm.RootProxy;
 import tfw.tsm.SynchronizerProxy;
 import tfw.tsm.TriggeredCommitProxy;
@@ -61,9 +66,11 @@ public class NodeToGraphicConverter extends Converter
 	private final ObjectIlaECD nodeClusterPixelXsECD;
 	private final ObjectIlaECD nodeClusterPixelYsECD;
 	private final FontECD fontECD;
+	private final ColorECD backgroundColorECD;
 	private final ColorECD branchColorECD;
 	private final ColorECD commitColorECD;
 	private final ColorECD converterColorECD;
+	private final ColorECD eventChannelColorECD;
 	private final ColorECD initiatorColorECD;
 	private final ColorECD multiplexedBranchColorECD;
 	private final ColorECD rootColorECD;
@@ -76,20 +83,22 @@ public class NodeToGraphicConverter extends Converter
 	public NodeToGraphicConverter(Component component,
 		ObjectIlaECD nodesECD, ObjectIlaECD nodeClusterECD,
 		ObjectIlaECD nodeClusterPixelXsECD, ObjectIlaECD nodeClusterPixelYsECD,
-		FontECD fontECD, ColorECD branchColorECD,
+		FontECD fontECD, ColorECD backgroundColorECD, ColorECD branchColorECD,
 		ColorECD commitColorECD, ColorECD converterColorECD,
-		ColorECD initiatorColorECD, ColorECD multiplexedBranchColorECD,
-		ColorECD rootColorECD, ColorECD synchronizerColorECD, 
-		ColorECD triggeredCommitColorECD, ColorECD triggeredConverterColorECD,
-		ColorECD validatorColorECD, GraphicECD graphicOutECD)
+		ColorECD eventChannelColorECD, ColorECD initiatorColorECD,
+		ColorECD multiplexedBranchColorECD, ColorECD rootColorECD,
+		ColorECD synchronizerColorECD, ColorECD triggeredCommitColorECD,
+		ColorECD triggeredConverterColorECD, ColorECD validatorColorECD,
+		GraphicECD graphicOutECD)
 	{
 		super("NodeEdgeToGraphicConverter",
 			new EventChannelDescription[] {nodesECD, nodeClusterECD,
 				nodeClusterPixelXsECD, nodeClusterPixelYsECD, fontECD,
-				branchColorECD, commitColorECD, converterColorECD,
-				initiatorColorECD, multiplexedBranchColorECD, rootColorECD,
-				synchronizerColorECD, triggeredCommitColorECD,
-				triggeredConverterColorECD, validatorColorECD},
+				backgroundColorECD, branchColorECD, commitColorECD,
+				converterColorECD, eventChannelColorECD, initiatorColorECD,
+				multiplexedBranchColorECD, rootColorECD, synchronizerColorECD,
+				triggeredCommitColorECD, triggeredConverterColorECD,
+				validatorColorECD},
 			null,
 			new EventChannelDescription[] {graphicOutECD});
 		
@@ -99,9 +108,11 @@ public class NodeToGraphicConverter extends Converter
 		this.nodeClusterPixelXsECD = nodeClusterPixelXsECD;
 		this.nodeClusterPixelYsECD = nodeClusterPixelYsECD;
 		this.fontECD = fontECD;
+		this.backgroundColorECD = backgroundColorECD;
 		this.branchColorECD = branchColorECD;
 		this.commitColorECD = commitColorECD;
 		this.converterColorECD = converterColorECD;
+		this.eventChannelColorECD = eventChannelColorECD;
 		this.initiatorColorECD = initiatorColorECD;
 		this.multiplexedBranchColorECD = multiplexedBranchColorECD;
 		this.rootColorECD = rootColorECD;
@@ -114,6 +125,18 @@ public class NodeToGraphicConverter extends Converter
 
 	protected void convert()
 	{
+		Color backgroundColor = (Color)get(backgroundColorECD);
+		Color branchColor = (Color)get(branchColorECD);
+		Color commitColor = (Color)get(commitColorECD);
+		Color converterColor = (Color)get(converterColorECD);
+		Color eventChannelColor = (Color)get(eventChannelColorECD);
+		Color initiatorColor = (Color)get(initiatorColorECD);
+		Color multiplexedBranchColor = (Color)get(multiplexedBranchColorECD);
+		Color rootColor = (Color)get(rootColorECD);
+		Color synchronizerColor = (Color)get(synchronizerColorECD);
+		Color triggeredCommitColor = (Color)get(triggeredCommitColorECD);
+		Color triggeredConverterColor = (Color)get(triggeredConverterColorECD);
+		Color validatorColor = (Color)get(validatorColorECD);
 		Object[] nodes = null;
 		Object[] nodeClusters = null;
 		Object[] nodeClusterPixelXs = null;
@@ -135,65 +158,22 @@ public class NodeToGraphicConverter extends Converter
 		
 		for (int i=0 ; i < nodes.length ; i++)
 		{
-			Object proxy = nodes[i];
-			
-			if (proxy instanceof RootProxy)
-			{
-				strings[i] = ((RootProxy)proxy).getName();
-			}
-			else if (proxy instanceof BranchProxy)
-			{
-				strings[i] = ((BranchProxy)proxy).getName();
-			}
-			else if (proxy instanceof CommitProxy)
-			{
-				strings[i] = ((CommitProxy)proxy).getName();
-			}
-			else if (proxy instanceof ConverterProxy)
-			{
-				strings[i] = ((ConverterProxy)proxy).getName();
-			}
-			else if (proxy instanceof EventChannelProxy)
-			{
-				strings[i] = ((EventChannelProxy)proxy)
-					.getEventChannelDescription().getEventChannelName();
-			}
-			else if (proxy instanceof InitiatorProxy)
-			{
-				strings[i] = ((InitiatorProxy)proxy).getName();
-			}
-			else if (proxy instanceof MultiplexedBranchProxy)
-			{
-				strings[i] = ((MultiplexedBranchProxy)proxy).getName();
-			}
-			else if (proxy instanceof SynchronizerProxy)
-			{
-				strings[i] = ((SynchronizerProxy)proxy).getName();
-			}
-			else if (proxy instanceof TriggeredCommitProxy)
-			{
-				strings[i] = ((TriggeredCommitProxy)proxy).getName();
-			}
-			else if (proxy instanceof TriggeredConverterProxy)
-			{
-				strings[i] = ((TriggeredConverterProxy)proxy).getName();
-			}
-			else if (proxy instanceof ValidatorProxy)
-			{
-				strings[i] = ((ValidatorProxy)proxy).getName();
-			}
-			else
-			{
-				throw new IllegalArgumentException(
-					"Expected Proxy ... found "+proxy.getClass());
-			}
+			strings[i] = ((Proxy)nodes[i]).getName();
 		}
 		
 		Font font = (Font)get(fontECD);
 		FontMetrics fontMetrics = component.getFontMetrics(font);
-		int heightOffset = fontMetrics.getHeight() / 2;
-		int[] xs = new int[nodes.length];
-		int[] ys = new int[nodes.length];
+
+		int height = fontMetrics.getHeight();
+		int halfHeight = height / 2;
+		int descent = fontMetrics.getDescent();
+//		int[] stringX = new int[nodes.length];
+//		int[] stringY = new int[nodes.length];
+//		int[] boxXs = new int[nodes.length];
+//		int[] boxYs = new int[nodes.length];
+//		int[] boxWidths = new int[nodes.length];
+//		int[] boxHeights = new int[nodes.length];
+		Graphic graphic = null;
 		
 		for (int i=0 ; i < nodeClusters.length ; i++)
 		{
@@ -215,14 +195,70 @@ public class NodeToGraphicConverter extends Converter
 			for (int j=0 ; j < cluster.length ; j++)
 			{
 				int node = (int)cluster[j];
+				Proxy proxy = (Proxy)nodes[node];
+				int width = fontMetrics.stringWidth(strings[node]);
+				int x = clusterX[j];
+				int y = clusterY[j];
+				Color foregroundColor = Color.BLACK;
 				
-				xs[node] = clusterX[j] - fontMetrics.stringWidth(strings[node]) / 2;
-				ys[node] = clusterY[j] + heightOffset;
+				if (proxy instanceof BranchProxy)
+					foregroundColor = branchColor;
+				else if (proxy instanceof CommitProxy)
+					foregroundColor = commitColor;
+				else if (proxy instanceof ConverterProxy)
+					foregroundColor = converterColor;
+				else if (proxy instanceof EventChannelProxy)
+					foregroundColor = eventChannelColor;
+				else if (proxy instanceof InitiatorProxy)
+					foregroundColor = initiatorColor;
+				else if (proxy instanceof MultiplexedBranchProxy)
+					foregroundColor = multiplexedBranchColor;
+				else if (proxy instanceof RootProxy)
+					foregroundColor = rootColor;
+				else if (proxy instanceof SynchronizerProxy)
+					foregroundColor = synchronizerColor;
+				else if (proxy instanceof TriggeredCommitProxy)
+					foregroundColor = triggeredCommitColor;
+				else if (proxy instanceof TriggeredConverterProxy)
+					foregroundColor = triggeredConverterColor;
+				else if (proxy instanceof ValidatorProxy)
+					foregroundColor = validatorColor;
+				
+				int sx = x - width / 2;
+				int sy = y + halfHeight - descent;
+				
+//				stringX[node] = sx;
+//				stringY[node] = sy;
+//				boxXs[node] = sx - 5;
+//				boxYs[node] = y - halfHeight - 5;
+//				boxWidths[node] = width + 10;
+//				boxHeights[node] = height +10;
+				
+				Graphic backgroundColorGraphic = SetColorGraphic.create(
+					graphic, backgroundColor);
+//				Graphic fillRectGraphic = FillRectGraphic.create(
+//					backgroundColorGraphic, boxXs, boxYs, boxWidths, boxHeights);
+				Graphic fillRectGraphic = FillRectGraphic.create(
+					backgroundColorGraphic, sx-5, y-halfHeight-5, width+10, height+10);
+				Graphic foregroundColorGraphic = SetColorGraphic.create(
+					fillRectGraphic, foregroundColor);
+//				Graphic drawRectGraphic = DrawRectGraphic.create(
+//					foregroundColorGraphic, boxXs, boxYs, boxWidths, boxHeights);
+				Graphic drawRectGraphic = DrawRectGraphic.create(
+					foregroundColorGraphic, sx-5, y-halfHeight-5, width+10, height+10);
+				Graphic setFontGraphic = SetFontGraphic.create(drawRectGraphic, font);
+//				Graphic drawStringGraphic = DrawStringGraphic.create(
+//					setFontGraphic, strings, stringX, stringY);
+				Graphic drawStringGraphic = DrawStringGraphic.create(
+					setFontGraphic, strings[node], sx, sy);
+				
+				graphic = drawStringGraphic;
 			}
 		}
 		
-		Graphic setFontGraphic = SetFontGraphic.create(null, font);
-		set(graphicOutECD, DrawStringGraphic.create(
-			setFontGraphic, strings, xs, ys));
+		if (graphic != null)
+		{
+			set(graphicOutECD, graphic);
+		}
 	}
 }

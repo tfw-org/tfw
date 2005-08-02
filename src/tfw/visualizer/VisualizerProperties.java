@@ -37,6 +37,10 @@ import tfw.tsm.ecd.BooleanECD;
 
 public class VisualizerProperties extends JPanelBB
 {
+	public static final ColorECD BACKGROUND_COLOR_ECD =
+		new ColorECD("backgroundColor");
+	public static final BooleanECD BACKGROUND_COLOR_ENABLED_ECD =
+		new BooleanECD("backgroundColorEnable");
 	public static final ColorECD BRANCH_COLOR_ECD =
 		new ColorECD("branchColor");
 	public static final BooleanECD BRANCH_COLOR_ENABLED_ECD =
@@ -49,6 +53,10 @@ public class VisualizerProperties extends JPanelBB
 		new ColorECD("converterColor");
 	public static final BooleanECD CONVERTER_COLOR_ENABLED_ECD =
 		new BooleanECD("converterColorEnable");
+	public static final ColorECD EVENTCHANNEL_COLOR_ECD =
+		new ColorECD("eventChannelColor");
+	public static final BooleanECD EVENTCHANNEL_COLOR_ENABLED_ECD =
+		new BooleanECD("eventChannelColorEnable");
 	public static final ColorECD INITIATOR_COLOR_ECD =
 		new ColorECD("initiatorColor");
 	public static final BooleanECD INITIATOR_COLOR_ENABLED_ECD =
@@ -83,8 +91,11 @@ public class VisualizerProperties extends JPanelBB
 		super("VisualizerProperties");
 		
 		JPanelBB labelPanel = new JPanelBB("Label");
-		labelPanel.setLayout(new GridLayout(10, 1, 3, 3));
+		labelPanel.setLayout(new GridLayout(12, 1, 3, 3));
 		labelPanel.setBorder(new EmptyBorder(4, 4, 4, 2));
+		JLabel backgroundColorL = new JLabel("Background Color:");
+		backgroundColorL.setHorizontalAlignment(JLabel.TRAILING);
+		labelPanel.add(backgroundColorL);
 		JLabel branchColorL = new JLabel("Branch Color:");
 		branchColorL.setHorizontalAlignment(JLabel.TRAILING);
 		labelPanel.add(branchColorL);
@@ -94,6 +105,9 @@ public class VisualizerProperties extends JPanelBB
 		JLabel converterColorL = new JLabel("Converter Color:");
 		converterColorL.setHorizontalAlignment(JLabel.TRAILING);
 		labelPanel.add(converterColorL);
+		JLabel eventChannelColorL = new JLabel("Event Channel Color:");
+		eventChannelColorL.setHorizontalAlignment(JLabel.TRAILING);
+		labelPanel.add(eventChannelColorL);
 		JLabel initiatorColorL = new JLabel("Initiator Color:");
 		initiatorColorL.setHorizontalAlignment(JLabel.TRAILING);
 		labelPanel.add(initiatorColorL);
@@ -117,8 +131,11 @@ public class VisualizerProperties extends JPanelBB
 		labelPanel.add(validatorColorL);
 		
 		JPanelBB colorButtonsPanel = new JPanelBB("ColorButtons");
-		colorButtonsPanel.setLayout(new GridLayout(10, 1, 3, 3));
+		colorButtonsPanel.setLayout(new GridLayout(12, 1, 3, 3));
 		colorButtonsPanel.setBorder(new EmptyBorder(4, 2, 4, 4));
+		ColorButtonNB backgroundCB = new ColorButtonNB("Background", BACKGROUND_COLOR_ECD,
+			BACKGROUND_COLOR_ENABLED_ECD, "Background Color", this);
+		colorButtonsPanel.addToBoth(backgroundCB);
 		ColorButtonNB branchCB = new ColorButtonNB("Branch", BRANCH_COLOR_ECD,
 			BRANCH_COLOR_ENABLED_ECD, "Branch Color", this);
 		colorButtonsPanel.addToBoth(branchCB);
@@ -128,6 +145,9 @@ public class VisualizerProperties extends JPanelBB
 		ColorButtonNB converterCB = new ColorButtonNB("Converter", CONVERTER_COLOR_ECD,
 			CONVERTER_COLOR_ENABLED_ECD, "Converter Color", this);
 		colorButtonsPanel.addToBoth(converterCB);
+		ColorButtonNB eventChannelCB = new ColorButtonNB("EventChannel", EVENTCHANNEL_COLOR_ECD,
+			EVENTCHANNEL_COLOR_ENABLED_ECD, "EventChannel Color", this);
+		colorButtonsPanel.addToBoth(eventChannelCB);
 		ColorButtonNB initiatorCB = new ColorButtonNB("Initiator", INITIATOR_COLOR_ECD,
 			INITIATOR_COLOR_ENABLED_ECD, "Initiator Color", this);
 		colorButtonsPanel.addToBoth(initiatorCB);

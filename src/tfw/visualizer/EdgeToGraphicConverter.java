@@ -24,11 +24,13 @@
  */
 package tfw.visualizer;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import tfw.awt.ecd.GraphicECD;
 import tfw.awt.graphic.DrawLineGraphic;
+import tfw.awt.graphic.Graphic;
+import tfw.awt.graphic.SetColorGraphic;
 import tfw.immutable.DataInvalidException;
 import tfw.immutable.ila.intila.IntIla;
 import tfw.immutable.ila.longila.LongIla;
@@ -145,6 +147,10 @@ public class EdgeToGraphicConverter extends Converter
 			y2s[i] = ((Integer)pixelToY.get(i)).intValue();
 		}
 		
-		set(graphicECD, DrawLineGraphic.create(null, x1s, y1s, x2s, y2s));
+		Graphic setColorGraphic = SetColorGraphic.create(null, Color.white);
+		Graphic drawLineGraphic = DrawLineGraphic.create(setColorGraphic,
+			x1s, y1s, x2s, y2s);
+		
+		set(graphicECD, drawLineGraphic);
 	}
 }

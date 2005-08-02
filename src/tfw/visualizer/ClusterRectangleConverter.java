@@ -82,7 +82,7 @@ public class ClusterRectangleConverter extends Converter
 		int clusterHeight = height / dimension;
 		int[] xs = new int[numberOfClusters];
 		int[] ys = new int[numberOfClusters];
-		
+
 		for (int c=0 ; c < numberOfClusters ; c++)
 		{
 			xs[c] = x + c % dimension * clusterWidth;
