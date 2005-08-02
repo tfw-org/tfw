@@ -24,11 +24,12 @@
  */
 package tfw.swing.label;
 
-import	javax.swing.JLabel;
-import	tfw.tsm.Commit;
-import	tfw.tsm.Initiator;
-import	tfw.tsm.ecd.EventChannelDescription;
-import	tfw.tsm.ecd.StringECD;
+import java.awt.EventQueue;
+import javax.swing.JLabel;
+import tfw.tsm.Commit;
+import tfw.tsm.Initiator;
+import tfw.tsm.ecd.EventChannelDescription;
+import tfw.tsm.ecd.StringECD;
 
 public class SetTextCommit extends Commit
 {
@@ -49,6 +50,14 @@ public class SetTextCommit extends Commit
 	
 	protected void commit()
 	{
-		label.setText((String)get(textECD));
+		final String text = (String)get(textECD);
+		
+		EventQueue.invokeLater(new Runnable()
+		{
+			public void run()
+			{
+				label.setText(text);				
+			}
+		});
 	}
 }

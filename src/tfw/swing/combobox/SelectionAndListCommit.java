@@ -24,6 +24,7 @@
  */
 package tfw.swing.combobox;
 
+import java.awt.EventQueue;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import tfw.immutable.DataInvalidException;
@@ -64,23 +65,42 @@ public class SelectionAndListCommit extends Commit
 		{
 			try
 			{
-				Object[] list = ((ObjectIla)get(listECD)).toArray();
+				final Object[] list = ((ObjectIla)get(listECD)).toArray();
 			
-				comboBox.setModel(new DefaultComboBoxModel(list));
+				EventQueue.invokeLater(new Runnable()
+				{
+					public void run()
+					{
+						comboBox.setModel(new DefaultComboBoxModel(list));						
+					}
+				});
 			}
 			catch(DataInvalidException die) {}
 		}
 		if (selectedItemECD != null)
 		{
-			Object selectedItem = (Object)get(selectedItemECD);
+			final Object selectedItem = (Object)get(selectedItemECD);
 			
-			comboBox.setSelectedItem(selectedItem);
+			EventQueue.invokeLater(new Runnable()
+			{
+				public void run()
+				{
+					comboBox.setSelectedItem(selectedItem);					
+				}
+			});
 		}
 		if (selectedIndexECD != null)
 		{
-			int selectedIndex = ((Integer)get(selectedIndexECD)).intValue();
-			
-			comboBox.setSelectedIndex(selectedIndex);
+			final int selectedIndex =
+				((Integer)get(selectedIndexECD)).intValue();
+
+			EventQueue.invokeLater(new Runnable()
+			{
+				public void run()
+				{
+					comboBox.setSelectedIndex(selectedIndex);
+				}
+			});
 		}
 	}
 }

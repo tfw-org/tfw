@@ -24,12 +24,13 @@
  */
 package tfw.swing.textcomponent;
 
-import	javax.swing.event.DocumentListener;
-import	javax.swing.text.JTextComponent;
-import	tfw.tsm.Commit;
-import	tfw.tsm.Initiator;
-import	tfw.tsm.ecd.EventChannelDescription;
-import	tfw.tsm.ecd.StringECD;
+import java.awt.EventQueue;
+import javax.swing.event.DocumentListener;
+import javax.swing.text.JTextComponent;
+import tfw.tsm.Commit;
+import tfw.tsm.Initiator;
+import tfw.tsm.ecd.EventChannelDescription;
+import tfw.tsm.ecd.StringECD;
 
 public class SetTextCommit extends Commit
 {
@@ -57,17 +58,26 @@ public class SetTextCommit extends Commit
 	
 	protected void commit()
 	{
-		if (documentListener != null)
+		final String text = (String)get(textECD);
+		
+		EventQueue.invokeLater(new Runnable()
 		{
-			textComponent.getDocument().removeDocumentListener(
-				documentListener);
-		}
+			public void run()
+			{
+				if (documentListener != null)
+				{
+					textComponent.getDocument().removeDocumentListener(
+						documentListener);
+				}
 
-		textComponent.setText((String)get(textECD));
+				textComponent.setText(text);
 
-		if (documentListener != null)
-		{
-			textComponent.getDocument().addDocumentListener(documentListener);
-		}
+				if (documentListener != null)
+				{
+					textComponent.getDocument().addDocumentListener(
+						documentListener);
+				}				
+			}
+		});
 	}
 }

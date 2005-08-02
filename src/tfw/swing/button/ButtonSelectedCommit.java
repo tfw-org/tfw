@@ -24,6 +24,7 @@
  */
 package tfw.swing.button;
 
+import java.awt.EventQueue;
 import javax.swing.AbstractButton;
 import tfw.tsm.Commit;
 import tfw.tsm.Initiator;
@@ -49,8 +50,14 @@ public final class ButtonSelectedCommit extends Commit
 	
 	protected void commit()
 	{
-		boolean selected = ((Boolean)get(selectedECD)).booleanValue();
+		final boolean selected = ((Boolean)get(selectedECD)).booleanValue();
 		
-		abstractButton.setSelected(selected);
+		EventQueue.invokeLater(new Runnable()
+		{
+			public void run()
+			{
+				abstractButton.setSelected(selected);
+			}
+		});
 	}
 }
