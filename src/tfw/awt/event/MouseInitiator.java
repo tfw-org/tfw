@@ -27,7 +27,6 @@ package tfw.awt.event;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-
 import tfw.tsm.EventChannelStateBuffer;
 import tfw.tsm.Initiator;
 import tfw.tsm.ecd.BooleanECD;
@@ -43,25 +42,21 @@ public class MouseInitiator extends Initiator
 	private final BooleanECD button1PressedECD;
 	private final BooleanECD button2PressedECD;
 	private final BooleanECD button3PressedECD;
-	private final BooleanECD insideComponentECD;
-	
-	private boolean insideComponent = false;
 	
 	public MouseInitiator(String name, IntegerECD xECD, IntegerECD yECD,
 		BooleanECD button1PressedECD, BooleanECD button2PressedECD,
-		BooleanECD button3PressedECD, BooleanECD insideComponentECD)
+		BooleanECD button3PressedECD)
 	{
 		super("MouseInitiator["+name+"]",
 			EventChannelDescriptionUtil.create(new EventChannelDescription[] {
 				xECD, yECD, button1PressedECD, button2PressedECD,
-				button3PressedECD, insideComponentECD}));
+				button3PressedECD}));
 		
 		this.xECD = xECD;
 		this.yECD = yECD;
 		this.button1PressedECD = button1PressedECD;
 		this.button2PressedECD = button2PressedECD;
 		this.button3PressedECD = button3PressedECD;
-		this.insideComponentECD = insideComponentECD;
 	}
 	
 	public void mouseClicked(MouseEvent e)
@@ -71,16 +66,12 @@ public class MouseInitiator extends Initiator
 	
 	public void mouseEntered(MouseEvent e)
 	{
-		insideComponent = true;
-		
-		send(e);
+		// Do Nothing...
 	}
 	
 	public void mouseExited(MouseEvent e)
 	{
-		insideComponent = false;
-		
-		send(e);
+		// Do Nothing...
 	}
 	
 	public void mousePressed(MouseEvent e)
@@ -132,11 +123,6 @@ public class MouseInitiator extends Initiator
 			ecsb.put(button3PressedECD, new Boolean(
 				((e.getModifiersEx() & MouseEvent.BUTTON3_DOWN_MASK) ==
 				MouseEvent.BUTTON3_DOWN_MASK)));
-		}
-		if (insideComponentECD != null)
-		{
-			ecsb.put(insideComponentECD,
-				insideComponent ? Boolean.TRUE : Boolean.FALSE);
 		}
 		
 		set(ecsb.toArray());
