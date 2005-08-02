@@ -280,18 +280,18 @@ class Terminator implements EventChannel, CommitRollbackListener {
 			component.getTransactionManager().addCommitRollbackListener(this);
 		}
 
-		if (this.state != previousState) {
-			throw new IllegalStateException(
-					"Attempt to change the state of event channel '"
-							+ getECD().getEventChannelName()
-							+ "' twice in the same state change cycle is not allowed. "
-							+ "The first state change source is "
-							+ stateSource.getTreeComponent().getName()
-							+ " and the state value is " + previousState
-							+ ". The second attempt was made by "
-							+ source.getTreeComponent().getName()
-							+ " and the new state value is " + state);
-		}
+//		if (this.state != previousState) {
+//			throw new IllegalStateException(
+//					"Attempt to change the state of event channel '"
+//							+ getECD().getEventChannelName()
+//							+ "' twice in the same state change cycle is not allowed. "
+//							+ "The first state change source is "
+//							+ stateSource.getTreeComponent().getName()
+//							+ " and the state value is " + previousState
+//							+ ". The second attempt was made by "
+//							+ source.getTreeComponent().getName()
+//							+ " and the new state value is " + state);
+//		}
 
 		if (stateChangeRule.isChange(this.state, state)) {
 			stateSource = source;
