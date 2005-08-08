@@ -646,6 +646,7 @@ public final class TransactionMgr
 
     private void componentChange(Runnable change)
     {
+        //TODO it looks like this needs to be made thread safe.
         if (componentChangeTransaction == null)
         {
             componentChangeTransaction = new ComponentChangeTransaction(change);

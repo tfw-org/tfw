@@ -81,7 +81,7 @@ class InitiatorSource extends Source
         if ((getEventChannel() != null) && (!stateQueue.isEmpty()))
         {
         	state = stateQueue.pop();
-            getEventChannel().setState(this, state);
+            getEventChannel().setState(this, state, null);
         }
         return state;
     }

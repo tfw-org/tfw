@@ -70,7 +70,7 @@ class ProcessorSource extends Source
     {
         Object temp = state;
         state = null;
-        getEventChannel().setState(this, temp);
+        getEventChannel().setState(this, temp, null);
         return temp;
     }
 }

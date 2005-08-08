@@ -116,10 +116,11 @@ class Translator extends Terminator
      *
      * @see co2.ui.fw.EventChannel#setState(Source, Object)
      */
-    public void setState(Source source, Object state)
+    public void setState(Source source, Object state, EventChannel forwardingEventChannel)
     {
+        // TODO figure out how to handle the forwarding event channel...
         // Propagate the state change down...
-        super.setState(source, state);
+        super.setState(source, state, forwardingEventChannel);
 
         // if this translator is not responsible for the state change...
         if ((source != parentRelaySource) && (source != childRelaySource))

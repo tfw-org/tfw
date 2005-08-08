@@ -77,7 +77,7 @@ interface EventChannel
 	 * Sets the state of this event channel.
 	 * @param state the new value.
 	 */
-	public void setState(Source source, Object state);
+	public void setState(Source source, Object state, EventChannel forwardingEventChannel);
 
 	/**
 	 * Returns the Source which set the current state.
