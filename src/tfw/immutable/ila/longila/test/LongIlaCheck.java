@@ -28,9 +28,9 @@ import java.util.Arrays;
 import tfw.immutable.DataInvalidException;
 import tfw.immutable.ila.longila.LongIla;
 
-public class LongIlaTest
+public final class LongIlaCheck
 {
-	private LongIlaTest() {}
+	private LongIlaCheck() {}
 	
 	public static String check(LongIla ila1, LongIla ila2)
 	{

@@ -53,7 +53,7 @@ public class CharIlaFillTest extends TestCase
 		}
 		catch (IllegalArgumentException iae) {}
 		
-		String s = CharIlaTest.check(ila,
+		String s = CharIlaCheck.check(ila,
 			CharIlaFill.create(element, LENGTH));
 		
 		assertNull(s, s);

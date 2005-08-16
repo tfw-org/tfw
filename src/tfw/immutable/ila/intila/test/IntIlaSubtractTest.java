@@ -67,7 +67,7 @@ public class IntIlaSubtractTest extends TestCase
 		}
 		catch (IllegalArgumentException iae) {}
 		
-		String s = IntIlaTest.check(ila3,
+		String s = IntIlaCheck.check(ila3,
 			IntIlaSubtract.create(ila1, ila2));
 		
 		assertNull(s, s);

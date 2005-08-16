@@ -77,7 +77,7 @@ public class StringIlaRemoveTest extends TestCase
 			
 			StringIla ia = StringIlaFromArray.create(a);
 			
-			String s = StringIlaTest.check(ia,
+			String s = StringIlaCheck.check(ia,
 				StringIlaRemove.create(ila, i));
 			
 			assertNull(s, s);

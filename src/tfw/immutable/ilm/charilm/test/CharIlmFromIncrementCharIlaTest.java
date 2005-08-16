@@ -67,7 +67,7 @@ public class CharIlmFromIncrementCharIlaTest extends TestCase
 		
 		try
 		{
-			CharIlmTest.check(ilm,
+			CharIlmCheck.check(ilm,
 				CharIlmFromIncrementCharIla.create(
 				ila, ROW_INCREMENT, (char)0));
 		}

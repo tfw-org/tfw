@@ -66,7 +66,7 @@ public class IntIlaFromIntIlmTest extends TestCase
 		}
 		catch (IllegalArgumentException iae) {}
 		
-		String s = IntIlaTest.check(ila,
+		String s = IntIlaCheck.check(ila,
 			IntIlaFromIntIlm.create(ilm));
 		
 		assertNull(s, s);

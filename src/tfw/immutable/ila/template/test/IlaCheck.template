@@ -22,17 +22,17 @@
  * Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307 USA
  */
-package tfw.immutable.ila.booleanila.test;
+package tfw.immutable.ila.%%PACKAGE%%ila.test;
 
 import java.util.Arrays;
 import tfw.immutable.DataInvalidException;
-import tfw.immutable.ila.booleanila.BooleanIla;
+import tfw.immutable.ila.%%PACKAGE%%ila.%%NAME%%Ila;
 
-public class BooleanIlaTest
+public final class %%NAME%%IlaCheck
 {
-	private BooleanIlaTest() {}
+	private %%NAME%%IlaCheck() {}
 	
-	public static String check(BooleanIla ila1, BooleanIla ila2)
+	public static String check(%%NAME%%Ila ila1, %%NAME%%Ila ila2)
 	{
 		if (ila1.length() != ila2.length())
 		{
@@ -45,8 +45,8 @@ public class BooleanIlaTest
 		// Check to see if the zero argument toArray() methods return
 		// the same result.
 		
-		boolean[] o1 = null;
-		boolean[] o2 = null;
+		%%TYPE%%[] o1 = null;
+		%%TYPE%%[] o2 = null;
 		
 		try
 		{
@@ -99,8 +99,8 @@ public class BooleanIlaTest
 			{
 				for (int o=0 ; o < length - l ; o++)
 				{
-					o1 = new boolean[length];
-					o2 = new boolean[length];
+					o1 = new %%TYPE%%[length];
+					o2 = new %%TYPE%%[length];
 
 					try
 					{

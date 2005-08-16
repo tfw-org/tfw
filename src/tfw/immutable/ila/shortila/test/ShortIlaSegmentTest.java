@@ -56,7 +56,7 @@ public class ShortIlaSegmentTest extends TestCase
 				
 				ShortIla i = ShortIlaFromArray.create(a);
 		
-				String s = ShortIlaTest.check(i,
+				String s = ShortIlaCheck.check(i,
 					ShortIlaSegment.create(ila, start, length));
 		
 				assertNull(s, s);

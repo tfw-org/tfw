@@ -66,7 +66,7 @@ public class ObjectIlaFromObjectIlmTest extends TestCase
 		}
 		catch (IllegalArgumentException iae) {}
 		
-		String s = ObjectIlaTest.check(ila,
+		String s = ObjectIlaCheck.check(ila,
 			ObjectIlaFromObjectIlm.create(ilm));
 		
 		assertNull(s, s);

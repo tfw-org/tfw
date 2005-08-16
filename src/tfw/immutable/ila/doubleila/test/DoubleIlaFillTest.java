@@ -53,7 +53,7 @@ public class DoubleIlaFillTest extends TestCase
 		}
 		catch (IllegalArgumentException iae) {}
 		
-		String s = DoubleIlaTest.check(ila,
+		String s = DoubleIlaCheck.check(ila,
 			DoubleIlaFill.create(element, LENGTH));
 		
 		assertNull(s, s);

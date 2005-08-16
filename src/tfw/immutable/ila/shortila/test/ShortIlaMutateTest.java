@@ -78,7 +78,7 @@ public class ShortIlaMutateTest extends TestCase
 			
 			ShortIla ia = ShortIlaFromArray.create(a);
 			
-			String s = ShortIlaTest.check(ia,
+			String s = ShortIlaCheck.check(ia,
 				ShortIlaMutate.create(ila, i, element));
 			
 			assertNull(s, s);

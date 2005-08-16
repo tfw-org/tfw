@@ -77,7 +77,7 @@ public class ShortIlaRemoveTest extends TestCase
 			
 			ShortIla ia = ShortIlaFromArray.create(a);
 			
-			String s = ShortIlaTest.check(ia,
+			String s = ShortIlaCheck.check(ia,
 				ShortIlaRemove.create(ila, i));
 			
 			assertNull(s, s);

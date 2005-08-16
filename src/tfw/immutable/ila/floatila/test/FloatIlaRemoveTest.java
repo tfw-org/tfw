@@ -77,7 +77,7 @@ public class FloatIlaRemoveTest extends TestCase
 			
 			FloatIla ia = FloatIlaFromArray.create(a);
 			
-			String s = FloatIlaTest.check(ia,
+			String s = FloatIlaCheck.check(ia,
 				FloatIlaRemove.create(ila, i));
 			
 			assertNull(s, s);

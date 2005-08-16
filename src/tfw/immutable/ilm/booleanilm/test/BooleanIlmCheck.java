@@ -23,17 +23,17 @@
  * Boston, MA 02111-1307 USA
  */
 
-package tfw.immutable.ilm.charilm.test;
+package tfw.immutable.ilm.booleanilm.test;
 
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
-import tfw.immutable.ilm.charilm.CharIlm;
+import tfw.immutable.ilm.booleanilm.BooleanIlm;
 
-public class CharIlmTest
+public final class BooleanIlmCheck
 {
-	private CharIlmTest() {}
+	private BooleanIlmCheck() {}
 	
-	public static void check(CharIlm ilm1, CharIlm ilm2)
+	public static void check(BooleanIlm ilm1, BooleanIlm ilm2)
 	{
 		Argument.assertEquals(ilm1.width(), ilm2.width(),
 			"ilm1.width()", "ilm2.width");
@@ -45,8 +45,8 @@ public class CharIlmTest
 		
 		final int width = (int)ilm1.width();
 		final int height = (int)ilm1.height();
-		char[][] a1 = null;
-		char[][] a2 = null;
+		boolean[][] a1 = null;
+		boolean[][] a2 = null;
 		
 		try
 		{

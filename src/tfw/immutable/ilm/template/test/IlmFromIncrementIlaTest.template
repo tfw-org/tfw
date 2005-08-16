@@ -67,7 +67,7 @@ public class %%NAME%%IlmFromIncrement%%NAME%%IlaTest extends TestCase
 		
 		try
 		{
-			%%NAME%%IlmTest.check(ilm,
+			%%NAME%%IlmCheck.check(ilm,
 				%%NAME%%IlmFromIncrement%%NAME%%Ila.create(
 				ila, ROW_INCREMENT, %%DEFAULT_VALUE%%));
 		}

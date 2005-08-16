@@ -99,15 +99,15 @@ public class ByteIlaSwapTest extends TestCase
 		}
 		catch (IllegalArgumentException iae) {}
 		
-		String s2 = ByteIlaTest.check(swap2Ila,
+		String s2 = ByteIlaCheck.check(swap2Ila,
 			ByteIlaSwap.create(byteIla, 2));		
 		assertNull(s2, s2);
 		
-		String s4 = ByteIlaTest.check(swap4Ila,
+		String s4 = ByteIlaCheck.check(swap4Ila,
 			ByteIlaSwap.create(byteIla, 4));
 		assertNull(s4, s4);
 		
-		String s8 = ByteIlaTest.check(swap8Ila,
+		String s8 = ByteIlaCheck.check(swap8Ila,
 			ByteIlaSwap.create(byteIla, 8));
 		assertNull(s8, s8);
 	}

@@ -67,7 +67,7 @@ public class LongIlmFromIncrementLongIlaTest extends TestCase
 		
 		try
 		{
-			LongIlmTest.check(ilm,
+			LongIlmCheck.check(ilm,
 				LongIlmFromIncrementLongIla.create(
 				ila, ROW_INCREMENT, 0L));
 		}

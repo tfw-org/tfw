@@ -73,7 +73,7 @@ public class ShortIlmConcatenateVerticalTest extends TestCase
 		
 		try
 		{
-			ShortIlmTest.check(ilm3,
+			ShortIlmCheck.check(ilm3,
 				ShortIlmConcatenateVertical.create(ilm1, ilm2));
 		}
 		catch(IllegalArgumentException iae)

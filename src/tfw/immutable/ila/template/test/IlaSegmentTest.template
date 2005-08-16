@@ -56,7 +56,7 @@ public class %%NAME%%IlaSegmentTest extends TestCase
 				
 				%%NAME%%Ila i = %%NAME%%IlaFromArray.create(a);
 		
-				String s = %%NAME%%IlaTest.check(i,
+				String s = %%NAME%%IlaCheck.check(i,
 					%%NAME%%IlaSegment.create(ila, start, length));
 		
 				assertNull(s, s);

@@ -389,7 +389,7 @@
 			<arg value="${templatetestdir}/IlaMutateTest.template"/>
 			<arg value="${templatetestdir}/IlaRemoveTest.template"/>
 			<arg value="${templatetestdir}/IlaSegmentTest.template"/>
-			<arg value="${templatetestdir}/IlaTest.template"/>
+			<arg value="${templatetestdir}/IlaCheck.template"/>
 			<arg value="${booleantestdir}/BooleanIlaConcatenateTest.java"/>
 			<arg value="${booleantestdir}/BooleanIlaFillTest.java"/>
 			<arg value="${booleantestdir}/BooleanIlaFromArrayTest.java"/>
@@ -399,7 +399,7 @@
 			<arg value="${booleantestdir}/BooleanIlaMutateTest.java"/>
 			<arg value="${booleantestdir}/BooleanIlaRemoveTest.java"/>
 			<arg value="${booleantestdir}/BooleanIlaSegmentTest.java"/>
-			<arg value="${booleantestdir}/BooleanIlaTest.java"/>
+			<arg value="${booleantestdir}/BooleanIlaCheck.java"/>
 			<classpath>
 				<pathelement path="bin"/>
 			</classpath>
@@ -415,7 +415,7 @@
 			<arg value="${templatetestdir}/IlaMutateTest.template"/>
 			<arg value="${templatetestdir}/IlaRemoveTest.template"/>
 			<arg value="${templatetestdir}/IlaSegmentTest.template"/>
-			<arg value="${templatetestdir}/IlaTest.template"/>
+			<arg value="${templatetestdir}/IlaCheck.template"/>
 			<arg value="${bytetestdir}/ByteIlaConcatenateTest.java"/>
 			<arg value="${bytetestdir}/ByteIlaFillTest.java"/>
 			<arg value="${bytetestdir}/ByteIlaFromArrayTest.java"/>
@@ -425,7 +425,7 @@
 			<arg value="${bytetestdir}/ByteIlaMutateTest.java"/>
 			<arg value="${bytetestdir}/ByteIlaRemoveTest.java"/>
 			<arg value="${bytetestdir}/ByteIlaSegmentTest.java"/>
-			<arg value="${bytetestdir}/ByteIlaTest.java"/>
+			<arg value="${bytetestdir}/ByteIlaCheck.java"/>
 			<classpath>
 				<pathelement path="bin"/>
 			</classpath>
@@ -441,7 +441,7 @@
 			<arg value="${templatetestdir}/IlaMutateTest.template"/>
 			<arg value="${templatetestdir}/IlaRemoveTest.template"/>
 			<arg value="${templatetestdir}/IlaSegmentTest.template"/>
-			<arg value="${templatetestdir}/IlaTest.template"/>
+			<arg value="${templatetestdir}/IlaCheck.template"/>
 			<arg value="${chartestdir}/CharIlaConcatenateTest.java"/>
 			<arg value="${chartestdir}/CharIlaFillTest.java"/>
 			<arg value="${chartestdir}/CharIlaFromArrayTest.java"/>
@@ -451,7 +451,7 @@
 			<arg value="${chartestdir}/CharIlaMutateTest.java"/>
 			<arg value="${chartestdir}/CharIlaRemoveTest.java"/>
 			<arg value="${chartestdir}/CharIlaSegmentTest.java"/>
-			<arg value="${chartestdir}/CharIlaTest.java"/>
+			<arg value="${chartestdir}/CharIlaCheck.java"/>
 			<classpath>
 				<pathelement path="bin"/>
 			</classpath>
@@ -471,7 +471,7 @@
 			<arg value="${templatetestdir}/IlaRemoveTest.template"/>
 			<arg value="${templatetestdir}/IlaSegmentTest.template"/>
 			<arg value="${templatetestdir}/IlaSubtractTest.template"/>
-			<arg value="${templatetestdir}/IlaTest.template"/>
+			<arg value="${templatetestdir}/IlaCheck.template"/>
 			<arg value="${doubletestdir}/DoubleIlaAddTest.java"/>
 			<arg value="${doubletestdir}/DoubleIlaConcatenateTest.java"/>
 			<arg value="${doubletestdir}/DoubleIlaDivideTest.java"/>
@@ -485,7 +485,7 @@
 			<arg value="${doubletestdir}/DoubleIlaRemoveTest.java"/>
 			<arg value="${doubletestdir}/DoubleIlaSegmentTest.java"/>
 			<arg value="${doubletestdir}/DoubleIlaSubtractTest.java"/>
-			<arg value="${doubletestdir}/DoubleIlaTest.java"/>
+			<arg value="${doubletestdir}/DoubleIlaCheck.java"/>
 			<classpath>
 				<pathelement path="bin"/>
 			</classpath>
@@ -505,7 +505,7 @@
 			<arg value="${templatetestdir}/IlaRemoveTest.template"/>
 			<arg value="${templatetestdir}/IlaSegmentTest.template"/>
 			<arg value="${templatetestdir}/IlaSubtractTest.template"/>
-			<arg value="${templatetestdir}/IlaTest.template"/>
+			<arg value="${templatetestdir}/IlaCheck.template"/>
 			<arg value="${floattestdir}/FloatIlaAddTest.java"/>
 			<arg value="${floattestdir}/FloatIlaConcatenateTest.java"/>
 			<arg value="${floattestdir}/FloatIlaDivideTest.java"/>
@@ -519,7 +519,7 @@
 			<arg value="${floattestdir}/FloatIlaRemoveTest.java"/>
 			<arg value="${floattestdir}/FloatIlaSegmentTest.java"/>
 			<arg value="${floattestdir}/FloatIlaSubtractTest.java"/>
-			<arg value="${floattestdir}/FloatIlaTest.java"/>
+			<arg value="${floattestdir}/FloatIlaCheck.java"/>
 			<classpath>
 				<pathelement path="bin"/>
 			</classpath>
@@ -539,7 +539,7 @@
 			<arg value="${templatetestdir}/IlaRemoveTest.template"/>
 			<arg value="${templatetestdir}/IlaSegmentTest.template"/>
 			<arg value="${templatetestdir}/IlaSubtractTest.template"/>
-			<arg value="${templatetestdir}/IlaTest.template"/>
+			<arg value="${templatetestdir}/IlaCheck.template"/>
 			<arg value="${inttestdir}/IntIlaAddTest.java"/>
 			<arg value="${inttestdir}/IntIlaConcatenateTest.java"/>
 			<arg value="${inttestdir}/IntIlaDivideTest.java"/>
@@ -553,7 +553,7 @@
 			<arg value="${inttestdir}/IntIlaRemoveTest.java"/>
 			<arg value="${inttestdir}/IntIlaSegmentTest.java"/>
 			<arg value="${inttestdir}/IntIlaSubtractTest.java"/>
-			<arg value="${inttestdir}/IntIlaTest.java"/>
+			<arg value="${inttestdir}/IntIlaCheck.java"/>
 			<classpath>
 				<pathelement path="bin"/>
 			</classpath>
@@ -573,7 +573,7 @@
 			<arg value="${templatetestdir}/IlaRemoveTest.template"/>
 			<arg value="${templatetestdir}/IlaSegmentTest.template"/>
 			<arg value="${templatetestdir}/IlaSubtractTest.template"/>
-			<arg value="${templatetestdir}/IlaTest.template"/>
+			<arg value="${templatetestdir}/IlaCheck.template"/>
 			<arg value="${longtestdir}/LongIlaAddTest.java"/>
 			<arg value="${longtestdir}/LongIlaConcatenateTest.java"/>
 			<arg value="${longtestdir}/LongIlaDivideTest.java"/>
@@ -587,7 +587,7 @@
 			<arg value="${longtestdir}/LongIlaRemoveTest.java"/>
 			<arg value="${longtestdir}/LongIlaSegmentTest.java"/>
 			<arg value="${longtestdir}/LongIlaSubtractTest.java"/>
-			<arg value="${longtestdir}/LongIlaTest.java"/>
+			<arg value="${longtestdir}/LongIlaCheck.java"/>
 			<classpath>
 				<pathelement path="bin"/>
 			</classpath>
@@ -603,7 +603,7 @@
 			<arg value="${templatetestdir}/IlaMutateTest.template"/>
 			<arg value="${templatetestdir}/IlaRemoveTest.template"/>
 			<arg value="${templatetestdir}/IlaSegmentTest.template"/>
-			<arg value="${templatetestdir}/IlaTest.template"/>
+			<arg value="${templatetestdir}/IlaCheck.template"/>
 			<arg value="${objecttestdir}/ObjectIlaConcatenateTest.java"/>
 			<arg value="${objecttestdir}/ObjectIlaFillTest.java"/>
 			<arg value="${objecttestdir}/ObjectIlaFromArrayTest.java"/>
@@ -613,7 +613,7 @@
 			<arg value="${objecttestdir}/ObjectIlaMutateTest.java"/>
 			<arg value="${objecttestdir}/ObjectIlaRemoveTest.java"/>
 			<arg value="${objecttestdir}/ObjectIlaSegmentTest.java"/>
-			<arg value="${objecttestdir}/ObjectIlaTest.java"/>
+			<arg value="${objecttestdir}/ObjectIlaCheck.java"/>
 			<classpath>
 				<pathelement path="bin"/>
 			</classpath>
@@ -629,7 +629,7 @@
 			<arg value="${templatetestdir}/IlaMutateTest.template"/>
 			<arg value="${templatetestdir}/IlaRemoveTest.template"/>
 			<arg value="${templatetestdir}/IlaSegmentTest.template"/>
-			<arg value="${templatetestdir}/IlaTest.template"/>
+			<arg value="${templatetestdir}/IlaCheck.template"/>
 			<arg value="${shorttestdir}/ShortIlaConcatenateTest.java"/>
 			<arg value="${shorttestdir}/ShortIlaFillTest.java"/>
 			<arg value="${shorttestdir}/ShortIlaFromArrayTest.java"/>
@@ -639,7 +639,7 @@
 			<arg value="${shorttestdir}/ShortIlaMutateTest.java"/>
 			<arg value="${shorttestdir}/ShortIlaRemoveTest.java"/>
 			<arg value="${shorttestdir}/ShortIlaSegmentTest.java"/>
-			<arg value="${shorttestdir}/ShortIlaTest.java"/>
+			<arg value="${shorttestdir}/ShortIlaCheck.java"/>
 			<classpath>
 				<pathelement path="bin"/>
 			</classpath>
@@ -655,7 +655,7 @@
 			<arg value="${templatetestdir}/IlaMutateTest.template"/>
 			<arg value="${templatetestdir}/IlaRemoveTest.template"/>
 			<arg value="${templatetestdir}/IlaSegmentTest.template"/>
-			<arg value="${templatetestdir}/IlaTest.template"/>
+			<arg value="${templatetestdir}/IlaCheck.template"/>
 			<arg value="${stringtestdir}/StringIlaConcatenateTest.java"/>
 			<arg value="${stringtestdir}/StringIlaFillTest.java"/>
 			<arg value="${stringtestdir}/StringIlaFromArrayTest.java"/>
@@ -665,7 +665,7 @@
 			<arg value="${stringtestdir}/StringIlaMutateTest.java"/>
 			<arg value="${stringtestdir}/StringIlaRemoveTest.java"/>
 			<arg value="${stringtestdir}/StringIlaSegmentTest.java"/>
-			<arg value="${stringtestdir}/StringIlaTest.java"/>
+			<arg value="${stringtestdir}/StringIlaCheck.java"/>
 			<classpath>
 				<pathelement path="bin"/>
 			</classpath>
@@ -947,14 +947,14 @@
 			<arg value="${templatetestdir}/IlmFromArrayTest.template"/>
 			<arg value="${templatetestdir}/IlmFromIlaTest.template"/>
 			<arg value="${templatetestdir}/IlmFromIncrementIlaTest.template"/>
-			<arg value="${templatetestdir}/IlmTest.template"/>
+			<arg value="${templatetestdir}/IlmCheck.template"/>
 			<arg value="${booleantestdir}/BooleanIlmConcatenateHorizontalTest.java"/>
 			<arg value="${booleantestdir}/BooleanIlmConcatenateVerticalTest.java"/>
 			<arg value="${booleantestdir}/BooleanIlmFillTest.java"/>
 			<arg value="${booleantestdir}/BooleanIlmFromArrayTest.java"/>
 			<arg value="${booleantestdir}/BooleanIlmFromBooleanIlaTest.java"/>
 			<arg value="${booleantestdir}/BooleanIlmFromIncrementBooleanIlaTest.java"/>
-			<arg value="${booleantestdir}/BooleanIlmTest.java"/>
+			<arg value="${booleantestdir}/BooleanIlmCheck.java"/>
 			<classpath>
 				<pathelement path="bin"/>
 			</classpath>
@@ -967,14 +967,14 @@
 			<arg value="${templatetestdir}/IlmFromArrayTest.template"/>
 			<arg value="${templatetestdir}/IlmFromIlaTest.template"/>
 			<arg value="${templatetestdir}/IlmFromIncrementIlaTest.template"/>
-			<arg value="${templatetestdir}/IlmTest.template"/>
+			<arg value="${templatetestdir}/IlmCheck.template"/>
 			<arg value="${bytetestdir}/ByteIlmConcatenateHorizontalTest.java"/>
 			<arg value="${bytetestdir}/ByteIlmConcatenateVerticalTest.java"/>
 			<arg value="${bytetestdir}/ByteIlmFillTest.java"/>
 			<arg value="${bytetestdir}/ByteIlmFromArrayTest.java"/>
 			<arg value="${bytetestdir}/ByteIlmFromByteIlaTest.java"/>
 			<arg value="${bytetestdir}/ByteIlmFromIncrementByteIlaTest.java"/>
-			<arg value="${bytetestdir}/ByteIlmTest.java"/>
+			<arg value="${bytetestdir}/ByteIlmCheck.java"/>
 			<classpath>
 				<pathelement path="bin"/>
 			</classpath>
@@ -987,14 +987,14 @@
 			<arg value="${templatetestdir}/IlmFromArrayTest.template"/>
 			<arg value="${templatetestdir}/IlmFromIlaTest.template"/>
 			<arg value="${templatetestdir}/IlmFromIncrementIlaTest.template"/>
-			<arg value="${templatetestdir}/IlmTest.template"/>
+			<arg value="${templatetestdir}/IlmCheck.template"/>
 			<arg value="${chartestdir}/CharIlmConcatenateHorizontalTest.java"/>
 			<arg value="${chartestdir}/CharIlmConcatenateVerticalTest.java"/>
 			<arg value="${chartestdir}/CharIlmFillTest.java"/>
 			<arg value="${chartestdir}/CharIlmFromArrayTest.java"/>
 			<arg value="${chartestdir}/CharIlmFromCharIlaTest.java"/>
 			<arg value="${chartestdir}/CharIlmFromIncrementCharIlaTest.java"/>
-			<arg value="${chartestdir}/CharIlmTest.java"/>
+			<arg value="${chartestdir}/CharIlmCheck.java"/>
 			<classpath>
 				<pathelement path="bin"/>
 			</classpath>
@@ -1007,14 +1007,14 @@
 			<arg value="${templatetestdir}/IlmFromArrayTest.template"/>
 			<arg value="${templatetestdir}/IlmFromIlaTest.template"/>
 			<arg value="${templatetestdir}/IlmFromIncrementIlaTest.template"/>
-			<arg value="${templatetestdir}/IlmTest.template"/>
+			<arg value="${templatetestdir}/IlmCheck.template"/>
 			<arg value="${doubletestdir}/DoubleIlmConcatenateHorizontalTest.java"/>
 			<arg value="${doubletestdir}/DoubleIlmConcatenateVerticalTest.java"/>
 			<arg value="${doubletestdir}/DoubleIlmFillTest.java"/>
 			<arg value="${doubletestdir}/DoubleIlmFromArrayTest.java"/>
 			<arg value="${doubletestdir}/DoubleIlmFromDoubleIlaTest.java"/>
 			<arg value="${doubletestdir}/DoubleIlmFromIncrementDoubleIlaTest.java"/>
-			<arg value="${doubletestdir}/DoubleIlmTest.java"/>
+			<arg value="${doubletestdir}/DoubleIlmCheck.java"/>
 			<classpath>
 				<pathelement path="bin"/>
 			</classpath>
@@ -1027,14 +1027,14 @@
 			<arg value="${templatetestdir}/IlmFromArrayTest.template"/>
 			<arg value="${templatetestdir}/IlmFromIlaTest.template"/>
 			<arg value="${templatetestdir}/IlmFromIncrementIlaTest.template"/>
-			<arg value="${templatetestdir}/IlmTest.template"/>
+			<arg value="${templatetestdir}/IlmCheck.template"/>
 			<arg value="${floattestdir}/FloatIlmConcatenateHorizontalTest.java"/>
 			<arg value="${floattestdir}/FloatIlmConcatenateVerticalTest.java"/>
 			<arg value="${floattestdir}/FloatIlmFillTest.java"/>
 			<arg value="${floattestdir}/FloatIlmFromArrayTest.java"/>
 			<arg value="${floattestdir}/FloatIlmFromFloatIlaTest.java"/>
 			<arg value="${floattestdir}/FloatIlmFromIncrementFloatIlaTest.java"/>
-			<arg value="${floattestdir}/FloatIlmTest.java"/>
+			<arg value="${floattestdir}/FloatIlmCheck.java"/>
 			<classpath>
 				<pathelement path="bin"/>
 			</classpath>
@@ -1047,14 +1047,14 @@
 			<arg value="${templatetestdir}/IlmFromArrayTest.template"/>
 			<arg value="${templatetestdir}/IlmFromIlaTest.template"/>
 			<arg value="${templatetestdir}/IlmFromIncrementIlaTest.template"/>
-			<arg value="${templatetestdir}/IlmTest.template"/>
+			<arg value="${templatetestdir}/IlmCheck.template"/>
 			<arg value="${inttestdir}/IntIlmConcatenateHorizontalTest.java"/>
 			<arg value="${inttestdir}/IntIlmConcatenateVerticalTest.java"/>
 			<arg value="${inttestdir}/IntIlmFillTest.java"/>
 			<arg value="${inttestdir}/IntIlmFromArrayTest.java"/>
 			<arg value="${inttestdir}/IntIlmFromIntIlaTest.java"/>
 			<arg value="${inttestdir}/IntIlmFromIncrementIntIlaTest.java"/>
-			<arg value="${inttestdir}/IntIlmTest.java"/>
+			<arg value="${inttestdir}/IntIlmCheck.java"/>
 			<classpath>
 				<pathelement path="bin"/>
 			</classpath>
@@ -1067,14 +1067,14 @@
 			<arg value="${templatetestdir}/IlmFromArrayTest.template"/>
 			<arg value="${templatetestdir}/IlmFromIlaTest.template"/>
 			<arg value="${templatetestdir}/IlmFromIncrementIlaTest.template"/>
-			<arg value="${templatetestdir}/IlmTest.template"/>
+			<arg value="${templatetestdir}/IlmCheck.template"/>
 			<arg value="${longtestdir}/LongIlmConcatenateHorizontalTest.java"/>
 			<arg value="${longtestdir}/LongIlmConcatenateVerticalTest.java"/>
 			<arg value="${longtestdir}/LongIlmFillTest.java"/>
 			<arg value="${longtestdir}/LongIlmFromArrayTest.java"/>
 			<arg value="${longtestdir}/LongIlmFromLongIlaTest.java"/>
 			<arg value="${longtestdir}/LongIlmFromIncrementLongIlaTest.java"/>
-			<arg value="${longtestdir}/LongIlmTest.java"/>
+			<arg value="${longtestdir}/LongIlmCheck.java"/>
 			<classpath>
 				<pathelement path="bin"/>
 			</classpath>
@@ -1087,14 +1087,14 @@
 			<arg value="${templatetestdir}/IlmFromArrayTest.template"/>
 			<arg value="${templatetestdir}/IlmFromIlaTest.template"/>
 			<arg value="${templatetestdir}/IlmFromIncrementIlaTest.template"/>
-			<arg value="${templatetestdir}/IlmTest.template"/>
+			<arg value="${templatetestdir}/IlmCheck.template"/>
 			<arg value="${objecttestdir}/ObjectIlmConcatenateHorizontalTest.java"/>
 			<arg value="${objecttestdir}/ObjectIlmConcatenateVerticalTest.java"/>
 			<arg value="${objecttestdir}/ObjectIlmFillTest.java"/>
 			<arg value="${objecttestdir}/ObjectIlmFromArrayTest.java"/>
 			<arg value="${objecttestdir}/ObjectIlmFromObjectIlaTest.java"/>
 			<arg value="${objecttestdir}/ObjectIlmFromIncrementObjectIlaTest.java"/>
-			<arg value="${objecttestdir}/ObjectIlmTest.java"/>
+			<arg value="${objecttestdir}/ObjectIlmCheck.java"/>
 			<classpath>
 				<pathelement path="bin"/>
 			</classpath>
@@ -1107,14 +1107,14 @@
 			<arg value="${templatetestdir}/IlmFromArrayTest.template"/>
 			<arg value="${templatetestdir}/IlmFromIlaTest.template"/>
 			<arg value="${templatetestdir}/IlmFromIncrementIlaTest.template"/>
-			<arg value="${templatetestdir}/IlmTest.template"/>
+			<arg value="${templatetestdir}/IlmCheck.template"/>
 			<arg value="${shorttestdir}/ShortIlmConcatenateHorizontalTest.java"/>
 			<arg value="${shorttestdir}/ShortIlmConcatenateVerticalTest.java"/>
 			<arg value="${shorttestdir}/ShortIlmFillTest.java"/>
 			<arg value="${shorttestdir}/ShortIlmFromArrayTest.java"/>
 			<arg value="${shorttestdir}/ShortIlmFromShortIlaTest.java"/>
 			<arg value="${shorttestdir}/ShortIlmFromIncrementShortIlaTest.java"/>
-			<arg value="${shorttestdir}/ShortIlmTest.java"/>
+			<arg value="${shorttestdir}/ShortIlmCheck.java"/>
 			<classpath>
 				<pathelement path="bin"/>
 			</classpath>
@@ -1127,14 +1127,14 @@
 			<arg value="${templatetestdir}/IlmFromArrayTest.template"/>
 			<arg value="${templatetestdir}/IlmFromIlaTest.template"/>
 			<arg value="${templatetestdir}/IlmFromIncrementIlaTest.template"/>
-			<arg value="${templatetestdir}/IlmTest.template"/>
+			<arg value="${templatetestdir}/IlmCheck.template"/>
 			<arg value="${stringtestdir}/StringIlmConcatenateHorizontalTest.java"/>
 			<arg value="${stringtestdir}/StringIlmConcatenateVerticalTest.java"/>
 			<arg value="${stringtestdir}/StringIlmFillTest.java"/>
 			<arg value="${stringtestdir}/StringIlmFromArrayTest.java"/>
 			<arg value="${stringtestdir}/StringIlmFromStringIlaTest.java"/>
 			<arg value="${stringtestdir}/StringIlmFromIncrementStringIlaTest.java"/>
-			<arg value="${stringtestdir}/StringIlmTest.java"/>
+			<arg value="${stringtestdir}/StringIlmCheck.java"/>
 			<classpath>
 				<pathelement path="bin"/>
 			</classpath>

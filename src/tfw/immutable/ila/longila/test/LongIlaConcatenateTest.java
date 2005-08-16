@@ -74,7 +74,7 @@ public class LongIlaConcatenateTest extends TestCase
 		}
 		catch (IllegalArgumentException iae) {}
 		
-		String s = LongIlaTest.check(ila3,
+		String s = LongIlaCheck.check(ila3,
 			LongIlaConcatenate.create(ila1, ila2));
 		
 		assertNull(s, s);

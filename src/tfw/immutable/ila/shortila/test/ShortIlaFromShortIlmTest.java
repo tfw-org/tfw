@@ -66,7 +66,7 @@ public class ShortIlaFromShortIlmTest extends TestCase
 		}
 		catch (IllegalArgumentException iae) {}
 		
-		String s = ShortIlaTest.check(ila,
+		String s = ShortIlaCheck.check(ila,
 			ShortIlaFromShortIlm.create(ilm));
 		
 		assertNull(s, s);

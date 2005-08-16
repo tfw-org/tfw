@@ -56,7 +56,7 @@ public class LongIlaSegmentTest extends TestCase
 				
 				LongIla i = LongIlaFromArray.create(a);
 		
-				String s = LongIlaTest.check(i,
+				String s = LongIlaCheck.check(i,
 					LongIlaSegment.create(ila, start, length));
 		
 				assertNull(s, s);

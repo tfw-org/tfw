@@ -53,7 +53,7 @@ public class ByteIlaFillTest extends TestCase
 		}
 		catch (IllegalArgumentException iae) {}
 		
-		String s = ByteIlaTest.check(ila,
+		String s = ByteIlaCheck.check(ila,
 			ByteIlaFill.create(element, LENGTH));
 		
 		assertNull(s, s);

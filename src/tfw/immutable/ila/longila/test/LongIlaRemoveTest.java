@@ -77,7 +77,7 @@ public class LongIlaRemoveTest extends TestCase
 			
 			LongIla ia = LongIlaFromArray.create(a);
 			
-			String s = LongIlaTest.check(ia,
+			String s = LongIlaCheck.check(ia,
 				LongIlaRemove.create(ila, i));
 			
 			assertNull(s, s);

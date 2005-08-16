@@ -79,7 +79,7 @@ public class ShortIlaInsertTest extends TestCase
 			
 			ShortIla ia = ShortIlaFromArray.create(a);
 			
-			String s = ShortIlaTest.check(ia,
+			String s = ShortIlaCheck.check(ia,
 				ShortIlaInsert.create(ila, i, element));
 			
 			assertNull(s, s);

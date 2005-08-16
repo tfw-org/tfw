@@ -66,7 +66,7 @@ public class %%NAME%%IlaFrom%%NAME%%IlmTest extends TestCase
 		}
 		catch (IllegalArgumentException iae) {}
 		
-		String s = %%NAME%%IlaTest.check(ila,
+		String s = %%NAME%%IlaCheck.check(ila,
 			%%NAME%%IlaFrom%%NAME%%Ilm.create(ilm));
 		
 		assertNull(s, s);

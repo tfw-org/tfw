@@ -65,7 +65,7 @@ public class LongIlmFillTest extends TestCase
 		
 		try
 		{
-			LongIlmTest.check(ilm,
+			LongIlmCheck.check(ilm,
 				LongIlmFill.create(element, WIDTH, HEIGHT));
 		}
 		catch(IllegalArgumentException iae)

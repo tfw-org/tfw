@@ -56,7 +56,7 @@ public class IntIlaSegmentTest extends TestCase
 				
 				IntIla i = IntIlaFromArray.create(a);
 		
-				String s = IntIlaTest.check(i,
+				String s = IntIlaCheck.check(i,
 					IntIlaSegment.create(ila, start, length));
 		
 				assertNull(s, s);

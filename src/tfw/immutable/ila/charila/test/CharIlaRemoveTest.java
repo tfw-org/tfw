@@ -77,7 +77,7 @@ public class CharIlaRemoveTest extends TestCase
 			
 			CharIla ia = CharIlaFromArray.create(a);
 			
-			String s = CharIlaTest.check(ia,
+			String s = CharIlaCheck.check(ia,
 				CharIlaRemove.create(ila, i));
 			
 			assertNull(s, s);

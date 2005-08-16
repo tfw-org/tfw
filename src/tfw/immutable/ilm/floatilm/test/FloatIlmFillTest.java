@@ -65,7 +65,7 @@ public class FloatIlmFillTest extends TestCase
 		
 		try
 		{
-			FloatIlmTest.check(ilm,
+			FloatIlmCheck.check(ilm,
 				FloatIlmFill.create(element, WIDTH, HEIGHT));
 		}
 		catch(IllegalArgumentException iae)

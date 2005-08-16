@@ -73,7 +73,7 @@ public class FloatIlmConcatenateVerticalTest extends TestCase
 		
 		try
 		{
-			FloatIlmTest.check(ilm3,
+			FloatIlmCheck.check(ilm3,
 				FloatIlmConcatenateVertical.create(ilm1, ilm2));
 		}
 		catch(IllegalArgumentException iae)

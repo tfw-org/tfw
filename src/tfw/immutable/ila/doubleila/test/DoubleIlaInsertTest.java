@@ -79,7 +79,7 @@ public class DoubleIlaInsertTest extends TestCase
 			
 			DoubleIla ia = DoubleIlaFromArray.create(a);
 			
-			String s = DoubleIlaTest.check(ia,
+			String s = DoubleIlaCheck.check(ia,
 				DoubleIlaInsert.create(ila, i, element));
 			
 			assertNull(s, s);

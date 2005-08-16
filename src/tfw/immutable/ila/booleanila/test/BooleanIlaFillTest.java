@@ -53,7 +53,7 @@ public class BooleanIlaFillTest extends TestCase
 		}
 		catch (IllegalArgumentException iae) {}
 		
-		String s = BooleanIlaTest.check(ila,
+		String s = BooleanIlaCheck.check(ila,
 			BooleanIlaFill.create(element, LENGTH));
 		
 		assertNull(s, s);

@@ -23,17 +23,17 @@
  * Boston, MA 02111-1307 USA
  */
 
-package tfw.immutable.ilm.doubleilm.test;
+package tfw.immutable.ilm.shortilm.test;
 
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
-import tfw.immutable.ilm.doubleilm.DoubleIlm;
+import tfw.immutable.ilm.shortilm.ShortIlm;
 
-public class DoubleIlmTest
+public final class ShortIlmCheck
 {
-	private DoubleIlmTest() {}
+	private ShortIlmCheck() {}
 	
-	public static void check(DoubleIlm ilm1, DoubleIlm ilm2)
+	public static void check(ShortIlm ilm1, ShortIlm ilm2)
 	{
 		Argument.assertEquals(ilm1.width(), ilm2.width(),
 			"ilm1.width()", "ilm2.width");
@@ -45,8 +45,8 @@ public class DoubleIlmTest
 		
 		final int width = (int)ilm1.width();
 		final int height = (int)ilm1.height();
-		double[][] a1 = null;
-		double[][] a2 = null;
+		short[][] a1 = null;
+		short[][] a2 = null;
 		
 		try
 		{

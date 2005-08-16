@@ -77,7 +77,7 @@ public class ByteIlaRemoveTest extends TestCase
 			
 			ByteIla ia = ByteIlaFromArray.create(a);
 			
-			String s = ByteIlaTest.check(ia,
+			String s = ByteIlaCheck.check(ia,
 				ByteIlaRemove.create(ila, i));
 			
 			assertNull(s, s);

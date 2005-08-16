@@ -56,7 +56,7 @@ public class FloatIlaSegmentTest extends TestCase
 				
 				FloatIla i = FloatIlaFromArray.create(a);
 		
-				String s = FloatIlaTest.check(i,
+				String s = FloatIlaCheck.check(i,
 					FloatIlaSegment.create(ila, start, length));
 		
 				assertNull(s, s);

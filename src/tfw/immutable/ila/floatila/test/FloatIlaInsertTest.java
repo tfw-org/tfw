@@ -79,7 +79,7 @@ public class FloatIlaInsertTest extends TestCase
 			
 			FloatIla ia = FloatIlaFromArray.create(a);
 			
-			String s = FloatIlaTest.check(ia,
+			String s = FloatIlaCheck.check(ia,
 				FloatIlaInsert.create(ila, i, element));
 			
 			assertNull(s, s);

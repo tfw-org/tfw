@@ -65,7 +65,7 @@ public class StringIlmFillTest extends TestCase
 		
 		try
 		{
-			StringIlmTest.check(ilm,
+			StringIlmCheck.check(ilm,
 				StringIlmFill.create(element, WIDTH, HEIGHT));
 		}
 		catch(IllegalArgumentException iae)

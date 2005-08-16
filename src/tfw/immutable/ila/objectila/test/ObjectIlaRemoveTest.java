@@ -77,7 +77,7 @@ public class ObjectIlaRemoveTest extends TestCase
 			
 			ObjectIla ia = ObjectIlaFromArray.create(a);
 			
-			String s = ObjectIlaTest.check(ia,
+			String s = ObjectIlaCheck.check(ia,
 				ObjectIlaRemove.create(ila, i));
 			
 			assertNull(s, s);

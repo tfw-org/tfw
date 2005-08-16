@@ -65,7 +65,7 @@ public class DoubleIlmFromDoubleIlaTest extends TestCase
 
 		try
 		{
-			DoubleIlmTest.check(ilm,
+			DoubleIlmCheck.check(ilm,
 				DoubleIlmFromDoubleIla.create(ila, WIDTH));
 		}
 		catch(IllegalArgumentException iae)

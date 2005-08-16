@@ -67,7 +67,7 @@ public class DoubleIlmFromIncrementDoubleIlaTest extends TestCase
 		
 		try
 		{
-			DoubleIlmTest.check(ilm,
+			DoubleIlmCheck.check(ilm,
 				DoubleIlmFromIncrementDoubleIla.create(
 				ila, ROW_INCREMENT, 0.0));
 		}

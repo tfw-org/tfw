@@ -29,9 +29,9 @@ import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
 import tfw.immutable.ilm.stringilm.StringIlm;
 
-public class StringIlmTest
+public final class StringIlmCheck
 {
-	private StringIlmTest() {}
+	private StringIlmCheck() {}
 	
 	public static void check(StringIlm ilm1, StringIlm ilm2)
 	{

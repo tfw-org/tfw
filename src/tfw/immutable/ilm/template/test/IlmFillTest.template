@@ -65,7 +65,7 @@ public class %%NAME%%IlmFillTest extends TestCase
 		
 		try
 		{
-			%%NAME%%IlmTest.check(ilm,
+			%%NAME%%IlmCheck.check(ilm,
 				%%NAME%%IlmFill.create(element, WIDTH, HEIGHT));
 		}
 		catch(IllegalArgumentException iae)

@@ -67,7 +67,7 @@ public class ShortIlmFromIncrementShortIlaTest extends TestCase
 		
 		try
 		{
-			ShortIlmTest.check(ilm,
+			ShortIlmCheck.check(ilm,
 				ShortIlmFromIncrementShortIla.create(
 				ila, ROW_INCREMENT, (short)0));
 		}

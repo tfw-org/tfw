@@ -67,7 +67,7 @@ public class FloatIlmFromIncrementFloatIlaTest extends TestCase
 		
 		try
 		{
-			FloatIlmTest.check(ilm,
+			FloatIlmCheck.check(ilm,
 				FloatIlmFromIncrementFloatIla.create(
 				ila, ROW_INCREMENT, 0.0f));
 		}

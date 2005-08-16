@@ -65,7 +65,7 @@ public class DoubleIlmFillTest extends TestCase
 		
 		try
 		{
-			DoubleIlmTest.check(ilm,
+			DoubleIlmCheck.check(ilm,
 				DoubleIlmFill.create(element, WIDTH, HEIGHT));
 		}
 		catch(IllegalArgumentException iae)

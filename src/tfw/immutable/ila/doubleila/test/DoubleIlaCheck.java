@@ -22,17 +22,17 @@
  * Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307 USA
  */
-package tfw.immutable.ila.stringila.test;
+package tfw.immutable.ila.doubleila.test;
 
 import java.util.Arrays;
 import tfw.immutable.DataInvalidException;
-import tfw.immutable.ila.stringila.StringIla;
+import tfw.immutable.ila.doubleila.DoubleIla;
 
-public class StringIlaTest
+public final class DoubleIlaCheck
 {
-	private StringIlaTest() {}
+	private DoubleIlaCheck() {}
 	
-	public static String check(StringIla ila1, StringIla ila2)
+	public static String check(DoubleIla ila1, DoubleIla ila2)
 	{
 		if (ila1.length() != ila2.length())
 		{
@@ -45,8 +45,8 @@ public class StringIlaTest
 		// Check to see if the zero argument toArray() methods return
 		// the same result.
 		
-		String[] o1 = null;
-		String[] o2 = null;
+		double[] o1 = null;
+		double[] o2 = null;
 		
 		try
 		{
@@ -99,8 +99,8 @@ public class StringIlaTest
 			{
 				for (int o=0 ; o < length - l ; o++)
 				{
-					o1 = new String[length];
-					o2 = new String[length];
+					o1 = new double[length];
+					o2 = new double[length];
 
 					try
 					{

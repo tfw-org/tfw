@@ -23,17 +23,17 @@
  * Boston, MA 02111-1307 USA
  */
 
-package tfw.immutable.ilm.booleanilm.test;
+package tfw.immutable.ilm.floatilm.test;
 
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
-import tfw.immutable.ilm.booleanilm.BooleanIlm;
+import tfw.immutable.ilm.floatilm.FloatIlm;
 
-public class BooleanIlmTest
+public final class FloatIlmCheck
 {
-	private BooleanIlmTest() {}
+	private FloatIlmCheck() {}
 	
-	public static void check(BooleanIlm ilm1, BooleanIlm ilm2)
+	public static void check(FloatIlm ilm1, FloatIlm ilm2)
 	{
 		Argument.assertEquals(ilm1.width(), ilm2.width(),
 			"ilm1.width()", "ilm2.width");
@@ -45,8 +45,8 @@ public class BooleanIlmTest
 		
 		final int width = (int)ilm1.width();
 		final int height = (int)ilm1.height();
-		boolean[][] a1 = null;
-		boolean[][] a2 = null;
+		float[][] a1 = null;
+		float[][] a2 = null;
 		
 		try
 		{

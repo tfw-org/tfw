@@ -67,7 +67,7 @@ public class %%NAME%%IlaDivideTest extends TestCase
 		}
 		catch (IllegalArgumentException iae) {}
 		
-		String s = %%NAME%%IlaTest.check(ila3,
+		String s = %%NAME%%IlaCheck.check(ila3,
 			%%NAME%%IlaDivide.create(ila1, ila2));
 		
 		assertNull(s, s);

@@ -56,7 +56,7 @@ public class CharIlaSegmentTest extends TestCase
 				
 				CharIla i = CharIlaFromArray.create(a);
 		
-				String s = CharIlaTest.check(i,
+				String s = CharIlaCheck.check(i,
 					CharIlaSegment.create(ila, start, length));
 		
 				assertNull(s, s);

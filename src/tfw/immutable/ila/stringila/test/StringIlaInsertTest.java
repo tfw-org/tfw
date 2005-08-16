@@ -79,7 +79,7 @@ public class StringIlaInsertTest extends TestCase
 			
 			StringIla ia = StringIlaFromArray.create(a);
 			
-			String s = StringIlaTest.check(ia,
+			String s = StringIlaCheck.check(ia,
 				StringIlaInsert.create(ila, i, element));
 			
 			assertNull(s, s);

@@ -65,7 +65,7 @@ public class ByteIlmFillTest extends TestCase
 		
 		try
 		{
-			ByteIlmTest.check(ilm,
+			ByteIlmCheck.check(ilm,
 				ByteIlmFill.create(element, WIDTH, HEIGHT));
 		}
 		catch(IllegalArgumentException iae)

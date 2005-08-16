@@ -67,7 +67,7 @@ public class BooleanIlmFromIncrementBooleanIlaTest extends TestCase
 		
 		try
 		{
-			BooleanIlmTest.check(ilm,
+			BooleanIlmCheck.check(ilm,
 				BooleanIlmFromIncrementBooleanIla.create(
 				ila, ROW_INCREMENT, false));
 		}

@@ -74,7 +74,7 @@ public class ByteIlaConcatenateTest extends TestCase
 		}
 		catch (IllegalArgumentException iae) {}
 		
-		String s = ByteIlaTest.check(ila3,
+		String s = ByteIlaCheck.check(ila3,
 			ByteIlaConcatenate.create(ila1, ila2));
 		
 		assertNull(s, s);

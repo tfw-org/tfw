@@ -79,7 +79,7 @@ public class BooleanIlaInsertTest extends TestCase
 			
 			BooleanIla ia = BooleanIlaFromArray.create(a);
 			
-			String s = BooleanIlaTest.check(ia,
+			String s = BooleanIlaCheck.check(ia,
 				BooleanIlaInsert.create(ila, i, element));
 			
 			assertNull(s, s);

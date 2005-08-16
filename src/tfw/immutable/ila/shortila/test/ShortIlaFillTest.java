@@ -53,7 +53,7 @@ public class ShortIlaFillTest extends TestCase
 		}
 		catch (IllegalArgumentException iae) {}
 		
-		String s = ShortIlaTest.check(ila,
+		String s = ShortIlaCheck.check(ila,
 			ShortIlaFill.create(element, LENGTH));
 		
 		assertNull(s, s);

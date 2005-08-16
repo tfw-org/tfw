@@ -78,7 +78,7 @@ public class ByteIlaMutateTest extends TestCase
 			
 			ByteIla ia = ByteIlaFromArray.create(a);
 			
-			String s = ByteIlaTest.check(ia,
+			String s = ByteIlaCheck.check(ia,
 				ByteIlaMutate.create(ila, i, element));
 			
 			assertNull(s, s);

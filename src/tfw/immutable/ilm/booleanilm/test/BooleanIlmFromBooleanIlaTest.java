@@ -65,7 +65,7 @@ public class BooleanIlmFromBooleanIlaTest extends TestCase
 
 		try
 		{
-			BooleanIlmTest.check(ilm,
+			BooleanIlmCheck.check(ilm,
 				BooleanIlmFromBooleanIla.create(ila, WIDTH));
 		}
 		catch(IllegalArgumentException iae)

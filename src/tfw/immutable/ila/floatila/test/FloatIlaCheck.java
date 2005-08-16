@@ -28,9 +28,9 @@ import java.util.Arrays;
 import tfw.immutable.DataInvalidException;
 import tfw.immutable.ila.floatila.FloatIla;
 
-public class FloatIlaTest
+public final class FloatIlaCheck
 {
-	private FloatIlaTest() {}
+	private FloatIlaCheck() {}
 	
 	public static String check(FloatIla ila1, FloatIla ila2)
 	{

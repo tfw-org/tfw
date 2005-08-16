@@ -78,7 +78,7 @@ public class StringIlaMutateTest extends TestCase
 			
 			StringIla ia = StringIlaFromArray.create(a);
 			
-			String s = StringIlaTest.check(ia,
+			String s = StringIlaCheck.check(ia,
 				StringIlaMutate.create(ila, i, element));
 			
 			assertNull(s, s);

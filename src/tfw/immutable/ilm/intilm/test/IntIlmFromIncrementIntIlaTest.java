@@ -67,7 +67,7 @@ public class IntIlmFromIncrementIntIlaTest extends TestCase
 		
 		try
 		{
-			IntIlmTest.check(ilm,
+			IntIlmCheck.check(ilm,
 				IntIlmFromIncrementIntIla.create(
 				ila, ROW_INCREMENT, 0));
 		}

@@ -66,7 +66,7 @@ public class ByteIlaFromByteIlmTest extends TestCase
 		}
 		catch (IllegalArgumentException iae) {}
 		
-		String s = ByteIlaTest.check(ila,
+		String s = ByteIlaCheck.check(ila,
 			ByteIlaFromByteIlm.create(ilm));
 		
 		assertNull(s, s);

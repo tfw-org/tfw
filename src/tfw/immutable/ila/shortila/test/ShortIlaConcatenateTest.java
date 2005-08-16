@@ -74,7 +74,7 @@ public class ShortIlaConcatenateTest extends TestCase
 		}
 		catch (IllegalArgumentException iae) {}
 		
-		String s = ShortIlaTest.check(ila3,
+		String s = ShortIlaCheck.check(ila3,
 			ShortIlaConcatenate.create(ila1, ila2));
 		
 		assertNull(s, s);

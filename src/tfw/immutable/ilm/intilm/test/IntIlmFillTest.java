@@ -65,7 +65,7 @@ public class IntIlmFillTest extends TestCase
 		
 		try
 		{
-			IntIlmTest.check(ilm,
+			IntIlmCheck.check(ilm,
 				IntIlmFill.create(element, WIDTH, HEIGHT));
 		}
 		catch(IllegalArgumentException iae)

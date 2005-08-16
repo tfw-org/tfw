@@ -65,7 +65,7 @@ public class %%NAME%%IlmFrom%%NAME%%IlaTest extends TestCase
 
 		try
 		{
-			%%NAME%%IlmTest.check(ilm,
+			%%NAME%%IlmCheck.check(ilm,
 				%%NAME%%IlmFrom%%NAME%%Ila.create(ila, WIDTH));
 		}
 		catch(IllegalArgumentException iae)

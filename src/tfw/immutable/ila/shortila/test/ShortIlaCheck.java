@@ -22,17 +22,17 @@
  * Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307 USA
  */
-package tfw.immutable.ila.charila.test;
+package tfw.immutable.ila.shortila.test;
 
 import java.util.Arrays;
 import tfw.immutable.DataInvalidException;
-import tfw.immutable.ila.charila.CharIla;
+import tfw.immutable.ila.shortila.ShortIla;
 
-public class CharIlaTest
+public final class ShortIlaCheck
 {
-	private CharIlaTest() {}
+	private ShortIlaCheck() {}
 	
-	public static String check(CharIla ila1, CharIla ila2)
+	public static String check(ShortIla ila1, ShortIla ila2)
 	{
 		if (ila1.length() != ila2.length())
 		{
@@ -45,8 +45,8 @@ public class CharIlaTest
 		// Check to see if the zero argument toArray() methods return
 		// the same result.
 		
-		char[] o1 = null;
-		char[] o2 = null;
+		short[] o1 = null;
+		short[] o2 = null;
 		
 		try
 		{
@@ -99,8 +99,8 @@ public class CharIlaTest
 			{
 				for (int o=0 ; o < length - l ; o++)
 				{
-					o1 = new char[length];
-					o2 = new char[length];
+					o1 = new short[length];
+					o2 = new short[length];
 
 					try
 					{

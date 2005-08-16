@@ -23,17 +23,17 @@
  * Boston, MA 02111-1307 USA
  */
 
-package tfw.immutable.ilm.intilm.test;
+package tfw.immutable.ilm.objectilm.test;
 
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
-import tfw.immutable.ilm.intilm.IntIlm;
+import tfw.immutable.ilm.objectilm.ObjectIlm;
 
-public class IntIlmTest
+public final class ObjectIlmCheck
 {
-	private IntIlmTest() {}
+	private ObjectIlmCheck() {}
 	
-	public static void check(IntIlm ilm1, IntIlm ilm2)
+	public static void check(ObjectIlm ilm1, ObjectIlm ilm2)
 	{
 		Argument.assertEquals(ilm1.width(), ilm2.width(),
 			"ilm1.width()", "ilm2.width");
@@ -45,8 +45,8 @@ public class IntIlmTest
 		
 		final int width = (int)ilm1.width();
 		final int height = (int)ilm1.height();
-		int[][] a1 = null;
-		int[][] a2 = null;
+		Object[][] a1 = null;
+		Object[][] a2 = null;
 		
 		try
 		{

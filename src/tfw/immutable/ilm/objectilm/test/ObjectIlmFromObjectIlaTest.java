@@ -65,7 +65,7 @@ public class ObjectIlmFromObjectIlaTest extends TestCase
 
 		try
 		{
-			ObjectIlmTest.check(ilm,
+			ObjectIlmCheck.check(ilm,
 				ObjectIlmFromObjectIla.create(ila, WIDTH));
 		}
 		catch(IllegalArgumentException iae)

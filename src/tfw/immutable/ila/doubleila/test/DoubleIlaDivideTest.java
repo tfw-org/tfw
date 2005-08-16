@@ -67,7 +67,7 @@ public class DoubleIlaDivideTest extends TestCase
 		}
 		catch (IllegalArgumentException iae) {}
 		
-		String s = DoubleIlaTest.check(ila3,
+		String s = DoubleIlaCheck.check(ila3,
 			DoubleIlaDivide.create(ila1, ila2));
 		
 		assertNull(s, s);

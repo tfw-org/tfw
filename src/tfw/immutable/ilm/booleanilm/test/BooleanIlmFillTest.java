@@ -65,7 +65,7 @@ public class BooleanIlmFillTest extends TestCase
 		
 		try
 		{
-			BooleanIlmTest.check(ilm,
+			BooleanIlmCheck.check(ilm,
 				BooleanIlmFill.create(element, WIDTH, HEIGHT));
 		}
 		catch(IllegalArgumentException iae)

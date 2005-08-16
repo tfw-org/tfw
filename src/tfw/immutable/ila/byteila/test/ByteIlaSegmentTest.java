@@ -56,7 +56,7 @@ public class ByteIlaSegmentTest extends TestCase
 				
 				ByteIla i = ByteIlaFromArray.create(a);
 		
-				String s = ByteIlaTest.check(i,
+				String s = ByteIlaCheck.check(i,
 					ByteIlaSegment.create(ila, start, length));
 		
 				assertNull(s, s);

@@ -77,7 +77,7 @@ public class IntIlaRemoveTest extends TestCase
 			
 			IntIla ia = IntIlaFromArray.create(a);
 			
-			String s = IntIlaTest.check(ia,
+			String s = IntIlaCheck.check(ia,
 				IntIlaRemove.create(ila, i));
 			
 			assertNull(s, s);

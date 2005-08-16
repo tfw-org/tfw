@@ -65,7 +65,7 @@ public class FloatIlmFromFloatIlaTest extends TestCase
 
 		try
 		{
-			FloatIlmTest.check(ilm,
+			FloatIlmCheck.check(ilm,
 				FloatIlmFromFloatIla.create(ila, WIDTH));
 		}
 		catch(IllegalArgumentException iae)

@@ -28,9 +28,9 @@ import java.util.Arrays;
 import tfw.immutable.DataInvalidException;
 import tfw.immutable.ila.intila.IntIla;
 
-public class IntIlaTest
+public final class IntIlaCheck
 {
-	private IntIlaTest() {}
+	private IntIlaCheck() {}
 	
 	public static String check(IntIla ila1, IntIla ila2)
 	{

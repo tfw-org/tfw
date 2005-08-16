@@ -65,7 +65,7 @@ public class ShortIlmFillTest extends TestCase
 		
 		try
 		{
-			ShortIlmTest.check(ilm,
+			ShortIlmCheck.check(ilm,
 				ShortIlmFill.create(element, WIDTH, HEIGHT));
 		}
 		catch(IllegalArgumentException iae)

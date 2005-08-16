@@ -23,17 +23,17 @@
  * Boston, MA 02111-1307 USA
  */
 
-package tfw.immutable.ilm.longilm.test;
+package tfw.immutable.ilm.charilm.test;
 
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
-import tfw.immutable.ilm.longilm.LongIlm;
+import tfw.immutable.ilm.charilm.CharIlm;
 
-public class LongIlmTest
+public final class CharIlmCheck
 {
-	private LongIlmTest() {}
+	private CharIlmCheck() {}
 	
-	public static void check(LongIlm ilm1, LongIlm ilm2)
+	public static void check(CharIlm ilm1, CharIlm ilm2)
 	{
 		Argument.assertEquals(ilm1.width(), ilm2.width(),
 			"ilm1.width()", "ilm2.width");
@@ -45,8 +45,8 @@ public class LongIlmTest
 		
 		final int width = (int)ilm1.width();
 		final int height = (int)ilm1.height();
-		long[][] a1 = null;
-		long[][] a2 = null;
+		char[][] a1 = null;
+		char[][] a2 = null;
 		
 		try
 		{

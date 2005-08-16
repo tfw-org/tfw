@@ -79,7 +79,7 @@ public class ByteIlaInsertTest extends TestCase
 			
 			ByteIla ia = ByteIlaFromArray.create(a);
 			
-			String s = ByteIlaTest.check(ia,
+			String s = ByteIlaCheck.check(ia,
 				ByteIlaInsert.create(ila, i, element));
 			
 			assertNull(s, s);

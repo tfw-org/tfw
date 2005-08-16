@@ -66,7 +66,7 @@ public class CharIlaFromCharIlmTest extends TestCase
 		}
 		catch (IllegalArgumentException iae) {}
 		
-		String s = CharIlaTest.check(ila,
+		String s = CharIlaCheck.check(ila,
 			CharIlaFromCharIlm.create(ilm));
 		
 		assertNull(s, s);

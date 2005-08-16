@@ -22,17 +22,17 @@
  * Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307 USA
  */
-package tfw.immutable.ila.shortila.test;
+package tfw.immutable.ila.stringila.test;
 
 import java.util.Arrays;
 import tfw.immutable.DataInvalidException;
-import tfw.immutable.ila.shortila.ShortIla;
+import tfw.immutable.ila.stringila.StringIla;
 
-public class ShortIlaTest
+public final class StringIlaCheck
 {
-	private ShortIlaTest() {}
+	private StringIlaCheck() {}
 	
-	public static String check(ShortIla ila1, ShortIla ila2)
+	public static String check(StringIla ila1, StringIla ila2)
 	{
 		if (ila1.length() != ila2.length())
 		{
@@ -45,8 +45,8 @@ public class ShortIlaTest
 		// Check to see if the zero argument toArray() methods return
 		// the same result.
 		
-		short[] o1 = null;
-		short[] o2 = null;
+		String[] o1 = null;
+		String[] o2 = null;
 		
 		try
 		{
@@ -99,8 +99,8 @@ public class ShortIlaTest
 			{
 				for (int o=0 ; o < length - l ; o++)
 				{
-					o1 = new short[length];
-					o2 = new short[length];
+					o1 = new String[length];
+					o2 = new String[length];
 
 					try
 					{

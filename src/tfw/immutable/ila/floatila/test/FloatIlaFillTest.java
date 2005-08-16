@@ -53,7 +53,7 @@ public class FloatIlaFillTest extends TestCase
 		}
 		catch (IllegalArgumentException iae) {}
 		
-		String s = FloatIlaTest.check(ila,
+		String s = FloatIlaCheck.check(ila,
 			FloatIlaFill.create(element, LENGTH));
 		
 		assertNull(s, s);

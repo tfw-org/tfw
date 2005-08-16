@@ -65,7 +65,7 @@ public class LongIlmFromLongIlaTest extends TestCase
 
 		try
 		{
-			LongIlmTest.check(ilm,
+			LongIlmCheck.check(ilm,
 				LongIlmFromLongIla.create(ila, WIDTH));
 		}
 		catch(IllegalArgumentException iae)

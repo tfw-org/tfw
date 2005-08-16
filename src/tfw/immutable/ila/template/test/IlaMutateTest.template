@@ -78,7 +78,7 @@ public class %%NAME%%IlaMutateTest extends TestCase
 			
 			%%NAME%%Ila ia = %%NAME%%IlaFromArray.create(a);
 			
-			String s = %%NAME%%IlaTest.check(ia,
+			String s = %%NAME%%IlaCheck.check(ia,
 				%%NAME%%IlaMutate.create(ila, i, element));
 			
 			assertNull(s, s);

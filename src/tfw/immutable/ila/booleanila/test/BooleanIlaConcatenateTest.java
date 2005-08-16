@@ -74,7 +74,7 @@ public class BooleanIlaConcatenateTest extends TestCase
 		}
 		catch (IllegalArgumentException iae) {}
 		
-		String s = BooleanIlaTest.check(ila3,
+		String s = BooleanIlaCheck.check(ila3,
 			BooleanIlaConcatenate.create(ila1, ila2));
 		
 		assertNull(s, s);

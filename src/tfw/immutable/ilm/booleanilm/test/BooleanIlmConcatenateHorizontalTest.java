@@ -73,7 +73,7 @@ public class BooleanIlmConcatenateHorizontalTest extends TestCase
 		
 		try
 		{
-			BooleanIlmTest.check(ilm3,
+			BooleanIlmCheck.check(ilm3,
 				BooleanIlmConcatenateHorizontal.create(ilm1, ilm2));
 		}
 		catch(IllegalArgumentException iae)

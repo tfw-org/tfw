@@ -78,7 +78,7 @@ public class BooleanIlaMutateTest extends TestCase
 			
 			BooleanIla ia = BooleanIlaFromArray.create(a);
 			
-			String s = BooleanIlaTest.check(ia,
+			String s = BooleanIlaCheck.check(ia,
 				BooleanIlaMutate.create(ila, i, element));
 			
 			assertNull(s, s);

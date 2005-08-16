@@ -56,7 +56,7 @@ public class ObjectIlaSegmentTest extends TestCase
 				
 				ObjectIla i = ObjectIlaFromArray.create(a);
 		
-				String s = ObjectIlaTest.check(i,
+				String s = ObjectIlaCheck.check(i,
 					ObjectIlaSegment.create(ila, start, length));
 		
 				assertNull(s, s);

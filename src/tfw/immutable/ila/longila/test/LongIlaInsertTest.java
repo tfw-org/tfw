@@ -79,7 +79,7 @@ public class LongIlaInsertTest extends TestCase
 			
 			LongIla ia = LongIlaFromArray.create(a);
 			
-			String s = LongIlaTest.check(ia,
+			String s = LongIlaCheck.check(ia,
 				LongIlaInsert.create(ila, i, element));
 			
 			assertNull(s, s);

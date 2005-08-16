@@ -73,7 +73,7 @@ public class ObjectIlmConcatenateHorizontalTest extends TestCase
 		
 		try
 		{
-			ObjectIlmTest.check(ilm3,
+			ObjectIlmCheck.check(ilm3,
 				ObjectIlmConcatenateHorizontal.create(ilm1, ilm2));
 		}
 		catch(IllegalArgumentException iae)

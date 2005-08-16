@@ -79,7 +79,7 @@ public class %%NAME%%IlaInsertTest extends TestCase
 			
 			%%NAME%%Ila ia = %%NAME%%IlaFromArray.create(a);
 			
-			String s = %%NAME%%IlaTest.check(ia,
+			String s = %%NAME%%IlaCheck.check(ia,
 				%%NAME%%IlaInsert.create(ila, i, element));
 			
 			assertNull(s, s);

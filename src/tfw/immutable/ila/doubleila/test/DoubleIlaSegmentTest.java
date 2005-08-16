@@ -56,7 +56,7 @@ public class DoubleIlaSegmentTest extends TestCase
 				
 				DoubleIla i = DoubleIlaFromArray.create(a);
 		
-				String s = DoubleIlaTest.check(i,
+				String s = DoubleIlaCheck.check(i,
 					DoubleIlaSegment.create(ila, start, length));
 		
 				assertNull(s, s);

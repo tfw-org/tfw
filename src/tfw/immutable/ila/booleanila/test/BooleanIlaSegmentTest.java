@@ -56,7 +56,7 @@ public class BooleanIlaSegmentTest extends TestCase
 				
 				BooleanIla i = BooleanIlaFromArray.create(a);
 		
-				String s = BooleanIlaTest.check(i,
+				String s = BooleanIlaCheck.check(i,
 					BooleanIlaSegment.create(ila, start, length));
 		
 				assertNull(s, s);

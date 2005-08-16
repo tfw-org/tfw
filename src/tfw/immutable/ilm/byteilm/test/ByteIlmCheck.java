@@ -23,17 +23,17 @@
  * Boston, MA 02111-1307 USA
  */
 
-package tfw.immutable.ilm.floatilm.test;
+package tfw.immutable.ilm.byteilm.test;
 
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
-import tfw.immutable.ilm.floatilm.FloatIlm;
+import tfw.immutable.ilm.byteilm.ByteIlm;
 
-public class FloatIlmTest
+public final class ByteIlmCheck
 {
-	private FloatIlmTest() {}
+	private ByteIlmCheck() {}
 	
-	public static void check(FloatIlm ilm1, FloatIlm ilm2)
+	public static void check(ByteIlm ilm1, ByteIlm ilm2)
 	{
 		Argument.assertEquals(ilm1.width(), ilm2.width(),
 			"ilm1.width()", "ilm2.width");
@@ -45,8 +45,8 @@ public class FloatIlmTest
 		
 		final int width = (int)ilm1.width();
 		final int height = (int)ilm1.height();
-		float[][] a1 = null;
-		float[][] a2 = null;
+		byte[][] a1 = null;
+		byte[][] a2 = null;
 		
 		try
 		{

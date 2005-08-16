@@ -66,7 +66,7 @@ public class BooleanIlaFromBooleanIlmTest extends TestCase
 		}
 		catch (IllegalArgumentException iae) {}
 		
-		String s = BooleanIlaTest.check(ila,
+		String s = BooleanIlaCheck.check(ila,
 			BooleanIlaFromBooleanIlm.create(ilm));
 		
 		assertNull(s, s);

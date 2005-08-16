@@ -67,7 +67,7 @@ public class ByteIlmFromIncrementByteIlaTest extends TestCase
 		
 		try
 		{
-			ByteIlmTest.check(ilm,
+			ByteIlmCheck.check(ilm,
 				ByteIlmFromIncrementByteIla.create(
 				ila, ROW_INCREMENT, (byte)0));
 		}

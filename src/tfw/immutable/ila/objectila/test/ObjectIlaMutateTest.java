@@ -78,7 +78,7 @@ public class ObjectIlaMutateTest extends TestCase
 			
 			ObjectIla ia = ObjectIlaFromArray.create(a);
 			
-			String s = ObjectIlaTest.check(ia,
+			String s = ObjectIlaCheck.check(ia,
 				ObjectIlaMutate.create(ila, i, element));
 			
 			assertNull(s, s);

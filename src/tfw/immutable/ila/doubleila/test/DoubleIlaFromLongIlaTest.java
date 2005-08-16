@@ -50,7 +50,7 @@ public class DoubleIlaFromLongIlaTest extends TestCase
 		LongIla longIla = LongIlaFromArray.create(longArray);
 		DoubleIla doubleIla = DoubleIlaFromArray.create(doubleArray);
 		
-		String s = DoubleIlaTest.check(doubleIla,
+		String s = DoubleIlaCheck.check(doubleIla,
 			DoubleIlaFromLongIla.create(longIla));
 			
 		assertNull(s, s);

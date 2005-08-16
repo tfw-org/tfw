@@ -67,7 +67,7 @@ public class StringIlmFromIncrementStringIlaTest extends TestCase
 		
 		try
 		{
-			StringIlmTest.check(ilm,
+			StringIlmCheck.check(ilm,
 				StringIlmFromIncrementStringIla.create(
 				ila, ROW_INCREMENT, ""));
 		}

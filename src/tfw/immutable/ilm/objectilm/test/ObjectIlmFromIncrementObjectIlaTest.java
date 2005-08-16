@@ -67,7 +67,7 @@ public class ObjectIlmFromIncrementObjectIlaTest extends TestCase
 		
 		try
 		{
-			ObjectIlmTest.check(ilm,
+			ObjectIlmCheck.check(ilm,
 				ObjectIlmFromIncrementObjectIla.create(
 				ila, ROW_INCREMENT, Object.class));
 		}

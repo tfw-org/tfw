@@ -73,7 +73,7 @@ public class ByteIlmConcatenateVerticalTest extends TestCase
 		
 		try
 		{
-			ByteIlmTest.check(ilm3,
+			ByteIlmCheck.check(ilm3,
 				ByteIlmConcatenateVertical.create(ilm1, ilm2));
 		}
 		catch(IllegalArgumentException iae)

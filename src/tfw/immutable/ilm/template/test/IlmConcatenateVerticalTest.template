@@ -73,7 +73,7 @@ public class %%NAME%%IlmConcatenateVerticalTest extends TestCase
 		
 		try
 		{
-			%%NAME%%IlmTest.check(ilm3,
+			%%NAME%%IlmCheck.check(ilm3,
 				%%NAME%%IlmConcatenateVertical.create(ilm1, ilm2));
 		}
 		catch(IllegalArgumentException iae)

@@ -77,7 +77,7 @@ public class BooleanIlaRemoveTest extends TestCase
 			
 			BooleanIla ia = BooleanIlaFromArray.create(a);
 			
-			String s = BooleanIlaTest.check(ia,
+			String s = BooleanIlaCheck.check(ia,
 				BooleanIlaRemove.create(ila, i));
 			
 			assertNull(s, s);

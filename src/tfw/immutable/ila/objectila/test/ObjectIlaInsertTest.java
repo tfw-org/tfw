@@ -79,7 +79,7 @@ public class ObjectIlaInsertTest extends TestCase
 			
 			ObjectIla ia = ObjectIlaFromArray.create(a);
 			
-			String s = ObjectIlaTest.check(ia,
+			String s = ObjectIlaCheck.check(ia,
 				ObjectIlaInsert.create(ila, i, element));
 			
 			assertNull(s, s);

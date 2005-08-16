@@ -78,7 +78,7 @@ public class CharIlaMutateTest extends TestCase
 			
 			CharIla ia = CharIlaFromArray.create(a);
 			
-			String s = CharIlaTest.check(ia,
+			String s = CharIlaCheck.check(ia,
 				CharIlaMutate.create(ila, i, element));
 			
 			assertNull(s, s);

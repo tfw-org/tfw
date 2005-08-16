@@ -53,7 +53,7 @@ public class LongIlaFillTest extends TestCase
 		}
 		catch (IllegalArgumentException iae) {}
 		
-		String s = LongIlaTest.check(ila,
+		String s = LongIlaCheck.check(ila,
 			LongIlaFill.create(element, LENGTH));
 		
 		assertNull(s, s);
