@@ -26,6 +26,7 @@
 package tfw.immutable.ilm.charilm.test;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.Random;
 import junit.framework.TestCase;
 import tfw.immutable.ila.charila.CharIla;
@@ -36,7 +37,7 @@ import tfw.immutable.ilm.charilm.CharIlmFromIncrementCharIla;
 
 public class CharIlmFromIncrementCharIlaTest extends TestCase
 {
-	public void testCharIlaFromIncrementCharIla()
+	public void testCharIlmFromIncrementCharIla()
 	{
 		final Random random = new Random();
 		final int WIDTH = 20;
@@ -52,6 +53,11 @@ public class CharIlmFromIncrementCharIlaTest extends TestCase
 		CharIla ila = CharIlaFromArray.create(ilaArray);
 		
 		char[][] ilmArray = new char[HEIGHT][WIDTH];
+		
+		for (int i=0 ; i < HEIGHT ; i++)
+		{
+			Arrays.fill(ilmArray[i], (char)0);
+		}
 		
 		System.arraycopy(ilaArray,  0, ilmArray[0], 0, WIDTH);
 		System.arraycopy(ilaArray,  2, ilmArray[1], 0, WIDTH -  2);

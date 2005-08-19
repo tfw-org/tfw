@@ -26,6 +26,7 @@
 package tfw.immutable.ilm.intilm.test;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.Random;
 import junit.framework.TestCase;
 import tfw.immutable.ila.intila.IntIla;
@@ -36,7 +37,7 @@ import tfw.immutable.ilm.intilm.IntIlmFromIncrementIntIla;
 
 public class IntIlmFromIncrementIntIlaTest extends TestCase
 {
-	public void testIntIlaFromIncrementIntIla()
+	public void testIntIlmFromIncrementIntIla()
 	{
 		final Random random = new Random();
 		final int WIDTH = 20;
@@ -52,6 +53,11 @@ public class IntIlmFromIncrementIntIlaTest extends TestCase
 		IntIla ila = IntIlaFromArray.create(ilaArray);
 		
 		int[][] ilmArray = new int[HEIGHT][WIDTH];
+		
+		for (int i=0 ; i < HEIGHT ; i++)
+		{
+			Arrays.fill(ilmArray[i], 0);
+		}
 		
 		System.arraycopy(ilaArray,  0, ilmArray[0], 0, WIDTH);
 		System.arraycopy(ilaArray,  2, ilmArray[1], 0, WIDTH -  2);

@@ -26,6 +26,7 @@
 package tfw.immutable.ilm.shortilm.test;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.Random;
 import junit.framework.TestCase;
 import tfw.immutable.ila.shortila.ShortIla;
@@ -36,7 +37,7 @@ import tfw.immutable.ilm.shortilm.ShortIlmFromIncrementShortIla;
 
 public class ShortIlmFromIncrementShortIlaTest extends TestCase
 {
-	public void testShortIlaFromIncrementShortIla()
+	public void testShortIlmFromIncrementShortIla()
 	{
 		final Random random = new Random();
 		final int WIDTH = 20;
@@ -52,6 +53,11 @@ public class ShortIlmFromIncrementShortIlaTest extends TestCase
 		ShortIla ila = ShortIlaFromArray.create(ilaArray);
 		
 		short[][] ilmArray = new short[HEIGHT][WIDTH];
+		
+		for (int i=0 ; i < HEIGHT ; i++)
+		{
+			Arrays.fill(ilmArray[i], (short)0);
+		}
 		
 		System.arraycopy(ilaArray,  0, ilmArray[0], 0, WIDTH);
 		System.arraycopy(ilaArray,  2, ilmArray[1], 0, WIDTH -  2);

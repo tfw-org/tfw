@@ -26,6 +26,7 @@
 package tfw.immutable.ilm.booleanilm.test;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.Random;
 import junit.framework.TestCase;
 import tfw.immutable.ila.booleanila.BooleanIla;
@@ -36,7 +37,7 @@ import tfw.immutable.ilm.booleanilm.BooleanIlmFromIncrementBooleanIla;
 
 public class BooleanIlmFromIncrementBooleanIlaTest extends TestCase
 {
-	public void testBooleanIlaFromIncrementBooleanIla()
+	public void testBooleanIlmFromIncrementBooleanIla()
 	{
 		final Random random = new Random();
 		final int WIDTH = 20;
@@ -52,6 +53,11 @@ public class BooleanIlmFromIncrementBooleanIlaTest extends TestCase
 		BooleanIla ila = BooleanIlaFromArray.create(ilaArray);
 		
 		boolean[][] ilmArray = new boolean[HEIGHT][WIDTH];
+		
+		for (int i=0 ; i < HEIGHT ; i++)
+		{
+			Arrays.fill(ilmArray[i], false);
+		}
 		
 		System.arraycopy(ilaArray,  0, ilmArray[0], 0, WIDTH);
 		System.arraycopy(ilaArray,  2, ilmArray[1], 0, WIDTH -  2);

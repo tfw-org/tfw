@@ -26,6 +26,7 @@
 package tfw.immutable.ilm.longilm.test;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.Random;
 import junit.framework.TestCase;
 import tfw.immutable.ila.longila.LongIla;
@@ -36,7 +37,7 @@ import tfw.immutable.ilm.longilm.LongIlmFromIncrementLongIla;
 
 public class LongIlmFromIncrementLongIlaTest extends TestCase
 {
-	public void testLongIlaFromIncrementLongIla()
+	public void testLongIlmFromIncrementLongIla()
 	{
 		final Random random = new Random();
 		final int WIDTH = 20;
@@ -52,6 +53,11 @@ public class LongIlmFromIncrementLongIlaTest extends TestCase
 		LongIla ila = LongIlaFromArray.create(ilaArray);
 		
 		long[][] ilmArray = new long[HEIGHT][WIDTH];
+		
+		for (int i=0 ; i < HEIGHT ; i++)
+		{
+			Arrays.fill(ilmArray[i], 0L);
+		}
 		
 		System.arraycopy(ilaArray,  0, ilmArray[0], 0, WIDTH);
 		System.arraycopy(ilaArray,  2, ilmArray[1], 0, WIDTH -  2);

@@ -26,6 +26,7 @@
 package tfw.immutable.ilm.floatilm.test;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.Random;
 import junit.framework.TestCase;
 import tfw.immutable.ila.floatila.FloatIla;
@@ -36,7 +37,7 @@ import tfw.immutable.ilm.floatilm.FloatIlmFromIncrementFloatIla;
 
 public class FloatIlmFromIncrementFloatIlaTest extends TestCase
 {
-	public void testFloatIlaFromIncrementFloatIla()
+	public void testFloatIlmFromIncrementFloatIla()
 	{
 		final Random random = new Random();
 		final int WIDTH = 20;
@@ -52,6 +53,11 @@ public class FloatIlmFromIncrementFloatIlaTest extends TestCase
 		FloatIla ila = FloatIlaFromArray.create(ilaArray);
 		
 		float[][] ilmArray = new float[HEIGHT][WIDTH];
+		
+		for (int i=0 ; i < HEIGHT ; i++)
+		{
+			Arrays.fill(ilmArray[i], 0.0f);
+		}
 		
 		System.arraycopy(ilaArray,  0, ilmArray[0], 0, WIDTH);
 		System.arraycopy(ilaArray,  2, ilmArray[1], 0, WIDTH -  2);

@@ -26,6 +26,7 @@
 package tfw.immutable.ilm.byteilm.test;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.Random;
 import junit.framework.TestCase;
 import tfw.immutable.ila.byteila.ByteIla;
@@ -36,7 +37,7 @@ import tfw.immutable.ilm.byteilm.ByteIlmFromIncrementByteIla;
 
 public class ByteIlmFromIncrementByteIlaTest extends TestCase
 {
-	public void testByteIlaFromIncrementByteIla()
+	public void testByteIlmFromIncrementByteIla()
 	{
 		final Random random = new Random();
 		final int WIDTH = 20;
@@ -52,6 +53,11 @@ public class ByteIlmFromIncrementByteIlaTest extends TestCase
 		ByteIla ila = ByteIlaFromArray.create(ilaArray);
 		
 		byte[][] ilmArray = new byte[HEIGHT][WIDTH];
+		
+		for (int i=0 ; i < HEIGHT ; i++)
+		{
+			Arrays.fill(ilmArray[i], (byte)0);
+		}
 		
 		System.arraycopy(ilaArray,  0, ilmArray[0], 0, WIDTH);
 		System.arraycopy(ilaArray,  2, ilmArray[1], 0, WIDTH -  2);
