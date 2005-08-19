@@ -22,70 +22,89 @@
  * Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307 USA
  */
-package tfw.swing.test;
+package tfw.swing.demo;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
-import tfw.swing.JLabelBB;
+import tfw.swing.JButtonBB;
 import tfw.tsm.AWTTransactionQueue;
 import tfw.tsm.Initiator;
+import tfw.tsm.TriggeredCommit;
+import tfw.tsm.ecd.BooleanECD;
 import tfw.tsm.ecd.EventChannelDescription;
-import tfw.tsm.ecd.StringECD;
+import tfw.tsm.ecd.StatelessTriggerECD;
 import tfw.tsm.Root;
 import tfw.tsm.RootFactory;
 
-public class JLabelBBTest
+public class JButtonBBDemo
 {
-	private static final StringECD TEXT_ECD =
-		new StringECD("text");
+	private static final BooleanECD ENABLE_ECD =
+		new BooleanECD("enable");
+	private static final StatelessTriggerECD TRIGGER_ECD =
+		new StatelessTriggerECD("trigger");
+	private static final String PREFIX = "Button pressed: ";
 	
-	private JLabelBBTest() {}
+	private static long buttonPresses = 0;
+	
+	private JButtonBBDemo() {}
 	
 	public static final void main(String[] args)
 	{
+		final JLabel l = new JLabel();
+		l.setText(PREFIX + buttonPresses);
+		
+		final TriggeredCommit commit = new TriggeredCommit("JBttonBBTest",
+			TRIGGER_ECD,
+			null,
+			null)
+		{
+			protected void commit()
+			{
+				l.setText(PREFIX + ++buttonPresses);
+			}
+		};
+		
 		final Initiator initiator = new Initiator("JButtonBBTest",
-			new EventChannelDescription[] {TEXT_ECD});
+			new EventChannelDescription[] {ENABLE_ECD});
 		
-		JLabelBB l = new JLabelBB("JButtonBBTest", TEXT_ECD);
-		l.setText("Set Label Value");
-		final JTextField tf = new JTextField(16);
-		JButton b = new JButton("Set Label");
-		
-		ActionListener al = new ActionListener()
+		final JCheckBox cb = new JCheckBox();
+		cb.setText("Enable Button");
+		cb.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				initiator.set(TEXT_ECD, tf.getText());
+				initiator.set(ENABLE_ECD,
+					cb.isSelected() ? Boolean.TRUE : Boolean.FALSE);
 			}
-		};
-		tf.addActionListener(al);
-		b.addActionListener(al);
+		});
 		
-		JPanel c = new JPanel();
-		c.setLayout(new BorderLayout());
-		c.add(tf, BorderLayout.CENTER);
-		c.add(b, BorderLayout.EAST);
+		JButtonBB b = new JButtonBB(
+			"JButtonBBTest", ENABLE_ECD, TRIGGER_ECD);
+		b.setText("Press Me!");
 		
 		final JPanel p = new JPanel();
 		p.setLayout(new BorderLayout());
-		p.add(l, BorderLayout.NORTH);
-		p.add(c, BorderLayout.CENTER);
+		p.add(cb, BorderLayout.NORTH);
+		p.add(l, BorderLayout.SOUTH);
 		
 		RootFactory rf = new RootFactory();
-		rf.addEventChannel(TEXT_ECD);
+		rf.addEventChannel(ENABLE_ECD, Boolean.FALSE);
+		rf.addEventChannel(TRIGGER_ECD);
 		Root r = rf.create("JButtonBBTest", new AWTTransactionQueue());
+		r.add(commit);
 		r.add(initiator);
-		r.add(l);
+		r.add(b);
 		
 		final JFrame f = new JFrame();
-		f.getContentPane().add(p, BorderLayout.CENTER);
+		f.getContentPane().add(b, BorderLayout.NORTH);
+		f.getContentPane().add(p, BorderLayout.SOUTH);
 		f.addWindowListener(new WindowAdapter()
 		{
 			public void windowClosing(WindowEvent e)
@@ -95,7 +114,5 @@ public class JLabelBBTest
 		});
 		f.pack();
 		f.setVisible(true);
-		
-		initiator.set(TEXT_ECD, "Initial Label Value");
 	}
 }

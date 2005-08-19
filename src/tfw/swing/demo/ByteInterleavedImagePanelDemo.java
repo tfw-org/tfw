@@ -22,7 +22,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307 USA
  */
-package tfw.swing.test;
+package tfw.swing.demo;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -53,9 +53,9 @@ import tfw.tsm.ecd.EventChannelDescription;
 import tfw.tsm.ecd.IntegerECD;
 import tfw.tsm.ecd.ilm.ByteIlmECD;
 
-public class ByteInterleavedImagePanelTest
+public class ByteInterleavedImagePanelDemo
 {
-	public ByteInterleavedImagePanelTest() {}
+	public ByteInterleavedImagePanelDemo() {}
 	
 	public static final void main(String[] args)
 	{

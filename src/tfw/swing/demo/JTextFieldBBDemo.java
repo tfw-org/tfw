@@ -22,7 +22,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307 USA
  */
-package tfw.swing.test;
+package tfw.swing.demo;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
@@ -45,9 +45,9 @@ import tfw.tsm.ecd.BooleanECD;
 import tfw.tsm.ecd.EventChannelDescription;
 import tfw.tsm.ecd.StringECD;
 
-public class JTextFieldBBTest
+public class JTextFieldBBDemo
 {
-	private JTextFieldBBTest() {}
+	private JTextFieldBBDemo() {}
 	
 	public static final void main(String[] args)
 	{
