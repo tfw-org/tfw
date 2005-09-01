@@ -85,8 +85,8 @@ public class Initiator extends Leaf
     public Initiator(String name, EventChannelDescription[] sources,
         StateQueueFactory queueFactory)
     {
-        super("Initiator[" + name + "]", null,
-            createSources(name, sources, queueFactory));
+        super(name, null, createSources(name, sources, queueFactory));
+        
         Argument.assertNotNull(name, "name");
 
         if (sources.length == 0)
