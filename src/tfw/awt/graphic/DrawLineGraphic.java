@@ -31,12 +31,46 @@ public final class DrawLineGraphic
 	private DrawLineGraphic() {}
 	
 	public static Graphic create(Graphic graphic,
-		int[] x1s, int[] y1s, int[] x2s, int[] y2s)
+		int x1, int y1, int x2, int y2)
 	{
-		return(new MyGraphic(graphic, x1s, y1s, x2s, y2s));
+		return(new MyGraphic1(graphic, x1, y1, x2, y2));
 	}
 	
-	private static class MyGraphic implements Graphic
+	private static class MyGraphic1 implements Graphic
+	{
+		private final Graphic graphic;
+		private final int x1;
+		private final int y1;
+		private final int x2;
+		private final int y2;
+		
+		public MyGraphic1(Graphic graphic, int x1, int y1, int x2, int y2)
+		{
+			this.graphic = graphic;
+			this.x1 = x1;
+			this.y1 = y1;
+			this.x2 = x2;
+			this.y2 = y2;
+		}
+		
+		public void paint(Graphics2D graphics2D)
+		{
+			if (graphic != null)
+			{
+				graphic.paint(graphics2D);
+			}
+			
+			graphics2D.drawLine(x1, y1, x2, y2);
+		}
+	}
+	
+	public static Graphic create(Graphic graphic,
+		int[] x1s, int[] y1s, int[] x2s, int[] y2s)
+	{
+		return(new MyGraphic2(graphic, x1s, y1s, x2s, y2s));
+	}
+	
+	private static class MyGraphic2 implements Graphic
 	{
 		private final Graphic graphic;
 		private final int[] x1s;
@@ -44,7 +78,7 @@ public final class DrawLineGraphic
 		private final int[] x2s;
 		private final int[] y2s;
 		
-		public MyGraphic(Graphic graphic, int[] x1s, int[] y1s,
+		public MyGraphic2(Graphic graphic, int[] x1s, int[] y1s,
 			int[] x2s, int[] y2s)
 		{
 			this.graphic = graphic;
