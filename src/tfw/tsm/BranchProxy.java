@@ -26,7 +26,7 @@ package tfw.tsm;
 
 import java.util.Iterator;
 import java.util.Map;
-
+import java.util.TreeMap;
 import tfw.check.Argument;
 
 public final class BranchProxy implements Proxy
@@ -46,75 +46,75 @@ public final class BranchProxy implements Proxy
 	
 	public EventChannelProxy[] getEventChannelProxies()
 	{
+		Object[] eventChannels = branch.eventChannels.values().toArray();
 		EventChannelProxy[] eventChannelProxies =
-			new EventChannelProxy[branch.eventChannels.size()];
-		Iterator iterator = branch.eventChannels.values().iterator();
-
-		for (int i=0 ; iterator.hasNext() ; i++)
+			new EventChannelProxy[eventChannels.length];
+		
+		for (int i=0 ; i < eventChannels.length ; i++)
 		{
-			eventChannelProxies[i] =
-				new EventChannelProxy((EventChannel)iterator.next());
+			eventChannelProxies[i] = 
+				new EventChannelProxy((EventChannel)eventChannels[i]);
 		}
 		
 		return(eventChannelProxies);
 	}
 	
-	public Object[] getChildProxies()
+	public Proxy[] getChildProxies()
 	{
-		Map children = branch.getChildren();
+		Map children = new TreeMap(branch.getChildren());
 		
-		Object[] o = new Object[children.size()];
+		Proxy[] proxies = new Proxy[children.size()];
 		Iterator iterator = children.values().iterator();
 		
-		for (int i=0 ; i < o.length ; i++)
+		for (int i=0 ; i < proxies.length ; i++)
 		{
 			TreeComponent treeComponent = (TreeComponent)iterator.next();
 			
 			if (treeComponent instanceof Root)
 			{
-				o[i] = new RootProxy((Root)treeComponent);
+				proxies[i] = new RootProxy((Root)treeComponent);
 			}
 			else if (treeComponent instanceof Branch)
 			{
-				o[i] = new BranchProxy((Branch)treeComponent);
+				proxies[i] = new BranchProxy((Branch)treeComponent);
 			}
 			else if (treeComponent instanceof Commit)
 			{
-				o[i] = new CommitProxy((Commit)treeComponent);
+				proxies[i] = new CommitProxy((Commit)treeComponent);
 			}
 			else if (treeComponent instanceof Converter)
 			{
-				o[i] = new ConverterProxy((Converter)treeComponent);
+				proxies[i] = new ConverterProxy((Converter)treeComponent);
 			}
 			else if (treeComponent instanceof Initiator)
 			{
-				o[i] = new InitiatorProxy((Initiator)treeComponent);
+				proxies[i] = new InitiatorProxy((Initiator)treeComponent);
 			}
 			else if (treeComponent instanceof MultiplexedBranch)
 			{
-				o[i] = new MultiplexedBranchProxy(
+				proxies[i] = new MultiplexedBranchProxy(
 					(MultiplexedBranch)treeComponent);
 			}
 			else if (treeComponent instanceof Synchronizer)
 			{
-				o[i] = new SynchronizerProxy((Synchronizer)treeComponent);
+				proxies[i] = new SynchronizerProxy((Synchronizer)treeComponent);
 			}
 			else if (treeComponent instanceof TriggeredCommit)
 			{
-				o[i] = new TriggeredCommitProxy((TriggeredCommit)treeComponent);
+				proxies[i] = new TriggeredCommitProxy((TriggeredCommit)treeComponent);
 			}
 			else if (treeComponent instanceof TriggeredConverter)
 			{
-				o[i] = new TriggeredConverterProxy(
+				proxies[i] = new TriggeredConverterProxy(
 					(TriggeredConverter)treeComponent);
 			}
 			else if (treeComponent instanceof Validator)
 			{
-				o[i] = new ValidatorProxy((Validator)treeComponent);
+				proxies[i] = new ValidatorProxy((Validator)treeComponent);
 			}
 		}
 		
-		return(o);
+		return(proxies);
 	}
 	
 	public boolean equals(Object obj)

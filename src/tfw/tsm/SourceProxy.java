@@ -26,7 +26,7 @@ package tfw.tsm;
 
 import tfw.check.Argument;
 
-public final class SourceProxy
+public final class SourceProxy implements Proxy
 {
 	private final Source source;
 	
@@ -40,6 +40,11 @@ public final class SourceProxy
 	public EventChannelProxy getEventChannelProxy()
 	{
 		return(new EventChannelProxy((Terminator)source.getEventChannel()));
+	}
+	
+	public String getName()
+	{
+		return(source.getEventChannelName());
 	}
 	
 	public boolean equals(Object obj)

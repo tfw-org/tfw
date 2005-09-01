@@ -26,7 +26,7 @@ package tfw.tsm;
 
 import tfw.check.Argument;
 
-public final class SinkProxy
+public final class SinkProxy implements Proxy
 {
 	private final Sink sink;
 	
@@ -40,6 +40,11 @@ public final class SinkProxy
 	public EventChannelProxy getEventChannelProxy()
 	{
 		return(new EventChannelProxy((Terminator)sink.getEventChannel()));
+	}
+	
+	public String getName()
+	{
+		return(sink.getEventChannelName());
 	}
 	
 	public boolean isTriggering()

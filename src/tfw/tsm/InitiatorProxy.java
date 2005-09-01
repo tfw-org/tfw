@@ -26,7 +26,7 @@ package tfw.tsm;
 
 import java.util.Collection;
 import java.util.Iterator;
-
+import java.util.TreeMap;
 import tfw.check.Argument;
 
 public final class InitiatorProxy implements Proxy
@@ -47,7 +47,7 @@ public final class InitiatorProxy implements Proxy
 	
 	public SourceProxy[] getSourceProxies()
 	{
-		Collection collection = initiator.sources.values();
+		Collection collection = new TreeMap(initiator.sources).values();
 		Iterator iterator = collection.iterator();
 		SourceProxy[] sp = new SourceProxy[collection.size()];
 		

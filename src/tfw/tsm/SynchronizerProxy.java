@@ -26,7 +26,7 @@ package tfw.tsm;
 
 import java.util.Collection;
 import java.util.Iterator;
-
+import java.util.TreeMap;
 import tfw.check.Argument;
 
 public final class SynchronizerProxy implements Proxy
@@ -47,7 +47,7 @@ public final class SynchronizerProxy implements Proxy
 	
 	public SourceProxy[] getSourceProxies()
 	{
-		Collection collection = synchronizer.sources.values();
+		Collection collection = new TreeMap(synchronizer.sources).values();
 		Iterator iterator = collection.iterator();
 		SourceProxy[] sp = new SourceProxy[collection.size()];
 		
@@ -61,14 +61,12 @@ public final class SynchronizerProxy implements Proxy
 	
 	public SinkProxy[] getSinkProxies()
 	{
-		Collection collection = synchronizer.sinks.values();
-		Iterator iterator = collection.iterator();
-		SinkProxy[] sp = new SinkProxy[collection.size()];
+		Object[] sinks = (Object[])synchronizer.sinks.values().toArray();
+		SinkProxy[] sp = new SinkProxy[sinks.length];
 		
-		for (int i=0 ; iterator.hasNext() ; i++)
+		for (int i=0 ; i < sinks.length ; i++)
 		{
-			Object o = iterator.next();
-			sp[i] = new SinkProxy((Sink)o);
+			sp[i] = new SinkProxy((Sink)sinks[i]);
 		}
 		return(sp);
 	}

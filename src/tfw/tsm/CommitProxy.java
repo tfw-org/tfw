@@ -24,9 +24,6 @@
  */
 package tfw.tsm;
 
-import java.util.Collection;
-import java.util.Iterator;
-
 import tfw.check.Argument;
 
 public final class CommitProxy implements Proxy
@@ -47,14 +44,12 @@ public final class CommitProxy implements Proxy
 	
 	public SinkProxy[] getSinkProxies()
 	{
-		Collection collection = commit.sinks.values();
-		Iterator iterator = collection.iterator();
-		SinkProxy[] sp = new SinkProxy[collection.size()];
+		Object[] sinks = (Object[])commit.sinks.values().toArray();
+		SinkProxy[] sp = new SinkProxy[sinks.length];
 		
-		for (int i=0 ; iterator.hasNext() ; i++)
+		for (int i=0 ; i < sinks.length ; i++)
 		{
-			Object o = iterator.next();
-			sp[i] = new SinkProxy((Sink)o);
+			sp[i] = new SinkProxy((Sink)sinks[i]);
 		}
 		return(sp);
 	}
