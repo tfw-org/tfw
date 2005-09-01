@@ -125,7 +125,9 @@ public class EdgeToGraphicConverter extends Converter
 					lefts[to] + (rights[to] - lefts[to]) / 2, tops[to]);
 			}
 		}
-
-		set(graphicECD, graphic);
+		if (graphic != null)
+		{
+			set(graphicECD, graphic);
+		}
 	}
 }
