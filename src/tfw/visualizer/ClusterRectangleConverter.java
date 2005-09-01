@@ -77,6 +77,12 @@ public class ClusterRectangleConverter extends Converter
 		int width = ((Integer)get(widthECD)).intValue();
 		int height = ((Integer)get(heightECD)).intValue();
 		int numberOfClusters = (int)((ObjectIla)get(nodeClustersECD)).length();
+		
+		if (numberOfClusters == 0)
+		{
+			return;
+		}
+		
 		int dimension = (int)Math.ceil(Math.sqrt(numberOfClusters));
 		int clusterWidth = width / dimension;
 		int clusterHeight = height / dimension;

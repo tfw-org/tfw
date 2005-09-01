@@ -28,7 +28,6 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.FontMetrics;
-
 import tfw.awt.ecd.ColorECD;
 import tfw.awt.ecd.FontECD;
 import tfw.awt.ecd.GraphicECD;
@@ -38,10 +37,7 @@ import tfw.awt.graphic.FillRectGraphic;
 import tfw.awt.graphic.Graphic;
 import tfw.awt.graphic.SetColorGraphic;
 import tfw.awt.graphic.SetFontGraphic;
-import tfw.immutable.DataInvalidException;
-import tfw.immutable.ila.intila.IntIla;
-import tfw.immutable.ila.longila.LongIla;
-import tfw.immutable.ila.objectila.ObjectIla;
+import tfw.immutable.ilm.intilm.IntIlm;
 import tfw.tsm.BranchProxy;
 import tfw.tsm.CommitProxy;
 import tfw.tsm.Converter;
@@ -56,15 +52,15 @@ import tfw.tsm.TriggeredCommitProxy;
 import tfw.tsm.TriggeredConverterProxy;
 import tfw.tsm.ValidatorProxy;
 import tfw.tsm.ecd.EventChannelDescription;
-import tfw.tsm.ecd.ila.ObjectIlaECD;
+import tfw.tsm.ecd.ilm.IntIlmECD;
+import tfw.visualizer.graph.Graph;
+import tfw.visualizer.graph.GraphECD;
 
 public class NodeToGraphicConverter extends Converter
 {
 	private final Component component;
-	private final ObjectIlaECD nodesECD;
-	private final ObjectIlaECD nodeClusterECD;
-	private final ObjectIlaECD nodeClusterPixelXsECD;
-	private final ObjectIlaECD nodeClusterPixelYsECD;
+	private final GraphECD graphECD;
+	private final IntIlmECD pixelNodeTLBRECD;
 	private final FontECD fontECD;
 	private final ColorECD backgroundColorECD;
 	private final ColorECD branchColorECD;
@@ -80,10 +76,9 @@ public class NodeToGraphicConverter extends Converter
 	private final ColorECD validatorColorECD;
 	private final GraphicECD graphicOutECD;
 	
-	public NodeToGraphicConverter(Component component,
-		ObjectIlaECD nodesECD, ObjectIlaECD nodeClusterECD,
-		ObjectIlaECD nodeClusterPixelXsECD, ObjectIlaECD nodeClusterPixelYsECD,
-		FontECD fontECD, ColorECD backgroundColorECD, ColorECD branchColorECD,
+	public NodeToGraphicConverter(Component component, GraphECD graphECD,
+		IntIlmECD pixelNodeTLBRECD, FontECD fontECD,
+		ColorECD backgroundColorECD, ColorECD branchColorECD,
 		ColorECD commitColorECD, ColorECD converterColorECD,
 		ColorECD eventChannelColorECD, ColorECD initiatorColorECD,
 		ColorECD multiplexedBranchColorECD, ColorECD rootColorECD,
@@ -92,9 +87,8 @@ public class NodeToGraphicConverter extends Converter
 		GraphicECD graphicOutECD)
 	{
 		super("NodeEdgeToGraphicConverter",
-			new EventChannelDescription[] {nodesECD, nodeClusterECD,
-				nodeClusterPixelXsECD, nodeClusterPixelYsECD, fontECD,
-				backgroundColorECD, branchColorECD, commitColorECD,
+			new EventChannelDescription[] {graphECD, pixelNodeTLBRECD,
+				fontECD, backgroundColorECD, branchColorECD, commitColorECD,
 				converterColorECD, eventChannelColorECD, initiatorColorECD,
 				multiplexedBranchColorECD, rootColorECD, synchronizerColorECD,
 				triggeredCommitColorECD, triggeredConverterColorECD,
@@ -103,10 +97,8 @@ public class NodeToGraphicConverter extends Converter
 			new EventChannelDescription[] {graphicOutECD});
 		
 		this.component = component;
-		this.nodesECD = nodesECD;
-		this.nodeClusterECD = nodeClusterECD;
-		this.nodeClusterPixelXsECD = nodeClusterPixelXsECD;
-		this.nodeClusterPixelYsECD = nodeClusterPixelYsECD;
+		this.graphECD = graphECD;
+		this.pixelNodeTLBRECD = pixelNodeTLBRECD;
 		this.fontECD = fontECD;
 		this.backgroundColorECD = backgroundColorECD;
 		this.branchColorECD = branchColorECD;
@@ -125,6 +117,7 @@ public class NodeToGraphicConverter extends Converter
 
 	protected void convert()
 	{
+		Graph graph = (Graph)get(graphECD);
 		Color backgroundColor = (Color)get(backgroundColorECD);
 		Color branchColor = (Color)get(branchColorECD);
 		Color commitColor = (Color)get(commitColorECD);
@@ -137,125 +130,87 @@ public class NodeToGraphicConverter extends Converter
 		Color triggeredCommitColor = (Color)get(triggeredCommitColorECD);
 		Color triggeredConverterColor = (Color)get(triggeredConverterColorECD);
 		Color validatorColor = (Color)get(validatorColorECD);
-		Object[] nodes = null;
-		Object[] nodeClusters = null;
-		Object[] nodeClusterPixelXs = null;
-		Object[] nodeClusterPixelYs = null;
+		Font font = (Font)get(fontECD);
+		FontMetrics fontMetrics = component.getFontMetrics(font);
+		int descent = fontMetrics.getDescent();
+
+		int[] tops = null;
+		int[] lefts = null;
+		int[] bottoms = null;
+		int[] rights = null;
+		Object[] nodes = new Object[(int)graph.nodesLength()];
+		Graphic graphic = null;
 		
 		try
 		{
-			nodes = ((ObjectIla)get(nodesECD)).toArray();
-			nodeClusters = ((ObjectIla)get(nodeClusterECD)).toArray();
-			nodeClusterPixelXs = ((ObjectIla)get(nodeClusterPixelXsECD)).toArray();
-			nodeClusterPixelYs = ((ObjectIla)get(nodeClusterPixelYsECD)).toArray();
+			int[][] pixelNodeTLBR = ((IntIlm)get(pixelNodeTLBRECD)).toArray();
+			tops = pixelNodeTLBR[0];
+			lefts = pixelNodeTLBR[1];
+			bottoms = pixelNodeTLBR[2];
+			rights = pixelNodeTLBR[3];
+
+			graph.toArray(nodes, 0, 0, (int)graph.nodesLength(),
+				null, null, 0, 0, 0);
 		}
-		catch (DataInvalidException e)
+		catch (Exception e)
 		{
 			return;
 		}
 		
 		String[] strings = new String[nodes.length];
-		
+
 		for (int i=0 ; i < nodes.length ; i++)
 		{
+			Proxy proxy = (Proxy)nodes[i];
+			
+			if (proxy == null)
+			{
+				continue;
+			}
+			
+			Color foregroundColor = Color.BLACK;
+			
 			strings[i] = ((Proxy)nodes[i]).getName();
-		}
-		
-		Font font = (Font)get(fontECD);
-		FontMetrics fontMetrics = component.getFontMetrics(font);
-
-		int height = fontMetrics.getHeight();
-		int halfHeight = height / 2;
-		int descent = fontMetrics.getDescent();
-//		int[] stringX = new int[nodes.length];
-//		int[] stringY = new int[nodes.length];
-//		int[] boxXs = new int[nodes.length];
-//		int[] boxYs = new int[nodes.length];
-//		int[] boxWidths = new int[nodes.length];
-//		int[] boxHeights = new int[nodes.length];
-		Graphic graphic = null;
-		
-		for (int i=0 ; i < nodeClusters.length ; i++)
-		{
-			long[] cluster = null;
-			int[] clusterX = null;
-			int[] clusterY = null;
 			
-			try
-			{
-				cluster = ((LongIla)nodeClusters[i]).toArray();
-				clusterX = ((IntIla)nodeClusterPixelXs[i]).toArray();
-				clusterY = ((IntIla)nodeClusterPixelYs[i]).toArray();
-			}
-			catch (DataInvalidException e)
-			{
-				return;
-			}
+			if (proxy instanceof BranchProxy)
+				foregroundColor = branchColor;
+			else if (proxy instanceof CommitProxy)
+				foregroundColor = commitColor;
+			else if (proxy instanceof ConverterProxy)
+				foregroundColor = converterColor;
+			else if (proxy instanceof EventChannelProxy)
+				foregroundColor = eventChannelColor;
+			else if (proxy instanceof InitiatorProxy)
+				foregroundColor = initiatorColor;
+			else if (proxy instanceof MultiplexedBranchProxy)
+				foregroundColor = multiplexedBranchColor;
+			else if (proxy instanceof RootProxy)
+				foregroundColor = rootColor;
+			else if (proxy instanceof SynchronizerProxy)
+				foregroundColor = synchronizerColor;
+			else if (proxy instanceof TriggeredCommitProxy)
+				foregroundColor = triggeredCommitColor;
+			else if (proxy instanceof TriggeredConverterProxy)
+				foregroundColor = triggeredConverterColor;
+			else if (proxy instanceof ValidatorProxy)
+				foregroundColor = validatorColor;
 			
-			for (int j=0 ; j < cluster.length ; j++)
-			{
-				int node = (int)cluster[j];
-				Proxy proxy = (Proxy)nodes[node];
-				int width = fontMetrics.stringWidth(strings[node]);
-				int x = clusterX[j];
-				int y = clusterY[j];
-				Color foregroundColor = Color.BLACK;
-				
-				if (proxy instanceof BranchProxy)
-					foregroundColor = branchColor;
-				else if (proxy instanceof CommitProxy)
-					foregroundColor = commitColor;
-				else if (proxy instanceof ConverterProxy)
-					foregroundColor = converterColor;
-				else if (proxy instanceof EventChannelProxy)
-					foregroundColor = eventChannelColor;
-				else if (proxy instanceof InitiatorProxy)
-					foregroundColor = initiatorColor;
-				else if (proxy instanceof MultiplexedBranchProxy)
-					foregroundColor = multiplexedBranchColor;
-				else if (proxy instanceof RootProxy)
-					foregroundColor = rootColor;
-				else if (proxy instanceof SynchronizerProxy)
-					foregroundColor = synchronizerColor;
-				else if (proxy instanceof TriggeredCommitProxy)
-					foregroundColor = triggeredCommitColor;
-				else if (proxy instanceof TriggeredConverterProxy)
-					foregroundColor = triggeredConverterColor;
-				else if (proxy instanceof ValidatorProxy)
-					foregroundColor = validatorColor;
-				
-				int sx = x - width / 2;
-				int sy = y + halfHeight - descent;
-				
-//				stringX[node] = sx;
-//				stringY[node] = sy;
-//				boxXs[node] = sx - 5;
-//				boxYs[node] = y - halfHeight - 5;
-//				boxWidths[node] = width + 10;
-//				boxHeights[node] = height +10;
-				
-				Graphic backgroundColorGraphic = SetColorGraphic.create(
-					graphic, backgroundColor);
-//				Graphic fillRectGraphic = FillRectGraphic.create(
-//					backgroundColorGraphic, boxXs, boxYs, boxWidths, boxHeights);
-				Graphic fillRectGraphic = FillRectGraphic.create(
-					backgroundColorGraphic, sx-5, y-halfHeight-5, width+10, height+10);
-				Graphic foregroundColorGraphic = SetColorGraphic.create(
-					fillRectGraphic, foregroundColor);
-//				Graphic drawRectGraphic = DrawRectGraphic.create(
-//					foregroundColorGraphic, boxXs, boxYs, boxWidths, boxHeights);
-				Graphic drawRectGraphic = DrawRectGraphic.create(
-					foregroundColorGraphic, sx-5, y-halfHeight-5, width+10, height+10);
-				Graphic setFontGraphic = SetFontGraphic.create(drawRectGraphic, font);
-//				Graphic drawStringGraphic = DrawStringGraphic.create(
-//					setFontGraphic, strings, stringX, stringY);
-				Graphic drawStringGraphic = DrawStringGraphic.create(
-					setFontGraphic, strings[node], sx, sy);
-				
-				graphic = drawStringGraphic;
-			}
+			int top = tops[i];
+			int left = lefts[i];
+			int bottom = bottoms[i];
+			int right = rights[i];
+			int width = right - left;
+			int height = bottom - top;
+			
+			graphic = SetColorGraphic.create(graphic, backgroundColor);
+			graphic = FillRectGraphic.create(graphic, left, top, width, height);
+			graphic = SetColorGraphic.create(graphic, foregroundColor);
+			graphic = DrawRectGraphic.create(graphic, left, top, width, height);
+			graphic = SetFontGraphic.create(graphic, font);
+			graphic = DrawStringGraphic.create(
+				graphic, proxy.getName(), left, bottom - descent);
 		}
-		
+				
 		if (graphic != null)
 		{
 			set(graphicOutECD, graphic);

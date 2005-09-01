@@ -51,7 +51,11 @@ public class ChangeFontSizeConverter extends TriggeredConverter
 	protected void convert()
 	{
 		Font font = (Font)get(fontECD);
+		float newSize = font.getSize2D() + scale;
 		
-		set(fontECD, font.deriveFont(font.getSize2D() + scale));
+		if (newSize > 0.0f)
+		{
+			set(fontECD, font.deriveFont(newSize));
+		}
 	}
 }

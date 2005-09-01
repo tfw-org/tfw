@@ -25,9 +25,7 @@
 package tfw.visualizer;
 
 import java.awt.Color;
-
 import javax.swing.JPanel;
-
 import tfw.awt.ecd.FontECD;
 import tfw.awt.ecd.GraphicECD;
 import tfw.awt.event.ComponentInitiator;
@@ -41,16 +39,21 @@ import tfw.swing.JMenuBB;
 import tfw.swing.JMenuBarBB;
 import tfw.swing.JMenuItemBB;
 import tfw.tsm.BasicTransactionQueue;
+import tfw.tsm.Initiator;
 import tfw.tsm.Root;
 import tfw.tsm.RootFactory;
 import tfw.tsm.TreeComponent;
 import tfw.tsm.ecd.BooleanECD;
+import tfw.tsm.ecd.EventChannelDescription;
 import tfw.tsm.ecd.IntegerECD;
 import tfw.tsm.ecd.StatelessTriggerECD;
 import tfw.tsm.ecd.ila.DoubleIlaECD;
 import tfw.tsm.ecd.ila.IntIlaECD;
 import tfw.tsm.ecd.ila.LongIlaECD;
 import tfw.tsm.ecd.ila.ObjectIlaECD;
+import tfw.tsm.ecd.ilm.DoubleIlmECD;
+import tfw.tsm.ecd.ilm.IntIlmECD;
+import tfw.visualizer.graph.GraphECD;
 
 public class Visualizer extends JFrameBB
 {
@@ -82,10 +85,22 @@ public class Visualizer extends JFrameBB
     	new LongIlaECD("filteredEdgeFroms");
     private static final LongIlaECD FILTERED_EDGE_TOS_ECD =
     	new LongIlaECD("filteredEdgeTos");
+    private static final LongIlaECD FILTERED2_EDGE_FROMS_ECD =
+    	new LongIlaECD("filtered2EdgeFroms");
+    private static final LongIlaECD FILTERED2_EDGE_TOS_ECD =
+    	new LongIlaECD("filtered2EdgeTos");
+    private static final GraphECD FILTERED_GRAPH_ECD =
+    	new GraphECD("nodeFilteredGraph");
+    private static final BooleanECD FIT_TO_SCREEN_ENABLED_ECD =
+    	new BooleanECD("fitToScreenEnabled");
+    private static final StatelessTriggerECD FIT_TO_SCREEN_TRIGGER_ECD =
+    	new StatelessTriggerECD("fitToScreenTrigger");
     private static final FontECD FONT_ECD =
     	new FontECD("font");
     private static final StatelessTriggerECD GENERATE_GRAPHIC_TRIGGER_ECD =
     	new StatelessTriggerECD("generateGraphicTrigger");
+    private static final GraphECD GRAPH_ECD =
+    	new GraphECD("graph");
     private static final IntegerECD GRAPH_HEIGHT_ECD =
     	new IntegerECD("graphHeight");
     private static final IntegerECD GRAPH_WIDTH_ECD =
@@ -124,6 +139,10 @@ public class Visualizer extends JFrameBB
     	new DoubleIlaECD("nodeXs");
     private static final DoubleIlaECD NODES_Y_ECD =
     	new DoubleIlaECD("nodeYs");
+    private static final DoubleIlmECD NORMALIZED_NODE_XY_ECD =
+    	new DoubleIlmECD("normalizedNodeXY");
+    private static final IntIlmECD PIXEL_NODE_TLBR_ECD =
+    	new IntIlmECD("pixelNodeTLBR");
     private static final StatelessTriggerECD PROPERTIES_TRIGGER_ECD =
     	new StatelessTriggerECD("propertiesTrigger");
     private static final BooleanECD PROPERTIES_ENABLED_ECD =
@@ -144,6 +163,10 @@ public class Visualizer extends JFrameBB
     	new BooleanECD("showConvertersEnabled");
     private static final BooleanECD SHOW_CONVERTERS_SELECTED_ECD =
     	new BooleanECD("showConvertersSelected");
+    private static final BooleanECD SHOW_DATA_FLOW_EDGES_ENABLED_ECD =
+    	new BooleanECD("showDataFlowEdgesEnabled");
+    private static final BooleanECD SHOW_DATA_FLOW_EDGES_SELECTED_ECD =
+    	new BooleanECD("showDataFlowEdgesSelected");
     private static final BooleanECD SHOW_EVENT_CHANNELS_ENABLED_ECD =
     	new BooleanECD("showEventChannelsEnabled");
     private static final BooleanECD SHOW_EVENT_CHANNELS_SELECTED_ECD =
@@ -160,6 +183,10 @@ public class Visualizer extends JFrameBB
     	new BooleanECD("showRootsEnabled");
     private static final BooleanECD SHOW_ROOTS_SELECTED_ECD =
     	new BooleanECD("showRootsSelected");
+    private static final BooleanECD SHOW_STRUCTURE_EDGES_ENABLED_ECD =
+    	new BooleanECD("showStructureEdgesEnabled");
+    private static final BooleanECD SHOW_STRUCTURE_EDGES_SELECTED_ECD =
+    	new BooleanECD("showStructureEdgesSelected");
     private static final BooleanECD SHOW_SYNCHRONIZERS_ENABLED_ECD =
     	new BooleanECD("showSynchronizersEnabled");
     private static final BooleanECD SHOW_SYNCHRONIZERS_SELECTED_ECD =
@@ -186,6 +213,14 @@ public class Visualizer extends JFrameBB
     	new IntegerECD("yOffset");
     private static final IntegerECD Y_MOUSE_ECD =
     	new IntegerECD("yMouse");
+    private static final BooleanECD ZOOM_IN_ENABLED_ECD =
+    	new BooleanECD("zoomInEnabled");
+    private static final StatelessTriggerECD ZOOM_IN_TRIGGER_ECD =
+    	new StatelessTriggerECD("zoomInTrigger");
+    private static final BooleanECD ZOOM_OUT_ENABLED_ECD =
+    	new BooleanECD("zoomOutEnabled");
+    private static final StatelessTriggerECD ZOOM_OUT_TRIGGER_ECD =
+    	new StatelessTriggerECD("zoomOutTrigger");
     
     public Visualizer(TreeComponent treeComponent)
     {
@@ -230,6 +265,10 @@ public class Visualizer extends JFrameBB
             "ShowConverters", SHOW_CONVERTERS_SELECTED_ECD,
             SHOW_CONVERTERS_ENABLED_ECD);
         showConvertersMI.setText("Converters");
+        JCheckBoxMenuItemBB showDataFlowEdgesMI = new JCheckBoxMenuItemBB(
+            "ShowDataFlowEdges", SHOW_DATA_FLOW_EDGES_SELECTED_ECD,
+            SHOW_DATA_FLOW_EDGES_ENABLED_ECD);
+        showDataFlowEdgesMI.setText("Data Flow Edges");
         JCheckBoxMenuItemBB showEventChannelsMI = new JCheckBoxMenuItemBB(
         	"ShowEventChannels", SHOW_EVENT_CHANNELS_SELECTED_ECD,
         	SHOW_EVENT_CHANNELS_ENABLED_ECD);
@@ -246,6 +285,10 @@ public class Visualizer extends JFrameBB
             "ShowRoots", SHOW_ROOTS_SELECTED_ECD,
             SHOW_ROOTS_ENABLED_ECD);
         showRootsMI.setText("Roots");
+        JCheckBoxMenuItemBB showStructureEdgesMI = new JCheckBoxMenuItemBB(
+            "ShowStructureEdges", SHOW_STRUCTURE_EDGES_SELECTED_ECD,
+            SHOW_STRUCTURE_EDGES_ENABLED_ECD);
+        showStructureEdgesMI.setText("Structure Edges");
         JCheckBoxMenuItemBB showSynchronizersMI = new JCheckBoxMenuItemBB(
             "ShowSynchronizers", SHOW_SYNCHRONIZERS_SELECTED_ECD,
             SHOW_SYNCHRONIZERS_ENABLED_ECD);
@@ -268,21 +311,37 @@ public class Visualizer extends JFrameBB
 //        showM.addToBoth(showBranchesMI);
         showM.addToBoth(showCommitsMI);
         showM.addToBoth(showConvertersMI);
+        showM.addToBoth(showDataFlowEdgesMI);
         showM.addToBoth(showEventChannelsMI);
         showM.addToBoth(showInitiatorsMI);
 //        showM.addToBoth(showMultiplexedBranchesMI);
 //        showM.addToBoth(showRootsMI);
+        showM.addToBoth(showStructureEdgesMI);
         showM.addToBoth(showSynchronizersMI);
         showM.addToBoth(showTriggeredCommitsMI);
         showM.addToBoth(showTriggeredConvertersMI);
         showM.addToBoth(showValidatorsMI);
         
+        JMenuItemBB zoomInMI = new JMenuItemBB("ZoomIn",
+        	ZOOM_IN_TRIGGER_ECD, ZOOM_IN_ENABLED_ECD);
+        zoomInMI.setText("Zoom In");
+        JMenuItemBB zoomOutMI = new JMenuItemBB("ZoomOut",
+        	ZOOM_OUT_TRIGGER_ECD, ZOOM_OUT_ENABLED_ECD);
+        zoomOutMI.setText("Zoom Out");
+        JMenuItemBB fitToScreenMI = new JMenuItemBB("FitToScreen",
+        	FIT_TO_SCREEN_TRIGGER_ECD, FIT_TO_SCREEN_ENABLED_ECD);
+        fitToScreenMI.setText("Fit To Screen");
+
         JMenuBB viewM = new JMenuBB("View");
         viewM.setText("View");
         viewM.addToBoth(increaseFontMI);
         viewM.addToBoth(decreaseFontMI);
         viewM.addSeparator();
         viewM.addToBoth(showM);
+        viewM.addSeparator();
+        viewM.addToBoth(zoomInMI);
+        viewM.addToBoth(zoomOutMI);
+        viewM.addToBoth(fitToScreenMI);
         
         JMenuBarBB menuBar = new JMenuBarBB("Visualizer");
         menuBar.addToBoth(fileM);
@@ -296,30 +355,31 @@ public class Visualizer extends JFrameBB
         
         getBranch().add(new ExitConverter(EXIT_TRIGGER_ECD));
         getBranch().add(new NodeEdgeConverter(
-        	(Root)treeComponent, REFRESH_TRIGGER_ECD, NODES_ECD,
-        	EDGE_FROMS_ECD, EDGE_TOS_ECD));
-        getBranch().add(new FilterConverter(NODES_ECD, EDGE_FROMS_ECD,
-        	EDGE_TOS_ECD, SHOW_BRANCHES_SELECTED_ECD, SHOW_COMMITS_SELECTED_ECD,
+        	(Root)treeComponent, REFRESH_TRIGGER_ECD, GRAPH_ECD));
+        getBranch().add(new NodeEdgeFilterConverter(GRAPH_ECD,
+        	SHOW_BRANCHES_SELECTED_ECD, SHOW_COMMITS_SELECTED_ECD,
         	SHOW_CONVERTERS_SELECTED_ECD, SHOW_EVENT_CHANNELS_SELECTED_ECD,
         	SHOW_INITIATORS_SELECTED_ECD, SHOW_MULTIPLEXEDBRANCHES_SELECTED_ECD,
         	SHOW_ROOTS_SELECTED_ECD, SHOW_SYNCHRONIZERS_SELECTED_ECD,
         	SHOW_TRIGGEREDCOMMITS_SELECTED_ECD,
         	SHOW_TRIGGEREDCONVERTERS_SELECTED_ECD, SHOW_VALIDATORS_SELECTED_ECD,
-        	FILTERED_NODES_ECD, FILTERED_EDGE_FROMS_ECD, FILTERED_EDGE_TOS_ECD));
-        getBranch().add(new ClusterConverter(FILTERED_EDGE_FROMS_ECD,
-        	FILTERED_EDGE_TOS_ECD, NODE_CLUSTERS_ECD, NODE_CLUSTER_FROMS_ECD,
-        	NODE_CLUSTER_TOS_ECD));
-        getBranch().add(new SimpleTreeLayoutConverter(NODE_CLUSTERS_ECD,
-        	NODE_CLUSTER_FROMS_ECD, NODE_CLUSTER_TOS_ECD, NODE_CLUSTER_XS_ECD,
-        	NODE_CLUSTER_YS_ECD));
-		getBranch().add(new ClusterRectangleConverter(REFRESH_TRIGGER_ECD,
-			X_OFFSET_ECD, Y_OFFSET_ECD, GRAPH_WIDTH_ECD, GRAPH_HEIGHT_ECD,
-			NODE_CLUSTERS_ECD, CLUSTER_XS_ECD, CLUSTER_YS_ECD,
-			CLUSTER_WIDTHS_ECD, CLUSTER_HEIGHTS_ECD));
-	    getBranch().add(new NormalPixelConverter(CLUSTER_XS_ECD, CLUSTER_YS_ECD,
-        	CLUSTER_WIDTHS_ECD, CLUSTER_HEIGHTS_ECD, NODE_CLUSTER_XS_ECD,
-        	NODE_CLUSTER_YS_ECD, NODE_CLUSTER_PIXEL_XS_ECD,
-        	NODE_CLUSTER_PIXEL_YS_ECD));
+        	SHOW_STRUCTURE_EDGES_SELECTED_ECD, SHOW_DATA_FLOW_EDGES_SELECTED_ECD,        	
+        	FILTERED_GRAPH_ECD));
+        getBranch().add(new NormalizedXYConverter(FILTERED_GRAPH_ECD,
+        	NORMALIZED_NODE_XY_ECD));
+//      getBranch().add(new ClusterConverter(FILTERED2_EDGE_FROMS_ECD,
+//        	FILTERED2_EDGE_TOS_ECD, NODE_CLUSTERS_ECD, NODE_CLUSTER_FROMS_ECD,
+//        	NODE_CLUSTER_TOS_ECD));
+//      getBranch().add(new SimpleTreeLayoutConverter(NODE_CLUSTERS_ECD,
+//        	NODE_CLUSTER_FROMS_ECD, NODE_CLUSTER_TOS_ECD, NODE_CLUSTER_XS_ECD,
+//        	NODE_CLUSTER_YS_ECD));
+//		getBranch().add(new ClusterRectangleConverter(REFRESH_TRIGGER_ECD,
+//			X_OFFSET_ECD, Y_OFFSET_ECD, GRAPH_WIDTH_ECD, GRAPH_HEIGHT_ECD,
+//			NODE_CLUSTERS_ECD, CLUSTER_XS_ECD, CLUSTER_YS_ECD,
+//			CLUSTER_WIDTHS_ECD, CLUSTER_HEIGHTS_ECD));
+	    getBranch().add(new NormalPixelConverter(this, FILTERED_GRAPH_ECD,
+        	NORMALIZED_NODE_XY_ECD, X_OFFSET_ECD, Y_OFFSET_ECD, GRAPH_WIDTH_ECD,
+        	GRAPH_HEIGHT_ECD, FONT_ECD, PIXEL_NODE_TLBR_ECD));
         getBranch().add(new MovePlotConverter(X_MOUSE_ECD, Y_MOUSE_ECD,
         	BUTTON_ONE_ECD, BUTTON_TWO_ECD, BUTTON_THREE_ECD,
         	X_OFFSET_ECD, Y_OFFSET_ECD));
@@ -332,6 +392,13 @@ public class Visualizer extends JFrameBB
         	DECREASE_FONT_TRIGGER_ECD, FONT_ECD, -1));
         getBranch().add(new ChangeFontSizeConverter("Increase",
             INCREASE_FONT_TRIGGER_ECD, FONT_ECD, 1));
+        getBranch().add(new ZoomConverter("In", ZOOM_IN_TRIGGER_ECD,
+        	FONT_ECD, GRAPH_WIDTH_ECD, GRAPH_HEIGHT_ECD, 1.25f));
+        getBranch().add(new ZoomConverter("Out", ZOOM_OUT_TRIGGER_ECD,
+            FONT_ECD, GRAPH_WIDTH_ECD, GRAPH_HEIGHT_ECD, 0.75f));
+        getBranch().add(new FitToScreenConverter(FIT_TO_SCREEN_TRIGGER_ECD,
+        	WIDTH_ECD, HEIGHT_ECD, X_OFFSET_ECD, Y_OFFSET_ECD,
+        	GRAPH_WIDTH_ECD, GRAPH_HEIGHT_ECD));
         
         PlotPanel plotPanel = new PlotPanel("Visualizer");
         
@@ -349,13 +416,12 @@ public class Visualizer extends JFrameBB
 			WIDTH_ECD, HEIGHT_ECD, GRAPHIC_ECD);
 		plotPanel.addGraphicProducer(backgroundGraphicConverter, 0);
 		EdgeToGraphicConverter edgeToGraphicConverter =
-			new EdgeToGraphicConverter(NODE_CLUSTERS_ECD, NODE_CLUSTER_FROMS_ECD,
-			NODE_CLUSTER_TOS_ECD, NODE_CLUSTER_PIXEL_XS_ECD,
-			NODE_CLUSTER_PIXEL_YS_ECD, GRAPHIC_ECD);
+			new EdgeToGraphicConverter(FILTERED_GRAPH_ECD, PIXEL_NODE_TLBR_ECD,
+			GRAPHIC_ECD);
 		plotPanel.addGraphicProducer(edgeToGraphicConverter, 1);
 		NodeToGraphicConverter nodeToGraphicConverter =
-			new NodeToGraphicConverter(this, FILTERED_NODES_ECD, NODE_CLUSTERS_ECD,
-			NODE_CLUSTER_PIXEL_XS_ECD, NODE_CLUSTER_PIXEL_YS_ECD, FONT_ECD,
+			new NodeToGraphicConverter(this, FILTERED_GRAPH_ECD,
+			PIXEL_NODE_TLBR_ECD, FONT_ECD,
 			VisualizerProperties.BACKGROUND_COLOR_ECD,
 			VisualizerProperties.BRANCH_COLOR_ECD,
 			VisualizerProperties.COMMIT_COLOR_ECD,
@@ -371,6 +437,12 @@ public class Visualizer extends JFrameBB
 		plotPanel.addGraphicProducer(nodeToGraphicConverter, 2);
 		
         setContentPaneForBoth(plotPanel);
+        
+        Initiator refreshInitiator = new Initiator("Initial Refresh",
+        	new EventChannelDescription[] {REFRESH_TRIGGER_ECD});
+        getBranch().add(refreshInitiator);
+        refreshInitiator.trigger(REFRESH_TRIGGER_ECD);
+        getBranch().remove(refreshInitiator);
     }
     
     private static Root createRoot(String name)
@@ -389,11 +461,17 @@ public class Visualizer extends JFrameBB
         rf.addEventChannel(EDGE_TOS_ECD);
         rf.addEventChannel(EXIT_ENABLED_ECD, Boolean.TRUE);
         rf.addEventChannel(EXIT_TRIGGER_ECD);
+        rf.addEventChannel(FILTERED_GRAPH_ECD);
         rf.addEventChannel(FILTERED_NODES_ECD);
         rf.addEventChannel(FILTERED_EDGE_FROMS_ECD);
         rf.addEventChannel(FILTERED_EDGE_TOS_ECD);
+        rf.addEventChannel(FILTERED2_EDGE_FROMS_ECD);
+        rf.addEventChannel(FILTERED2_EDGE_TOS_ECD);
+        rf.addEventChannel(FIT_TO_SCREEN_ENABLED_ECD, Boolean.TRUE);
+        rf.addEventChannel(FIT_TO_SCREEN_TRIGGER_ECD);
         rf.addEventChannel(FONT_ECD, new JPanel().getFont());
         rf.addEventChannel(GENERATE_GRAPHIC_TRIGGER_ECD);
+        rf.addEventChannel(GRAPH_ECD);
         rf.addEventChannel(GRAPH_HEIGHT_ECD, new Integer(500));
         rf.addEventChannel(GRAPH_WIDTH_ECD, new Integer(1500));
         rf.addEventChannel(HEIGHT_ECD);
@@ -412,6 +490,8 @@ public class Visualizer extends JFrameBB
         rf.addEventChannel(NODES_ECD);
         rf.addEventChannel(NODES_X_ECD);
         rf.addEventChannel(NODES_Y_ECD);
+        rf.addEventChannel(NORMALIZED_NODE_XY_ECD);
+        rf.addEventChannel(PIXEL_NODE_TLBR_ECD);
         rf.addEventChannel(PROPERTIES_TRIGGER_ECD);
         rf.addEventChannel(PROPERTIES_ENABLED_ECD, Boolean.TRUE);
         rf.addEventChannel(REFRESH_ENABLED_ECD, Boolean.TRUE);
@@ -422,14 +502,18 @@ public class Visualizer extends JFrameBB
         rf.addEventChannel(SHOW_COMMITS_SELECTED_ECD, Boolean.TRUE);
         rf.addEventChannel(SHOW_CONVERTERS_ENABLED_ECD, Boolean.TRUE);
         rf.addEventChannel(SHOW_CONVERTERS_SELECTED_ECD, Boolean.TRUE);
+        rf.addEventChannel(SHOW_DATA_FLOW_EDGES_ENABLED_ECD, Boolean.TRUE);
+        rf.addEventChannel(SHOW_DATA_FLOW_EDGES_SELECTED_ECD, Boolean.TRUE);
         rf.addEventChannel(SHOW_EVENT_CHANNELS_ENABLED_ECD, Boolean.TRUE);
-        rf.addEventChannel(SHOW_EVENT_CHANNELS_SELECTED_ECD, Boolean.FALSE);
+        rf.addEventChannel(SHOW_EVENT_CHANNELS_SELECTED_ECD, Boolean.TRUE);
         rf.addEventChannel(SHOW_INITIATORS_ENABLED_ECD, Boolean.TRUE);
         rf.addEventChannel(SHOW_INITIATORS_SELECTED_ECD, Boolean.TRUE);
         rf.addEventChannel(SHOW_MULTIPLEXEDBRANCHES_ENABLED_ECD, Boolean.TRUE);
         rf.addEventChannel(SHOW_MULTIPLEXEDBRANCHES_SELECTED_ECD, Boolean.TRUE);
         rf.addEventChannel(SHOW_ROOTS_ENABLED_ECD, Boolean.TRUE);
         rf.addEventChannel(SHOW_ROOTS_SELECTED_ECD, Boolean.TRUE);
+        rf.addEventChannel(SHOW_STRUCTURE_EDGES_ENABLED_ECD, Boolean.TRUE);
+        rf.addEventChannel(SHOW_STRUCTURE_EDGES_SELECTED_ECD, Boolean.TRUE);
         rf.addEventChannel(SHOW_SYNCHRONIZERS_ENABLED_ECD, Boolean.TRUE);
         rf.addEventChannel(SHOW_SYNCHRONIZERS_SELECTED_ECD, Boolean.TRUE);
         rf.addEventChannel(SHOW_TRIGGEREDCOMMITS_ENABLED_ECD, Boolean.TRUE);
@@ -443,6 +527,10 @@ public class Visualizer extends JFrameBB
         rf.addEventChannel(X_MOUSE_ECD);
         rf.addEventChannel(Y_OFFSET_ECD, new Integer(0));
         rf.addEventChannel(Y_MOUSE_ECD);
+        rf.addEventChannel(ZOOM_IN_ENABLED_ECD, Boolean.TRUE);
+        rf.addEventChannel(ZOOM_IN_TRIGGER_ECD);
+        rf.addEventChannel(ZOOM_OUT_ENABLED_ECD, Boolean.TRUE);
+        rf.addEventChannel(ZOOM_OUT_TRIGGER_ECD);
         
         rf.addEventChannel(VisualizerProperties.BACKGROUND_COLOR_ECD, Color.black);
         rf.addEventChannel(VisualizerProperties.BACKGROUND_COLOR_ENABLED_ECD,

@@ -63,16 +63,12 @@ public class ShowPanelInNonModalDialog extends Branch
 		
 		protected void commit()
 		{
-System.out.println("Putting remove runnable on AWT queue");
 			EventQueue.invokeLater(new Runnable()
 			{
 				public void run()
 				{
-System.out.println("dialog == "+dialog);
 					if (dialog != null)
 					{
-System.out.println("Removed and disposed");
-
 						remove(dialog.getBranch());
 						dialog.dispose();
 						
@@ -110,7 +106,6 @@ System.out.println("Removed and disposed");
 				{
 					if (dialog == null)
 					{
-System.out.println("Creating dialog");
 						JPanelBB contentPane;
 						try
 						{
@@ -139,8 +134,9 @@ System.out.println("Creating dialog");
 						
 						dialog.pack();
 						dialog.setLocationRelativeTo(owner);
-						dialog.setVisible(true);
 					}
+					
+					dialog.setVisible(true);
 				}
 			});
 		}

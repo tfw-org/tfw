@@ -24,110 +24,71 @@
  */
 package tfw.visualizer;
 
-import tfw.immutable.DataInvalidException;
-import tfw.immutable.ila.doubleila.DoubleIla;
-import tfw.immutable.ila.intila.IntIla;
-import tfw.immutable.ila.intila.IntIlaFromArray;
-import tfw.immutable.ila.objectila.ObjectIla;
-import tfw.immutable.ila.objectila.ObjectIlaFromArray;
+import java.awt.Component;
+import java.awt.Font;
+
+import tfw.awt.ecd.FontECD;
+import tfw.immutable.ilm.doubleilm.DoubleIlm;
+import tfw.immutable.ilm.intilm.IntIlm;
 import tfw.tsm.Converter;
 import tfw.tsm.ecd.EventChannelDescription;
-import tfw.tsm.ecd.ila.IntIlaECD;
-import tfw.tsm.ecd.ila.ObjectIlaECD;
+import tfw.tsm.ecd.IntegerECD;
+import tfw.tsm.ecd.ilm.DoubleIlmECD;
+import tfw.tsm.ecd.ilm.IntIlmECD;
+import tfw.visualizer.graph.Graph;
+import tfw.visualizer.graph.GraphECD;
 
 public class NormalPixelConverter extends Converter
 {
-	private final IntIlaECD clusterXsECD;
-	private final IntIlaECD clusterYsECD;
-	private final IntIlaECD clusterWidthsECD;
-	private final IntIlaECD clusterHeightsECD;
-	private final ObjectIlaECD nodeClusterNormalXsECD;
-	private final ObjectIlaECD nodeClusterNormalYsECD;
-	private final ObjectIlaECD nodeClusterPixelXsECD;
-	private final ObjectIlaECD nodeClusterPixelYsECD;
+	private final Component component;
+	private final GraphECD graphECD;
+	private final DoubleIlmECD normalizedXYsECD;
+	private final IntegerECD graphXOffsetECD;
+	private final IntegerECD graphYOffsetECD;
+	private final IntegerECD graphWidthECD;
+	private final IntegerECD graphHeightECD;
+	private final FontECD fontECD;
+	private final IntIlmECD pixelNodeTLBRECD;
 	
-	public NormalPixelConverter(IntIlaECD clusterXsECD, IntIlaECD clusterYsECD,
-		IntIlaECD clusterWidthsECD, IntIlaECD clusterHeightsECD,
-		ObjectIlaECD nodeClusterNormalXsECD, ObjectIlaECD nodeClusterNormalYsECD,
-		ObjectIlaECD nodeClusterPixelXsECD, ObjectIlaECD nodeClusterPixelYsECD)
+	public NormalPixelConverter(Component component, GraphECD graphECD,
+		DoubleIlmECD normalizedXYsECD, IntegerECD graphXOffsetECD,
+		IntegerECD graphYOffsetECD, IntegerECD graphWidthECD,
+		IntegerECD graphHeightECD, FontECD fontECD,
+		IntIlmECD pixelNodeTLBRECD)
 	{
 		super("NormalPixelConverter",
-			new EventChannelDescription[] {clusterXsECD, clusterYsECD,
-				clusterWidthsECD, clusterHeightsECD, nodeClusterNormalXsECD,
-				nodeClusterNormalYsECD},
+			new EventChannelDescription[] {graphECD, normalizedXYsECD,
+				graphXOffsetECD, graphYOffsetECD, graphWidthECD, graphHeightECD,
+				fontECD},
 			null,
-			new EventChannelDescription[] {nodeClusterPixelXsECD,
-				nodeClusterPixelYsECD});
-		
-		this.clusterXsECD = clusterXsECD;
-		this.clusterYsECD = clusterYsECD;
-		this.clusterWidthsECD = clusterWidthsECD;
-		this.clusterHeightsECD = clusterHeightsECD;
-		this.nodeClusterNormalXsECD = nodeClusterNormalXsECD;
-		this.nodeClusterNormalYsECD = nodeClusterNormalYsECD;
-		this.nodeClusterPixelXsECD = nodeClusterPixelXsECD;
-		this.nodeClusterPixelYsECD = nodeClusterPixelYsECD;
+			new EventChannelDescription[] {pixelNodeTLBRECD});
+
+		this.component = component;
+		this.graphECD = graphECD;
+		this.normalizedXYsECD = normalizedXYsECD;
+		this.graphXOffsetECD = graphXOffsetECD;
+		this.graphYOffsetECD = graphYOffsetECD;
+		this.graphWidthECD = graphWidthECD;
+		this.graphHeightECD = graphHeightECD;
+		this.fontECD = fontECD;
+		this.pixelNodeTLBRECD = pixelNodeTLBRECD;
 	}
 	
 	protected void convert()
 	{
-		int[] clusterXs = null;
-		int[] clusterYs = null;
-		int[] clusterWidths = null;
-		int[] clusterHeights = null;
-		Object[] nodeClusterNormalXs = null;
-		Object[] nodeClusterNormalYs = null;
-		
-		try
-		{
-			clusterXs = ((IntIla)get(clusterXsECD)).toArray();
-			clusterYs = ((IntIla)get(clusterYsECD)).toArray();
-			clusterWidths = ((IntIla)get(clusterWidthsECD)).toArray();
-			clusterHeights = ((IntIla)get(clusterHeightsECD)).toArray();
-			nodeClusterNormalXs = ((ObjectIla)get(nodeClusterNormalXsECD)).toArray();
-			nodeClusterNormalYs = ((ObjectIla)get(nodeClusterNormalYsECD)).toArray();
-		}
-		catch (DataInvalidException e)
-		{
-			return;
-		}
-		
-		Object[] nodeClusterPixelXs = new Object[nodeClusterNormalXs.length];
-		Object[] nodeClusterPixelYs = new Object[nodeClusterNormalYs.length];
-		
-		for (int i=0 ; i < clusterXs.length ; i++)
-		{
-			int x = clusterXs[i];
-			int y = clusterYs[i];
-			int width = clusterWidths[i];
-			int height = clusterHeights[i];
-			double[] normalXs = null;
-			double[] normalYs = null;
-			
-			try
-			{
-				normalXs = ((DoubleIla)nodeClusterNormalXs[i]).toArray();
-				normalYs = ((DoubleIla)nodeClusterNormalYs[i]).toArray();
-			}
-			catch (DataInvalidException e)
-			{
-				return;
-			}
-			
-			int[] pixelXs = new int[normalXs.length];
-			int[] pixelYs = new int[normalYs.length];
-			
-			for (int j=0 ; j < normalXs.length ; j++)
-			{
-				pixelXs[j] = x + (int)(normalXs[j] * (double)width);
-				pixelYs[j] = y + (int)(normalYs[j] * (double)height);
-			}
-			
-			nodeClusterPixelXs[i] = IntIlaFromArray.create(pixelXs);
-			nodeClusterPixelYs[i] = IntIlaFromArray.create(pixelYs);
-		}
-		
-		set(nodeClusterPixelXsECD, ObjectIlaFromArray.create(nodeClusterPixelXs));
-		set(nodeClusterPixelYsECD, ObjectIlaFromArray.create(nodeClusterPixelYs));
+		Graph graph = (Graph)get(graphECD);
+		DoubleIlm normalizedXYs = (DoubleIlm)get(normalizedXYsECD);
+		int graphXOffset = ((Integer)get(graphXOffsetECD)).intValue();
+		int graphYOffset = ((Integer)get(graphYOffsetECD)).intValue();
+		int graphWidth = ((Integer)get(graphWidthECD)).intValue();
+		int graphHeight = ((Integer)get(graphHeightECD)).intValue();
+		Font font = (Font)get(fontECD);
+
+		IntIlm pixelNodeBoundsFromNormalizedXYs =
+			PixelNodeBoundsFromNormalizedXYs.create(graph, normalizedXYs,
+			graphXOffset, graphYOffset, graphWidth, graphHeight,
+			component.getFontMetrics(font));
+
+		set(pixelNodeTLBRECD, pixelNodeBoundsFromNormalizedXYs);
 	}
 }
