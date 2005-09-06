@@ -27,7 +27,7 @@ package tfw.visualizer.test;
 import junit.framework.TestCase;
 import tfw.immutable.ila.longila.LongIla;
 import tfw.immutable.ila.longila.LongIlaFromArray;
-import tfw.immutable.ila.longila.test.LongIlaTest;
+import tfw.immutable.ila.longila.test.LongIlaCheck;
 import tfw.immutable.ila.objectila.ObjectIla;
 import tfw.immutable.ila.objectila.ObjectIlaFromArray;
 import tfw.visualizer.IndexedEdgesFromNodesAndEdges;
@@ -61,7 +61,7 @@ public class IndexedEdgesFromNodesAndEdgesTest extends TestCase
 		LongIla longIla1 = LongIlaFromArray.create(indexes);
 		LongIla longIla2 = IndexedEdgesFromNodesAndEdges.create(nodes, edges);
 		
-		String s = LongIlaTest.check(longIla1, longIla2);
+		String s = LongIlaCheck.check(longIla1, longIla2);
 		
 		assertNull(s, s);
 	}

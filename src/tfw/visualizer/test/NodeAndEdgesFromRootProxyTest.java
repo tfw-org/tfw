@@ -28,7 +28,7 @@ import java.util.Arrays;
 import junit.framework.TestCase;
 import tfw.immutable.ila.objectila.ObjectIla;
 import tfw.immutable.ila.objectila.ObjectIlaFromArray;
-import tfw.immutable.ila.objectila.test.ObjectIlaTest;
+import tfw.immutable.ila.objectila.test.ObjectIlaCheck;
 import tfw.tsm.BasicTransactionQueue;
 import tfw.tsm.Branch;
 import tfw.tsm.BranchFactory;
@@ -197,7 +197,7 @@ public class NodeAndEdgesFromRootProxyTest extends TestCase
 		ObjectIla nodesIla1 = ObjectIlaFromArray.create(nodesArray);
 		ObjectIla nodesIla2 = ObjectIlaFromArray.create(nodesObjectIlaArray);
 
-		String nodesString = ObjectIlaTest.check(nodesIla1, nodesIla2);
+		String nodesString = ObjectIlaCheck.check(nodesIla1, nodesIla2);
 		
 		assertNull(nodesString, nodesString);
 		
@@ -231,7 +231,7 @@ public class NodeAndEdgesFromRootProxyTest extends TestCase
 		ObjectIla edgeFromsIla1 = ObjectIlaFromArray.create(edgeFromsArray);
 		ObjectIla edgeFromsIla2 = nodeAndEdgesFromRootProxy.edgeFromsLongIla;
 
-		String edgeFromsString = ObjectIlaTest.check(edgeFromsIla1, edgeFromsIla2);
+		String edgeFromsString = ObjectIlaCheck.check(edgeFromsIla1, edgeFromsIla2);
 		
 		assertNull(edgeFromsString, edgeFromsString);
 		
@@ -265,7 +265,7 @@ public class NodeAndEdgesFromRootProxyTest extends TestCase
 		ObjectIla edgeTosIla1 = ObjectIlaFromArray.create(edgeTosArray);
 		ObjectIla edgeTosIla2 = nodeAndEdgesFromRootProxy.edgeTosLongIla;
 
-		String edgeTosString = ObjectIlaTest.check(edgeTosIla1, edgeTosIla2);
+		String edgeTosString = ObjectIlaCheck.check(edgeTosIla1, edgeTosIla2);
 				
 		assertNull(edgeTosString, edgeTosString);
 	}
