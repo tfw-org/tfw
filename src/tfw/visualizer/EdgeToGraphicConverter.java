@@ -92,7 +92,7 @@ public class EdgeToGraphicConverter extends Converter
 				int from = -1;
 				for (int j=0 ; j < nodes.length ; j++)
 				{
-					if (nodes[j].equals(froms[i]))
+					if (froms[i].equals(nodes[j]))
 					{
 						from = j;
 						break;
@@ -107,7 +107,7 @@ public class EdgeToGraphicConverter extends Converter
 				int to = -1;
 				for (int j=0 ; j < nodes.length ; j++)
 				{
-					if (nodes[j].equals(tos[i]))
+					if (tos[i].equals(nodes[j]))
 					{
 						to = j;
 						break;
