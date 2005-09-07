@@ -141,7 +141,7 @@ public class InitiatorTest extends TestCase
         Root root = rf.create("test", queue);
         root.add(initiator);
 
-        TestCommit commit = new TestCommit("test", channels);
+        TestCommit commit = new TestCommit("testcommit", channels);
         root.add(commit);
 
         String state1 = "Hello";

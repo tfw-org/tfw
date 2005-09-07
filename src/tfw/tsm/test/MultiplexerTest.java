@@ -78,7 +78,7 @@ public class MultiplexerTest extends TestCase
         assertEquals("value 0 not correct", "0", valueCommit0.value);
         assertEquals("value 1 not correct", "1", valueCommit1.value);
 
-        Initiator multiInitiator = new Initiator("MultiValue", multiValueECD);
+        Initiator multiInitiator = new Initiator("MultiValueInitiator", multiValueECD);
         root.add(multiInitiator);
 
         String[] strings = new String[] { "zero", "one" };
@@ -90,7 +90,7 @@ public class MultiplexerTest extends TestCase
         assertEquals("value 0 not correct", strings[0], valueCommit0.value);
         assertEquals("value 1 not correct", strings[1], valueCommit1.value);
 
-        MultiValueCommit mvCommit = new MultiValueCommit("MultiValue",
+        MultiValueCommit mvCommit = new MultiValueCommit("MultiValueCommit",
                 multiValueECD);
         root.add(mvCommit);
 
