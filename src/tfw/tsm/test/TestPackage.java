@@ -48,10 +48,8 @@ public class TestPackage
 		suite.addTestSuite(OneDeepStateQueueFactoryTest.class);
 		suite.addTestSuite(ConverterTest.class);
 		suite.addTestSuite(PortTerminationTest.class);
-		//suite.addTestSuite(ReconnectTest.class);
 		suite.addTestSuite(RollbackTest.class);
 		suite.addTestSuite(RootTest.class);
-		//suite.addTestSuite(SimpleSendTest.class);
 		suite.addTestSuite(TranslatorTest.class);
 		suite.addTestSuite(TreeStateBufferTest.class);
 		suite.addTestSuite(TriggeredConverterTest.class);
