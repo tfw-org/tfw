@@ -31,6 +31,7 @@ import tfw.tsm.ecd.IntegerECD;
 
 public class MovePlotConverter extends Converter
 {
+	private final BooleanECD selectedECD;
 	private final IntegerECD xECD;
 	private final IntegerECD yECD;
 	private final BooleanECD button1ECD;
@@ -39,16 +40,17 @@ public class MovePlotConverter extends Converter
 	private final IntegerECD xOffsetECD;
 	private final IntegerECD yOffsetECD;
 	
-	public MovePlotConverter(IntegerECD xECD, IntegerECD yECD,
-		BooleanECD button1ECD, BooleanECD button2ECD, BooleanECD button3ECD,
-		IntegerECD xOffsetECD, IntegerECD yOffsetECD)
+	public MovePlotConverter(BooleanECD selectedECD, IntegerECD xECD,
+		IntegerECD yECD, BooleanECD button1ECD, BooleanECD button2ECD,
+		BooleanECD button3ECD, IntegerECD xOffsetECD, IntegerECD yOffsetECD)
 	{
 		super("MovePlotConverter",
-			new EventChannelDescription[] {xECD, yECD,
+			new EventChannelDescription[] {selectedECD, xECD, yECD,
 				button1ECD, button2ECD, button3ECD},
 			new EventChannelDescription[] {xOffsetECD, yOffsetECD},
 			new EventChannelDescription[] {xOffsetECD, yOffsetECD});
 		
+		this.selectedECD = selectedECD;
 		this.xECD = xECD;
 		this.yECD = yECD;
 		this.button1ECD = button1ECD;
@@ -60,21 +62,24 @@ public class MovePlotConverter extends Converter
 	
 	protected void convert()
 	{
-		boolean button1 = ((Boolean)get(button1ECD)).booleanValue();
-		boolean button2 = ((Boolean)get(button2ECD)).booleanValue();
-		boolean button3 = ((Boolean)get(button3ECD)).booleanValue();
-
-		if (button1 && !button2 && !button3)
+		if (((Boolean)get(selectedECD)).booleanValue())
 		{
-			int x = ((Integer)get(xECD)).intValue();
-			int y = ((Integer)get(yECD)).intValue();
-			int previousX = ((Integer)getPreviousCycleState(xECD)).intValue();
-			int previousY = ((Integer)getPreviousCycleState(yECD)).intValue();
-			int xOffset = ((Integer)get(xOffsetECD)).intValue();
-			int yOffset = ((Integer)get(yOffsetECD)).intValue();
-			
-			set(xOffsetECD, new Integer(xOffset+(x - previousX)));
-			set(yOffsetECD, new Integer(yOffset+(y - previousY)));
+			boolean button1 = ((Boolean)get(button1ECD)).booleanValue();
+			boolean button2 = ((Boolean)get(button2ECD)).booleanValue();
+			boolean button3 = ((Boolean)get(button3ECD)).booleanValue();
+	
+			if (button1 && !button2 && !button3)
+			{
+				int x = ((Integer)get(xECD)).intValue();
+				int y = ((Integer)get(yECD)).intValue();
+				int previousX = ((Integer)getPreviousCycleState(xECD)).intValue();
+				int previousY = ((Integer)getPreviousCycleState(yECD)).intValue();
+				int xOffset = ((Integer)get(xOffsetECD)).intValue();
+				int yOffset = ((Integer)get(yOffsetECD)).intValue();
+				
+				set(xOffsetECD, new Integer(xOffset+(x - previousX)));
+				set(yOffsetECD, new Integer(yOffset+(y - previousY)));
+			}
 		}
 	}
 }

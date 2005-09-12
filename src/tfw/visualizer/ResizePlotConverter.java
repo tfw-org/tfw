@@ -31,6 +31,7 @@ import tfw.tsm.ecd.IntegerECD;
 
 public class ResizePlotConverter extends Converter
 {
+	private final BooleanECD selectedECD;
 	private final IntegerECD xECD;
 	private final IntegerECD yECD;
 	private final BooleanECD button1ECD;
@@ -39,16 +40,17 @@ public class ResizePlotConverter extends Converter
 	private final IntegerECD graphWidthECD;
 	private final IntegerECD graphHeightECD;
 	
-	public ResizePlotConverter(IntegerECD xECD, IntegerECD yECD,
-		BooleanECD button1ECD, BooleanECD button2ECD, BooleanECD button3ECD,
-		IntegerECD graphWidthECD, IntegerECD graphHeightECD)
+	public ResizePlotConverter(BooleanECD selectedECD, IntegerECD xECD,
+		IntegerECD yECD, BooleanECD button1ECD, BooleanECD button2ECD,
+		BooleanECD button3ECD, IntegerECD graphWidthECD, IntegerECD graphHeightECD)
 	{
 		super("ResizePlotConverter",
-			new EventChannelDescription[] {xECD, yECD,
+			new EventChannelDescription[] {selectedECD, xECD, yECD,
 				button1ECD, button2ECD, button3ECD},
 			new EventChannelDescription[] {graphWidthECD, graphHeightECD},
 			new EventChannelDescription[] {graphWidthECD, graphHeightECD});
 		
+		this.selectedECD = selectedECD;
 		this.xECD = xECD;
 		this.yECD = yECD;
 		this.button1ECD = button1ECD;
@@ -60,21 +62,24 @@ public class ResizePlotConverter extends Converter
 	
 	protected void convert()
 	{
-		boolean button1 = ((Boolean)get(button1ECD)).booleanValue();
-		boolean button2 = ((Boolean)get(button2ECD)).booleanValue();
-		boolean button3 = ((Boolean)get(button3ECD)).booleanValue();
-
-		if (!button1 && !button2 && button3)
+		if (((Boolean)get(selectedECD)).booleanValue())
 		{
-			int x = ((Integer)get(xECD)).intValue();
-			int y = ((Integer)get(yECD)).intValue();
-			int previousX = ((Integer)getPreviousCycleState(xECD)).intValue();
-			int previousY = ((Integer)getPreviousCycleState(yECD)).intValue();
-			int graphWidth = ((Integer)get(graphWidthECD)).intValue();
-			int graphHeight = ((Integer)get(graphHeightECD)).intValue();
-			
-			set(graphWidthECD, new Integer(graphWidth+(x - previousX)));
-			set(graphHeightECD, new Integer(graphHeight+(y - previousY)));
+			boolean button1 = ((Boolean)get(button1ECD)).booleanValue();
+			boolean button2 = ((Boolean)get(button2ECD)).booleanValue();
+			boolean button3 = ((Boolean)get(button3ECD)).booleanValue();
+	
+			if (!button1 && !button2 && button3)
+			{
+				int x = ((Integer)get(xECD)).intValue();
+				int y = ((Integer)get(yECD)).intValue();
+				int previousX = ((Integer)getPreviousCycleState(xECD)).intValue();
+				int previousY = ((Integer)getPreviousCycleState(yECD)).intValue();
+				int graphWidth = ((Integer)get(graphWidthECD)).intValue();
+				int graphHeight = ((Integer)get(graphHeightECD)).intValue();
+				
+				set(graphWidthECD, new Integer(graphWidth+(x - previousX)));
+				set(graphHeightECD, new Integer(graphHeight+(y - previousY)));
+			}
 		}
 	}
 }
