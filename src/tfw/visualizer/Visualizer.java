@@ -24,6 +24,7 @@
  */
 package tfw.visualizer;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import javax.swing.JPanel;
 import tfw.awt.ecd.FontECD;
@@ -38,6 +39,7 @@ import tfw.swing.JFrameBB;
 import tfw.swing.JMenuBB;
 import tfw.swing.JMenuBarBB;
 import tfw.swing.JMenuItemBB;
+import tfw.swing.JPanelBB;
 import tfw.tsm.BasicTransactionQueue;
 import tfw.tsm.Initiator;
 import tfw.tsm.Root;
@@ -380,12 +382,6 @@ public class Visualizer extends JFrameBB
 	    getBranch().add(new NormalPixelConverter(this, FILTERED_GRAPH_ECD,
         	NORMALIZED_NODE_XY_ECD, X_OFFSET_ECD, Y_OFFSET_ECD, GRAPH_WIDTH_ECD,
         	GRAPH_HEIGHT_ECD, FONT_ECD, PIXEL_NODE_TLBR_ECD));
-        getBranch().add(new MovePlotConverter(X_MOUSE_ECD, Y_MOUSE_ECD,
-        	BUTTON_ONE_ECD, BUTTON_TWO_ECD, BUTTON_THREE_ECD,
-        	X_OFFSET_ECD, Y_OFFSET_ECD));
-        getBranch().add(new ResizePlotConverter(X_MOUSE_ECD, Y_MOUSE_ECD,
-            BUTTON_ONE_ECD, BUTTON_TWO_ECD, BUTTON_THREE_ECD,
-            GRAPH_WIDTH_ECD, GRAPH_HEIGHT_ECD));
         getBranch().add(new ShowPanelInNonModalDialog(PROPERTIES_TRIGGER_ECD,
         	this, "Visualizer Properties", VisualizerProperties.class));
         getBranch().add(new ChangeFontSizeConverter("Decrease",
@@ -399,12 +395,13 @@ public class Visualizer extends JFrameBB
         getBranch().add(new FitToScreenConverter(FIT_TO_SCREEN_TRIGGER_ECD,
         	WIDTH_ECD, HEIGHT_ECD, X_OFFSET_ECD, Y_OFFSET_ECD,
         	GRAPH_WIDTH_ECD, GRAPH_HEIGHT_ECD));
+        getBranch().add(new VisualizerToolBarController());
         
         PlotPanel plotPanel = new PlotPanel("Visualizer");
         
 		plotPanel.addComponentListenerToBoth(new ComponentInitiator(
 			"PlotPanel", null, null, null, WIDTH_ECD, HEIGHT_ECD));
-				MouseInitiator mouseInitiator = new MouseInitiator("PlotPanel",
+		MouseInitiator mouseInitiator = new MouseInitiator("PlotPanel",
 			X_MOUSE_ECD, Y_MOUSE_ECD, BUTTON_ONE_ECD, BUTTON_TWO_ECD,
 			BUTTON_THREE_ECD);
 		plotPanel.addMouseListenerToBoth(mouseInitiator);
@@ -436,7 +433,13 @@ public class Visualizer extends JFrameBB
 			VisualizerProperties.VALIDATOR_COLOR_ECD, GRAPHIC_ECD);
 		plotPanel.addGraphicProducer(nodeToGraphicConverter, 2);
 		
-        setContentPaneForBoth(plotPanel);
+		VisualizerToolBar visualizerToolBar = new VisualizerToolBar();
+		
+		JPanelBB contentPane = new JPanelBB("contentPane");
+		contentPane.setLayout(new BorderLayout());
+		contentPane.addToBoth(visualizerToolBar, BorderLayout.WEST);
+		contentPane.addToBoth(plotPanel, BorderLayout.CENTER);
+        setContentPaneForBoth(contentPane);
         
         Initiator refreshInitiator = new Initiator("Initial Refresh",
         	new EventChannelDescription[] {REFRESH_TRIGGER_ECD});
