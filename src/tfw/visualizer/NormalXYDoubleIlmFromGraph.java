@@ -63,7 +63,7 @@ public class NormalXYDoubleIlmFromGraph
 	    {
 	    	return(2);
 	    }
-	    
+
 	    public double[][] toArray()
 	    	throws DataInvalidException
     	{
@@ -84,8 +84,10 @@ public class NormalXYDoubleIlmFromGraph
 	    	// Produce the set of root nodes.
 	    	for (int i=0 ; i < tos.length ; i++)
 	    	{
+//System.out.println("froms["+i+"]="+froms[i]+" tos["+i+"]="+tos[i]);
 	    		if (tos[i] != null)
 	    		{
+//System.out.println("  removing "+tos[i]);
 	    			rootNodes.remove(tos[i]);
 	    		}
 	    	}
@@ -99,34 +101,47 @@ public class NormalXYDoubleIlmFromGraph
 	    	
 	    	int clusterNumber = 0;
 //System.out.println("rootNodes.size() = "+rootNodes.size());
-	    	for ( ; rootNodes.size() > 0 ; clusterNumber++)
+	    	for ( ; rootNodes.size() > 0 ; )
 	    	{
+	    		if (rootNodes.get(0) == null)
+	    		{
+	    			rootNodes.remove(0);
+	    			continue;
+	    		}
 //System.out.println("rootNodes.size() = "+rootNodes.size());
 		    	// For each root, calculate its normal X's, Y depth and
 	    		// node cluster number.
 	    		int depth = calculateXandYs(0, clusterNumber, new Object[] {rootNodes.remove(0)},
 	    			nodes, froms, tos, normalXs, normalYs, nodeClusterNumbers);
 	    		
+//System.out.println("depth="+depth);
 	    		// Normalize the Y depth.
 	    		for (int i=0 ; i < normalYs.length ; i++)
 	    		{
-	    			normalYs[i] = normalYs[i] / depth;
+	    			if (normalYs[i] >= 1.0)
+	    			{
+	    				normalYs[i] = normalYs[i] / (depth+1);
+	    			}
+//System.out.println("new normalYs["+i+"]="+normalYs[i]);
 	    		}
+	    		clusterNumber++;
 	    	}
 
 //for (int i=0 ; i < normalXs.length ; i++)
 //System.out.println(i+" nX="+normalXs[i]+" nY="+normalYs[i]);
 	    	
 	    	int dimension = (int)Math.ceil(Math.sqrt(clusterNumber));
+//System.out.println("dimension="+dimension);
 	    	
 	    	// Position each normalized cluster into a
 	    	// "dimension" x "dimension" grid.
 	    	for (int i=0 ; i < normalXs.length ; i++)
 	    	{
-	    		normalXs[i] = (normalXs[i] +
-	    			(nodeClusterNumbers[i] % dimension)) / dimension;
-	    		normalYs[i] = (normalYs[i] +
-	    			(nodeClusterNumbers[i] / dimension)) / dimension; 
+//System.out.println("normalYs["+i+"]="+normalYs[i]+" nCN["+i+"]="+nodeClusterNumbers[i]+" d="+dimension);
+	    		normalXs[i] = (normalXs[i] / (double)dimension) +
+	    			(double)(nodeClusterNumbers[i] % dimension) / (double)dimension;
+	    		normalYs[i] = (normalYs[i] / (double)dimension) +
+	    			(double)(nodeClusterNumbers[i] / dimension / (double)dimension); 
 	    	}
 	    	
 //System.out.println("NormalXYDoubleIlmFromGraph:  starting");
@@ -139,7 +154,7 @@ public class NormalXYDoubleIlmFromGraph
 	    	int[] nodeClusterNumbers)
 	    {
 			ArrayList nodesAtNextLevel = new ArrayList();
-			int deepestLevel = currentLevel;
+			int deepestLevel = currentLevel+1;
 			
 //System.out.println("Starting node search");
 			// Loop through each node at the current level.
@@ -152,10 +167,11 @@ public class NormalXYDoubleIlmFromGraph
 //System.out.println("node "+j);
 					if (nodes[j] != null && nodes[j] == nodesAtCurrentLevel[i])
 					{
-//System.out.println("Setting X/Y for "+nodes[j]);
-						normalXs[j] = ((double)i + 1) / ((double)nodesAtCurrentLevel.length + 1);
-						normalYs[j] = currentLevel;
+//System.out.println("Setting X/Y for "+nodes[j]+" i="+i+" nACL.l="+nodesAtCurrentLevel.length);
+						normalXs[j] = (double)(i + 1) / (double)(nodesAtCurrentLevel.length + 1);
+						normalYs[j] = deepestLevel;
 						nodeClusterNumbers[j] = clusterNumber;
+//System.out.println("  x["+j+"]="+normalXs[j]+" y["+j+"]="+normalYs[j]+" c["+j+"]="+nodeClusterNumbers[j]);
 					}
 				}
 				
@@ -168,10 +184,20 @@ public class NormalXYDoubleIlmFromGraph
 //System.out.println("from "+k);
 	    			if (froms[k] != null && froms[k] == nodesAtCurrentLevel[i])
 	    			{
+//System.out.println("froms[k]="+froms[k]);
+	    				for (int m=0 ; m < nodes.length ; m++)
+	    				{
+//System.out.println("froms[k]="+froms[k]+" tos[k]="+tos[k]+" nodes[m]="+nodes[m]+" normalYs["+normalYs[m]);
+	    					if (tos[k] == nodes[m] && normalYs[m] == 0.0)
+	    					{
 //System.out.println("Adding child "+tos[k]);
-	    				nodesAtNextLevel.add(tos[k]);
-	    				froms[k] = null;
-	    				tos[k] = null;
+	    	    				nodesAtNextLevel.add(tos[k]);
+	    	    				froms[k] = null;
+	    	    				tos[k] = null;   	
+	    	    				
+	    	    				break;
+	    					}
+	    				}
 	    			}
 	    		}
 //} catch (Throwable t) {t.printStackTrace(); }
@@ -184,7 +210,7 @@ public class NormalXYDoubleIlmFromGraph
 			if (nodesAtNextLevel.size() > 0)
 			{
 //System.out.println("Calling next level");
-				deepestLevel = calculateXandYs(currentLevel+1, clusterNumber,
+				deepestLevel = calculateXandYs(deepestLevel, clusterNumber,
 					nodesAtNextLevel.toArray(), nodes, froms, tos, normalXs,
 					normalYs, nodeClusterNumbers);
 			}
@@ -195,7 +221,15 @@ public class NormalXYDoubleIlmFromGraph
 	    public double[][] toArray(long rowStart, long columnStart,
 	    	int width, int height) throws DataInvalidException
     	{
-	    	throw new DataInvalidException("Method not implemented");
+	    	double[][] array = toArray();
+	    	double[][] returnArray = new double[height][width];
+	    	
+	    	for (int i=0 ; i < height ; i++)
+	    	{
+	    		System.arraycopy(array[i+(int)rowStart], (int)columnStart, returnArray[i], 0, width);
+	    	}
+	    	
+	    	return(returnArray);
     	}
 	    
 	    public void toArray(double[][] array, int rowOffset, int columnOffset,
