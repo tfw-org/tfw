@@ -29,7 +29,9 @@ import tfw.tsm.MultiplexedBranch;
 import tfw.tsm.MultiplexedBranchFactory;
 import tfw.tsm.ecd.BooleanECD;
 import tfw.tsm.ecd.IntegerECD;
+import tfw.tsm.ecd.ila.BooleanIlaECD;
 import tfw.tsm.ecd.ila.ObjectIlaECD;
+import tfw.tsm.ecd.ilm.IntIlmECD;
 
 public class VisualizerToolBarController extends Branch
 {
@@ -45,6 +47,10 @@ public class VisualizerToolBarController extends Branch
 		new IntegerECD("graphWidth");
 	public static final ObjectIlaECD MULTI_TOOL_SELECTED_ECD =
 		new ObjectIlaECD("multiToolSelected");
+	public static final IntIlmECD PIXEL_NODE_TLBR_ECD =
+		new IntIlmECD("pixelNodeTLBR");
+	public static final BooleanIlaECD SELECTED_NODES_ECD =
+		new BooleanIlaECD("selectedNodes");
 	public static final BooleanECD TOOL_SELECTED_ECD =
 		new BooleanECD("toolSelected");
 	public static final IntegerECD X_MOUSE_ECD =
@@ -63,6 +69,11 @@ public class VisualizerToolBarController extends Branch
 		MultiplexedBranchFactory mbf = new MultiplexedBranchFactory();
 		mbf.addMultiplexer(TOOL_SELECTED_ECD, MULTI_TOOL_SELECTED_ECD);
 		MultiplexedBranch mb = mbf.create("MultiplexedBranch");
+		add(mb);
+		
+		mb.add(new SelectionConverter(TOOL_SELECTED_ECD, BUTTON_ONE_ECD,
+			BUTTON_TWO_ECD, BUTTON_THREE_ECD, PIXEL_NODE_TLBR_ECD, X_MOUSE_ECD,
+			Y_MOUSE_ECD, SELECTED_NODES_ECD), 0);
 		
         mb.add(new MovePlotConverter(TOOL_SELECTED_ECD, X_MOUSE_ECD,
         	Y_MOUSE_ECD, BUTTON_ONE_ECD, BUTTON_TWO_ECD, BUTTON_THREE_ECD,
