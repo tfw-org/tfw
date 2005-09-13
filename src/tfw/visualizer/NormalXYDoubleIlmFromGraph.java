@@ -243,6 +243,11 @@ public class NormalXYDoubleIlmFromGraph
 	    {
 	    	HashMap map = new HashMap();
 	    	
+	    	map.put("name", "NormalXYDoubleIlmFromGraph");
+	    	map.put("graph", graph);
+	    	map.put("width", new Long(width()));
+	    	map.put("height", new Long(height()));
+	    	
 	    	return(map);
 	    }
 	}

@@ -24,8 +24,12 @@
  */
 package tfw.visualizer.graph;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
+import tfw.immutable.ImmutableProxy;
 
 public class GraphEdgeEitherClassFilter
 {
@@ -39,7 +43,7 @@ public class GraphEdgeEitherClassFilter
 		return(new MyGraph(graph, classToRemove));
 	}
 	
-	private static class MyGraph implements Graph
+	private static class MyGraph implements Graph, ImmutableProxy
 	{
 		private final Graph graph;
 		private final Class classToRemove;
@@ -80,6 +84,19 @@ public class GraphEdgeEitherClassFilter
 					edgeTos[i] = null;
 				}
 			}
+		}
+		
+		public Map getParameters()
+		{
+			HashMap map = new HashMap();
+			
+			map.put("name", "GraphEdgeEitherClassFilter");
+			map.put("graph", graph);
+			map.put("classToRemove", classToRemove);
+			map.put("nodesLength", new Long(nodesLength()));
+			map.put("edgesLength", new Long(edgesLength()));
+			
+			return(map);
 		}
 	}
 }
