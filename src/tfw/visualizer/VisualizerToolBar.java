@@ -52,6 +52,7 @@ public class VisualizerToolBar extends JPanelBB
 		MultiplexedBranchFactory mbf = new MultiplexedBranchFactory();
 		mbf.addMultiplexer(TOOL_SELECTED_ECD, MULTI_TOOL_SELECTED_ECD);
 		MultiplexedBranch mb = mbf.create("Buttons");
+		getBranch().add(mb);
 		
 		JToggleButtonBB selectionTB = new JToggleButtonBB("Selection",
 			SELECTION_ENABLED_ECD, TOOL_SELECTED_ECD);
