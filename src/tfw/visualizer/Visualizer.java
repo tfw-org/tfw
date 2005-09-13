@@ -49,6 +49,7 @@ import tfw.tsm.ecd.BooleanECD;
 import tfw.tsm.ecd.EventChannelDescription;
 import tfw.tsm.ecd.IntegerECD;
 import tfw.tsm.ecd.StatelessTriggerECD;
+import tfw.tsm.ecd.ila.BooleanIlaECD;
 import tfw.tsm.ecd.ila.DoubleIlaECD;
 import tfw.tsm.ecd.ila.IntIlaECD;
 import tfw.tsm.ecd.ila.LongIlaECD;
@@ -121,6 +122,8 @@ public class Visualizer extends JFrameBB
     	new StatelessTriggerECD("increaseFontTrigger");
     private static final ObjectIlaECD MULTI_GRAPHIC_ECD =
     	new ObjectIlaECD("multiGraphic");
+    private static final ObjectIlaECD MULTI_TOOL_SELECTED_ECD =
+    	new ObjectIlaECD("multiToolSelected");
     private static final ObjectIlaECD NODE_CLUSTERS_ECD =
     	new ObjectIlaECD("nodeClusters");
     private static final ObjectIlaECD NODE_CLUSTER_FROMS_ECD =
@@ -153,6 +156,8 @@ public class Visualizer extends JFrameBB
     	new BooleanECD("refreshEnabled");
     private static final StatelessTriggerECD REFRESH_TRIGGER_ECD =
     	new StatelessTriggerECD("refreshTrigger");
+    private static final BooleanIlaECD SELECTED_NODES_ECD =
+    	new BooleanIlaECD("selectedNodes");
     private static final BooleanECD SHOW_BRANCHES_ENABLED_ECD =
     	new BooleanECD("showBranchesEnabled");
     private static final BooleanECD SHOW_BRANCHES_SELECTED_ECD =
@@ -418,20 +423,24 @@ public class Visualizer extends JFrameBB
 		plotPanel.addGraphicProducer(edgeToGraphicConverter, 1);
 		NodeToGraphicConverter nodeToGraphicConverter =
 			new NodeToGraphicConverter(this, FILTERED_GRAPH_ECD,
-			PIXEL_NODE_TLBR_ECD, FONT_ECD,
-			VisualizerProperties.BACKGROUND_COLOR_ECD,
-			VisualizerProperties.BRANCH_COLOR_ECD,
-			VisualizerProperties.COMMIT_COLOR_ECD,
-			VisualizerProperties.CONVERTER_COLOR_ECD,
-			VisualizerProperties.EVENTCHANNEL_COLOR_ECD,
-			VisualizerProperties.INITIATOR_COLOR_ECD,
-			VisualizerProperties.MULTIPLEXEDBRANCH_COLOR_ECD,
-			VisualizerProperties.ROOT_COLOR_ECD,
-			VisualizerProperties.SYNCHRONIZER_COLOR_ECD,
-			VisualizerProperties.TRIGGEREDCOMMIT_COLOR_ECD,
-			VisualizerProperties.TRIGGEREDCONVERTER_COLOR_ECD,
-			VisualizerProperties.VALIDATOR_COLOR_ECD, GRAPHIC_ECD);
+				PIXEL_NODE_TLBR_ECD, FONT_ECD,
+				VisualizerProperties.BACKGROUND_COLOR_ECD,
+				VisualizerProperties.BRANCH_COLOR_ECD,
+				VisualizerProperties.COMMIT_COLOR_ECD,
+				VisualizerProperties.CONVERTER_COLOR_ECD,
+				VisualizerProperties.EVENTCHANNEL_COLOR_ECD,
+				VisualizerProperties.INITIATOR_COLOR_ECD,
+				VisualizerProperties.MULTIPLEXEDBRANCH_COLOR_ECD,
+				VisualizerProperties.ROOT_COLOR_ECD,
+				VisualizerProperties.SYNCHRONIZER_COLOR_ECD,
+				VisualizerProperties.TRIGGEREDCOMMIT_COLOR_ECD,
+				VisualizerProperties.TRIGGEREDCONVERTER_COLOR_ECD,
+				VisualizerProperties.VALIDATOR_COLOR_ECD, GRAPHIC_ECD);
 		plotPanel.addGraphicProducer(nodeToGraphicConverter, 2);
+		SelectionToGraphicConverter selectionToGraphicConverter =
+			new SelectionToGraphicConverter(SELECTED_NODES_ECD,
+				PIXEL_NODE_TLBR_ECD, GRAPHIC_ECD);
+		plotPanel.addGraphicProducer(selectionToGraphicConverter, 3);
 		
 		VisualizerToolBar visualizerToolBar = new VisualizerToolBar();
 		
@@ -483,6 +492,7 @@ public class Visualizer extends JFrameBB
         rf.addEventChannel(INCREASE_FONT_ENABLED_ECD);
         rf.addEventChannel(INCREASE_FONT_TRIGGER_ECD);
         rf.addEventChannel(MULTI_GRAPHIC_ECD);
+        rf.addEventChannel(MULTI_TOOL_SELECTED_ECD);
         rf.addEventChannel(NODE_CLUSTERS_ECD);
         rf.addEventChannel(NODE_CLUSTER_FROMS_ECD);
         rf.addEventChannel(NODE_CLUSTER_PIXEL_XS_ECD);
@@ -499,6 +509,7 @@ public class Visualizer extends JFrameBB
         rf.addEventChannel(PROPERTIES_ENABLED_ECD, Boolean.TRUE);
         rf.addEventChannel(REFRESH_ENABLED_ECD, Boolean.TRUE);
         rf.addEventChannel(REFRESH_TRIGGER_ECD);
+        rf.addEventChannel(SELECTED_NODES_ECD);
         rf.addEventChannel(SHOW_BRANCHES_ENABLED_ECD, Boolean.TRUE);
         rf.addEventChannel(SHOW_BRANCHES_SELECTED_ECD, Boolean.TRUE);
         rf.addEventChannel(SHOW_COMMITS_ENABLED_ECD, Boolean.TRUE);
@@ -571,6 +582,8 @@ public class Visualizer extends JFrameBB
         rf.addEventChannel(VisualizerProperties.VALIDATOR_COLOR_ECD, Color.orange);
         rf.addEventChannel(VisualizerProperties.VALIDATOR_COLOR_ENABLED_ECD,
         	Boolean.TRUE);
+        rf.addEventChannel(VisualizerToolBar.MOVE_ENABLED_ECD, Boolean.TRUE);
+        rf.addEventChannel(VisualizerToolBar.SELECTION_ENABLED_ECD, Boolean.TRUE);
         
         return(rf.create(name, new BasicTransactionQueue()));
     }
