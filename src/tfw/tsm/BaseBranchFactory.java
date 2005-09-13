@@ -92,7 +92,7 @@ class BaseBranchFactory
         Object initialState) throws ValueException
     {
         addEventChannel(eventChannelDescription, initialState,
-            AlwaysChangeRule.RULE);
+            DotEqualsRule.RULE);
     }
 
     /**
