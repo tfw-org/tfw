@@ -25,6 +25,7 @@
 package tfw.tsm;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -79,8 +80,22 @@ public class MultiplexedBranch extends TreeComponent
      */
     public final void add(TreeComponent child, int multipexIndex)
     {
-		children.put(child, new Integer(multipexIndex));
+//		children.put(child, new Integer(multipexIndex));
+    	addAll(child, new Integer(multipexIndex), children);
         super.add(child);
+    }
+    
+    private static void addAll(TreeComponent child, Integer index, Map children)
+    {
+    	children.put(child, index);
+    	
+    	if (child instanceof Branch)
+    	{
+    		for (Iterator i=((Branch)child).getChildren().values().iterator() ; i.hasNext() ; )
+    		{
+    			addAll((TreeComponent)i.next(), index, children);
+    		}
+    	}
     }
 
 	/**
@@ -90,7 +105,21 @@ public class MultiplexedBranch extends TreeComponent
     public final void remove(TreeComponent child)
     {
         super.remove(child);
-        children.remove(child);
+        removeAll(child, children);
+//        children.remove(child);
+    }
+    
+    private static void removeAll(TreeComponent child, Map children)
+    {
+    	children.remove(child);
+    	
+    	if (child instanceof Branch)
+    	{
+    		for (Iterator i=((Branch)child).getChildren().values().iterator() ; i.hasNext() ; )
+    		{
+    			removeAll((TreeComponent)i.next(), children);
+    		}
+    	}
     }
 
     /**
