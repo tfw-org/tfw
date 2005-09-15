@@ -87,7 +87,7 @@ public class SelectionToGraphicConverter extends Converter
 		
 		for (int i=0 ; i < width ; i++)
 		{
-			if (selectedNodes[i])
+			if (i < selectedNodes.length && selectedNodes[i])
 			{
 				graphic = DrawRectGraphic.create(graphic, lefts[i]-1, tops[i]-1,
 					rights[i]-lefts[i]+2, bottoms[i]-tops[i]+2);
