@@ -67,7 +67,7 @@ public class EdgeToGraphicConverter extends Converter
 		Object[] nodes = new Object[(int)graph.nodesLength()];
 		Object[] froms = new Object[(int)graph.edgesLength()];
 		Object[] tos = new Object[(int)graph.edgesLength()];
-		Graphic graphic = null;
+		Graphic graphic = SetColorGraphic.create(null, Color.white);
 		
 		try
 		{
@@ -119,15 +119,12 @@ public class EdgeToGraphicConverter extends Converter
 					continue;
 				}
 				
-				graphic = SetColorGraphic.create(graphic, Color.white);
 				graphic = DrawLineGraphic.create(graphic,
 					lefts[from] + (rights[from] - lefts[from]) / 2, bottoms[from],
 					lefts[to] + (rights[to] - lefts[to]) / 2, tops[to]);
 			}
 		}
-		if (graphic != null)
-		{
-			set(graphicECD, graphic);
-		}
+
+		set(graphicECD, graphic);
 	}
 }
