@@ -45,18 +45,19 @@ public class SelectionConverter extends Converter
 	private final IntIlmECD pixelNodeTLBRECD;
 	private final IntegerECD xMouseECD;
 	private final IntegerECD yMouseECD;
+	private final BooleanECD controlKeyPressedECD;
 	private final BooleanIlaECD selectedNodesECD;
 	
 	public SelectionConverter(BooleanECD selectedECD, BooleanECD buttonOneECD,
 		BooleanECD buttonTwoECD, BooleanECD buttonThreeECD,
 		IntIlmECD pixelNodeTLBRECD, IntegerECD xMouseECD, IntegerECD yMouseECD,
-		BooleanIlaECD selectedNodesECD)
+		BooleanECD controlKeyPressedECD, BooleanIlaECD selectedNodesECD)
 	{
 		super("SelectionConverter",
 			new EventChannelDescription[] {selectedECD, buttonOneECD,
 				buttonTwoECD, buttonThreeECD},
 			new EventChannelDescription[] {pixelNodeTLBRECD, xMouseECD,
-				yMouseECD},
+				yMouseECD, controlKeyPressedECD, selectedNodesECD},
 			new EventChannelDescription[] {selectedNodesECD});
 		
 		this.selectedECD = selectedECD;
@@ -66,6 +67,7 @@ public class SelectionConverter extends Converter
 		this.pixelNodeTLBRECD = pixelNodeTLBRECD;
 		this.xMouseECD = xMouseECD;
 		this.yMouseECD = yMouseECD;
+		this.controlKeyPressedECD = controlKeyPressedECD;
 		this.selectedNodesECD = selectedNodesECD;
 	}
 	
@@ -73,6 +75,7 @@ public class SelectionConverter extends Converter
 	{
 		if (((Boolean)get(selectedECD)).booleanValue() &&
 			((Boolean)get(buttonOneECD)).booleanValue() &&
+			!((Boolean)getPreviousTransactionState(buttonOneECD)).booleanValue() &&
 			!((Boolean)get(buttonTwoECD)).booleanValue() &&
 			!((Boolean)get(buttonThreeECD)).booleanValue())
 		{
@@ -100,12 +103,28 @@ public class SelectionConverter extends Converter
 			int[] rights = tlbr[3];
 			BooleanIla ila = BooleanIlaFill.create(false, width);
 			
+			if (((Boolean)get(controlKeyPressedECD)).booleanValue())
+			{
+				ila = (BooleanIla)get(selectedNodesECD);
+			}
+			else
+			{
+				ila = BooleanIlaFill.create(false, width);
+			}
+			
 			for (int i=width-1 ; i >= 0 ; i--)
 			{
 				if (tops[i] <= y && y <= bottoms[i] &&
 					lefts[i] <= x && x <= rights[i])
 				{
-					ila = BooleanIlaMutate.create(ila, i, true);
+					try
+					{
+						ila = BooleanIlaMutate.create(ila, i, !ila.toArray(i, 1)[0]);
+					}
+					catch (DataInvalidException die)
+					{
+						return;
+					}
 					break;
 				}
 			}
