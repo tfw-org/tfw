@@ -33,6 +33,7 @@ import tfw.awt.ecd.FontECD;
 import tfw.awt.ecd.GraphicECD;
 import tfw.awt.graphic.DrawRectGraphic;
 import tfw.awt.graphic.DrawStringGraphic;
+import tfw.awt.graphic.EmptyGraphic;
 import tfw.awt.graphic.FillRectGraphic;
 import tfw.awt.graphic.Graphic;
 import tfw.awt.graphic.SetColorGraphic;
@@ -214,6 +215,10 @@ public class NodeToGraphicConverter extends Converter
 		if (graphic != null)
 		{
 			set(graphicOutECD, graphic);
+		}
+		else
+		{
+			set(graphicOutECD, EmptyGraphic.create());
 		}
 	}
 }
