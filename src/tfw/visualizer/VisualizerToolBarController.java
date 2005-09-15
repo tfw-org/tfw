@@ -41,6 +41,8 @@ public class VisualizerToolBarController extends Branch
 		new BooleanECD("buttonTwo");
 	public static final BooleanECD BUTTON_THREE_ECD =
 		new BooleanECD("buttonThree");
+	public static final BooleanECD CONTROL_KEY_ECD =
+		new BooleanECD("controlKey");
 	public static final IntegerECD GRAPH_HEIGHT_ECD =
 		new IntegerECD("graphHeight");
 	public static final IntegerECD GRAPH_WIDTH_ECD =
@@ -73,7 +75,10 @@ public class VisualizerToolBarController extends Branch
 		
 		mb.add(new SelectionConverter(TOOL_SELECTED_ECD, BUTTON_ONE_ECD,
 			BUTTON_TWO_ECD, BUTTON_THREE_ECD, PIXEL_NODE_TLBR_ECD, X_MOUSE_ECD,
-			Y_MOUSE_ECD, SELECTED_NODES_ECD), 0);
+			Y_MOUSE_ECD, CONTROL_KEY_ECD, SELECTED_NODES_ECD), 0);
+		mb.add(new MoveSelectionConverter(X_MOUSE_ECD, Y_MOUSE_ECD,
+			TOOL_SELECTED_ECD, SELECTED_NODES_ECD, PIXEL_NODE_TLBR_ECD,
+			BUTTON_ONE_ECD, BUTTON_TWO_ECD, BUTTON_THREE_ECD), 0);
 		
         mb.add(new MovePlotConverter(TOOL_SELECTED_ECD, X_MOUSE_ECD,
         	Y_MOUSE_ECD, BUTTON_ONE_ECD, BUTTON_TWO_ECD, BUTTON_THREE_ECD,
