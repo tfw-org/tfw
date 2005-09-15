@@ -24,6 +24,7 @@
  */
 package tfw.visualizer;
 
+import tfw.immutable.ila.booleanila.BooleanIla;
 import tfw.tsm.BranchProxy;
 import tfw.tsm.CommitProxy;
 import tfw.tsm.Converter;
@@ -38,15 +39,19 @@ import tfw.tsm.TriggeredConverterProxy;
 import tfw.tsm.ValidatorProxy;
 import tfw.tsm.ecd.BooleanECD;
 import tfw.tsm.ecd.EventChannelDescription;
+import tfw.tsm.ecd.ila.BooleanIlaECD;
 import tfw.visualizer.graph.Graph;
 import tfw.visualizer.graph.GraphECD;
 import tfw.visualizer.graph.GraphEdgeEitherClassFilter;
 import tfw.visualizer.graph.GraphEdgeNeitherClassFilter;
 import tfw.visualizer.graph.GraphNodeClassFilter;
+import tfw.visualizer.graph.GraphSelectionFilter;
 
 public class NodeEdgeFilterConverter extends Converter
 {
 	private final GraphECD graphECD;
+	private final BooleanIlaECD selectedNodesECD;
+	private final BooleanECD showBowTieECD;
 	private final BooleanECD showBranchesECD;
 	private final BooleanECD showCommitsECD;
 	private final BooleanECD showConvertersECD;
@@ -62,26 +67,30 @@ public class NodeEdgeFilterConverter extends Converter
 	private final BooleanECD showDataFlowEdgesECD;
 	private final GraphECD filteredGraphECD;
 	
-	public NodeEdgeFilterConverter(GraphECD graphECD, BooleanECD showBranchesECD,
-		BooleanECD showCommitsECD, BooleanECD showConvertersECD,
-		BooleanECD showEventChannelsECD, BooleanECD showInitiatorsECD,
-		BooleanECD showMultiplexedBranchesECD, BooleanECD showRootsECD,
-		BooleanECD showSynchronizersECD, BooleanECD showTriggeredCommitsECD,
+	public NodeEdgeFilterConverter(GraphECD graphECD,
+		BooleanIlaECD selectedNodesECD, BooleanECD showBowTieECD,
+		BooleanECD showBranchesECD, BooleanECD showCommitsECD,
+		BooleanECD showConvertersECD, BooleanECD showEventChannelsECD,
+		BooleanECD showInitiatorsECD, BooleanECD showMultiplexedBranchesECD,
+		BooleanECD showRootsECD, BooleanECD showSynchronizersECD,
+		BooleanECD showTriggeredCommitsECD,
 		BooleanECD showTriggeredConvertersECD, BooleanECD showValidatorsECD,
 		BooleanECD showStructureEdgesECD, BooleanECD showDataFlowEdgesECD,
 		GraphECD filteredGraphECD)
 	{
 		super("FilterConverter",
-			new EventChannelDescription[] {graphECD, showBranchesECD,
-				showCommitsECD, showConvertersECD, showEventChannelsECD,
-				showInitiatorsECD, showMultiplexedBranchesECD, showRootsECD,
-				showSynchronizersECD, showTriggeredCommitsECD,
-				showTriggeredConvertersECD, showValidatorsECD,
-				showStructureEdgesECD, showDataFlowEdgesECD},
+			new EventChannelDescription[] {graphECD, selectedNodesECD,
+				showBowTieECD, showBranchesECD, showCommitsECD,
+				showConvertersECD, showEventChannelsECD, showInitiatorsECD,
+				showMultiplexedBranchesECD, showRootsECD, showSynchronizersECD,
+				showTriggeredCommitsECD, showTriggeredConvertersECD,
+				showValidatorsECD, showStructureEdgesECD, showDataFlowEdgesECD},
 			null,
 			new EventChannelDescription[] {filteredGraphECD});
 		
 		this.graphECD = graphECD;
+		this.selectedNodesECD = selectedNodesECD;
+		this.showBowTieECD = showBowTieECD;
 		this.showBranchesECD = showBranchesECD;
 		this.showCommitsECD = showCommitsECD;
 		this.showConvertersECD = showConvertersECD;
@@ -100,8 +109,20 @@ public class NodeEdgeFilterConverter extends Converter
 	
 	protected void convert()
 	{
+		boolean showBowTie = ((Boolean)get(showBowTieECD)).booleanValue();
+		
+		if (isStateChanged(selectedNodesECD) && !showBowTie)
+		{
+			return;
+		}
+		
 		Graph graph = (Graph)get(graphECD);
 		
+		if (showBowTie)
+		{
+			graph = GraphSelectionFilter.create(graph,
+				(BooleanIla)get(selectedNodesECD));
+		}
 		if (!((Boolean)get(showBranchesECD)).booleanValue())
 		{
 			graph = GraphNodeClassFilter.create(graph, BranchProxy.class);
