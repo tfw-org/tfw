@@ -32,6 +32,7 @@ import tfw.awt.ecd.GraphicECD;
 import tfw.awt.event.ComponentInitiator;
 import tfw.awt.event.MouseInitiator;
 import tfw.awt.event.WindowInitiator;
+import tfw.immutable.ila.booleanila.BooleanIlaFromArray;
 import tfw.plot.BackgroundGraphicConverter;
 import tfw.plot.PlotPanel;
 import tfw.swing.JCheckBoxMenuItemBB;
@@ -51,8 +52,6 @@ import tfw.tsm.ecd.IntegerECD;
 import tfw.tsm.ecd.StatelessTriggerECD;
 import tfw.tsm.ecd.ila.BooleanIlaECD;
 import tfw.tsm.ecd.ila.DoubleIlaECD;
-import tfw.tsm.ecd.ila.IntIlaECD;
-import tfw.tsm.ecd.ila.LongIlaECD;
 import tfw.tsm.ecd.ila.ObjectIlaECD;
 import tfw.tsm.ecd.ilm.DoubleIlmECD;
 import tfw.tsm.ecd.ilm.IntIlmECD;
@@ -66,32 +65,12 @@ public class Visualizer extends JFrameBB
 		new BooleanECD("buttonTwo");
 	private static final BooleanECD BUTTON_THREE_ECD =
 		new BooleanECD("buttonThree");
-	private static final IntIlaECD CLUSTER_XS_ECD =
-		new IntIlaECD("clusterXs");
-	private static final IntIlaECD CLUSTER_YS_ECD =
-		new IntIlaECD("clusterYs");
-	private static final IntIlaECD CLUSTER_WIDTHS_ECD =
-		new IntIlaECD("clusterWidths");
-	private static final IntIlaECD CLUSTER_HEIGHTS_ECD =
-		new IntIlaECD("clusterHeights");
-	private static final LongIlaECD EDGE_FROMS_ECD =
-		new LongIlaECD("edgeFroms");
-	private static final LongIlaECD EDGE_TOS_ECD =
-		new LongIlaECD("edgeTos");
+	private static final BooleanECD CONTROL_KEY_ECD =
+		new BooleanECD("controlKey");
     private static final BooleanECD EXIT_ENABLED_ECD =
         new BooleanECD("exitEnabled");
     private static final StatelessTriggerECD EXIT_TRIGGER_ECD =
         new StatelessTriggerECD("exitTrigger");
-    private static final ObjectIlaECD FILTERED_NODES_ECD =
-    	new ObjectIlaECD("filteredNodes");
-    private static final LongIlaECD FILTERED_EDGE_FROMS_ECD =
-    	new LongIlaECD("filteredEdgeFroms");
-    private static final LongIlaECD FILTERED_EDGE_TOS_ECD =
-    	new LongIlaECD("filteredEdgeTos");
-    private static final LongIlaECD FILTERED2_EDGE_FROMS_ECD =
-    	new LongIlaECD("filtered2EdgeFroms");
-    private static final LongIlaECD FILTERED2_EDGE_TOS_ECD =
-    	new LongIlaECD("filtered2EdgeTos");
     private static final GraphECD FILTERED_GRAPH_ECD =
     	new GraphECD("nodeFilteredGraph");
     private static final BooleanECD FIT_TO_SCREEN_ENABLED_ECD =
@@ -158,6 +137,10 @@ public class Visualizer extends JFrameBB
     	new StatelessTriggerECD("refreshTrigger");
     private static final BooleanIlaECD SELECTED_NODES_ECD =
     	new BooleanIlaECD("selectedNodes");
+    private static final BooleanECD SHOW_BOWTIE_ENABLED_ECD =
+    	new BooleanECD("showBowTieEnabled");
+    private static final BooleanECD SHOW_BOWTIE_SELECTED_ECD =
+    	new BooleanECD("showBowTieSelected");
     private static final BooleanECD SHOW_BRANCHES_ENABLED_ECD =
     	new BooleanECD("showBranchesEnabled");
     private static final BooleanECD SHOW_BRANCHES_SELECTED_ECD =
@@ -260,6 +243,10 @@ public class Visualizer extends JFrameBB
         	DECREASE_FONT_TRIGGER_ECD, DECREASE_FONT_ENABLED_ECD);
         decreaseFontMI.setText("Decrease Font Size");
         
+        JCheckBoxMenuItemBB showBowTieMI = new JCheckBoxMenuItemBB(
+        	"ShowBowTie", SHOW_BOWTIE_SELECTED_ECD,
+        	SHOW_BOWTIE_ENABLED_ECD);
+        showBowTieMI.setText("BowTie");
         JCheckBoxMenuItemBB showBranchesMI = new JCheckBoxMenuItemBB(
         	"ShowBranches", SHOW_BRANCHES_SELECTED_ECD,
         	SHOW_BRANCHES_ENABLED_ECD);
@@ -315,14 +302,15 @@ public class Visualizer extends JFrameBB
         
         JMenuBB showM = new JMenuBB("Show");
         showM.setText("Show");
-//        showM.addToBoth(showBranchesMI);
+        showM.addToBoth(showBowTieMI);
+        showM.addToBoth(showBranchesMI);
         showM.addToBoth(showCommitsMI);
         showM.addToBoth(showConvertersMI);
         showM.addToBoth(showDataFlowEdgesMI);
         showM.addToBoth(showEventChannelsMI);
         showM.addToBoth(showInitiatorsMI);
-//        showM.addToBoth(showMultiplexedBranchesMI);
-//        showM.addToBoth(showRootsMI);
+        showM.addToBoth(showMultiplexedBranchesMI);
+        showM.addToBoth(showRootsMI);
         showM.addToBoth(showStructureEdgesMI);
         showM.addToBoth(showSynchronizersMI);
         showM.addToBoth(showTriggeredCommitsMI);
@@ -363,8 +351,8 @@ public class Visualizer extends JFrameBB
         getBranch().add(new ExitConverter(EXIT_TRIGGER_ECD));
         getBranch().add(new NodeEdgeConverter(
         	(Root)treeComponent, REFRESH_TRIGGER_ECD, GRAPH_ECD));
-        getBranch().add(new NodeEdgeFilterConverter(GRAPH_ECD,
-        	SHOW_BRANCHES_SELECTED_ECD, SHOW_COMMITS_SELECTED_ECD,
+        getBranch().add(new NodeEdgeFilterConverter(GRAPH_ECD, SELECTED_NODES_ECD,
+        	SHOW_BOWTIE_SELECTED_ECD, SHOW_BRANCHES_SELECTED_ECD, SHOW_COMMITS_SELECTED_ECD,
         	SHOW_CONVERTERS_SELECTED_ECD, SHOW_EVENT_CHANNELS_SELECTED_ECD,
         	SHOW_INITIATORS_SELECTED_ECD, SHOW_MULTIPLEXEDBRANCHES_SELECTED_ECD,
         	SHOW_ROOTS_SELECTED_ECD, SHOW_SYNCHRONIZERS_SELECTED_ECD,
@@ -408,7 +396,7 @@ public class Visualizer extends JFrameBB
 			"PlotPanel", null, null, null, WIDTH_ECD, HEIGHT_ECD));
 		MouseInitiator mouseInitiator = new MouseInitiator("PlotPanel",
 			X_MOUSE_ECD, Y_MOUSE_ECD, BUTTON_ONE_ECD, BUTTON_TWO_ECD,
-			BUTTON_THREE_ECD);
+			BUTTON_THREE_ECD, null, CONTROL_KEY_ECD, null);
 		plotPanel.addMouseListenerToBoth(mouseInitiator);
 		plotPanel.addMouseMotionListener(mouseInitiator);
        
@@ -465,30 +453,20 @@ public class Visualizer extends JFrameBB
         rf.addEventChannel(BUTTON_ONE_ECD);
         rf.addEventChannel(BUTTON_TWO_ECD);
         rf.addEventChannel(BUTTON_THREE_ECD);
-        rf.addEventChannel(CLUSTER_XS_ECD);
-        rf.addEventChannel(CLUSTER_YS_ECD);
-        rf.addEventChannel(CLUSTER_WIDTHS_ECD);
-        rf.addEventChannel(CLUSTER_HEIGHTS_ECD);
-        rf.addEventChannel(EDGE_FROMS_ECD);
-        rf.addEventChannel(EDGE_TOS_ECD);
+        rf.addEventChannel(CONTROL_KEY_ECD);
         rf.addEventChannel(EXIT_ENABLED_ECD, Boolean.TRUE);
         rf.addEventChannel(EXIT_TRIGGER_ECD);
         rf.addEventChannel(FILTERED_GRAPH_ECD);
-        rf.addEventChannel(FILTERED_NODES_ECD);
-        rf.addEventChannel(FILTERED_EDGE_FROMS_ECD);
-        rf.addEventChannel(FILTERED_EDGE_TOS_ECD);
-        rf.addEventChannel(FILTERED2_EDGE_FROMS_ECD);
-        rf.addEventChannel(FILTERED2_EDGE_TOS_ECD);
         rf.addEventChannel(FIT_TO_SCREEN_ENABLED_ECD, Boolean.TRUE);
         rf.addEventChannel(FIT_TO_SCREEN_TRIGGER_ECD);
         rf.addEventChannel(FONT_ECD, new JPanel().getFont());
-        rf.addEventChannel(GENERATE_GRAPHIC_TRIGGER_ECD);
         rf.addEventChannel(GRAPH_ECD);
         rf.addEventChannel(GRAPH_HEIGHT_ECD, new Integer(500));
         rf.addEventChannel(GRAPH_WIDTH_ECD, new Integer(1500));
         rf.addEventChannel(HEIGHT_ECD);
         rf.addEventChannel(DECREASE_FONT_ENABLED_ECD);
         rf.addEventChannel(DECREASE_FONT_TRIGGER_ECD);
+        rf.addEventChannel(GENERATE_GRAPHIC_TRIGGER_ECD);
         rf.addEventChannel(INCREASE_FONT_ENABLED_ECD);
         rf.addEventChannel(INCREASE_FONT_TRIGGER_ECD);
         rf.addEventChannel(MULTI_GRAPHIC_ECD);
@@ -509,7 +487,9 @@ public class Visualizer extends JFrameBB
         rf.addEventChannel(PROPERTIES_ENABLED_ECD, Boolean.TRUE);
         rf.addEventChannel(REFRESH_ENABLED_ECD, Boolean.TRUE);
         rf.addEventChannel(REFRESH_TRIGGER_ECD);
-        rf.addEventChannel(SELECTED_NODES_ECD);
+        rf.addEventChannel(SELECTED_NODES_ECD, BooleanIlaFromArray.create(new boolean[0]));
+        rf.addEventChannel(SHOW_BOWTIE_ENABLED_ECD, Boolean.TRUE);
+        rf.addEventChannel(SHOW_BOWTIE_SELECTED_ECD, Boolean.FALSE);
         rf.addEventChannel(SHOW_BRANCHES_ENABLED_ECD, Boolean.TRUE);
         rf.addEventChannel(SHOW_BRANCHES_SELECTED_ECD, Boolean.TRUE);
         rf.addEventChannel(SHOW_COMMITS_ENABLED_ECD, Boolean.TRUE);
