@@ -27,7 +27,9 @@ package tfw.visualizer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
 import tfw.immutable.ImmutableProxy;
@@ -77,7 +79,12 @@ public class NormalXYDoubleIlmFromGraph
 	    	
 	    	graph.toArray(nodes, 0, 0, (int)graph.nodesLength(),
 	    		froms, tos, 0, 0, (int)graph.edgesLength());
-	    	
+
+//for (int i=0 ; i < nodes.length ; i++)
+//System.out.println("nodes["+i+"]="+nodes[i]);
+//for (int i=0 ; i < froms.length ; i++)
+//System.out.println("froms["+i+"]="+froms[i]+" tos["+i+"]="+tos[i]);
+
 	    	ArrayList rootNodes = new ArrayList(Arrays.asList(nodes));
 	    	
 //System.out.println("A: rN.s="+rootNodes.size());
@@ -111,19 +118,65 @@ public class NormalXYDoubleIlmFromGraph
 //System.out.println("rootNodes.size() = "+rootNodes.size());
 		    	// For each root, calculate its normal X's, Y depth and
 	    		// node cluster number.
-	    		int depth = calculateXandYs(0, clusterNumber, new Object[] {rootNodes.remove(0)},
-	    			nodes, froms, tos, normalXs, normalYs, nodeClusterNumbers);
+//	    		int depth = calculateXandYs(0, clusterNumber, new Object[] {rootNodes.remove(0)},
+//	    			nodes, froms, tos, normalXs, normalYs, nodeClusterNumbers);
+	    		ArrayList levels = new ArrayList();
+	    		ArrayList rootMinusOneLevel = new ArrayList();
+	    		ArrayList rootLevel = new ArrayList();
+	    		
+	    		rootLevel.add(rootNodes.remove(0));
+	    		levels.add(rootMinusOneLevel);
+	    		levels.add(rootLevel);
+	    		
+	    		xxx(levels, new HashSet(Arrays.asList(nodes)), froms, tos);
+
+//System.out.println("Starting extra root node removal");
+
+	    		for (int i=rootNodes.size() - 1 ; i >= 0 ; i--)
+	    		{
+	    			if (rootLevel.contains(rootNodes.get(i)))
+	    			{
+	    				rootNodes.remove(i);
+	    			}
+	    		}
+	    		
+//System.out.println("Starting normalizing");
+				levels.remove(0);
+
+	    		for (int i=0 ; i < levels.size() ; i++)
+	    		{
+	    			ArrayList level = (ArrayList)levels.get(i);
+//System.out.println("level="+level);
+	    			
+	    			for (int j=0 ; j < level.size() ; j++)
+	    			{
+	    				Object node = level.get(j);
+	    				
+	    				for (int k=0 ; k < nodes.length ; k++)
+	    				{
+	    					if (nodes[k] != null && nodes[k].equals(node))
+	    					{
+//System.out.println("node["+k+"] i="+i+" j="+j+" level.s="+level.size()+" levels.s="+levels.size());
+	    						normalXs[k] = (double)(j + 1) / (double)(level.size() + 1);
+	    						normalYs[k] = (double)(i + 1) / (double)(levels.size() + 1);
+	    						nodeClusterNumbers[k] = clusterNumber;
+	    					}
+	    				}
+	    			}
+	    		}
+	    		
+//System.out.println("Finished normalizing");
 	    		
 //System.out.println("depth="+depth);
 	    		// Normalize the Y depth.
-	    		for (int i=0 ; i < normalYs.length ; i++)
-	    		{
-	    			if (normalYs[i] >= 1.0)
-	    			{
-	    				normalYs[i] = normalYs[i] / (depth+1);
-	    			}
+//	    		for (int i=0 ; i < normalYs.length ; i++)
+//	    		{
+//	    			if (normalYs[i] >= 1.0)
+//	    			{
+//	    				normalYs[i] = normalYs[i] / (depth+1);
+//	    			}
 //System.out.println("new normalYs["+i+"]="+normalYs[i]);
-	    		}
+//	    		}
 	    		clusterNumber++;
 	    	}
 
@@ -147,80 +200,70 @@ public class NormalXYDoubleIlmFromGraph
 		    	}
 			}
 	    	
-//System.out.println("NormalXYDoubleIlmFromGraph:  starting");
+//System.out.println("NormalXYDoubleIlmFromGraph:  ending");
 	    	return(new double[][] {normalXs, normalYs});
     	}
 	    
-	    private static int calculateXandYs(int currentLevel, int clusterNumber,
-	    	Object[] nodesAtCurrentLevel, Object[] nodes, Object[] froms,
-	    	Object[] tos, double[] normalXs, double[] normalYs,
-	    	int[] nodeClusterNumbers)
+	    private static void xxx(ArrayList levels, HashSet nodes, Object[] froms, Object[] tos)
 	    {
-			ArrayList nodesAtNextLevel = new ArrayList();
-			int deepestLevel = currentLevel+1;
-			
-//System.out.println("Starting node search");
-			// Loop through each node at the current level.
-			for (int i=0 ; i < nodesAtCurrentLevel.length ; i++)
-			{
-//System.out.println("current node number "+i);
-				// Find the current node in the node list and set its x and y.
-				for (int j=0 ; j < nodes.length ; j++)
-				{
-//System.out.println("node "+j);
-					if (nodes[j] != null && nodes[j] == nodesAtCurrentLevel[i])
-					{
-//System.out.println("Setting X/Y for "+nodes[j]+" i="+i+" nACL.l="+nodesAtCurrentLevel.length);
-						normalXs[j] = (double)(i + 1) / (double)(nodesAtCurrentLevel.length + 1);
-						normalYs[j] = deepestLevel;
-						nodeClusterNumbers[j] = clusterNumber;
-//System.out.println("  x["+j+"]="+normalXs[j]+" y["+j+"]="+normalYs[j]+" c["+j+"]="+nodeClusterNumbers[j]);
-					}
-				}
-				
-				// Add any children of this node to the next level list and
-				// remove that edge from the edge list.
-//System.out.println("Starting from search f.l="+froms.length);
-//try{
-	    		for (int k=0 ; k < froms.length ; k++)
+//System.out.println("Entering xxx");
+	    	ArrayList previousLevelNodes = (ArrayList)levels.get(levels.size() - 2);
+	    	ArrayList currentLevelNodes = (ArrayList)levels.get(levels.size() - 1);
+	    	ArrayList nextLevelNodes = new ArrayList();
+	    	
+//System.out.println("pLN="+previousLevelNodes);
+//System.out.println("cLN="+currentLevelNodes);
+//System.out.println("nLN="+nextLevelNodes);
+//System.out.println("nodes="+nodes);
+	    	
+	    	for (int i=0 ; i < currentLevelNodes.size() ; i++)
+	    	{
+    			Object currentLevelNode = currentLevelNodes.get(i);
+//System.out.println("looking for "+currentLevelNode);
+
+    			for (int j=0 ; j < froms.length ; j++)
 	    		{
-//System.out.println("from "+k);
-	    			if (froms[k] != null && froms[k] == nodesAtCurrentLevel[i])
+	    			Object from = froms[j];
+	    			Object to = tos[j];
+//System.out.println(j+": from="+from+" to="+to);
+	    			
+	    			if (from != null && from.equals(currentLevelNode))
 	    			{
-//System.out.println("froms[k]="+froms[k]);
-	    				for (int m=0 ; m < nodes.length ; m++)
+	    				if (nodes.contains(to))
 	    				{
-//System.out.println("froms[k]="+froms[k]+" tos[k]="+tos[k]+" nodes[m]="+nodes[m]+" normalYs["+normalYs[m]);
-	    					if (tos[k] == nodes[m] && normalYs[m] == 0.0)
-	    					{
-//System.out.println("Adding child "+tos[k]);
-	    	    				nodesAtNextLevel.add(tos[k]);
-	    	    				froms[k] = null;
-	    	    				tos[k] = null;   	
-	    	    				
-	    	    				break;
-	    					}
+//System.out.println("found next node "+to);
+	    					nextLevelNodes.add(to);
 	    				}
+    					froms[j] = null;
+    					tos[j] = null;
+	    			}
+	    			else if (to != null && to.equals(currentLevelNode))
+	    			{
+	    				if (nodes.contains(from))
+	    				{
+//System.out.println("found previous node "+from);
+	    					previousLevelNodes.add(from);
+	    					nodes.remove(from);
+	    				}
+    					froms[j] = null;
+    					tos[j] = null;
 	    			}
 	    		}
-//} catch (Throwable t) {t.printStackTrace(); }
-//System.out.println("Finished from search");
-			}
-//System.out.println("Finished node search");
-
-//System.out.println("nANL.s="+nodesAtNextLevel.size());
-			// If there are any nodes in the next level, process them.
-			if (nodesAtNextLevel.size() > 0)
-			{
-//System.out.println("Calling next level");
-				deepestLevel = calculateXandYs(deepestLevel, clusterNumber,
-					nodesAtNextLevel.toArray(), nodes, froms, tos, normalXs,
-					normalYs, nodeClusterNumbers);
-			}
-
-    		return(deepestLevel);
+    			
+    			nodes.remove(currentLevelNode);
+	    	}
+	    	
+//System.out.println("nextLevelNodes.size()="+nextLevelNodes.size());
+	    	
+	    	if (nextLevelNodes.size() > 0)
+	    	{
+	    		levels.add(nextLevelNodes);
+	    		
+	    		xxx(levels, nodes, froms, tos);
+	    	}
+//System.out.println("Leaving xxx");
 	    }
-	    
+	    	    
 	    public double[][] toArray(long rowStart, long columnStart,
 	    	int width, int height) throws DataInvalidException
     	{
