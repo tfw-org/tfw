@@ -79,13 +79,13 @@ public class NodeEdgeFilterConverter extends Converter
 		GraphECD filteredGraphECD)
 	{
 		super("FilterConverter",
-			new EventChannelDescription[] {graphECD, selectedNodesECD,
+			new EventChannelDescription[] {graphECD,
 				showBowTieECD, showBranchesECD, showCommitsECD,
 				showConvertersECD, showEventChannelsECD, showInitiatorsECD,
 				showMultiplexedBranchesECD, showRootsECD, showSynchronizersECD,
 				showTriggeredCommitsECD, showTriggeredConvertersECD,
 				showValidatorsECD, showStructureEdgesECD, showDataFlowEdgesECD},
-			null,
+			new EventChannelDescription[] {selectedNodesECD},
 			new EventChannelDescription[] {filteredGraphECD});
 		
 		this.graphECD = graphECD;
