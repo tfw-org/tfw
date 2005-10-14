@@ -130,8 +130,15 @@ class Multiplexer implements EventChannel
      */
     public void add(Port port)
     {
+    	// Search for the multiplexed component...
         int index = component.getIndex(port.getTreeComponent());
-
+        TreeComponent tc = port.getTreeComponent().getParent();
+        while((index < 0) && (tc != null) ){
+            index = component.getIndex(tc);
+            tc = tc.getParent();
+        }
+        
+        // if we didn't find a multiplexed component...
         if (index < 0)
         {
             throw new IllegalArgumentException(
@@ -544,7 +551,7 @@ class Multiplexer implements EventChannel
          */
         public void addDeferredStateChange(ProcessorSource source)
         {
-            source.fire();
+            component.getTransactionManager().addStateChange(source);
         }
     }
 }
