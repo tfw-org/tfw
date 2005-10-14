@@ -64,7 +64,6 @@ public class MultiplexedBranch extends TreeComponent
     {
         for (int i = 0; i < this.multiplexers.length; i++)
         {
-			//connections.add(multiplexers[i].initiatorMultiSource);
 			connections.add(multiplexers[i].processorMultiSource);
 			connections.add(multiplexers[i].multiSink);
         }
