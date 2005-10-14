@@ -23,6 +23,8 @@ import junit.framework.TestSuite;
 import tfw.immutable.ila.objectila.ObjectIla;
 import tfw.immutable.ila.objectila.ObjectIlaFromArray;
 import tfw.tsm.BasicTransactionQueue;
+import tfw.tsm.Branch;
+import tfw.tsm.BranchFactory;
 import tfw.tsm.Commit;
 import tfw.tsm.Initiator;
 import tfw.tsm.MultiplexedBranch;
@@ -34,20 +36,114 @@ import tfw.tsm.ecd.EventChannelDescription;
 import tfw.tsm.ecd.StatelessTriggerECD;
 import tfw.tsm.ecd.StringECD;
 import tfw.tsm.ecd.ila.ObjectIlaECD;
+
 public class MultiplexerTest extends TestCase
 {
     private StringECD valueECD = new StringECD("value");
 
     private ObjectIlaECD multiValueECD = new ObjectIlaECD("multiValue");
 
-    public void testMultiplexing() throws Exception
+    // public void testMultiplexing() throws Exception
+    // {
+    // StatelessTriggerECD triggerECD = new StatelessTriggerECD("trigger");
+    // RootFactory rf = new RootFactory();
+    // rf.addEventChannel(triggerECD);
+    // rf.addEventChannel(multiValueECD);
+    // //rf.setLogging(true);
+    //        
+    // BasicTransactionQueue queue = new BasicTransactionQueue();
+    //
+    // Root root = rf.create("MultiplexerTestRoot", queue);
+    //
+    // MultiplexedBranchFactory mbf = new MultiplexedBranchFactory();
+    // mbf.addMultiplexer(valueECD, multiValueECD);
+    //
+    // MultiplexedBranch multiBranch = mbf.create("Multiplexer");
+    //
+    // Initiator initiator0 = new Initiator("Value0", valueECD);
+    // ValueCommit valueCommit0 = new ValueCommit("Value 0", valueECD);
+    //
+    // multiBranch.add(initiator0, 0);
+    // multiBranch.add(valueCommit0, 0);
+    //
+    // root.add(multiBranch);
+    // initiator0.set(valueECD, "0");
+    // queue.waitTilEmpty();
+    // assertEquals("value 0 not correct", "0", valueCommit0.value);
+    //
+    // Initiator initiator1 = new Initiator("Value1", valueECD);
+    // ValueCommit valueCommit1 = new ValueCommit("Value 1", valueECD);
+    // multiBranch.add(initiator1, 1);
+    // multiBranch.add(valueCommit1, 1);
+    //
+    // initiator1.set(valueECD, "1");
+    // queue.waitTilEmpty();
+    // assertEquals("value 0 not correct", "0", valueCommit0.value);
+    // assertEquals("value 1 not correct", "1", valueCommit1.value);
+    //
+    // Initiator multiInitiator = new Initiator("MultiValueInitiator",
+    // multiValueECD);
+    // root.add(multiInitiator);
+    //
+    // String[] strings = new String[] { "zero", "one" };
+    //
+    // ObjectIla obj = ObjectIlaFromArray.create(strings);
+    // multiInitiator.set(multiValueECD, obj);
+    // queue.waitTilEmpty();
+    //
+    // assertEquals("value 0 not correct", strings[0], valueCommit0.value);
+    // assertEquals("value 1 not correct", strings[1], valueCommit1.value);
+    //
+    // MultiValueCommit mvCommit = new MultiValueCommit("MultiValueCommit",
+    // multiValueECD);
+    // root.add(mvCommit);
+    //
+    // initiator0.set(valueECD, "0");
+    // queue.waitTilEmpty();
+    // assertEquals("value 0 not correct", "0", valueCommit0.value);
+    // assertEquals("value 1 not correct", "one", valueCommit1.value);
+    // assertEquals("multiValue[0] not correct", "0",
+    // mvCommit.value.toArray()[0]);
+    // assertEquals("multiValue[1] not correct", "one", mvCommit.value
+    // .toArray()[1]);
+    //
+    // //TODO: add ProcessorSource test case.
+    // MyTriggeredConverter tc0 = new MyTriggeredConverter("tc0", triggerECD,
+    // "tc0", valueECD);
+    // MyTriggeredConverter tc1 = new MyTriggeredConverter("tc1", triggerECD,
+    // "tc1", valueECD);
+    //        
+    // Initiator triggerInitiator = new Initiator("trigger", triggerECD);
+    // root.add(triggerInitiator);
+    //        
+    // multiBranch.add(tc0, 0);
+    // multiBranch.add(tc1, 1);
+    //         
+    // triggerInitiator.trigger(triggerECD);
+    // queue.waitTilEmpty();
+    // assertEquals("value 0 not correct", "tc0", valueCommit0.value);
+    // assertEquals("value 1 not correct", "tc1", valueCommit1.value);
+    // assertEquals("multiValue[0] not correct", "tc0",
+    // mvCommit.value.toArray()[0]);
+    // assertEquals("multiValue[1] not correct", "tc1", mvCommit.value
+    // .toArray()[1]);
+    //        
+    // // Test exception in multiple state changes in the same
+    // // multiplex sub-channel...
+    //        
+    // // multiBranch.remove(tc1);
+    // // multiBranch.add(tc1,0);
+    // // triggerInitiator.trigger(triggerECD);
+    // }
+
+    public void testMultiplerWithIntermediateBranch() throws Exception
     {
         StatelessTriggerECD triggerECD = new StatelessTriggerECD("trigger");
         RootFactory rf = new RootFactory();
         rf.addEventChannel(triggerECD);
         rf.addEventChannel(multiValueECD);
-        //rf.setLogging(true);
-        
+        // rf.setLogging(true);
+
         BasicTransactionQueue queue = new BasicTransactionQueue();
 
         Root root = rf.create("MultiplexerTestRoot", queue);
@@ -57,11 +153,17 @@ public class MultiplexerTest extends TestCase
 
         MultiplexedBranch multiBranch = mbf.create("Multiplexer");
 
+        BranchFactory subBranchFactory = new BranchFactory();
+        Branch subBranch0 = subBranchFactory.create("subBranch0");
+        Branch subBranch1 = subBranchFactory.create("subBranch1");
+        multiBranch.add(subBranch0, 0);
+        multiBranch.add(subBranch1, 1);
+
         Initiator initiator0 = new Initiator("Value0", valueECD);
         ValueCommit valueCommit0 = new ValueCommit("Value 0", valueECD);
 
-        multiBranch.add(initiator0, 0);
-        multiBranch.add(valueCommit0, 0);
+        subBranch0.add(initiator0);
+        subBranch0.add(valueCommit0);
 
         root.add(multiBranch);
         initiator0.set(valueECD, "0");
@@ -70,15 +172,16 @@ public class MultiplexerTest extends TestCase
 
         Initiator initiator1 = new Initiator("Value1", valueECD);
         ValueCommit valueCommit1 = new ValueCommit("Value 1", valueECD);
-        multiBranch.add(initiator1, 1);
-        multiBranch.add(valueCommit1, 1);
+        subBranch1.add(initiator1);
+        subBranch1.add(valueCommit1);
 
         initiator1.set(valueECD, "1");
         queue.waitTilEmpty();
         assertEquals("value 0 not correct", "0", valueCommit0.value);
         assertEquals("value 1 not correct", "1", valueCommit1.value);
 
-        Initiator multiInitiator = new Initiator("MultiValueInitiator", multiValueECD);
+        Initiator multiInitiator = new Initiator("MultiValueInitiator",
+                multiValueECD);
         root.add(multiInitiator);
 
         String[] strings = new String[] { "zero", "one" };
@@ -103,33 +206,26 @@ public class MultiplexerTest extends TestCase
         assertEquals("multiValue[1] not correct", "one", mvCommit.value
                 .toArray()[1]);
 
-        //TODO: add ProcessorSource test case.
         MyTriggeredConverter tc0 = new MyTriggeredConverter("tc0", triggerECD,
                 "tc0", valueECD);
         MyTriggeredConverter tc1 = new MyTriggeredConverter("tc1", triggerECD,
                 "tc1", valueECD);
-        
+
         Initiator triggerInitiator = new Initiator("trigger", triggerECD);
         root.add(triggerInitiator);
-        
-        multiBranch.add(tc0, 0);
-        multiBranch.add(tc1, 1);
-         
+
+        subBranch0.add(tc0);
+        subBranch1.add(tc1);
+
+        System.err.println("\n***********\n");
         triggerInitiator.trigger(triggerECD);
         queue.waitTilEmpty();
         assertEquals("value 0 not correct", "tc0", valueCommit0.value);
         assertEquals("value 1 not correct", "tc1", valueCommit1.value);
-        assertEquals("multiValue[0] not correct", "tc0",
-                mvCommit.value.toArray()[0]);
+        assertEquals("multiValue[0] not correct", "tc0", mvCommit.value
+                .toArray()[0]);
         assertEquals("multiValue[1] not correct", "tc1", mvCommit.value
                 .toArray()[1]);
-        
-        // Test exception in multiple state changes in the same
-        // multiplex sub-channel...
-        
-//        multiBranch.remove(tc1);
-//        multiBranch.add(tc1,0);
-//        triggerInitiator.trigger(triggerECD);
     }
 
     public static Test suite()
