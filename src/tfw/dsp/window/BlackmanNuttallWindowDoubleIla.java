@@ -24,9 +24,8 @@
  */
 package tfw.dsp.window;
 
-import tfw.immutable.DataInvalidException;
-import tfw.immutable.ila.doubleila.AbstractDoubleIla;
 import tfw.immutable.ila.doubleila.DoubleIla;
+import tfw.immutable.ila.doubleila.DoubleIlaFromArray;
 
 public final class BlackmanNuttallWindowDoubleIla
 {
@@ -40,42 +39,18 @@ public final class BlackmanNuttallWindowDoubleIla
 	public static DoubleIla create(DoubleIla doubleIla, int windowLength,
 		long numberOfWindows)
 	{
-		return(new MyDoubleIla(doubleIla, windowLength));
-	}
-	
-	private static class MyDoubleIla extends AbstractDoubleIla
-	{
-		private final DoubleIla doubleIla;
-		private final double[] window;
+		double[] window = new double[windowLength];
 		
-		public MyDoubleIla(DoubleIla doubleIla, int windowLength)
-		{
-			super(doubleIla.length());
-			
-			this.doubleIla = doubleIla;
-			this.window = new double[windowLength];
-			
-			double constant1 = 2.0 * Math.PI / (windowLength - 1);
-			double constant2 = 2.0 * constant1;
-			double constant3 = 2.0 * constant2;
+		double constant1 = 2.0 * Math.PI / (windowLength - 1);
+		double constant2 = 2.0 * constant1;
+		double constant3 = 2.0 * constant2;
 
-			for (int i=0 ; i < windowLength ; i++)
-			{
-				window[i] = A0 - A1 * Math.cos(constant1 * i) +
-					A2 * Math.cos(constant2 * i) - A3 * Math.cos(constant3 * i);
-			}
+		for (int i=0 ; i < windowLength ; i++)
+		{
+			window[i] = A0 - A1 * Math.cos(constant1 * i) +
+				A2 * Math.cos(constant2 * i) - A3 * Math.cos(constant3 * i);
 		}
 		
-		public void toArrayImpl(double[] array, int offset, long start,
-			int length) throws DataInvalidException
-		{
-			doubleIla.toArray(array, offset, start, length);
-			
-			for (int i=0,o=(int)(start%window.length) ; i < length ;
-				i++,o%=window.length)
-			{
-				array[offset+i] *= window[o++];
-			}
-		}
+		return(DoubleIlaFromArray.create(window));
 	}
 }

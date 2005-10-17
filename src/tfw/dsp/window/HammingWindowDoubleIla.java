@@ -24,9 +24,8 @@
  */
 package tfw.dsp.window;
 
-import tfw.immutable.DataInvalidException;
-import tfw.immutable.ila.doubleila.AbstractDoubleIla;
 import tfw.immutable.ila.doubleila.DoubleIla;
+import tfw.immutable.ila.doubleila.DoubleIlaFromArray;
 
 public final class HammingWindowDoubleIla
 {
@@ -38,39 +37,15 @@ public final class HammingWindowDoubleIla
 	public static DoubleIla create(DoubleIla doubleIla, int windowLength,
 		long numberOfWindows)
 	{
-		return(new MyDoubleIla(doubleIla, windowLength));
-	}
-	
-	private static class MyDoubleIla extends AbstractDoubleIla
-	{
-		private final DoubleIla doubleIla;
-		private final double[] window;
+		double[] window = new double[windowLength];
 		
-		public MyDoubleIla(DoubleIla doubleIla, int windowLength)
-		{
-			super(doubleIla.length());
-			
-			this.doubleIla = doubleIla;
-			this.window = new double[windowLength];
-			
-			double constant = 2.0 * Math.PI / (windowLength - 1);
+		double constant = 2.0 * Math.PI / (windowLength - 1);
 
-			for (int i=0 ; i < windowLength ; i++)
-			{
-				window[i] = A0 - A1 * Math.cos(constant * i);
-			}
+		for (int i=0 ; i < windowLength ; i++)
+		{
+			window[i] = A0 - A1 * Math.cos(constant * i);
 		}
 		
-		public void toArrayImpl(double[] array, int offset, long start,
-			int length) throws DataInvalidException
-		{
-			doubleIla.toArray(array, offset, start, length);
-			
-			for (int i=0,o=(int)(start%window.length) ; i < length ;
-				i++,o%=window.length)
-			{
-				array[offset+i] *= window[o++];
-			}
-		}
+		return(DoubleIlaFromArray.create(window));
 	}
 }
