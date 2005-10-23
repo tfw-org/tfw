@@ -24,7 +24,6 @@
  */
 package tfw.tsm;
 
-
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -37,13 +36,15 @@ import tfw.tsm.ecd.EventChannelDescription;
 import tfw.value.NullConstaint;
 import tfw.value.ValueException;
 
-
 /**
  * The base class for all components.
  */
 public class TreeComponent
 {
-    private static final Map EMPTY = Collections.unmodifiableMap(new HashMap(0));
+    public static final String DEFAULT_EXPORT_TAG = "All";
+
+    private static final Map EMPTY = Collections
+            .unmodifiableMap(new HashMap(0));
 
     /** The name of the component. */
     private final String name;
@@ -57,7 +58,7 @@ public class TreeComponent
     /** This components sinks. */
     final PortMap sinks;
 
-    /** This components sources.*/
+    /** This components sources. */
     final Map sources;
 
     /** This components event channels. */
@@ -68,13 +69,18 @@ public class TreeComponent
 
     /**
      * Creates a tree component with the specified attributes.
-     * @param name the name of the component.
-     * @param sinks the sinks for this component.
-     * @param sources the sources for this component.
-     * @param eventChannels the event channels for this component.
+     * 
+     * @param name
+     *            the name of the component.
+     * @param sinks
+     *            the sinks for this component.
+     * @param sources
+     *            the sources for this component.
+     * @param eventChannels
+     *            the event channels for this component.
      */
     TreeComponent(String name, Sink[] sinks, Source[] sources,
-        EventChannel[] eventChannels)
+            EventChannel[] eventChannels)
     {
         Argument.assertNotNull(name, "name");
         this.name = name;
@@ -85,9 +91,10 @@ public class TreeComponent
 
     /**
      * Creates an unmodifiable map of the specified sinks.
-     * @param sinks the sinks.
-     * @return an unmodifiable map of the sinks, mapped by event channel
-     * name.
+     * 
+     * @param sinks
+     *            the sinks.
+     * @return an unmodifiable map of the sinks, mapped by event channel name.
      */
     private PortMap initializeSinks(Sink[] sinks)
     {
@@ -112,9 +119,10 @@ public class TreeComponent
 
     /**
      * Creates an unmodifiable map of the specified sources.
-     * @param sources the sources.
-     * @return an unmodifiable map of the sources, mapped by event channel
-     * name.
+     * 
+     * @param sources
+     *            the sources.
+     * @return an unmodifiable map of the sources, mapped by event channel name.
      */
     private Map initializeSources(Source[] sources)
     {
@@ -131,8 +139,8 @@ public class TreeComponent
                 if (map.put(sources[i].getEventChannelName(), sources[i]) != null)
                 {
                     throw new IllegalArgumentException(
-                        "Multiple sources detected for event channel '" +
-                        sources[i].getEventChannelName() + "'");
+                            "Multiple sources detected for event channel '"
+                                    + sources[i].getEventChannelName() + "'");
                 }
             }
 
@@ -148,9 +156,11 @@ public class TreeComponent
 
     /**
      * Creates an unmodifiable map of the specified event channels.
-     * @param eventChannels the event channels.
-     * @return an unmodifiable map of the event channels, mapped by event channel
-     * name.
+     * 
+     * @param eventChannels
+     *            the event channels.
+     * @return an unmodifiable map of the event channels, mapped by event
+     *         channel name.
      */
     private Map initializeEventChannels(EventChannel[] eventChannels)
     {
@@ -167,8 +177,8 @@ public class TreeComponent
                         eventChannels[i]) != null)
                 {
                     throw new IllegalArgumentException(
-                        "Multiple event channels detected with name '" +
-                        eventChannels[i].getECD() + "'");
+                            "Multiple event channels detected with name '"
+                                    + eventChannels[i].getECD() + "'");
                 }
             }
 
@@ -192,6 +202,7 @@ public class TreeComponent
 
     /**
      * Returns the name of the component.
+     * 
      * @return the name of the component.
      */
     public final String getName()
@@ -227,6 +238,7 @@ public class TreeComponent
 
     /**
      * Returns the component's parent.
+     * 
      * @return the component's parent.
      */
     public final TreeComponent getParent()
@@ -236,7 +248,9 @@ public class TreeComponent
 
     /**
      * Sets this components parent.
-     * @param parent the parent component.
+     * 
+     * @param parent
+     *            the parent component.
      */
     void setParent(TreeComponent parent)
     {
@@ -245,7 +259,9 @@ public class TreeComponent
 
     /**
      * Adds the specified component as a child to this component.
-     * @param child The child to be added.
+     * 
+     * @param child
+     *            The child to be added.
      */
     void add(TreeComponent child)
     {
@@ -253,8 +269,8 @@ public class TreeComponent
 
         if (child.getParent() != null)
         {
-            throw new IllegalArgumentException("Child, '" + child.getName() +
-                "', already has a parent.");
+            throw new IllegalArgumentException("Child, '" + child.getName()
+                    + "', already has a parent.");
         }
 
         if (child == this)
@@ -264,8 +280,8 @@ public class TreeComponent
 
         if (child.isRooted())
         {
-            throw new IllegalArgumentException("Child, '" + child.getName() +
-                "' is rooted. Can't add a rooted tree!");
+            throw new IllegalArgumentException("Child, '" + child.getName()
+                    + "' is rooted. Can't add a rooted tree!");
         }
 
         if (children == null)
@@ -276,8 +292,8 @@ public class TreeComponent
         if (children.put(child.getName(), child) != null)
         {
             throw new IllegalArgumentException(
-                "Attempt to add child with duplicate name, '" +
-                child.getName() + "'");
+                    "Attempt to add child with duplicate name, '"
+                            + child.getName() + "'");
         }
 
         child.setParent(this);
@@ -290,7 +306,9 @@ public class TreeComponent
 
     /**
      * Removes the specified child component.
-     * @param child the component to be removed.
+     * 
+     * @param child
+     *            the component to be removed.
      */
     void remove(TreeComponent child)
     {
@@ -299,7 +317,7 @@ public class TreeComponent
         if (child.getParent() != this)
         {
             throw new IllegalArgumentException(
-                "child not connected to this component");
+                    "child not connected to this component");
         }
 
         children.remove(child.getName());
@@ -331,6 +349,7 @@ public class TreeComponent
 
     /**
      * Returns an unmodifiable map of this component's children.
+     * 
      * @return an unmodifiable map of this component's children.
      */
     public Map getChildren()
@@ -345,6 +364,7 @@ public class TreeComponent
 
     /**
      * Returns an unmodifiable map of the sinks, mapped by event channel name.
+     * 
      * @return an unmodifiable map of the sinks, mapped by event channel name.
      */
     final PortMap getSinks()
@@ -354,6 +374,7 @@ public class TreeComponent
 
     /**
      * Returns an unmodifiable map of the sources, mapped by event channel name.
+     * 
      * @return an unmodifiable map of the sources, mapped by event channel name.
      */
     final Map getSources()
@@ -363,25 +384,27 @@ public class TreeComponent
 
     /**
      * Returns the source for the specified event channel.
-     * @param eventChannelName the name of the event channel whose source is
-     * to be returned.
+     * 
+     * @param eventChannelName
+     *            the name of the event channel whose source is to be returned.
      * @return the source for the specified event channel.
      */
     final Source getSource(String eventChannelName)
     {
-        //		checkSource(eventChannelName);
+        // checkSource(eventChannelName);
         return ((Source) sources.get(eventChannelName));
     }
 
     /**
      * Returns the sink for the specified event channel.
-     * @param eventChannelName the name of the event channel whose sink is
-     * to be returned.
+     * 
+     * @param eventChannelName
+     *            the name of the event channel whose sink is to be returned.
      * @return the sink for the specified event channel.
      */
     final Sink getSink(EventChannelDescription eventChannelName)
     {
-        //		checkSink(eventChannelName);
+        // checkSink(eventChannelName);
         return ((Sink) sinks.get(eventChannelName));
     }
 
@@ -389,8 +412,8 @@ public class TreeComponent
     {
         if (!sources.containsKey(eventChannelName))
         {
-            throw new IllegalArgumentException(eventChannelName +
-                " is invalid source in Leaf[" + getName() + "]");
+            throw new IllegalArgumentException(eventChannelName
+                    + " is invalid source in Leaf[" + getName() + "]");
         }
     }
 
@@ -398,13 +421,14 @@ public class TreeComponent
     {
         if (!sinks.containsKey(eventChannelName))
         {
-            throw new IllegalArgumentException(eventChannelName +
-                " is invalid sink in Leaf[" + getName() + "]");
+            throw new IllegalArgumentException(eventChannelName
+                    + " is invalid sink in Leaf[" + getName() + "]");
         }
     }
 
     /**
      * Returns the names of the sources for the leaves.
+     * 
      * @return the names of the sources for the leaves.
      */
     public String[] getSourceNames()
@@ -416,6 +440,7 @@ public class TreeComponent
 
     /**
      * Returns the names of the sinks for the leaves.
+     * 
      * @return the names of the sinks for the leaves.
      */
     public EventChannelDescription[] getSinkNames()
@@ -425,6 +450,7 @@ public class TreeComponent
 
     /**
      * Returns the names of the sinks for the leaves.
+     * 
      * @return the names of the sinks for the leaves.
      */
     public String[] getEventChannelNames()
@@ -437,8 +463,9 @@ public class TreeComponent
     /**
      * Returns <code>true</code> if all of this components sinks event
      * channels are non-null, otherwise returns <code>false</code>.
+     * 
      * @return <code>true</code> if all of this components sinks event
-     * channels are non-null, otherwise returns <code>false</code>.
+     *         channels are non-null, otherwise returns <code>false</code>.
      */
     final boolean isStateNonNull()
     {
@@ -446,11 +473,13 @@ public class TreeComponent
     }
 
     /**
-     * Returns <code>true</code> if the specified set of event
-     * channels are non-null, otherwise returns <code>false</code>.
-     * @param eventChannels the set of event channels
-     * @return <code>true</code> if the specified set of event
-     * channels are non-null, otherwise returns <code>false</code>.
+     * Returns <code>true</code> if the specified set of event channels are
+     * non-null, otherwise returns <code>false</code>.
+     * 
+     * @param eventChannels
+     *            the set of event channels
+     * @return <code>true</code> if the specified set of event channels are
+     *         non-null, otherwise returns <code>false</code>.
      */
     final boolean isStateNonNull(Set eventChannels)
     {
@@ -465,8 +494,8 @@ public class TreeComponent
 
             if (sink.getEventChannel() == null)
             {
-                throw new IllegalStateException(ecd +
-                    " is not connected to an event channel");
+                throw new IllegalStateException(ecd
+                        + " is not connected to an event channel");
             }
 
             if (!(sink.getConstraint() instanceof NullConstaint))
@@ -484,8 +513,9 @@ public class TreeComponent
     /**
      * Returns true if the component is a root, or is connected to a root
      * component, otherwise returns false.
+     * 
      * @return true if the component is a root, or is connected to a root
-     * component, otherwise returns false.
+     *         component, otherwise returns false.
      */
     public boolean isRooted()
     {
@@ -498,9 +528,10 @@ public class TreeComponent
     }
 
     /**
-     * Recursively terminates child component ports and terminates leaf
-     * ports. The initial call to this method to kick off the recursion is
-     * made by the transaction manager.
+     * Recursively terminates child component ports and terminates leaf ports.
+     * The initial call to this method to kick off the recursion is made by the
+     * transaction manager.
+     * 
      * @return Un-terminated ports.
      */
     Set terminateChildAndLocalConnections()
@@ -514,7 +545,8 @@ public class TreeComponent
             while (itr.hasNext())
             {
                 TreeComponent child = (TreeComponent) itr.next();
-                unterminatedConnections.addAll(child.terminateChildAndLocalConnections());
+                unterminatedConnections.addAll(child
+                        .terminateChildAndLocalConnections());
             }
         }
 
@@ -523,6 +555,7 @@ public class TreeComponent
 
     /**
      * Returns the transaction manager for this component tree.
+     * 
      * @return the transaction manager for this component tree.
      */
     TransactionMgr getTransactionManager()
@@ -534,9 +567,11 @@ public class TreeComponent
 
         if (!isRooted())
         {
-            throw new IllegalStateException("'" + getName() +
-                "' is not rooted. " +
-                "The transaction manager is only available when the component is rooted.");
+            throw new IllegalStateException(
+                    "'"
+                            + getName()
+                            + "' is not rooted. "
+                            + "The transaction manager is only available when the component is rooted.");
         }
 
         this.transactionMgr = getParent().getTransactionManager();
@@ -545,9 +580,11 @@ public class TreeComponent
     }
 
     /**
-     * Terminates the specified ports locally and then recursively
-     * passes the unterminated ports up to the parent component.
-     * @param connections The set of ports to be terminated.
+     * Terminates the specified ports locally and then recursively passes the
+     * unterminated ports up to the parent component.
+     * 
+     * @param connections
+     *            The set of ports to be terminated.
      */
     void terminateParentAndLocalConnections(Set connections)
     {
@@ -568,7 +605,7 @@ public class TreeComponent
         if (parent == null)
         {
             throw new IllegalStateException(
-                "Event channels left unterminated:\n" + connections);
+                    "Event channels left unterminated:\n" + connections);
         }
 
         parent.terminateParentAndLocalConnections(connections);
@@ -577,18 +614,22 @@ public class TreeComponent
     /**
      * For each port for which this component has a terminator, terminate the
      * port.
-     * @param connections the set of unterminated ports.
+     * 
+     * @param connections
+     *            the set of unterminated ports.
      * @return the set of unterminated ports.
      */
     Set terminateLocally(Set connections)
     {
-        Port[] ports = (Port[]) connections.toArray(new Port[connections.size()]);
+        Port[] ports = (Port[]) connections
+                .toArray(new Port[connections.size()]);
 
         for (int i = 0; i < ports.length; i++)
         {
             if (eventChannels.containsKey(ports[i].getEventChannelName()))
             {
-                EventChannel t = (EventChannel) eventChannels.get(ports[i].getEventChannelName());
+                EventChannel t = (EventChannel) eventChannels.get(ports[i]
+                        .getEventChannelName());
                 t.add(ports[i]);
                 connections.remove(ports[i]);
             }
@@ -601,8 +642,8 @@ public class TreeComponent
     }
 
     /**
-     * Calls disconnectPorts() and then recursively calls
-     * disconnect on the child components.
+     * Calls disconnectPorts() and then recursively calls disconnect on the
+     * child components.
      */
     void disconnect()
     {
@@ -620,8 +661,7 @@ public class TreeComponent
     }
 
     /**
-     * Disconnects this component's sinks and sources from the
-     * event channels.
+     * Disconnects this component's sinks and sources from the event channels.
      */
     private final void disconnectPorts()
     {
@@ -643,24 +683,48 @@ public class TreeComponent
     }
 
     /**
-     * Returns the this components tree state.
-     * @return the this components tree state.
-     * @throws IllegalStateException if this component is not rooted.
-     * @throws IllegalStateException if called outside of the of the
-     * transaction manager's transaction queue thread.
+     * Returns the this components tree state using the
+     * {@link #DEFAULT_EXPORT_TAG}.
+     * 
+     * @return this components tree state.
+     * @throws IllegalStateException
+     *             if this component is not rooted.
+     * @throws IllegalStateException
+     *             if called outside of the of the transaction manager's
+     *             transaction queue thread.
      */
     public TreeState getTreeState()
     {
+        return getTreeState(DEFAULT_EXPORT_TAG);
+    }
+
+    /**
+     * Returns the this components tree state using the
+     * {@link #DEFAULT_EXPORT_TAG}.
+     * 
+     * @param exportTag
+     *            The event channel export tag. Only event channels with this
+     *            export tag will be included in the tree state.
+     * @return this components tree state.
+     * @throws IllegalStateException
+     *             if this component is not rooted.
+     * @throws IllegalStateException
+     *             if called outside of the of the transaction manager's
+     *             transaction queue thread.
+     */
+    public TreeState getTreeState(String exportTag)
+    {
+        Argument.assertNotNull(exportTag, "exportTag");
         if (!isRooted())
         {
             throw new IllegalStateException(
-                "This component is not rooted and therefore it's state is undefined.");
+                    "This component is not rooted and therefore it's state is undefined.");
         }
 
         if (!getTransactionManager().isDispatchThread())
         {
             throw new IllegalStateException(
-                "This method can not be called from outside the transaction queue thread");
+                    "This method can not be called from outside the transaction queue thread");
         }
 
         TreeStateBuffer buff = new TreeStateBuffer();
@@ -672,18 +736,21 @@ public class TreeComponent
         {
             EventChannel ec = (EventChannel) itr.next();
 
-            try
+            if (isExport(ec, exportTag))
             {
-                EventChannelState ecs = new EventChannelState(ec.getECD(),
-                        ec.getState());
-                buff.addState(ecs);
-            }
-            catch (ValueException unexpected)
-            {
-                // This should never happen.
-                throw new IllegalStateException(
-                    "Event channel has invalid state: " +
-                    unexpected.getMessage());
+                try
+                {
+                    EventChannelState ecs = new EventChannelState(ec.getECD(),
+                            ec.getState());
+                    buff.addState(ecs);
+                }
+                catch (ValueException unexpected)
+                {
+                    // This should never happen.
+                    throw new IllegalStateException(
+                            "Event channel has invalid state: "
+                                    + unexpected.getMessage());
+                }
             }
         }
 
@@ -701,16 +768,46 @@ public class TreeComponent
         return buff.toTreeState();
     }
 
-    public void setTreeState(TreeState state)
+    private static boolean isExport(EventChannel ec, String exportTag)
     {
-        //TODO decide how/if unset event channels should cause errors.
+        if (!ec.getECD().isFireOnConnect() || (ec.getState() == null))
+        {
+            return false;
+        }
+
+        if (!(ec instanceof Terminator))
+        {
+            return false;
+        }
+        return ((Terminator) ec).isExportTag(exportTag);
+    }
+
+    /**
+     * Sets the state of this tree.
+     * 
+     * @param state
+     *            The state.
+     * @param skipMissingEventChannels
+     *            A flag indicating whether to allow missing event channels. If
+     *            <code>false</code> an IllegalArgumentException will be
+     *            thrown if the <code>state</code> contains state for an event
+     *            channel which is not present in the tree structure.
+     * @param skipMissingChildBranches
+     *            A flag indicating whether to allow missing child branches. if
+     *            <code>false</code> an IllegalArgumentException will be
+     *            thrown if the <code>state</code> contains child tree states
+     *            for a branch which is not present in the tree structure.
+     */
+    public void setTreeState(TreeState state, boolean skipMissingEventChannels,
+            boolean skipMissingChildBranches)
+    {
         Argument.assertNotNull(state, "state");
 
         if (!this.name.equals(state.getName()))
         {
             throw new IllegalArgumentException(
-                "TreeState name does not match, expected <" + this.name +
-                "> found <" + state.getName() + ">.");
+                    "TreeState name does not match, expected <" + this.name
+                            + "> found <" + state.getName() + ">.");
         }
 
         EventChannelState[] ecs = state.getState();
@@ -718,13 +815,17 @@ public class TreeComponent
         for (int i = 0; i < ecs.length; i++)
         {
             Terminator ec = (Terminator) this.eventChannels.get(ecs[i].getECD()
-                                                                      .getEventChannelName());
+                    .getEventChannelName());
 
             if (ec == null)
             {
+                if (skipMissingEventChannels)
+                {
+                    continue;
+                }
                 throw new IllegalArgumentException(
-                    "TreeState contains state for an unknown event channel '" +
-                    ecs[i].getECD().getEventChannelName() + "'");
+                        "TreeState contains state for an unknown event channel '"
+                                + ecs[i].getECD().getEventChannelName() + "'");
             }
 
             ec.importState(ecs[i].getState());
@@ -734,16 +835,22 @@ public class TreeComponent
 
         for (int i = 0; i < childTreeState.length; i++)
         {
-            TreeComponent child = (TreeComponent) this.children.get(childTreeState[i].getName());
+            TreeComponent child = (TreeComponent) this.children
+                    .get(childTreeState[i].getName());
 
             if (child == null)
             {
+                if (skipMissingChildBranches)
+                {
+                    continue;
+                }
                 throw new IllegalArgumentException(
-                    "TreeState contains unknown child tree state with name '" +
-                    childTreeState[i].getName());
+                        "TreeState contains unknown child tree state with name '"
+                                + childTreeState[i].getName());
             }
 
-            child.setTreeState(childTreeState[i]);
+            child.setTreeState(childTreeState[i], skipMissingEventChannels,
+                    skipMissingChildBranches);
         }
     }
 }
