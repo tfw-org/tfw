@@ -24,14 +24,12 @@
  */
 package tfw.tsm;
 
-
 import tfw.check.Argument;
 import tfw.tsm.ecd.EventChannelDescription;
 
 import tfw.value.ValueException;
 
 import java.util.HashMap;
-
 
 /**
  * The base class for branch component factories.
@@ -49,31 +47,35 @@ class BaseBranchFactory
 
     /**
      * Returns the current set of Event Channel terminators.
+     * 
      * @return the current set of Event Channel terminators.
      */
     EventChannel[] getTerminators()
     {
-        return (EventChannel[]) terminators.values().toArray(new EventChannel[terminators.size()]);
+        return (EventChannel[]) terminators.values().toArray(
+                new EventChannel[terminators.size()]);
     }
 
     //
-    //    private void checkOverLap(HashMap terms, HashMap trans, HashMap multi)
-    //    {
-    //        HashSet set = new HashSet();
-    //        set.addAll(terms.keySet());
-    //        set.addAll(trans.keySet());
-    //        set.addAll(multi.keySet());
+    // private void checkOverLap(HashMap terms, HashMap trans, HashMap multi)
+    // {
+    // HashSet set = new HashSet();
+    // set.addAll(terms.keySet());
+    // set.addAll(trans.keySet());
+    // set.addAll(multi.keySet());
     //
-    //        if (set.size() != (terms.size() + trans.size() + multi.size()))
-    //        {
-    //            throw new IllegalArgumentException(
-    //                "Terminators, Translators and multiplexers overlap!");
-    //        }
-    //    }
+    // if (set.size() != (terms.size() + trans.size() + multi.size()))
+    // {
+    // throw new IllegalArgumentException(
+    // "Terminators, Translators and multiplexers overlap!");
+    // }
+    // }
 
     /**
      * Adds an event channel terminator based on the specified description
-     * @param eventChannelDescription a description of the event channel.
+     * 
+     * @param eventChannelDescription
+     *            a description of the event channel.
      */
     public void addEventChannel(EventChannelDescription eventChannelDescription)
     {
@@ -81,43 +83,53 @@ class BaseBranchFactory
     }
 
     /**
-     * Adds an event channel terminator based on the specified description
-     * and initial state. The {@link DotEqualsRule} is used.
-     * @param eventChannelDescription a description of the event channel.
-     * @param initialState the initial state for the event channel.
-     * @throws ValueException if the <code>initialState</code> value is
-     * incompatible with the event channel.
+     * Adds an event channel terminator based on the specified description and
+     * initial state. The {@link DotEqualsRule} is used.
+     * 
+     * @param eventChannelDescription
+     *            a description of the event channel.
+     * @param initialState
+     *            the initial state for the event channel.
+     * @throws ValueException
+     *             if the <code>initialState</code> value is incompatible with
+     *             the event channel.
      */
-    public void addEventChannel(EventChannelDescription eventChannelDescription,
-        Object initialState) throws ValueException
+    public void addEventChannel(
+            EventChannelDescription eventChannelDescription, Object initialState)
+            throws ValueException
     {
         addEventChannel(eventChannelDescription, initialState,
-            DotEqualsRule.RULE);
+                DotEqualsRule.RULE);
     }
 
     /**
      * Adds an event channel terminator based on the specified description
-     * @param eventChannelDescription a description of the event channel.
-     * @param initialState the initial state for the event channel.
-     * @throws ValueException if the <code>initialState</code> value is
-     * incompatible with the event channel.
+     * 
+     * @param eventChannelDescription
+     *            a description of the event channel.
+     * @param initialState
+     *            the initial state for the event channel.
+     * @throws ValueException
+     *             if the <code>initialState</code> value is incompatible with
+     *             the event channel.
      */
-    public void addEventChannel(EventChannelDescription eventChannelDescription,
-        Object initialState, StateChangeRule rule) throws ValueException
+    public void addEventChannel(
+            EventChannelDescription eventChannelDescription,
+            Object initialState, StateChangeRule rule) throws ValueException
     {
         Argument.assertNotNull(eventChannelDescription,
-            "eventChannelDescription");
+                "eventChannelDescription");
         Argument.assertNotNull(rule, "rule");
 
         if (isTerminated(eventChannelDescription))
         {
-            throw new IllegalArgumentException("The event channel '" +
-                eventChannelDescription.getEventChannelName() +
-                "' is already terminated");
+            throw new IllegalArgumentException("The event channel '"
+                    + eventChannelDescription.getEventChannelName()
+                    + "' is already exists");
         }
 
         terminators.put(eventChannelDescription.getEventChannelName(),
-            new Terminator(eventChannelDescription, initialState, rule));
+                new Terminator(eventChannelDescription, initialState, rule));
     }
 
     boolean isTerminated(EventChannelDescription ecd)
@@ -131,5 +143,32 @@ class BaseBranchFactory
     public void clear()
     {
         terminators.clear();
+    }
+
+    /**
+     * Adds the specified export tag to the specified event channel. The event
+     * channel must be added to the branch before this method can be called.
+     * 
+     * @param ecd
+     *            The description of the event channel to be tagged.
+     * @param tag
+     *            The tag to be added to the event channel
+     */
+    public void addExportTag(EventChannelDescription ecd, String tag)
+    {
+        Argument.assertNotNull(ecd, "ecd");
+        Argument.assertNotNull(tag, "tag");
+        Argument.assertNotEmpty(tag, "tag");
+        if (!isTerminated(ecd))
+        {
+            throw new IllegalArgumentException("The event channel '"
+                    + ecd.getEventChannelName()
+                    + "' has not been added to this factory and "
+                    + "therefore can not be tagged.");
+        }
+
+        Terminator t = (Terminator) this.terminators.get(ecd
+                .getEventChannelName());
+        t.addExportStateTag(tag);
     }
 }
