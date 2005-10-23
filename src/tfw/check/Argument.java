@@ -67,6 +67,26 @@ public class Argument
     }
 
     /**
+     * Checks the string argument for zero length.
+     * @param argument the argument to be checked.
+     * @param argumentName the name of the argument.
+     *
+     * @throws IllegalArgumentException if <code>argument == null</code>.
+     * @throws IllegalArgumentException if <code>argument.length() == 0</code>.
+     */
+    public static void assertNotEmpty(String argument, String argumentName)
+    
+    {
+        assertNotNull(argument, argumentName);
+
+        if (argument.length() == 0)
+        {
+            throw new IllegalArgumentException(argumentName +
+                ".length() == 0 not allowed");
+        }
+    }
+
+    /**
      * Checks the array argument for zero length.
      * @param argument the argument to be checked.
      * @param argumentName the name of the argument.
