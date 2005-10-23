@@ -24,13 +24,13 @@
  */
 package tfw.tsm;
 
-import tfw.check.Argument;
-import tfw.tsm.ecd.EventChannelDescription;
-
-import tfw.value.ValueException;
-
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
+
+import tfw.check.Argument;
+import tfw.tsm.ecd.EventChannelDescription;
+import tfw.value.ValueException;
 
 /**
  * A terminating event channel.
@@ -58,7 +58,7 @@ class Terminator implements EventChannel, CommitRollbackListener
     private Source rollbackSource = null;
 
     /** Any sinks which haven't been initialized. */
-    private HashSet uninitializedSinks = null;
+    private Set uninitializedSinks = null;
 
     /** Flag indicating whether the terminator state is locked. */
     private boolean terminatorLocked = false;
@@ -67,6 +67,8 @@ class Terminator implements EventChannel, CommitRollbackListener
     protected TreeComponent component = null;
 
     private final StateChangeRule stateChangeRule;
+
+    private Set exportTags = null;
 
     /**
      * Create an event channel termainator.
@@ -89,7 +91,7 @@ class Terminator implements EventChannel, CommitRollbackListener
         this.state = initialState;
         this.previousState = initialState;
         // TODO Make sure that rollback's on initialization cause an Error.
-        //this.rollbackState = initialState;
+        // this.rollbackState = initialState;
 
         if (initialState != null)
         {
@@ -106,7 +108,7 @@ class Terminator implements EventChannel, CommitRollbackListener
         return (Sink[]) sinks.toArray(new Sink[sinks.size()]);
     }
 
-    private void updateSinks(HashSet set)
+    private void updateSinks(Set set)
     {
         Iterator itr = set.iterator();
 
@@ -313,9 +315,9 @@ class Terminator implements EventChannel, CommitRollbackListener
     public void setState(Source source, Object state,
             EventChannel forwardingEventChannel)
     {
-        //        System.err.print("Terminator(" + this.getECD().getEventChannelName()
-        //                + ").setState(" + source + ", " + state
-        //                + ", " + forwardingEventChannel+")");
+        // System.err.print("Terminator(" + this.getECD().getEventChannelName()
+        // + ").setState(" + source + ", " + state
+        // + ", " + forwardingEventChannel+")");
         if (ecd.isRollBackParticipant())
         {
             component.getTransactionManager().addCommitRollbackListener(this);
@@ -334,7 +336,7 @@ class Terminator implements EventChannel, CommitRollbackListener
                             + source.getTreeComponent().getName()
                             + " and the new state value is " + state);
         }
-        //        }
+        // }
 
         if (stateChangeRule.isChange(this.state, state))
         {
@@ -375,9 +377,9 @@ class Terminator implements EventChannel, CommitRollbackListener
         terminatorLocked = false;
     }
 
-    private HashSet resetUninitializedSinks()
+    private Set resetUninitializedSinks()
     {
-        HashSet temp = null;
+        Set temp = null;
 
         synchronized (this)
         {
@@ -450,5 +452,37 @@ class Terminator implements EventChannel, CommitRollbackListener
         {
             component.getTransactionManager().addCommitRollbackListener(this);
         }
+    }
+
+    /**
+     * Adds the specified export tag to this terminator
+     * @param exportTag The tag to add.
+     */
+    void addExportStateTag(String exportTag)
+    {
+        if (this.exportTags == null){
+            this.exportTags = new HashSet();
+        }
+        this.exportTags.add(exportTag);
+    }
+
+    /**
+     * Returns true if this terminator contains the specified export tag.
+     * 
+     * @param exportTag
+     *            the export tag to check.
+     * @return true if this terminator contains the specified export tag.
+     */
+    boolean isExportTag(String exportTag)
+    {
+        if (TreeComponent.DEFAULT_EXPORT_TAG.equals(exportTag))
+        {
+            return true;
+        }
+        if (this.exportTags != null)
+        {
+            return this.exportTags.contains(exportTag);
+        }
+        return false;
     }
 }
