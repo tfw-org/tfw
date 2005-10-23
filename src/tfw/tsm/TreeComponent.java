@@ -797,11 +797,28 @@ public class TreeComponent
      *            <code>false</code> an IllegalArgumentException will be
      *            thrown if the <code>state</code> contains child tree states
      *            for a branch which is not present in the tree structure.
+     * @throws IllegalStateException
+     *             if this component is not rooted.
+     * @throws IllegalStateException
+     *             if called outside of the of the transaction manager's
+     *             transaction queue thread.
      */
     public void setTreeState(TreeState state, boolean skipMissingEventChannels,
             boolean skipMissingChildBranches)
     {
         Argument.assertNotNull(state, "state");
+        
+        if (!isRooted())
+        {
+            throw new IllegalStateException(
+                    "This component is not rooted and therefore it's state is undefined.");
+        }
+
+        if (!getTransactionManager().isDispatchThread())
+        {
+            throw new IllegalStateException(
+                    "This method can not be called from outside the transaction queue thread");
+        }
 
         if (!this.name.equals(state.getName()))
         {
