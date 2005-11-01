@@ -28,9 +28,9 @@ import tfw.value.NullConstaint;
 
 /**
  * An event channel discription for a stateless, trigging
- * event channel.
+ * event channel. 
  */
-public class StatelessTriggerECD extends EventChannelDescription {
+public final class StatelessTriggerECD extends EventChannelDescription {
 
 	/**
 	 * Constructs an event channel description with the specified name.
