@@ -32,9 +32,8 @@ import tfw.value.ValueException;
 
 import junit.framework.TestCase;
 
-
 /**
- *
+ * 
  */
 public class BranchFactoryTest extends TestCase
 {
@@ -49,7 +48,7 @@ public class BranchFactoryTest extends TestCase
         }
         catch (IllegalArgumentException expected)
         {
-            //System.out.println(expected);
+            // System.out.println(expected);
         }
 
         StringECD stringECD = new StringECD("myString");
@@ -61,7 +60,7 @@ public class BranchFactoryTest extends TestCase
         }
         catch (IllegalArgumentException expected)
         {
-            //System.out.println(expected);
+            // System.out.println(expected);
         }
 
         try
@@ -71,7 +70,7 @@ public class BranchFactoryTest extends TestCase
         }
         catch (ValueException expected)
         {
-            //System.out.println(expected);
+            // System.out.println(expected);
         }
 
         try
@@ -81,10 +80,21 @@ public class BranchFactoryTest extends TestCase
         }
         catch (IllegalArgumentException expected)
         {
-            //System.out.println(expected);
+            // System.out.println(expected);
         }
 
         bf.addEventChannel(stringECD);
+
+        StringECD memoryLessECD = new StringECD("memoryLess", false);
+        try
+        {
+            bf.addEventChannel(memoryLessECD, "non-null state");
+            fail("addEventChannel() accepted non-null state on memory less event channel");
+        }
+        catch (IllegalArgumentException expected)
+        {
+            //System.out.println(expected);
+        }
 
         try
         {
@@ -93,7 +103,7 @@ public class BranchFactoryTest extends TestCase
         }
         catch (IllegalArgumentException expected)
         {
-            //System.out.println(expected);
+            // System.out.println(expected);
         }
 
         StringECD childECD = new StringECD("child");
@@ -106,7 +116,7 @@ public class BranchFactoryTest extends TestCase
         }
         catch (IllegalArgumentException expected)
         {
-            //System.out.println(expected);
+            // System.out.println(expected);
         }
 
         try
@@ -116,7 +126,7 @@ public class BranchFactoryTest extends TestCase
         }
         catch (IllegalArgumentException expected)
         {
-            //System.out.println(expected);
+            // System.out.println(expected);
         }
 
         try
@@ -126,7 +136,7 @@ public class BranchFactoryTest extends TestCase
         }
         catch (IllegalStateException expected)
         {
-            //System.out.println(expected);
+            // System.out.println(expected);
         }
 
         bf.addTranslation(childECD, parentECD);
@@ -138,7 +148,7 @@ public class BranchFactoryTest extends TestCase
         }
         catch (IllegalStateException expected)
         {
-            //System.out.println(expected);
+            // System.out.println(expected);
         }
 
         try
@@ -148,7 +158,7 @@ public class BranchFactoryTest extends TestCase
         }
         catch (IllegalStateException expected)
         {
-            //System.out.println(expected);
+            // System.out.println(expected);
         }
 
         try
@@ -158,7 +168,7 @@ public class BranchFactoryTest extends TestCase
         }
         catch (IllegalArgumentException expected)
         {
-            //System.out.println(expected);
+            // System.out.println(expected);
         }
 
         bf.clear();
@@ -166,23 +176,23 @@ public class BranchFactoryTest extends TestCase
         IntegerECD integerECD = new IntegerECD("Full Range Integer");
         IntegerECD int0_1ECD = new IntegerECD("constrained integer", 0, 1);
 
-		try
-		{
-			bf.addTranslation(integerECD, int0_1ECD);
-			fail("addTranslator() parent un-assignable to child");
-		}
-		catch (IllegalArgumentException expected)
-		{
-			//System.out.println(expected);
-		}
-		try
-		{
-			bf.addTranslation(int0_1ECD, integerECD);
-			fail("addTranslator() child un-assignable to parent");
-		}
-		catch (IllegalArgumentException expected)
-		{
-			//System.out.println(expected);
-		}
+        try
+        {
+            bf.addTranslation(integerECD, int0_1ECD);
+            fail("addTranslator() parent un-assignable to child");
+        }
+        catch (IllegalArgumentException expected)
+        {
+            // System.out.println(expected);
+        }
+        try
+        {
+            bf.addTranslation(int0_1ECD, integerECD);
+            fail("addTranslator() child un-assignable to parent");
+        }
+        catch (IllegalArgumentException expected)
+        {
+            // System.out.println(expected);
+        }
     }
 }

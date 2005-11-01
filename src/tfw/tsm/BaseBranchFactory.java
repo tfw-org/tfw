@@ -128,6 +128,14 @@ class BaseBranchFactory
                     + "' is already exists");
         }
 
+        // if the event channel is memory-less and non-null initial state...
+        if (!eventChannelDescription.isFireOnConnect()
+                && (initialState != null))
+        {
+            throw new IllegalArgumentException(
+                    "Non-null 'initialState' is not permitted given"
+                            + " eventChannelDescription.isFireOnConnect() == false");
+        }
         terminators.put(eventChannelDescription.getEventChannelName(),
                 new Terminator(eventChannelDescription, initialState, rule));
     }
