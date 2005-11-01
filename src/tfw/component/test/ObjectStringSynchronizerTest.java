@@ -110,7 +110,7 @@ public class ObjectStringSynchronizerTest extends TestCase
         }
         catch (IllegalArgumentException expected)
         {
-            System.out.println(expected);
+            //System.out.println(expected);
         }
     }
 

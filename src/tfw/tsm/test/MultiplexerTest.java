@@ -217,7 +217,6 @@ public class MultiplexerTest extends TestCase
         subBranch0.add(tc0);
         subBranch1.add(tc1);
 
-        System.err.println("\n***********\n");
         triggerInitiator.trigger(triggerECD);
         queue.waitTilEmpty();
         assertEquals("value 0 not correct", "tc0", valueCommit0.value);
