@@ -24,12 +24,12 @@
  */
 package tfw.tsm;
 
+import java.util.HashMap;
+
 import tfw.check.Argument;
 import tfw.tsm.ecd.EventChannelDescription;
-
+import tfw.tsm.ecd.StatelessTriggerECD;
 import tfw.value.ValueException;
-
-import java.util.HashMap;
 
 /**
  * The base class for branch component factories.
@@ -56,35 +56,23 @@ class BaseBranchFactory
                 new EventChannel[terminators.size()]);
     }
 
-    //
-    // private void checkOverLap(HashMap terms, HashMap trans, HashMap multi)
-    // {
-    // HashSet set = new HashSet();
-    // set.addAll(terms.keySet());
-    // set.addAll(trans.keySet());
-    // set.addAll(multi.keySet());
-    //
-    // if (set.size() != (terms.size() + trans.size() + multi.size()))
-    // {
-    // throw new IllegalArgumentException(
-    // "Terminators, Translators and multiplexers overlap!");
-    // }
-    // }
-
     /**
-     * Adds an event channel terminator based on the specified description
+     * Adds an event channel based on the specified description with a null
+     * initial state and an {@link DotEqualsRule}
      * 
      * @param eventChannelDescription
      *            a description of the event channel.
      */
     public void addEventChannel(EventChannelDescription eventChannelDescription)
     {
-        addEventChannel(eventChannelDescription, null, AlwaysChangeRule.RULE);
+        addEventChannel(eventChannelDescription, null);
     }
 
     /**
-     * Adds an event channel terminator based on the specified description and
-     * initial state. The {@link DotEqualsRule} is used.
+     * Adds an event channel based on the specified description and initial
+     * state. The {@link DotEqualsRule} is used as long as the event channel is
+     * not a {@link StatelessTriggerECD}. The {@link AlwaysChangeRule} is used
+     * for {@link StatelessTriggerECD}.
      * 
      * @param eventChannelDescription
      *            a description of the event channel.
@@ -98,8 +86,16 @@ class BaseBranchFactory
             EventChannelDescription eventChannelDescription, Object initialState)
             throws ValueException
     {
-        addEventChannel(eventChannelDescription, initialState,
-                DotEqualsRule.RULE);
+        if (eventChannelDescription instanceof StatelessTriggerECD)
+        {
+            addEventChannel(eventChannelDescription, initialState,
+                    AlwaysChangeRule.RULE, null);
+        }
+        else
+        {
+            addEventChannel(eventChannelDescription, initialState,
+                    DotEqualsRule.RULE, null);
+        }
     }
 
     /**
@@ -109,17 +105,27 @@ class BaseBranchFactory
      *            a description of the event channel.
      * @param initialState
      *            the initial state for the event channel.
+     * @param rule
+     *            the rule to be used to determine what represents a state
+     *            change for the event channel.
+     * @param exportTags
+     *            The list of export tags for this event channel.
      * @throws ValueException
      *             if the <code>initialState</code> value is incompatible with
      *             the event channel.
      */
     public void addEventChannel(
             EventChannelDescription eventChannelDescription,
-            Object initialState, StateChangeRule rule) throws ValueException
+            Object initialState, StateChangeRule rule, String[] exportTags)
+            throws ValueException
     {
         Argument.assertNotNull(eventChannelDescription,
                 "eventChannelDescription");
         Argument.assertNotNull(rule, "rule");
+        if (exportTags != null)
+        {
+            Argument.assertElementNotNull(exportTags, "exportTags");
+        }
 
         if (isTerminated(eventChannelDescription))
         {
@@ -136,8 +142,26 @@ class BaseBranchFactory
                     "Non-null 'initialState' is not permitted given"
                             + " eventChannelDescription.isFireOnConnect() == false");
         }
+
+        if (eventChannelDescription instanceof StatelessTriggerECD)
+        {
+            if (!(rule instanceof AlwaysChangeRule))
+            {
+                throw new IllegalArgumentException(
+                        "(eventChannelDescription instanceof StatelessTriggerECD)"
+                                + " && !(rule instanceof AlwaysChangeRule) not allowed");
+            }
+        }
         terminators.put(eventChannelDescription.getEventChannelName(),
                 new Terminator(eventChannelDescription, initialState, rule));
+
+        if (exportTags != null)
+        {
+            for (int i = 0; i < exportTags.length; i++)
+            {
+                this.addExportTag(eventChannelDescription, exportTags[i]);
+            }
+        }
     }
 
     boolean isTerminated(EventChannelDescription ecd)
