@@ -87,7 +87,7 @@ public class Argument
     }
 
     /**
-     * Checks the array argument for zero length.
+     * Checks the array argument for null elements.
      * @param argument the argument to be checked.
      * @param argumentName the name of the argument.
      *
