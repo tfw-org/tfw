@@ -161,10 +161,12 @@ public class BranchFactory extends BaseBranchFactory
      *            The initial value to be assigned to the event channel.
      * @param rule
      *            The state change rule for the event channel.
+     * @param exportTags
+     *            The list of export tags for this event channel.
      */
     public void addEventChannel(
             EventChannelDescription eventChannelDescription,
-            Object initialState, StateChangeRule rule) throws ValueException
+            Object initialState, StateChangeRule rule, String[] exportTags) throws ValueException
     {
         if ((eventChannelDescription != null)
                 && isTranslated(eventChannelDescription))
@@ -175,7 +177,7 @@ public class BranchFactory extends BaseBranchFactory
                             + "', which is already transalated.");
         }
 
-        super.addEventChannel(eventChannelDescription, initialState, rule);
+        super.addEventChannel(eventChannelDescription, initialState, rule, exportTags);
     }
 
     private boolean isTranslated(EventChannelDescription ecd)
