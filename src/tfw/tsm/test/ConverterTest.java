@@ -116,6 +116,7 @@ public class ConverterTest extends TestCase
         queue.waitTilEmpty();
         checkAndClearValues(null, null, null, null, null, null, aValue, bValue,
             null);
+        aValue = "a2";
         initiator.set(porta, aValue);
         queue.waitTilEmpty();
         checkAndClearValues(aValue, bValue, cValue, null, null, null, aValue,
