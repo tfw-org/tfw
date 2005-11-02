@@ -24,6 +24,10 @@
  */
 package tfw.tsm.test;
 
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
+import tfw.tsm.AlwaysChangeRule;
 import tfw.tsm.BasicTransactionQueue;
 import tfw.tsm.Commit;
 import tfw.tsm.Converter;
@@ -36,10 +40,6 @@ import tfw.tsm.ecd.CharacterECD;
 import tfw.tsm.ecd.EventChannelDescription;
 import tfw.tsm.ecd.StatelessTriggerECD;
 import tfw.tsm.ecd.StringECD;
-
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 
 
 public class SynchronizerTest extends TestCase
@@ -238,12 +238,12 @@ public class SynchronizerTest extends TestCase
         RootFactory rf = new RootFactory();
 
         //rf.setLogging(true);
-        rf.addEventChannel(a1Port);
-        rf.addEventChannel(a2Port);
-        rf.addEventChannel(b1Port);
-        rf.addEventChannel(b2Port);
-        rf.addEventChannel(source);
-        rf.addEventChannel(sink);
+        rf.addEventChannel(a1Port, null, AlwaysChangeRule.RULE, null);
+        rf.addEventChannel(a2Port, null, AlwaysChangeRule.RULE, null);
+        rf.addEventChannel(b1Port, null, AlwaysChangeRule.RULE, null);
+        rf.addEventChannel(b2Port, null, AlwaysChangeRule.RULE, null);
+        rf.addEventChannel(source, null, AlwaysChangeRule.RULE, null);
+        rf.addEventChannel(sink, null, AlwaysChangeRule.RULE, null);
         if (handler != null){
         	rf.setTransactionExceptionHandler(handler);
         }

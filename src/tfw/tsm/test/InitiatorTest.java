@@ -25,6 +25,7 @@
 package tfw.tsm.test;
 
 import junit.framework.TestCase;
+import tfw.tsm.AlwaysChangeRule;
 import tfw.tsm.BasicTransactionQueue;
 import tfw.tsm.Commit;
 import tfw.tsm.EventChannelStateBuffer;
@@ -133,8 +134,8 @@ public class InitiatorTest extends TestCase
                 fail("Exception: " + exception.getMessage());
             }
         });
-        rf.addEventChannel(channel1);
-        rf.addEventChannel(channel2);
+        rf.addEventChannel(channel1, null, AlwaysChangeRule.RULE, null);
+        rf.addEventChannel(channel2, null, AlwaysChangeRule.RULE, null);
 
         BasicTransactionQueue queue = new BasicTransactionQueue();
 

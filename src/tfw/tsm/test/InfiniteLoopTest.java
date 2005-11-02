@@ -25,6 +25,7 @@
 package tfw.tsm.test;
 
 import junit.framework.TestCase;
+import tfw.tsm.AlwaysChangeRule;
 import tfw.tsm.BasicTransactionQueue;
 import tfw.tsm.Commit;
 import tfw.tsm.Converter;
@@ -113,10 +114,9 @@ public class InfiniteLoopTest extends TestCase
     {
         RootFactory rf = new RootFactory();
         BasicTransactionQueue queue = new BasicTransactionQueue();
-//        SynchronousAWTTransactionQueue syncQueue = new SynchronousAWTTransactionQueue();
-        rf.addEventChannel(porta);
-        rf.addEventChannel(portb);
-        rf.addEventChannel(portc);
+        rf.addEventChannel(porta, null, AlwaysChangeRule.RULE, null);
+        rf.addEventChannel(portb, null, AlwaysChangeRule.RULE, null);
+        rf.addEventChannel(portc, null, AlwaysChangeRule.RULE, null);
 
         Root root = rf.create("Infinite loop test", queue);
         root.add(initiator);
