@@ -75,7 +75,7 @@ public class BranchFactoryTest extends TestCase
 
         try
         {
-            bf.addEventChannel(stringECD, "myString", null);
+            bf.addEventChannel(stringECD, "myString", null, null);
             fail("addTerminator() accepted null state change rule");
         }
         catch (IllegalArgumentException expected)
