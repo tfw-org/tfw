@@ -330,10 +330,10 @@ class Terminator implements EventChannel, CommitRollbackListener
                             + getECD().getEventChannelName()
                             + "' twice in the same state change cycle is not allowed. "
                             + "The first state change source is "
-                            + stateSource.getTreeComponent().getName()
+                            + stateSource.getTreeComponent().getName()+"("+stateSource.getTreeComponent()+")"
                             + " and the state value is " + previousState
                             + ". The second attempt was made by "
-                            + source.getTreeComponent().getName()
+                            + source.getTreeComponent().getName()+"("+source.getTreeComponent()+")"
                             + " and the new state value is " + state);
         }
         // }
