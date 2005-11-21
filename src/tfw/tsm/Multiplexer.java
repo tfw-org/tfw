@@ -37,9 +37,8 @@ import tfw.immutable.ila.objectila.ObjectIlaFromArray;
 import tfw.tsm.ecd.EventChannelDescription;
 import tfw.tsm.ecd.ila.ObjectIlaECD;
 
-
 /**
- *  
+ * 
  */
 class Multiplexer implements EventChannel
 {
@@ -48,9 +47,6 @@ class Multiplexer implements EventChannel
 
     /** The description of the single value event channel. */
     private final EventChannelDescription valueECD;
-
-    /** The description of the multi value event channel. */
-    private final ObjectIlaECD multiValueECD;
 
     /** The multiplexed value sink. */
     final Sink multiSink;
@@ -68,21 +64,21 @@ class Multiplexer implements EventChannel
      * Creates a multiplexer with the specified value and multi-value event
      * channels.
      * 
+     * @param multiplexerBranchName
      * @param valueECD
      * @param multiValueECD
      */
-    public Multiplexer(EventChannelDescription valueECD,
-            ObjectIlaECD multiValueECD)
+    public Multiplexer(String multiplexerBranchName,
+            EventChannelDescription valueECD, ObjectIlaECD multiValueECD)
     {
         Argument.assertNotNull(valueECD, "valueECD");
         Argument.assertNotNull(multiValueECD, "multiValueECD");
-        
+
         this.valueECD = valueECD;
-        this.multiValueECD = multiValueECD;
 
         this.multiSink = new MultiSink(multiValueECD);
-        this.processorMultiSource = new ProcessorSource("Multiplexer Source",
-                multiValueECD);
+        this.processorMultiSource = new ProcessorSource("Multiplexer Source["
+                + multiplexerBranchName + "]", multiValueECD);
     }
 
     /*
@@ -103,6 +99,8 @@ class Multiplexer implements EventChannel
     public void setTreeComponent(TreeComponent component)
     {
         this.component = (MultiplexedBranch) component;
+        this.multiSink.setTreeComponent(component);
+        this.processorMultiSource.setTreeComponent(component);
     }
 
     private EventChannel getDemultiplexedEventChannel(int index)
@@ -130,14 +128,15 @@ class Multiplexer implements EventChannel
      */
     public void add(Port port)
     {
-    	// Search for the multiplexed component...
+        // Search for the multiplexed component...
         int index = component.getIndex(port.getTreeComponent());
         TreeComponent tc = port.getTreeComponent().getParent();
-        while((index < 0) && (tc != null) ){
+        while ((index < 0) && (tc != null))
+        {
             index = component.getIndex(tc);
             tc = tc.getParent();
         }
-        
+
         // if we didn't find a multiplexed component...
         if (index < 0)
         {
@@ -205,7 +204,8 @@ class Multiplexer implements EventChannel
      * 
      * @see co2.ui.fw.EventChannel#setState(co2.ui.fw.Source, java.lang.Object)
      */
-    public void setState(Source source, Object state, EventChannel forwardingEventChannel)
+    public void setState(Source source, Object state,
+            EventChannel forwardingEventChannel)
     {
         throw new UnsupportedOperationException(
                 "Multiplexer does not participate directly in transactions.");
@@ -316,27 +316,27 @@ class Multiplexer implements EventChannel
         Object[] array = null;
 
         try
-		{
-			if (objs == null)
-			{
-			    array = new Object[index + 1];
-			}
-			else if (index >= objs.length())
-			{
-			    array = new Object[index + 1];
-			    objs.toArray(array, 0, 0L, (int) objs.length());
-			}
-			else
-			{
-			    array = objs.toArray();
-			}
-		}
-		catch (DataInvalidException e)
-		{
-			throw new RuntimeException(
-				"Multiplexer received DataInvalidException: " +
-				e.getMessage(), e);
-		}
+        {
+            if (objs == null)
+            {
+                array = new Object[index + 1];
+            }
+            else if (index >= objs.length())
+            {
+                array = new Object[index + 1];
+                objs.toArray(array, 0, 0L, (int) objs.length());
+            }
+            else
+            {
+                array = objs.toArray();
+            }
+        }
+        catch (DataInvalidException e)
+        {
+            throw new RuntimeException(
+                    "Multiplexer received DataInvalidException: "
+                            + e.getMessage(), e);
+        }
 
         array[index] = state;
 
@@ -370,7 +370,7 @@ class Multiplexer implements EventChannel
     /**
      * This class represents an {@link EventChannel}for a specific index
      * position within the multiplexed {@link EventChannel}.
-     *  
+     * 
      */
     private class DemultiplexedEventChannel implements EventChannel
     {
@@ -379,7 +379,7 @@ class Multiplexer implements EventChannel
 
         /** The number of ports connected to this event channel. */
         private int connectionCount = 0;
-        
+
         private boolean stateSet = false;
 
         DemultiplexedEventChannel(Integer demultiplexIndex)
@@ -453,15 +453,15 @@ class Multiplexer implements EventChannel
             }
 
             try
-			{
-				return (objects.toArray((long) index, 1)[0]);
-			}
-			catch (DataInvalidException e)
-			{
-				throw new RuntimeException(
-						"Multiplexer received DataInvalidException: " +
-						e.getMessage(), e);
-			}
+            {
+                return (objects.toArray((long) index, 1)[0]);
+            }
+            catch (DataInvalidException e)
+            {
+                throw new RuntimeException(
+                        "Multiplexer received DataInvalidException: "
+                                + e.getMessage(), e);
+            }
         }
 
         public Object getState()
@@ -488,17 +488,23 @@ class Multiplexer implements EventChannel
             return (getElement(objects, demultiplexIndex.intValue()));
         }
 
-        public void setState(Source source, Object state, EventChannel forwardingEventChannel)
+        public void setState(Source source, Object state,
+                EventChannel forwardingEventChannel)
         {
 
             ObjectIla objs = (ObjectIla) multiSink.getEventChannel().getState();
             objs = newObjects(demultiplexIndex.intValue(), state, objs);
 
-            if (stateSet){
-                processorMultiSource.getEventChannel().setState(source, objs, null);
-            } else {
-                processorMultiSource.getEventChannel().setState(source, objs, this);
-           }
+            if (stateSet)
+            {
+                processorMultiSource.getEventChannel().setState(source, objs,
+                        null);
+            }
+            else
+            {
+                processorMultiSource.getEventChannel().setState(source, objs,
+                        this);
+            }
             stateSet = true;
         }
 
@@ -515,7 +521,8 @@ class Multiplexer implements EventChannel
 
         public void synchronizeTransactionState()
         {
-            processorMultiSource.getEventChannel().synchronizeTransactionState();
+            processorMultiSource.getEventChannel()
+                    .synchronizeTransactionState();
         }
 
         public Object fire()
