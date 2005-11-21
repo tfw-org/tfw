@@ -81,14 +81,14 @@ public class MultiplexedBranchFactory
         multiValueECDList.add(multiValueECD);
     }
 
-    private static Multiplexer[] generateMulitplexers(List valueECDList,
+    private static Multiplexer[] generateMulitplexers(String name, List valueECDList,
         List multiValueECDList)
     {
         ArrayList list = new ArrayList();
 
         for (int i = 0; i < valueECDList.size(); i++)
         {
-            list.add(new Multiplexer(
+            list.add(new Multiplexer(name,
                     (EventChannelDescription) valueECDList.get(i),
                     (ObjectIlaECD) multiValueECDList.get(i)));
         }
@@ -116,7 +116,7 @@ public class MultiplexedBranchFactory
         }
 
         return new MultiplexedBranch(name,
-            generateMulitplexers(valueECDList, multiValueECDList));
+            generateMulitplexers(name, valueECDList, multiValueECDList));
     }
 
     /**
