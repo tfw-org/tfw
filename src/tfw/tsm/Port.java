@@ -28,35 +28,43 @@ import tfw.tsm.ecd.EventChannelDescription;
 
 import tfw.value.ValueConstraint;
 
-
 /**
  * The base class for sinks and sources.
  */
 abstract class Port
 {
     private final EventChannelDescription ecd;
+
     private final String name;
+
     private EventChannel eventChannel = null;
+
     private TreeComponent component = null;
 
     /**
      * Construct a port with the specified attributes.
-     * @param name the name of the port.
-     * @param eventChannelName the name of the event channel.
-     * @param constraint the value constraint for the port.
+     * 
+     * @param name
+     *            the name of the port.
+     * @param eventChannelName
+     *            the name of the event channel.
+     * @param constraint
+     *            the value constraint for the port.
      */
     Port(String name, EventChannelDescription ecd)
     {
         this.name = name;
         this.ecd = ecd;
     }
-    
-    EventChannelDescription getECD(){
-    	return ecd;
+
+    EventChannelDescription getECD()
+    {
+        return ecd;
     }
 
     /**
      * Returns this ports name.
+     * 
      * @return this ports name.
      */
     String getFullyQualifiedName()
@@ -78,8 +86,9 @@ abstract class Port
 
     /**
      * Connects this <code>Port</code> to the specified event channel.
-     *
-     * @param eventChannel the event channel for this <code>Port</code>.
+     * 
+     * @param eventChannel
+     *            the event channel for this <code>Port</code>.
      */
     void setEventChannel(EventChannel eventChannel)
     {
@@ -87,16 +96,17 @@ abstract class Port
     }
 
     /**
-     * Returns the event channel for this  port. The value may be null.
-     * @return the event channel for this  port.
+     * Returns the event channel for this port. The value may be null.
+     * 
+     * @return the event channel for this port.
      */
     EventChannel getEventChannel()
     {
         if (eventChannel == null)
         {
-            throw new IllegalStateException(name +
-                " is not connectd to event channel '" +
-                ecd.getEventChannelName() + "'");
+            throw new IllegalStateException(name
+                    + " is not connectd to event channel '"
+                    + ecd.getEventChannelName() + "'");
         }
 
         return eventChannel;
@@ -104,6 +114,7 @@ abstract class Port
 
     /**
      * Returns the name of the event channel for this port.
+     * 
      * @return the name of the event channel for this port.
      */
     String getEventChannelName()
@@ -113,6 +124,7 @@ abstract class Port
 
     /**
      * Returns the value constraint for this port.
+     * 
      * @return the value constraint for this port.
      */
     ValueConstraint getConstraint()
@@ -122,14 +134,16 @@ abstract class Port
 
     /**
      * Sets this ports associated tree component.
-     * @param component the component to which this port is bound.
+     * 
+     * @param component
+     *            the component to which this port is bound.
      */
     void setTreeComponent(TreeComponent component)
     {
         if (this.component != null)
         {
             throw new IllegalStateException(
-                "Illegal attempt to re-assign component");
+                    "Illegal attempt to re-assign component");
         }
 
         this.component = component;
@@ -137,13 +151,16 @@ abstract class Port
 
     /**
      * Returns the component to which this port is bound.
+     * 
      * @return the component to which this port is bound.
      */
     TreeComponent getTreeComponent()
     {
         if (this.component == null)
         {
-            throw new IllegalStateException("Component is not defined");
+            throw new IllegalStateException("Port '" + name
+                    + "' for event channel '" + ecd.getEventChannelName()
+                    + "' has not been connected to a component");
         }
 
         return this.component;
