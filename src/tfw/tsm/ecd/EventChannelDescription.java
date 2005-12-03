@@ -29,7 +29,8 @@ import tfw.value.ValueCodec;
 import tfw.value.ValueConstraint;
 
 /**
- * Describes an event channel.
+ * Describes an event channel. For specialized event channel descriptions
+ * extends {@link ObjectECD}.
  */
 public abstract class EventChannelDescription
 {
