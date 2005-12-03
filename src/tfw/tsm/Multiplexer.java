@@ -438,6 +438,7 @@ class Multiplexer implements EventChannel
             }
 
             port.setEventChannel(null);
+            childSinks.remove(port);
         }
 
         private Object getElement(ObjectIla objects, long index)
