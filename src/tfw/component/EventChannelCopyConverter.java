@@ -35,7 +35,7 @@ public class EventChannelCopyConverter extends Converter
 	public EventChannelCopyConverter(String name,
 		ObjectECD inputECD, ObjectECD outputECD)
 	{
-		super("TriggeredEventChannelCopy[" + name + "]",
+		super("EventChannelCopyConverter[" + name + "]",
 			new ObjectECD[] {inputECD},
 			null,
 			new ObjectECD[] {outputECD});
