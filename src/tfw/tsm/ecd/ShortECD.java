@@ -31,7 +31,7 @@ import tfw.value.ShortConstraint;
 /**
  * A <code>java.lang.Short</code> event channel descritpion
  */
-public class ShortECD extends EventChannelDescription {
+public class ShortECD extends ObjectECD {
 	
 	/**
 	 * Creates an event channel description with the specified attribute.

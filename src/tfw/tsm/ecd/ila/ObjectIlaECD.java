@@ -24,11 +24,11 @@
  */
 package tfw.tsm.ecd.ila;
 
-import tfw.tsm.ecd.EventChannelDescription;
-import tfw.value.ClassValueConstraint;
 import tfw.immutable.ila.objectila.ObjectIla;
+import tfw.tsm.ecd.ObjectECD;
+import tfw.value.ClassValueConstraint;
 
-public class ObjectIlaECD extends EventChannelDescription
+public class ObjectIlaECD extends ObjectECD
 {
 	public ObjectIlaECD(String name)
 	{

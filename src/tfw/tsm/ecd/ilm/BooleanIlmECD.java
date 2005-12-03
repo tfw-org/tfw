@@ -24,11 +24,11 @@
  */
 package tfw.tsm.ecd.ilm;
 
-import tfw.tsm.ecd.EventChannelDescription;
-import tfw.value.ClassValueConstraint;
 import tfw.immutable.ilm.booleanilm.BooleanIlm;
+import tfw.tsm.ecd.ObjectECD;
+import tfw.value.ClassValueConstraint;
 
-public class BooleanIlmECD extends EventChannelDescription
+public class BooleanIlmECD extends ObjectECD
 {
 	public BooleanIlmECD(String name)
 	{

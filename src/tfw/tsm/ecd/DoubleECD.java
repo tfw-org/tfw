@@ -31,7 +31,7 @@ import tfw.value.DoubleConstraint;
 /**
  * A <code>java.lang.Double</code> event channel descritpion.
  */
-public class DoubleECD extends EventChannelDescription {
+public class DoubleECD extends ObjectECD {
 	
 	/**
 	 * Creates an event channel description with the specified attribute.

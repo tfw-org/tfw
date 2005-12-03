@@ -32,7 +32,7 @@ import tfw.value.IntegerConstraint;
 /**
  * A <code>java.lang.Integer</code> event channel descritpion
  */
-public class IntegerECD extends EventChannelDescription
+public class IntegerECD extends ObjectECD
 {
     /**
      * Creates an event channel description with the specified attribute.

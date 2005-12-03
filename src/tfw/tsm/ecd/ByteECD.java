@@ -31,7 +31,7 @@ import tfw.value.ClassValueConstraint;
 /**
  * A <code>java.lang.Integer</code> event channel descritpion
  */
-public class ByteECD extends EventChannelDescription {
+public class ByteECD extends ObjectECD {
 	/**
 	 * Creates an event channel description with the specified attribute.
 	 * @param name the name of the event channel.

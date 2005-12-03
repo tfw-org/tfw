@@ -31,7 +31,7 @@ import tfw.value.FloatConstraint;
 /**
  * A <code>java.lang.Float</code> event channel descritpion.
  */
-public class FloatECD extends EventChannelDescription {
+public class FloatECD extends ObjectECD {
 	
 	/**
 	 * Creates an event channel description with the specified attribute.

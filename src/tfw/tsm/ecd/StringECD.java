@@ -31,7 +31,7 @@ import tfw.value.StringCodec;
 /**
  * A <code>java.lang.String</code> event channel description
  */
-public class StringECD extends EventChannelDescription
+public class StringECD extends ObjectECD
 {
     /**
      * Creates an event channel description with the specified name.

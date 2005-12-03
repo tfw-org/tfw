@@ -32,7 +32,7 @@ import tfw.value.ValueConstraint;
  * of a transaction rollback. Note that the state is changed in a follow-on
  * transaction.
  */
-public abstract class RollbackECD extends EventChannelDescription {
+public abstract class RollbackECD extends ObjectECD {
 	public RollbackECD(String eventChannelName, ValueConstraint constraint, ValueCodec codec){
 		super(eventChannelName, constraint, codec);
 	}

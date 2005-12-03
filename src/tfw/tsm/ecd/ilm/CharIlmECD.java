@@ -24,11 +24,11 @@
  */
 package tfw.tsm.ecd.ilm;
 
-import tfw.tsm.ecd.EventChannelDescription;
-import tfw.value.ClassValueConstraint;
 import tfw.immutable.ilm.charilm.CharIlm;
+import tfw.tsm.ecd.ObjectECD;
+import tfw.value.ClassValueConstraint;
 
-public class CharIlmECD extends EventChannelDescription
+public class CharIlmECD extends ObjectECD
 {
 	public CharIlmECD(String name)
 	{
