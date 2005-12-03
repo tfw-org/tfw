@@ -34,8 +34,6 @@ public class GraphicECD extends ObjectECD
 	{
 		super(name,
 			ClassValueConstraint.getInstance(Graphic.class),
-			null,
-			true,
-			true);
+			null);
 	}
 }

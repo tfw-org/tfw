@@ -34,8 +34,6 @@ public class CharIlmECD extends ObjectECD
 	{
 		super(name,
 			ClassValueConstraint.getInstance(CharIlm.class),
-			null,
-			true,
-			true);
+			null);
 	}
 }

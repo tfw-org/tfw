@@ -34,8 +34,6 @@ public class ObjectIlaECD extends ObjectECD
 	{
 		super(name,
 			ClassValueConstraint.getInstance(ObjectIla.class),
-			null,
-			true,
-			true);
+			null);
 	}
 }

@@ -24,13 +24,12 @@
  */
 package tfw.tsm.test;
 
+import junit.framework.TestCase;
 import tfw.tsm.BranchFactory;
 import tfw.tsm.ecd.IntegerECD;
+import tfw.tsm.ecd.StatelessTriggerECD;
 import tfw.tsm.ecd.StringECD;
-
 import tfw.value.ValueException;
-
-import junit.framework.TestCase;
 
 /**
  * 
@@ -85,7 +84,7 @@ public class BranchFactoryTest extends TestCase
 
         bf.addEventChannel(stringECD);
 
-        StringECD memoryLessECD = new StringECD("memoryLess", false);
+        StatelessTriggerECD memoryLessECD = new StatelessTriggerECD("memoryLess");
         try
         {
             bf.addEventChannel(memoryLessECD, "non-null state");

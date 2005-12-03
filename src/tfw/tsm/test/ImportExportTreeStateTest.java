@@ -49,14 +49,12 @@ public class ImportExportTreeStateTest extends TestCase
         String childName = "Child Tree";
         StringECD stringECD = new StringECD("ecd1");
         StringECD stringECDNullState = new StringECD("stringNullState");
-        StringECD stringECDMemoryLess = new StringECD("memory-less", false);
         EventChannelState state = new EventChannelState(stringECD, "Hello");
         BasicTransactionQueue queue = new BasicTransactionQueue();
 
         RootFactory rf = new RootFactory();
         rf.addEventChannel(stringECD, state.getState());
         rf.addEventChannel(stringECDNullState, null);
-        rf.addEventChannel(stringECDMemoryLess);
 
         final Root root = rf.create(rootName, queue);
 

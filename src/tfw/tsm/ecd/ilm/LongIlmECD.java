@@ -34,8 +34,6 @@ public class LongIlmECD extends ObjectECD
 	{
 		super(name,
 			ClassValueConstraint.getInstance(LongIlm.class),
-			null,
-			true,
-			true);
+			null);
 	}
 }

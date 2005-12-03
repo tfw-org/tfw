@@ -34,8 +34,6 @@ public class BooleanIlmECD extends ObjectECD
 	{
 		super(name,
 			ClassValueConstraint.getInstance(BooleanIlm.class),
-			null,
-			true,
-			true);
+			null);
 	}
 }

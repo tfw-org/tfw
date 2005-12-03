@@ -33,8 +33,6 @@ public class GraphECD extends ObjectECD
 	{
 		super(name,
 			ClassValueConstraint.getInstance(Graph.class),
-			null,
-			true,
-			true);
+			null);
 	}
 }

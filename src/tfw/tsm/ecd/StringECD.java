@@ -41,16 +41,4 @@ public class StringECD extends ObjectECD
     {
         super(name, ClassValueConstraint.STRING, StringCodec.INSTANCE);
     }
-
-    /**
-     * Creates an event channel description with the specified name.
-     * @param name the name of the event channel.
-     * @param fireOnConnect flag indicating whether the event channel
-     * fires state when a new sink is connected.
-     */
-    public StringECD(String name, boolean fireOnConnect)
-    {
-        super(name, ClassValueConstraint.STRING, StringCodec.INSTANCE,
-            fireOnConnect, fireOnConnect);
-    }
 }

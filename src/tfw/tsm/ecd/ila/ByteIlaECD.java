@@ -34,8 +34,6 @@ public class ByteIlaECD extends ObjectECD
 	{
 		super(name,
 			ClassValueConstraint.getInstance(ByteIla.class),
-			null,
-			true,
-			true);
+			null);
 	}
 }

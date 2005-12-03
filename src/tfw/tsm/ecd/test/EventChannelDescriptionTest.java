@@ -43,7 +43,7 @@ public class EventChannelDescriptionTest extends TestCase
         try
         {
             new TestECD(null, ClassValueConstraint.STRING,
-                StringCodec.INSTANCE, false, false);
+                StringCodec.INSTANCE);
             fail("constructor accepted null name");
         }
         catch (IllegalArgumentException expected)
@@ -53,8 +53,7 @@ public class EventChannelDescriptionTest extends TestCase
 
         try
         {
-            new TestECD(" ", ClassValueConstraint.STRING, StringCodec.INSTANCE,
-                false, false);
+            new TestECD(" ", ClassValueConstraint.STRING, StringCodec.INSTANCE);
             fail("constructor accepted empty name");
         }
         catch (IllegalArgumentException expected)
@@ -64,7 +63,7 @@ public class EventChannelDescriptionTest extends TestCase
 
         try
         {
-            new TestECD("A", null, StringCodec.INSTANCE, false, false);
+            new TestECD("A", null, StringCodec.INSTANCE);
             fail("constructor accepted constraint");
         }
         catch (IllegalArgumentException expected)
@@ -74,7 +73,7 @@ public class EventChannelDescriptionTest extends TestCase
 
         try
         {
-            new TestECD("A", ClassValueConstraint.STRING, null, false, false);
+            new TestECD("A", ClassValueConstraint.STRING, null);
         }
         catch (IllegalArgumentException expected)
         {
@@ -85,40 +84,39 @@ public class EventChannelDescriptionTest extends TestCase
     public void testEquals()
     {
 		TestECD ecd1 = new TestECD("A", ClassValueConstraint.STRING,
-				StringCodec.INSTANCE, false, false);
+				StringCodec.INSTANCE);
 		TestECD ecd2 = new TestECD("A", ClassValueConstraint.STRING,
-				StringCodec.INSTANCE, false, false);
+				StringCodec.INSTANCE);
         assertEquals("Equivalent instances not equal",ecd1, ecd2);
 		assertFalse("equal to null.",ecd1.equals(null));
        
         ecd2 = new TestECD("different", ClassValueConstraint.STRING,
-		StringCodec.INSTANCE, false, false);
+		StringCodec.INSTANCE);
 		assertFalse("different names equal",ecd1.equals(ecd2));
 		
 		ecd2 = new TestECD("A", ClassValueConstraint.BOOLEAN,
-						StringCodec.INSTANCE, false, false);
+						StringCodec.INSTANCE);
 		assertFalse("different constraints equal",ecd1.equals(ecd2));
 		
 		ecd2 = new TestECD("A", ClassValueConstraint.STRING,
-						IntegerCodec.INSTANCE, false, false);
+						IntegerCodec.INSTANCE);
 		assertFalse("different codecs equal",ecd1.equals(ecd2));
 		
-		ecd2 = new TestECD("A", ClassValueConstraint.STRING,
-						StringCodec.INSTANCE, true, false);
-		assertFalse("different fire-on-connect equal",ecd1.equals(ecd2));
+//		ecd2 = new TestECD("A", ClassValueConstraint.STRING,
+//						StringCodec.INSTANCE, true, false);
+//		assertFalse("different fire-on-connect equal",ecd1.equals(ecd2));
 		
-		ecd2 = new TestECD("A", ClassValueConstraint.STRING,
-						StringCodec.INSTANCE, false, true);
-		assertFalse("different rollback participant equal",ecd1.equals(ecd2));
+//		ecd2 = new TestECD("A", ClassValueConstraint.STRING,
+//						StringCodec.INSTANCE, false, true);
+//		assertFalse("different rollback participant equal",ecd1.equals(ecd2));
     }
 
     private class TestECD extends ObjectECD
     {
         public TestECD(String eventChannelName, ValueConstraint constraint,
-            ValueCodec codec, boolean fireOnConnect, boolean rollbackParticipant)
+            ValueCodec codec)
         {
-            super(eventChannelName, constraint, codec, fireOnConnect,
-                rollbackParticipant);
+            super(eventChannelName, constraint, codec);
         }
     }
 }

@@ -34,8 +34,6 @@ public class ImageObserverECD extends ObjectECD
 	{
 		super(name,
 			ClassValueConstraint.getInstance(ImageObserver.class),
-			null,
-			true,
-			true);
+			null);
 	}
 }

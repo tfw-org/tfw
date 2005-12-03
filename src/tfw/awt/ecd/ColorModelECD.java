@@ -34,8 +34,6 @@ public class ColorModelECD extends ObjectECD
 	{
 		super(name,
 			ClassValueConstraint.getInstance(ColorModel.class),
-			null,
-			true,
-			true);
+			null);
 	}
 }

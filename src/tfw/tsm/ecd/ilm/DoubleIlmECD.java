@@ -34,8 +34,6 @@ public class DoubleIlmECD extends ObjectECD
 	{
 		super(name,
 			ClassValueConstraint.getInstance(DoubleIlm.class),
-			null,
-			true,
-			true);
+			null);
 	}
 }
