@@ -32,7 +32,7 @@ import tfw.awt.ecd.ImageECD;
 import tfw.awt.ecd.ImageObserverECD;
 import tfw.awt.graphic.DrawImageGraphic;
 import tfw.tsm.TriggeredConverter;
-import tfw.tsm.ecd.EventChannelDescription;
+import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.IntegerECD;
 import tfw.tsm.ecd.StatelessTriggerECD;
 
@@ -50,9 +50,9 @@ public class DrawImageConverter extends TriggeredConverter
 	{
 		super("DrawImageConverter["+name+"]",
 			triggerECD,
-			new EventChannelDescription[] {imageECD, xECD, yECD,
+			new ObjectECD[] {imageECD, xECD, yECD,
 				imageObserverECD},
-			new EventChannelDescription[] {graphicECD});
+			new ObjectECD[] {graphicECD});
 		
 		this.imageECD = imageECD;
 		this.xECD = xECD;

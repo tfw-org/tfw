@@ -33,6 +33,8 @@ import java.util.Set;
 
 import tfw.check.Argument;
 import tfw.tsm.ecd.EventChannelDescription;
+import tfw.tsm.ecd.ObjectECD;
+import tfw.tsm.ecd.StatelessTriggerECD;
 import tfw.value.NullConstaint;
 import tfw.value.ValueException;
 
@@ -740,7 +742,7 @@ public class TreeComponent
             {
                 try
                 {
-                    EventChannelState ecs = new EventChannelState(ec.getECD(),
+                    EventChannelState ecs = new EventChannelState((ObjectECD)ec.getECD(),
                             ec.getState());
                     buff.addState(ecs);
                 }
@@ -770,7 +772,8 @@ public class TreeComponent
 
     private static boolean isExport(EventChannel ec, String exportTag)
     {
-        if (!ec.getECD().isFireOnConnect() || (ec.getState() == null))
+        if ((ec.getECD() instanceof StatelessTriggerECD)
+                || !ec.getECD().isFireOnConnect() || (ec.getState() == null))
         {
             return false;
         }
@@ -807,7 +810,7 @@ public class TreeComponent
             boolean skipMissingChildBranches)
     {
         Argument.assertNotNull(state, "state");
-        
+
         if (!isRooted())
         {
             throw new IllegalStateException(

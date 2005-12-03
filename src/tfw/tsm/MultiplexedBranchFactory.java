@@ -25,12 +25,13 @@
 package tfw.tsm;
 
 
-import tfw.check.Argument;
-import tfw.tsm.ecd.EventChannelDescription;
-import tfw.tsm.ecd.ila.ObjectIlaECD;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import tfw.check.Argument;
+import tfw.tsm.ecd.ObjectECD;
+import tfw.tsm.ecd.ila.ObjectIlaECD;
 
 /**
  * A factory for creating a {@link MultiplexedBranch}.
@@ -56,7 +57,7 @@ public class MultiplexedBranchFactory
      * @param multiValueECD the event channel description of the parent
      * multiplexed values.
      */
-    public void addMultiplexer(EventChannelDescription valueECD,
+    public void addMultiplexer(ObjectECD valueECD,
         ObjectIlaECD multiValueECD)
     {
         Argument.assertNotNull(valueECD, "valueECD");
@@ -89,7 +90,7 @@ public class MultiplexedBranchFactory
         for (int i = 0; i < valueECDList.size(); i++)
         {
             list.add(new Multiplexer(name,
-                    (EventChannelDescription) valueECDList.get(i),
+                    (ObjectECD) valueECDList.get(i),
                     (ObjectIlaECD) multiValueECDList.get(i)));
         }
 

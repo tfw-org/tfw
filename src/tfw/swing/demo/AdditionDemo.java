@@ -41,7 +41,7 @@ import tfw.tsm.RootFactory;
 import tfw.tsm.Synchronizer;
 import tfw.tsm.TriggeredConverter;
 import tfw.tsm.ecd.BooleanECD;
-import tfw.tsm.ecd.EventChannelDescription;
+import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.IntegerECD;
 import tfw.tsm.ecd.StatelessTriggerECD;
 import tfw.tsm.ecd.StringECD;
@@ -183,10 +183,10 @@ public class AdditionDemo
 			StringECD textECD, StringRollbackECD errorECD)
 		{
 			super("IntegerSynchronizer["+name+"]",
-				new EventChannelDescription[] {integerECD},
-				new EventChannelDescription[] {textECD},
+				new ObjectECD[] {integerECD},
+				new ObjectECD[] {textECD},
 				null,
-				new EventChannelDescription[] {errorECD});
+				new ObjectECD[] {errorECD});
 			
 			this.name = name;
 			this.integerECD = integerECD;
@@ -242,8 +242,8 @@ public class AdditionDemo
 		{
 			super("AdditionConverter",
 				triggerECD,
-				new EventChannelDescription[] {valueOneECD, valueTwoECD},
-				new EventChannelDescription[] {sumECD});
+				new ObjectECD[] {valueOneECD, valueTwoECD},
+				new ObjectECD[] {sumECD});
 			
 			this.valueOneECD = valueOneECD;
 			this.valueTwoECD = valueTwoECD;
@@ -268,7 +268,7 @@ public class AdditionDemo
 			StringRollbackECD errorMessageECD)
 		{
 			super("ErrorMessageConverter",
-				new EventChannelDescription[] {errorMessageECD},
+				new ObjectECD[] {errorMessageECD},
 				null,
 				null);
 			

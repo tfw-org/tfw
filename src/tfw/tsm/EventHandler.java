@@ -24,16 +24,16 @@
  */
 package tfw.tsm;
 
-import tfw.check.Argument;
-import tfw.tsm.ecd.EventChannelDescription;
-import tfw.tsm.ecd.RollbackECD;
-import tfw.tsm.ecd.StatelessTriggerECD;
-
-import tfw.value.ValueException;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
+import tfw.check.Argument;
+import tfw.tsm.ecd.EventChannelDescription;
+import tfw.tsm.ecd.ObjectECD;
+import tfw.tsm.ecd.RollbackECD;
+import tfw.tsm.ecd.StatelessTriggerECD;
+import tfw.value.ValueException;
 
 /**
  * The base class for event handling leaf components.
@@ -235,9 +235,9 @@ abstract class EventHandler extends Leaf
             EventChannelDescription sinkEventChannel = (EventChannelDescription) itr
                     .next();
 
-            if (!(sinkEventChannel instanceof StatelessTriggerECD))
+            if (sinkEventChannel instanceof ObjectECD)
             {
-                stateMap.put(sinkEventChannel, get(sinkEventChannel));
+                stateMap.put((ObjectECD)sinkEventChannel, get(sinkEventChannel));
             }
         }
 
@@ -313,25 +313,6 @@ abstract class EventHandler extends Leaf
         }
 
         getTransactionManager().addStateChange(sources);
-    }
-
-    static void checkForStatelessTrigger(EventChannelDescription[] ecds,
-            String name)
-    {
-        if (ecds == null)
-        {
-            return;
-        }
-
-        for (int i = 0; i < ecds.length; i++)
-        {
-            if (ecds[i] instanceof StatelessTriggerECD)
-            {
-                throw new IllegalArgumentException(name + "[" + i
-                        + "] instanceof " + StatelessTriggerECD.class.getName()
-                        + " not allowed");
-            }
-        }
     }
 
     /**

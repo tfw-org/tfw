@@ -38,7 +38,7 @@ import tfw.tsm.AWTTransactionQueue;
 import tfw.tsm.Initiator;
 import tfw.tsm.TriggeredCommit;
 import tfw.tsm.ecd.BooleanECD;
-import tfw.tsm.ecd.EventChannelDescription;
+import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.StatelessTriggerECD;
 import tfw.tsm.Root;
 import tfw.tsm.RootFactory;
@@ -72,7 +72,7 @@ public class JButtonBBDemo
 		};
 		
 		final Initiator initiator = new Initiator("JButtonBBTest",
-			new EventChannelDescription[] {ENABLE_ECD});
+			new ObjectECD[] {ENABLE_ECD});
 		
 		final JCheckBox cb = new JCheckBox();
 		cb.setText("Enable Button");

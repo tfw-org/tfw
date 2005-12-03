@@ -52,7 +52,7 @@ import tfw.tsm.SynchronizerProxy;
 import tfw.tsm.TriggeredCommitProxy;
 import tfw.tsm.TriggeredConverterProxy;
 import tfw.tsm.ValidatorProxy;
-import tfw.tsm.ecd.EventChannelDescription;
+import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.ilm.IntIlmECD;
 import tfw.visualizer.graph.Graph;
 import tfw.visualizer.graph.GraphECD;
@@ -88,14 +88,14 @@ public class NodeToGraphicConverter extends Converter
 		GraphicECD graphicOutECD)
 	{
 		super("NodeEdgeToGraphicConverter",
-			new EventChannelDescription[] {graphECD, pixelNodeTLBRECD,
+			new ObjectECD[] {graphECD, pixelNodeTLBRECD,
 				fontECD, backgroundColorECD, branchColorECD, commitColorECD,
 				converterColorECD, eventChannelColorECD, initiatorColorECD,
 				multiplexedBranchColorECD, rootColorECD, synchronizerColorECD,
 				triggeredCommitColorECD, triggeredConverterColorECD,
 				validatorColorECD},
 			null,
-			new EventChannelDescription[] {graphicOutECD});
+			new ObjectECD[] {graphicOutECD});
 		
 		this.component = component;
 		this.graphECD = graphECD;

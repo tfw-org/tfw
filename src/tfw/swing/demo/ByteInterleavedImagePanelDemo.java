@@ -49,7 +49,7 @@ import tfw.tsm.EventChannelStateBuffer;
 import tfw.tsm.Initiator;
 import tfw.tsm.Root;
 import tfw.tsm.RootFactory;
-import tfw.tsm.ecd.EventChannelDescription;
+import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.IntegerECD;
 import tfw.tsm.ecd.ilm.ByteIlmECD;
 
@@ -80,7 +80,7 @@ public class ByteInterleavedImagePanelDemo
 		
 		final Initiator initiator = new Initiator(
 			"ByteInterleavedImagePanelTest",
-			new EventChannelDescription[] {xECD, yECD, ilmECD, cmECD});
+			new ObjectECD[] {xECD, yECD, ilmECD, cmECD});
 		root.add(initiator);
 		
 		final JColorChooser cc = new JColorChooser(initialColor);

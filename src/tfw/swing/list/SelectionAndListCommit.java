@@ -34,7 +34,7 @@ import tfw.immutable.ila.intila.IntIla;
 import tfw.immutable.ila.objectila.ObjectIla;
 import tfw.tsm.Commit;
 import tfw.tsm.Initiator;
-import tfw.tsm.ecd.EventChannelDescription;
+import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.ila.IntIlaECD;
 import tfw.tsm.ecd.ila.ObjectIlaECD;
 
@@ -50,7 +50,7 @@ public class SelectionAndListCommit extends Commit
 		Initiator[] initiators, JList list)
 	{
 		super("SelectionAndListCommit["+name+"]",
-			new EventChannelDescription[] {listECD, selectedItemsECD,
+			new ObjectECD[] {listECD, selectedItemsECD,
 				selectedIndexesECD},
 			null,
 			initiators);

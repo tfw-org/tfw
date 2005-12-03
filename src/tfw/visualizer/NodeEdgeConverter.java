@@ -27,7 +27,7 @@ package tfw.visualizer;
 import tfw.tsm.Root;
 import tfw.tsm.RootProxy;
 import tfw.tsm.TriggeredConverter;
-import tfw.tsm.ecd.EventChannelDescription;
+import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.StatelessTriggerECD;
 import tfw.visualizer.graph.Graph;
 import tfw.visualizer.graph.GraphECD;
@@ -44,7 +44,7 @@ public class NodeEdgeConverter extends TriggeredConverter
 		super("NodeEdgeConverter",
 			triggerECD,
 			null,
-			new EventChannelDescription[] {graphECD});
+			new ObjectECD[] {graphECD});
 		
 		this.root = root;
 		this.graphECD = graphECD;

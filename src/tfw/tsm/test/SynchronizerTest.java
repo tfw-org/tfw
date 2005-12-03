@@ -37,29 +37,29 @@ import tfw.tsm.RootFactory;
 import tfw.tsm.Synchronizer;
 import tfw.tsm.TransactionExceptionHandler;
 import tfw.tsm.ecd.CharacterECD;
-import tfw.tsm.ecd.EventChannelDescription;
+import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.StatelessTriggerECD;
 import tfw.tsm.ecd.StringECD;
 
 
 public class SynchronizerTest extends TestCase
 {
-    private EventChannelDescription source = new StringECD("source");
-    private EventChannelDescription sink = new StringECD("sink");
-    private EventChannelDescription a1Port = new CharacterECD("a1");
-    private EventChannelDescription a2Port = new CharacterECD("a2");
-    private EventChannelDescription b1Port = new CharacterECD("b1");
-    private EventChannelDescription b2Port = new CharacterECD("b2");
-    private EventChannelDescription[] aChans = new EventChannelDescription[]
+    private ObjectECD source = new StringECD("source");
+    private ObjectECD sink = new StringECD("sink");
+    private ObjectECD a1Port = new CharacterECD("a1");
+    private ObjectECD a2Port = new CharacterECD("a2");
+    private ObjectECD b1Port = new CharacterECD("b1");
+    private ObjectECD b2Port = new CharacterECD("b2");
+    private ObjectECD[] aChans = new ObjectECD[]
         {
             a1Port, a2Port
         };
-    private EventChannelDescription[] bChans = new EventChannelDescription[]
+    private ObjectECD[] bChans = new ObjectECD[]
         {
             b1Port, b2Port
         };
-    private EventChannelDescription[] sinks = new EventChannelDescription[]{ sink };
-    private EventChannelDescription[] sources = new EventChannelDescription[]
+    private ObjectECD[] sinks = new ObjectECD[]{ sink };
+    private ObjectECD[] sources = new ObjectECD[]
         {
             source
         };
@@ -70,10 +70,10 @@ public class SynchronizerTest extends TestCase
     private boolean aToBFired = false;
     private boolean bToAFired = false;
     private Initiator initiator = new Initiator("Initiator",
-            new EventChannelDescription[]{ a1Port, a2Port, b1Port, b2Port, source });
+            new ObjectECD[]{ a1Port, a2Port, b1Port, b2Port, source });
     private Synchronizer converter = new Synchronizer("TwoWay",
-            new EventChannelDescription[]{ a1Port, a2Port },
-            new EventChannelDescription[]{ b1Port, b2Port }, sinks, sources)
+            new ObjectECD[]{ a1Port, a2Port },
+            new ObjectECD[]{ b1Port, b2Port }, sinks, sources)
         {
             protected void convertAToB()
             {
@@ -125,7 +125,7 @@ public class SynchronizerTest extends TestCase
         };
 
     private Commit commit = new Commit("Commit",
-            new EventChannelDescription[]{ a1Port, a2Port, b1Port, b2Port })
+            new ObjectECD[]{ a1Port, a2Port, b1Port, b2Port })
         {
             protected void commit()
             {
@@ -172,8 +172,8 @@ public class SynchronizerTest extends TestCase
         };
 
     private Converter rollback = new Converter("rollback",
-            new EventChannelDescription[]{ a1Port },
-            new EventChannelDescription[]{ b1Port })
+            new ObjectECD[]{ a1Port },
+            new ObjectECD[]{ b1Port })
         {
             protected void convert()
             {
@@ -186,8 +186,8 @@ public class SynchronizerTest extends TestCase
     private Exception exception = null;
     private boolean fired = false;
     private Converter causeAtoBtoAError = new Converter("causeAtoBToAerror",
-            new EventChannelDescription[]{ source },
-            new EventChannelDescription[]{ b1Port })
+            new ObjectECD[]{ source },
+            new ObjectECD[]{ b1Port })
         {
             protected void convert()
             {
@@ -204,8 +204,8 @@ public class SynchronizerTest extends TestCase
         };
 
     private Converter causeBtoAtoBError = new Converter("causeAtoBToAerror",
-            new EventChannelDescription[]{ source },
-            new EventChannelDescription[]{ a1Port })
+            new ObjectECD[]{ source },
+            new ObjectECD[]{ a1Port })
         {
             protected void convert()
             {
@@ -281,7 +281,7 @@ public class SynchronizerTest extends TestCase
 
         try
         {
-            new TestTwoWay("Test", new EventChannelDescription[0], bChans,
+            new TestTwoWay("Test", new ObjectECD[0], bChans,
                 sinks, sources);
             fail("Constructor accepted empty 'A' channels");
         }
@@ -292,7 +292,7 @@ public class SynchronizerTest extends TestCase
 
         try
         {
-            new TestTwoWay("Test", new EventChannelDescription[]{ null },
+            new TestTwoWay("Test", new ObjectECD[]{ null },
                 bChans, sinks, sources);
             fail("Constructor accepted 'A' channel array with null value");
         }
@@ -313,7 +313,7 @@ public class SynchronizerTest extends TestCase
 
         try
         {
-            new TestTwoWay("Test", aChans, new EventChannelDescription[0],
+            new TestTwoWay("Test", aChans, new ObjectECD[0],
                 sinks, sources);
             fail("Constructor accepted empty 'B' channels");
         }
@@ -325,7 +325,7 @@ public class SynchronizerTest extends TestCase
         try
         {
             new TestTwoWay("Test", aChans,
-                new EventChannelDescription[]{ null }, sinks, sources);
+                new ObjectECD[]{ null }, sinks, sources);
             fail("Constructor accepted 'B' channel array with null value");
         }
         catch (IllegalArgumentException expected)
@@ -336,7 +336,7 @@ public class SynchronizerTest extends TestCase
         try
         {
             new TestTwoWay("Test", aChans, bChans,
-                new EventChannelDescription[]{ null }, sources);
+                new ObjectECD[]{ null }, sources);
             fail("Constructor accepted sinks channel array with null value");
         }
         catch (IllegalArgumentException expected)
@@ -347,56 +347,13 @@ public class SynchronizerTest extends TestCase
         try
         {
             new TestTwoWay("Test", aChans, bChans, sinks,
-                new EventChannelDescription[]{ null });
+                new ObjectECD[]{ null });
             fail("Constructor accepted sources channel array with null value");
         }
         catch (IllegalArgumentException expected)
         {
             //System.out.println(expected);
         }
-
-        StatelessTriggerECD[] statelessTriggers = new StatelessTriggerECD[]
-            {
-                new StatelessTriggerECD("test")
-            };
-
-		try
-		{
-			new TestTwoWay("Test", statelessTriggers, bChans, sinks, sources);
-			fail("Constructor accepted aChans with statelessTriggers");
-		}
-		catch (IllegalArgumentException expected)
-		{
-			//System.out.println(expected);
-		}
-		try
-		{
-			new TestTwoWay("Test", aChans, statelessTriggers, sinks, sources);
-			fail("Constructor accepted bChans with statelessTriggers");
-		}
-		catch (IllegalArgumentException expected)
-		{
-			//System.out.println(expected);
-		}
-		try
-		{
-			new TestTwoWay("Test", aChans, bChans, statelessTriggers, sources);
-			fail("Constructor accepted sinks with statelessTriggers");
-		}
-		catch (IllegalArgumentException expected)
-		{
-			//System.out.println(expected);
-		}
-		
-		try
-		{
-			new TestTwoWay("Test", aChans, bChans, sinks, statelessTriggers);
-			fail("Constructor accepted sources with statelessTriggers");
-		}
-		catch (IllegalArgumentException expected)
-		{
-			//System.out.println(expected);
-		}
     }
 
     public void testConvertAToB() throws Exception
@@ -595,9 +552,9 @@ public class SynchronizerTest extends TestCase
 
     private class TestTwoWay extends Synchronizer
     {
-        public TestTwoWay(String name, EventChannelDescription[] aChans,
-            EventChannelDescription[] bChans, EventChannelDescription[] sinks,
-            EventChannelDescription[] sources)
+        public TestTwoWay(String name, ObjectECD[] aChans,
+            ObjectECD[] bChans, ObjectECD[] sinks,
+            ObjectECD[] sources)
         {
             super(name, aChans, bChans, sinks, sources);
         }

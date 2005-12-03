@@ -29,7 +29,7 @@ import tfw.tsm.Commit;
 import tfw.tsm.Root;
 import tfw.tsm.RootFactory;
 import tfw.tsm.TransactionExceptionHandler;
-import tfw.tsm.ecd.EventChannelDescription;
+import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.StringECD;
 
 import junit.framework.TestCase;
@@ -44,7 +44,7 @@ public class PortTerminationTest extends TestCase
 
     public void testUnTerminatedPort()
     {
-        EventChannelDescription ecd = new StringECD("Test");
+        ObjectECD ecd = new StringECD("Test");
         RootFactory rf = new RootFactory();
 		rf.setTransactionExceptionHandler(new TransactionExceptionHandler()
 			{
@@ -58,7 +58,7 @@ public class PortTerminationTest extends TestCase
         BasicTransactionQueue queue = new BasicTransactionQueue();
 		Root root = rf.create("test", queue);
 
-        Commit commit = new Commit("test", new EventChannelDescription[]{ ecd })
+        Commit commit = new Commit("test", new ObjectECD[]{ ecd })
             {
                 public void commit()
                 {

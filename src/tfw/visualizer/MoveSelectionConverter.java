@@ -30,7 +30,7 @@ import tfw.immutable.ilm.intilm.IntIlm;
 import tfw.immutable.ilm.intilm.IntIlmFromArray;
 import tfw.tsm.Converter;
 import tfw.tsm.ecd.BooleanECD;
-import tfw.tsm.ecd.EventChannelDescription;
+import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.IntegerECD;
 import tfw.tsm.ecd.ila.BooleanIlaECD;
 import tfw.tsm.ecd.ilm.IntIlmECD;
@@ -52,11 +52,11 @@ public class MoveSelectionConverter extends Converter
 		BooleanECD buttonTwoPressedECD, BooleanECD buttonThreePressedECD)
 	{
 		super("MoveSelectionConverter",
-			new EventChannelDescription[] {xMouseECD, yMouseECD, selectedECD},
-			new EventChannelDescription[] {selectedNodesECD, pixelNodeTLBRECD,
+			new ObjectECD[] {xMouseECD, yMouseECD, selectedECD},
+			new ObjectECD[] {selectedNodesECD, pixelNodeTLBRECD,
 				buttonOnePressedECD, buttonTwoPressedECD,
 				buttonThreePressedECD},
-			new EventChannelDescription[] {pixelNodeTLBRECD});
+			new ObjectECD[] {pixelNodeTLBRECD});
 		
 		this.xMouseECD = xMouseECD;
 		this.yMouseECD = yMouseECD;

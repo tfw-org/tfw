@@ -32,7 +32,7 @@ import tfw.awt.graphic.Graphic;
 import tfw.awt.graphic.SetColorGraphic;
 import tfw.immutable.ilm.intilm.IntIlm;
 import tfw.tsm.Converter;
-import tfw.tsm.ecd.EventChannelDescription;
+import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.ilm.IntIlmECD;
 import tfw.visualizer.graph.Graph;
 import tfw.visualizer.graph.GraphECD;
@@ -47,9 +47,9 @@ public class EdgeToGraphicConverter extends Converter
 		GraphicECD graphicECD)
 	{
 		super("EdgeToGraphicConverter",
-			new EventChannelDescription[] {graphECD, pixelNodeTLBRECD},
+			new ObjectECD[] {graphECD, pixelNodeTLBRECD},
 			null,
-			new EventChannelDescription[] {graphicECD});
+			new ObjectECD[] {graphicECD});
 
 		this.graphECD = graphECD;
 		this.pixelNodeTLBRECD = pixelNodeTLBRECD;

@@ -30,7 +30,7 @@ import tfw.component.EventChannelCopyConverter;
 import tfw.tsm.Branch;
 import tfw.tsm.Commit;
 import tfw.tsm.ecd.BooleanECD;
-import tfw.tsm.ecd.EventChannelDescription;
+import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.StatelessTriggerECD;
 import tfw.tsm.ecd.StringECD;
 
@@ -84,7 +84,7 @@ public class JTextFieldModifiableBB extends JTextFieldBB
 				StringECD textAdjSink, BooleanECD enableSink)
 		{
 			super("ForegroundBackgroundHandler[" + name + "]",
-				new EventChannelDescription[] {textSink, textAdjSink,
+				new ObjectECD[] {textSink, textAdjSink,
 					enableSink });
 			
 			this.textName = textSink;

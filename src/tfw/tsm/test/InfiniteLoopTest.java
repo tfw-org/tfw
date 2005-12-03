@@ -32,7 +32,7 @@ import tfw.tsm.Converter;
 import tfw.tsm.Initiator;
 import tfw.tsm.Root;
 import tfw.tsm.RootFactory;
-import tfw.tsm.ecd.EventChannelDescription;
+import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.StringECD;
 
 
@@ -58,7 +58,7 @@ public class InfiniteLoopTest extends TestCase
         };
 
     private Converter convertAtoB = new Converter("A to B Converter",
-            new EventChannelDescription[]{ porta }, new EventChannelDescription[]{ portb })
+            new ObjectECD[]{ porta }, new ObjectECD[]{ portb })
         {
             protected void convert()
             {
@@ -73,7 +73,7 @@ public class InfiniteLoopTest extends TestCase
         };
 
     private Converter convertBtoA = new Converter("B to A Converter",
-            new EventChannelDescription[]{ portb }, new EventChannelDescription[]{ porta })
+            new ObjectECD[]{ portb }, new ObjectECD[]{ porta })
         {
             protected void convert()
             {
@@ -87,13 +87,13 @@ public class InfiniteLoopTest extends TestCase
         };
 
     private Initiator initiator = new Initiator("Infinite loop initiator",
-            new EventChannelDescription[]{ porta, portc });
+            new ObjectECD[]{ porta, portc });
     public boolean isCommit = false;
     boolean isDebugCommit = false;
     String avalue = null;
     String bvalue = null;
     private final Commit commit = new Commit("Infinite loop commit",
-            new EventChannelDescription[]{ porta, portb })
+            new ObjectECD[]{ porta, portb })
         {
             protected void commit()
             {

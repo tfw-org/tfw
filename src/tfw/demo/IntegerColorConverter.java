@@ -4,7 +4,7 @@ import java.awt.Color;
 
 import tfw.awt.ecd.ColorECD;
 import tfw.tsm.Synchronizer;
-import tfw.tsm.ecd.EventChannelDescription;
+import tfw.tsm.ecd.ObjectECD;
 import tfw.value.IntegerConstraint;
 
 
@@ -51,15 +51,15 @@ public class IntegerColorConverter extends Synchronizer
         //				", "+color+"]");
     }
 
-    private static EventChannelDescription[] createSinks(RedGreenBlueECD red,
+    private static ObjectECD[] createSinks(RedGreenBlueECD red,
         RedGreenBlueECD green, RedGreenBlueECD blue)
     {
-        return new EventChannelDescription[]{ red, green, blue };
+        return new ObjectECD[]{ red, green, blue };
     }
 
-    private static EventChannelDescription[] createSources(ColorECD color)
+    private static ObjectECD[] createSources(ColorECD color)
     {
-        return new EventChannelDescription[]
+        return new ObjectECD[]
         {
             color
         };

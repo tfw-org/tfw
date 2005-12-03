@@ -26,7 +26,9 @@ package tfw.visualizer;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+
 import javax.swing.JPanel;
+
 import tfw.awt.ecd.FontECD;
 import tfw.awt.ecd.GraphicECD;
 import tfw.awt.event.ComponentInitiator;

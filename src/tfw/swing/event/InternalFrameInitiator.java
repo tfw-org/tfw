@@ -26,6 +26,7 @@ package tfw.swing.event;
 
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.InternalFrameListener;
+
 import tfw.tsm.Initiator;
 import tfw.tsm.ecd.EventChannelDescription;
 import tfw.tsm.ecd.EventChannelDescriptionUtil;

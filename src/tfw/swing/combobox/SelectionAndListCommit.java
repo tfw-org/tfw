@@ -31,7 +31,7 @@ import tfw.immutable.DataInvalidException;
 import tfw.immutable.ila.objectila.ObjectIla;
 import tfw.tsm.Commit;
 import tfw.tsm.Initiator;
-import tfw.tsm.ecd.EventChannelDescription;
+import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.IntegerECD;
 import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.ila.ObjectIlaECD;
@@ -48,7 +48,7 @@ public class SelectionAndListCommit extends Commit
 		Initiator[] initiators, JComboBox comboBox)
 	{
 		super("SelectionAndListCommit["+name+"]",
-			new EventChannelDescription[] {listECD, selectedItemECD,
+			new ObjectECD[] {listECD, selectedItemECD,
 				selectedIndexECD},
 			null,
 			initiators);

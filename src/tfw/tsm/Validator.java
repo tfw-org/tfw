@@ -25,7 +25,7 @@
 package tfw.tsm;
 
 import tfw.check.Argument;
-import tfw.tsm.ecd.EventChannelDescription;
+import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.RollbackECD;
 
 /**
@@ -41,7 +41,7 @@ public abstract class Validator extends RollbackHandler
      * @param triggeringSinks the set of sinks which trigger this validator.
      *
      */
-    public Validator(String name, EventChannelDescription[] triggeringSinks,
+    public Validator(String name, ObjectECD[] triggeringSinks,
         RollbackECD[] initiators)
     {
         this(name, triggeringSinks, null, initiators);
@@ -57,17 +57,15 @@ public abstract class Validator extends RollbackHandler
 	 * {@link #validateState()} method will be called.
 	 * @param initiators the set of sources used to initiate new transactions.
 	 */
-    public Validator(String name, EventChannelDescription[] triggeringSinks,
-        EventChannelDescription[] nonTriggeringSinks,
+    public Validator(String name, ObjectECD[] triggeringSinks,
+        ObjectECD[] nonTriggeringSinks,
         RollbackECD[] initiators)
     {
         super(name, checkSinks(triggeringSinks), nonTriggeringSinks, initiators);
-		checkForStatelessTrigger(triggeringSinks, "trigeringSinks");
-		checkForStatelessTrigger(nonTriggeringSinks, "nonTriggeringSinks");
     }
 
-    private static EventChannelDescription[] checkSinks(
-        EventChannelDescription[] triggeringSinks)
+    private static ObjectECD[] checkSinks(
+        ObjectECD[] triggeringSinks)
     {
         Argument.assertNotNull(triggeringSinks, "triggeringSinks");
         return triggeringSinks;
@@ -83,7 +81,7 @@ public abstract class Validator extends RollbackHandler
      *         cycle.
      */
     protected final Object getPreviousCycleState(
-            EventChannelDescription sinkEventChannel)
+            ObjectECD sinkEventChannel)
     {
         Argument.assertNotNull(sinkEventChannel, "sinkEventChannel");
         assertNotStateless(sinkEventChannel);

@@ -30,7 +30,7 @@ import javax.swing.event.ListSelectionListener;
 import tfw.immutable.ila.intila.IntIlaFromArray;
 import tfw.immutable.ila.objectila.ObjectIlaFromArray;
 import tfw.tsm.Initiator;
-import tfw.tsm.ecd.EventChannelDescription;
+import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.ila.IntIlaECD;
 import tfw.tsm.ecd.ila.ObjectIlaECD;
 
@@ -45,7 +45,7 @@ public class SelectionInitiator extends Initiator
 		IntIlaECD selectedIndexesECD, JList list)
 	{
 		super("SelectionInitiator["+name+"]",
-			new EventChannelDescription[] {selectedItemsECD, selectedIndexesECD});
+			new ObjectECD[] {selectedItemsECD, selectedIndexesECD});
 		
 		this.selectedItemsECD = selectedItemsECD;
 		this.selectedIndexesECD = selectedIndexesECD;

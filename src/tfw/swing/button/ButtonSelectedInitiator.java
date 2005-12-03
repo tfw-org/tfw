@@ -29,7 +29,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import tfw.tsm.Initiator;
 import tfw.tsm.ecd.BooleanECD;
-import tfw.tsm.ecd.EventChannelDescription;
+import tfw.tsm.ecd.ObjectECD;
 
 public class ButtonSelectedInitiator extends Initiator implements ChangeListener
 {
@@ -40,7 +40,7 @@ public class ButtonSelectedInitiator extends Initiator implements ChangeListener
 		AbstractButton abstractButton)
 	{
 		super("SelectedChangeInitiator["+name+"]",
-			new EventChannelDescription[] {selectedECD});
+			new ObjectECD[] {selectedECD});
 		
 		this.selectedECD = selectedECD;
 		this.abstractButton = abstractButton;

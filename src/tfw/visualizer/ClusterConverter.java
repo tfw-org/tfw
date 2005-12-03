@@ -33,7 +33,7 @@ import tfw.immutable.ila.longila.LongIla;
 import tfw.immutable.ila.longila.LongIlaFromArray;
 import tfw.immutable.ila.objectila.ObjectIlaFromArray;
 import tfw.tsm.Converter;
-import tfw.tsm.ecd.EventChannelDescription;
+import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.ila.LongIlaECD;
 import tfw.tsm.ecd.ila.ObjectIlaECD;
 
@@ -50,9 +50,9 @@ public class ClusterConverter extends Converter
 		ObjectIlaECD nodeClusterTosECD)
 	{
 		super("ClusterConverter",
-			new EventChannelDescription[] {nodeFromsECD, nodeTosECD},
+			new ObjectECD[] {nodeFromsECD, nodeTosECD},
 			null,
-			new EventChannelDescription[] {nodeClustersECD, nodeClusterFromsECD,
+			new ObjectECD[] {nodeClustersECD, nodeClusterFromsECD,
 				nodeClusterTosECD});
 		
 		this.nodeFromsECD = nodeFromsECD;

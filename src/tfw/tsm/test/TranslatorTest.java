@@ -37,7 +37,7 @@ import tfw.tsm.Initiator;
 import tfw.tsm.Root;
 import tfw.tsm.RootFactory;
 import tfw.tsm.TransactionExceptionHandler;
-import tfw.tsm.ecd.EventChannelDescription;
+import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.IntegerECD;
 import tfw.tsm.ecd.StringECD;
 
@@ -46,9 +46,9 @@ public class TranslatorTest extends TestCase
 {
     private final String answer = "Hello World";
     private String result = null;
-    private EventChannelDescription portA = new StringECD("a");
-    private EventChannelDescription portB = new StringECD("b");
-    private EventChannelDescription[] eventChannels = new EventChannelDescription[]
+    private ObjectECD portA = new StringECD("a");
+    private ObjectECD portB = new StringECD("b");
+    private ObjectECD[] eventChannels = new ObjectECD[]
         {
             portA
         };

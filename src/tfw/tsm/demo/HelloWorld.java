@@ -24,13 +24,13 @@
  */
 package tfw.tsm.demo;
 
-import	tfw.tsm.BasicTransactionQueue;
-import	tfw.tsm.TriggeredCommit;
-import	tfw.tsm.Initiator;
-import	tfw.tsm.ecd.EventChannelDescription;
-import	tfw.tsm.ecd.StatelessTriggerECD;
-import	tfw.tsm.Root;
-import	tfw.tsm.RootFactory;
+import tfw.tsm.BasicTransactionQueue;
+import tfw.tsm.Initiator;
+import tfw.tsm.Root;
+import tfw.tsm.RootFactory;
+import tfw.tsm.TriggeredCommit;
+import tfw.tsm.ecd.EventChannelDescription;
+import tfw.tsm.ecd.StatelessTriggerECD;
 
 public class HelloWorld
 {

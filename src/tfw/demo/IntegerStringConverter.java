@@ -2,7 +2,7 @@ package tfw.demo;
 
 import tfw.tsm.Initiator;
 import tfw.tsm.Synchronizer;
-import tfw.tsm.ecd.EventChannelDescription;
+import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.IntegerECD;
 import tfw.tsm.ecd.StringECD;
 import tfw.tsm.ecd.StringRollbackECD;
@@ -25,9 +25,9 @@ public class IntegerStringConverter extends Synchronizer
         IntegerECD integerECD, StringRollbackECD errorECD)
     {
         super("IntegerStringConverter[" + name + "]",
-            new EventChannelDescription[]{ stringECD },
-            new EventChannelDescription[]{ integerECD }, null,
-            new EventChannelDescription[]{ errorECD });
+            new ObjectECD[]{ stringECD },
+            new ObjectECD[]{ integerECD }, null,
+            new ObjectECD[]{ errorECD });
         this.stringECD = stringECD;
         this.integerECD = integerECD;
         this.errorECD = errorECD;

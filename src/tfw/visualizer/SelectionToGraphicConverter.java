@@ -36,7 +36,7 @@ import tfw.immutable.DataInvalidException;
 import tfw.immutable.ila.booleanila.BooleanIla;
 import tfw.immutable.ilm.intilm.IntIlm;
 import tfw.tsm.Converter;
-import tfw.tsm.ecd.EventChannelDescription;
+import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.ila.BooleanIlaECD;
 import tfw.tsm.ecd.ilm.IntIlmECD;
 
@@ -50,9 +50,9 @@ public class SelectionToGraphicConverter extends Converter
 		IntIlmECD pixelNodeTLBRECD, GraphicECD graphicECD)
 	{
 		super("SelectionToGraphicConverter",
-			new EventChannelDescription[] {selectedNodesECD, pixelNodeTLBRECD},
+			new ObjectECD[] {selectedNodesECD, pixelNodeTLBRECD},
 			null,
-			new EventChannelDescription[] {graphicECD});
+			new ObjectECD[] {graphicECD});
 		
 		this.selectedNodesECD = selectedNodesECD;
 		this.pixelNodeTLBRECD = pixelNodeTLBRECD;

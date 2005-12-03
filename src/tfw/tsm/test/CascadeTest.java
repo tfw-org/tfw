@@ -36,7 +36,7 @@ import tfw.tsm.Converter;
 import tfw.tsm.Initiator;
 import tfw.tsm.RootFactory;
 import tfw.tsm.Validator;
-import tfw.tsm.ecd.EventChannelDescription;
+import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.StringECD;
 
 public class CascadeTest extends TestCase
@@ -53,10 +53,10 @@ public class CascadeTest extends TestCase
 	private StringECD portB = new StringECD("b");
 	private StringECD portC = new StringECD("c");
 	private Initiator initiator = new Initiator("Initiator"
-			, new EventChannelDescription[]{portA});
+			, new ObjectECD[]{portA});
 
 	private Validator aValidator = new Validator("A Validator", 
-	new EventChannelDescription[]{portA}, null)
+	new ObjectECD[]{portA}, null)
 	{
 		protected void validateState()
 		{
@@ -65,7 +65,7 @@ public class CascadeTest extends TestCase
 	};
 
 	private Converter converterAB = 
-		new Converter("converterAB", new EventChannelDescription[]{portA}, new EventChannelDescription[]{portB})
+		new Converter("converterAB", new ObjectECD[]{portA}, new ObjectECD[]{portB})
 	{
 		protected void convert()
 		{
@@ -75,7 +75,7 @@ public class CascadeTest extends TestCase
 	};
 
 	private Validator bValidator = new Validator("B Validator", 
-	new EventChannelDescription[]{portB}, null)
+	new ObjectECD[]{portB}, null)
 	{
 		protected void validateState()
 		{
@@ -84,7 +84,7 @@ public class CascadeTest extends TestCase
 	};
 
 	private Converter converterBC = 
-		new Converter("converterBC", new EventChannelDescription[]{portB}, new EventChannelDescription[]{portC})
+		new Converter("converterBC", new ObjectECD[]{portB}, new ObjectECD[]{portC})
 	{
 		protected void convert()
 		{
@@ -94,7 +94,7 @@ public class CascadeTest extends TestCase
 	};
 
 	private Validator cValidator = new Validator("C Validator", 
-		new EventChannelDescription[]{portC}, null)
+		new ObjectECD[]{portC}, null)
 	{
 		protected void validateState()
 		{
@@ -102,7 +102,7 @@ public class CascadeTest extends TestCase
 		}
 	};
 
-	private Commit commit = new Commit("Commit", new EventChannelDescription[]{portC})
+	private Commit commit = new Commit("Commit", new ObjectECD[]{portC})
 	{
 		protected void commit()
 		{

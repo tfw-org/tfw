@@ -25,10 +25,10 @@
 package tfw.awt.ecd;
 
 import java.awt.Font;
-import tfw.tsm.ecd.EventChannelDescription;
+import tfw.tsm.ecd.ObjectECD;
 import tfw.value.ClassValueConstraint;
 
-public class FontECD extends EventChannelDescription
+public class FontECD extends ObjectECD
 {
 	public FontECD(String name)
 	{

@@ -26,7 +26,7 @@ package tfw.tsm;
 
 
 import tfw.check.Argument;
-import tfw.tsm.ecd.EventChannelDescription;
+import tfw.tsm.ecd.ObjectECD;
 
 
 /**
@@ -45,8 +45,8 @@ public abstract class Converter extends Processor
      * @param sinkEventChannels the input event channels.
      * @param sourceEventChannels the output event channels.
      */
-    public Converter(String name, EventChannelDescription[] sinkDescriptions,
-        EventChannelDescription[] sourceDescriptions)
+    public Converter(String name, ObjectECD[] sinkDescriptions,
+        ObjectECD[] sourceDescriptions)
     {
         this(name, sinkDescriptions, null, sourceDescriptions);
     }
@@ -63,15 +63,12 @@ public abstract class Converter extends Processor
      * or the {@link #debugConvert()} method to be called.
      * @param sources output event channels for this converter.
      */
-    public Converter(String name, EventChannelDescription[] triggeringSinks,
-        EventChannelDescription[] nonTriggeringSinks,
-        EventChannelDescription[] sources)
+    public Converter(String name, ObjectECD[] triggeringSinks,
+        ObjectECD[] nonTriggeringSinks,
+        ObjectECD[] sources)
     {
         super(name, checkTriggeringSinks(triggeringSinks), nonTriggeringSinks,
             sources);
-        checkForStatelessTrigger(triggeringSinks, "triggeringSinks");
-		checkForStatelessTrigger(nonTriggeringSinks, "nonTriggeringSinks");
-		checkForStatelessTrigger(sources, "sources");
     }
 
     void process()
@@ -86,8 +83,8 @@ public abstract class Converter extends Processor
         }
     }
 
-    private static EventChannelDescription[] checkTriggeringSinks(
-        EventChannelDescription[] triggeringSinks)
+    private static ObjectECD[] checkTriggeringSinks(
+        ObjectECD[] triggeringSinks)
     {
         Argument.assertNotNull(triggeringSinks, "triggeringSinks");
         Argument.assertElementNotNull(triggeringSinks, "triggeringSinks");

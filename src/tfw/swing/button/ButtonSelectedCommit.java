@@ -29,7 +29,7 @@ import javax.swing.AbstractButton;
 import tfw.tsm.Commit;
 import tfw.tsm.Initiator;
 import tfw.tsm.ecd.BooleanECD;
-import tfw.tsm.ecd.EventChannelDescription;
+import tfw.tsm.ecd.ObjectECD;
 
 public final class ButtonSelectedCommit extends Commit
 {
@@ -40,7 +40,7 @@ public final class ButtonSelectedCommit extends Commit
 		Initiator[] initiators, AbstractButton abstractButton)
 	{
 		super("ButtonSelectedCommit["+name+"]",
-			new EventChannelDescription[] {selectedECD},
+			new ObjectECD[] {selectedECD},
 			null,
 			initiators);
 		

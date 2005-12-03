@@ -25,20 +25,20 @@
 package tfw.component;
 
 import tfw.tsm.Converter;
-import tfw.tsm.ecd.EventChannelDescription;
+import tfw.tsm.ecd.ObjectECD;
 
 public class EventChannelCopyConverter extends Converter
 {
-	private final EventChannelDescription inputECD;
-	private final EventChannelDescription outputECD;
+	private final ObjectECD inputECD;
+	private final ObjectECD outputECD;
 
 	public EventChannelCopyConverter(String name,
-		EventChannelDescription inputECD, EventChannelDescription outputECD)
+		ObjectECD inputECD, ObjectECD outputECD)
 	{
 		super("TriggeredEventChannelCopy[" + name + "]",
-			new EventChannelDescription[] {inputECD},
+			new ObjectECD[] {inputECD},
 			null,
-			new EventChannelDescription[] {outputECD});
+			new ObjectECD[] {outputECD});
 		
 		if (outputECD.getConstraint().isCompatable(
 			inputECD.getConstraint()) == false)

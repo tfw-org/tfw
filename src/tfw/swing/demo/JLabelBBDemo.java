@@ -36,7 +36,7 @@ import javax.swing.JTextField;
 import tfw.swing.JLabelBB;
 import tfw.tsm.AWTTransactionQueue;
 import tfw.tsm.Initiator;
-import tfw.tsm.ecd.EventChannelDescription;
+import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.StringECD;
 import tfw.tsm.Root;
 import tfw.tsm.RootFactory;
@@ -51,7 +51,7 @@ public class JLabelBBDemo
 	public static final void main(String[] args)
 	{
 		final Initiator initiator = new Initiator("JButtonBBTest",
-			new EventChannelDescription[] {TEXT_ECD});
+			new ObjectECD[] {TEXT_ECD});
 		
 		JLabelBB l = new JLabelBB("JButtonBBTest", TEXT_ECD);
 		l.setText("Set Label Value");

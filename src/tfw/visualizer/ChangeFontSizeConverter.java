@@ -28,7 +28,7 @@ import java.awt.Font;
 
 import tfw.awt.ecd.FontECD;
 import tfw.tsm.TriggeredConverter;
-import tfw.tsm.ecd.EventChannelDescription;
+import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.StatelessTriggerECD;
 
 public class ChangeFontSizeConverter extends TriggeredConverter
@@ -41,8 +41,8 @@ public class ChangeFontSizeConverter extends TriggeredConverter
 	{
 		super("IncreaseFontConverter["+name+"]",
 			triggerECD,
-			new EventChannelDescription[] {fontECD},
-			new EventChannelDescription[] {fontECD});
+			new ObjectECD[] {fontECD},
+			new ObjectECD[] {fontECD});
 		
 		this.fontECD = fontECD;
 		this.scale = scale;

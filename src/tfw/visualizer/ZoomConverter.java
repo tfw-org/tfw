@@ -28,8 +28,8 @@ import java.awt.Font;
 
 import tfw.awt.ecd.FontECD;
 import tfw.tsm.TriggeredConverter;
-import tfw.tsm.ecd.EventChannelDescription;
 import tfw.tsm.ecd.IntegerECD;
+import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.StatelessTriggerECD;
 
 public class ZoomConverter extends TriggeredConverter
@@ -45,9 +45,9 @@ public class ZoomConverter extends TriggeredConverter
 	{
 		super("ZoomConverter["+name+"]",
 			triggerECD,
-			new EventChannelDescription[] {fontECD, graphWidthECD,
+			new ObjectECD[] {fontECD, graphWidthECD,
 				graphHeightECD},
-			new EventChannelDescription[] {fontECD, graphWidthECD,
+			new ObjectECD[] {fontECD, graphWidthECD,
 				graphHeightECD});
 		
 		this.fontECD = fontECD;

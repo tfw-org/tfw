@@ -31,7 +31,7 @@ import tfw.immutable.ila.booleanila.BooleanIlaMutate;
 import tfw.immutable.ilm.intilm.IntIlm;
 import tfw.tsm.Converter;
 import tfw.tsm.ecd.BooleanECD;
-import tfw.tsm.ecd.EventChannelDescription;
+import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.IntegerECD;
 import tfw.tsm.ecd.ila.BooleanIlaECD;
 import tfw.tsm.ecd.ilm.IntIlmECD;
@@ -54,11 +54,11 @@ public class SelectionConverter extends Converter
 		BooleanECD controlKeyPressedECD, BooleanIlaECD selectedNodesECD)
 	{
 		super("SelectionConverter",
-			new EventChannelDescription[] {selectedECD, buttonOneECD,
+			new ObjectECD[] {selectedECD, buttonOneECD,
 				buttonTwoECD, buttonThreeECD},
-			new EventChannelDescription[] {pixelNodeTLBRECD, xMouseECD,
+			new ObjectECD[] {pixelNodeTLBRECD, xMouseECD,
 				yMouseECD, controlKeyPressedECD, selectedNodesECD},
-			new EventChannelDescription[] {selectedNodesECD});
+			new ObjectECD[] {selectedNodesECD});
 		
 		this.selectedECD = selectedECD;
 		this.buttonOneECD = buttonOneECD;

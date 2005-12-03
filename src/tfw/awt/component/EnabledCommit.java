@@ -29,7 +29,7 @@ import java.awt.EventQueue;
 import tfw.tsm.Commit;
 import tfw.tsm.Initiator;
 import tfw.tsm.ecd.BooleanECD;
-import tfw.tsm.ecd.EventChannelDescription;
+import tfw.tsm.ecd.ObjectECD;
 
 public class EnabledCommit extends Commit
 {
@@ -40,7 +40,7 @@ public class EnabledCommit extends Commit
 		Component component, Initiator[] initiators)
 	{
 		super("EnabledCommit["+name+"]",
-			new EventChannelDescription[] {enabledECD},
+			new ObjectECD[] {enabledECD},
 			null,
 			initiators);
 		

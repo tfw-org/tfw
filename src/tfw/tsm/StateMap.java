@@ -29,10 +29,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import tfw.tsm.ecd.EventChannelDescription;
+import tfw.tsm.ecd.ObjectECD;
 
 /**
- * A map of {@link EventChannelDescription} to values.
+ * A map of {@link ObjectECD} to values.
  */
 public class StateMap {
 	private final Map state;
@@ -58,7 +58,7 @@ public class StateMap {
 	/* (non-Javadoc)
 	 * @see java.util.Map#containsKey(java.lang.Object)
 	 */
-	public boolean containsKey(EventChannelDescription key) {
+	public boolean containsKey(ObjectECD key) {
 		return this.state.containsKey(key);
 	}
 
@@ -73,7 +73,7 @@ public class StateMap {
 	/* (non-Javadoc)
 	 * @see java.util.Map#get(java.lang.Object)
 	 */
-	public Object get(EventChannelDescription key) {
+	public Object get(ObjectECD key) {
 		return this.state.get(key);
 	}
 
@@ -94,14 +94,14 @@ public class StateMap {
 	/* (non-Javadoc)
 	 * @see java.util.Map#put(java.lang.Object, java.lang.Object)
 	 */
-	public Object put(EventChannelDescription key, Object value) {
+	public Object put(ObjectECD key, Object value) {
 		return this.state.put(key, value);
 	}
 
 	/* (non-Javadoc)
 	 * @see java.util.Map#remove(java.lang.Object)
 	 */
-	public Object remove(EventChannelDescription key) {
+	public Object remove(ObjectECD key) {
 		return this.state.remove(key);
 	}
 

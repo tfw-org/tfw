@@ -24,7 +24,7 @@ import tfw.tsm.BranchBox;
 import tfw.tsm.Commit;
 import tfw.tsm.Initiator;
 import tfw.tsm.ecd.BooleanECD;
-import tfw.tsm.ecd.EventChannelDescription;
+import tfw.tsm.ecd.ObjectECD;
 
 
 public class ColorButtonNB extends JButton implements BranchBox
@@ -42,7 +42,7 @@ public class ColorButtonNB extends JButton implements BranchBox
         branch = new Branch(fullName);
 
         final Initiator initiator = new Initiator(fullName + "Initiator",
-                new EventChannelDescription[]{ colorECD });
+                new ObjectECD[]{ colorECD });
 
         branch.add(new MyCommit(fullName, colorECD, enableECD));
         branch.add(initiator);
@@ -107,7 +107,7 @@ public class ColorButtonNB extends JButton implements BranchBox
             BooleanECD enableName)
         {
             super(name + "Commit",
-                new EventChannelDescription[]{ colorName, enableName });
+                new ObjectECD[]{ colorName, enableName });
             this.colorName = colorName;
             this.enableName = enableName;
         }

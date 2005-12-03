@@ -26,14 +26,14 @@ package tfw.awt.ecd;
 
 import java.awt.Color;
 
-import tfw.tsm.ecd.EventChannelDescription;
+import tfw.tsm.ecd.ObjectECD;
 import tfw.value.ClassValueConstraint;
 import tfw.value.ColorCodec;
 
 /**
  * A <code>java.awt.Color</code> event channel descritpion
  */
-public class ColorECD extends EventChannelDescription {
+public class ColorECD extends ObjectECD {
 	/**
 	 * Creates an event channel description with the specified name.
 	 * @param name the name of the event channel.

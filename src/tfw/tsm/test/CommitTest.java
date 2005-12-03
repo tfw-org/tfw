@@ -32,6 +32,7 @@ import tfw.tsm.Converter;
 import tfw.tsm.Initiator;
 import tfw.tsm.RootFactory;
 import tfw.tsm.ecd.EventChannelDescription;
+import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.StatelessTriggerECD;
 import tfw.tsm.ecd.StringECD;
 
@@ -41,28 +42,28 @@ import tfw.tsm.ecd.StringECD;
  */
 public class CommitTest extends TestCase
 {
-    private final EventChannelDescription portA = new StringECD("A");
-    private final EventChannelDescription portB = new StringECD("B");
-    private final EventChannelDescription portC = new StringECD("C");
-    private final EventChannelDescription portD = new StringECD("D");
+    private final ObjectECD portA = new StringECD("A");
+    private final ObjectECD portB = new StringECD("B");
+    private final ObjectECD portC = new StringECD("C");
+    private final ObjectECD portD = new StringECD("D");
     private final Initiator initA = new Initiator("initiator a",
-            new EventChannelDescription[]{ portA });
+            new ObjectECD[]{ portA });
     private final Initiator initB = new Initiator("initiator b",
-            new EventChannelDescription[]{ portB });
+            new ObjectECD[]{ portB });
     private final Initiator initC = new Initiator("initiator c",
-            new EventChannelDescription[]{ portC });
+            new ObjectECD[]{ portC });
     private final Initiator initD = new Initiator("initiator d",
-            new EventChannelDescription[]{ portD });
+            new ObjectECD[]{ portD });
     private final MyCommit mycommit = new MyCommit("Test Commit",
-            new EventChannelDescription[]{ portA, portB },
-            new EventChannelDescription[]{ portC, portD },
+            new ObjectECD[]{ portA, portB },
+            new ObjectECD[]{ portC, portD },
             new Initiator[]{ initA, initB });
 
     public void testConstructor()
     {
         try
         {
-            new MyCommit(null, new EventChannelDescription[]{ portA }, null,
+            new MyCommit(null, new ObjectECD[]{ portA }, null,
                 null);
             fail("Constructor accepted null name");
         }
@@ -74,7 +75,7 @@ public class CommitTest extends TestCase
         try
         {
             new MyCommit("MyCommit", null,
-                new EventChannelDescription[]{ portA }, null);
+                new ObjectECD[]{ portA }, null);
             fail("Constructor accepted null triggerSinks");
         }
         catch (IllegalArgumentException expected)
@@ -84,8 +85,8 @@ public class CommitTest extends TestCase
 
         try
         {
-            new MyCommit("MyCommit", new EventChannelDescription[]{  },
-                new EventChannelDescription[]{ portA }, null);
+            new MyCommit("MyCommit", new ObjectECD[]{  },
+                new ObjectECD[]{ portA }, null);
             fail("Constructor accepted empty triggerSinks");
         }
         catch (IllegalArgumentException expected)
@@ -96,7 +97,7 @@ public class CommitTest extends TestCase
         try
         {
             new MyCommit("MyCommit",
-                new EventChannelDescription[]{ portA, null }, null, null);
+                new ObjectECD[]{ portA, null }, null, null);
             fail("Constructor accepted null triggerSinks element");
         }
         catch (IllegalArgumentException expected)
@@ -106,8 +107,8 @@ public class CommitTest extends TestCase
 
         try
         {
-            new MyCommit("MyCommit", new EventChannelDescription[]{ portA },
-                new EventChannelDescription[]{ null }, null);
+            new MyCommit("MyCommit", new ObjectECD[]{ portA },
+                new ObjectECD[]{ null }, null);
             fail("Constructor accepted null nonTriggerSinks element");
         }
         catch (IllegalArgumentException expected)
@@ -117,33 +118,9 @@ public class CommitTest extends TestCase
 
         try
         {
-            new MyCommit("MyCommit", new EventChannelDescription[]{ portA },
+            new MyCommit("MyCommit", new ObjectECD[]{ portA },
                 null, new Initiator[]{ null });
             fail("Constructor accepted null initiator element");
-        }
-        catch (IllegalArgumentException expected)
-        {
-            //System.out.println(expected);
-        }
-
-        try
-        {
-            new MyCommit("MyCommit",
-                new EventChannelDescription[]{ new StatelessTriggerECD("test") },
-                null, null);
-            fail("Constructor accepted stateless ecd as trigger");
-        }
-        catch (IllegalArgumentException expected)
-        {
-            //System.out.println(expected);
-        }
-
-        try
-        {
-            new MyCommit("MyCommit", new EventChannelDescription[]{ portA },
-                new EventChannelDescription[]{ new StatelessTriggerECD("test") },
-                null);
-            fail("Constructor accepted stateless ecd as non-triggerable");
         }
         catch (IllegalArgumentException expected)
         {
@@ -200,12 +177,12 @@ public class CommitTest extends TestCase
 
     private class SetAOnA extends Converter
     {
-        private final EventChannelDescription portA;
+        private final ObjectECD portA;
 
-        public SetAOnA(String name, EventChannelDescription portA)
+        public SetAOnA(String name, ObjectECD portA)
         {
-            super(name, new EventChannelDescription[]{ portA },
-                new EventChannelDescription[]{ portA });
+            super(name, new ObjectECD[]{ portA },
+                new ObjectECD[]{ portA });
             this.portA = portA;
         }
 
@@ -222,14 +199,14 @@ public class CommitTest extends TestCase
 
     private class SetAOnC extends Converter
     {
-        private final EventChannelDescription portA;
-        private final EventChannelDescription portC;
+        private final ObjectECD portA;
+        private final ObjectECD portC;
 
-        public SetAOnC(String name, EventChannelDescription portC,
-            EventChannelDescription portA)
+        public SetAOnC(String name, ObjectECD portC,
+            ObjectECD portA)
         {
-            super(name, new EventChannelDescription[]{ portC },
-                new EventChannelDescription[]{ portA });
+            super(name, new ObjectECD[]{ portC },
+                new ObjectECD[]{ portA });
             this.portA = portA;
             this.portC = portC;
         }
@@ -249,8 +226,8 @@ public class CommitTest extends TestCase
         public String portCState = null;
         public String portDState = null;
 
-        public MyCommit(String name, EventChannelDescription[] triggerSinks,
-            EventChannelDescription[] nonTriggerSinks, Initiator[] initiators)
+        public MyCommit(String name, ObjectECD[] triggerSinks,
+            ObjectECD[] nonTriggerSinks, Initiator[] initiators)
         {
             super(name, triggerSinks, nonTriggerSinks, initiators);
         }

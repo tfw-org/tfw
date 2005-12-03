@@ -34,7 +34,7 @@ import tfw.tsm.Root;
 import tfw.tsm.RootFactory;
 import tfw.tsm.StateMap;
 import tfw.tsm.TransactionExceptionHandler;
-import tfw.tsm.ecd.EventChannelDescription;
+import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.StringECD;
 
 /**
@@ -42,11 +42,11 @@ import tfw.tsm.ecd.StringECD;
  */
 public class InitiatorTest extends TestCase
 {
-    EventChannelDescription channel1 = new StringECD("aaa");
+    ObjectECD channel1 = new StringECD("aaa");
 
-    EventChannelDescription channel2 = new StringECD("bbb");
+    ObjectECD channel2 = new StringECD("bbb");
 
-    EventChannelDescription[] channels = new EventChannelDescription[] {
+    ObjectECD[] channels = new ObjectECD[] {
             channel1, channel2 };
 
     public void testInitiatorConstruction()
@@ -63,7 +63,7 @@ public class InitiatorTest extends TestCase
 
         try
         {
-            new Initiator("test", (EventChannelDescription) null);
+            new Initiator("test", (ObjectECD) null);
             fail("Constructor accepted null source");
         }
         catch (IllegalArgumentException expected)
@@ -73,7 +73,7 @@ public class InitiatorTest extends TestCase
 
         try
         {
-            new Initiator("test", (EventChannelDescription[]) null);
+            new Initiator("test", (ObjectECD[]) null);
             fail("Constructor accepted null sources");
         }
         catch (IllegalArgumentException expected)
@@ -88,7 +88,7 @@ public class InitiatorTest extends TestCase
 
         try
         {
-            initiator.set((EventChannelDescription) null, new Object());
+            initiator.set((ObjectECD) null, new Object());
             fail("set(channel, state) accepted null channel");
         }
         catch (IllegalArgumentException expected)
@@ -233,7 +233,7 @@ public class InitiatorTest extends TestCase
 
         public StateMap debugCommitState = null;
 
-        public TestCommit(String name, EventChannelDescription[] ecds)
+        public TestCommit(String name, ObjectECD[] ecds)
         {
             super(name, ecds);
         }

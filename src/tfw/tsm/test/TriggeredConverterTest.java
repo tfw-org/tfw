@@ -24,18 +24,18 @@
  */
 package tfw.tsm.test;
 
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
 import tfw.tsm.BasicTransactionQueue;
 import tfw.tsm.Initiator;
 import tfw.tsm.Root;
 import tfw.tsm.RootFactory;
 import tfw.tsm.TriggeredConverter;
 import tfw.tsm.ecd.EventChannelDescription;
-import tfw.tsm.ecd.StringECD;
+import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.StatelessTriggerECD;
-
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import tfw.tsm.ecd.StringECD;
 
 
 public class TriggeredConverterTest extends TestCase
@@ -48,7 +48,7 @@ public class TriggeredConverterTest extends TestCase
     private StringECD channel1 = new StringECD("1");
     private StringECD channel2 = new StringECD("2");
     private StatelessTriggerECD trigger = new StatelessTriggerECD("trigger");
-    private EventChannelDescription[] sinks = new EventChannelDescription[]
+    private ObjectECD[] sinks = new ObjectECD[]
         {
             channel1, channel2
         };

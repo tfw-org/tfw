@@ -31,7 +31,7 @@ import java.util.Set;
 
 import tfw.check.Argument;
 import tfw.tsm.ecd.ECDUtility;
-import tfw.tsm.ecd.EventChannelDescription;
+import tfw.tsm.ecd.ObjectECD;
 
 /**
  * A base class for components which convert one set of events, 'setA', into
@@ -82,10 +82,10 @@ public abstract class Synchronizer extends Processor
      *            Additional sources for the component.
      */
     public Synchronizer(String name,
-            EventChannelDescription[] aPortDescriptions,
-            EventChannelDescription[] bPortDescriptions,
-            EventChannelDescription[] sinkEventChannels,
-            EventChannelDescription[] sourceEventChannels)
+            ObjectECD[] aPortDescriptions,
+            ObjectECD[] bPortDescriptions,
+            ObjectECD[] sinkEventChannels,
+            ObjectECD[] sourceEventChannels)
     {
         super(name, checkTriggeringSinks(aPortDescriptions, bPortDescriptions),
                 checkAdditionalSinks(sinkEventChannels), checkSources(
@@ -98,10 +98,9 @@ public abstract class Synchronizer extends Processor
                 .asList(bPortDescriptions)));
     }
 
-    private static EventChannelDescription[] checkAdditionalSinks(
-            EventChannelDescription[] sinkEventChannels)
+    private static ObjectECD[] checkAdditionalSinks(
+            ObjectECD[] sinkEventChannels)
     {
-        checkForStatelessTrigger(sinkEventChannels, "sinkEventChannels");
         if (sinkEventChannels != null)
         {
             Argument.assertElementNotNull(sinkEventChannels,
@@ -123,9 +122,9 @@ public abstract class Synchronizer extends Processor
      *         <code>aPortDescriptions</code> and
      *         <code>bPortDescriptions</code>
      */
-    private static EventChannelDescription[] checkTriggeringSinks(
-            EventChannelDescription[] aPortDescriptions,
-            EventChannelDescription[] bPortDescriptions)
+    private static ObjectECD[] checkTriggeringSinks(
+            ObjectECD[] aPortDescriptions,
+            ObjectECD[] bPortDescriptions)
     {
 
         Argument.assertNotNull(aPortDescriptions, "aPortDescriptions");
@@ -133,8 +132,6 @@ public abstract class Synchronizer extends Processor
         Argument.assertElementNotNull(aPortDescriptions, "aPortDescription");
         Argument.assertElementNotNull(bPortDescriptions, "bPortDescription");
 
-        checkForStatelessTrigger(aPortDescriptions, "aPortDescriptions");
-        checkForStatelessTrigger(bPortDescriptions, "bPortDescriptions");
         if (aPortDescriptions.length == 0)
         {
             throw new IllegalArgumentException(
@@ -163,12 +160,11 @@ public abstract class Synchronizer extends Processor
      *         <code>aPortDescriptions</code> and
      *         <code>bPortDescriptions</code>
      */
-    private static EventChannelDescription[] checkSources(
-            EventChannelDescription[] sources,
-            EventChannelDescription[] aPortDescriptions,
-            EventChannelDescription[] bPortDescriptions)
+    private static ObjectECD[] checkSources(
+            ObjectECD[] sources,
+            ObjectECD[] aPortDescriptions,
+            ObjectECD[] bPortDescriptions)
     {
-        checkForStatelessTrigger(sources, "sources");
         if (sources != null)
         {
             Argument.assertElementNotNull(sources, "sources");

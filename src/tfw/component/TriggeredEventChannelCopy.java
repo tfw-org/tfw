@@ -18,7 +18,7 @@
 package tfw.component;
 
 import tfw.tsm.TriggeredConverter;
-import tfw.tsm.ecd.EventChannelDescription;
+import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.StatelessTriggerECD;
 
 /**
@@ -26,9 +26,9 @@ import tfw.tsm.ecd.StatelessTriggerECD;
  * based on a trigger.
  */
 public class TriggeredEventChannelCopy extends TriggeredConverter {
-	private final EventChannelDescription inputECD;
+	private final ObjectECD inputECD;
 
-	private final EventChannelDescription outputECD;
+	private final ObjectECD outputECD;
 
 	/**
 	 * Creates a component with specified attributes.
@@ -45,11 +45,11 @@ public class TriggeredEventChannelCopy extends TriggeredConverter {
 	 *            channels state is to be copied.
 	 */
 	public TriggeredEventChannelCopy(String name,
-			StatelessTriggerECD triggerECD, EventChannelDescription inputECD,
-			EventChannelDescription outputECD) {
+			StatelessTriggerECD triggerECD, ObjectECD inputECD,
+			ObjectECD outputECD) {
 		super("TriggeredEventChannelCopy[" + name + "]", triggerECD,
-				new EventChannelDescription[] { inputECD },
-				new EventChannelDescription[] { outputECD });
+				new ObjectECD[] { inputECD },
+				new ObjectECD[] { outputECD });
 		if (outputECD.getConstraint().isCompatable(inputECD.getConstraint()) == false) {
 			throw new IllegalArgumentException(
 					"outputECD.getConstraint().isCompatable(inputECD.getConstraint()) == false not allowed");

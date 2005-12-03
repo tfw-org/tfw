@@ -42,7 +42,7 @@ import tfw.tsm.Initiator;
 import tfw.tsm.Root;
 import tfw.tsm.RootFactory;
 import tfw.tsm.ecd.BooleanECD;
-import tfw.tsm.ecd.EventChannelDescription;
+import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.StringECD;
 
 public class JTextFieldBBDemo
@@ -62,7 +62,7 @@ public class JTextFieldBBDemo
 		Root root = rf.create("JTextFieldBBTest", new AWTTransactionQueue());
 		
 		final Initiator initiator = new Initiator("JTextFieldBBTest",
-				new EventChannelDescription[] {textECD, enabledECD});
+				new ObjectECD[] {textECD, enabledECD});
 			root.add(initiator);
 
 		final JTextField tf = new JTextField();
@@ -87,7 +87,7 @@ public class JTextFieldBBDemo
 		root.add(tfb);
 		root.add(new Commit(
 			"JTextFieldBBTestCommit",
-			new EventChannelDescription[] {textECD},
+			new ObjectECD[] {textECD},
 			null,
 			null)
 		{

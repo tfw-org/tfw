@@ -38,7 +38,7 @@ import tfw.immutable.ila.byteila.ByteIlaFromByteIlm;
 import tfw.immutable.ilm.byteilm.ByteIlm;
 import tfw.tsm.Branch;
 import tfw.tsm.Commit;
-import tfw.tsm.ecd.EventChannelDescription;
+import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.IntegerECD;
 import tfw.tsm.ecd.ilm.ByteIlmECD;
 
@@ -71,7 +71,7 @@ public class ByteInterleavedImagePanel extends JPanelBB
 			ByteIlmECD byteIlmECD, ColorModelECD colorModelECD)
 		{
 			super("ByteInterleavedImagePanelCommit",
-				new EventChannelDescription[] {xECD, yECD, byteIlmECD,
+				new ObjectECD[] {xECD, yECD, byteIlmECD,
 					colorModelECD});
 			
 			this.xECD = xECD;

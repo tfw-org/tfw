@@ -29,7 +29,7 @@ import javax.swing.event.DocumentListener;
 import javax.swing.text.JTextComponent;
 import tfw.tsm.Commit;
 import tfw.tsm.Initiator;
-import tfw.tsm.ecd.EventChannelDescription;
+import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.StringECD;
 
 public class SetTextCommit extends Commit
@@ -43,7 +43,7 @@ public class SetTextCommit extends Commit
 		Initiator[] initiators)
 	{
 		super("SetTextCommit["+name+"]",
-			new EventChannelDescription[] {textECD},
+			new ObjectECD[] {textECD},
 			null,
 			initiators);
 		

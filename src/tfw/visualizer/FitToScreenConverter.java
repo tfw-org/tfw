@@ -25,7 +25,7 @@
 package tfw.visualizer;
 
 import tfw.tsm.TriggeredConverter;
-import tfw.tsm.ecd.EventChannelDescription;
+import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.IntegerECD;
 import tfw.tsm.ecd.StatelessTriggerECD;
 
@@ -44,8 +44,8 @@ public class FitToScreenConverter extends TriggeredConverter
 	{
 		super("FitToScreenConverter",
 			triggerECD,
-			new EventChannelDescription[] {widthECD, heightECD},
-			new EventChannelDescription[] {xECD, yECD, graphWidthECD,
+			new ObjectECD[] {widthECD, heightECD},
+			new ObjectECD[] {xECD, yECD, graphWidthECD,
 				graphHeightECD});
 		
 		this.widthECD = widthECD;

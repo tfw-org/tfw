@@ -25,6 +25,7 @@
 package tfw.visualizer.test;
 
 import java.util.Arrays;
+
 import junit.framework.TestCase;
 import tfw.immutable.ila.objectila.ObjectIla;
 import tfw.immutable.ila.objectila.ObjectIlaFromArray;
@@ -82,7 +83,7 @@ public class NodeAndEdgesFromRootProxyTest extends TestCase
 		
 		Commit commit = new Commit(
 			"commit",
-			new EventChannelDescription[] {integer2ECD},
+			new ObjectECD[] {integer2ECD},
 			null,
 			null)
 		{
@@ -91,7 +92,7 @@ public class NodeAndEdgesFromRootProxyTest extends TestCase
 		
 		Converter converter = new Converter(
 			"converter",
-			new EventChannelDescription[] {integer2ECD},
+			new ObjectECD[] {integer2ECD},
 			null,
 			null)
 		{
@@ -115,8 +116,8 @@ public class NodeAndEdgesFromRootProxyTest extends TestCase
 		
 		Synchronizer synchronizer = new Synchronizer(
 			"synchronizer",
-			new EventChannelDescription[] {integer1ECD},
-			new EventChannelDescription[] {integer2ECD},
+			new ObjectECD[] {integer1ECD},
+			new ObjectECD[] {integer2ECD},
 			null,
 			null)
 		{
@@ -144,7 +145,7 @@ public class NodeAndEdgesFromRootProxyTest extends TestCase
 		
 		Validator validator = new Validator(
 			"validator",
-			new EventChannelDescription[] {integer1ECD, integer2ECD},
+			new ObjectECD[] {integer1ECD, integer2ECD},
 			null,
 			null)
 		{

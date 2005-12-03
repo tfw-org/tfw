@@ -30,7 +30,7 @@ import java.awt.event.MouseMotionListener;
 import tfw.tsm.EventChannelStateBuffer;
 import tfw.tsm.Initiator;
 import tfw.tsm.ecd.BooleanECD;
-import tfw.tsm.ecd.EventChannelDescription;
+import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.EventChannelDescriptionUtil;
 import tfw.tsm.ecd.IntegerECD;
 
@@ -52,7 +52,7 @@ public class MouseInitiator extends Initiator
 		BooleanECD controlPressedECD, BooleanECD shiftPressedECD)
 	{
 		super("MouseInitiator["+name+"]",
-			EventChannelDescriptionUtil.create(new EventChannelDescription[] {
+			EventChannelDescriptionUtil.create(new ObjectECD[] {
 				xECD, yECD, button1PressedECD, button2PressedECD,
 				button3PressedECD, altPressedECD, controlPressedECD,
 				shiftPressedECD}));

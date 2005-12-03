@@ -24,7 +24,7 @@
  */
 package tfw.tsm;
 
-import tfw.tsm.ecd.EventChannelDescription;
+import tfw.tsm.ecd.ObjectECD;
 
 /**
  * The base class for component which process state in the commit phase of
@@ -38,7 +38,7 @@ public abstract class Commit extends BaseCommit {
 	 * @param triggerSinks the set of event channels which this
 	 * commit component will process.
 	 */
-	public Commit(String name, EventChannelDescription[] triggerSinks) {
+	public Commit(String name, ObjectECD[] triggerSinks) {
 		this(name, triggerSinks, null, null);
 	}
 
@@ -68,11 +68,9 @@ public abstract class Commit extends BaseCommit {
 	 */
 	public Commit(
 		String name,
-		EventChannelDescription[] triggerSinks,
-		EventChannelDescription[] nonTriggerSinks,
+		ObjectECD[] triggerSinks,
+		ObjectECD[] nonTriggerSinks,
 		Initiator[] initiators) {
 		super(name, triggerSinks, nonTriggerSinks, initiators);
-		checkForStatelessTrigger(triggerSinks, "triggerSinks");
-		checkForStatelessTrigger(nonTriggerSinks, "nonTriggerSinks");
 	}
 }

@@ -32,7 +32,7 @@ import tfw.tsm.MultiplexedBranchFactory;
 import tfw.tsm.Root;
 import tfw.tsm.RootFactory;
 import tfw.tsm.TriggeredConverter;
-import tfw.tsm.ecd.EventChannelDescription;
+import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.StatelessTriggerECD;
 import tfw.tsm.ecd.StringECD;
 import tfw.tsm.ecd.ila.ObjectIlaECD;
@@ -262,11 +262,11 @@ public class MultiplexerTest extends TestCase
     {
         public String value;
 
-        public final EventChannelDescription valueECD;
+        public final ObjectECD valueECD;
 
-        public ValueCommit(String name, EventChannelDescription valueECD)
+        public ValueCommit(String name, ObjectECD valueECD)
         {
-            super(name, new EventChannelDescription[] { valueECD });
+            super(name, new ObjectECD[] { valueECD });
             this.valueECD = valueECD;
         }
 
@@ -280,11 +280,11 @@ public class MultiplexerTest extends TestCase
     {
         public ObjectIla value;
 
-        public final EventChannelDescription valueECD;
+        public final ObjectECD valueECD;
 
-        public MultiValueCommit(String name, EventChannelDescription valueECD)
+        public MultiValueCommit(String name, ObjectECD valueECD)
         {
-            super(name, new EventChannelDescription[] { valueECD });
+            super(name, new ObjectECD[] { valueECD });
             this.valueECD = valueECD;
         }
 

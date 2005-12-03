@@ -25,10 +25,10 @@
 package tfw.awt.ecd;
 
 import tfw.awt.graphic.Graphic;
-import tfw.tsm.ecd.EventChannelDescription;
+import tfw.tsm.ecd.ObjectECD;
 import tfw.value.ClassValueConstraint;
 
-public class GraphicECD extends EventChannelDescription
+public class GraphicECD extends ObjectECD
 {
 	public GraphicECD(String name)
 	{

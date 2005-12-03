@@ -154,7 +154,7 @@ public class BranchFactoryTest extends TestCase
         try
         {
             bf.addEventChannel(childECD);
-            fail("addTerminator() accepted translated event channel");
+            fail("addEventChannel() accepted translated event channel");
         }
         catch (IllegalStateException expected)
         {

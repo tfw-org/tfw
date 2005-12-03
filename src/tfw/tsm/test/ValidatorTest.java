@@ -27,6 +27,7 @@ package tfw.tsm.test;
 import junit.framework.TestCase;
 import tfw.tsm.Validator;
 import tfw.tsm.ecd.EventChannelDescription;
+import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.RollbackECD;
 import tfw.tsm.ecd.StatelessTriggerECD;
 import tfw.tsm.ecd.StringECD;
@@ -39,7 +40,7 @@ public class ValidatorTest extends TestCase
 {
     public void testConstruction()
     {
-        EventChannelDescription[] sinks = new EventChannelDescription[]
+        ObjectECD[] sinks = new ObjectECD[]
             {
                 new StringECD("Test")
             };
@@ -57,7 +58,7 @@ public class ValidatorTest extends TestCase
 
         try
         {
-            new MyValidator("Test", new EventChannelDescription[]{ null },
+            new MyValidator("Test", new ObjectECD[]{ null },
                 null, null);
 
             fail("constructor accepted null element in sink event channels");
@@ -69,7 +70,7 @@ public class ValidatorTest extends TestCase
         
 		try
 		{
-			new MyValidator("Test", sinks, new EventChannelDescription[]{ null }, null);
+			new MyValidator("Test", sinks, new ObjectECD[]{ null }, null);
 
 			fail("constructor accepted null element in non-triggering sinks");
 		}
@@ -91,32 +92,13 @@ public class ValidatorTest extends TestCase
 			{
 				new StatelessTriggerECD("test")
 			};
-
-		try
-		{
-			new MyValidator("Test", statelessTriggers, null, null);
-			fail("constructor accepted statelessTriggers for sink");
-		}
-		catch (IllegalArgumentException expected)
-		{
-			//System.out.println(expected);
-		}
-		try
-		{
-			new MyValidator("Test", sinks, statelessTriggers, null);
-			fail("constructor accepted statelessTriggers for non-triggering sink");
-		}
-		catch (IllegalArgumentException expected)
-		{
-			//System.out.println(expected);
-		}
     }
 
     private class MyValidator extends Validator
     {
         public MyValidator(String name,
-            EventChannelDescription[] triggeringSinks,
-            EventChannelDescription[] nonTriggeringSinks,
+            ObjectECD[] triggeringSinks,
+            ObjectECD[] nonTriggeringSinks,
             RollbackECD[] initiators)
         {
             super(name, triggeringSinks, nonTriggeringSinks, initiators);

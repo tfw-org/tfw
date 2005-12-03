@@ -79,7 +79,7 @@ public class NormalXYDoubleIlmFromGraphTest extends TestCase
 		
 		Commit commit = new Commit(
 			"commit",
-			new EventChannelDescription[] {integer2ECD},
+			new ObjectECD[] {integer2ECD},
 			null,
 			null)
 		{
@@ -88,7 +88,7 @@ public class NormalXYDoubleIlmFromGraphTest extends TestCase
 		
 		Converter converter = new Converter(
 			"converter",
-			new EventChannelDescription[] {integer2ECD},
+			new ObjectECD[] {integer2ECD},
 			null,
 			null)
 		{
@@ -112,8 +112,8 @@ public class NormalXYDoubleIlmFromGraphTest extends TestCase
 		
 		Synchronizer synchronizer = new Synchronizer(
 			"synchronizer",
-			new EventChannelDescription[] {integer1ECD},
-			new EventChannelDescription[] {integer2ECD},
+			new ObjectECD[] {integer1ECD},
+			new ObjectECD[] {integer2ECD},
 			null,
 			null)
 		{
@@ -141,7 +141,7 @@ public class NormalXYDoubleIlmFromGraphTest extends TestCase
 		
 		Validator validator = new Validator(
 			"validator",
-			new EventChannelDescription[] {integer1ECD, integer2ECD},
+			new ObjectECD[] {integer1ECD, integer2ECD},
 			null,
 			null)
 		{

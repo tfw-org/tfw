@@ -29,7 +29,9 @@ import java.awt.Graphics2D;
 import java.awt.event.ComponentListener;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+
 import javax.swing.JPanel;
+
 import tfw.awt.graphic.Graphic;
 import tfw.immutable.DataInvalidException;
 import tfw.immutable.ila.objectila.ObjectIla;
@@ -41,6 +43,7 @@ import tfw.tsm.MultiplexedBranch;
 import tfw.tsm.MultiplexedBranchFactory;
 import tfw.tsm.TreeComponent;
 import tfw.tsm.ecd.EventChannelDescription;
+import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.StatelessTriggerECD;
 import tfw.tsm.ecd.ila.ObjectIlaECD;
 
@@ -88,7 +91,7 @@ public class PlotPanel extends JPanel implements BranchBox
 		public PlotPanelCommit(PlotPanel plotPanel)
 		{
 			super("PlotPanelCommit",
-				new EventChannelDescription[] {MULTI_GRAPHIC_ECD},
+				new ObjectECD[] {MULTI_GRAPHIC_ECD},
 				null,
 				null);
 			

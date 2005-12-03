@@ -31,7 +31,7 @@ import tfw.awt.ecd.FontECD;
 import tfw.immutable.ilm.doubleilm.DoubleIlm;
 import tfw.immutable.ilm.intilm.IntIlm;
 import tfw.tsm.Converter;
-import tfw.tsm.ecd.EventChannelDescription;
+import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.IntegerECD;
 import tfw.tsm.ecd.ilm.DoubleIlmECD;
 import tfw.tsm.ecd.ilm.IntIlmECD;
@@ -57,11 +57,11 @@ public class NormalPixelConverter extends Converter
 		IntIlmECD pixelNodeTLBRECD)
 	{
 		super("NormalPixelConverter",
-			new EventChannelDescription[] {graphECD, normalizedXYsECD,
+			new ObjectECD[] {graphECD, normalizedXYsECD,
 				graphXOffsetECD, graphYOffsetECD, graphWidthECD, graphHeightECD,
 				fontECD},
 			null,
-			new EventChannelDescription[] {pixelNodeTLBRECD});
+			new ObjectECD[] {pixelNodeTLBRECD});
 
 		this.component = component;
 		this.graphECD = graphECD;

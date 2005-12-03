@@ -26,6 +26,7 @@ package tfw.tsm;
 
 import tfw.check.Argument;
 import tfw.tsm.ecd.EventChannelDescription;
+import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.StatelessTriggerECD;
 
 
@@ -70,7 +71,7 @@ public abstract class TriggeredCommit extends BaseCommit
      * @throws IllegalArgumentException if <code>triggerSinks[i] == null</code>.
      */
     public TriggeredCommit(String name, StatelessTriggerECD trigger,
-        EventChannelDescription[] nonTriggerSinks, Initiator[] initiators)
+        ObjectECD[] nonTriggerSinks, Initiator[] initiators)
     {
         super(name, checkTrigger(trigger), nonTriggerSinks, initiators);
     }

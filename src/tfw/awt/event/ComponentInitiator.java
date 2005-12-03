@@ -29,7 +29,7 @@ import	java.awt.event.ComponentListener;
 import	tfw.tsm.Initiator;
 import	tfw.tsm.EventChannelStateBuffer;
 import	tfw.tsm.ecd.BooleanECD;
-import	tfw.tsm.ecd.EventChannelDescription;
+import	tfw.tsm.ecd.ObjectECD;
 import	tfw.tsm.ecd.EventChannelDescriptionUtil;
 import	tfw.tsm.ecd.IntegerECD;
 
@@ -46,7 +46,7 @@ public class ComponentInitiator extends Initiator implements ComponentListener
 		IntegerECD heightECD)
 	{
 		super("ComponentInitiator["+name+"]",
-			EventChannelDescriptionUtil.create(new EventChannelDescription[] {
+			EventChannelDescriptionUtil.create(new ObjectECD[] {
 				visibleECD, xECD, yECD, widthECD, heightECD}));
 		
 		this.visibleECD = visibleECD;

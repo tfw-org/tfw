@@ -25,7 +25,7 @@
 package tfw.visualizer;
 
 import tfw.tsm.Converter;
-import tfw.tsm.ecd.EventChannelDescription;
+import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.ilm.DoubleIlmECD;
 import tfw.visualizer.graph.Graph;
 import tfw.visualizer.graph.GraphECD;
@@ -39,9 +39,9 @@ public class NormalizedXYConverter extends Converter
 		DoubleIlmECD normalizedXYsECD)
 	{
 		super("NormalizedXYConverter",
-			new EventChannelDescription[] {graphECD},
+			new ObjectECD[] {graphECD},
 			null,
-			new EventChannelDescription[] {normalizedXYsECD});
+			new ObjectECD[] {normalizedXYsECD});
 		
 		this.graphECD = graphECD;
 		this.normalizedXYsECD = normalizedXYsECD;

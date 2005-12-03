@@ -24,12 +24,13 @@
  */
 package tfw.awt.event;
 
-import	java.awt.event.WindowEvent;
-import	java.awt.event.WindowListener;
-import	tfw.tsm.Initiator;
-import	tfw.tsm.ecd.EventChannelDescription;
-import	tfw.tsm.ecd.EventChannelDescriptionUtil;
-import	tfw.tsm.ecd.StatelessTriggerECD;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+
+import tfw.tsm.Initiator;
+import tfw.tsm.ecd.EventChannelDescription;
+import tfw.tsm.ecd.EventChannelDescriptionUtil;
+import tfw.tsm.ecd.StatelessTriggerECD;
 
 public class WindowInitiator extends Initiator implements WindowListener
 {

@@ -28,7 +28,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JComboBox;
 import tfw.tsm.Initiator;
-import tfw.tsm.ecd.EventChannelDescription;
+import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.IntegerECD;
 import tfw.tsm.ecd.ObjectECD;
 
@@ -42,7 +42,7 @@ public class SelectionInitiator extends Initiator implements ActionListener
 		IntegerECD selectedIndexECD, JComboBox comboBox)
 	{
 		super("SelectionInitiator["+name+"]",
-			new EventChannelDescription[] {selectedItemECD, selectedIndexECD});
+			new ObjectECD[] {selectedItemECD, selectedIndexECD});
 		
 		this.selectedItemECD = selectedItemECD;
 		this.selectedIndexECD = selectedIndexECD;

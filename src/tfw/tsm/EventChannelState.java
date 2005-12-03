@@ -26,7 +26,7 @@ package tfw.tsm;
 
 
 import tfw.check.Argument;
-import tfw.tsm.ecd.EventChannelDescription;
+import tfw.tsm.ecd.ObjectECD;
 
 import tfw.value.ValueException;
 
@@ -36,7 +36,7 @@ import tfw.value.ValueException;
  */
 public class EventChannelState
 {
-    private final EventChannelDescription ecd;
+    private final ObjectECD ecd;
     private final Object state;
 
     /**
@@ -47,7 +47,7 @@ public class EventChannelState
      * with the constraint defined in the specified event channel
      * description.
      */
-    public EventChannelState(EventChannelDescription ecd, Object state)
+    public EventChannelState(ObjectECD ecd, Object state)
         throws ValueException
     {
         Argument.assertNotNull(ecd, "ecd");
@@ -60,7 +60,7 @@ public class EventChannelState
      * Returns the event channel description.
      * @return the event channel description.
      */
-    public EventChannelDescription getECD()
+    public ObjectECD getECD()
     {
         return this.ecd;
     }

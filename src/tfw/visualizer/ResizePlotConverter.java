@@ -26,7 +26,7 @@ package tfw.visualizer;
 
 import tfw.tsm.Converter;
 import tfw.tsm.ecd.BooleanECD;
-import tfw.tsm.ecd.EventChannelDescription;
+import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.IntegerECD;
 
 public class ResizePlotConverter extends Converter
@@ -45,10 +45,10 @@ public class ResizePlotConverter extends Converter
 		BooleanECD button3ECD, IntegerECD graphWidthECD, IntegerECD graphHeightECD)
 	{
 		super("ResizePlotConverter",
-			new EventChannelDescription[] {selectedECD, xECD, yECD,
+			new ObjectECD[] {selectedECD, xECD, yECD,
 				button1ECD, button2ECD, button3ECD},
-			new EventChannelDescription[] {graphWidthECD, graphHeightECD},
-			new EventChannelDescription[] {graphWidthECD, graphHeightECD});
+			new ObjectECD[] {graphWidthECD, graphHeightECD},
+			new ObjectECD[] {graphWidthECD, graphHeightECD});
 		
 		this.selectedECD = selectedECD;
 		this.xECD = xECD;

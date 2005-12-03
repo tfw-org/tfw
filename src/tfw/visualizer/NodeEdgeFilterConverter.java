@@ -38,7 +38,7 @@ import tfw.tsm.TriggeredCommitProxy;
 import tfw.tsm.TriggeredConverterProxy;
 import tfw.tsm.ValidatorProxy;
 import tfw.tsm.ecd.BooleanECD;
-import tfw.tsm.ecd.EventChannelDescription;
+import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.ila.BooleanIlaECD;
 import tfw.visualizer.graph.Graph;
 import tfw.visualizer.graph.GraphECD;
@@ -79,14 +79,14 @@ public class NodeEdgeFilterConverter extends Converter
 		GraphECD filteredGraphECD)
 	{
 		super("FilterConverter",
-			new EventChannelDescription[] {graphECD,
+			new ObjectECD[] {graphECD,
 				showBowTieECD, showBranchesECD, showCommitsECD,
 				showConvertersECD, showEventChannelsECD, showInitiatorsECD,
 				showMultiplexedBranchesECD, showRootsECD, showSynchronizersECD,
 				showTriggeredCommitsECD, showTriggeredConvertersECD,
 				showValidatorsECD, showStructureEdgesECD, showDataFlowEdgesECD},
-			new EventChannelDescription[] {selectedNodesECD},
-			new EventChannelDescription[] {filteredGraphECD});
+			new ObjectECD[] {selectedNodesECD},
+			new ObjectECD[] {filteredGraphECD});
 		
 		this.graphECD = graphECD;
 		this.selectedNodesECD = selectedNodesECD;

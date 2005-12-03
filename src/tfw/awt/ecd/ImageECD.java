@@ -25,10 +25,10 @@
 package tfw.awt.ecd;
 
 import java.awt.Image;
-import tfw.tsm.ecd.EventChannelDescription;
+import tfw.tsm.ecd.ObjectECD;
 import tfw.value.ClassValueConstraint;
 
-public class ImageECD extends EventChannelDescription
+public class ImageECD extends ObjectECD
 {
 	public ImageECD(String name)
 	{

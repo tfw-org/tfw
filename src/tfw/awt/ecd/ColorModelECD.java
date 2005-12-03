@@ -25,10 +25,10 @@
 package tfw.awt.ecd;
 
 import java.awt.image.ColorModel;
-import tfw.tsm.ecd.EventChannelDescription;
+import tfw.tsm.ecd.ObjectECD;
 import tfw.value.ClassValueConstraint;
 
-public class ColorModelECD extends EventChannelDescription
+public class ColorModelECD extends ObjectECD
 {
 	public ColorModelECD(String name)
 	{

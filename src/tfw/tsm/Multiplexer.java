@@ -35,6 +35,7 @@ import tfw.immutable.DataInvalidException;
 import tfw.immutable.ila.objectila.ObjectIla;
 import tfw.immutable.ila.objectila.ObjectIlaFromArray;
 import tfw.tsm.ecd.EventChannelDescription;
+import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.ila.ObjectIlaECD;
 
 /**
@@ -46,7 +47,7 @@ class Multiplexer implements EventChannel
     private MultiplexedBranch component = null;
 
     /** The description of the single value event channel. */
-    private final EventChannelDescription valueECD;
+    private final ObjectECD valueECD;
 
     /** The multiplexed value sink. */
     final Sink multiSink;
@@ -69,7 +70,7 @@ class Multiplexer implements EventChannel
      * @param multiValueECD
      */
     public Multiplexer(String multiplexerBranchName,
-            EventChannelDescription valueECD, ObjectIlaECD multiValueECD)
+            ObjectECD valueECD, ObjectIlaECD multiValueECD)
     {
         Argument.assertNotNull(valueECD, "valueECD");
         Argument.assertNotNull(multiValueECD, "multiValueECD");
@@ -345,7 +346,7 @@ class Multiplexer implements EventChannel
 
     private class MultiSink extends Sink
     {
-        public MultiSink(EventChannelDescription ecd)
+        public MultiSink(ObjectECD ecd)
         {
             super("MultiplexSink[" + ecd.getEventChannelName() + "]", ecd, true);
         }

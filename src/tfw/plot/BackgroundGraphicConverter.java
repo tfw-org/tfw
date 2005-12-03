@@ -31,7 +31,7 @@ import tfw.awt.graphic.FillRectGraphic;
 import tfw.awt.graphic.Graphic;
 import tfw.awt.graphic.SetColorGraphic;
 import tfw.tsm.Converter;
-import tfw.tsm.ecd.EventChannelDescription;
+import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.IntegerECD;
 
 public class BackgroundGraphicConverter extends Converter
@@ -45,9 +45,9 @@ public class BackgroundGraphicConverter extends Converter
 		IntegerECD widthECD, IntegerECD heightECD, GraphicECD graphicECD)
 	{
 		super("BackgroundConverter["+name+"]",
-			new EventChannelDescription[] {colorECD, widthECD, heightECD},
+			new ObjectECD[] {colorECD, widthECD, heightECD},
 			null,
-			new EventChannelDescription[] {graphicECD});
+			new ObjectECD[] {graphicECD});
 		
 		this.colorECD = colorECD;
 		this.widthECD = widthECD;

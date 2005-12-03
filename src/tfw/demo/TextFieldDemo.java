@@ -18,7 +18,7 @@ import tfw.tsm.AWTTransactionQueue;
 import tfw.tsm.Branch;
 import tfw.tsm.RootFactory;
 import tfw.tsm.ecd.BooleanECD;
-import tfw.tsm.ecd.EventChannelDescription;
+import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.IntegerECD;
 import tfw.tsm.ecd.StatelessTriggerECD;
 import tfw.tsm.ecd.StringECD;
@@ -103,9 +103,9 @@ public class TextFieldDemo extends JPanelBB {
 		northPanel.addToBoth(textFieldPanel, BorderLayout.CENTER);
 		northPanel.addToBoth(colorButtonPanel, BorderLayout.SOUTH);
 
-		EventChannelDescription[] colorText = new EventChannelDescription[] {
+		ObjectECD[] colorText = new ObjectECD[] {
 				RED_STRING, BLUE_STRING, GREEN_STRING };
-		EventChannelDescription[] colorTextAdj = new EventChannelDescription[] {
+		ObjectECD[] colorTextAdj = new ObjectECD[] {
 				RED_STRING_ADJ, BLUE_STRING_ADJ, GREEN_STRING_ADJ };
 		JButtonBB applyButton = new JButtonBB("Apply", APPLY_ENABLE,
 				APPLY_TRIGGER);

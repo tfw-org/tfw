@@ -28,7 +28,7 @@ package tfw.component;
 
 import tfw.check.Argument;
 import tfw.tsm.Synchronizer;
-import tfw.tsm.ecd.EventChannelDescription;
+import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.StringECD;
 import tfw.tsm.ecd.StringRollbackECD;
 import tfw.value.CodecException;
@@ -42,7 +42,7 @@ public class ObjectStringSynchronizer extends Synchronizer
 {
     private final String valueName;
 
-    private final EventChannelDescription objectECD;
+    private final ObjectECD objectECD;
 
     private final StringECD stringECD;
 
@@ -70,7 +70,7 @@ public class ObjectStringSynchronizer extends Synchronizer
      *            The codec to be used in the conversion.
      */
     public ObjectStringSynchronizer(String synchronizerName, String valueName,
-            EventChannelDescription objectECD, StringECD stringECD,
+            ObjectECD objectECD, StringECD stringECD,
             StringRollbackECD errorECD, ValueCodec codec)
     {
         super(synchronizerName, check("objectECD", objectECD), check(
@@ -84,14 +84,14 @@ public class ObjectStringSynchronizer extends Synchronizer
         this.codec = codec;
     }
 
-    private static EventChannelDescription[] check(String name,
-            EventChannelDescription ecd)
+    private static ObjectECD[] check(String name,
+            ObjectECD ecd)
     {
         if (ecd == null)
         {
             throw new IllegalArgumentException(name + " == null not allowed");
         }
-        return new EventChannelDescription[] { ecd };
+        return new ObjectECD[] { ecd };
     }
 
     /*

@@ -29,6 +29,7 @@ import tfw.tsm.Commit;
 import tfw.tsm.Initiator;
 import tfw.tsm.TriggeredCommit;
 import tfw.tsm.ecd.EventChannelDescription;
+import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.StatelessTriggerECD;
 
 public class Connector
@@ -69,7 +70,7 @@ public class Connector
 		else
 		{
 			commit = new Commit("Connector["+name+"]",
-				new EventChannelDescription[] {eventChannelDescription},
+				new ObjectECD[] {(ObjectECD)eventChannelDescription},
 				null,
 				null)
 			{

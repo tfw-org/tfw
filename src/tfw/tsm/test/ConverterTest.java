@@ -30,7 +30,7 @@ import tfw.tsm.Initiator;
 import tfw.tsm.Root;
 import tfw.tsm.RootFactory;
 import tfw.tsm.StateMap;
-import tfw.tsm.ecd.EventChannelDescription;
+import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.StatelessTriggerECD;
 import tfw.tsm.ecd.StringECD;
 
@@ -49,18 +49,18 @@ public class ConverterTest extends TestCase
     private String debugConvertA = null;
     private String debugConvertB = null;
     private String debugConvertC = null;
-    private EventChannelDescription porta = new StringECD("a");
-    private EventChannelDescription portb = new StringECD("b");
-    private EventChannelDescription portc = new StringECD("c");
-    private EventChannelDescription[] nonTriggeringSinks = new EventChannelDescription[]
+    private ObjectECD porta = new StringECD("a");
+    private ObjectECD portb = new StringECD("b");
+    private ObjectECD portc = new StringECD("c");
+    private ObjectECD[] nonTriggeringSinks = new ObjectECD[]
         {
             portc
         };
-    private EventChannelDescription[] triggeringSinks = new EventChannelDescription[]
+    private ObjectECD[] triggeringSinks = new ObjectECD[]
         {
             porta, portb
         };
-    private EventChannelDescription[] sources = new EventChannelDescription[]
+    private ObjectECD[] sources = new ObjectECD[]
         {
             porta, portb
         };
@@ -98,7 +98,7 @@ public class ConverterTest extends TestCase
         root.add(converter);
 
         Initiator initiator = new Initiator("test",
-                new EventChannelDescription[]{ porta, portb, portc });
+                new ObjectECD[]{ porta, portb, portc });
         root.add(initiator);
 
         String aValue = "a";
@@ -169,7 +169,7 @@ public class ConverterTest extends TestCase
 
         try
         {
-            new MyConverter("test", new EventChannelDescription[]{ null },
+            new MyConverter("test", new ObjectECD[]{ null },
                 nonTriggeringSinks, sources);
 
             fail("Constructor accepted null element in triggering sinks");
@@ -182,7 +182,7 @@ public class ConverterTest extends TestCase
         try
         {
             new MyConverter("test", triggeringSinks,
-                new EventChannelDescription[]{ null }, sources);
+                new ObjectECD[]{ null }, sources);
 
             fail("Constructor accepted null element in non-triggering sinks");
         }
@@ -194,7 +194,7 @@ public class ConverterTest extends TestCase
         try
         {
             new MyConverter("test", triggeringSinks, nonTriggeringSinks,
-                new EventChannelDescription[]{ null });
+                new ObjectECD[]{ null });
 
             fail("Constructor accepted null element in sources");
         }
@@ -209,49 +209,6 @@ public class ConverterTest extends TestCase
             new MyConverter("test", triggeringSinks, triggeringSinks, sources);
 
             fail("Constructor accepted duplicate sinks");
-        }
-        catch (IllegalArgumentException expected)
-        {
-            //System.out.println(expected);
-        }
-
-        StatelessTriggerECD[] statelessTriggers = new StatelessTriggerECD[]
-            {
-                new StatelessTriggerECD("test")
-            };
-
-        try
-        {
-            new MyConverter("test", statelessTriggers, nonTriggeringSinks,
-                sources);
-
-            fail("Constructor accepted stateless triggers as a trigger");
-        }
-        catch (IllegalArgumentException expected)
-        {
-            //System.out.println(expected);
-        }
-
-        try
-        {
-            new MyConverter("test", triggeringSinks, statelessTriggers,
-                sources);
-
-            fail(
-                "Constructor accepted stateless triggers as a nonTriggering sink");
-        }
-        catch (IllegalArgumentException expected)
-        {
-            //System.out.println(expected);
-        }
-
-        try
-        {
-            new MyConverter("test", triggeringSinks, nonTriggeringSinks,
-                statelessTriggers);
-
-            fail(
-                "Constructor accepted stateless triggers as a nonTriggering sink");
         }
         catch (IllegalArgumentException expected)
         {
@@ -272,9 +229,9 @@ public class ConverterTest extends TestCase
     private class MyConverter extends Converter
     {
         public MyConverter(String name,
-            EventChannelDescription[] triggeringSinks,
-            EventChannelDescription[] nonTriggeringSinks,
-            EventChannelDescription[] sources)
+            ObjectECD[] triggeringSinks,
+            ObjectECD[] nonTriggeringSinks,
+            ObjectECD[] sources)
         {
             super(name, triggeringSinks, nonTriggeringSinks, sources);
         }

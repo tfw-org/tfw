@@ -28,7 +28,7 @@ import	javax.swing.event.DocumentEvent;
 import	javax.swing.event.DocumentListener;
 import	javax.swing.text.BadLocationException;
 import	tfw.tsm.Initiator;
-import	tfw.tsm.ecd.EventChannelDescription;
+import	tfw.tsm.ecd.ObjectECD;
 import	tfw.tsm.ecd.StringECD;
 
 public class DocumentInitiator extends Initiator implements DocumentListener
@@ -38,7 +38,7 @@ public class DocumentInitiator extends Initiator implements DocumentListener
 	public DocumentInitiator(String name, StringECD textECD)
 	{
 		super("DocumentInitiator["+name+"]",
-			new EventChannelDescription[] {textECD});
+			new ObjectECD[] {textECD});
 		
 		this.textECD = textECD;
 	}

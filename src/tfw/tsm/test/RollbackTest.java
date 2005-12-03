@@ -33,7 +33,7 @@ import tfw.tsm.Root;
 import tfw.tsm.RootFactory;
 import tfw.tsm.StateMap;
 import tfw.tsm.Validator;
-import tfw.tsm.ecd.EventChannelDescription;
+import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.RollbackECD;
 import tfw.tsm.ecd.StringECD;
 import tfw.tsm.ecd.StringRollbackECD;
@@ -126,7 +126,7 @@ public class RollbackTest extends TestCase
         };
 
     private Commit commit = new Commit("Commit",
-            new EventChannelDescription[]{ aECD, bECD, cECD, error1ECD })
+            new ObjectECD[]{ aECD, bECD, cECD, error1ECD })
         {
             protected void commit()
             {
@@ -143,7 +143,7 @@ public class RollbackTest extends TestCase
         };
 
     private Commit errorHandler = new Commit("Error Handler",
-            new EventChannelDescription[]{ error1ECD, error2ECD })
+            new ObjectECD[]{ error1ECD, error2ECD })
         {
             protected void commit()
             {
@@ -466,13 +466,13 @@ public class RollbackTest extends TestCase
     {
         String commitValue = null;
         StateMap stateMap = null;
-        private final EventChannelDescription trigger;
+        private final ObjectECD trigger;
 
-        public TestCommit(EventChannelDescription trigger,
-            EventChannelDescription[] nontriggers)
+        public TestCommit(ObjectECD trigger,
+            ObjectECD[] nontriggers)
         {
             super("Test Commit " + trigger.getEventChannelName(),
-                new EventChannelDescription[]{ trigger }, nontriggers, null);
+                new ObjectECD[]{ trigger }, nontriggers, null);
             this.trigger = trigger;
         }
 
@@ -487,7 +487,7 @@ public class RollbackTest extends TestCase
     {
         public TestRollbackHandler()
         {
-            super("Test", new EventChannelDescription[]{ aECD },
+            super("Test", new ObjectECD[]{ aECD },
                 new RollbackECD[]{ error1ECD });
         }
 

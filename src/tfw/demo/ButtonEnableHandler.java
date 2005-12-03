@@ -5,7 +5,7 @@ import javax.swing.JButton;
 import tfw.check.Argument;
 import tfw.tsm.Commit;
 import tfw.tsm.ecd.ECDUtility;
-import tfw.tsm.ecd.EventChannelDescription;
+import tfw.tsm.ecd.ObjectECD;
 
 
 /**
@@ -19,8 +19,8 @@ import tfw.tsm.ecd.EventChannelDescription;
  */
 public class ButtonEnableHandler extends Commit
 {
-    private final EventChannelDescription[] eventChannels1;
-    private final EventChannelDescription[] eventChannels2;
+    private final ObjectECD[] eventChannels1;
+    private final ObjectECD[] eventChannels2;
     private final JButton button;
 
     /**
@@ -30,8 +30,8 @@ public class ButtonEnableHandler extends Commit
     * @param eventChannels2 event channel set two.
     * @param button the button whose enable state is managed.
     */
-    public ButtonEnableHandler(String name, EventChannelDescription[] eventChannels1,
-        EventChannelDescription[] eventChannels2, JButton button)
+    public ButtonEnableHandler(String name, ObjectECD[] eventChannels1,
+        ObjectECD[] eventChannels2, JButton button)
     {
         super("ButtonEnableHandler[" + name + "]",
             ECDUtility.concat(eventChannels1, eventChannels2));

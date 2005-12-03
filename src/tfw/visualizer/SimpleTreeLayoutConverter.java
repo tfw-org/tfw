@@ -35,7 +35,7 @@ import tfw.immutable.ila.longila.LongIla;
 import tfw.immutable.ila.objectila.ObjectIla;
 import tfw.immutable.ila.objectila.ObjectIlaFromArray;
 import tfw.tsm.Converter;
-import tfw.tsm.ecd.EventChannelDescription;
+import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.ila.ObjectIlaECD;
 
 public class SimpleTreeLayoutConverter extends Converter
@@ -51,10 +51,10 @@ public class SimpleTreeLayoutConverter extends Converter
 		ObjectIlaECD nodeClusterXsECD, ObjectIlaECD nodeClusterYsECD)
 	{
 		super("SimpleTreeLayoutConverter",
-			new EventChannelDescription[] {nodeClustersECD, nodeClusterFromsECD,
+			new ObjectECD[] {nodeClustersECD, nodeClusterFromsECD,
 				nodeClusterTosECD},
 			null,
-			new EventChannelDescription[] {nodeClusterXsECD, nodeClusterYsECD});
+			new ObjectECD[] {nodeClusterXsECD, nodeClusterYsECD});
 		
 		this.nodeClustersECD = nodeClustersECD;
 		this.nodeClusterFromsECD = nodeClusterFromsECD;

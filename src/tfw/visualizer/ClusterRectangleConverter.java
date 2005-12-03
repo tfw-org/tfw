@@ -28,8 +28,8 @@ import tfw.immutable.ila.intila.IntIlaFill;
 import tfw.immutable.ila.intila.IntIlaFromArray;
 import tfw.immutable.ila.objectila.ObjectIla;
 import tfw.tsm.Converter;
-import tfw.tsm.ecd.EventChannelDescription;
 import tfw.tsm.ecd.IntegerECD;
+import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.StatelessTriggerECD;
 import tfw.tsm.ecd.ila.IntIlaECD;
 import tfw.tsm.ecd.ila.ObjectIlaECD;
@@ -53,10 +53,10 @@ public class ClusterRectangleConverter extends Converter
 		IntIlaECD clusterWidthsECD, IntIlaECD clusterHeightsECD)
 	{
 		super("ClusterRectangleConverter",
-			new EventChannelDescription[] {xECD, yECD, widthECD, heightECD,
+			new ObjectECD[] {xECD, yECD, widthECD, heightECD,
 				nodeClustersECD},
 			null,
-			new EventChannelDescription[] {clusterXsECD, clusterYsECD,
+			new ObjectECD[] {clusterXsECD, clusterYsECD,
 				clusterWidthsECD, clusterHeightsECD});
 		
 		this.xECD = xECD;

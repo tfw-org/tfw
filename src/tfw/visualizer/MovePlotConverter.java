@@ -26,7 +26,7 @@ package tfw.visualizer;
 
 import tfw.tsm.Converter;
 import tfw.tsm.ecd.BooleanECD;
-import tfw.tsm.ecd.EventChannelDescription;
+import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.IntegerECD;
 
 public class MovePlotConverter extends Converter
@@ -45,10 +45,10 @@ public class MovePlotConverter extends Converter
 		BooleanECD button3ECD, IntegerECD xOffsetECD, IntegerECD yOffsetECD)
 	{
 		super("MovePlotConverter",
-			new EventChannelDescription[] {selectedECD, xECD, yECD,
+			new ObjectECD[] {selectedECD, xECD, yECD,
 				button1ECD, button2ECD, button3ECD},
-			new EventChannelDescription[] {xOffsetECD, yOffsetECD},
-			new EventChannelDescription[] {xOffsetECD, yOffsetECD});
+			new ObjectECD[] {xOffsetECD, yOffsetECD},
+			new ObjectECD[] {xOffsetECD, yOffsetECD});
 		
 		this.selectedECD = selectedECD;
 		this.xECD = xECD;
