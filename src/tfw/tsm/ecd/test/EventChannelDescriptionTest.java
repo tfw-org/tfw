@@ -25,7 +25,7 @@
 package tfw.tsm.ecd.test;
 
 import junit.framework.TestCase;
-import tfw.tsm.ecd.EventChannelDescription;
+import tfw.tsm.ecd.ObjectECD;
 import tfw.value.ClassValueConstraint;
 import tfw.value.IntegerCodec;
 import tfw.value.StringCodec;
@@ -112,7 +112,7 @@ public class EventChannelDescriptionTest extends TestCase
 		assertFalse("different rollback participant equal",ecd1.equals(ecd2));
     }
 
-    private class TestECD extends EventChannelDescription
+    private class TestECD extends ObjectECD
     {
         public TestECD(String eventChannelName, ValueConstraint constraint,
             ValueCodec codec, boolean fireOnConnect, boolean rollbackParticipant)

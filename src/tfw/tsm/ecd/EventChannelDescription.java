@@ -56,7 +56,7 @@ public abstract class EventChannelDescription
      * @param constraint
      *            the value constraint for the event channel.
      */
-    protected EventChannelDescription(String eventChannelName,
+    EventChannelDescription(String eventChannelName,
             ValueConstraint constraint, ValueCodec codec)
     {
         this(eventChannelName, constraint, codec, true, true);
@@ -79,7 +79,7 @@ public abstract class EventChannelDescription
      *            flag indicating whether the event channel participates in
      *            transaction rollbacks.
      */
-    protected EventChannelDescription(String eventChannelName,
+    EventChannelDescription(String eventChannelName,
             ValueConstraint constraint, ValueCodec codec,
             boolean fireOnConnect, boolean rollbackParticipant)
     {
