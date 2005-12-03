@@ -28,7 +28,6 @@ import tfw.check.Argument;
 import tfw.value.ValueCodec;
 import tfw.value.ValueConstraint;
 
-
 /**
  * Describes an event channel.
  */
@@ -39,7 +38,7 @@ public abstract class EventChannelDescription
 
     /** The value constraint for this event channel. */
     private final ValueConstraint constraint;
-    
+
     /** The codec for this event channel. */
     private final ValueCodec codec;
 
@@ -49,52 +48,61 @@ public abstract class EventChannelDescription
     /** A flag indicating whether the event channel participates in rollbacks. */
     private final boolean rollbackParticipant;
 
-
     /**
      * Creates an event channel description with the specified attributes.
-     * @param eventChannelName the name of the event channel.
-     * @param constraint the value constraint for the event channel.
+     * 
+     * @param eventChannelName
+     *            the name of the event channel.
+     * @param constraint
+     *            the value constraint for the event channel.
      */
     protected EventChannelDescription(String eventChannelName,
-        ValueConstraint constraint, ValueCodec codec)
+            ValueConstraint constraint, ValueCodec codec)
     {
         this(eventChannelName, constraint, codec, true, true);
     }
 
     /**
      * Creates an event channel description with the specified attributes.
-     * @param eventChannelName the name of the event channel.
-     * @param constraint the value constraint for the evnet channel.
-     * @param codec the codec for the event channel values. <code>null</code>
-     * is a valid value.
-     * @param fireOnConnect flag indicating whether the event channel
-     * fires state when a new sink is connected.
-     * @param rollbackParticipant flag indicating whether the event channel
-     * participates in transaction rollbacks.
+     * 
+     * @param eventChannelName
+     *            the name of the event channel.
+     * @param constraint
+     *            the value constraint for the evnet channel.
+     * @param codec
+     *            the codec for the event channel values. <code>null</code> is
+     *            a valid value.
+     * @param fireOnConnect
+     *            flag indicating whether the event channel fires state when a
+     *            new sink is connected.
+     * @param rollbackParticipant
+     *            flag indicating whether the event channel participates in
+     *            transaction rollbacks.
      */
     protected EventChannelDescription(String eventChannelName,
-        ValueConstraint constraint, ValueCodec codec, boolean fireOnConnect,
-        boolean rollbackParticipant)
+            ValueConstraint constraint, ValueCodec codec,
+            boolean fireOnConnect, boolean rollbackParticipant)
     {
         Argument.assertNotNull(eventChannelName, "eventChannelName");
         Argument.assertNotNull(constraint, "constraint");
-        //CheckArgument.checkNull(codec, "codec");
+        // CheckArgument.checkNull(codec, "codec");
 
         this.eventChannelName = eventChannelName.trim();
-		this.constraint = constraint;
-		this.codec = codec;
+        this.constraint = constraint;
+        this.codec = codec;
         this.fireOnConnect = fireOnConnect;
         this.rollbackParticipant = rollbackParticipant;
 
         if (this.eventChannelName.length() == 0)
         {
             throw new IllegalArgumentException(
-                "eventChannelName.trim().length() == 0 not allowed!");
+                    "eventChannelName.trim().length() == 0 not allowed!");
         }
     }
 
     /**
      * Returns the event channel name.
+     * 
      * @return the event channel name.
      */
     public final String getEventChannelName()
@@ -104,6 +112,7 @@ public abstract class EventChannelDescription
 
     /**
      * Returns the value constraint.
+     * 
      * @return the value constraint.
      */
     public final ValueConstraint getConstraint()
@@ -111,20 +120,20 @@ public abstract class EventChannelDescription
         return constraint;
     }
 
-	/**
-	 * Returns the value codec.
-	 * @return the value codec.
-	 */
-	public final ValueCodec getCodec()
-	{
-		return codec;
-	}
+    /**
+     * Returns the value codec.
+     * 
+     * @return the value codec.
+     */
+    public final ValueCodec getCodec()
+    {
+        return codec;
+    }
 
     /**
-     * Returns true if the event channel fires on connection, false
-     * otherwise.
-     * @return true if the event channel fires on connection, false
-     * otherwise.
+     * Returns true if the event channel fires on connection, false otherwise.
+     * 
+     * @return true if the event channel fires on connection, false otherwise.
      */
     public boolean isFireOnConnect()
     {
@@ -134,25 +143,51 @@ public abstract class EventChannelDescription
     /**
      * Returns true if the event channel participates in rollbacks, false
      * otherwise.
+     * 
      * @return true if the event channel participates in rollbacks, false
-     * otherwise.
+     *         otherwise.
      */
     public boolean isRollBackParticipant()
     {
         return rollbackParticipant;
     }
-    
-    public boolean equals(Object object){
-    	if (!(object instanceof EventChannelDescription)){
-    		return false;
-    	}
-    	
-    	EventChannelDescription ecd = (EventChannelDescription)object;
-    	
-    	return ecd.eventChannelName.equals(this.eventChannelName)
-    		&& ecd.constraint == this.constraint
-    		&& ecd.codec == this.codec
-    		&& ecd.fireOnConnect == this.fireOnConnect
-    		&& ecd.rollbackParticipant == this.rollbackParticipant;
+
+    /**
+     * Returns a hash value for this ecd.
+     */
+    public int hashCode()
+    {
+        return this.eventChannelName.hashCode();
+    }
+
+    /**
+     * Checks for equality between the specified object and this ecd.
+     * 
+     * @param object
+     *            The object to be tested.
+     * @return true if the object is equivalent otherwise returns false.
+     */
+    public boolean equals(Object object)
+    {
+        if (!(object instanceof EventChannelDescription))
+        {
+            return false;
+        }
+
+        EventChannelDescription ecd = (EventChannelDescription) object;
+
+        return ecd.eventChannelName.equals(this.eventChannelName)
+                && ecd.constraint == this.constraint && ecd.codec == this.codec
+                && ecd.fireOnConnect == this.fireOnConnect
+                && ecd.rollbackParticipant == this.rollbackParticipant;
+    }
+
+    /**
+     * Returns a string representation of the event channel description.
+     */
+    public String toString()
+    {
+        return super.toString() + "[eventChannelName = "
+                + this.eventChannelName + "]";
     }
 }
