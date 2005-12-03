@@ -25,82 +25,109 @@
 package tfw.swing.combobox;
 
 import java.awt.EventQueue;
+import java.util.ArrayList;
+
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
+
+import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
 import tfw.immutable.ila.objectila.ObjectIla;
 import tfw.tsm.Commit;
 import tfw.tsm.Initiator;
-import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.IntegerECD;
 import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.ila.ObjectIlaECD;
 
 public class SelectionAndListCommit extends Commit
 {
-	private final ObjectIlaECD listECD;
-	private final ObjectECD selectedItemECD;
-	private final IntegerECD selectedIndexECD;
-	private final JComboBox comboBox;
-	
-	public SelectionAndListCommit(String name, ObjectIlaECD listECD,
-		ObjectECD selectedItemECD, IntegerECD selectedIndexECD,
-		Initiator[] initiators, JComboBox comboBox)
-	{
-		super("SelectionAndListCommit["+name+"]",
-			new ObjectECD[] {listECD, selectedItemECD,
-				selectedIndexECD},
-			null,
-			initiators);
-		
-		this.listECD = listECD;
-		this.selectedItemECD = selectedItemECD;
-		this.selectedIndexECD = selectedIndexECD;
-		this.comboBox = comboBox;
-	}
+    private final ObjectIlaECD listECD;
 
-	protected void commit()
-	{
-		if (isStateChanged(listECD))
-		{
-			try
-			{
-				final Object[] list = ((ObjectIla)get(listECD)).toArray();
-			
-				EventQueue.invokeLater(new Runnable()
-				{
-					public void run()
-					{
-						comboBox.setModel(new DefaultComboBoxModel(list));						
-					}
-				});
-			}
-			catch(DataInvalidException die) {}
-		}
-		if (selectedItemECD != null)
-		{
-			final Object selectedItem = (Object)get(selectedItemECD);
-			
-			EventQueue.invokeLater(new Runnable()
-			{
-				public void run()
-				{
-					comboBox.setSelectedItem(selectedItem);					
-				}
-			});
-		}
-		if (selectedIndexECD != null)
-		{
-			final int selectedIndex =
-				((Integer)get(selectedIndexECD)).intValue();
+    private final ObjectECD selectedItemECD;
 
-			EventQueue.invokeLater(new Runnable()
-			{
-				public void run()
-				{
-					comboBox.setSelectedIndex(selectedIndex);
-				}
-			});
-		}
-	}
+    private final IntegerECD selectedIndexECD;
+
+    private final JComboBox comboBox;
+
+    public SelectionAndListCommit(String name, ObjectIlaECD listECD,
+            ObjectECD selectedItemECD, IntegerECD selectedIndexECD,
+            Initiator[] initiators, JComboBox comboBox)
+    {
+        super("SelectionAndListCommit[" + name + "]", toArray(listECD,
+                selectedItemECD, selectedIndexECD), null, initiators);
+
+        this.listECD = listECD;
+        this.selectedItemECD = selectedItemECD;
+        this.selectedIndexECD = selectedIndexECD;
+        this.comboBox = comboBox;
+    }
+
+    private static ObjectECD[] toArray(ObjectIlaECD listECD,
+            ObjectECD selectedItemECD, IntegerECD selectedIndexECD)
+    {
+        Argument.assertNotNull(listECD, "listECD");
+        if ((selectedItemECD == null) && (selectedIndexECD == null))
+        {
+            throw new IllegalStateException(
+                    "(selectedItemECD == null) && (selectedIndexECD == null) not allowed");
+        }
+        ArrayList list = new ArrayList();
+        list.add(listECD);
+        if (selectedItemECD != null)
+        {
+            list.add(selectedItemECD);
+        }
+        if (selectedIndexECD != null)
+        {
+            list.add(selectedIndexECD);
+        }
+        return (ObjectECD[]) list.toArray(new ObjectECD[list.size()]);
+    }
+
+    protected void commit()
+    {
+        if (isStateChanged(listECD))
+        {
+            try
+            {
+                final Object[] list = ((ObjectIla) get(listECD)).toArray();
+
+                EventQueue.invokeLater(new Runnable()
+                {
+                    public void run()
+                    {
+                        comboBox.setModel(new DefaultComboBoxModel(list));
+                    }
+                });
+            }
+            catch (DataInvalidException die)
+            {
+            }
+        }
+        if (selectedItemECD != null)
+        {
+            final Object selectedItem = (Object) get(selectedItemECD);
+
+            EventQueue.invokeLater(new Runnable()
+            {
+                public void run()
+                {
+                    comboBox.setSelectedItem(selectedItem);
+                }
+            });
+        }
+        if (selectedIndexECD != null)
+        {
+            final int selectedIndex = ((Integer) get(selectedIndexECD))
+                    .intValue();
+
+            EventQueue.invokeLater(new Runnable()
+            {
+                public void run()
+                {
+                    comboBox.setSelectedIndex(selectedIndex);
+                }
+            });
+        }
+    }
 }
