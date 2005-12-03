@@ -35,11 +35,11 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-// TODO: What should happen if an exception occurs while processing a 
-//   transaction? Currently the transaction state is left as is. 
-//   pending transaction will attempt to execute.
+// TODO: What should happen if an exception occurs while processing a
+// transaction? Currently the transaction state is left as is.
+// pending transaction will attempt to execute.
 // TODO: Review exception handling for exceptions that are not
-//    currently caught.
+// currently caught.
 // TODO: test rollback state changes
 // TODO: test rollback component changes
 
@@ -59,7 +59,7 @@ import java.util.logging.Logger;
  * </LI>
  * <LI>Event Channel Firing (Need to verify the validity of this type).</LI>
  * </UL>
- *  
+ * 
  */
 public final class TransactionMgr
 {
@@ -67,7 +67,7 @@ public final class TransactionMgr
 
     private long transactionCount = 0;
 
-    private final ArrayList stateChanges = new ArrayList();
+    private final HashSet stateChanges = new HashSet();
 
     private HashSet validators = null;
 
@@ -216,7 +216,7 @@ public final class TransactionMgr
 
         executingStateChanges = false;
 
-        //System.out.println();
+        // System.out.println();
     }
 
     private void executeValidators()
@@ -227,7 +227,7 @@ public final class TransactionMgr
             return;
         }
 
-        //System.out.print("executeValidators()");
+        // System.out.print("executeValidators()");
         Validator[] v = (Validator[]) validators
                 .toArray(new Validator[validators.size()]);
         validators = null;
@@ -239,7 +239,7 @@ public final class TransactionMgr
             v[i].validateState();
         }
 
-        //System.out.println();
+        // System.out.println();
     }
 
     private void executeProcessors()
@@ -337,7 +337,7 @@ public final class TransactionMgr
             Source src = (Source) itr.next();
             // If the source is connected to a terminator...
             // TODO: Climb up through multiplexors/demultiplexors to
-            //       to find the terminators (This isn't going to be fun).
+            // to find the terminators (This isn't going to be fun).
             if (src.getEventChannel() instanceof Terminator)
             {
                 Terminator t = (Terminator) src.getEventChannel();
@@ -356,7 +356,7 @@ public final class TransactionMgr
                     }
 
                     // if the dependent component is in the set of processors
-                    //    remove it and add it to the set of delayed processors...
+                    // remove it and add it to the set of delayed processors...
                     if (processors.remove(tc))
                     {
                         delayedProcessors.add(tc);
@@ -418,7 +418,7 @@ public final class TransactionMgr
             return;
         }
 
-        //System.out.print("executeEventChannelFires()");
+        // System.out.print("executeEventChannelFires()");
         EventChannel[] ec = (EventChannel[]) eventChannelFires
                 .toArray(new EventChannel[eventChannelFires.size()]);
         eventChannelFires.clear();
@@ -462,7 +462,7 @@ public final class TransactionMgr
 
     private void executeRollback()
     {
-        //System.out.print("executeRollback()");
+        // System.out.print("executeRollback()");
         stateChanges.clear();
         validators = null;
         processors = null;
@@ -477,7 +477,7 @@ public final class TransactionMgr
 
         for (int i = 0; i < crls.length; i++)
         {
-            //System.out.print("*");
+            // System.out.print("*");
             crls[i].rollback();
         }
 
@@ -487,13 +487,13 @@ public final class TransactionMgr
                     .rollback();
         }
 
-        //System.out.println();
+        // System.out.println();
         executeTransactionCycles();
     }
 
     private void commitTransaction()
     {
-        //System.out.print("commitTransaction()");
+        // System.out.print("commitTransaction()");
         CommitRollbackListener[] crls;
 
         synchronized (this)
@@ -510,11 +510,11 @@ public final class TransactionMgr
             logger.log(Level.INFO, "commitRollbackListeners[" + i
                     + "].commit(): ");
 
-            //System.out.print("*");
+            // System.out.print("*");
             crls[i].commit();
         }
 
-        //System.out.println();
+        // System.out.println();
     }
 
     void addCommitRollbackListener(CommitRollbackListener listener)
@@ -558,7 +558,13 @@ public final class TransactionMgr
             throw new IllegalStateException(sb.toString());
         }
 
-        stateChanges.add(source);
+        if (!stateChanges.add(source))
+        {
+            throw new IllegalStateException(source.getTreeComponent().getName()
+                    + " attempted to change the state of '"
+                    + source.getEventChannelName()
+                    + "' twice in the same state change cycle.");
+        }
     }
 
     void addStateChange(InitiatorSource[] source)
@@ -646,7 +652,7 @@ public final class TransactionMgr
 
     private void componentChange(Runnable change)
     {
-        //TODO it looks like this needs to be made thread safe.
+        // TODO it looks like this needs to be made thread safe.
         if (componentChangeTransaction == null)
         {
             componentChangeTransaction = new ComponentChangeTransaction(change);
