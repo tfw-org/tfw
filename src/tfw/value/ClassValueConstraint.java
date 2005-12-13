@@ -38,7 +38,7 @@ import tfw.immutable.ila.objectila.ObjectIla;
  * <code>ClassValueConstraint</code> then it is valid, otherwise it is 
  * not valid.
  */
-public class ClassValueConstraint implements ValueConstraint
+public class ClassValueConstraint extends ValueConstraint
 {
     /** A value constraint which allows any object. */
     public static final ClassValueConstraint OBJECT = new ClassValueConstraint(Object.class);
@@ -139,22 +139,6 @@ public class ClassValueConstraint implements ValueConstraint
         return true;
     }
 
-    /**
-     * Checks the value against the constraint and throws an exception if it
-     * does not comply.
-     *
-     * @param value The value to be checked.
-     * @throws ValueException if the value does not comply with the constraint.
-     */
-    public void checkValue(Object value) throws ValueException
-    {
-        String valueCompliance = getValueCompliance(value);
-
-        if (valueCompliance != VALID)
-        {
-            throw new ValueException(valueCompliance);
-        }
-    }
 
     /**
      * Returns {@link #VALID} if the value complies with the constraint,

@@ -31,7 +31,7 @@ import tfw.check.Argument;
 /**
  * A constaint where the only legal value is <code>null</code>.
  */
-public class NullConstaint implements ValueConstraint
+public class NullConstaint extends ValueConstraint
 {
 	public static final NullConstaint INSTANCE = new NullConstaint();
 	private NullConstaint(){}
@@ -58,17 +58,6 @@ public class NullConstaint implements ValueConstraint
         else
         {
             return "Trigger event channels have no values, so no value complies with this constraint";
-        }
-    }
-
-    /* (non-Javadoc)
-     * @see co2.value.Constraint#checkValue(java.lang.Object)
-     */
-    public void checkValue(Object value) throws ValueException
-    {
-        if (value != null)
-        {
-            throw new ValueException(getValueCompliance(value));
         }
     }
 }
