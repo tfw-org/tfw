@@ -160,66 +160,88 @@ public class MultiplexerTest extends TestCase
 
         assertNull("Unexpected exception thrown during testing",
                 exceptionHandler.exp);
+
+        // Now we will remove the multiplexer...and make sure everything still
+        // works.
+        root.remove(multiBranch);
+        queue.waitTilEmpty();
+        multiInitiator.set(multiValueECD, obj);
+        queue.waitTilEmpty();
+        assertEquals("multiValue[0] not correct", obj.toArray()[0],
+                mvCommit.value.toArray()[0]);
+        assertEquals("multiValue[1] not correct", obj.toArray()[1],
+                mvCommit.value.toArray()[1]);
+
+        // Now we put the multiplexer back and make sure it still works.
+        root.add(multiBranch);
+        queue.waitTilEmpty();
+        assertEquals("value 0 not correct", obj.toArray()[0],
+                valueCommit0.value);
+        assertEquals("value 1 not correct", obj.toArray()[1],
+                valueCommit1.value);
     }
 
     public void testMultiLayerMultiplexing()
     {
-        
-          String v0_0 = "Value0.0"; String v0_1 = "Value0.1"; String v1_0 =
-          "Value1.0"; String v1_1 = "Value1.1";
-          
-          String[] vm0 = new String[]{v0_0, v0_1}; String[] vm1 = new
-          String[]{v1_0, v1_1};
-          
-          ObjectIla vmo0 = ObjectIlaFromArray.create(vm0); ObjectIla vmo1 =
-          ObjectIlaFromArray.create(vm1);
-          
-          ObjectIla vmmo = ObjectIlaFromArray.create(new ObjectIla[]{vmo0,
-          vmo1});
-          
-          //TODO add multiMultiInitiator and multiMultiCommit...
-          
-          RootFactory rf = new RootFactory();
-          rf.addEventChannel(multiMultiValueECD); BasicTransactionQueue queue =
-          new BasicTransactionQueue(); Root root =
-          rf.create("MultiplexerTestRoot", queue); rf.setLogging(true);
-          
-          MultiplexedBranchFactory mbf = new MultiplexedBranchFactory();
-          mbf.addMultiplexer(multiValueECD, multiMultiValueECD);
-          MultiplexedBranch multiMultiBranch = mbf.create("MultiMultiBranch");
-          
-          mbf = new MultiplexedBranchFactory(); mbf.addMultiplexer(valueECD,
-          multiValueECD); MultiplexedBranch multiBranchZero =
-          mbf.create("MultiBranchZero");
-          
-          mbf = new MultiplexedBranchFactory(); mbf.addMultiplexer(valueECD,
-          multiValueECD); MultiplexedBranch multiBranchOne =
-          mbf.create("MultiBranchOne");
-          
-          multiMultiBranch.add(multiBranchZero, 0);
-          multiMultiBranch.add(multiBranchOne, 1);
-          
-          Initiator initiator0_0 = new Initiator("Value0_0", valueECD);
-          ValueCommit valueCommit0_0 = new ValueCommit("Value 0_0", valueECD);
-          Initiator initiator0_1 = new Initiator("Value0_1", valueECD);
-          ValueCommit valueCommit0_1 = new ValueCommit("Value 0_1", valueECD);
-          multiBranchZero.add(initiator0_0, 0);
-          multiBranchZero.add(valueCommit0_0, 0);
-          multiBranchZero.add(initiator0_1, 1);
-          multiBranchZero.add(valueCommit0_1, 1);
-          
-          Initiator initiator1_0 = new Initiator("Value1_0", valueECD);
-          ValueCommit valueCommit1_0 = new ValueCommit("Value 1_0", valueECD);
-          Initiator initiator1_1 = new Initiator("Value1_1", valueECD);
-          ValueCommit valueCommit1_1 = new ValueCommit("Value 1_1", valueECD);
-          multiBranchOne.add(initiator1_0, 0);
-          multiBranchOne.add(valueCommit1_0, 0);
-          multiBranchOne.add(initiator1_1, 1);
-          multiBranchOne.add(valueCommit1_1, 1);
-          
-          root.add(multiMultiBranch);
-          
-          queue.waitTilEmpty();
+
+        String v0_0 = "Value0.0";
+        String v0_1 = "Value0.1";
+        String v1_0 = "Value1.0";
+        String v1_1 = "Value1.1";
+
+        String[] vm0 = new String[] { v0_0, v0_1 };
+        String[] vm1 = new String[] { v1_0, v1_1 };
+
+        ObjectIla vmo0 = ObjectIlaFromArray.create(vm0);
+        ObjectIla vmo1 = ObjectIlaFromArray.create(vm1);
+
+        ObjectIla vmmo = ObjectIlaFromArray
+                .create(new ObjectIla[] { vmo0, vmo1 });
+
+        // TODO add multiMultiInitiator and multiMultiCommit...
+
+        RootFactory rf = new RootFactory();
+        rf.addEventChannel(multiMultiValueECD);
+        BasicTransactionQueue queue = new BasicTransactionQueue();
+        Root root = rf.create("MultiplexerTestRoot", queue);
+        rf.setLogging(true);
+
+        MultiplexedBranchFactory mbf = new MultiplexedBranchFactory();
+        mbf.addMultiplexer(multiValueECD, multiMultiValueECD);
+        MultiplexedBranch multiMultiBranch = mbf.create("MultiMultiBranch");
+
+        mbf = new MultiplexedBranchFactory();
+        mbf.addMultiplexer(valueECD, multiValueECD);
+        MultiplexedBranch multiBranchZero = mbf.create("MultiBranchZero");
+
+        mbf = new MultiplexedBranchFactory();
+        mbf.addMultiplexer(valueECD, multiValueECD);
+        MultiplexedBranch multiBranchOne = mbf.create("MultiBranchOne");
+
+        multiMultiBranch.add(multiBranchZero, 0);
+        multiMultiBranch.add(multiBranchOne, 1);
+
+        Initiator initiator0_0 = new Initiator("Value0_0", valueECD);
+        ValueCommit valueCommit0_0 = new ValueCommit("Value 0_0", valueECD);
+        Initiator initiator0_1 = new Initiator("Value0_1", valueECD);
+        ValueCommit valueCommit0_1 = new ValueCommit("Value 0_1", valueECD);
+        multiBranchZero.add(initiator0_0, 0);
+        multiBranchZero.add(valueCommit0_0, 0);
+        multiBranchZero.add(initiator0_1, 1);
+        multiBranchZero.add(valueCommit0_1, 1);
+
+        Initiator initiator1_0 = new Initiator("Value1_0", valueECD);
+        ValueCommit valueCommit1_0 = new ValueCommit("Value 1_0", valueECD);
+        Initiator initiator1_1 = new Initiator("Value1_1", valueECD);
+        ValueCommit valueCommit1_1 = new ValueCommit("Value 1_1", valueECD);
+        multiBranchOne.add(initiator1_0, 0);
+        multiBranchOne.add(valueCommit1_0, 0);
+        multiBranchOne.add(initiator1_1, 1);
+        multiBranchOne.add(valueCommit1_1, 1);
+
+        root.add(multiMultiBranch);
+
+        queue.waitTilEmpty();
     }
 
     public static Test suite()
