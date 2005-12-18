@@ -24,7 +24,6 @@
  */
 package tfw.tsm;
 
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -50,48 +49,73 @@ public class MultiplexedBranchFactory
     /** A list of value event channel descriptions. */
     ArrayList valueECDList = new ArrayList();
 
+    /** A list of State change rules. */
+    ArrayList stateChangeRules = new ArrayList();
+
     /**
      * Addes a multiplexer for the specified event channels.
-     *
-     * @param valueECD the event channel description of the child values.
-     * @param multiValueECD the event channel description of the parent
-     * multiplexed values.
+     * 
+     * @param valueECD
+     *            The event channel description of the child values.
+     * @param multiValueECD
+     *            The event channel description of the parent multiplexed
+     *            values.
      */
-    public void addMultiplexer(ObjectECD valueECD,
-        ObjectIlaECD multiValueECD)
+    public void addMultiplexer(ObjectECD valueECD, ObjectIlaECD multiValueECD)
+    {
+        this.addMultiplexer(valueECD, multiValueECD, DotEqualsRule
+                .getInstance());
+    }
+
+    /**
+     * Addes a multiplexer for the specified event channels.
+     * 
+     * @param valueECD
+     *            The event channel description of the child values.
+     * @param multiValueECD
+     *            The event channel description of the parent multiplexed
+     *            values.
+     * @param valueStateChangeRule
+     *            The state change rule for the child or demultiplexed event
+     *            channels.
+     */
+    public void addMultiplexer(ObjectECD valueECD, ObjectIlaECD multiValueECD,
+            StateChangeRule valueStateChangeRule)
     {
         Argument.assertNotNull(valueECD, "valueECD");
         Argument.assertNotNull(multiValueECD, "multiValueECD");
+        Argument.assertNotNull(valueStateChangeRule, "valueStateChangeRule");
 
         if (multiValueECDMap.put(multiValueECD.getEventChannelName(),
                 multiValueECD) != null)
         {
             throw new IllegalArgumentException(
-                "Attempt to add multiple multiplexers for multi event channel '" +
-                multiValueECD.getEventChannelName() + "'");
+                    "Attempt to add multiple multiplexers for multi event channel '"
+                            + multiValueECD.getEventChannelName() + "'");
         }
 
         if (valueECDMap.put(valueECD.getEventChannelName(), multiValueECD) != null)
         {
             throw new IllegalArgumentException(
-                "Attempt to add multiple multiplexers for value event channel '" +
-                valueECD.getEventChannelName() + "'");
+                    "Attempt to add multiple multiplexers for value event channel '"
+                            + valueECD.getEventChannelName() + "'");
         }
 
         valueECDList.add(valueECD);
         multiValueECDList.add(multiValueECD);
+        stateChangeRules.add(valueStateChangeRule);
     }
 
-    private static Multiplexer[] generateMulitplexers(String name, List valueECDList,
-        List multiValueECDList)
+    private static Multiplexer[] generateMulitplexers(String name,
+            List valueECDList, List multiValueECDList, List stateChangeRules)
     {
         ArrayList list = new ArrayList();
 
         for (int i = 0; i < valueECDList.size(); i++)
         {
-            list.add(new Multiplexer(name,
-                    (ObjectECD) valueECDList.get(i),
-                    (ObjectIlaECD) multiValueECDList.get(i)));
+            list.add(new Multiplexer(name, (ObjectECD) valueECDList.get(i),
+                    (ObjectIlaECD) multiValueECDList.get(i),
+                    (StateChangeRule) stateChangeRules.get(i)));
         }
 
         return (Multiplexer[]) list.toArray(new Multiplexer[list.size()]);
@@ -101,7 +125,9 @@ public class MultiplexedBranchFactory
      * Creates a multiplexed branch with the set of multiplexed event channels
      * as previously defined by calls to
      * {@link #addMultiplexer(EventChannelDescription, ObjectIlaECD)}.
-     * @param name the name of the branch.
+     * 
+     * @param name
+     *            the name of the branch.
      * @return the multiplexed branch.
      */
     public MultiplexedBranch create(String name)
@@ -110,14 +136,15 @@ public class MultiplexedBranchFactory
 
         if (multiValueECDMap.size() == 0)
         {
-            throw new IllegalStateException("Attempt to create a " +
-                MultiplexedBranch.class.getName() +
-                " with no multiplexed channels. At least one multiplexer " +
-                "must be added by calling the addMultiplexer() method.");
+            throw new IllegalStateException(
+                    "Attempt to create a "
+                            + MultiplexedBranch.class.getName()
+                            + " with no multiplexed channels. At least one multiplexer "
+                            + "must be added by calling the addMultiplexer() method.");
         }
 
-        return new MultiplexedBranch(name,
-            generateMulitplexers(name, valueECDList, multiValueECDList));
+        return new MultiplexedBranch(name, generateMulitplexers(name,
+                valueECDList, multiValueECDList, stateChangeRules));
     }
 
     /**
@@ -129,5 +156,6 @@ public class MultiplexedBranchFactory
         multiValueECDMap.clear();
         valueECDList.clear();
         multiValueECDList.clear();
+        stateChangeRules.clear();
     }
 }
