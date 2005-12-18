@@ -3,8 +3,6 @@ package tfw.demo;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -18,8 +16,8 @@ import tfw.tsm.AWTTransactionQueue;
 import tfw.tsm.Branch;
 import tfw.tsm.RootFactory;
 import tfw.tsm.ecd.BooleanECD;
-import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.IntegerECD;
+import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.StatelessTriggerECD;
 import tfw.tsm.ecd.StringECD;
 import tfw.tsm.ecd.StringRollbackECD;
