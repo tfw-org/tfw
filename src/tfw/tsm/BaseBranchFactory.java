@@ -32,16 +32,19 @@ import tfw.tsm.ecd.StatelessTriggerECD;
 import tfw.value.ValueException;
 
 /**
- * The base class for branch component factories.
+ * The base class for branch component factories. It is made public solely to
+ * make the base class type of all branch factories available. It is not
+ * intended to be sub-classed outside of its package.
  */
-class BaseBranchFactory
+public class BaseBranchFactory
 {
     private final HashMap terminators = new HashMap();
 
     /**
-     * Creates a factory.
+     * Creates a factory. The constructor is package private to prevent
+     * sub-classing outside the package.
      */
-    public BaseBranchFactory()
+    BaseBranchFactory()
     {
     }
 
