@@ -40,7 +40,7 @@ import tfw.value.ValueException;
  */
 abstract class EventHandler extends Leaf
 {
-    //    private final List initiators;
+    // private final List initiators;
 
     /**
      * Creates an event handler with the specified attributes.
@@ -206,15 +206,16 @@ abstract class EventHandler extends Leaf
 
         if (sink == null)
         {
-            throw new IllegalArgumentException(sinkEventChannel
-                    .getEventChannelName()
-                    + " not found");
+            throw new IllegalArgumentException(
+                    "The component does not subscribe to the requested event channel, '"
+                            + sinkEventChannel.getEventChannelName() + ".");
         }
 
         if (sink.getEventChannel() == null)
         {
-            throw new IllegalStateException(sinkEventChannel
-                    + " is not connected to an event channel");
+            throw new IllegalStateException("The requested sink, '"
+                    + sinkEventChannel.getEventChannelName()
+                    + "', is not connected to an event channel");
         }
 
         return (sink.getEventChannel().getState());
@@ -237,7 +238,8 @@ abstract class EventHandler extends Leaf
 
             if (sinkEventChannel instanceof ObjectECD)
             {
-                stateMap.put((ObjectECD)sinkEventChannel, get(sinkEventChannel));
+                stateMap.put((ObjectECD) sinkEventChannel,
+                        get(sinkEventChannel));
             }
         }
 
