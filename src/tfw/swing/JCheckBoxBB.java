@@ -22,7 +22,6 @@ import javax.swing.JCheckBox;
 import tfw.awt.component.EnabledCommit;
 import tfw.swing.button.ButtonSelectedCommit;
 import tfw.swing.button.ButtonSelectedInitiator;
-
 import tfw.tsm.Branch;
 import tfw.tsm.BranchBox;
 import tfw.tsm.Initiator;
@@ -46,7 +45,9 @@ public class JCheckBoxBB extends JCheckBox implements BranchBox {
 		addChangeListener(buttonSelectedInitiator);
 		branch.add(buttonSelectedInitiator);
 
-		branch.add(new EnabledCommit("JCheckBoxBB", enabledECD, this, null));
+		if (enabledECD != null){
+            branch.add(new EnabledCommit("JCheckBoxBB", enabledECD, this, null));
+        }
 		branch.add(new ButtonSelectedCommit("JCheckBoxBB", selectedECD,
 				new Initiator[] { buttonSelectedInitiator }, this));
 	}
