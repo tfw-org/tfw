@@ -25,6 +25,7 @@
 package tfw.tsm;
 
 import tfw.tsm.ecd.EventChannelDescription;
+import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.StatelessTriggerECD;
 
 
@@ -44,7 +45,7 @@ public abstract class TriggeredConverter extends Processor
      * @param sourceDescriptions the set of event channel source descriptions.
      */
     public TriggeredConverter(String name, StatelessTriggerECD triggerDescription,
-        EventChannelDescription[] sinkDescriptions,
+        ObjectECD[] sinkDescriptions,
         EventChannelDescription[] sourceDescriptions)
     {
         super(name, new EventChannelDescription[]{ triggerDescription },

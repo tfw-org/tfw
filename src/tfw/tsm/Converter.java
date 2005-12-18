@@ -26,6 +26,7 @@ package tfw.tsm;
 
 
 import tfw.check.Argument;
+import tfw.tsm.ecd.EventChannelDescription;
 import tfw.tsm.ecd.ObjectECD;
 
 
@@ -46,7 +47,7 @@ public abstract class Converter extends Processor
      * @param sourceEventChannels the output event channels.
      */
     public Converter(String name, ObjectECD[] sinkDescriptions,
-        ObjectECD[] sourceDescriptions)
+        EventChannelDescription[] sourceDescriptions)
     {
         this(name, sinkDescriptions, null, sourceDescriptions);
     }
@@ -65,7 +66,7 @@ public abstract class Converter extends Processor
      */
     public Converter(String name, ObjectECD[] triggeringSinks,
         ObjectECD[] nonTriggeringSinks,
-        ObjectECD[] sources)
+        EventChannelDescription[] sources)
     {
         super(name, checkTriggeringSinks(triggeringSinks), nonTriggeringSinks,
             sources);
