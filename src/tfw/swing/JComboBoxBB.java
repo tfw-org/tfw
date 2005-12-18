@@ -19,6 +19,7 @@ package tfw.swing;
 
 import javax.swing.JComboBox;
 
+import tfw.awt.component.EnabledCommit;
 import tfw.swing.combobox.SelectionAndListCommit;
 import tfw.swing.combobox.SelectionInitiator;
 import tfw.tsm.Branch;
@@ -54,6 +55,9 @@ public class JComboBoxBB extends JComboBox implements BranchBox {
 				"JComboBoxBB", listECD, selectedItemECD, selectedIndexECD,
 				new Initiator[] { selectionInitiator }, this);
 
+        if (enabledECD != null){
+            branch.add(new EnabledCommit("JComboBoxBB", enabledECD, this, null));
+        }
 		branch.add(selectionAndListCommit);
 	}
 
