@@ -165,4 +165,12 @@ abstract class Port
 
         return this.component;
     }
+    
+    /**
+     * Get the name of this port.
+     * @return the port name.
+     */
+    String getPortName(){
+        return this.name;
+    }
 }
