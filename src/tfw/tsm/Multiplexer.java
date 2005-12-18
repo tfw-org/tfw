@@ -1,4 +1,6 @@
 /*
+ * Created on Dec 17, 2005
+ *
  * The Framework Project
  * Copyright (C) 2005 Anonymous
  * 
@@ -24,11 +26,10 @@
  */
 package tfw.tsm;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Set;
 
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
@@ -38,25 +39,22 @@ import tfw.tsm.ecd.EventChannelDescription;
 import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.ila.ObjectIlaECD;
 
-/**
- * 
- */
 class Multiplexer implements EventChannel
 {
     /** The branch associated with this terminator. */
     private MultiplexedBranch component = null;
 
     /** The description of the single value event channel. */
-    private final ObjectECD valueECD;
+    final ObjectECD valueECD;
+    
+    /** The state change rule for the sub-channels. */
+    private final StateChangeRule stateChangeRule;
 
     /** The multiplexed value sink. */
     final Sink multiSink;
 
-    /** The list of child sinks. */
-    private final Set childSinks = new HashSet();
-
     /** The multiplexed value initiator source. */
-    final ProcessorSource processorMultiSource;
+    final MultiSource processorMultiSource;
 
     /** The set of demultiplexing event channels. */
     private final Map demultiplexedEventChannels = new HashMap();
@@ -69,39 +67,140 @@ class Multiplexer implements EventChannel
      * @param valueECD
      * @param multiValueECD
      */
-    public Multiplexer(String multiplexerBranchName,
-            ObjectECD valueECD, ObjectIlaECD multiValueECD)
+    Multiplexer(String multiplexerBranchName, ObjectECD valueECD,
+            ObjectIlaECD multiValueECD, StateChangeRule stateChangeRule)
     {
         Argument.assertNotNull(valueECD, "valueECD");
         Argument.assertNotNull(multiValueECD, "multiValueECD");
 
         this.valueECD = valueECD;
-
+        this.stateChangeRule = stateChangeRule;
         this.multiSink = new MultiSink(multiValueECD);
-        this.processorMultiSource = new ProcessorSource("Multiplexer Source["
+        this.processorMultiSource = new MultiSource("Multiplexer Source["
                 + multiplexerBranchName + "]", multiValueECD);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see co2.ui.fw.EventChannel#getName()
-     */
-    public EventChannelDescription getECD()
+    private class MultiSink extends Sink
     {
-        return valueECD;
+        public MultiSink(ObjectECD ecd)
+        {
+            super("MultiplexSink[" + ecd.getEventChannelName() + "]", ecd, true);
+        }
+
+        /*
+         * (non-Javadoc)
+         * 
+         * @see co2.ui.fw.Sink#stateChange()
+         */
+        void stateChange()
+        {
+            if (processorMultiSource.isStateSource())
+            {
+                return;
+            }
+
+            Object[] state;
+            try
+            {
+                state = ((ObjectIla) getState()).toArray();
+            }
+            catch (DataInvalidException e)
+            {
+                throw new RuntimeException(
+                        "Multiplexed data invalid in event channel '"
+                                + multiSink.getEventChannelName() + "': "
+                                + e.getMessage(), e);
+            }
+            Iterator itr = Multiplexer.this.demultiplexedEventChannels.values()
+                    .iterator();
+            while (itr.hasNext())
+            {
+                DemultiplexedEventChannel dm = (DemultiplexedEventChannel) itr
+                        .next();
+                int index = dm.demultiplexIndex.intValue();
+                if (index > state.length)
+                {
+                    throw new IllegalStateException(
+                            "Multiplexed state does not have a value for demultiplexed channel '"
+                                    + index + "'.");
+                }
+                dm.setDeMultiState(state[index]);
+            }
+        }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see co2.ui.fw.EventChannel#setTreeComponent(co2.ui.fw.TreeComponent)
-     */
-    public void setTreeComponent(TreeComponent component)
+    class MultiSource extends ProcessorSource
     {
-        this.component = (MultiplexedBranch) component;
-        this.multiSink.setTreeComponent(component);
-        this.processorMultiSource.setTreeComponent(component);
+        ArrayList pendingStateChanges = new ArrayList();
+
+        MultiSource(String name, EventChannelDescription ecd)
+        {
+            super(name, ecd);
+        }
+
+        void setState(DemultiplexedEventChannel deMultiplexer)
+        {
+            if (pendingStateChanges.size() == 0)
+            {
+                getEventChannel().addDeferredStateChange(this);
+            }
+            pendingStateChanges.add(deMultiplexer);
+        }
+
+        Object fire()
+        {
+            if (pendingStateChanges.size() == 0)
+            {
+                throw new IllegalStateException(
+                        "No pending state changes to fire.");
+            }
+            ObjectIla objs = (ObjectIla) this.getEventChannel().getState();
+            DemultiplexedEventChannel[] dms = (DemultiplexedEventChannel[]) pendingStateChanges
+                    .toArray(new DemultiplexedEventChannel[pendingStateChanges
+                            .size()]);
+            pendingStateChanges.clear();
+            int maxIndex = dms[0].demultiplexIndex.intValue();
+            for (int i = 1; i < dms.length; i++)
+            {
+                if (dms[i].demultiplexIndex.intValue() > maxIndex)
+                {
+                    maxIndex = dms[i].demultiplexIndex.intValue();
+                }
+            }
+
+            Object[] array = null;
+
+            try
+            {
+                if (objs == null)
+                {
+                    array = new Object[maxIndex + 1];
+                }
+                else if (maxIndex >= objs.length())
+                {
+                    array = new Object[maxIndex + 1];
+                    objs.toArray(array, 0, 0L, (int) objs.length());
+                }
+                else
+                {
+                    array = objs.toArray();
+                }
+            }
+            catch (DataInvalidException e)
+            {
+                throw new RuntimeException(
+                        "Multiplexer received DataInvalidException: "
+                                + e.getMessage(), e);
+            }
+
+            for (int i = 0; i < dms.length; i++)
+            {
+                array[dms[i].demultiplexIndex.intValue()] = dms[i].getState();
+            }
+            objs = ObjectIlaFromArray.create(array);
+            getEventChannel().setState(this, objs, null);
+            return objs;
+        }
     }
 
     private EventChannel getDemultiplexedEventChannel(int index)
@@ -115,17 +214,35 @@ class Multiplexer implements EventChannel
 
         if (!demultiplexedEventChannels.containsKey(integerIndex))
         {
-            demultiplexedEventChannels.put(integerIndex,
-                    new DemultiplexedEventChannel(integerIndex));
+            DemultiplexedEventChannel dm = new DemultiplexedEventChannel(this,
+                    integerIndex, stateChangeRule);
+            dm.setTreeComponent(this.component);
+            demultiplexedEventChannels.put(integerIndex, dm);
         }
 
         return ((EventChannel) demultiplexedEventChannels.get(integerIndex));
     }
 
+    TreeComponent getTreeComponent()
+    {
+        return this.component;
+    }
+
+    void remove(DemultiplexedEventChannel deMultiplexer)
+    {
+        if (demultiplexedEventChannels.remove(deMultiplexer.demultiplexIndex) == null)
+        {
+            throw new IllegalStateException(
+                    "Demultiplexer not found attempting to remove demultiplexer for "
+                            + valueECD.getEventChannelName() + "["
+                            + deMultiplexer.demultiplexIndex + "]");
+        }
+    }
+
     /*
      * (non-Javadoc)
      * 
-     * @see co2.ui.fw.EventChannel#add(co2.ui.fw.Port)
+     * @see tfw.tsm.EventChannel#add(tfw.tsm.Port)
      */
     public void add(Port port)
     {
@@ -145,33 +262,87 @@ class Multiplexer implements EventChannel
                     "'port' is not from a multiplexed component.");
         }
 
-        if (port instanceof Sink)
-        {
-            childSinks.add(port);
-        }
-
         getDemultiplexedEventChannel(index).add(port);
     }
 
     /*
      * (non-Javadoc)
      * 
-     * @see co2.ui.fw.EventChannel#remove(co2.ui.fw.Port)
+     * @see tfw.tsm.EventChannel#addDeferredStateChange(tfw.tsm.InitiatorSource[])
      */
-    public void remove(Port port)
+    public void addDeferredStateChange(InitiatorSource[] source)
     {
-        if (port instanceof Sink)
-        {
-            childSinks.remove(port);
-        }
-
-        port.getEventChannel().remove(port);
+        throw new UnsupportedOperationException(
+                "Multiplexer does not participate directly in transactions.");
     }
 
     /*
      * (non-Javadoc)
      * 
-     * @see co2.ui.fw.EventChannel#getState()
+     * @see tfw.tsm.EventChannel#addDeferredStateChange(tfw.tsm.ProcessorSource)
+     */
+    public void addDeferredStateChange(ProcessorSource source)
+    {
+        throw new UnsupportedOperationException(
+                "Multiplexer does not participate directly in transactions.");
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see tfw.tsm.EventChannel#fire()
+     */
+    public Object fire()
+    {
+        throw new UnsupportedOperationException(
+                "Multiplexer does not participate directly in transactions.");
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see tfw.tsm.EventChannel#getCurrentStateSource()
+     */
+    public Source getCurrentStateSource()
+    {
+        throw new UnsupportedOperationException(
+                "Multiplexer does not participate directly in transactions.");
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see tfw.tsm.EventChannel#getECD()
+     */
+    public EventChannelDescription getECD()
+    {
+        return valueECD;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see tfw.tsm.EventChannel#getPreviousCycleState()
+     */
+    public Object getPreviousCycleState()
+    {
+        return valueECD;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see tfw.tsm.EventChannel#getPreviousTransactionState()
+     */
+    public Object getPreviousTransactionState()
+    {
+        return valueECD;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see tfw.tsm.EventChannel#getState()
      */
     public Object getState()
     {
@@ -181,9 +352,9 @@ class Multiplexer implements EventChannel
     /*
      * (non-Javadoc)
      * 
-     * @see co2.ui.fw.EventChannel#getPreviousCycleState()
+     * @see tfw.tsm.EventChannel#isFireOnConnect()
      */
-    public Object getPreviousCycleState()
+    public boolean isFireOnConnect()
     {
         throw new UnsupportedOperationException(
                 "Multiplexer does not participate directly in transactions.");
@@ -192,9 +363,9 @@ class Multiplexer implements EventChannel
     /*
      * (non-Javadoc)
      * 
-     * @see co2.ui.fw.EventChannel#getPreviousTransactionState()
+     * @see tfw.tsm.EventChannel#isRollbackParticipant()
      */
-    public Object getPreviousTransactionState()
+    public boolean isRollbackParticipant()
     {
         throw new UnsupportedOperationException(
                 "Multiplexer does not participate directly in transactions.");
@@ -203,7 +374,18 @@ class Multiplexer implements EventChannel
     /*
      * (non-Javadoc)
      * 
-     * @see co2.ui.fw.EventChannel#setState(co2.ui.fw.Source, java.lang.Object)
+     * @see tfw.tsm.EventChannel#remove(tfw.tsm.Port)
+     */
+    public void remove(Port port)
+    {
+        port.getEventChannel().remove(port);
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see tfw.tsm.EventChannel#setState(tfw.tsm.Source, java.lang.Object,
+     *      tfw.tsm.EventChannel)
      */
     public void setState(Source source, Object state,
             EventChannel forwardingEventChannel)
@@ -215,18 +397,19 @@ class Multiplexer implements EventChannel
     /*
      * (non-Javadoc)
      * 
-     * @see co2.ui.fw.EventChannel#getCurrentStateSource()
+     * @see tfw.tsm.EventChannel#setTreeComponent(tfw.tsm.TreeComponent)
      */
-    public Source getCurrentStateSource()
+    public void setTreeComponent(TreeComponent component)
     {
-        throw new UnsupportedOperationException(
-                "Multiplexer does not participate directly in transactions.");
+        this.component = (MultiplexedBranch) component;
+        this.multiSink.setTreeComponent(component);
+        this.processorMultiSource.setTreeComponent(component);
     }
 
     /*
      * (non-Javadoc)
      * 
-     * @see co2.ui.fw.EventChannel#synchronizeCycleState()
+     * @see tfw.tsm.EventChannel#synchronizeCycleState()
      */
     public void synchronizeCycleState()
     {
@@ -237,330 +420,11 @@ class Multiplexer implements EventChannel
     /*
      * (non-Javadoc)
      * 
-     * @see co2.ui.fw.EventChannel#synchronizeTransactionState()
+     * @see tfw.tsm.EventChannel#synchronizeTransactionState()
      */
     public void synchronizeTransactionState()
     {
         throw new UnsupportedOperationException(
                 "Multiplexer does not participate directly in transactions.");
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see co2.ui.fw.EventChannel#fire()
-     */
-    public Object fire()
-    {
-        throw new UnsupportedOperationException(
-                "Multiplexer does not participate directly in transactions.");
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see co2.ui.fw.EventChannel#isFireOnConnect()
-     */
-    public boolean isFireOnConnect()
-    {
-        throw new UnsupportedOperationException(
-                "Multiplexer does not participate directly in transactions.");
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see co2.ui.fw.EventChannel#isRollbackParticipant()
-     */
-    public boolean isRollbackParticipant()
-    {
-        throw new UnsupportedOperationException(
-                "Multiplexer does not participate directly in transactions.");
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see co2.ui.fw.EventChannel#addDeferredStateChange(co2.ui.fw.ProcessorSource)
-     */
-    public void addDeferredStateChange(ProcessorSource source)
-    {
-        throw new UnsupportedOperationException(
-                "Multiplexer does not participate directly in transactions.");
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see co2.ui.fw.EventChannel#addDeferredStateChange(co2.ui.fw.InitiatorSource)
-     */
-    public void addDeferredStateChange(InitiatorSource[] source)
-    {
-        throw new UnsupportedOperationException(
-                "Multiplexer does not participate directly in transactions.");
-    }
-
-    /**
-     * Creates a new {@link Objects}from an existing one, substituting the
-     * specified new value and a the specified index.
-     * 
-     * @param index
-     *            the index at which to place the new value.
-     * @param state
-     *            the new value.
-     * @param objs
-     *            the objects to be modified.
-     * @return returns the new objects.
-     */
-    private static ObjectIla newObjects(int index, Object state, ObjectIla objs)
-    {
-        Object[] array = null;
-
-        try
-        {
-            if (objs == null)
-            {
-                array = new Object[index + 1];
-            }
-            else if (index >= objs.length())
-            {
-                array = new Object[index + 1];
-                objs.toArray(array, 0, 0L, (int) objs.length());
-            }
-            else
-            {
-                array = objs.toArray();
-            }
-        }
-        catch (DataInvalidException e)
-        {
-            throw new RuntimeException(
-                    "Multiplexer received DataInvalidException: "
-                            + e.getMessage(), e);
-        }
-
-        array[index] = state;
-
-        return ObjectIlaFromArray.create(array);
-    }
-
-    private class MultiSink extends Sink
-    {
-        public MultiSink(ObjectECD ecd)
-        {
-            super("MultiplexSink[" + ecd.getEventChannelName() + "]", ecd, true);
-        }
-
-        /*
-         * (non-Javadoc)
-         * 
-         * @see co2.ui.fw.Sink#stateChange()
-         */
-        void stateChange()
-        {
-            Iterator itr = childSinks.iterator();
-
-            while (itr.hasNext())
-            {
-                Sink sink = (Sink) itr.next();
-                sink.stateChange();
-            }
-        }
-    }
-
-    /**
-     * This class represents an {@link EventChannel}for a specific index
-     * position within the multiplexed {@link EventChannel}.
-     * 
-     */
-    private class DemultiplexedEventChannel implements EventChannel
-    {
-        /** The index within the multiplexed channel. */
-        private final Integer demultiplexIndex;
-
-        /** The number of ports connected to this event channel. */
-        private int connectionCount = 0;
-
-        private boolean stateSet = false;
-
-        DemultiplexedEventChannel(Integer demultiplexIndex)
-        {
-            this.demultiplexIndex = demultiplexIndex;
-        }
-
-        public EventChannelDescription getECD()
-        {
-            return Multiplexer.this.getECD();
-        }
-
-        /**
-         * Sets this terminators component.
-         * 
-         * @param component
-         *            the component for this terminator
-         */
-        public void setTreeComponent(TreeComponent component)
-        {
-            throw new UnsupportedOperationException(
-                    "Demultiplexer event channels do not support this method");
-        }
-
-        /**
-         * Returns the current component associated with this terminator.
-         * 
-         * @return the current component associated with this terminator.
-         */
-        public TreeComponent getTreeComponent()
-        {
-            if (component == null)
-            {
-                throw new IllegalStateException(
-                        "Component has not been initialized.");
-            }
-
-            return component;
-        }
-
-        public void add(Port port)
-        {
-            port.setEventChannel(this);
-            connectionCount++;
-        }
-
-        public void remove(Port port)
-        {
-            connectionCount--;
-
-            // if no ports are connected...
-            if (connectionCount == 0)
-            {
-                // remove this event channel so it can be garbage collected.
-                demultiplexedEventChannels.remove(demultiplexIndex);
-            }
-
-            port.setEventChannel(null);
-            childSinks.remove(port);
-        }
-
-        private Object getElement(ObjectIla objects, long index)
-        {
-            if (objects == null)
-            {
-                return null;
-            }
-
-            if (index >= objects.length())
-            {
-                return null;
-            }
-
-            try
-            {
-                return (objects.toArray((long) index, 1)[0]);
-            }
-            catch (DataInvalidException e)
-            {
-                throw new RuntimeException(
-                        "Multiplexer received DataInvalidException: "
-                                + e.getMessage(), e);
-            }
-        }
-
-        public Object getState()
-        {
-            ObjectIla objects = (ObjectIla) multiSink.getEventChannel()
-                    .getState();
-
-            return (getElement(objects, demultiplexIndex.intValue()));
-        }
-
-        public Object getPreviousCycleState()
-        {
-            ObjectIla objects = (ObjectIla) multiSink.getEventChannel()
-                    .getPreviousCycleState();
-
-            return (getElement(objects, demultiplexIndex.intValue()));
-        }
-
-        public Object getPreviousTransactionState()
-        {
-            ObjectIla objects = (ObjectIla) multiSink.getEventChannel()
-                    .getPreviousTransactionState();
-
-            return (getElement(objects, demultiplexIndex.intValue()));
-        }
-
-        public void setState(Source source, Object state,
-                EventChannel forwardingEventChannel)
-        {
-
-            ObjectIla objs = (ObjectIla) multiSink.getEventChannel().getState();
-            objs = newObjects(demultiplexIndex.intValue(), state, objs);
-
-            if (stateSet)
-            {
-                processorMultiSource.getEventChannel().setState(source, objs,
-                        null);
-            }
-            else
-            {
-                processorMultiSource.getEventChannel().setState(source, objs,
-                        this);
-            }
-            stateSet = true;
-        }
-
-        public Source getCurrentStateSource()
-        {
-            return (multiSink.getEventChannel().getCurrentStateSource());
-        }
-
-        public void synchronizeCycleState()
-        {
-            stateSet = false;
-            processorMultiSource.getEventChannel().synchronizeCycleState();
-        }
-
-        public void synchronizeTransactionState()
-        {
-            processorMultiSource.getEventChannel()
-                    .synchronizeTransactionState();
-        }
-
-        public Object fire()
-        {
-            throw new UnsupportedOperationException(
-                    "Can't fire on Demultiplexed Event Channel");
-        }
-
-        public boolean isFireOnConnect()
-        {
-            return (multiSink.getEventChannel().isFireOnConnect());
-        }
-
-        public boolean isRollbackParticipant()
-        {
-            return (multiSink.getEventChannel().isRollbackParticipant());
-        }
-
-        /*
-         * (non-Javadoc)
-         * 
-         * @see co2.ui.fw.EventChannel#addDeferredStateChange(co2.ui.fw.InitiatorSource)
-         */
-        public void addDeferredStateChange(InitiatorSource[] source)
-        {
-            component.getTransactionManager().addStateChange(source);
-        }
-
-        /*
-         * (non-Javadoc)
-         * 
-         * @see co2.ui.fw.EventChannel#addDeferredStateChange(co2.ui.fw.ProcessorSource)
-         */
-        public void addDeferredStateChange(ProcessorSource source)
-        {
-            component.getTransactionManager().addStateChange(source);
-        }
     }
 }
