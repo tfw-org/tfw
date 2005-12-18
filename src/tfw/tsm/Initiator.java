@@ -34,40 +34,48 @@ import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.StatelessTriggerECD;
 import tfw.value.ValueException;
 
-
 /**
- * This class provides an interface to generate a transaction and to set
- * the state of event channels in that transaction. The initiator will queue
- * state changes if it is not rooted. The queueing strategy can be set
- * by providing the appropriate {@link StateQueueFactory} on the constructor
- * {@link #Initiator(String, ObjectECD[], StateQueueFactory)}. 
- * The default queuing strategy employs an unbounded queue which will store up
- * state changes until the initiator becomes rooted and can begin to fire its
- * state changes. Note that a component is said to be rooted when it is attached 
- * to a root component or its parent is rooted.
+ * This class provides an interface to generate a transaction and to set the
+ * state of event channels in that transaction. The initiator will queue state
+ * changes if it is not rooted. The queueing strategy can be set by providing
+ * the appropriate {@link StateQueueFactory} on the constructor
+ * {@link #Initiator(String, ObjectECD[], StateQueueFactory)}. The default
+ * queuing strategy employs an unbounded queue which will store up state changes
+ * until the initiator becomes rooted and can begin to fire its state changes.
+ * Note that a component is said to be rooted when it is attached to a root
+ * component or its parent is rooted.
  */
 public class Initiator extends Leaf
 {
-    /** The list of state changes which occur while the component is not connected. */
+    /**
+     * The list of state changes which occur while the component is not
+     * connected.
+     */
     private List deferredStateChanges = null;
 
     /**
-     * Constructs an <code>Initiator</code> with the specified name and
-     * source event channel.
-     * @param name the non-null name for the <code>Initiator</code>
-     * @param source the source event channel for this initiator.
+     * Constructs an <code>Initiator</code> with the specified name and source
+     * event channel.
+     * 
+     * @param name
+     *            the non-null name for the <code>Initiator</code>
+     * @param source
+     *            the source event channel for this initiator.
      */
     public Initiator(String name, EventChannelDescription source)
     {
-        this(name, new EventChannelDescription[]{ source });
+        this(name, new EventChannelDescription[] { source });
     }
 
     /**
-     * Constructs an <code>Initiator</code> with the specified name and
-     * set of source event channels.
-     * @param name the non-null name for the <code>Initiator</code>
-     * @param sourceEventChannels A non-null, non-empty array of source
-     * event channels for the <code>Initiator</code>.
+     * Constructs an <code>Initiator</code> with the specified name and set of
+     * source event channels.
+     * 
+     * @param name
+     *            the non-null name for the <code>Initiator</code>
+     * @param sourceEventChannels
+     *            A non-null, non-empty array of source event channels for the
+     *            <code>Initiator</code>.
      */
     public Initiator(String name, EventChannelDescription[] sources)
     {
@@ -75,25 +83,29 @@ public class Initiator extends Leaf
     }
 
     /**
-     * Constructs an <code>Initiator</code> with the specified name,
-     * set of source event channels, and state queue.
-     * @param name the non-null name for the <code>Initiator</code>
-     * @param sourceEventChannels A non-null, non-empty array of source
-     * event channels for the <code>Initiator</code>.
-     * @param queueFactory a factory for creating state queue for each
-     * source event channel.
+     * Constructs an <code>Initiator</code> with the specified name, set of
+     * source event channels, and state queue.
+     * 
+     * @param name
+     *            the non-null name for the <code>Initiator</code>
+     * @param sourceEventChannels
+     *            A non-null, non-empty array of source event channels for the
+     *            <code>Initiator</code>.
+     * @param queueFactory
+     *            a factory for creating state queue for each source event
+     *            channel.
      */
     public Initiator(String name, EventChannelDescription[] sources,
-        StateQueueFactory queueFactory)
+            StateQueueFactory queueFactory)
     {
         super(name, null, createSources(name, sources, queueFactory));
-        
+
         Argument.assertNotNull(name, "name");
 
         if (sources.length == 0)
         {
             throw new IllegalArgumentException(
-                "sources.length == 0 not allowed");
+                    "sources.length == 0 not allowed");
         }
     }
 
@@ -111,8 +123,8 @@ public class Initiator extends Leaf
             {
                 for (int i = 0; i < deferredStateChanges.size(); i++)
                 {
-                    this.getTransactionManager().addStateChange((InitiatorSource[]) deferredStateChanges.get(
-                            i));
+                    this.getTransactionManager().addStateChange(
+                            (InitiatorSource[]) deferredStateChanges.get(i));
                 }
 
                 this.deferredStateChanges = null;
@@ -121,7 +133,7 @@ public class Initiator extends Leaf
     }
 
     private static Source[] createSources(String name,
-        EventChannelDescription[] sources, StateQueueFactory factory)
+            EventChannelDescription[] sources, StateQueueFactory factory)
     {
         Argument.assertNotNull(sources, "sources");
         Argument.assertElementNotNull(sources, "sources");
@@ -131,24 +143,24 @@ public class Initiator extends Leaf
 
         for (int i = 0; i < sources.length; i++)
         {
-            srcs[i] = new InitiatorSource(name,
-                    sources[i], factory.create());
+            srcs[i] = new InitiatorSource(name, sources[i], factory.create());
         }
 
         return srcs;
     }
 
-    //    /**
-    //     * Sets the event channel to the specified state value in a new 
-    //     * transaction.
-    //     * @param channel a port discription of source on which to set the state.
-    //     * @param state the state for the event channel.
-    //     */
-    //    public final void set(EventChannelDescription channel, final Object state)
-    //    {
-    //        CheckArgument.checkNull(channel, "channel");
-    //        set(channel.getEventChannelName(), state);
-    //    }
+    // /**
+    // * Sets the event channel to the specified state value in a new
+    // * transaction.
+    // * @param channel a port discription of source on which to set the state.
+    // * @param state the state for the event channel.
+    // */
+    // public final void set(EventChannelDescription channel, final Object
+    // state)
+    // {
+    // CheckArgument.checkNull(channel, "channel");
+    // set(channel.getEventChannelName(), state);
+    // }
     private void newTransaction(InitiatorSource[] sources)
     {
         if (isRooted())
@@ -170,44 +182,50 @@ public class Initiator extends Leaf
     }
 
     /**
-     * Sets, asynchronously, the state of the specified event channel to
-     * the specified state. Note that the <code>sourceEventChannel</code>
-     * will be updated in transaction manager event queue thread regardless
-     * of what thread calls this method.
-     *
-     * @param sourceEventChannel The event channel to be updated. It must
-     * be one of the event channels specified at construction.
-     *
-     * @param state the new state for the event channel.
+     * Sets, asynchronously, the state of the specified event channel to the
+     * specified state. Note that the <code>sourceEventChannel</code> will be
+     * updated in transaction manager event queue thread regardless of what
+     * thread calls this method.
+     * 
+     * @param sourceEventChannel
+     *            The event channel to be updated. It must be one of the event
+     *            channels specified at construction.
+     * 
+     * @param state
+     *            the new state for the event channel.
      */
     public final void set(EventChannelDescription sourceEventChannel,
-        final Object state)
+            final Object state)
     {
         Argument.assertNotNull(sourceEventChannel, "sourceEventChannel");
         // Trigger have null values...
-        //CheckArgument.checkNull(state, "state");
+        // CheckArgument.checkNull(state, "state");
 
-        final InitiatorSource source = (InitiatorSource) getSource(sourceEventChannel.getEventChannelName());
+        final InitiatorSource source = (InitiatorSource) getSource(sourceEventChannel
+                .getEventChannelName());
 
         if (source == null)
         {
-            throw new IllegalArgumentException(sourceEventChannel +
-                " not found");
+            throw new IllegalArgumentException(sourceEventChannel
+                    + " not found");
         }
 
-        try{
-        	source.setState(state);
-        } catch (ValueException ve){
-        	throw new IllegalArgumentException(ve.getMessage());
+        try
+        {
+            source.setState(state);
         }
-        newTransaction(new InitiatorSource[]{ source });
+        catch (ValueException ve)
+        {
+            throw new IllegalArgumentException(ve.getMessage());
+        }
+        newTransaction(new InitiatorSource[] { source });
     }
 
     /**
-     * Sets the state of the eventChannels with values specfied in the map.
-     * The event channel name is the key in the map and the map value is
-     * the event channel state.
-     * @param state the map of the state.
+     * Sets the state of the eventChannels with values specfied.
+     * 
+     * @param state
+     *            the event channel state to set.
      */
     public final void set(EventChannelState[] state)
     {
@@ -225,12 +243,15 @@ public class Initiator extends Leaf
             {
                 throw new IllegalArgumentException(eventChannel + " not found");
             }
-            
-			try{
-				source.setState(state[i].getState());
-			} catch (ValueException ve){
-				throw new IllegalArgumentException(ve.getMessage());
-			}
+
+            try
+            {
+                source.setState(state[i].getState());
+            }
+            catch (ValueException ve)
+            {
+                throw new IllegalArgumentException(ve.getMessage());
+            }
 
             sources[index++] = source;
         }
@@ -242,8 +263,9 @@ public class Initiator extends Leaf
      * Sets, asynchronously, the state of the specified event channel to
      * <code>new Object()</code>. This is intended to be used to activate
      * {@link TriggeredConverter}s where the state changes is not relevant.
-     * @param sourceEventChannel The event channel to receive the trigger
-     * event.
+     * 
+     * @param sourceEventChannel
+     *            The event channel to receive the trigger event.
      */
     public final void trigger(StatelessTriggerECD triggerEventChannel)
     {
