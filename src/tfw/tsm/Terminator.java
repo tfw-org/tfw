@@ -336,7 +336,6 @@ class Terminator implements EventChannel, CommitRollbackListener
                             + source.getTreeComponent().getName()+"("+source.getTreeComponent()+")"
                             + " and the new state value is " + state);
         }
-        // }
 
         if (stateChangeRule.isChange(this.state, state))
         {
