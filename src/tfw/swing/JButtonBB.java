@@ -48,7 +48,9 @@ public class JButtonBB extends JButton implements BranchBox
 	{
 		this.branch = branch;
 		
-		branch.add(new EnabledCommit("JButtonBB", enabledECD, this, null));
+		if (enabledECD != null){
+            branch.add(new EnabledCommit("JButtonBB", enabledECD, this, null));
+        }
 		
 		ActionInitiator actionInitiator =
 			new ActionInitiator("JButtonBB", triggerECD);

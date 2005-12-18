@@ -50,14 +50,15 @@ public class JTextFieldBB extends JTextField implements BranchBox
 	{
         Argument.assertNotNull(branch, "branch");
         Argument.assertNotNull(textECD, "textECD");
-        Argument.assertNotNull(enabledECD, "enabledECD");
 		this.branch = branch;
 		
 		DocumentInitiator initiator = new DocumentInitiator(
 			"JTextFieldBB", textECD);
 		
 		branch.add(initiator);
-		branch.add(new EnabledCommit("JTextFieldBB", enabledECD, this, null));
+		if (enabledECD != null){
+            branch.add(new EnabledCommit("JTextFieldBB", enabledECD, this, null));
+        }
 		branch.add(new SetTextCommit("JTextFieldBB", textECD, this,
 			initiator, new Initiator[] {initiator}));
 	}
