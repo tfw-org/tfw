@@ -104,7 +104,7 @@ public class SelectionAndListCommit extends Commit
             {
             }
         }
-        if (selectedItemECD != null)
+        if ((selectedItemECD != null) && isStateChanged(selectedItemECD))
         {
             final Object selectedItem = (Object) get(selectedItemECD);
 
@@ -116,7 +116,7 @@ public class SelectionAndListCommit extends Commit
                 }
             });
         }
-        if (selectedIndexECD != null)
+        if ((selectedIndexECD != null) && isStateChanged(selectedIndexECD))
         {
             final int selectedIndex = ((Integer) get(selectedIndexECD))
                     .intValue();
