@@ -26,7 +26,6 @@ package tfw.tsm;
 
 import java.util.NoSuchElementException;
 
-
 /**
  * A factory for creating one deep queue's.
  */
@@ -47,33 +46,38 @@ public class OneDeepStateQueueFactory implements StateQueueFactory
     {
         private Object state = null;
 
+        private boolean empty = true;
+
         /**
          * Returns the current state
+         * 
          * @return the current state.
-         * @throws NoSuchElementException if the queue is empty.
+         * @throws NoSuchElementException
+         *             if the queue is empty.
          */
         public Object pop() throws NoSuchElementException
         {
-            if (state == null)
+            if (empty)
             {
                 throw new NoSuchElementException("Queue is empty");
             }
-			Object returnValue = state;
-			state = null;
-            return returnValue;
+            empty = true;
+            return state;
         }
 
         /**
-         * Puts the specified value on the queue, over writing any 
-         * previously pushed state that hasn't been removed.
+         * Puts the specified value on the queue, over writing any previously
+         * pushed state that hasn't been removed.
          */
         public void push(Object state)
         {
             this.state = state;
+            this.empty = false;
         }
-		
-		public boolean isEmpty(){
-			return state == null;
-		}
+
+        public boolean isEmpty()
+        {
+            return empty;
+        }
     }
 }
