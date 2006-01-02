@@ -35,7 +35,7 @@ import tfw.check.Argument;
 import tfw.tsm.ecd.EventChannelDescription;
 import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.StatelessTriggerECD;
-import tfw.value.NullConstaint;
+import tfw.value.NullConstraint;
 import tfw.value.ValueException;
 
 /**
@@ -500,7 +500,7 @@ public class TreeComponent
                         + " is not connected to an event channel");
             }
 
-            if (!(sink.getConstraint() instanceof NullConstaint))
+            if (!(sink.getConstraint() instanceof NullConstraint))
             {
                 if (sink.getEventChannel().getState() == null)
                 {

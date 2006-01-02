@@ -31,10 +31,10 @@ import tfw.check.Argument;
 /**
  * A constaint where the only legal value is <code>null</code>.
  */
-public class NullConstaint extends ValueConstraint
+public class NullConstraint extends ValueConstraint
 {
-	public static final NullConstaint INSTANCE = new NullConstaint();
-	private NullConstaint(){}
+	public static final NullConstraint INSTANCE = new NullConstraint();
+	private NullConstraint(){}
 	
     /* (non-Javadoc)
      * @see co2.value.Constraint#isCompatable(co2.value.Constraint)
@@ -43,7 +43,7 @@ public class NullConstaint extends ValueConstraint
     {
         Argument.assertNotNull(constraint, "constraint");
 
-        return (constraint instanceof NullConstaint);
+        return (constraint instanceof NullConstraint);
     }
 
     /* (non-Javadoc)

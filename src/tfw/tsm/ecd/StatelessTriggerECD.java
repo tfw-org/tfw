@@ -24,7 +24,7 @@
  */
 package tfw.tsm.ecd;
 
-import tfw.value.NullConstaint;
+import tfw.value.NullConstraint;
 
 /**
  * An event channel discription for a stateless, trigging
@@ -37,6 +37,6 @@ public final class StatelessTriggerECD extends EventChannelDescription {
 	 * @param eventChannelName the name of the event channel.
 	 */
 	public StatelessTriggerECD(String eventChannelName){
-		super(eventChannelName, NullConstaint.INSTANCE, null, false, false);
+		super(eventChannelName, NullConstraint.INSTANCE, null, false, false);
 	}
 }

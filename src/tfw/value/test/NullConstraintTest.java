@@ -2,7 +2,7 @@ package tfw.value.test;
 
 import junit.framework.TestCase;
 import tfw.value.IntegerConstraint;
-import tfw.value.NullConstaint;
+import tfw.value.NullConstraint;
 import tfw.value.ValueException;
 
 
@@ -13,7 +13,7 @@ public class NullConstraintTest extends TestCase
 {
     public void testIsCompatable()
     {
-		NullConstaint nc = NullConstaint.INSTANCE;
+		NullConstraint nc = NullConstraint.INSTANCE;
 
         try
         {
@@ -31,7 +31,7 @@ public class NullConstraintTest extends TestCase
     }
     
     public void testgetValueCompliance(){
-		NullConstaint nc = NullConstaint.INSTANCE;
+		NullConstraint nc = NullConstraint.INSTANCE;
 
 		try
 		{
