@@ -83,7 +83,9 @@ class DemultiplexedEventChannel extends Terminator
             EventChannel forwardingEventChannel)
     {
         super.setState(source, state, forwardingEventChannel);
-        parent.processorMultiSource.setState(this);
+        if (this.component != source.getTreeComponent()){
+            parent.processorMultiSource.setState(this);
+        }
     }
 
     /**
