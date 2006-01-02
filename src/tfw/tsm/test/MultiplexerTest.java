@@ -137,7 +137,6 @@ public class MultiplexerTest extends TestCase
                 .toArray()[0]);
         assertEquals("multiValue[1] not correct", "tc1", mvCommit.value
                 .toArray()[1]);
-
         // We remove one of the component to cause a new transaction in order
         // to make sure that no exceptions are thrown...
         subBranch0.remove(valueCommit0);
@@ -160,7 +159,6 @@ public class MultiplexerTest extends TestCase
 
         assertNull("Unexpected exception thrown during testing",
                 exceptionHandler.exp);
-
         // Now we will remove the multiplexer...and make sure everything still
         // works.
         root.remove(multiBranch);
@@ -171,7 +169,6 @@ public class MultiplexerTest extends TestCase
                 mvCommit.value.toArray()[0]);
         assertEquals("multiValue[1] not correct", obj.toArray()[1],
                 mvCommit.value.toArray()[1]);
-
         // Now we put the multiplexer back and make sure it still works.
         root.add(multiBranch);
         queue.waitTilEmpty();
@@ -181,7 +178,7 @@ public class MultiplexerTest extends TestCase
                 valueCommit1.value);
     }
 
-    public void testMultiLayerMultiplexing()
+    public void testMultiLayerMultiplexing() throws Exception
     {
 
         String v0_0 = "Value0.0";
@@ -189,22 +186,13 @@ public class MultiplexerTest extends TestCase
         String v1_0 = "Value1.0";
         String v1_1 = "Value1.1";
 
-        String[] vm0 = new String[] { v0_0, v0_1 };
-        String[] vm1 = new String[] { v1_0, v1_1 };
-
-        ObjectIla vmo0 = ObjectIlaFromArray.create(vm0);
-        ObjectIla vmo1 = ObjectIlaFromArray.create(vm1);
-
-        ObjectIla vmmo = ObjectIlaFromArray
-                .create(new ObjectIla[] { vmo0, vmo1 });
-
+        ObjectIla vmmo = createMultiMultiValue(v0_0, v0_1, v1_0, v1_1);
         // TODO add multiMultiInitiator and multiMultiCommit...
 
         RootFactory rf = new RootFactory();
-        rf.addEventChannel(multiMultiValueECD);
+        rf.addEventChannel(multiMultiValueECD, vmmo);
         BasicTransactionQueue queue = new BasicTransactionQueue();
         Root root = rf.create("MultiplexerTestRoot", queue);
-        rf.setLogging(true);
 
         MultiplexedBranchFactory mbf = new MultiplexedBranchFactory();
         mbf.addMultiplexer(multiValueECD, multiMultiValueECD);
@@ -239,9 +227,102 @@ public class MultiplexerTest extends TestCase
         multiBranchOne.add(initiator1_1, 1);
         multiBranchOne.add(valueCommit1_1, 1);
 
+        MultiValueCommit mmValueCommit = new MultiValueCommit(
+                "multiMultiValueCommit", multiMultiValueECD);
+
         root.add(multiMultiBranch);
+        root.add(mmValueCommit);
 
         queue.waitTilEmpty();
+        checkState(vmmo, mmValueCommit.value, valueCommit0_0.value,
+                valueCommit0_1.value, valueCommit1_0.value,
+                valueCommit1_1.value);
+
+        v1_1 = "hello 1.1";
+        vmmo = createMultiMultiValue(v0_0, v0_1, v1_0, v1_1);
+        initiator1_1.set(valueECD, v1_1);
+        queue.waitTilEmpty();
+        checkState(vmmo, mmValueCommit.value, valueCommit0_0.value,
+                valueCommit0_1.value, valueCommit1_0.value,
+                valueCommit1_1.value);
+    }
+
+    public void testMultipleMultiplexers()
+    {
+        String slot0 = "slot0";
+
+        RootFactory rf = new RootFactory();
+        rf.addEventChannel(multiValueECD, ObjectIlaFromArray
+                .create(new String[] { slot0 }));
+        BasicTransactionQueue queue = new BasicTransactionQueue();
+        Root root = rf.create("MultiplexerTestRoot", queue);
+
+        MultiplexedBranchFactory mbf = new MultiplexedBranchFactory();
+        mbf.addMultiplexer(valueECD, multiValueECD);
+        MultiplexedBranch multiBranch0 = mbf.create("MultiBranch0");
+        ValueCommit vcMb0S0 = new ValueCommit("ValueCommitBranch0Slot0",
+                valueECD);
+        multiBranch0.add(vcMb0S0, 0);
+        Initiator initiator0_0 = new Initiator("branch0Slot0Initiator",
+                valueECD);
+        multiBranch0.add(initiator0_0, 0);
+
+        MultiplexedBranch multiBranch1 = mbf.create("MultiBranch1");
+        ValueCommit vcMb1S0 = new ValueCommit("ValueCommitBranch1Slot0",
+                valueECD);
+        multiBranch1.add(vcMb1S0, 0);
+
+        root.add(multiBranch0);
+        root.add(multiBranch1);
+        queue.waitTilEmpty();
+        assertEquals("branch0Slot0", slot0, vcMb0S0.value);
+        assertEquals("branch1Slot0", slot0, vcMb1S0.value);
+
+        slot0 = "xyz";
+        initiator0_0.set(valueECD, slot0);
+        queue.waitTilEmpty();
+        assertEquals("branch0Slot0", slot0, vcMb0S0.value);
+        assertEquals("branch1Slot0", slot0, vcMb1S0.value);
+    }
+
+    private ObjectIla createMultiMultiValue(String v0_0, String v0_1,
+            String v1_0, String v1_1)
+    {
+        String[] vm0 = new String[] { v0_0, v0_1 };
+        String[] vm1 = new String[] { v1_0, v1_1 };
+
+        ObjectIla vmo0 = ObjectIlaFromArray.create(vm0);
+        ObjectIla vmo1 = ObjectIlaFromArray.create(vm1);
+
+        ObjectIla vmmo = ObjectIlaFromArray
+                .create(new ObjectIla[] { vmo0, vmo1 });
+        return vmmo;
+    }
+
+    private void checkState(ObjectIla mmAnswer, ObjectIla mmResult,
+            String v0_0, String v0_1, String v1_0, String v1_1)
+            throws Exception
+    {
+        Object[][] mma = toArray(mmAnswer);
+        assertEquals("[0][0]", mma[0][0], v0_0);
+        assertEquals("[0][1]", mma[0][1], v0_1);
+        assertEquals("[1][0]", mma[1][0], v1_0);
+        assertEquals("[1][1]", mma[1][1], v1_1);
+
+        Object[][] mmr = toArray(mmResult);
+        assertEquals("[0][0]", mma[0][0], mmr[0][0]);
+        assertEquals("[0][1]", mma[0][1], mmr[0][1]);
+        assertEquals("[1][0]", mma[1][0], mmr[1][0]);
+        assertEquals("[1][1]", mma[1][1], mmr[1][1]);
+    }
+
+    private Object[][] toArray(ObjectIla objs) throws Exception
+    {
+        Object[][] mmArray = new Object[2][];
+        Object[] mma = objs.toArray();
+        mmArray[0] = ((ObjectIla) mma[0]).toArray();
+        mmArray[1] = ((ObjectIla) mma[1]).toArray();
+        return mmArray;
     }
 
     public static Test suite()
