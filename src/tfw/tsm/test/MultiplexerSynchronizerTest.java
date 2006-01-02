@@ -42,16 +42,6 @@ public class MultiplexerSynchronizerTest extends TestCase
         protected void commit()
         {
             this.objectIla = (ObjectIla) get(this.objectIlaECD);
-            try
-            {
-                System.out.println(this.getName() + " - "
-                        + Arrays.asList(objectIla.toArray()));
-            }
-            catch (DataInvalidException e)
-            {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
         }
     }
 
