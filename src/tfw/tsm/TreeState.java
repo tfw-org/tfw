@@ -24,6 +24,8 @@
  */
 package tfw.tsm;
 
+import java.io.Serializable;
+
 import tfw.array.ArrayUtil;
 import tfw.check.Argument;
 
@@ -34,7 +36,7 @@ import tfw.check.Argument;
  * a tree component includes its name, the state of its event channels and 
  * the state of its child sub-trees.
  */
-public class TreeState
+public class TreeState implements Serializable
 {
 	/** The name of the tree component. */
     private final String name;

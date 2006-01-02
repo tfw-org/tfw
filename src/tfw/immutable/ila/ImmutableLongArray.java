@@ -24,7 +24,9 @@
  */
 package tfw.immutable.ila;
 
-public interface ImmutableLongArray
+import java.io.Serializable;
+
+public interface ImmutableLongArray extends Serializable
 {
     public long length();
 }

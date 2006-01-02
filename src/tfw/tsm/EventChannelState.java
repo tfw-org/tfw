@@ -25,16 +25,17 @@
 package tfw.tsm;
 
 
+import java.io.Serializable;
+
 import tfw.check.Argument;
 import tfw.tsm.ecd.ObjectECD;
-
 import tfw.value.ValueException;
 
 
 /**
  * A container for event channel state.
  */
-public class EventChannelState
+public class EventChannelState implements Serializable
 {
     private final ObjectECD ecd;
     private final Object state;
