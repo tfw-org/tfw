@@ -96,7 +96,13 @@ public class SelectionAndListCommit extends Commit
                 {
                     public void run()
                     {
-                        comboBox.setModel(new DefaultComboBoxModel(list));
+                        DefaultComboBoxModel model = new DefaultComboBoxModel(
+                                list);
+                        if (model.getIndexOf(comboBox.getSelectedItem()) > 0)
+                        {
+                            model.setSelectedItem(comboBox.getSelectedItem());
+                        }
+                        comboBox.setModel(model);
                     }
                 });
             }
