@@ -763,7 +763,7 @@ public class TreeComponent
             while (itr.hasNext())
             {
                 TreeComponent tc = (TreeComponent) itr.next();
-                buff.addChild(tc.getTreeState());
+                buff.addChild(tc.getTreeState(exportTag));
             }
         }
 
