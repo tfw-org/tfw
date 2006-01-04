@@ -24,10 +24,12 @@
  */
 package tfw.value;
 
+import java.io.Serializable;
+
 /**
  * 
  */
-public abstract class ValueConstraint {
+public abstract class ValueConstraint implements Serializable {
 	/** The string used to represent a value which complies with the constraint. */
 	public static final String VALID = "Valid";
  
