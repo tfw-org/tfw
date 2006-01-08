@@ -59,4 +59,29 @@ public class ObjectECD extends EventChannelDescription
     {
         super(eventChannelName, constraint, codec, true, true);
     }
+
+    /**
+     * Creates an event channel description with the specified attributes. This
+     * constructor is intentionally package private. 
+     * 
+     * @param eventChannelName
+     *            the name of the event channel.
+     * @param constraint
+     *            the value constraint for the evnet channel.
+     * @param codec
+     *            the codec for the event channel values. <code>null</code> is
+     *            a valid value.
+     * @param fireOnConnect
+     *            flag indicating whether the event channel fires state when a
+     *            new sink is connected.
+     * @param rollbackParticipant
+     *            flag indicating whether the event channel participates in
+     *            transaction rollbacks.
+     */
+    ObjectECD(String eventChannelName, ValueConstraint constraint,
+            ValueCodec codec, boolean fireOnConnect, boolean rollbackParticipant)
+    {
+        super(eventChannelName, constraint, codec, fireOnConnect,
+                rollbackParticipant);
+    }
 }
