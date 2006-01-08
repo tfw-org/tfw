@@ -42,121 +42,156 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-
 public class RollbackTest extends TestCase
 {
     private final String VALID = "valid";
+
     private final String INVALID = "invalid";
+
     private final StringECD aECD = new StringECD("a");
+
     private final StringECD bECD = new StringECD("b");
+
     private final StringECD cECD = new StringECD("c");
+
     private final StringRollbackECD error1ECD = new StringRollbackECD("error1");
+
     private final StringRollbackECD error2ECD = new StringRollbackECD("error2");
+
     private final String aInitialState = "aInitialState";
+
     private final String bInitialState = "bInitialState";
+
     private final String cInitialState = "cInitialState";
+
     private String errorState1 = null;
+
     private String errorState2 = null;
+
     private String aCommitState = null;
+
     private String bCommitState = null;
+
     private String cCommitState = null;
+
     private EventChannelState aRollbackState = new EventChannelState(aECD,
             "A set after rolledback");
+
     private EventChannelState bRollbackState = new EventChannelState(bECD,
             "B set after rolledback");
+
     private EventChannelState cRollbackState = new EventChannelState(cECD,
             "C set after rolledback");
+
     private EventChannelState aErrorState = new EventChannelState(error1ECD,
             "A is invalid");
+
     private EventChannelState bErrorState = new EventChannelState(error1ECD,
             "B is invalid");
+
     private EventChannelState cErrorState = new EventChannelState(error1ECD,
             "C is invalid");
-    private final Initiator initiator = new Initiator("Initiator",
-            new StringECD[]{ aECD, bECD, cECD });
-    private final Validator aValidator = new Validator("A Validator",
-            new StringECD[]{ aECD }, new StringRollbackECD[]{ error1ECD })
-        {
-            protected void validateState()
-            {
-                String state = (String) get(aECD);
 
-                //System.out.println("validating a: " + state);
-                if (state.equals("invalid"))
-                {
-                    rollback((RollbackECD) aErrorState.getECD(),
-                        aErrorState.getState());
-                }
+    private final Initiator initiator = new Initiator("Initiator",
+            new StringECD[] { aECD, bECD, cECD });
+
+    private final Validator aValidator = new Validator("A Validator",
+            new StringECD[] { aECD }, new StringRollbackECD[] { error1ECD })
+    {
+        protected void validateState()
+        {
+            String state = (String) get(aECD);
+
+            // System.out.println("validating a: " + state);
+            if (state.equals("invalid"))
+            {
+                rollback((RollbackECD) aErrorState.getECD(), aErrorState
+                        .getState());
             }
-        };
+        }
+    };
 
     private Validator bValidator = new Validator("B Validator",
-            new StringECD[]{ bECD }, new StringRollbackECD[]{ error1ECD })
+            new StringECD[] { bECD }, new StringRollbackECD[] { error1ECD })
+    {
+        protected void validateState()
         {
-            protected void validateState()
-            {
-                String state = (String) get(bECD);
+            String state = (String) get(bECD);
 
-                //System.out.println("validating b: " + state);
-                if (state.equals("invalid"))
-                {
-                    //                    rollback(new EventChannelState[]
-                    //                        {
-                    //                            aRollbackState, bRollbackState, cRollbackState,
-                    //                            bErrorState
-                    //                        });
-                }
+            // System.out.println("validating b: " + state);
+            if (state.equals("invalid"))
+            {
+                // rollback(new EventChannelState[]
+                // {
+                // aRollbackState, bRollbackState, cRollbackState,
+                // bErrorState
+                // });
             }
-        };
+        }
+    };
 
     private Validator cValidator = new Validator("C Validator",
-            new StringECD[]{ cECD }, new StringRollbackECD[]{ error1ECD })
+            new StringECD[] { cECD }, new StringRollbackECD[] { error1ECD })
+    {
+        protected void validateState()
         {
-            protected void validateState()
+            String state = (String) get(cECD);
+
+            System.out.println("validating c: " + state);
+            if (state.equals("invalid"))
             {
-                String state = (String) get(cECD);
-
-                //System.out.println("validating c: " + state);
-                if (state.equals("invalid"))
-                {
-                    rollback((RollbackECD) cErrorState.getECD(),
-                        cErrorState.getState());
-                }
+                rollback((RollbackECD) cErrorState.getECD(), cErrorState
+                        .getState());
             }
-        };
+        }
+    };
 
-    private Commit commit = new Commit("Commit",
-            new ObjectECD[]{ aECD, bECD, cECD, error1ECD })
+    private Commit commit = new Commit("Commit", new ObjectECD[] { aECD, bECD,
+            cECD })
+    {
+        protected void commit()
         {
-            protected void commit()
-            {
-                //System.out.println("commit.commit() reached");
-                aCommitState = (String) get(aECD);
-                bCommitState = (String) get(bECD);
-                cCommitState = (String) get(cECD);
-            }
+            // System.out.println("commit.commit() reached");
+            aCommitState = (String) get(aECD);
+            bCommitState = (String) get(bECD);
+            cCommitState = (String) get(cECD);
+        }
 
-            protected void debugCommit()
-            {
-                //System.out.println("commit.debugCommit() called");
-            }
-        };
-
-    private Commit errorHandler = new Commit("Error Handler",
-            new ObjectECD[]{ error1ECD, error2ECD })
+        protected void debugCommit()
         {
-            protected void commit()
-            {
-                //System.out.println("errorHandler.commit()");
-                errorState1 = (String) get(error1ECD);
-                errorState2 = (String) get(error2ECD);
-            }
+            System.out.println("commit.debugCommit() called" + get());
+        }
+    };
 
-            protected void debugCommit()
-            {
-                //System.out.println("errorHandler.debugCommit()");
-            }
-        };
+    private Commit errorHandler1 = new Commit("Error Handler 1",
+            new ObjectECD[] { error1ECD })
+    {
+        protected void commit()
+        {
+            System.out.println("errorHandler1.commit()");
+            errorState1 = (String) get(error1ECD);
+        }
+
+        protected void debugCommit()
+        {
+            // System.out.println("errorHandler1.debugCommit()");
+        }
+    };
+
+    private Commit errorHandler2 = new Commit("Error Handler 2",
+            new ObjectECD[] { error2ECD })
+    {
+        protected void commit()
+        {
+            System.out.println("errorHandler2.commit()");
+            errorState2 = (String) get(error2ECD);
+        }
+
+        protected void debugCommit()
+        {
+            // System.out.println("errorHandler2.debugCommit()");
+        }
+    };
 
     public void testRollbackArguments()
     {
@@ -169,7 +204,7 @@ public class RollbackTest extends TestCase
         }
         catch (IllegalArgumentException expected)
         {
-            //System.out.println(expected);
+            // System.out.println(expected);
         }
 
         try
@@ -179,7 +214,7 @@ public class RollbackTest extends TestCase
         }
         catch (IllegalArgumentException expected)
         {
-            //System.out.println(expected);
+            // System.out.println(expected);
         }
 
         try
@@ -189,48 +224,48 @@ public class RollbackTest extends TestCase
         }
         catch (IllegalArgumentException expected)
         {
-            //System.out.println(expected);
+            // System.out.println(expected);
         }
 
         try
         {
-            handler.testRollback(new EventChannelState[]{ null });
+            handler.testRollback(new EventChannelState[] { null });
 
             fail("rollback() accepted event channel state with null element");
         }
         catch (IllegalArgumentException expected)
         {
-            //System.out.println(expected);
+            // System.out.println(expected);
         }
     }
 
     public void testConverter() throws Exception
     {
         RootFactory rf = new RootFactory();
-        rf.addEventChannel(error1ECD, "no errors");
-        rf.addEventChannel(error2ECD, "no errors");
+        rf.addEventChannel(error1ECD);
+        rf.addEventChannel(error2ECD);
         rf.addEventChannel(aECD, aInitialState);
         rf.addEventChannel(bECD, bInitialState);
         rf.addEventChannel(cECD, cInitialState);
 
-        //rf.setLogging(true);
+        // rf.setLogging(true);
         BasicTransactionQueue queue = new BasicTransactionQueue();
 
-        //rf.setLogging(true);
+        // rf.setLogging(true);
         Root root = rf.create("Test branch", queue);
         root.add(initiator);
         root.add(aValidator);
         root.add(bValidator);
         root.add(cValidator);
         root.add(commit);
-        root.add(errorHandler);
+        root.add(errorHandler1);
 
         initiator.set(aECD, "valid");
         initiator.set(bECD, "valid");
         initiator.set(cECD, "invalid");
         queue.waitTilEmpty();
 
-        //System.out.println("got here");
+        // System.out.println("got here");
         assertEquals("A Commit", "valid", aCommitState);
         assertEquals("B Commit", "valid", bCommitState);
         assertEquals("C Commit", cInitialState, cCommitState);
@@ -255,10 +290,10 @@ public class RollbackTest extends TestCase
         initiator.set(bECD, "invalid");
         queue.waitTilEmpty();
 
-        //        assertEquals("A Commit", aRollbackState.getState(), aCommitState);
-        //        assertEquals("B Commit", bRollbackState.getState(), bCommitState);
-        //        assertEquals("C Commit", cRollbackState.getState(), cCommitState);
-        //        assertEquals("error Commit", aErrorState.getState(), errorState1);
+        // assertEquals("A Commit", aRollbackState.getState(), aCommitState);
+        // assertEquals("B Commit", bRollbackState.getState(), bCommitState);
+        // assertEquals("C Commit", cRollbackState.getState(), cCommitState);
+        // assertEquals("error Commit", aErrorState.getState(), errorState1);
     }
 
     public void testSimpleRollback()
@@ -284,14 +319,14 @@ public class RollbackTest extends TestCase
         queue.waitTilEmpty();
         assertEquals("valid value failed", VALID, aCommit.commitValue);
         assertEquals("Error commit called when no error", null,
-            errorCommit.commitValue);
+                errorCommit.commitValue);
 
         aCommit.commitValue = null;
         initiator.set(aECD, INVALID);
         queue.waitTilEmpty();
         assertEquals("Invalid value reached commit", null, aCommit.commitValue);
         assertEquals("Error commit not reached", errorMsg,
-            errorCommit.commitValue);
+                errorCommit.commitValue);
     }
 
     public void testDaisyChainedMultiCycleRollback()
@@ -304,8 +339,8 @@ public class RollbackTest extends TestCase
         TestConverter aConverter = new TestConverter("A converter", aECD, bECD);
         TestConverter bConverter = new TestConverter("B converter", bECD, cECD);
         Validator cValidator = new TestValidator(cECD, error1ECD, cErrorMsg);
-        TestCommit errorCommit = new TestCommit(error1ECD,
-                new StringECD[]{ aECD, bECD, cECD });
+        TestCommit errorCommit = new TestCommit(error1ECD, new StringECD[] {
+                aECD, bECD, cECD });
 
         RootFactory rf = new RootFactory();
         rf.addEventChannel(aECD);
@@ -342,23 +377,21 @@ public class RollbackTest extends TestCase
         assertEquals("bCommit not reached", VALID, bCommit.commitValue);
         assertEquals("cCommit not reached", VALID, cCommit.commitValue);
         assertEquals("errorCommit reached", cErrorMsg, errorCommit.commitValue);
-        assertEquals("aECD has wrong value", VALID,
-            errorCommit.stateMap.get(aECD));
-        assertEquals("bECD has wrong value", VALID,
-            errorCommit.stateMap.get(bECD));
-        assertEquals("cECD has wrong value", VALID,
-            errorCommit.stateMap.get(cECD));
+        assertEquals("aECD has wrong value", VALID, errorCommit.stateMap
+                .get(aECD));
+        assertEquals("bECD has wrong value", VALID, errorCommit.stateMap
+                .get(bECD));
+        assertEquals("cECD has wrong value", VALID, errorCommit.stateMap
+                .get(cECD));
     }
 
     public void testMultiValueRollback()
     {
         String error1msg = "Error notification on error channel one";
         String error2msg = "Error notification on error channel two";
-        EventChannelState[] rollbackState = new EventChannelState[]
-            {
+        EventChannelState[] rollbackState = new EventChannelState[] {
                 new EventChannelState(error1ECD, error1msg),
-                new EventChannelState(error2ECD, error2msg)
-            };
+                new EventChannelState(error2ECD, error2msg) };
 
         Initiator initiator = new Initiator("Test initiator", aECD);
         Validator aValidator = new TestValidator(aECD, rollbackState);
@@ -381,16 +414,16 @@ public class RollbackTest extends TestCase
         initiator.set(aECD, VALID);
         queue.waitTilEmpty();
         assertNull("errorCommit1 received value on valid input",
-            errorCommit1.commitValue);
+                errorCommit1.commitValue);
         assertNull("errorCommit2 received value on valid input",
-            errorCommit2.commitValue);
+                errorCommit2.commitValue);
 
         initiator.set(aECD, INVALID);
         queue.waitTilEmpty();
         assertEquals("errorCommit1 received wrong value on invalid input",
-            error1msg, errorCommit1.commitValue);
+                error1msg, errorCommit1.commitValue);
         assertEquals("errorCommit2 received wrong value on invalid input",
-            error2msg, errorCommit2.commitValue);
+                error2msg, errorCommit2.commitValue);
     }
 
     public static Test suite()
@@ -418,15 +451,18 @@ public class RollbackTest extends TestCase
     private class TestValidator extends Validator
     {
         private final StringECD triggerECD;
+
         private final StringRollbackECD rollbackECD;
+
         private final String errorMsg;
+
         private final EventChannelState[] rollbackState;
 
         public TestValidator(StringECD triggerECD,
-            EventChannelState[] rollbackState)
+                EventChannelState[] rollbackState)
         {
             super("Test Validator " + triggerECD.getEventChannelName(),
-                new StringECD[]{ triggerECD }, getECDs(rollbackState));
+                    new StringECD[] { triggerECD }, getECDs(rollbackState));
             this.triggerECD = triggerECD;
             this.errorMsg = null;
             this.rollbackECD = null;
@@ -434,10 +470,11 @@ public class RollbackTest extends TestCase
         }
 
         public TestValidator(StringECD triggerECD,
-            StringRollbackECD rollbackECD, String errorMsg)
+                StringRollbackECD rollbackECD, String errorMsg)
         {
             super("Test Validator " + triggerECD.getEventChannelName(),
-                new StringECD[]{ triggerECD }, new RollbackECD[]{ rollbackECD });
+                    new StringECD[] { triggerECD },
+                    new RollbackECD[] { rollbackECD });
             this.triggerECD = triggerECD;
             this.rollbackECD = rollbackECD;
             this.errorMsg = errorMsg;
@@ -465,14 +502,15 @@ public class RollbackTest extends TestCase
     private class TestCommit extends Commit
     {
         String commitValue = null;
+
         StateMap stateMap = null;
+
         private final ObjectECD trigger;
 
-        public TestCommit(ObjectECD trigger,
-            ObjectECD[] nontriggers)
+        public TestCommit(ObjectECD trigger, ObjectECD[] nontriggers)
         {
             super("Test Commit " + trigger.getEventChannelName(),
-                new ObjectECD[]{ trigger }, nontriggers, null);
+                    new ObjectECD[] { trigger }, nontriggers, null);
             this.trigger = trigger;
         }
 
@@ -487,8 +525,8 @@ public class RollbackTest extends TestCase
     {
         public TestRollbackHandler()
         {
-            super("Test", new ObjectECD[]{ aECD },
-                new RollbackECD[]{ error1ECD });
+            super("Test", new ObjectECD[] { aECD },
+                    new RollbackECD[] { error1ECD });
         }
 
         public void validateState()
@@ -509,12 +547,14 @@ public class RollbackTest extends TestCase
     private class TestConverter extends Converter
     {
         private final StringECD input;
+
         private final StringECD output;
+
         private String inValue;
 
         public TestConverter(String name, StringECD input, StringECD output)
         {
-            super(name, new StringECD[]{ input }, new StringECD[]{ output });
+            super(name, new StringECD[] { input }, new StringECD[] { output });
             this.input = input;
             this.output = output;
         }

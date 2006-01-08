@@ -28,6 +28,7 @@ import java.util.HashMap;
 
 import tfw.check.Argument;
 import tfw.tsm.ecd.EventChannelDescription;
+import tfw.tsm.ecd.RollbackECD;
 import tfw.tsm.ecd.StatelessTriggerECD;
 import tfw.value.ValueException;
 
@@ -89,7 +90,8 @@ public class BaseBranchFactory
             EventChannelDescription eventChannelDescription, Object initialState)
             throws ValueException
     {
-        if (eventChannelDescription instanceof StatelessTriggerECD)
+        if ((eventChannelDescription instanceof StatelessTriggerECD)
+                || (eventChannelDescription instanceof RollbackECD))
         {
             addEventChannel(eventChannelDescription, initialState,
                     AlwaysChangeRule.RULE, null);
@@ -146,13 +148,16 @@ public class BaseBranchFactory
                             + " eventChannelDescription.isFireOnConnect() == false");
         }
 
-        if (eventChannelDescription instanceof StatelessTriggerECD)
+        if ((eventChannelDescription instanceof StatelessTriggerECD)
+                || (eventChannelDescription instanceof RollbackECD))
         {
             if (!(rule instanceof AlwaysChangeRule))
             {
                 throw new IllegalArgumentException(
-                        "(eventChannelDescription instanceof StatelessTriggerECD)"
-                                + " && !(rule instanceof AlwaysChangeRule) not allowed");
+                        "(eventChannelDescription instanceof "
+                                + ((eventChannelDescription instanceof StatelessTriggerECD) ? "StatelessTriggerECD"
+                                        : "RollbackECD")
+                                + ") && !(rule instanceof AlwaysChangeRule) not allowed");
             }
         }
         terminators.put(eventChannelDescription.getEventChannelName(),
