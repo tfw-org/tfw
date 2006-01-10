@@ -24,8 +24,6 @@
  */
 package tfw.tsm.ecd;
 
-import java.io.Serializable;
-
 import tfw.check.Argument;
 import tfw.value.ValueCodec;
 import tfw.value.ValueConstraint;
@@ -34,7 +32,7 @@ import tfw.value.ValueConstraint;
  * Describes an event channel. For specialized event channel descriptions
  * extends {@link ObjectECD}.
  */
-public abstract class EventChannelDescription implements Serializable
+public abstract class EventChannelDescription
 {
     /** The name of the event channel. */
     private final String eventChannelName;
