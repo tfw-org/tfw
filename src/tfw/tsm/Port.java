@@ -105,7 +105,7 @@ abstract class Port
         if (eventChannel == null)
         {
             throw new IllegalStateException(name
-                    + " is not connectd to event channel '"
+                    + " is not connected to event channel '"
                     + ecd.getEventChannelName() + "'");
         }
 
