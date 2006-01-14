@@ -118,7 +118,7 @@ class Multiplexer implements EventChannel
                 DemultiplexedEventChannel dm = (DemultiplexedEventChannel) itr
                         .next();
                 int index = dm.demultiplexIndex.intValue();
-                if (index > state.length)
+                if (index >= state.length)
                 {
                     throw new IllegalStateException(
                             "Multiplexed state does not have a value for demultiplexed channel '"
