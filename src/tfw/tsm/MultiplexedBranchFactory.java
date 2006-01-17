@@ -86,6 +86,12 @@ public class MultiplexedBranchFactory
         Argument.assertNotNull(multiValueECD, "multiValueECD");
         Argument.assertNotNull(valueStateChangeRule, "valueStateChangeRule");
 
+        if (valueECD.getEventChannelName().equals(
+                multiValueECD.getEventChannelName()))
+        {
+            throw new IllegalArgumentException(
+                    "valueECD.getEventChannelName().equals(multiValueECD.getEventChannelName()) not allowed");
+        }
         if (multiValueECDMap.put(multiValueECD.getEventChannelName(),
                 multiValueECD) != null)
         {
