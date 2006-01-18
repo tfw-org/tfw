@@ -285,17 +285,19 @@ public class TreeComponent
             throw new IllegalArgumentException("Child, '" + child.getName()
                     + "' is rooted. Can't add a rooted tree!");
         }
-
         if (children == null)
         {
             this.children = new HashMap();
         }
 
-        if (children.put(child.getName(), child) != null)
+        synchronized (children)
         {
-            throw new IllegalArgumentException(
-                    "Attempt to add child with duplicate name, '"
-                            + child.getName() + "'");
+            if (children.put(child.getName(), child) != null)
+            {
+                throw new IllegalArgumentException(
+                        "Attempt to add child with duplicate name, '"
+                                + child.getName() + "'");
+            }
         }
 
         child.setParent(this);
@@ -322,7 +324,10 @@ public class TreeComponent
                     "child not connected to this component");
         }
 
-        children.remove(child.getName());
+        synchronized (children)
+        {
+            children.remove(child.getName());
+        }
         child.setParent(null);
 
         if (isRooted())
@@ -340,9 +345,11 @@ public class TreeComponent
         {
             return;
         }
-
-        Object[] array = children.values().toArray();
-
+        Object[] array = null;
+        synchronized (children)
+        {
+            array = children.values().toArray();
+        }
         for (int i = 0; i < array.length; i++)
         {
             remove((TreeComponent) array[i]);
@@ -350,9 +357,9 @@ public class TreeComponent
     }
 
     /**
-     * Returns an unmodifiable map of this component's children.
+     * Returns an copy of this component's map of children.
      * 
-     * @return an unmodifiable map of this component's children.
+     * @return an copy of this component's map of children.
      */
     public Map getChildren()
     {
@@ -361,7 +368,10 @@ public class TreeComponent
             return new HashMap();
         }
 
-        return Collections.unmodifiableMap(children);
+        synchronized (children)
+        {
+            return new HashMap(children);
+        }
     }
 
     /**
@@ -539,20 +549,27 @@ public class TreeComponent
     Set terminateChildAndLocalConnections()
     {
         HashSet unterminatedConnections = new HashSet();
-
-        if (children != null)
+        TreeComponent[] treeComponents = getChildComponents();
+        for (int i = 0; i < treeComponents.length; i++)
         {
-            Iterator itr = children.values().iterator();
-
-            while (itr.hasNext())
-            {
-                TreeComponent child = (TreeComponent) itr.next();
-                unterminatedConnections.addAll(child
-                        .terminateChildAndLocalConnections());
-            }
+            unterminatedConnections.addAll(treeComponents[i]
+                    .terminateChildAndLocalConnections());
         }
 
         return (terminateLocally(unterminatedConnections));
+    }
+
+    private TreeComponent[] getChildComponents()
+    {
+        if (children == null)
+        {
+            return new TreeComponent[0];
+        }
+        synchronized (children)
+        {
+            return ((TreeComponent[]) children.values().toArray(
+                    new TreeComponent[children.size()]));
+        }
     }
 
     /**
@@ -650,15 +667,10 @@ public class TreeComponent
     void disconnect()
     {
         disconnectPorts();
-
-        if (children != null)
+        TreeComponent[] childComponents = getChildComponents();
+        for (int i = 0; i < childComponents.length; i++)
         {
-            Iterator itr = children.values().iterator();
-
-            while (itr.hasNext())
-            {
-                ((TreeComponent) itr.next()).disconnect();
-            }
+            childComponents[i].disconnect();
         }
     }
 
@@ -742,8 +754,8 @@ public class TreeComponent
             {
                 try
                 {
-                    EventChannelState ecs = new EventChannelState((ObjectECD)ec.getECD(),
-                            ec.getState());
+                    EventChannelState ecs = new EventChannelState(
+                            (ObjectECD) ec.getECD(), ec.getState());
                     buff.addState(ecs);
                 }
                 catch (ValueException unexpected)
@@ -756,15 +768,10 @@ public class TreeComponent
             }
         }
 
-        if (this.children != null)
+        TreeComponent[] childComponents = getChildComponents();
+        for (int i = 0; i < childComponents.length; i++)
         {
-            itr = this.children.values().iterator();
-
-            while (itr.hasNext())
-            {
-                TreeComponent tc = (TreeComponent) itr.next();
-                buff.addChild(tc.getTreeState(exportTag));
-            }
+            buff.addChild(childComponents[i].getTreeState(exportTag));
         }
 
         return buff.toTreeState();
@@ -853,6 +860,15 @@ public class TreeComponent
 
         TreeState[] childTreeState = state.getChildren();
 
+        if (children == null)
+        {
+            if ((childTreeState.length == 0) || skipMissingChildBranches)
+            {
+                return;
+            }
+            throw new IllegalArgumentException(
+                    "'state' contains child tree state and this component has no children");
+        }
         for (int i = 0; i < childTreeState.length; i++)
         {
             TreeComponent child = (TreeComponent) this.children
