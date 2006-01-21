@@ -72,13 +72,13 @@ class Translator extends Terminator
         ValueConstraint pvc = parentPort.getConstraint();
         ValueConstraint cvc = childPort.getConstraint();
 
-        if (!cvc.isCompatable(pvc))
+        if (!cvc.isCompatible(pvc))
         {
             throw new IllegalArgumentException(
                 "The parent value constraint is not compatable with the child value constraint");
         }
 
-        if (!pvc.isCompatable(cvc))
+        if (!pvc.isCompatible(cvc))
         {
             throw new IllegalArgumentException(
                 "The child value constraint is not compatable with the parent value constraint");

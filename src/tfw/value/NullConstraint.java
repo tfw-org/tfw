@@ -39,7 +39,7 @@ public class NullConstraint extends ValueConstraint
     /* (non-Javadoc)
      * @see co2.value.Constraint#isCompatable(co2.value.Constraint)
      */
-    public boolean isCompatable(ValueConstraint constraint)
+    public boolean isCompatible(ValueConstraint constraint)
     {
         Argument.assertNotNull(constraint, "constraint");
 

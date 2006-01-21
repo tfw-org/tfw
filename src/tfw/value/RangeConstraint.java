@@ -148,7 +148,7 @@ public class RangeConstraint extends ClassValueConstraint
      * @return true if every value which meets the specified constraint
      * also meets this constraint, otherwise returns false.
      */
-    public boolean isCompatable(ValueConstraint constraint)
+    public boolean isCompatible(ValueConstraint constraint)
     {
         if (constraint == this)
         {
@@ -166,7 +166,7 @@ public class RangeConstraint extends ClassValueConstraint
         }
 
         // check value type...
-        if (!super.isCompatable(constraint))
+        if (!super.isCompatible(constraint))
         {
             return false;
         }

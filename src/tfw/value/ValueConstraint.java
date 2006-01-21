@@ -63,7 +63,7 @@ public abstract class ValueConstraint
      * @return true if every value which meets the specified constraint also
      *         meets this constraint, otherwise returns false.
      */
-    public abstract boolean isCompatable(ValueConstraint constraint);
+    public abstract boolean isCompatible(ValueConstraint constraint);
 
     /**
      * Returns {@link #VALID} if the value complies with the constraint,

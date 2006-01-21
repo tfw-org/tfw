@@ -114,7 +114,7 @@ public class BranchFactory extends BaseBranchFactory
                             + "' which is already translated.");
         }
 
-        if (!childEventChannel.getConstraint().isCompatable(
+        if (!childEventChannel.getConstraint().isCompatible(
                 parentEventChannel.getConstraint()))
         {
             throw new IllegalArgumentException(
@@ -123,7 +123,7 @@ public class BranchFactory extends BaseBranchFactory
                             + "' are not assignable to the child event channel '"
                             + childEventChannel.getEventChannelName() + "'");
         }
-        if (!parentEventChannel.getConstraint().isCompatable(
+        if (!parentEventChannel.getConstraint().isCompatible(
                 childEventChannel.getConstraint()))
         {
             throw new IllegalArgumentException(

@@ -50,7 +50,7 @@ public class TriggeredEventChannelCopy extends TriggeredConverter {
 		super("TriggeredEventChannelCopy[" + name + "]", triggerECD,
 				new ObjectECD[] { inputECD },
 				new ObjectECD[] { outputECD });
-		if (outputECD.getConstraint().isCompatable(inputECD.getConstraint()) == false) {
+		if (outputECD.getConstraint().isCompatible(inputECD.getConstraint()) == false) {
 			throw new IllegalArgumentException(
 					"outputECD.getConstraint().isCompatable(inputECD.getConstraint()) == false not allowed");
 		}

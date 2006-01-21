@@ -17,7 +17,7 @@ public class NullConstraintTest extends TestCase
 
         try
         {
-            nc.isCompatable(null);
+            nc.isCompatible(null);
             fail("isCompatible() accepted null constraint");
         }
         catch (IllegalArgumentException expected)
@@ -25,9 +25,9 @@ public class NullConstraintTest extends TestCase
             //System.out.println(expected);
         }
 
-        assertTrue("isCompatible() rejected itself", nc.isCompatable(nc));
+        assertTrue("isCompatible() rejected itself", nc.isCompatible(nc));
         assertFalse("isCompatible() accepted an IntegerConstaint",
-            nc.isCompatable(new IntegerConstraint(0, 1)));
+            nc.isCompatible(new IntegerConstraint(0, 1)));
     }
     
     public void testgetValueCompliance(){

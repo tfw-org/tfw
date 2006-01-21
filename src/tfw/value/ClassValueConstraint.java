@@ -180,7 +180,7 @@ public class ClassValueConstraint extends ValueConstraint
      * @return true if every value which meets the specified constraint
      * also meets this constraint, otherwise returns false.
      */
-    public boolean isCompatable(ValueConstraint constraint)
+    public boolean isCompatible(ValueConstraint constraint)
     {
         if (constraint instanceof ClassValueConstraint)
         {

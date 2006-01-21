@@ -71,7 +71,7 @@ public class SetConstraint extends ValueConstraint
      *         <code>SetConstraint</code> and its set of values is a sub-set
      *         of this constraints values, otherwise returns false.
      */
-    public boolean isCompatable(ValueConstraint constraint)
+    public boolean isCompatible(ValueConstraint constraint)
     {
         if (constraint instanceof SetConstraint)
         {

@@ -82,29 +82,29 @@ public class RangeConstraintTest extends TestCase
     {
         RangeConstraint rc = new RangeConstraint(Integer.class, new Integer(0),
                 new Integer(2), false, false);
-        assertFalse("isCompatible(null) returned true", rc.isCompatable(null));
+        assertFalse("isCompatible(null) returned true", rc.isCompatible(null));
 
         RangeConstraint rcLow = new RangeConstraint(Integer.class,
                 new Integer(0), new Integer(0), true, true);
-        assertFalse("isCompatible(rcLow) returned true", rc.isCompatable(rcLow));
+        assertFalse("isCompatible(rcLow) returned true", rc.isCompatible(rcLow));
 
         RangeConstraint rcHigh = new RangeConstraint(Integer.class,
                 new Integer(2), new Integer(2), true, true);
         assertFalse("isCompatible(rcHigh) returned true",
-            rc.isCompatable(rcHigh));
+            rc.isCompatible(rcHigh));
 
         RangeConstraint rcMiddle = new RangeConstraint(Integer.class,
                 new Integer(1), new Integer(1), true, true);
         assertTrue("isCompatible(rcMiddle) returned false",
-            rc.isCompatable(rcMiddle));
+            rc.isCompatible(rcMiddle));
 
-        assertTrue("isCompatible(rc) returned false", rc.isCompatable(rc));
+        assertTrue("isCompatible(rc) returned false", rc.isCompatible(rc));
 
         RangeConstraint rcFloat = new RangeConstraint(Float.class,
                 new Float(1.0), new Float(1.0), true, true);
 
         assertFalse("isCompatible(rcFloat) returned true",
-            rc.isCompatable(rcFloat));
+            rc.isCompatible(rcFloat));
     }
 
     public void testValueCompliance()

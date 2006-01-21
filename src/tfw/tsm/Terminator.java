@@ -204,7 +204,7 @@ class Terminator implements EventChannel, CommitRollbackListener
 
     void addSource(Source source)
     {
-        if (!ecd.getConstraint().isCompatable(source.getConstraint()))
+        if (!ecd.getConstraint().isCompatible(source.getConstraint()))
         {
             throw new TerminatorException("The source '"
                     + source.getFullyQualifiedName() + ", with '"
@@ -232,7 +232,7 @@ class Terminator implements EventChannel, CommitRollbackListener
     {
         Argument.assertNotNull(sink, "sink");
 
-        if (!sink.getConstraint().isCompatable(ecd.getConstraint()))
+        if (!sink.getConstraint().isCompatible(ecd.getConstraint()))
         {
             throw new TerminatorException("The sink '"
                     + sink.getFullyQualifiedName() + ", with '"
