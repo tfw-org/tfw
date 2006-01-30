@@ -91,7 +91,7 @@ class Terminator implements EventChannel, CommitRollbackListener
         this.state = initialState;
         this.previousState = initialState;
         // TODO Make sure that rollback's on initialization cause an Error.
-        // this.rollbackState = initialState;
+        this.rollbackState = initialState;
 
         if (initialState != null)
         {
