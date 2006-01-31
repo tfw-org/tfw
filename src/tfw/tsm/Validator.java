@@ -29,43 +29,49 @@ import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.RollbackECD;
 
 /**
- * The base class for all components which perform validation in the 
- * validation phase of a transaction. Subclasses must implement the
+ * The base class for all components which perform validation in the validation
+ * phase of a transaction. Subclasses must implement the
  * {@link #validateState()} method.
  */
 public abstract class Validator extends RollbackHandler
 {
     /**
      * Creates a validate with the specified attributes.
-     * @param name the name of this validator component.
-     * @param triggeringSinks the set of sinks which trigger this validator.
-     *
+     * 
+     * @param name
+     *            the name of this validator component.
+     * @param triggeringSinks
+     *            the set of sinks which trigger this validator.
+     * 
      */
     public Validator(String name, ObjectECD[] triggeringSinks,
-        RollbackECD[] initiators)
+            RollbackECD[] initiators)
     {
         this(name, triggeringSinks, null, initiators);
     }
 
-	/**
-	 * Creates a validator with the specified attriubutes.
-     * @param name the name of this validator component.
-     * @param triggeringSinks the set of sinks which trigger this validator.
-	 * @param nonTriggeringSinks the set of sinks which do not trigger this
-	 * validator, but are used in validation. Note that the event
-	 * channels associated with these sinks must be non-null before the 
-	 * {@link #validateState()} method will be called.
-	 * @param initiators the set of sources used to initiate new transactions.
-	 */
+    /**
+     * Creates a validator with the specified attriubutes.
+     * 
+     * @param name
+     *            the name of this validator component.
+     * @param triggeringSinks
+     *            the set of sinks which trigger this validator.
+     * @param nonTriggeringSinks
+     *            the set of sinks which do not trigger this validator, but are
+     *            used in validation. Note that the event channels associated
+     *            with these sinks must be non-null before the
+     *            {@link #validateState()} method will be called.
+     * @param initiators
+     *            the set of sources used to initiate new transactions.
+     */
     public Validator(String name, ObjectECD[] triggeringSinks,
-        ObjectECD[] nonTriggeringSinks,
-        RollbackECD[] initiators)
+            ObjectECD[] nonTriggeringSinks, RollbackECD[] initiators)
     {
         super(name, checkSinks(triggeringSinks), nonTriggeringSinks, initiators);
     }
 
-    private static ObjectECD[] checkSinks(
-        ObjectECD[] triggeringSinks)
+    private static ObjectECD[] checkSinks(ObjectECD[] triggeringSinks)
     {
         Argument.assertNotNull(triggeringSinks, "triggeringSinks");
         return triggeringSinks;
@@ -80,8 +86,7 @@ public abstract class Validator extends RollbackHandler
      * @return the state of the event channel during the previous state change
      *         cycle.
      */
-    protected final Object getPreviousCycleState(
-            ObjectECD sinkEventChannel)
+    protected final Object getPreviousCycleState(ObjectECD sinkEventChannel)
     {
         Argument.assertNotNull(sinkEventChannel, "sinkEventChannel");
         assertNotStateless(sinkEventChannel);
@@ -108,10 +113,31 @@ public abstract class Validator extends RollbackHandler
         getTransactionManager().addValidator(this);
     }
 
-	/**
-	 * Called in the validation phase of a transaction where one or more of 
-	 * the triggering event channels specified at construction has its state
-	 * changed.
-	 */
+    final void validate()
+    {
+        if (isStateNonNull())
+        {
+            validateState();
+        } else {
+            debugValidateState();
+        }
+    }
+
+    /**
+     * Called in the validation phase of a transaction where one or more of the
+     * triggering event channels specified at construction has its state
+     * changed.
+     */
     protected abstract void validateState();
+
+    /**
+     * This method is called in the validation phase of a transaction where one
+     * or more of the triggering event channels specified at construction has
+     * its state changed and one or more of the event channels has
+     * <code>null</code>.
+     */
+    protected void debugValidateState()
+    {
+        // Do nothing by default.
+    }
 }
