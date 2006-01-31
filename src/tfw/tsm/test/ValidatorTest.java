@@ -25,59 +25,56 @@
 package tfw.tsm.test;
 
 import junit.framework.TestCase;
+import tfw.tsm.BasicTransactionQueue;
+import tfw.tsm.Initiator;
+import tfw.tsm.Root;
+import tfw.tsm.RootFactory;
 import tfw.tsm.Validator;
-import tfw.tsm.ecd.EventChannelDescription;
 import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.RollbackECD;
-import tfw.tsm.ecd.StatelessTriggerECD;
 import tfw.tsm.ecd.StringECD;
 
-
 /**
- *
+ * 
  */
 public class ValidatorTest extends TestCase
 {
     public void testConstruction()
     {
-        ObjectECD[] sinks = new ObjectECD[]
-            {
-                new StringECD("Test")
-            };
-
-		try
-		{
-			new MyValidator(null, sinks, null, null);
-
-			fail("constructor accepted null name");
-		}
-		catch (IllegalArgumentException expected)
-		{
-			//System.out.println(expected);
-		}
+        ObjectECD[] sinks = new ObjectECD[] { new StringECD("Test") };
 
         try
         {
-            new MyValidator("Test", new ObjectECD[]{ null },
-                null, null);
+            new MyValidator(null, sinks, null, null);
+
+            fail("constructor accepted null name");
+        }
+        catch (IllegalArgumentException expected)
+        {
+            // System.out.println(expected);
+        }
+
+        try
+        {
+            new MyValidator("Test", new ObjectECD[] { null }, null, null);
 
             fail("constructor accepted null element in sink event channels");
         }
         catch (IllegalArgumentException expected)
         {
-            //System.out.println(expected);
+            // System.out.println(expected);
         }
-        
-		try
-		{
-			new MyValidator("Test", sinks, new ObjectECD[]{ null }, null);
 
-			fail("constructor accepted null element in non-triggering sinks");
-		}
-		catch (IllegalArgumentException expected)
-		{
-			//System.out.println(expected);
-		}
+        try
+        {
+            new MyValidator("Test", sinks, new ObjectECD[] { null }, null);
+
+            fail("constructor accepted null element in non-triggering sinks");
+        }
+        catch (IllegalArgumentException expected)
+        {
+            // System.out.println(expected);
+        }
 
         try
         {
@@ -86,26 +83,92 @@ public class ValidatorTest extends TestCase
         }
         catch (IllegalArgumentException expected)
         {
-            //System.out.println(expected);
+            // System.out.println(expected);
         }
-		StatelessTriggerECD[] statelessTriggers = new StatelessTriggerECD[]
-			{
-				new StatelessTriggerECD("test")
-			};
+    }
+
+    private final StringECD eventChannelAECD = new StringECD("ecA");
+
+    private final StringECD eventChannelBECD = new StringECD("ecB");
+
+    public void testValidator()
+    {
+        RootFactory rf = new RootFactory();
+        rf.addEventChannel(eventChannelAECD);
+        rf.addEventChannel(eventChannelBECD);
+
+        BasicTransactionQueue queue = new BasicTransactionQueue();
+        Root root = rf.create("ValidatorTestRoot", queue);
+        Initiator initiator = new Initiator("ValidatorTestInitiator",
+                new StringECD[] { eventChannelAECD, eventChannelBECD });
+        root.add(initiator);
+        MyValidator validator = new MyValidator("TestValidator",
+                new StringECD[] { eventChannelAECD },
+                new StringECD[] { eventChannelBECD }, null);
+        root.add(validator);
+        String valueA = "valueA";
+        initiator.set(eventChannelAECD, valueA);
+        queue.waitTilEmpty();
+
+        assertEquals("validateState() called with wrong channelA state", null,
+                validator.channelA);
+        assertEquals("validateState() called with wrong channelB state", null,
+                validator.channelB);
+        assertEquals("debugValdateState() called with wrong channelA state",
+                valueA, validator.debugChannelA);
+        assertEquals("debugValdateState() called with wrong channelB state",
+                null, validator.debugChannelB);
+
+        validator.reset();
+        valueA = "newValueA";
+        String valueB = "valueB";
+        initiator.set(eventChannelBECD, valueB);
+        initiator.set(eventChannelAECD, valueA);
+        queue.waitTilEmpty();
+        assertEquals("validateState() called with wrong channelA state",
+                valueA, validator.channelA);
+        assertEquals("validateState() called with wrong channelB state",
+                valueB, validator.channelB);
+        assertEquals("debugValdateState() called with wrong channelA state",
+                null, validator.debugChannelA);
+        assertEquals("debugValdateState() called with wrong channelB state",
+                null, validator.debugChannelB);
     }
 
     private class MyValidator extends Validator
     {
-        public MyValidator(String name,
-            ObjectECD[] triggeringSinks,
-            ObjectECD[] nonTriggeringSinks,
-            RollbackECD[] initiators)
+        private String channelA = null;
+
+        private String channelB = null;
+
+        private String debugChannelA = null;
+
+        private String debugChannelB = null;
+
+        public MyValidator(String name, ObjectECD[] triggeringSinks,
+                ObjectECD[] nonTriggeringSinks, RollbackECD[] initiators)
         {
             super(name, triggeringSinks, nonTriggeringSinks, initiators);
         }
 
-        public void validateState()
+        protected void validateState()
         {
+            channelA = (String) get(eventChannelAECD);
+            channelB = (String) get(eventChannelBECD);
+        }
+
+        protected void debugValidateState()
+        {
+            debugChannelA = (String) get(eventChannelAECD);
+            debugChannelB = (String) get(eventChannelBECD);
+        }
+
+        public void reset()
+        {
+            this.channelA = null;
+            this.channelB = null;
+            this.debugChannelA = null;
+            this.debugChannelB = null;
         }
     }
 }
