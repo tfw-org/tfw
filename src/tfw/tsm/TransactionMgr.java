@@ -236,7 +236,7 @@ public final class TransactionMgr
         {
             logger.log(Level.INFO, "validators[" + i + "].validateState(): "
                     + v[i].getName());
-            v[i].validateState();
+            v[i].validate();
         }
 
         // System.out.println();
