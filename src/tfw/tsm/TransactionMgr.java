@@ -609,9 +609,9 @@ public final class TransactionMgr
      * It can be called at any time from any thread.
      * 
      * @param parent
-     *            the parent from which a component is to be removed.
+     *            the parent to which a child component is to be added.
      * @param child
-     *            the child component to be removed.
+     *            the child component to be added.
      */
     void addComponent(TreeComponent parent, TreeComponent child)
     {
@@ -747,8 +747,7 @@ public final class TransactionMgr
         }
     }
 
-    private static class AddComponentRunnable implements Runnable,
-            CommitRollbackListener
+    private static class AddComponentRunnable implements Runnable
     {
         private final TreeComponent parent;
 
@@ -763,19 +762,10 @@ public final class TransactionMgr
 
         public void run()
         {
+            parent.addInTransaction(child);
             parent.terminateParentAndLocalConnections(child
                     .terminateChildAndLocalConnections());
         }
-
-        public void rollback()
-        {
-            child.disconnect();
-        }
-
-        public void commit()
-        {
-        }
-
         public String toString()
         {
             return "add Component " + child.getName() + " to "
@@ -783,8 +773,7 @@ public final class TransactionMgr
         }
     }
 
-    private static class RemoveComponentRunnable implements Runnable,
-            CommitRollbackListener
+    private static class RemoveComponentRunnable implements Runnable
     {
         private final TreeComponent parent;
 
@@ -799,17 +788,8 @@ public final class TransactionMgr
 
         public void run()
         {
+            parent.removeInTransaction(child);
             child.disconnect();
-        }
-
-        public void rollback()
-        {
-            parent.terminateParentAndLocalConnections(child
-                    .terminateChildAndLocalConnections());
-        }
-
-        public void commit()
-        {
         }
 
         public String toString()

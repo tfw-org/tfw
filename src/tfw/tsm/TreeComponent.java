@@ -265,7 +265,19 @@ public class TreeComponent
      * @param child
      *            The child to be added.
      */
-    void add(TreeComponent child)
+    synchronized void add(TreeComponent child)
+    {
+        if (isRooted())
+        {
+            getTransactionManager().addComponent(this, child);
+        }
+        else
+        {
+            addToChildren(child);
+        }
+    }
+
+    void addCheck(TreeComponent child)
     {
         Argument.assertNotNull(child, "child");
 
@@ -285,27 +297,29 @@ public class TreeComponent
             throw new IllegalArgumentException("Child, '" + child.getName()
                     + "' is rooted. Can't add a rooted tree!");
         }
+    }
+
+    private synchronized void addToChildren(TreeComponent child)
+    {
+
         if (children == null)
         {
             this.children = new HashMap();
         }
-
-        synchronized (children)
+        if (children.containsKey(child.getName()))
         {
-            if (children.put(child.getName(), child) != null)
-            {
-                throw new IllegalArgumentException(
-                        "Attempt to add child with duplicate name, '"
-                                + child.getName() + "'");
-            }
+            throw new IllegalArgumentException(
+                    "Attempt to add child with duplicate name, '"
+                            + child.getName() + "'");
         }
-
+        children.put(child.getName(), child);
         child.setParent(this);
+    }
 
-        if (isRooted())
-        {
-            getTransactionManager().addComponent(this, child);
-        }
+    void addInTransaction(TreeComponent child)
+    {
+        addCheck(child);
+        addToChildren(child);
     }
 
     /**
@@ -314,7 +328,17 @@ public class TreeComponent
      * @param child
      *            the component to be removed.
      */
-    void remove(TreeComponent child)
+    synchronized void remove(TreeComponent child)
+    {
+        if (isRooted())
+        {
+            getTransactionManager().removeComponent(this, child);
+        } else {
+            removeChild(child);         
+        }
+    }
+
+    void removeCheck(TreeComponent child)
     {
         Argument.assertNotNull(child, "child");
 
@@ -323,17 +347,16 @@ public class TreeComponent
             throw new IllegalArgumentException(
                     "child not connected to this component");
         }
-
-        synchronized (children)
-        {
-            children.remove(child.getName());
-        }
-        child.setParent(null);
-
-        if (isRooted())
-        {
-            getTransactionManager().removeComponent(this, child);
-        }
+    }
+    
+    void removeInTransaction(TreeComponent child){
+        removeCheck(child);
+        removeChild(child);
+    }
+    
+    private synchronized void removeChild(TreeComponent child){
+        children.remove(child.getName());
+        child.setParent(null);                   
     }
 
     /**
