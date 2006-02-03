@@ -81,11 +81,9 @@ public final class TransactionMgr
 
     private HashSet eventChannelFires = new HashSet();
 
-    private List componentChanges = null;
+    private Runnable componentChange = null;
 
     private ComponentChangeTransaction componentChangeTransaction = null;
-
-    private ArrayList rollbackComponentChanges = new ArrayList();
 
     private boolean inTransaction = false;
 
@@ -169,6 +167,7 @@ public final class TransactionMgr
 
     private void executeTransactionCycles()
     {
+        executeComponentChange();
         do
         {
             logger.log(Level.INFO, "executeEventChannelFires()");
@@ -186,8 +185,6 @@ public final class TransactionMgr
             logger.log(Level.INFO, "synchronizeCycleState()");
             synchronizeCycleState();
 
-            logger.log(Level.INFO, "executeComponentChanges()");
-            executeComponentChanges();
         } while ((stateChanges.size() != 0) || (eventChannelFires.size() != 0)
                 || (processors != null));
     }
@@ -436,28 +433,16 @@ public final class TransactionMgr
         executingStateChanges = false;
     }
 
-    private void executeComponentChanges()
+    private void executeComponentChange()
     {
-        Runnable[] runnables = null;
-
-        if (componentChanges == null)
+        if (componentChange == null)
         {
             return;
         }
+        logger.log(Level.INFO, "executeComponentChange()");
 
-        runnables = (Runnable[]) componentChanges
-                .toArray(new Runnable[componentChanges.size()]);
-        componentChanges = null;
-
-        logger.log(Level.INFO, "executeComponentChanges() - "
-                + runnables.length);
-
-        for (int i = 0; i < runnables.length; i++)
-        {
-            logger.log(Level.INFO, runnables[i].toString());
-            runnables[i].run();
-            rollbackComponentChanges.add(runnables[i]);
-        }
+        componentChange.run();
+        componentChange = null;
     }
 
     private void executeRollback()
@@ -469,7 +454,7 @@ public final class TransactionMgr
         cycleStateChanges.clear();
         transStateChanges.clear();
         eventChannelFires.clear();
-        componentChanges = null;
+        componentChange = null;
 
         CommitRollbackListener[] crls = (CommitRollbackListener[]) crListeners
                 .toArray(new CommitRollbackListener[crListeners.size()]);
@@ -479,12 +464,6 @@ public final class TransactionMgr
         {
             // System.out.print("*");
             crls[i].rollback();
-        }
-
-        while (rollbackComponentChanges.size() > 0)
-        {
-            ((CommitRollbackListener) rollbackComponentChanges.remove(0))
-                    .rollback();
         }
 
         // System.out.println();
@@ -498,8 +477,6 @@ public final class TransactionMgr
 
         synchronized (this)
         {
-            rollbackComponentChanges.clear();
-
             crls = (CommitRollbackListener[]) crListeners
                     .toArray(new CommitRollbackListener[crListeners.size()]);
             crListeners.clear();
@@ -646,23 +623,22 @@ public final class TransactionMgr
         }
 
         AddComponentRunnable acr = new AddComponentRunnable(parent, child);
-
-        componentChange(acr);
+        queue.add(new ComponentChangeTransaction(acr));
     }
 
-    private void componentChange(Runnable change)
-    {
-        // TODO it looks like this needs to be made thread safe.
-        if (componentChangeTransaction == null)
-        {
-            componentChangeTransaction = new ComponentChangeTransaction(change);
-            queue.add(componentChangeTransaction);
-        }
-        else
-        {
-            componentChangeTransaction.add(change);
-        }
-    }
+    // private void componentChange(Runnable change)
+    // {
+    // // TODO it looks like this needs to be made thread safe.
+    // if (componentChangeTransaction == null)
+    // {
+    // componentChangeTransaction = new ComponentChangeTransaction(change);
+    // queue.add(componentChangeTransaction);
+    // }
+    // else
+    // {
+    // componentChangeTransaction.add(change);
+    // }
+    // }
 
     /**
      * Creates remove component change. This is called by {@link TreeComponent}.
@@ -683,7 +659,7 @@ public final class TransactionMgr
         }
 
         RemoveComponentRunnable rcr = new RemoveComponentRunnable(parent, child);
-        componentChange(rcr);
+        queue.add(new ComponentChangeTransaction(rcr));
     }
 
     void addEventChannelFire(EventChannel eventChannel)
@@ -713,27 +689,16 @@ public final class TransactionMgr
 
     private class ComponentChangeTransaction implements Runnable
     {
-        private final List changes = new ArrayList();
+        private final Runnable change;
 
         public ComponentChangeTransaction(Runnable change)
         {
-            this.changes.add(change);
+            this.change = change;
         }
 
         public void run()
         {
-            // This method is called in the transaction
-            // thread and therefore does not need to be
-            // synchronized.
-            componentChanges = changes;
-
-            synchronized (TransactionMgr.this)
-            {
-                if (componentChangeTransaction == ComponentChangeTransaction.this)
-                {
-                    componentChangeTransaction = null;
-                }
-            }
+            componentChange = change;
 
             try
             {
@@ -743,11 +708,6 @@ public final class TransactionMgr
             {
                 exceptionHandler.handle(exp);
             }
-        }
-
-        public void add(Runnable change)
-        {
-            changes.add(change);
         }
     }
 
