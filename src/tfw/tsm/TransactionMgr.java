@@ -626,19 +626,20 @@ public final class TransactionMgr
         queue.add(new ComponentChangeTransaction(acr));
     }
 
-    // private void componentChange(Runnable change)
-    // {
-    // // TODO it looks like this needs to be made thread safe.
-    // if (componentChangeTransaction == null)
-    // {
-    // componentChangeTransaction = new ComponentChangeTransaction(change);
-    // queue.add(componentChangeTransaction);
-    // }
-    // else
-    // {
-    // componentChangeTransaction.add(change);
-    // }
-    // }
+    void addComponent(MultiplexedBranch parent, TreeComponent child, int index)
+    {
+        if (!parent.isRooted())
+        {
+            throw new IllegalArgumentException(
+                    "only rooted parents can have child added inside a "
+                            + "transaction");
+        }
+
+        AddComponentMultiplexRunnable acr = new AddComponentMultiplexRunnable(
+                parent, child, index);
+        queue.add(new ComponentChangeTransaction(acr));
+    }
+
 
     /**
      * Creates remove component change. This is called by {@link TreeComponent}.
@@ -762,10 +763,41 @@ public final class TransactionMgr
 
         public void run()
         {
-            parent.addInTransaction(child);
+            parent.addToChildren(child);
             parent.terminateParentAndLocalConnections(child
                     .terminateChildAndLocalConnections());
         }
+
+        public String toString()
+        {
+            return "add Component " + child.getName() + " to "
+                    + parent.getName();
+        }
+    }
+
+    private static class AddComponentMultiplexRunnable implements Runnable
+    {
+        private final MultiplexedBranch parent;
+
+        private final TreeComponent child;
+
+        private final int index;
+
+        AddComponentMultiplexRunnable(final MultiplexedBranch parent,
+                final TreeComponent child, int index)
+        {
+            this.parent = parent;
+            this.child = child;
+            this.index = index;
+        }
+
+        public void run()
+        {
+            parent.addAll(child, new Integer(index));
+            parent.terminateParentAndLocalConnections(child
+                    .terminateChildAndLocalConnections());
+        }
+
         public String toString()
         {
             return "add Component " + child.getName() + " to "
@@ -788,7 +820,7 @@ public final class TransactionMgr
 
         public void run()
         {
-            parent.removeInTransaction(child);
+            parent.removeFromChildren(child);
             child.disconnect();
         }
 
