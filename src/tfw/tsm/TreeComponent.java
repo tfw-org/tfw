@@ -267,6 +267,7 @@ public class TreeComponent
      */
     synchronized void add(TreeComponent child)
     {
+        Argument.assertNotNull(child, "child");
         if (isRooted())
         {
             getTransactionManager().addComponent(this, child);
@@ -277,10 +278,8 @@ public class TreeComponent
         }
     }
 
-    void addCheck(TreeComponent child)
+    synchronized void addToChildren(TreeComponent child)
     {
-        Argument.assertNotNull(child, "child");
-
         if (child.getParent() != null)
         {
             throw new IllegalArgumentException("Child, '" + child.getName()
@@ -297,10 +296,6 @@ public class TreeComponent
             throw new IllegalArgumentException("Child, '" + child.getName()
                     + "' is rooted. Can't add a rooted tree!");
         }
-    }
-
-    private synchronized void addToChildren(TreeComponent child)
-    {
 
         if (children == null)
         {
@@ -316,12 +311,6 @@ public class TreeComponent
         child.setParent(this);
     }
 
-    void addInTransaction(TreeComponent child)
-    {
-        addCheck(child);
-        addToChildren(child);
-    }
-
     /**
      * Removes the specified child component.
      * 
@@ -330,49 +319,39 @@ public class TreeComponent
      */
     synchronized void remove(TreeComponent child)
     {
+        Argument.assertNotNull(child, "child");
         if (isRooted())
         {
             getTransactionManager().removeComponent(this, child);
-        } else {
-            removeChild(child);         
+        }
+        else
+        {
+            removeFromChildren(child);
         }
     }
 
-    void removeCheck(TreeComponent child)
+    synchronized void removeFromChildren(TreeComponent child)
     {
-        Argument.assertNotNull(child, "child");
-
         if (child.getParent() != this)
         {
             throw new IllegalArgumentException(
                     "child not connected to this component");
         }
-    }
-    
-    void removeInTransaction(TreeComponent child){
-        removeCheck(child);
-        removeChild(child);
-    }
-    
-    private synchronized void removeChild(TreeComponent child){
         children.remove(child.getName());
-        child.setParent(null);                   
+        child.setParent(null);
     }
 
     /**
      * Removes all of this components child components.
      */
-    public final void removeAll()
+    public synchronized final void removeAll()
     {
         if (children == null)
         {
             return;
         }
         Object[] array = null;
-        synchronized (children)
-        {
-            array = children.values().toArray();
-        }
+        array = children.values().toArray();
         for (int i = 0; i < array.length; i++)
         {
             remove((TreeComponent) array[i]);
