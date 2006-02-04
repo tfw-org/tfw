@@ -87,6 +87,8 @@ public final class TransactionMgr
 
     private boolean inTransaction = false;
 
+    private boolean inCommit = false;
+
     private boolean executingStateChanges = false;
 
     private TransactionExceptionHandler exceptionHandler = new TransactionExceptionHandler()
@@ -158,9 +160,21 @@ public final class TransactionMgr
             exceptionHandler.handle(exception);
         }
 
-        commitTransaction();
-        synchronizeTransState();
-        inTransaction = false;
+        try
+        {
+            inCommit = true;
+            commitTransaction();
+            synchronizeTransState();
+        }
+        catch (Exception exception)
+        {
+            exceptionHandler.handle(exception);
+        }
+        finally
+        {
+            inCommit = false;
+            inTransaction = false;
+        }
 
         logger.log(Level.INFO, "End transaction: " + transactionCount + "\n");
     }
@@ -605,6 +619,26 @@ public final class TransactionMgr
     }
 
     /**
+     * Throws an IllegalStateException if a construction change is attempted
+     * inside the processing phase of a transaction.
+     */
+    private void checkConstructionState()
+    {
+        if (this.queue.isDispatchThread())
+        {
+            if (this.inTransaction)
+            {
+                if (!this.inCommit)
+                {
+                    throw new IllegalStateException(
+                            "Attempt to add/remove components in the processing"
+                                    + " phase of a transaction is not allowed.");
+                }
+            }
+        }
+    }
+
+    /**
      * Creates an adds component change. This is called by {@link TreeComponent}.
      * It can be called at any time from any thread.
      * 
@@ -615,6 +649,7 @@ public final class TransactionMgr
      */
     void addComponent(TreeComponent parent, TreeComponent child)
     {
+        checkConstructionState();
         if (!parent.isRooted())
         {
             throw new IllegalArgumentException(
@@ -628,6 +663,7 @@ public final class TransactionMgr
 
     void addComponent(MultiplexedBranch parent, TreeComponent child, int index)
     {
+        checkConstructionState();
         if (!parent.isRooted())
         {
             throw new IllegalArgumentException(
@@ -640,7 +676,6 @@ public final class TransactionMgr
         queue.add(new ComponentChangeTransaction(acr));
     }
 
-
     /**
      * Creates remove component change. This is called by {@link TreeComponent}.
      * It can be called at any time from any thread.
@@ -652,6 +687,7 @@ public final class TransactionMgr
      */
     void removeComponent(TreeComponent parent, TreeComponent child)
     {
+        checkConstructionState();
         if (!parent.isRooted())
         {
             throw new IllegalArgumentException(
