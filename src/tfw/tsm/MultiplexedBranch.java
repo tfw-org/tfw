@@ -79,12 +79,17 @@ public class MultiplexedBranch extends TreeComponent
      */
     public final void add(TreeComponent child, int multipexIndex)
     {
-//		children.put(child, new Integer(multipexIndex));
-    	addAll(child, new Integer(multipexIndex), children);
-        super.add(child);
+        if (isRooted())
+        {
+            getTransactionManager().addComponent(this, child, multipexIndex);
+        }
+        else
+        {
+            addAll(child, new Integer(multipexIndex));
+        }
     }
     
-    private static void addAll(TreeComponent child, Integer index, Map children)
+    synchronized void addAll(TreeComponent child, Integer index)
     {
     	children.put(child, index);
     	
@@ -92,9 +97,10 @@ public class MultiplexedBranch extends TreeComponent
     	{
     		for (Iterator i=((Branch)child).getChildren().values().iterator() ; i.hasNext() ; )
     		{
-    			addAll((TreeComponent)i.next(), index, children);
+    			addAll((TreeComponent)i.next(), index);
     		}
     	}
+        addToChildren(child);
     }
 
 	/**
@@ -103,12 +109,23 @@ public class MultiplexedBranch extends TreeComponent
 	 */
     public final void remove(TreeComponent child)
     {
-        super.remove(child);
-        removeAll(child, children);
-//        children.remove(child);
+        if (isRooted())
+        {
+            getTransactionManager().removeComponent(this, child);
+        }
+        else
+        {
+            super.remove(child);
+            removeAll(child);
+        }
     }
     
-    private static void removeAll(TreeComponent child, Map children)
+    void removeInTransaction(TreeComponent child){
+        super.removeFromChildren(child);
+        removeAll(child);
+    }
+    
+    private synchronized void removeAll(TreeComponent child)
     {
     	children.remove(child);
     	
@@ -116,7 +133,7 @@ public class MultiplexedBranch extends TreeComponent
     	{
     		for (Iterator i=((Branch)child).getChildren().values().iterator() ; i.hasNext() ; )
     		{
-    			removeAll((TreeComponent)i.next(), children);
+    			removeAll((TreeComponent)i.next());
     		}
     	}
     }
