@@ -334,8 +334,8 @@ public class TreeComponent
     {
         if (child.getParent() != this)
         {
-            throw new IllegalArgumentException(
-                    "child not connected to this component");
+            throw new IllegalArgumentException("child, " + child.name
+                    + ", not connected to this component");
         }
         children.remove(child.getName());
         child.setParent(null);
