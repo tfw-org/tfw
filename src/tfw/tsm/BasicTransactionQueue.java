@@ -24,28 +24,31 @@
  */
 package tfw.tsm;
 
-
 import java.util.ArrayList;
 
 import tfw.check.Argument;
 
-
 /**
- * A basic transaction queue and event dispatch thread. This queue should
- * not be used with AWT or Swing compoents. Use the {@link AWTTransactionQueue}
- * for AWT and Swing components.
+ * A basic transaction queue and event dispatch thread. This queue should not be
+ * used with AWT or Swing compoents. Use the {@link AWTTransactionQueue} for AWT
+ * and Swing components.
  */
 public final class BasicTransactionQueue implements TransactionQueue
 {
     /** The default name for the transaction queue thread. */
     public static final String DEFAULT_THREAD_NAME = "BasicTransactionQueue";
+
     private final ArrayList queue = new ArrayList();
+
     private Thread thread = null;
+
     private final String threadName;
 
     /**
      * Creates a transaction queue with the specified thread name.
-     * @param threadName the name assigned to the transaction queue thread.
+     * 
+     * @param threadName
+     *            the name assigned to the transaction queue thread.
      */
     public BasicTransactionQueue(String threadName)
     {
@@ -64,18 +67,62 @@ public final class BasicTransactionQueue implements TransactionQueue
 
     /**
      * Adds the specified runnable to the transaction queue.
-     * @param runnable the runnable to add to the queue.
+     * 
+     * @param runnable
+     *            the runnable to add to the queue.
      */
-    public final synchronized void add(Runnable runnable)
+    public final synchronized void invokeLater(Runnable runnable)
     {
         Argument.assertNotNull(runnable, "runnable");
         queue.add(runnable);
         checkThread();
     }
 
+    private class InvokeAndWaitRunnable implements Runnable
+    {
+        private final Runnable runnable;
+
+        private final Object lock;
+
+        public InvokeAndWaitRunnable(Runnable runnable, Object lock)
+        {
+            this.runnable = runnable;
+            this.lock = lock;
+        }
+
+        public void run()
+        {
+            synchronized (lock)
+            {
+                this.runnable.run();
+                lock.notify();
+            }
+        }
+    }
+
+    public void invokeAndWait(Runnable runnable) throws InterruptedException
+    {
+        Argument.assertNotNull(runnable, "runnable");
+        if (isDispatchThread())
+        {
+            runnable.run();
+            return;
+        }
+        class InvokeAndWaitLock
+        {
+        }
+        InvokeAndWaitLock lock = new InvokeAndWaitLock();
+        InvokeAndWaitRunnable iwr = new InvokeAndWaitRunnable(runnable, lock);
+        synchronized (lock)
+        {
+            invokeLater(iwr);
+            lock.wait();
+        }
+    }
+
     /**
-     * Creates a thread if one is needed. This method must be
-     * called from a synchronized context.
+     * Creates a thread if one is needed. This method must be called from a
+     * synchronized context.
      */
     private void checkThread()
     {
@@ -94,8 +141,9 @@ public final class BasicTransactionQueue implements TransactionQueue
     /**
      * Returns <code>true</code> if the queue is empty, otherwise returns
      * <code>false</code>.
+     * 
      * @return <code>true</code> if the queue is empty, otherwise returns
-     * <code>false</code>.
+     *         <code>false</code>.
      */
     public final synchronized boolean isEmpty()
     {
@@ -105,8 +153,9 @@ public final class BasicTransactionQueue implements TransactionQueue
     /**
      * Returns <code>true</code> if the calling thread is the current
      * transaction queue thread.
+     * 
      * @return <code>true</code> if the calling thread is the current
-     * transaction queue thread.
+     *         transaction queue thread.
      */
     public final synchronized boolean isDispatchThread()
     {
@@ -120,9 +169,10 @@ public final class BasicTransactionQueue implements TransactionQueue
 
     /**
      * Interrupts the thread associated with this queue.
-     *
-     * @throws SecurityException if the current thread cannot modify the
-     * transaction queue thread
+     * 
+     * @throws SecurityException
+     *             if the current thread cannot modify the transaction queue
+     *             thread
      */
     public final synchronized void interrupt()
     {
@@ -136,15 +186,15 @@ public final class BasicTransactionQueue implements TransactionQueue
     /**
      * Blocks the calling thead until the transaction queue is empty. This
      * method must not be called from within this transaction queue's thread.
-     * Use {@link #isDispatchThread} to check whether the calling thread is
-     * the transaction queue thread.
+     * Use {@link #isDispatchThread} to check whether the calling thread is the
+     * transaction queue thread.
      */
     public void waitTilEmpty()
     {
         if (isDispatchThread())
         {
             throw new IllegalStateException(
-                "This method can not be called from within the queue's thread");
+                    "This method can not be called from within the queue's thread");
         }
 
         while (!isEmpty())
