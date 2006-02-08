@@ -119,8 +119,8 @@ public class TranslatorTest extends TestCase
         // Fire source unconnected.
         initiator.set(portA, answer);
         queue.waitTilEmpty();
-        assertNotNull("send on disconnected initiator didn't throw exception",
-            handler.exception);
+//        assertNotNull("send on disconnected initiator didn't throw exception",
+//            handler.exception);
         assertEquals("source removal", null, result);
 
         result = null;
