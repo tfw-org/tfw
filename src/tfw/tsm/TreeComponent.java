@@ -278,7 +278,7 @@ public class TreeComponent
         }
     }
 
-    synchronized void addToChildren(TreeComponent child)
+    void addToChildren(TreeComponent child)
     {
         if (child.getParent() != null)
         {
@@ -330,7 +330,7 @@ public class TreeComponent
         }
     }
 
-    synchronized void removeFromChildren(TreeComponent child)
+    void removeFromChildren(TreeComponent child)
     {
         if (child.getParent() != this)
         {
