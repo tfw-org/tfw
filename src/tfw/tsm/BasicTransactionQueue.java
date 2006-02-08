@@ -94,8 +94,14 @@ public final class BasicTransactionQueue implements TransactionQueue
         {
             synchronized (lock)
             {
-                this.runnable.run();
-                lock.notify();
+                try
+                {
+                    this.runnable.run();
+                }
+                finally
+                {
+                    lock.notify();
+                }
             }
         }
     }
