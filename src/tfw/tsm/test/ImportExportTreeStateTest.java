@@ -70,7 +70,7 @@ public class ImportExportTreeStateTest extends TestCase
 
         GetTreeStateRunnable getStateRunnable = new GetTreeStateRunnable(root);
 
-        queue.add(getStateRunnable);
+        queue.invokeLater(getStateRunnable);
         queue.waitTilEmpty();
 
         assertNotNull("getTreeState() returned null",
@@ -98,7 +98,7 @@ public class ImportExportTreeStateTest extends TestCase
 
         Branch branch = bf.create("Child Tree");
         root.add(branch);
-        queue.add(getStateRunnable);
+        queue.invokeLater(getStateRunnable);
         queue.waitTilEmpty();
 
         children = getStateRunnable.treeState.getChildren();
@@ -107,13 +107,13 @@ public class ImportExportTreeStateTest extends TestCase
 
         SetTreeStateRunnable setStateRunnable = new SetTreeStateRunnable(root,
                 null);
-        queue.add(setStateRunnable);
+        queue.invokeLater(setStateRunnable);
         queue.waitTilEmpty();
         assertNotNull("setTreeState() accepted null value");
 
         setStateRunnable = new SetTreeStateRunnable(root, new TreeState(
                 "wrongname", null, null));
-        queue.add(setStateRunnable);
+        queue.invokeLater(setStateRunnable);
         queue.waitTilEmpty();
         assertNotNull("setTreeState() accepted wrong event channel state");
 
@@ -129,7 +129,7 @@ public class ImportExportTreeStateTest extends TestCase
 
         
         setStateRunnable = new SetTreeStateRunnable(root, rootTS);
-        queue.add(setStateRunnable);
+        queue.invokeLater(setStateRunnable);
         queue.waitTilEmpty();
         assertNotNull("setTreeState() accepted wrong child tree state name");
 
@@ -144,9 +144,9 @@ public class ImportExportTreeStateTest extends TestCase
                 new TreeState[] { childTS });
 
         setStateRunnable = new SetTreeStateRunnable(root, rootTS);
-        queue.add(setStateRunnable);
+        queue.invokeLater(setStateRunnable);
         queue.waitTilEmpty();
-        queue.add(getStateRunnable);
+        queue.invokeLater(getStateRunnable);
         queue.waitTilEmpty();
         // System.out.println(rootTS);
         // System.out.println(runnable.treeState);
@@ -207,12 +207,12 @@ public class ImportExportTreeStateTest extends TestCase
         BasicTransactionQueue queue = new BasicTransactionQueue();
         Root root = rf.create("TestRoot", queue);
         GetTreeStateRunnable tsr = new GetTreeStateRunnable(root, null);
-        queue.add(tsr);
+        queue.invokeLater(tsr);
         queue.waitTilEmpty();
         assertNotNull("getTreeState() accepted null tag", tsr.exception);
 
         tsr = new GetTreeStateRunnable(root, tag1);
-        queue.add(tsr);
+        queue.invokeLater(tsr);
         queue.waitTilEmpty();
 
         assertNotNull("getTreeState() returned null", tsr.treeState);
@@ -225,7 +225,7 @@ public class ImportExportTreeStateTest extends TestCase
                 .getState(), ecs[0].getState());
 
         tsr = new GetTreeStateRunnable(root, tag2);
-        queue.add(tsr);
+        queue.invokeLater(tsr);
         queue.waitTilEmpty();
 
         assertNotNull("getTreeState() returned null", tsr.treeState);

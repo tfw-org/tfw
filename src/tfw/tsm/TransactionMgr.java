@@ -569,7 +569,7 @@ public final class TransactionMgr
             this.componentChangeTransaction = null;
         }
 
-        queue.add(new StateChangeTransaction(source));
+        queue.invokeLater(new StateChangeTransaction(source));
     }
 
     /**
@@ -658,7 +658,7 @@ public final class TransactionMgr
         }
 
         AddComponentRunnable acr = new AddComponentRunnable(parent, child);
-        queue.add(new ComponentChangeTransaction(acr));
+        queue.invokeLater(new ComponentChangeTransaction(acr));
     }
 
     void addComponent(MultiplexedBranch parent, TreeComponent child, int index)
@@ -673,7 +673,7 @@ public final class TransactionMgr
 
         AddComponentMultiplexRunnable acr = new AddComponentMultiplexRunnable(
                 parent, child, index);
-        queue.add(new ComponentChangeTransaction(acr));
+        queue.invokeLater(new ComponentChangeTransaction(acr));
     }
 
     /**
@@ -696,14 +696,14 @@ public final class TransactionMgr
         }
 
         RemoveComponentRunnable rcr = new RemoveComponentRunnable(parent, child);
-        queue.add(new ComponentChangeTransaction(rcr));
+        queue.invokeLater(new ComponentChangeTransaction(rcr));
     }
 
     void addEventChannelFire(EventChannel eventChannel)
     {
         if (!inTransaction)
         {
-            queue.add(new EventChannelFireTransaction(eventChannel));
+            queue.invokeLater(new EventChannelFireTransaction(eventChannel));
         }
         else if (!queue.isDispatchThread())
         {
