@@ -24,12 +24,8 @@
  */
 package tfw.tsm;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
@@ -85,11 +81,12 @@ public final class TransactionMgr
 
     private Runnable componentChange = null;
 
-    private ComponentChangeTransaction componentChangeTransaction = null;
 
     private boolean inTransaction = false;
 
     private boolean inCommit = false;
+
+    private boolean inConstruction = false;
 
     private boolean executingStateChanges = false;
 
@@ -457,8 +454,16 @@ public final class TransactionMgr
         }
         logger.log(Level.INFO, "executeComponentChange()");
 
-        componentChange.run();
-        componentChange = null;
+        this.inConstruction = true;
+        try
+        {
+            componentChange.run();
+        }
+        finally
+        {
+            this.inConstruction = false;
+            componentChange = null;
+        }
     }
 
     private void executeRollback()
@@ -562,15 +567,6 @@ public final class TransactionMgr
 
     void addStateChange(InitiatorSource[] source)
     {
-        synchronized (this)
-        {
-            // We can not coalese component changes
-            // across state changes so we must make
-            // sure that if there are pending component
-            // changes that no more are added.
-            this.componentChangeTransaction = null;
-        }
-
         queue.invokeLater(new StateChangeTransaction(source));
     }
 
@@ -630,7 +626,7 @@ public final class TransactionMgr
         {
             if (this.inTransaction)
             {
-                if (!this.inCommit)
+                if ((!this.inCommit) && (!this.inConstruction))
                 {
                     throw new IllegalStateException(
                             "Attempt to add/remove components in the processing"
@@ -651,7 +647,7 @@ public final class TransactionMgr
      */
     void addComponent(TreeComponent parent, TreeComponent child)
     {
-        // checkConstructionState();
+        checkConstructionState();
         if (!parent.isRooted())
         {
             throw new IllegalArgumentException(
@@ -660,12 +656,12 @@ public final class TransactionMgr
         }
 
         AddComponentRunnable acr = new AddComponentRunnable(parent, child);
-        executeConstruction(acr, "add '" + child.getName() + "' to '"
-                + parent.getName() + "'");
+        queue.invokeLater(new ComponentChangeTransaction(acr));
     }
 
     void addComponent(MultiplexedBranch parent, TreeComponent child, int index)
     {
+        checkConstructionState();
         if (!parent.isRooted())
         {
             throw new IllegalArgumentException(
@@ -675,8 +671,7 @@ public final class TransactionMgr
 
         AddComponentMultiplexRunnable acr = new AddComponentMultiplexRunnable(
                 parent, child, index);
-        executeConstruction(acr, "add '" + child.getName() + "' to slot "
-                + index + " of '" + parent.getName() + "'");
+        queue.invokeLater(new ComponentChangeTransaction(acr));
     }
 
     /**
@@ -690,6 +685,7 @@ public final class TransactionMgr
      */
     void removeComponent(TreeComponent parent, TreeComponent child)
     {
+        checkConstructionState();
         if (!parent.isRooted())
         {
             throw new IllegalArgumentException(
@@ -698,76 +694,7 @@ public final class TransactionMgr
         }
 
         RemoveComponentRunnable rcr = new RemoveComponentRunnable(parent, child);
-        executeConstruction(rcr, "remove '" + child.getName() + "' from '"
-                + parent.getName() + "'");
-    }
-
-    private void executeConstruction(Runnable constructionRunnable,
-            String actionMsg)
-    {
-        if (this.queue.isDispatchThread())
-        {
-            if (this.inTransaction)
-            {
-                if (!this.inCommit)
-                {
-                    throw new IllegalStateException("Attempt to " + actionMsg
-                            + " in the processing"
-                            + " phase of a transaction is not allowed.");
-                }
-            }
-            /*
-             * We are either in a commit or not in a transaction, we are in the
-             * transaction thread, so we can perform construction immediately.
-             */
-            constructionRunnable.run();
-        }
-        else
-        {
-            /*
-             * We are not in the transaction thread, so we must do an
-             * invokeAndWait() on the transaction thread.
-             */
-            try
-            {
-                queue.invokeAndWait(constructionRunnable);
-            }
-            catch (InvocationTargetException e)
-            {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-            catch (InterruptedException e)
-            {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
-    }
-
-    private List constructionEventChannelFires = null;
-
-    void addConstructionEventChannelFire(EventChannel eventChannel)
-    {
-        if (constructionEventChannelFires == null)
-        {
-            this.constructionEventChannelFires = new ArrayList();
-        }
-        this.constructionEventChannelFires.add(eventChannel);
-    }
-
-    private void generateEventChannelFireTransaction()
-    {
-        if (constructionEventChannelFires != null)
-        {
-            EventChannel[] ecs = (EventChannel[]) constructionEventChannelFires
-                    .toArray(new EventChannel[constructionEventChannelFires
-                            .size()]);
-            constructionEventChannelFires = null;
-            EventChannelFireTransaction ecft = new EventChannelFireTransaction(
-                    ecs);
-            queue.invokeLater(ecft);
-        }
+        queue.invokeLater(new ComponentChangeTransaction(rcr));
     }
 
     void addEventChannelFire(EventChannel eventChannel)
@@ -841,50 +768,21 @@ public final class TransactionMgr
 
     private class EventChannelFireTransaction implements Runnable
     {
-        private final EventChannel[] eventChannels;
+        private final EventChannel eventChannel;
 
         public EventChannelFireTransaction(EventChannel eventChannel)
         {
-            this.eventChannels = new EventChannel[] { eventChannel };
-        }
-
-        public EventChannelFireTransaction(EventChannel[] eventChannels)
-        {
-            this.eventChannels = eventChannels;
+            this.eventChannel = eventChannel;
         }
 
         public void run()
         {
-            eventChannelFires.addAll(Arrays.asList(eventChannels));
+            eventChannelFires.add(eventChannel);
             executeTransaction();
         }
     }
 
-    private abstract class ComponentChange implements Runnable
-    {
-
-        public void run()
-        {
-            try
-            {
-                makeChange();
-                generateEventChannelFireTransaction();
-
-            }
-            catch (Exception exception)
-            {
-                exceptionHandler.handle(exception);
-            }
-            finally
-            {
-                constructionEventChannelFires = null;
-            }
-        }
-
-        abstract void makeChange();
-    }
-
-    private class AddComponentRunnable extends ComponentChange
+    private class AddComponentRunnable implements Runnable
     {
         private final TreeComponent parent;
 
@@ -897,8 +795,9 @@ public final class TransactionMgr
             this.child = child;
         }
 
-        public void makeChange()
+        public void run()
         {
+            logger.info(this.toString());
             parent.addToChildren(child);
             parent.terminateParentAndLocalConnections(child
                     .terminateChildAndLocalConnections());
@@ -911,7 +810,7 @@ public final class TransactionMgr
         }
     }
 
-    private class AddComponentMultiplexRunnable extends ComponentChange
+    private class AddComponentMultiplexRunnable implements Runnable
     {
         private final MultiplexedBranch parent;
 
@@ -927,9 +826,10 @@ public final class TransactionMgr
             this.index = index;
         }
 
-        public void makeChange()
+        public void run()
         {
-            parent.addAll(child, new Integer(index));
+            logger.info(this.toString());
+            parent.addToSubBranch(child, new Integer(index));
             parent.terminateParentAndLocalConnections(child
                     .terminateChildAndLocalConnections());
         }
@@ -941,7 +841,7 @@ public final class TransactionMgr
         }
     }
 
-    private class RemoveComponentRunnable extends ComponentChange
+    private class RemoveComponentRunnable implements Runnable
     {
         private final TreeComponent parent;
 
@@ -954,10 +854,14 @@ public final class TransactionMgr
             this.child = child;
         }
 
-        public void makeChange()
+        public void run()
         {
-            parent.removeFromChildren(child);
-            child.disconnect();
+            if (child.isRooted())
+            {
+                logger.info(this.toString());
+                parent.removeFromChildren(child);
+                child.disconnect();
+            }
         }
 
         public String toString()
