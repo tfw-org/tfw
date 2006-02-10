@@ -69,19 +69,33 @@ public class MultiplexerConstructionTest extends TestCase
         rf.addEventChannel(this.TRIGGER_ECD);
         Root root = rf.create("Test", queue);
 
-        Initiator initiator = new Initiator("trigger", TRIGGER_ECD);
         root.add(multiBranch);
-        root.add(initiator);
-        root.add(new ComponentSwitchCommit(multiBranch));
         queue.waitTilEmpty();
-        
-        assertEquals("vc1.value", value, vc1.value);
-        
-        initiator.trigger(this.TRIGGER_ECD);
-        queue.waitTilEmpty();
-        assertEquals("vc2.value", value, vc2.value);
     }
+    
+    public void testNameSpaceSeparation(){
+        String value0 = "bob";
+        String value1 = "sally";
+        MultiplexedBranchFactory mbf = new MultiplexedBranchFactory();
+        mbf.addMultiplexer(VALUE_ECD, MULTIVALUE_ECD);
+        MultiplexedBranch multiBranch = mbf.create("multiBranch");
+        ValueCommit vc0 = new ValueCommit("vc");
+        ValueCommit vc1 = new ValueCommit("vc");
+        multiBranch.add(vc0, 0);
+        multiBranch.add(vc1, 1);
 
+        BasicTransactionQueue queue = new BasicTransactionQueue();
+        RootFactory rf = new RootFactory();
+        rf.setLogging(true);
+        rf.addEventChannel(MULTIVALUE_ECD, ObjectIlaFromArray
+                .create(new String[] { value0, value1 }));
+        Root root = rf.create("Test", queue);
+        root.add(multiBranch);
+        queue.waitTilEmpty();
+        assertEquals(value0, vc0.value);
+        assertEquals(value1, vc1.value);
+    }
+    
     private class ValueCommit extends Commit
     {
         String value = null;
