@@ -27,29 +27,39 @@ package tfw.tsm;
 import tfw.tsm.ecd.EventChannelDescription;
 import tfw.value.ValueException;
 
-
 /**
- *
+ * 
  */
 class InitiatorSource extends Source
 {
     private final StateQueue stateQueue;
 
-	InitiatorSource(String name, EventChannelDescription ecd, StateQueue stateQueue){
-		super(name, ecd);
-		this.stateQueue = stateQueue;
-	}
-	
+    InitiatorSource(String name, EventChannelDescription ecd,
+            StateQueue stateQueue)
+    {
+        super(name, ecd);
+        this.stateQueue = stateQueue;
+    }
+
     /**
-     * Connects this <code>Source</code> to the specified event channel.
-     * If the deferred state is set, the <code>eventChannel</code> will
-     * be set the deferred state asynchronously. This method should only
-     * be called during the branch construction phase of a transaction.
-     *
-     * @param eventChannel the event channel for this <code>Source</code>.
+     * Connects this <code>Source</code> to the specified event channel. If
+     * the deferred state is set, the <code>eventChannel</code> will be set
+     * the deferred state asynchronously. This method should only be called
+     * during the branch construction phase of a transaction.
+     * 
+     * @param eventChannel
+     *            the event channel for this <code>Source</code>.
      */
     public synchronized void setEventChannel(EventChannel eventChannel)
     {
+        /*
+         * TODO: This needs to be re-thought. It was put here to make sure the
+         * deferred state of an initiator gets fired after it has been removed.
+         */
+        if (eventChannel == null)
+        {
+            return;
+        }
         super.setEventChannel(eventChannel);
 
         if (this.getTreeComponent() instanceof Initiator)
@@ -59,28 +69,30 @@ class InitiatorSource extends Source
     }
 
     /**
-     * This method asynchronously causes the event channel state to be
-     * changed to the specified state value. If this <code>Source</code>
-     * is not connected to an event channel it will cause a state change
-     * to the event channel when it is connected.
-     * @param state the new event channel value.
+     * This method asynchronously causes the event channel state to be changed
+     * to the specified state value. If this <code>Source</code> is not
+     * connected to an event channel it will cause a state change to the event
+     * channel when it is connected.
+     * 
+     * @param state
+     *            the new event channel value.
      */
     synchronized void setState(Object state) throws ValueException
     {
-    	getConstraint().checkValue(state);
+        getConstraint().checkValue(state);
         this.stateQueue.push(state);
     }
 
     /**
-     * Sets the state of the event channel. This method should only
-     * be called by {@link TransactionMgr}.
+     * Sets the state of the event channel. This method should only be called by
+     * {@link TransactionMgr}.
      */
     synchronized Object fire()
     {
-    	Object state = null;
+        Object state = null;
         if ((getEventChannel() != null) && (!stateQueue.isEmpty()))
         {
-        	state = stateQueue.pop();
+            state = stateQueue.pop();
             getEventChannel().setState(this, state, null);
         }
         return state;
