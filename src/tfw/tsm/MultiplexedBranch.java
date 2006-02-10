@@ -29,43 +29,47 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import tfw.check.Argument;
 
 /**
- * A branch which will multiplex child event channels into a single parent 
- * event channel and demultiplex the single parent event channel into multiple
- * child event channels. To create one you must use 
- * {@link MultiplexedBranchFactory}.
+ * A branch which will multiplex child event channels into a single parent event
+ * channel and demultiplex the single parent event channel into multiple child
+ * event channels. To create one you must use {@link MultiplexedBranchFactory}.
  */
 public class MultiplexedBranch extends TreeComponent
 {
     private final Map children = new HashMap();
+
+    private final Map subBranches = new HashMap();
+
     private final Multiplexer[] multiplexers;
 
     /**
      * Creates a multiplexed branch.
-     *
-     * @param name the name of the branch.
+     * 
+     * @param name
+     *            the name of the branch.
      * @param multiplexers
-     * @param ports the multiplexing ports.
+     * @param ports
+     *            the multiplexing ports.
      */
     MultiplexedBranch(String name, Multiplexer[] multiplexers)
     {
         super(name, null, null, multiplexers);
         this.multiplexers = new Multiplexer[multiplexers.length];
         System.arraycopy(multiplexers, 0, this.multiplexers, 0,
-            multiplexers.length);
+                multiplexers.length);
     }
 
-	/**
-	 * Over-ride the super method so we can add the special multiplexer
-	 * ports.
-	 */
+    /**
+     * Over-ride the super method so we can add the special multiplexer ports.
+     */
     Set terminateLocally(Set connections)
     {
         for (int i = 0; i < this.multiplexers.length; i++)
         {
-			connections.add(multiplexers[i].processorMultiSource);
-			connections.add(multiplexers[i].multiSink);
+            connections.add(multiplexers[i].processorMultiSource);
+            connections.add(multiplexers[i].multiSink);
         }
 
         return super.terminateLocally(connections);
@@ -73,76 +77,164 @@ public class MultiplexedBranch extends TreeComponent
 
     /**
      * Adds a component in the specified multiplex index slot.
-     * @param child the component to add.
-     * @param multipexIndex the multiplexer slot into which to add the
-     * component
+     * 
+     * @param child
+     *            the component to add.
+     * @param multipexIndex
+     *            the multiplexer slot into which to add the component
      */
-    public final void add(TreeComponent child, int multipexIndex)
+    public synchronized final void add(TreeComponent child, int multipexIndex)
     {
+        Argument.assertNotNull(child, "child");
+        Argument.assertGreaterThanOrEqualTo(multipexIndex, 0, "multipexIndex");
         if (isRooted())
         {
             getTransactionManager().addComponent(this, child, multipexIndex);
         }
         else
         {
-            addAll(child, new Integer(multipexIndex));
+            addToSubBranch(child, new Integer(multipexIndex));
         }
     }
-    
-    synchronized void addAll(TreeComponent child, Integer index)
+
+    private void addAll(TreeComponent child, Integer index)
     {
-    	children.put(child, index);
-    	
-    	if (child instanceof Branch)
-    	{
-    		for (Iterator i=((Branch)child).getChildren().values().iterator() ; i.hasNext() ; )
-    		{
-    			addAll((TreeComponent)i.next(), index);
-    		}
-    	}
-        addToChildren(child);
+        children.put(child, index);
+
+        if (child instanceof Branch)
+        {
+            for (Iterator i = ((Branch) child).getChildren().values()
+                    .iterator(); i.hasNext();)
+            {
+                addAll((TreeComponent) i.next(), index);
+            }
+        }
     }
 
-	/**
-	 * Removes the specified child component.
-	 * @link child The child component to remove.
-	 */
-    public final void remove(TreeComponent child)
+    void addToSubBranch(TreeComponent child, Integer index)
     {
+        addAll(child, index);
+        Branch branch = (Branch) this.subBranches.get(index);
+        if (branch == null)
+        {
+            branch = createSubBranch(index);
+            // Add the child to the new branch...
+            branch.addToChildren(child);
+            // Add the new branch to the super class...
+            super.addToChildren(branch);
+            this.subBranches.put(index, branch);
+            this.children.put(branch, index);
+        }
+        else
+        {
+            branch.addToChildren(child);
+        }
+    }
+
+    private Branch createSubBranch(Integer index)
+    {
+        BranchFactory bf = new BranchFactory();
+        return bf.create(this.getName() + "[" + index + "]");
+    }
+
+    /**
+     * Removes the specified child component.
+     * 
+     * @link child The child component to remove.
+     */
+    public synchronized final void remove(TreeComponent child)
+    {
+        Argument.assertNotNull(child, "child");
         if (isRooted())
         {
             getTransactionManager().removeComponent(this, child);
         }
         else
         {
-            super.remove(child);
-            removeAll(child);
+            removeFromChildren(child);
         }
     }
-    
-    void removeInTransaction(TreeComponent child){
-        super.removeFromChildren(child);
+
+    void removeFromChildren(TreeComponent child)
+    {
+        Integer index = (Integer) children.get(child);
+        if (index == null)
+        {
+            throw new IllegalStateException("Attempt to remove '"
+                    + child.getName() + "(" + child
+                    + ")' for which no index exists");
+        }
+
+        Branch subBranch = (Branch) this.subBranches.get(index);
+        if (subBranch == null)
+        {
+            throw new IllegalStateException("Attempt to remove '"
+                    + child.getName() + "(" + child
+                    + ")' for which no sub-branch exists");
+        }
+
+        // If the child is the subBranch...
+        if (subBranch == child)
+        {
+            // Remove it from the sub-branch map...
+            this.subBranches.remove(index);
+            // Remove it from the super class childern...
+            super.removeFromChildren(child);
+        }
+        else
+        {
+            subBranch.removeFromChildren(child);
+            if (subBranch.getChildren().isEmpty())
+            {
+                super.remove(subBranch);
+            }
+        }
         removeAll(child);
     }
-    
+
     private synchronized void removeAll(TreeComponent child)
     {
-    	children.remove(child);
-    	
-    	if (child instanceof Branch)
-    	{
-    		for (Iterator i=((Branch)child).getChildren().values().iterator() ; i.hasNext() ; )
-    		{
-    			removeAll((TreeComponent)i.next());
-    		}
-    	}
+        children.remove(child);
+
+        if (child instanceof Branch)
+        {
+            for (Iterator i = ((Branch) child).getChildren().values()
+                    .iterator(); i.hasNext();)
+            {
+                removeAll((TreeComponent) i.next());
+            }
+        }
+    }
+
+    public synchronized void removeAll()
+    {
+        Object[] indexes = this.subBranches.keySet().toArray();
+        for (int i = 0; i < indexes.length; i++)
+        {
+            removeAll((Integer) indexes[i]);
+        }
+    }
+
+    public synchronized void removeAll(Integer index)
+    {
+        Branch subBranch = (Branch) this.subBranches.get(index);
+        if (subBranch != null)
+        {
+            Object[] tc = subBranch.getChildren().values().toArray();
+            for (int i = 0; i < tc.length; i++)
+            {
+                remove((TreeComponent) tc[i]);
+            }
+        }
     }
 
     /**
      * Returns the multiplexer index of the specified child.
-     * @param child the child component whose index is to be returned.
-     * @return the multiplexer index of the specified child if it  is
-     * found, otherwise -1.
+     * 
+     * @param child
+     *            the child component whose index is to be returned.
+     * @return the multiplexer index of the specified child if it is found,
+     *         otherwise -1.
      */
     int getIndex(TreeComponent child)
     {
