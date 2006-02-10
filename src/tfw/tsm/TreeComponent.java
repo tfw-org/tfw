@@ -344,7 +344,7 @@ public class TreeComponent
     /**
      * Removes all of this components child components.
      */
-    public synchronized final void removeAll()
+    public synchronized void removeAll()
     {
         if (children == null)
         {
