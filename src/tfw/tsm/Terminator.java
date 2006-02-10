@@ -253,7 +253,7 @@ class Terminator implements EventChannel, CommitRollbackListener
             }
 
             uninitializedSinks.add(sink);
-            component.getTransactionManager().addConstructionEventChannelFire(this);
+            component.getTransactionManager().addEventChannelFire(this);
         }
     }
 
