@@ -38,7 +38,7 @@ import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.StringECD;
 
 /**
- *  
+ * 
  */
 public class InitiatorTest extends TestCase
 {
@@ -46,8 +46,7 @@ public class InitiatorTest extends TestCase
 
     ObjectECD channel2 = new StringECD("bbb");
 
-    ObjectECD[] channels = new ObjectECD[] {
-            channel1, channel2 };
+    ObjectECD[] channels = new ObjectECD[] { channel1, channel2 };
 
     public void testInitiatorConstruction()
     {
@@ -58,7 +57,7 @@ public class InitiatorTest extends TestCase
         }
         catch (IllegalArgumentException expected)
         {
-            //System.out.println(expected);
+            // System.out.println(expected);
         }
 
         try
@@ -68,7 +67,7 @@ public class InitiatorTest extends TestCase
         }
         catch (IllegalArgumentException expected)
         {
-            //System.out.println(expected);
+            // System.out.println(expected);
         }
 
         try
@@ -78,7 +77,7 @@ public class InitiatorTest extends TestCase
         }
         catch (IllegalArgumentException expected)
         {
-            //System.out.println(expected);
+            // System.out.println(expected);
         }
     }
 
@@ -93,7 +92,7 @@ public class InitiatorTest extends TestCase
         }
         catch (IllegalArgumentException expected)
         {
-            //System.out.println(expected);
+            // System.out.println(expected);
         }
 
         try
@@ -103,7 +102,7 @@ public class InitiatorTest extends TestCase
         }
         catch (IllegalArgumentException expected)
         {
-            //System.out.println(expected);
+            // System.out.println(expected);
         }
 
         try
@@ -113,7 +112,7 @@ public class InitiatorTest extends TestCase
         }
         catch (IllegalArgumentException expected)
         {
-            //System.out.println(expected);
+            // System.out.println(expected);
         }
 
         try
@@ -123,7 +122,7 @@ public class InitiatorTest extends TestCase
         }
         catch (IllegalArgumentException expected)
         {
-            //System.out.println(expected);
+            // System.out.println(expected);
         }
 
         RootFactory rf = new RootFactory();
@@ -131,6 +130,7 @@ public class InitiatorTest extends TestCase
         {
             public void handle(Exception exception)
             {
+                exception.printStackTrace();
                 fail("Exception: " + exception.getMessage());
             }
         });
@@ -169,9 +169,9 @@ public class InitiatorTest extends TestCase
         root.remove(commit);
         commit.commitState = null;
         commit.debugCommitState = null;
-        //        rf = new RootFactory();
-        //        rf.addTerminator(channel1);
-        //        rf.addTerminator(channel2);
+        // rf = new RootFactory();
+        // rf.addTerminator(channel1);
+        // rf.addTerminator(channel2);
         root.add(initiator);
         root.add(commit);
 
@@ -207,7 +207,7 @@ public class InitiatorTest extends TestCase
         assertNull("debugCommit() was called", commit.debugCommitState);
 
         // Test set(EventChannelName, State) before connection...
-        //  This tests the delay fire requirement for an intiator.
+        // This tests the delay fire requirement for an intiator.
         commit.commitState = null;
         commit.debugCommitState = null;
         root.remove(initiator);
@@ -218,6 +218,54 @@ public class InitiatorTest extends TestCase
         root.add(initiator);
         queue.waitTilEmpty();
 
+        assertNotNull("commit() not called", commit.commitState);
+        assertEquals("commit() received wrong state1", state1,
+                commit.commitState.get(channel1));
+        assertEquals("commit() received wrong state2", state2,
+                commit.commitState.get(channel2));
+
+        assertNull("debugCommit() was called", commit.debugCommitState);
+
+        root.remove(initiator);
+        queue.waitTilEmpty();
+
+        commit.commitState = null;
+        commit.debugCommitState = null;
+        root.add(initiator);
+        initiator.set(channel1, state1);
+        initiator.set(channel2, state2);
+        root.remove(initiator);
+        queue.waitTilEmpty();
+        assertNotNull("commit() not called", commit.commitState);
+        assertEquals("commit() received wrong state1", state1,
+                commit.commitState.get(channel1));
+        assertEquals("commit() received wrong state2", state2,
+                commit.commitState.get(channel2));
+
+        assertNull("debugCommit() was called", commit.debugCommitState);
+        rf = new RootFactory();
+        rf.setTransactionExceptionHandler(new TransactionExceptionHandler()
+        {
+            public void handle(Exception exception)
+            {
+                exception.printStackTrace();
+                fail("Exception: " + exception.getMessage());
+            }
+        });
+        rf.addEventChannel(channel1, null, AlwaysChangeRule.RULE, null);
+        rf.addEventChannel(channel2, null, AlwaysChangeRule.RULE, null);
+
+        Root root2 = rf.create("Root2", queue);
+        initiator.set(channel1, state1);
+        initiator.set(channel2, state2);
+
+        commit.commitState = null;
+        commit.debugCommitState = null;
+        root.add(initiator);
+        root.remove(initiator);
+        root2.add(initiator);
+        queue.waitTilEmpty();
+        
         assertNotNull("commit() not called", commit.commitState);
         assertEquals("commit() received wrong state1", state1,
                 commit.commitState.get(channel1));
@@ -242,14 +290,14 @@ public class InitiatorTest extends TestCase
         {
             commitState = this.get();
 
-            //System.out.println("commit() - " + commitState);
+            // System.out.println("commit() - " + commitState);
         }
 
         public void debugCommit()
         {
             debugCommitState = this.get();
 
-            //System.out.println("debugCommit() - " + debugCommitState);
+            // System.out.println("debugCommit() - " + debugCommitState);
         }
     }
 }
