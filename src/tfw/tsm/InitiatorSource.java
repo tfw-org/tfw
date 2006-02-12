@@ -61,11 +61,6 @@ class InitiatorSource extends Source
             return;
         }
         super.setEventChannel(eventChannel);
-
-        if (this.getTreeComponent() instanceof Initiator)
-        {
-            ((Initiator) this.getTreeComponent()).fireDeferredState();
-        }
     }
 
     /**
@@ -79,8 +74,14 @@ class InitiatorSource extends Source
      */
     synchronized void setState(Object state) throws ValueException
     {
+        if (!this.getTreeComponent().isRooted())
+        {
+            throw new IllegalStateException(
+                    "Attempt to set state on disconnected source.");
+        }
         getConstraint().checkValue(state);
-        this.stateQueue.push(state);
+        this.stateQueue.push(new EventChannelNState(this.getEventChannel(),
+                state));
     }
 
     /**
@@ -89,12 +90,37 @@ class InitiatorSource extends Source
      */
     synchronized Object fire()
     {
-        Object state = null;
-        if ((getEventChannel() != null) && (!stateQueue.isEmpty()))
+        if (!stateQueue.isEmpty())
         {
-            state = stateQueue.pop();
-            getEventChannel().setState(this, state, null);
+            EventChannelNState ecs = (EventChannelNState) stateQueue.pop();
+            TreeComponent component = ecs.ec.getParent();
+            /*
+             * if the event channel is rooted and is rooted to the same
+             * transaction mananager as is running the current transaction, then
+             * set the state on the event channel.
+             */
+            if ((component != null)
+                    || (component.isRooted())
+                    || component.getTransactionManager().queue
+                            .isDispatchThread())
+            {
+                ecs.ec.setState(this, ecs.state, null);
+                return ecs.state;
+            }
         }
-        return state;
+        return null;
+    }
+
+    private class EventChannelNState
+    {
+        private final EventChannel ec;
+
+        private final Object state;
+
+        public EventChannelNState(EventChannel ec, Object state)
+        {
+            this.ec = ec;
+            this.state = state;
+        }
     }
 }

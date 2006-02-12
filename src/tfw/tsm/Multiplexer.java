@@ -301,6 +301,15 @@ class Multiplexer implements EventChannel
     /*
      * (non-Javadoc)
      * 
+     * @see tfw.tsm.EventChannel#getParent()
+     */
+    public TreeComponent getParent(){
+        return this.component;
+    }
+    
+    /*
+     * (non-Javadoc)
+     * 
      * @see tfw.tsm.EventChannel#getCurrentStateSource()
      */
     public Source getCurrentStateSource()

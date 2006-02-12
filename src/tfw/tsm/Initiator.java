@@ -39,11 +39,28 @@ import tfw.value.ValueException;
  * state of event channels in that transaction. The initiator will queue state
  * changes if it is not rooted. The queueing strategy can be set by providing
  * the appropriate {@link StateQueueFactory} on the constructor
- * {@link #Initiator(String, ObjectECD[], StateQueueFactory)}. The default
+ * {@link #Initiator(String, EventChannelDescription[], StateQueueFactory)}. The default
  * queuing strategy employs an unbounded queue which will store up state changes
  * until the initiator becomes rooted and can begin to fire its state changes.
  * Note that a component is said to be rooted when it is attached to a root
  * component or its parent is rooted.
+ * <P>
+ * State Change Rules:
+ * <ol>
+ * <li>If one of the 'set' or 'trigger' methods is called while the
+ * <tt>Initiator</tt> is rooted, the state changes will be immediately
+ * scheduled with the transaction manager.</li>
+ * <li>If one of the 'set' or 'trigger' methods is called while the
+ * <tt>Initiator</tt> is not rooted the state changes will be queued,
+ * according to the queuing strategy supplied at construction, and deferred
+ * until such time as the <tt>Initiator</tt> becomes rooted.</li>
+ * <li>An <tt>Initiator</tt> will schedule all of its deferred state changes
+ * with the transaction manager immediately upon becoming rooted. </li>
+ * <li>If the <tt>Initiator</tt> becomes un-rooted after state changes have
+ * been scheduled with the transaction manager and before the state changes have
+ * occurred, the state changes will occur if and only if the associated event
+ * channel is rooted when the state change transaction is executed. </li>
+ * </ol>
  */
 public class Initiator extends Leaf
 {
@@ -109,13 +126,7 @@ public class Initiator extends Leaf
         }
     }
 
-    void terminateParentAndLocalConnections(Set connections)
-    {
-        super.terminateParentAndLocalConnections(connections);
-        fireDeferredState();
-    }
-
-    void fireDeferredState()
+    synchronized void fireDeferredState()
     {
         synchronized (this)
         {
@@ -123,13 +134,26 @@ public class Initiator extends Leaf
             {
                 for (int i = 0; i < deferredStateChanges.size(); i++)
                 {
-                    this.getTransactionManager().addStateChange(
-                            (InitiatorSource[]) deferredStateChanges.get(i));
+                    SourceNState[] sns = (SourceNState[]) deferredStateChanges
+                            .get(i);
+                    InitiatorSource[] iSource = setState(sns);
+                    this.getTransactionManager().addStateChange(iSource);
                 }
 
                 this.deferredStateChanges = null;
             }
         }
+    }
+
+    private InitiatorSource[] setState(SourceNState[] sns)
+    {
+        InitiatorSource[] is = new InitiatorSource[sns.length];
+        for (int i = 0; i < sns.length; i++)
+        {
+            sns[i].source.setState(sns[i].state);
+            is[i] = sns[i].source;
+        }
+        return is;
     }
 
     private static Source[] createSources(String name,
@@ -161,24 +185,30 @@ public class Initiator extends Leaf
     // CheckArgument.checkNull(channel, "channel");
     // set(channel.getEventChannelName(), state);
     // }
-    private void newTransaction(InitiatorSource[] sources)
+    private void newTransaction(InitiatorSource[] sources, Object[] state)
     {
         if (isRooted())
         {
+            for (int i = 0; i < sources.length; i++)
+            {
+                sources[i].setState(state[i]);
+            }
             getTransactionManager().addStateChange(sources);
 
             return;
         }
-
-        synchronized (this)
+        SourceNState[] sns = new SourceNState[sources.length];
+        for (int i = 0; i < sources.length; i++)
         {
-            if (this.deferredStateChanges == null)
-            {
-                this.deferredStateChanges = new ArrayList();
-            }
-
-            this.deferredStateChanges.add(sources);
+            sns[i] = new SourceNState(sources[i], state[i]);
         }
+
+        if (this.deferredStateChanges == null)
+        {
+            this.deferredStateChanges = new ArrayList();
+        }
+
+        this.deferredStateChanges.add(sns);
     }
 
     /**
@@ -194,9 +224,10 @@ public class Initiator extends Leaf
      * @param state
      *            the new state for the event channel.
      */
-    public final void set(EventChannelDescription sourceEventChannel,
-            final Object state)
+    public synchronized final void set(
+            EventChannelDescription sourceEventChannel, final Object state)
     {
+
         Argument.assertNotNull(sourceEventChannel, "sourceEventChannel");
         // Trigger have null values...
         // CheckArgument.checkNull(state, "state");
@@ -212,13 +243,13 @@ public class Initiator extends Leaf
 
         try
         {
-            source.setState(state);
+            source.getConstraint().checkValue(state);
         }
         catch (ValueException ve)
         {
             throw new IllegalArgumentException(ve.getMessage());
         }
-        newTransaction(new InitiatorSource[] { source });
+        newTransaction(new InitiatorSource[] { source }, new Object[] { state });
     }
 
     /**
@@ -227,12 +258,12 @@ public class Initiator extends Leaf
      * @param state
      *            the event channel state to set.
      */
-    public final void set(EventChannelState[] state)
+    public synchronized final void set(EventChannelState[] state)
     {
         Argument.assertNotEmpty(state, "state");
 
-        final InitiatorSource[] sources = new InitiatorSource[state.length];
-        int index = 0;
+        InitiatorSource[] sources = new InitiatorSource[state.length];
+        Object[] stateObjects = new Object[state.length];
 
         for (int i = 0; i < state.length; i++)
         {
@@ -244,19 +275,11 @@ public class Initiator extends Leaf
                 throw new IllegalArgumentException(eventChannel + " not found");
             }
 
-            try
-            {
-                source.setState(state[i].getState());
-            }
-            catch (ValueException ve)
-            {
-                throw new IllegalArgumentException(ve.getMessage());
-            }
-
-            sources[index++] = source;
+            sources[i] = source;
+            stateObjects[i] = state[i].getState();
         }
 
-        newTransaction(sources);
+        newTransaction(sources, stateObjects);
     }
 
     /**
@@ -267,8 +290,22 @@ public class Initiator extends Leaf
      * @param sourceEventChannel
      *            The event channel to receive the trigger event.
      */
-    public final void trigger(StatelessTriggerECD triggerEventChannel)
+    public synchronized final void trigger(
+            StatelessTriggerECD triggerEventChannel)
     {
         set(triggerEventChannel, null);
+    }
+
+    private class SourceNState
+    {
+        private final InitiatorSource source;
+
+        private final Object state;
+
+        public SourceNState(InitiatorSource source, Object state)
+        {
+            this.source = source;
+            this.state = state;
+        }
     }
 }
