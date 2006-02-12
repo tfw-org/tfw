@@ -166,13 +166,8 @@ class Terminator implements EventChannel, CommitRollbackListener
      * 
      * @return the current branch associated with this terminator.
      */
-    public TreeComponent getTreeComponent()
+    public TreeComponent getParent()
     {
-        if (component == null)
-        {
-            throw new IllegalStateException("Branch has not been initialized.");
-        }
-
         return component;
     }
 
@@ -315,9 +310,6 @@ class Terminator implements EventChannel, CommitRollbackListener
     public void setState(Source source, Object state,
             EventChannel forwardingEventChannel)
     {
-        // System.err.print("Terminator(" + this.getECD().getEventChannelName()
-        // + ").setState(" + source + ", " + state
-        // + ", " + forwardingEventChannel+")");
         if (ecd.isRollBackParticipant())
         {
             component.getTransactionManager().addCommitRollbackListener(this);
@@ -330,10 +322,12 @@ class Terminator implements EventChannel, CommitRollbackListener
                             + getECD().getEventChannelName()
                             + "' twice in the same state change cycle is not allowed. "
                             + "The first state change source is "
-                            + stateSource.getTreeComponent().getName()+"("+stateSource.getTreeComponent()+")"
+                            + stateSource.getTreeComponent().getName() + "("
+                            + stateSource.getTreeComponent() + ")"
                             + " and the state value is " + previousState
                             + ". The second attempt was made by "
-                            + source.getTreeComponent().getName()+"("+source.getTreeComponent()+")"
+                            + source.getTreeComponent().getName() + "("
+                            + source.getTreeComponent() + ")"
                             + " and the new state value is " + state);
         }
 
@@ -456,11 +450,14 @@ class Terminator implements EventChannel, CommitRollbackListener
 
     /**
      * Adds the specified export tag to this terminator
-     * @param exportTag The tag to add.
+     * 
+     * @param exportTag
+     *            The tag to add.
      */
     void addExportStateTag(String exportTag)
     {
-        if (this.exportTags == null){
+        if (this.exportTags == null)
+        {
             this.exportTags = new HashSet();
         }
         this.exportTags.add(exportTag);
