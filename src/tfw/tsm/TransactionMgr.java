@@ -61,7 +61,7 @@ import tfw.check.Argument;
  */
 public final class TransactionMgr
 {
-    private final TransactionQueue queue;
+    final TransactionQueue queue;
 
     private long transactionCount = 0;
 
@@ -782,6 +782,17 @@ public final class TransactionMgr
         }
     }
 
+    private static void notifyInitiators(TreeComponent child){
+        if (child instanceof Initiator){
+            ((Initiator)child).fireDeferredState();
+            return;
+        }
+        Iterator children = child.getChildren().values().iterator();
+        while(children.hasNext()){
+            notifyInitiators((TreeComponent)children.next());
+        }
+    }
+
     private class AddComponentRunnable implements Runnable
     {
         private final TreeComponent parent;
@@ -801,8 +812,9 @@ public final class TransactionMgr
             parent.addToChildren(child);
             parent.terminateParentAndLocalConnections(child
                     .terminateChildAndLocalConnections());
+            notifyInitiators(child);
         }
-
+        
         public String toString()
         {
             return "add Component " + child.getName() + " to "
@@ -832,6 +844,7 @@ public final class TransactionMgr
             parent.addToSubBranch(child, new Integer(index));
             parent.terminateParentAndLocalConnections(child
                     .terminateChildAndLocalConnections());
+            notifyInitiators(child);
         }
 
         public String toString()
