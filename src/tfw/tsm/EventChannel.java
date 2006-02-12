@@ -56,6 +56,12 @@ interface EventChannel
 	 */
 	public void remove(Port port);
 	
+    /**
+     * Get the parent of this event channel.
+     * @return The event channels parent
+     */
+    public TreeComponent getParent();
+
 	/**
 	 * Returns the current state of the event channel.
 	 */
