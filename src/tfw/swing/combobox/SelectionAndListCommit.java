@@ -27,6 +27,7 @@ package tfw.swing.combobox;
 import java.awt.EventQueue;
 import java.util.ArrayList;
 
+import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 
@@ -86,30 +87,44 @@ public class SelectionAndListCommit extends Commit
 
     protected void commit()
     {
-        if (isStateChanged(listECD))
+        try
         {
-            try
-            {
-                final Object[] list = ((ObjectIla) get(listECD)).toArray();
+            final Object[] list = ((ObjectIla) get(listECD)).toArray();
 
-                EventQueue.invokeLater(new Runnable()
-                {
-                    public void run()
-                    {
-                        DefaultComboBoxModel model = new DefaultComboBoxModel(
-                                list);
-                        if (model.getIndexOf(comboBox.getSelectedItem()) > 0)
-                        {
-                            model.setSelectedItem(comboBox.getSelectedItem());
-                        }
-                        comboBox.setModel(model);
-                    }
-                });
-            }
-            catch (DataInvalidException die)
+            EventQueue.invokeLater(new Runnable()
             {
-            }
+                public void run()
+                {
+                    ComboBoxModel cbm = comboBox.getModel();
+                    if (cbm.getSize() == list.length)
+                    {
+                        boolean equal = true;
+                        for (int i = 0; i < list.length; i++)
+                        {
+                            if (list[i] != cbm.getElementAt(i))
+                            {
+                                equal = false;
+                                break;
+                            }
+                        }
+                        if (equal)
+                        {
+                            return;
+                        }
+                    }
+                    DefaultComboBoxModel model = new DefaultComboBoxModel(list);
+                    if (model.getIndexOf(comboBox.getSelectedItem()) > 0)
+                    {
+                        model.setSelectedItem(comboBox.getSelectedItem());
+                    }
+                    comboBox.setModel(model);
+                }
+            });
         }
+        catch (DataInvalidException die)
+        {
+        }
+
         if ((selectedItemECD != null) && isStateChanged(selectedItemECD))
         {
             final Object selectedItem = (Object) get(selectedItemECD);
