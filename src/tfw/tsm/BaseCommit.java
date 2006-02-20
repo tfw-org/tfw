@@ -99,7 +99,7 @@ abstract class BaseCommit extends EventHandler {
 
 	/**
 	 * Returns true if the specified sink event channel state has changed
-	 * during the current transaction state change cycle, otherwise returns
+	 * during the current transaction, otherwise returns
 	 * false. Note that <code>equals()</code> is used to determine if the
 	 * state has changed.
 	 *
@@ -119,21 +119,8 @@ abstract class BaseCommit extends EventHandler {
 			throw new IllegalArgumentException(sinkEventChannel + " not found");
 		}
 
-		Object state = sink.getEventChannel().getState();
-		Object previousState = sink.getEventChannel()
-								   .getPreviousTransactionState();
+        return sink.getEventChannel().isStateChanged();
 
-		if (state == previousState)
-		{
-			return false;
-		}
-
-		if (previousState == null)
-		{
-			return true;
-		}
-
-		return (!previousState.equals(state));
 	}
 
 	/**
