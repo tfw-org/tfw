@@ -121,44 +121,6 @@ abstract class Processor extends RollbackHandler
     }
 
     /**
-     * Returns true if the specified sink event channel state has changed during
-     * the current transaction state change cycle, otherwise returns false. Note
-     * that <code>equals()</code> is used to determine if the state has
-     * changed.
-     * 
-     * @param sinkEventChannel
-     *            the name of the event channel to check.
-     * @return true if the specified sink event channel state has changed during
-     *         the current transaction state change cycle, otherwise returns
-     *         false.
-     */
-    protected final boolean isStateChanged(
-            EventChannelDescription sinkEventChannel)
-    {
-        Sink sink = getSink(sinkEventChannel);
-
-        if (sink == null)
-        {
-            throw new IllegalArgumentException(sinkEventChannel + " not found");
-        }
-
-        Object state = sink.getEventChannel().getState();
-        Object previousState = sink.getEventChannel().getPreviousCycleState();
-
-        if (state == previousState)
-        {
-            return false;
-        }
-
-        if (previousState == null)
-        {
-            return true;
-        }
-
-        return (!previousState.equals(state));
-    }
-
-    /**
      * Asynchronously changes the state of the specified event channel.
      * 
      * @param sourceEventChannel
