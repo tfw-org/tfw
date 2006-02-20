@@ -45,8 +45,8 @@ class DemultiplexedEventChannel extends Terminator
      */
     private final ProcessorSource deMultiSource;
 
-    /** The sub-channel index of this event channel. */
-    final Integer demultiplexIndex;
+    /** The sub-channel identifier of this event channel. */
+    final Object demultiplexSlotId;
 
     /** The number of ports connected to this event channel. */
     private int connectionCount = 0;
@@ -56,21 +56,21 @@ class DemultiplexedEventChannel extends Terminator
      * 
      * @param parent
      *            The parent multiplexer.
-     * @param demultiplexIndex
-     *            The sub-channel index of this event channel.
+     * @param demultiplexSlotId
+     *            The sub-channel indentifier of this event channel.
      * @param stateChangeRule
      *            The state change rule for this event channel.
      */
-    DemultiplexedEventChannel(Multiplexer parent, Integer demultiplexIndex,
+    DemultiplexedEventChannel(Multiplexer parent, Object demultiplexSlotId,
             StateChangeRule stateChangeRule)
     {
         super(parent.valueECD, null, stateChangeRule);
         Argument.assertNotNull(parent, "parent");
         this.parent = parent;
-        this.demultiplexIndex = demultiplexIndex;
+        this.demultiplexSlotId = demultiplexSlotId;
         this.deMultiSource = new ProcessorSource(parent.processorMultiSource
                 .getPortName()
-                + "[" + demultiplexIndex + "]", parent.valueECD);
+                + "[" + demultiplexSlotId + "]", parent.valueECD);
         this.deMultiSource.setTreeComponent(parent.getTreeComponent());
         super.add(this.deMultiSource);
     }
@@ -126,7 +126,7 @@ class DemultiplexedEventChannel extends Terminator
         {
             throw new IllegalStateException(
                     "Demultiplexing error, attempt to set state to null in sub-channel '"
-                            + this.demultiplexIndex
+                            + this.demultiplexSlotId
                             + "' of multiplexed channel '"
                             + parent.multiSink.getEventChannelName() + "'");
         }
