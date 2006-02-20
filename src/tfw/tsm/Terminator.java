@@ -70,6 +70,8 @@ class Terminator implements EventChannel, CommitRollbackListener
 
     private Set exportTags = null;
 
+    private boolean isStateChanged = false;
+
     /**
      * Create an event channel termainator.
      * 
@@ -92,6 +94,7 @@ class Terminator implements EventChannel, CommitRollbackListener
         this.previousState = initialState;
         // TODO Make sure that rollback's on initialization cause an Error.
         this.rollbackState = initialState;
+        this.isStateChanged = (initialState != null);
 
         if (initialState != null)
         {
@@ -132,6 +135,7 @@ class Terminator implements EventChannel, CommitRollbackListener
         previousState = rollbackState;
         state = rollbackState;
         stateSource = rollbackSource;
+        isStateChanged = false;
     }
 
     /**
@@ -300,6 +304,16 @@ class Terminator implements EventChannel, CommitRollbackListener
     }
 
     /**
+     * @return True if new state has been published during the current
+     *         transaction. Otherwise, false if the state has not changed or if
+     *         no transaction is in progress.
+     */
+    public boolean isStateChanged()
+    {
+        return this.isStateChanged;
+    }
+
+    /**
      * Sets the state of this event channel.
      * 
      * @param state
@@ -315,16 +329,25 @@ class Terminator implements EventChannel, CommitRollbackListener
             component.getTransactionManager().addCommitRollbackListener(this);
         }
 
-        if ((forwardingEventChannel == null) && (this.state != previousState))
+        if ((forwardingEventChannel == null)
+                && (this.state != this.previousState))
         {
+            String stateSourceName = "Unkown";
+            if ((stateSource != null)
+                    && (stateSource.getTreeComponent() != null))
+            {
+                stateSourceName = stateSource.getTreeComponent().getName();
+            }
             throw new IllegalStateException(
                     "Attempt to change the state of event channel '"
                             + getECD().getEventChannelName()
                             + "' twice in the same state change cycle is not allowed. "
                             + "The first state change source is "
-                            + stateSource.getTreeComponent().getName() + "("
-                            + stateSource.getTreeComponent() + ")"
-                            + " and the state value is " + previousState
+                            + stateSourceName
+                            + "("
+                            + ((stateSource != null) ? stateSource
+                                    .getTreeComponent().toString() : "null")
+                            + ")" + " and the state value is " + previousState
                             + ". The second attempt was made by "
                             + source.getTreeComponent().getName() + "("
                             + source.getTreeComponent() + ")"
@@ -333,6 +356,7 @@ class Terminator implements EventChannel, CommitRollbackListener
 
         if (stateChangeRule.isChange(this.state, state))
         {
+            this.isStateChanged = true;
             stateSource = source;
             this.state = state;
             updateSinks(sinks);
@@ -368,6 +392,7 @@ class Terminator implements EventChannel, CommitRollbackListener
         rollbackState = state;
         rollbackSource = stateSource;
         terminatorLocked = false;
+        isStateChanged = false;
     }
 
     private Set resetUninitializedSinks()
