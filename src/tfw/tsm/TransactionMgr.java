@@ -81,7 +81,6 @@ public final class TransactionMgr
 
     private Runnable componentChange = null;
 
-
     private boolean inTransaction = false;
 
     private boolean inCommit = false;
@@ -270,15 +269,15 @@ public final class TransactionMgr
             // process the independent processors...
             p = (Processor[]) processors.toArray(new Processor[processors
                     .size()]);
-            processors = null;
+        processors = null;
 
-            // if there are dependent processor to be delayed...
-            if (delayedProcessors.size() > 0)
-            {
-                // remember the delayed processors for the next state change
-                // cycle...
-                processors = delayedProcessors;
-            }
+        // if there are dependent processor to be delayed...
+        if (delayedProcessors.size() > 0)
+        {
+            // remember the delayed processors for the next state change
+            // cycle...
+            processors = delayedProcessors;
+        }
         }
         else
         {
@@ -308,7 +307,6 @@ public final class TransactionMgr
     private static void checkDependencies(Set processors, Set delayedProcessors)
     {
         Set crumbs = new HashSet();
-
         Processor[] procs = (Processor[]) processors
                 .toArray(new Processor[processors.size()]);
 
@@ -441,6 +439,7 @@ public final class TransactionMgr
             logger.log(Level.INFO, "eventChannels[" + i + "].fire(): "
                     + ec[i].getECD().getEventChannelName() + " - "
                     + ec[i].getState());
+            this.transStateChanges.add(ec[i]);
         }
 
         executingStateChanges = false;
@@ -659,7 +658,8 @@ public final class TransactionMgr
         queue.invokeLater(new ComponentChangeTransaction(acr));
     }
 
-    void addComponent(MultiplexedBranch parent, TreeComponent child, int index)
+    void addComponent(MultiplexedBranch parent, TreeComponent child,
+            Object slotId)
     {
         checkConstructionState();
         if (!parent.isRooted())
@@ -670,7 +670,7 @@ public final class TransactionMgr
         }
 
         AddComponentMultiplexRunnable acr = new AddComponentMultiplexRunnable(
-                parent, child, index);
+                parent, child, slotId);
         queue.invokeLater(new ComponentChangeTransaction(acr));
     }
 
@@ -782,14 +782,17 @@ public final class TransactionMgr
         }
     }
 
-    private static void notifyInitiators(TreeComponent child){
-        if (child instanceof Initiator){
-            ((Initiator)child).fireDeferredState();
+    private static void notifyInitiators(TreeComponent child)
+    {
+        if (child instanceof Initiator)
+        {
+            ((Initiator) child).fireDeferredState();
             return;
         }
         Iterator children = child.getChildren().values().iterator();
-        while(children.hasNext()){
-            notifyInitiators((TreeComponent)children.next());
+        while (children.hasNext())
+        {
+            notifyInitiators((TreeComponent) children.next());
         }
     }
 
@@ -814,7 +817,7 @@ public final class TransactionMgr
                     .terminateChildAndLocalConnections());
             notifyInitiators(child);
         }
-        
+
         public String toString()
         {
             return "add Component " + child.getName() + " to "
@@ -828,20 +831,20 @@ public final class TransactionMgr
 
         private final TreeComponent child;
 
-        private final int index;
+        private final Object slotId;
 
         AddComponentMultiplexRunnable(final MultiplexedBranch parent,
-                final TreeComponent child, int index)
+                final TreeComponent child, Object slotId)
         {
             this.parent = parent;
             this.child = child;
-            this.index = index;
+            this.slotId = slotId;
         }
 
         public void run()
         {
             logger.info(this.toString());
-            parent.addToSubBranch(child, new Integer(index));
+            parent.addToSubBranch(child, slotId);
             parent.terminateParentAndLocalConnections(child
                     .terminateChildAndLocalConnections());
             notifyInitiators(child);
