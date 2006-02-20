@@ -32,21 +32,21 @@ import java.util.Iterator;
 import java.util.Map;
 
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
-import tfw.immutable.ila.objectila.ObjectIla;
-import tfw.immutable.ila.objectila.ObjectIlaFromArray;
+import tfw.tsm.MultiplexerStrategy.MultiStateAccessor;
+import tfw.tsm.MultiplexerStrategy.MultiStateFactory;
 import tfw.tsm.ecd.EventChannelDescription;
 import tfw.tsm.ecd.ObjectECD;
-import tfw.tsm.ecd.ila.ObjectIlaECD;
 
 class Multiplexer implements EventChannel
 {
+    private final MultiplexerStrategy multiStrategy;
+
     /** The branch associated with this terminator. */
     private MultiplexedBranch component = null;
 
     /** The description of the single value event channel. */
     final ObjectECD valueECD;
-    
+
     /** The state change rule for the sub-channels. */
     private final StateChangeRule stateChangeRule;
 
@@ -68,16 +68,19 @@ class Multiplexer implements EventChannel
      * @param multiValueECD
      */
     Multiplexer(String multiplexerBranchName, ObjectECD valueECD,
-            ObjectIlaECD multiValueECD, StateChangeRule stateChangeRule)
+            ObjectECD multiValueECD, StateChangeRule stateChangeRule,
+            MultiplexerStrategy multiStrategy)
     {
         Argument.assertNotNull(valueECD, "valueECD");
         Argument.assertNotNull(multiValueECD, "multiValueECD");
+        Argument.assertNotNull(multiStrategy, "multiStrategy");
 
         this.valueECD = valueECD;
         this.stateChangeRule = stateChangeRule;
         this.multiSink = new MultiSink(multiValueECD);
         this.processorMultiSource = new MultiSource("Multiplexer Source["
                 + multiplexerBranchName + "]", multiValueECD);
+        this.multiStrategy = multiStrategy;
     }
 
     private class MultiSink extends Sink
@@ -99,32 +102,20 @@ class Multiplexer implements EventChannel
                 return;
             }
 
-            Object[] state;
-            try
-            {
-                state = ((ObjectIla) getState()).toArray();
-            }
-            catch (DataInvalidException e)
-            {
-                throw new RuntimeException(
-                        "Multiplexed data invalid in event channel '"
-                                + multiSink.getEventChannelName() + "': "
-                                + e.getMessage(), e);
-            }
+            MultiStateAccessor stateAccessor = multiStrategy
+                    .toMultiStateAccessor(getState());
             Iterator itr = Multiplexer.this.demultiplexedEventChannels.values()
                     .iterator();
             while (itr.hasNext())
             {
                 DemultiplexedEventChannel dm = (DemultiplexedEventChannel) itr
                         .next();
-                int index = dm.demultiplexIndex.intValue();
-                if (index >= state.length)
+
+                Object state = stateAccessor.getState(dm.demultiplexSlotId);
+                if (state != null)
                 {
-                    throw new IllegalStateException(
-                            "Multiplexed state does not have a value for demultiplexed channel '"
-                                    + index + "'.");
+                    dm.setDeMultiState(state);
                 }
-                dm.setDeMultiState(state[index]);
             }
         }
     }
@@ -154,73 +145,40 @@ class Multiplexer implements EventChannel
                 throw new IllegalStateException(
                         "No pending state changes to fire.");
             }
-            ObjectIla objs = (ObjectIla) this.getEventChannel().getState();
+            MultiStateFactory stateFactory = Multiplexer.this.multiStrategy
+                    .toMultiStateFactory(this.getEventChannel().getState());
             DemultiplexedEventChannel[] dms = (DemultiplexedEventChannel[]) pendingStateChanges
                     .toArray(new DemultiplexedEventChannel[pendingStateChanges
                             .size()]);
             pendingStateChanges.clear();
-            int maxIndex = dms[0].demultiplexIndex.intValue();
-            for (int i = 1; i < dms.length; i++)
-            {
-                if (dms[i].demultiplexIndex.intValue() > maxIndex)
-                {
-                    maxIndex = dms[i].demultiplexIndex.intValue();
-                }
-            }
-
-            Object[] array = null;
-
-            try
-            {
-                if (objs == null)
-                {
-                    array = new Object[maxIndex + 1];
-                }
-                else if (maxIndex >= objs.length())
-                {
-                    array = new Object[maxIndex + 1];
-                    objs.toArray(array, 0, 0L, (int) objs.length());
-                }
-                else
-                {
-                    array = objs.toArray();
-                }
-            }
-            catch (DataInvalidException e)
-            {
-                throw new RuntimeException(
-                        "Multiplexer received DataInvalidException: "
-                                + e.getMessage(), e);
-            }
 
             for (int i = 0; i < dms.length; i++)
             {
-                array[dms[i].demultiplexIndex.intValue()] = dms[i].getState();
+                stateFactory.setState(dms[i].demultiplexSlotId, dms[i]
+                        .getState());
             }
-            objs = ObjectIlaFromArray.create(array);
-            getEventChannel().setState(this, objs, null);
-            return objs;
+            Object multiState = stateFactory.toMultiState();
+            getEventChannel().setState(this, multiState, null);
+            return multiState;
         }
     }
 
-    private EventChannel getDemultiplexedEventChannel(int index)
+    private EventChannel getDemultiplexedEventChannel(Object slotId)
     {
-        if (index < 0)
+        if (slotId == null)
         {
-            throw new IllegalArgumentException("index < 0 not allowed");
+            throw new IllegalArgumentException("slotId == null not allowed");
         }
 
-        Integer integerIndex = new Integer(index);
-
-        if (!demultiplexedEventChannels.containsKey(integerIndex))
+        if (!demultiplexedEventChannels.containsKey(slotId))
         {
             DemultiplexedEventChannel dm = new DemultiplexedEventChannel(this,
-                    integerIndex, stateChangeRule);
+                    slotId, stateChangeRule);
             dm.setTreeComponent(this.component);
-            demultiplexedEventChannels.put(integerIndex, dm);
+            demultiplexedEventChannels.put(slotId, dm);
         }
 
-        return ((EventChannel) demultiplexedEventChannels.get(integerIndex));
+        return ((EventChannel) demultiplexedEventChannels.get(slotId));
     }
 
     TreeComponent getTreeComponent()
@@ -230,12 +188,12 @@ class Multiplexer implements EventChannel
 
     void remove(DemultiplexedEventChannel deMultiplexer)
     {
-        if (demultiplexedEventChannels.remove(deMultiplexer.demultiplexIndex) == null)
+        if (demultiplexedEventChannels.remove(deMultiplexer.demultiplexSlotId) == null)
         {
             throw new IllegalStateException(
                     "Demultiplexer not found attempting to remove demultiplexer for "
                             + valueECD.getEventChannelName() + "["
-                            + deMultiplexer.demultiplexIndex + "]");
+                            + deMultiplexer.demultiplexSlotId + "]");
         }
     }
 
@@ -247,22 +205,22 @@ class Multiplexer implements EventChannel
     public void add(Port port)
     {
         // Search for the multiplexed component...
-        int index = component.getIndex(port.getTreeComponent());
+        Object slotId = component.getSlotId(port.getTreeComponent());
         TreeComponent tc = port.getTreeComponent().getParent();
-        while ((index < 0) && (tc != null))
+        while ((slotId == null) && (tc != null))
         {
-            index = component.getIndex(tc);
+            slotId = component.getSlotId(tc);
             tc = tc.getParent();
         }
 
         // if we didn't find a multiplexed component...
-        if (index < 0)
+        if (slotId == null)
         {
             throw new IllegalArgumentException(
                     "'port' is not from a multiplexed component.");
         }
 
-        getDemultiplexedEventChannel(index).add(port);
+        getDemultiplexedEventChannel(slotId).add(port);
     }
 
     /*
@@ -303,10 +261,11 @@ class Multiplexer implements EventChannel
      * 
      * @see tfw.tsm.EventChannel#getParent()
      */
-    public TreeComponent getParent(){
+    public TreeComponent getParent()
+    {
         return this.component;
     }
-    
+
     /*
      * (non-Javadoc)
      * 
@@ -335,7 +294,8 @@ class Multiplexer implements EventChannel
      */
     public Object getPreviousCycleState()
     {
-        return valueECD;
+        throw new UnsupportedOperationException(
+                "Multiplexer does not participate directly in transactions.");
     }
 
     /*
@@ -345,7 +305,13 @@ class Multiplexer implements EventChannel
      */
     public Object getPreviousTransactionState()
     {
-        return valueECD;
+        throw new UnsupportedOperationException(
+                "Multiplexer does not participate directly in transactions.");
+    }
+
+    public boolean isStateChanged()
+    {
+        return false;
     }
 
     /*
@@ -355,7 +321,7 @@ class Multiplexer implements EventChannel
      */
     public Object getState()
     {
-        return multiSink.getEventChannel().getState();
+        return this.multiSink.getEventChannel().getState();
     }
 
     /*
