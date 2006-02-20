@@ -46,7 +46,6 @@ public class GetPreviousStateTest extends TestCase
         final String stateChangeOne = "StateOne";
         final String stateChangeTwo = "StateTwo";
         RootFactory rf = new RootFactory();
-        rf.setLogging(true);
         rf.setTransactionExceptionHandler(new TransactionExceptionHandler()
         {
             public void handle(Exception e)
