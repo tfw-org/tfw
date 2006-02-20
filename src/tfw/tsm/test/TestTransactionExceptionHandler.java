@@ -39,6 +39,6 @@ class TestTransactionExceptionHandler implements
     public void handle(Exception exp)
     {
         this.exp = exp;
-        exp.printStackTrace();
+        //exp.printStackTrace();
     }
 }
