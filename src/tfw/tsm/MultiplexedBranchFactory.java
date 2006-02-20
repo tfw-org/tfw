@@ -52,6 +52,9 @@ public class MultiplexedBranchFactory
     /** A list of State change rules. */
     ArrayList stateChangeRules = new ArrayList();
 
+    /** A list of multiplexer strategies. */
+    ArrayList strategyList = new ArrayList();
+
     /**
      * Addes a multiplexer for the specified event channels.
      * 
@@ -64,7 +67,7 @@ public class MultiplexedBranchFactory
     public void addMultiplexer(ObjectECD valueECD, ObjectIlaECD multiValueECD)
     {
         this.addMultiplexer(valueECD, multiValueECD, DotEqualsRule
-                .getInstance());
+                .getInstance(), new ObjectIlaMultiplexerStrategy());
     }
 
     /**
@@ -78,13 +81,17 @@ public class MultiplexedBranchFactory
      * @param valueStateChangeRule
      *            The state change rule for the child or demultiplexed event
      *            channels.
+     * @param multiplexerStrategy
+     *            The strategy for multiplexing and demultiplexing state.
      */
-    public void addMultiplexer(ObjectECD valueECD, ObjectIlaECD multiValueECD,
-            StateChangeRule valueStateChangeRule)
+    public void addMultiplexer(ObjectECD valueECD, ObjectECD multiValueECD,
+            StateChangeRule valueStateChangeRule,
+            MultiplexerStrategy multiplexerStrategy)
     {
         Argument.assertNotNull(valueECD, "valueECD");
         Argument.assertNotNull(multiValueECD, "multiValueECD");
         Argument.assertNotNull(valueStateChangeRule, "valueStateChangeRule");
+        Argument.assertNotNull(multiplexerStrategy, "multiplexerStrategy");
 
         if (valueECD.getEventChannelName().equals(
                 multiValueECD.getEventChannelName()))
@@ -110,18 +117,21 @@ public class MultiplexedBranchFactory
         valueECDList.add(valueECD);
         multiValueECDList.add(multiValueECD);
         stateChangeRules.add(valueStateChangeRule);
+        strategyList.add(multiplexerStrategy);
     }
 
     private static Multiplexer[] generateMulitplexers(String name,
-            List valueECDList, List multiValueECDList, List stateChangeRules)
+            List valueECDList, List multiValueECDList, List stateChangeRules,
+            List strategyList)
     {
         ArrayList list = new ArrayList();
 
         for (int i = 0; i < valueECDList.size(); i++)
         {
             list.add(new Multiplexer(name, (ObjectECD) valueECDList.get(i),
-                    (ObjectIlaECD) multiValueECDList.get(i),
-                    (StateChangeRule) stateChangeRules.get(i)));
+                    (ObjectECD) multiValueECDList.get(i),
+                    (StateChangeRule) stateChangeRules.get(i),
+                    (MultiplexerStrategy) strategyList.get(i)));
         }
 
         return (Multiplexer[]) list.toArray(new Multiplexer[list.size()]);
@@ -149,8 +159,9 @@ public class MultiplexedBranchFactory
                             + "must be added by calling the addMultiplexer() method.");
         }
 
-        return new MultiplexedBranch(name, generateMulitplexers(name,
-                valueECDList, multiValueECDList, stateChangeRules));
+        return new MultiplexedBranch(name,
+                generateMulitplexers(name, valueECDList, multiValueECDList,
+                        stateChangeRules, strategyList));
     }
 
     /**
