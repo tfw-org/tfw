@@ -110,12 +110,7 @@ public class NodeEdgeFilterConverter extends Converter
 	protected void convert()
 	{
 		boolean showBowTie = ((Boolean)get(showBowTieECD)).booleanValue();
-		
-		if (isStateChanged(selectedNodesECD) && !showBowTie)
-		{
-			return;
-		}
-		
+				
 		Graph graph = (Graph)get(graphECD);
 		
 		if (showBowTie)
