@@ -46,7 +46,7 @@ public abstract class Converter extends Processor
      * @param sinkEventChannels the input event channels.
      * @param sourceEventChannels the output event channels.
      */
-    public Converter(String name, ObjectECD[] sinkDescriptions,
+    public Converter(String name, EventChannelDescription[] sinkDescriptions,
         EventChannelDescription[] sourceDescriptions)
     {
         this(name, sinkDescriptions, null, sourceDescriptions);
@@ -64,7 +64,7 @@ public abstract class Converter extends Processor
      * or the {@link #debugConvert()} method to be called.
      * @param sources output event channels for this converter.
      */
-    public Converter(String name, ObjectECD[] triggeringSinks,
+    public Converter(String name, EventChannelDescription[] triggeringSinks,
         ObjectECD[] nonTriggeringSinks,
         EventChannelDescription[] sources)
     {
@@ -84,8 +84,8 @@ public abstract class Converter extends Processor
         }
     }
 
-    private static ObjectECD[] checkTriggeringSinks(
-        ObjectECD[] triggeringSinks)
+    private static EventChannelDescription[] checkTriggeringSinks(
+            EventChannelDescription[] triggeringSinks)
     {
         Argument.assertNotNull(triggeringSinks, "triggeringSinks");
         Argument.assertElementNotNull(triggeringSinks, "triggeringSinks");
