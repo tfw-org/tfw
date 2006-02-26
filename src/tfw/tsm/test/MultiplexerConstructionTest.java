@@ -30,7 +30,6 @@ import junit.framework.TestCase;
 import tfw.immutable.ila.objectila.ObjectIlaFromArray;
 import tfw.tsm.BasicTransactionQueue;
 import tfw.tsm.Commit;
-import tfw.tsm.Initiator;
 import tfw.tsm.MultiplexedBranch;
 import tfw.tsm.MultiplexedBranchFactory;
 import tfw.tsm.Root;
@@ -72,7 +71,7 @@ public class MultiplexerConstructionTest extends TestCase
         root.add(multiBranch);
         queue.waitTilEmpty();
     }
-    
+
     public void testNameSpaceSeparation(){
         String value0 = "bob";
         String value1 = "sally";
@@ -86,7 +85,7 @@ public class MultiplexerConstructionTest extends TestCase
 
         BasicTransactionQueue queue = new BasicTransactionQueue();
         RootFactory rf = new RootFactory();
-        rf.setLogging(true);
+        //rf.setLogging(true);
         rf.addEventChannel(MULTIVALUE_ECD, ObjectIlaFromArray
                 .create(new String[] { value0, value1 }));
         Root root = rf.create("Test", queue);
