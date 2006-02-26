@@ -216,8 +216,9 @@ class Multiplexer implements EventChannel
         // if we didn't find a multiplexed component...
         if (slotId == null)
         {
-            throw new IllegalArgumentException(
-                    "'port' is not from a multiplexed component.");
+            throw new IllegalArgumentException("The specified port, '"
+                    + port.getEventChannelName()
+                    + "', is not from a multiplexed component.");
         }
 
         getDemultiplexedEventChannel(slotId).add(port);
