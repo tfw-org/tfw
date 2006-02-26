@@ -46,7 +46,7 @@ public class MultiplexerTest extends TestCase
     private ObjectIlaECD multiMultiValueECD = new ObjectIlaECD(
             "multiMultiValue");
 
-    public void testMultiplerWithIntermediateBranch() throws Exception
+    public void testMultiplexerWithIntermediateBranch() throws Exception
     {
         StatelessTriggerECD triggerECD = new StatelessTriggerECD("trigger");
         RootFactory rf = new RootFactory();
