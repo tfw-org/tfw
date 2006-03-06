@@ -44,7 +44,7 @@ public class EventChannelCopyConverter extends Converter
 			inputECD.getConstraint()) == false)
 		{
 			throw new IllegalArgumentException(
-				"outputECD.getConstraint().isCompatable("+
+				"outputECD.getConstraint().isCompatible("+
 				"inputECD.getConstraint()) == false not allowed");
 		}
 
