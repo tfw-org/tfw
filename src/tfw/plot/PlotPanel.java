@@ -29,36 +29,29 @@ import java.awt.Graphics2D;
 import java.awt.event.ComponentListener;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-
 import javax.swing.JPanel;
-
+import tfw.awt.ecd.GraphicECD;
 import tfw.awt.graphic.Graphic;
 import tfw.immutable.DataInvalidException;
 import tfw.immutable.ila.objectila.ObjectIla;
 import tfw.tsm.Branch;
 import tfw.tsm.BranchBox;
 import tfw.tsm.Commit;
-import tfw.tsm.Initiator;
 import tfw.tsm.MultiplexedBranch;
 import tfw.tsm.MultiplexedBranchFactory;
 import tfw.tsm.TreeComponent;
-import tfw.tsm.ecd.EventChannelDescription;
 import tfw.tsm.ecd.ObjectECD;
-import tfw.tsm.ecd.StatelessTriggerECD;
 import tfw.tsm.ecd.ila.ObjectIlaECD;
 
 public class PlotPanel extends JPanel implements BranchBox
 {
-	private static final ObjectIlaECD GRAPHIC_ECD =
-		new ObjectIlaECD("graphic");
+	private static final GraphicECD GRAPHIC_ECD =
+		new GraphicECD("graphic");
 	private static final ObjectIlaECD MULTI_GRAPHIC_ECD =
 		new ObjectIlaECD("multiGraphic");
-	private static final StatelessTriggerECD GENERATE_GRAPHIC_TRIGGER_ECD =
-		new StatelessTriggerECD("generateGraphicTrigger");
 	
 	private final Branch branch;
 	private final MultiplexedBranch multiplexedBranch;
-	private final Initiator initiator;
 	
 	private ObjectIla multiGraphic = null;
 	
@@ -74,11 +67,6 @@ public class PlotPanel extends JPanel implements BranchBox
 		mbf.addMultiplexer(GRAPHIC_ECD, MULTI_GRAPHIC_ECD);
 		multiplexedBranch = mbf.create("PlotPanelPainters");
 		branch.add(multiplexedBranch);
-		
-		initiator = new Initiator("PlotPanelInitiator",
-			new EventChannelDescription[] {GENERATE_GRAPHIC_TRIGGER_ECD,
-				MULTI_GRAPHIC_ECD});
-		branch.add(initiator);
 		
 		PlotPanelCommit plotPanelCommit = new PlotPanelCommit(this);
 		branch.add(plotPanelCommit);
