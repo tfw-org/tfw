@@ -11,7 +11,7 @@
  * 
  * This library is distributed in the hope that it
  * will be useful, but WITHOUT ANY WARRANTY;
- * witout even the implied warranty of
+ * without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR
  * PURPOSE.  See the GNU Lesser General Public
  * License for more details.
@@ -25,6 +25,7 @@
 package tfw.swing;
 
 import java.awt.event.ActionListener;
+import java.awt.event.KeyListener;
 import javax.swing.JTextField;
 import tfw.awt.component.EnabledCommit;
 import tfw.check.Argument;
@@ -66,6 +67,25 @@ public class JTextFieldBB extends JTextField implements BranchBox
 	public final void addActionListenerToBoth(ActionListener listener)
 	{
 	    addActionListener(listener);
+	    
+	    if (listener instanceof BranchBox)
+	    {
+	        branch.add((BranchBox)listener);
+	    }
+	    else if (listener instanceof TreeComponent)
+	    {
+	        branch.add((TreeComponent)listener);
+	    }
+	    else
+	    {
+	        throw new IllegalArgumentException(
+	            "listener != BranchBox || TreeComponent not allowed!");
+	    }
+	}
+	
+	public final void addKeyListenerToBoth(KeyListener listener)
+	{
+	    addKeyListener(listener);
 	    
 	    if (listener instanceof BranchBox)
 	    {
