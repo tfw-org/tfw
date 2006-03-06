@@ -87,7 +87,7 @@ public class NodeToGraphicConverter extends Converter
 		ColorECD triggeredConverterColorECD, ColorECD validatorColorECD,
 		GraphicECD graphicOutECD)
 	{
-		super("NodeEdgeToGraphicConverter",
+		super("NodeToGraphicConverter",
 			new ObjectECD[] {graphECD, pixelNodeTLBRECD,
 				fontECD, backgroundColorECD, branchColorECD, commitColorECD,
 				converterColorECD, eventChannelColorECD, initiatorColorECD,
