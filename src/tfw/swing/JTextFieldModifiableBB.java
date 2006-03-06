@@ -27,7 +27,6 @@ package tfw.swing;
 import java.awt.Color;
 
 import tfw.awt.event.ActionInitiator;
-import tfw.check.Argument;
 import tfw.component.EventChannelCopyConverter;
 import tfw.tsm.Branch;
 import tfw.tsm.Commit;
@@ -95,22 +94,6 @@ public class JTextFieldModifiableBB extends JTextFieldBB
             this.textName = textSink;
             this.textAdjName = textAdjSink;
             this.enableName = enableSink;
-        }
-
-        private ObjectECD[] toArray(StringECD textSink, StringECD textAdjSink,
-                BooleanECD enableSink)
-        {
-            Argument.assertNotNull(textSink, "textSink");
-            Argument.assertNotNull(textAdjSink, "textAdjSink");
-            
-            if (enableSink == null)
-            {
-                return new ObjectECD[] { textSink, textAdjSink};
-            }
-            else
-            {
-                return new ObjectECD[] { textSink, textAdjSink, enableSink };
-            }
         }
 
         protected void commit()
