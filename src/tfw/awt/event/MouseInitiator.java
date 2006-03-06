@@ -45,17 +45,19 @@ public class MouseInitiator extends Initiator
 	private final BooleanECD altPressedECD;
 	private final BooleanECD controlPressedECD;
 	private final BooleanECD shiftPressedECD;
+	private final IntegerECD clickCountECD;
 	
 	public MouseInitiator(String name, IntegerECD xECD, IntegerECD yECD,
 		BooleanECD button1PressedECD, BooleanECD button2PressedECD,
 		BooleanECD button3PressedECD, BooleanECD altPressedECD,
-		BooleanECD controlPressedECD, BooleanECD shiftPressedECD)
+		BooleanECD controlPressedECD, BooleanECD shiftPressedECD,
+		IntegerECD clickCountECD)
 	{
 		super("MouseInitiator["+name+"]",
 			EventChannelDescriptionUtil.create(new ObjectECD[] {
 				xECD, yECD, button1PressedECD, button2PressedECD,
 				button3PressedECD, altPressedECD, controlPressedECD,
-				shiftPressedECD}));
+				shiftPressedECD, clickCountECD}));
 		
 		this.xECD = xECD;
 		this.yECD = yECD;
@@ -65,11 +67,12 @@ public class MouseInitiator extends Initiator
 		this.altPressedECD = altPressedECD;
 		this.controlPressedECD = controlPressedECD;
 		this.shiftPressedECD = shiftPressedECD;
+		this.clickCountECD = clickCountECD;
 	}
 	
 	public void mouseClicked(MouseEvent e)
 	{
-		// ?????
+		send(e);
 	}
 	
 	public void mouseEntered(MouseEvent e)
@@ -143,6 +146,10 @@ public class MouseInitiator extends Initiator
 		if (shiftPressedECD != null)
 		{
 			ecsb.put(shiftPressedECD, new Boolean(e.isShiftDown()));
+		}
+		if (clickCountECD != null)
+		{
+			ecsb.put(clickCountECD, new Integer(e.getClickCount()));
 		}
 		
 		set(ecsb.toArray());
