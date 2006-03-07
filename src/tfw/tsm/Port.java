@@ -96,6 +96,17 @@ abstract class Port
     }
 
     /**
+     * Check whether this port is connected.
+     * 
+     * @return <tt>true</tt> if the this port is connected to an event
+     *         channel, otherwise returns <tt>false</tt>.
+     */
+    boolean isConnected()
+    {
+        return (eventChannel != null);
+    }
+
+    /**
      * Returns the event channel for this port. The value may be null.
      * 
      * @return the event channel for this port.
@@ -165,12 +176,14 @@ abstract class Port
 
         return this.component;
     }
-    
+
     /**
      * Get the name of this port.
+     * 
      * @return the port name.
      */
-    String getPortName(){
+    String getPortName()
+    {
         return this.name;
     }
 }
