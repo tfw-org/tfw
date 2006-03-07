@@ -26,11 +26,9 @@ package tfw.tsm;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import tfw.check.Argument;
 import tfw.tsm.ecd.EventChannelDescription;
-import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.StatelessTriggerECD;
 import tfw.value.ValueException;
 
@@ -39,11 +37,11 @@ import tfw.value.ValueException;
  * state of event channels in that transaction. The initiator will queue state
  * changes if it is not rooted. The queueing strategy can be set by providing
  * the appropriate {@link StateQueueFactory} on the constructor
- * {@link #Initiator(String, EventChannelDescription[], StateQueueFactory)}. The default
- * queuing strategy employs an unbounded queue which will store up state changes
- * until the initiator becomes rooted and can begin to fire its state changes.
- * Note that a component is said to be rooted when it is attached to a root
- * component or its parent is rooted.
+ * {@link #Initiator(String, EventChannelDescription[], StateQueueFactory)}.
+ * The default queuing strategy employs an unbounded queue which will store up
+ * state changes until the initiator becomes rooted and can begin to fire its
+ * state changes. Note that a component is said to be rooted when it is attached
+ * to a root component or its parent is rooted.
  * <P>
  * State Change Rules:
  * <ol>
@@ -173,21 +171,14 @@ public class Initiator extends Leaf
         return srcs;
     }
 
-    // /**
-    // * Sets the event channel to the specified state value in a new
-    // * transaction.
-    // * @param channel a port discription of source on which to set the state.
-    // * @param state the state for the event channel.
-    // */
-    // public final void set(EventChannelDescription channel, final Object
-    // state)
-    // {
-    // CheckArgument.checkNull(channel, "channel");
-    // set(channel.getEventChannelName(), state);
-    // }
     private void newTransaction(InitiatorSource[] sources, Object[] state)
     {
-        if (isRooted())
+        /*
+         * Check both rooting and source connection before scheduling a
+         * state change transaction. It is possible during construction to
+         * be rooted but not connected.
+         */
+        if (isRooted() && isConnected(sources))
         {
             for (int i = 0; i < sources.length; i++)
             {
@@ -209,6 +200,26 @@ public class Initiator extends Leaf
         }
 
         this.deferredStateChanges.add(sns);
+    }
+
+    /**
+     * Checks whether all of the sources are connected.
+     * 
+     * @param sources
+     *            The sources to be checked.
+     * @return <tt>true</tt> if all of the sources are connected, otherwise
+     *         returns <tt>false</tt>.
+     */
+    private boolean isConnected(InitiatorSource[] sources)
+    {
+        for (int i = 0; i < sources.length; i++)
+        {
+            if (!sources[i].isConnected())
+            {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
