@@ -193,7 +193,7 @@ public class InitiatorTest extends TestCase
         commit.commitState = null;
         commit.debugCommitState = null;
         root.remove(initiator);
-        initiator = new Initiator("test", channels);
+//        initiator = new Initiator("test", channels);
         initiator.set(stateBuff.toArray());
         queue.waitTilEmpty();
         root.add(initiator);
@@ -211,7 +211,8 @@ public class InitiatorTest extends TestCase
         commit.commitState = null;
         commit.debugCommitState = null;
         root.remove(initiator);
-        initiator = new Initiator("test", channels);
+        queue.waitTilEmpty();
+//        initiator = new Initiator("test", channels);
         initiator.set(channel1, state1);
         initiator.set(channel2, state2);
 
