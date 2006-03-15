@@ -29,6 +29,7 @@ import java.lang.reflect.InvocationTargetException;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+import tfw.tsm.AlwaysChangeRule;
 import tfw.tsm.BasicTransactionQueue;
 import tfw.tsm.Branch;
 import tfw.tsm.BranchFactory;
@@ -37,35 +38,37 @@ import tfw.tsm.Initiator;
 import tfw.tsm.Root;
 import tfw.tsm.RootFactory;
 import tfw.tsm.TransactionExceptionHandler;
-import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.IntegerECD;
+import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.StringECD;
-
 
 public class TranslatorTest extends TestCase
 {
     private final String answer = "Hello World";
-    private String result = null;
-    private ObjectECD portA = new StringECD("a");
-    private ObjectECD portB = new StringECD("b");
-    private ObjectECD[] eventChannels = new ObjectECD[]
-        {
-            portA
-        };
-    private Initiator initiator = new Initiator("Initiator", eventChannels);
-    private Commit commit = new Commit("Commit", eventChannels)
-        {
-            protected void commit()
-            {
-                result = (String) get(portA);
-            }
-        };
 
-    public void testTranslation()
-        throws InterruptedException, InvocationTargetException
+    private String result = null;
+
+    private ObjectECD portA = new StringECD("a");
+
+    private ObjectECD portB = new StringECD("b");
+
+    private ObjectECD[] eventChannels = new ObjectECD[] { portA };
+
+    private Initiator initiator = new Initiator("Initiator", eventChannels);
+
+    private Commit commit = new Commit("Commit", eventChannels)
+    {
+        protected void commit()
+        {
+            result = (String) get(portA);
+        }
+    };
+
+    public void testTranslation() throws InterruptedException,
+            InvocationTargetException
     {
         RootFactory rf = new RootFactory();
-        rf.addEventChannel(portB);
+        rf.addEventChannel(portB, null, AlwaysChangeRule.RULE, null);
 
         MyExceptionHandler handler = new MyExceptionHandler();
         rf.setTransactionExceptionHandler(handler);
@@ -88,7 +91,7 @@ public class TranslatorTest extends TestCase
         topBranch.add(middleBranch1);
         topBranch.add(middleBranch2);
 
-        //Visualize.print(topBranch);
+        // Visualize.print(topBranch);
         initiator.set(portA, answer);
         queue.waitTilEmpty();
         assertEquals("initial connections", answer, result);
@@ -114,13 +117,13 @@ public class TranslatorTest extends TestCase
         assertEquals("fire on sink reconnect", answer, result);
 
         middleBranch2.remove(initiator);
+        queue.waitTilEmpty();
         result = null;
 
         // Fire source unconnected.
         initiator.set(portA, answer);
         queue.waitTilEmpty();
-//        assertNotNull("send on disconnected initiator didn't throw exception",
-//            handler.exception);
+
         assertEquals("source removal", null, result);
 
         result = null;
@@ -132,24 +135,32 @@ public class TranslatorTest extends TestCase
         checkHandler(handler);
     }
 
-    public void testIncompatableTranslation(){
+    public void testIncompatableTranslation()
+    {
         BranchFactory bf = new BranchFactory();
         StringECD stringECD = new StringECD("StringECD");
         IntegerECD integerECD1 = new IntegerECD("integerECD1", 1, 5);
         IntegerECD integerECD2 = new IntegerECD("integerECD2", 0, 6);
-        try{
+        try
+        {
             bf.addTranslation(integerECD1, integerECD2);
             fail("addTranslation() accepted incompatible ecds");
-        } catch (IllegalArgumentException expected){
-            //System.out.println(expected);
         }
-        try{
+        catch (IllegalArgumentException expected)
+        {
+            // System.out.println(expected);
+        }
+        try
+        {
             bf.addTranslation(integerECD2, integerECD1);
             fail("addTranslation() accepted incompatible ecds");
-        } catch (IllegalArgumentException expected){
-            //System.out.println(expected);
+        }
+        catch (IllegalArgumentException expected)
+        {
+            // System.out.println(expected);
         }
     }
+
     private void checkHandler(MyExceptionHandler handler)
     {
         String message = "No exception";
@@ -179,7 +190,7 @@ public class TranslatorTest extends TestCase
 
         public void handle(Exception exception)
         {
-        	//exception.printStackTrace();
+            // exception.printStackTrace();
             this.exception = exception;
         }
     }
