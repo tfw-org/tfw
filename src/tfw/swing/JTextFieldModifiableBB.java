@@ -27,6 +27,7 @@ package tfw.swing;
 import java.awt.Color;
 
 import tfw.awt.event.ActionInitiator;
+import tfw.check.Argument;
 import tfw.component.EventChannelCopyConverter;
 import tfw.tsm.Branch;
 import tfw.tsm.Commit;
@@ -72,6 +73,22 @@ public class JTextFieldModifiableBB extends JTextFieldBB
                 textAdjECD));
     }
 
+    private static ObjectECD[] toArray(StringECD textSink,
+            StringECD textAdjSink, BooleanECD enableSink)
+    {
+        Argument.assertNotNull(textSink, "textSink");
+        Argument.assertNotNull(textAdjSink, "textAdjSink");
+
+        if (enableSink == null)
+        {
+            return new ObjectECD[] { textSink, textAdjSink };
+        }
+        else
+        {
+            return new ObjectECD[] { textSink, textAdjSink, enableSink };
+        }
+    }
+
     /**
      * Sets the foreground and background state of the text field. Sets the
      * value of the text field if the text event channel is set during the state
@@ -88,8 +105,8 @@ public class JTextFieldModifiableBB extends JTextFieldBB
         public ForegroundBackgroundHandler(String name, StringECD textSink,
                 StringECD textAdjSink, BooleanECD enableSink)
         {
-            super("ForegroundBackgroundHandler[" + name + "]", new ObjectECD[] {
-                    textSink, textAdjSink, enableSink });
+            super("ForegroundBackgroundHandler[" + name + "]", toArray(
+                    textSink, textAdjSink, enableSink));
 
             this.textName = textSink;
             this.textAdjName = textAdjSink;
@@ -102,10 +119,11 @@ public class JTextFieldModifiableBB extends JTextFieldBB
             String textAdj = (String) get(textAdjName);
 
             boolean enabled = true;
-            if (this.enableName != null){
+            if (this.enableName != null)
+            {
                 enabled = ((Boolean) get(enableName)).booleanValue();
-            } 
-            
+            }
+
             if (!text.equals(textAdj))
             {
                 setBackground(modifiedBackground);
