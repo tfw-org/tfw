@@ -25,8 +25,10 @@
 package tfw.tsm;
 
 import tfw.check.Argument;
+import tfw.tsm.ecd.EventChannelDescription;
 import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.RollbackECD;
+import tfw.tsm.ecd.StatelessTriggerECD;
 
 /**
  * The base class for all components which perform validation in the validation
@@ -69,6 +71,29 @@ public abstract class Validator extends RollbackHandler
             ObjectECD[] nonTriggeringSinks, RollbackECD[] initiators)
     {
         super(name, checkSinks(triggeringSinks), nonTriggeringSinks, initiators);
+    }
+
+    /**
+     * Creates a triggered validator. The validator will only run when the
+     * trigger fires.
+     * 
+     * @param name
+     *            The name of this validator.
+     * @param trigger
+     *            The trigger which causes the validator to execute.
+     * @param nonTriggeringSinks
+     *            the set of sinks which do not trigger this validator, but are
+     *            used in validation. Note that the event channels associated
+     *            with these sinks must be non-null before the
+     *            {@link #validateState()} method will be called.
+     * @param initiators
+     *            the set of sources used to initiate new transactions.
+     */
+    public Validator(String name, StatelessTriggerECD trigger,
+            ObjectECD[] nonTriggeringSinks, RollbackECD[] initiators)
+    {
+        super(name, new EventChannelDescription[] { trigger },
+                nonTriggeringSinks, initiators);
     }
 
     private static ObjectECD[] checkSinks(ObjectECD[] triggeringSinks)
@@ -118,7 +143,9 @@ public abstract class Validator extends RollbackHandler
         if (isStateNonNull())
         {
             validateState();
-        } else {
+        }
+        else
+        {
             debugValidateState();
         }
     }
