@@ -262,6 +262,12 @@ abstract class EventHandler extends Leaf
         InitiatorSource source = (InitiatorSource) getSource(initiateECD
                 .getEventChannelName());
 
+        if (source == null)
+        {
+            throw new IllegalArgumentException(
+                    "Attempt to set state on unknown event channel '"
+                            + initiateECD.getEventChannelName() + "'.");
+        }
         try
         {
             source.setState(state);
