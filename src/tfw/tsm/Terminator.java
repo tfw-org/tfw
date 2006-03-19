@@ -60,9 +60,6 @@ class Terminator implements EventChannel, CommitRollbackListener
     /** Any sinks which haven't been initialized. */
     private Set uninitializedSinks = null;
 
-    /** Flag indicating whether the terminator state is locked. */
-    private boolean terminatorLocked = false;
-
     /** The branch associated with this terminator. */
     protected TreeComponent component = null;
 
@@ -391,7 +388,6 @@ class Terminator implements EventChannel, CommitRollbackListener
     {
         rollbackState = state;
         rollbackSource = stateSource;
-        terminatorLocked = false;
         isStateChanged = false;
     }
 
@@ -417,7 +413,7 @@ class Terminator implements EventChannel, CommitRollbackListener
 
     public Object fire()
     {
-        updateSinks(sinks);
+        updateSinks(resetUninitializedSinks());
         return state;
     }
 
@@ -460,7 +456,6 @@ class Terminator implements EventChannel, CommitRollbackListener
             return;
         }
 
-        terminatorLocked = true;
         previousState = state;
         this.state = state;
         uninitializedSinks = sinks;
