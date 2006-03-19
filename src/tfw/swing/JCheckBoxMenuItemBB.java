@@ -47,7 +47,7 @@ public class JCheckBoxMenuItemBB extends JCheckBoxMenuItem implements BranchBox
 		addChangeListener(buttonSelectedInitiator);
 		branch.add(buttonSelectedInitiator);
 
-		if (enabledECD == null){
+		if (enabledECD != null){
             branch.add(new EnabledCommit("JCheckBoxBB", enabledECD, this, null));
         }
 		branch.add(new ButtonSelectedCommit("JCheckBoxBB", selectedECD,
