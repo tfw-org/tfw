@@ -58,10 +58,10 @@ public class JTextFieldModifiableBB extends JTextFieldBB
     {
         super(branch, textAdjECD, enabledECD);
 
-        setEnabled(true);
-        defaultEnabledBackground = getBackground();
         setEnabled(false);
         defaultDisabledBackground = getBackground();
+        setEnabled(true);
+        defaultEnabledBackground = getBackground();
 
         ActionInitiator actionInitiator = new ActionInitiator(
                 "JTextFieldModifiableBB", applyECD);
