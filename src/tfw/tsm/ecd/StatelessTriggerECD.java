@@ -30,7 +30,7 @@ import tfw.value.NullConstraint;
  * An event channel discription for a stateless, trigging
  * event channel. 
  */
-public final class StatelessTriggerECD extends EventChannelDescription {
+public class StatelessTriggerECD extends EventChannelDescription {
 
 	/**
 	 * Constructs an event channel description with the specified name.
