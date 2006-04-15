@@ -58,6 +58,9 @@ public class ObjectIlaMultiplexerStrategy implements MultiplexerStrategy
         return new MyMultiStateFactory((ObjectIla) multiState);
     }
 
+    public Object getDefaultSlotState(){
+    	return null;
+    }
     private class MyMultiStateAccessor implements MultiStateAccessor
     {
 
