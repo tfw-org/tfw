@@ -31,7 +31,6 @@ import tfw.tsm.Synchronizer;
 import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.StringECD;
 import tfw.tsm.ecd.StringRollbackECD;
-import tfw.value.CodecException;
 import tfw.value.ValueCodec;
 
 /**
@@ -105,11 +104,10 @@ public class ObjectStringSynchronizer extends Synchronizer
         {
             set(stringECD, codec.encode(get(objectECD)));
         }
-        catch (CodecException e)
+        catch (Exception e)
         {
             rollback(errorECD, get(objectECD) + " is not valid");
         }
-
     }
 
     /*
@@ -123,11 +121,10 @@ public class ObjectStringSynchronizer extends Synchronizer
         {
             set(objectECD, codec.decode((String) get(stringECD)));
         }
-        catch (CodecException e)
+        catch (Exception e)
         {
             rollback(errorECD, "'" + get(stringECD) + "' is not valid for "
                     + valueName);
         }
-
     }
 }
