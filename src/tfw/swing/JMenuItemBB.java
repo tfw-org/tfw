@@ -52,9 +52,12 @@ public class JMenuItemBB extends JMenuItem implements BranchBox
 		addActionListener(actionInitiator);
 		branch.add(actionInitiator);
 		
-		EnabledCommit enabledCommit = new EnabledCommit(
-		    "JMenuItemBB", enabledECD, this, null);
-		branch.add(enabledCommit);
+		if (enabledECD != null) 
+		{
+			EnabledCommit enabledCommit = new EnabledCommit("JMenuItemBB",
+					enabledECD, this, null);
+			branch.add(enabledCommit);
+		}
 	}
 	
 	public final Branch getBranch()
