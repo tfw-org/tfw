@@ -47,6 +47,9 @@ public interface MultiplexerStrategy
      */
     public MultiStateFactory toMultiStateFactory(Object multiState);
 
+    
+    public Object getDefaultSlotState();
+    
     /**
      * An interface for accessing a multiplexed state object.
      */
