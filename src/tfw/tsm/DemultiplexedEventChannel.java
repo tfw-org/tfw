@@ -27,9 +27,8 @@
 package tfw.tsm;
 
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
-import tfw.immutable.ila.objectila.ObjectIla;
-import tfw.immutable.ila.objectila.ObjectIlaFromArray;
+import tfw.tsm.ecd.EventChannelDescription;
+import tfw.value.ValueException;
 
 /**
  * The event channel for sub-channels under a multiplexer.
@@ -62,13 +61,13 @@ class DemultiplexedEventChannel extends Terminator
      *            The state change rule for this event channel.
      */
     DemultiplexedEventChannel(Multiplexer parent, Object demultiplexSlotId,
-            StateChangeRule stateChangeRule)
+			Object initialState, StateChangeRule stateChangeRule)
     {
-        super(parent.valueECD, null, stateChangeRule);
+		super(parent.valueECD, initialState, stateChangeRule);
         Argument.assertNotNull(parent, "parent");
         this.parent = parent;
         this.demultiplexSlotId = demultiplexSlotId;
-        this.deMultiSource = new ProcessorSource(parent.processorMultiSource
+		this.deMultiSource = new DemultiSource(parent.processorMultiSource
                 .getPortName()
                 + "[" + demultiplexSlotId + "]", parent.valueECD);
         this.deMultiSource.setTreeComponent(parent.getTreeComponent());
@@ -83,7 +82,8 @@ class DemultiplexedEventChannel extends Terminator
             EventChannel forwardingEventChannel)
     {
         super.setState(source, state, forwardingEventChannel);
-        if (this.component != source.getTreeComponent()){
+		if (this.component != source.getTreeComponent())
+		{
             parent.processorMultiSource.setState(this);
         }
     }
@@ -132,4 +132,46 @@ class DemultiplexedEventChannel extends Terminator
         }
         this.deMultiSource.setState(state);
     }
+
+	private class DemultiSource extends ProcessorSource
+	{
+		private int fireCount = 0;
+
+		DemultiSource(String name, EventChannelDescription ecd)
+		{
+			super(name, ecd);
+}
+		Object getState()
+		{
+			Object state = super.getState();
+			return state;
+		}
+
+		void setState(Object state) throws ValueException
+		{
+			Argument.assertNotNull(state, "state");
+			if (this.getState() != null)
+			{
+				// (new IllegalStateException("Attempt to overwrite state "
+				// +this)).printStackTrace();
+			}
+			this.fireCount = 0;
+			super.setState(state);
+		}
+
+		Object fire()
+		{
+			this.fireCount++;
+			if (getState() == null)
+			{
+				// (new IllegalStateException(
+				// "Attempt to fire null state(fireCount == "
+				// + fireCount + ") on event channel: "
+				// + this.getEventChannelName()+" - "
+				// + this)).printStackTrace();
+				return null;
+			}
+			return super.fire();
+		}
+	}
 }
