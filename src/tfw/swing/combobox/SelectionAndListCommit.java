@@ -125,29 +125,33 @@ public class SelectionAndListCommit extends Commit
         {
         }
 
-        if ((selectedItemECD != null) && isStateChanged(selectedItemECD))
-        {
+		if (selectedItemECD != null) 
+		{
             final Object selectedItem = (Object) get(selectedItemECD);
 
-            EventQueue.invokeLater(new Runnable()
-            {
-                public void run()
-                {
+			EventQueue.invokeLater(new Runnable() 
+			{
+				public void run() 
+				{
+					if (selectedItem != comboBox.getSelectedItem()) {
                     comboBox.setSelectedItem(selectedItem);
                 }
+				}
             });
         }
-        if ((selectedIndexECD != null) && isStateChanged(selectedIndexECD))
-        {
+		if (selectedIndexECD != null) 
+		{
             final int selectedIndex = ((Integer) get(selectedIndexECD))
                     .intValue();
 
-            EventQueue.invokeLater(new Runnable()
-            {
-                public void run()
-                {
-                    comboBox.setSelectedIndex(selectedIndex);
-                }
+			EventQueue.invokeLater(new Runnable() 
+			{
+				public void run() 
+				{
+					if (selectedIndex != comboBox.getSelectedIndex()) {
+                    	comboBox.setSelectedIndex(selectedIndex);
+                	}
+				}
             });
         }
     }
