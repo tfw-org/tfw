@@ -40,7 +40,14 @@ class ProcessorSource extends Source
         super(name, ecd);
     }
 
-    /* (non-Javadoc)
+	Object getState()
+	{
+		return state;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
      * @see co2.ui.fw.Source#setState(java.lang.Object)
      */
     void setState(Object state) throws ValueException
@@ -63,7 +70,9 @@ class ProcessorSource extends Source
         getEventChannel().addDeferredStateChange(this);
     }
 
-    /* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
      * @see co2.ui.fw.Source#fire()
      */
     Object fire()
