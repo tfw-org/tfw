@@ -289,7 +289,7 @@ abstract class EventHandler extends Leaf
 
         for (int i = 0; i < eventChannelState.length; i++)
         {
-            String ecName = eventChannelState[i].getECD().getEventChannelName();
+            String ecName = eventChannelState[i].getEventChannelName();
             sources[i] = (InitiatorSource) getSource(ecName);
 
             if (sources[i] == null)

@@ -278,7 +278,7 @@ public class Initiator extends Leaf
 
         for (int i = 0; i < state.length; i++)
         {
-            String eventChannel = state[i].getECD().getEventChannelName();
+            String eventChannel = state[i].getEventChannelName();
             InitiatorSource source = (InitiatorSource) getSource(eventChannel);
 
             if (source == null)

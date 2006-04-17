@@ -220,7 +220,7 @@ public class ImportExportTreeStateTest extends TestCase
         assertEquals("The wrong number of event channel state returned", 1,
                 ecs.length);
         assertEquals("The wrong event channel description was returned", state1
-                .getECD(), ecs[0].getECD());
+                .getEventChannelName(), ecs[0].getEventChannelName());
         assertEquals("The wrong event channel state was returned", state1
                 .getState(), ecs[0].getState());
 
