@@ -45,7 +45,7 @@ public class EventChannelStateTest extends TestCase {
 		}
 
 		EventChannelState state = new EventChannelState(stringECD, value);
-		assertEquals("returned wrong ecd", stringECD, state.getEventChannelName());
+		assertEquals("returned wrong ecd", stringECD.getEventChannelName(), state.getEventChannelName());
 		assertEquals("returned wrong value", value, state.getState());
 	}
 
