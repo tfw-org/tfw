@@ -55,11 +55,15 @@
 	</target>
 	
 	<target name="jarclasses" depends="compile" description="creates class jar file">
-		<jar basedir="${buildclasses}" destfile="${buildjars}/tfw_classes.zip"/>
+		<jar basedir="${buildclasses}" destfile="${buildjars}/tfw_classes0.11.zip"/>
 	</target>
 	
 	<target name="jarsrc" depends="init" description="creates source jar file">
-		<jar basedir="${src}" destfile="${buildjars}/tfw_src.zip"/>
+		<jar basedir="${src}" destfile="${buildjars}/tfw_src0.11.zip"/>
+	</target>
+	
+	<target name="jarjavadoc" depends="javadoc" description="creates javadoc jar file">
+		<jar basedir="${builddoc}" destfile="${buildjars}/tfw_doc0.11.zip"/>
 	</target>
 	
 	<target name="javadoc" depends="compile" description="generates the javadoc.">
