@@ -14,7 +14,6 @@
 	<path id="compile.path">
 		<fileset dir="lib">
 			<include name="junit.jar"/>
-			<include name="prefuse_20050401_class.jar"/>
 		</fileset>
 	</path>
 	
