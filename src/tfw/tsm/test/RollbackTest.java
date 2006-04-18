@@ -105,8 +105,7 @@ public class RollbackTest extends TestCase
             // System.out.println("validating a: " + state);
             if (state.equals("invalid"))
             {
-                rollback((RollbackECD) aErrorState.getECD(), aErrorState
-                        .getState());
+                rollback(error1ECD, aErrorState.getState());
             }
         }
     };
@@ -140,8 +139,7 @@ public class RollbackTest extends TestCase
             System.out.println("validating c: " + state);
             if (state.equals("invalid"))
             {
-                rollback((RollbackECD) cErrorState.getECD(), cErrorState
-                        .getState());
+                rollback(error1ECD, cErrorState.getState());
             }
         }
     };
@@ -394,7 +392,8 @@ public class RollbackTest extends TestCase
                 new EventChannelState(error2ECD, error2msg) };
 
         Initiator initiator = new Initiator("Test initiator", aECD);
-        Validator aValidator = new TestValidator(aECD, rollbackState);
+        Validator aValidator = new TestValidator(aECD, new RollbackECD[] {
+                error1ECD, error2ECD }, rollbackState);
         TestCommit errorCommit1 = new TestCommit(error1ECD, null);
         TestCommit errorCommit2 = new TestCommit(error2ECD, null);
 
@@ -440,10 +439,10 @@ public class RollbackTest extends TestCase
     {
         RollbackECD[] ecds = new RollbackECD[ecs.length];
 
-        for (int i = 0; i < ecs.length; i++)
-        {
-            ecds[i] = (RollbackECD) ecs[i].getECD();
-        }
+        // for (int i = 0; i < ecs.length; i++)
+        // {
+        // ecds[i] = (RollbackECD) ecs[i].getECD();
+        // }
 
         return ecds;
     }
@@ -456,16 +455,19 @@ public class RollbackTest extends TestCase
 
         private final String errorMsg;
 
+        private final RollbackECD[] rollbackECDs;
+
         private final EventChannelState[] rollbackState;
 
-        public TestValidator(StringECD triggerECD,
+        public TestValidator(StringECD triggerECD, RollbackECD[] rollbackECDs,
                 EventChannelState[] rollbackState)
         {
             super("Test Validator " + triggerECD.getEventChannelName(),
-                    new StringECD[] { triggerECD }, getECDs(rollbackState));
+                    new StringECD[] { triggerECD }, rollbackECDs);
             this.triggerECD = triggerECD;
             this.errorMsg = null;
             this.rollbackECD = null;
+            this.rollbackECDs = rollbackECDs;
             this.rollbackState = rollbackState;
         }
 
@@ -478,6 +480,7 @@ public class RollbackTest extends TestCase
             this.triggerECD = triggerECD;
             this.rollbackECD = rollbackECD;
             this.errorMsg = errorMsg;
+            this.rollbackECDs = null;
             this.rollbackState = null;
         }
 
