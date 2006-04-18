@@ -92,6 +92,18 @@ public class TreeComponent
     }
 
     /**
+	 * Disconnects this component from its parent if it is connected to a
+	 * parent.
+	 */
+	public void disconnectFromParent()
+	{
+		if (this.parent != null)
+		{
+			this.parent.remove(this);
+		}
+	}
+
+	/**
      * Creates an unmodifiable map of the specified sinks.
      * 
      * @param sinks
@@ -335,7 +347,7 @@ public class TreeComponent
         if (child.getParent() != this)
         {
             throw new IllegalArgumentException("child, " + child.name
-                    + ", not connected to this component");
+					+ ", not connected to this component, '"+this.name+"'");
         }
         children.remove(child.getName());
         child.setParent(null);
@@ -843,7 +855,7 @@ public class TreeComponent
 
         for (int i = 0; i < ecs.length; i++)
         {
-            Terminator ec = (Terminator) this.eventChannels.get(ecs[i].getECD()
+            Terminator ec = (Terminator) this.eventChannels.get(ecs[i]
                     .getEventChannelName());
 
             if (ec == null)
@@ -854,7 +866,7 @@ public class TreeComponent
                 }
                 throw new IllegalArgumentException(
                         "TreeState contains state for an unknown event channel '"
-                                + ecs[i].getECD().getEventChannelName() + "'");
+								+ ecs[i].getEventChannelName() + "'");
             }
 
             ec.importState(ecs[i].getState());
