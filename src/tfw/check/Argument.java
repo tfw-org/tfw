@@ -197,6 +197,28 @@ public class Argument
         }
     }
 
+    /**
+     * Checks that the argument is greater than or equal to a constant.
+     * 
+     * @param argument
+     *            The argument to be checked.
+     * @param constant
+     *            The constant that the argument must be greater than.
+     * @param argumentName
+     *            The name of the argument.
+     * @throws IllegalArgumentException
+     *             if <code>argument < constant</code>
+     */
+    public static final void assertGreaterThanOrEqualTo(long argument,
+            long constant, String argumentName)
+    {
+        if (argument < constant)
+        {
+            throw new IllegalArgumentException(argumentName + " (=" + argument
+                    + ") < " + constant + " not allowed.");
+        }
+    }
+
     public static final void assertEquals(int left, int right, String leftName,
             String rightName)
     {
@@ -239,6 +261,14 @@ public class Argument
 
     public static final void assertLessThan(long left, long right,
             String leftName, String rightName)
+    {
+        if (left >= right)
+            throw new IllegalArgumentException(leftName + " (=" + left
+                    + ") >= " + rightName + " (=" + right + ") not allowed!");
+    }
+    
+    public static final void assertLessThan(double left, double right,
+    		String leftName, String rightName)
     {
         if (left >= right)
             throw new IllegalArgumentException(leftName + " (=" + left
