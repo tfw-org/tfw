@@ -77,7 +77,7 @@ public class ByteIlaOutputStream extends OutputStream
 			i += bytesToWrite;
 			
 			bytesToWrite = ((byteIla.length() - i) > b.length) ?
-				b.length : (int)(byteIla.length() - 1);
+				b.length : (int)(byteIla.length() - i);
 		}
 	}
 	
