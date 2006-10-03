@@ -207,8 +207,8 @@ abstract class EventHandler extends Leaf
         if (sink == null)
         {
             throw new IllegalArgumentException(
-                    "The component does not subscribe to the requested event channel, '"
-                            + sinkEventChannel.getEventChannelName() + ".");
+					"The component, '"+this.getName()+"', does not subscribe to the requested event channel, '"
+							+ sinkEventChannel.getEventChannelName() + "'.");
         }
 
         if (sink.getEventChannel() == null)
@@ -265,8 +265,9 @@ abstract class EventHandler extends Leaf
         if (source == null)
         {
             throw new IllegalArgumentException(
-                    "Attempt to set state on unknown event channel '"
-                            + initiateECD.getEventChannelName() + "'.");
+					"initiateECD.getEventChannelName() == "
+							+ initiateECD.getEventChannelName()
+							+ " is not a known event channel.");
         }
         try
         {
