@@ -62,6 +62,7 @@ public class JTextFieldBB extends JTextField implements BranchBox
         }
 		branch.add(new SetTextCommit("JTextFieldBB", textECD, this,
 			initiator, new Initiator[] {initiator}));
+		this.getDocument().addDocumentListener(initiator);
 	}
 		
 	public final void addActionListenerToBoth(ActionListener listener)
