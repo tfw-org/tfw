@@ -24,10 +24,11 @@
  */
 package tfw.tsm;
 
+import java.io.IOException;
 import java.io.Serializable;
 
 import tfw.check.Argument;
-import tfw.tsm.ecd.ObjectECD;
+import tfw.tsm.ecd.EventChannelDescription;
 import tfw.value.ValueException;
 
 /**
@@ -35,8 +36,8 @@ import tfw.value.ValueException;
  */
 public class EventChannelState implements Serializable
 {
-    private static final long serialVersionUID = -8848929104594047886L;
-    
+	private static final long serialVersionUID = -8852353620619649029L;
+
 	private final String eventChannelName;
 
 	private final Object state;
@@ -52,12 +53,35 @@ public class EventChannelState implements Serializable
 	 *             if the specified value is not compatible with the constraint
 	 *             defined in the specified event channel description.
 	 */
-	public EventChannelState(ObjectECD ecd, Object state) throws ValueException
+	public EventChannelState(EventChannelDescription ecd, Object state)
+			throws ValueException
 	{
 		Argument.assertNotNull(ecd, "ecd");
 		ecd.getConstraint().checkValue(state);
 		this.state = state;
 		this.eventChannelName = ecd.getEventChannelName();
+	}
+
+	private void writeObject(java.io.ObjectOutputStream out) throws IOException
+	{
+		out.defaultWriteObject();
+	}
+
+	private void readObject(java.io.ObjectInputStream in) throws IOException,
+			ClassNotFoundException
+	{
+		in.defaultReadObject();
+		if (this.eventChannelName == null)
+		{
+			throw new IllegalStateException(
+					"De-serialization failed, eventChannelName == null not allowed.");
+		}
+
+		if (this.eventChannelName.length() == 0)
+		{
+			throw new IllegalStateException(
+					"De-serialization failed, eventChannelName.lenth() == 0 not allowed");
+		}
 	}
 
 	/**
