@@ -27,6 +27,7 @@ package tfw.tsm;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 import tfw.check.Argument;
@@ -45,25 +46,22 @@ import tfw.tsm.ecd.ObjectECD;
 public abstract class Synchronizer extends Processor
 {
     private final Set aEventSet;
-
     private final Set bEventSet;
-
-    private boolean aToBConvert = false;
-
-    private boolean bToAConvert = false;
+    private HashSet aToBConvert = new HashSet();
+    private HashSet bToAConvert = new HashSet();
 
     private CommitRollbackListener crListener = new CommitRollbackListener()
     {
         public void rollback()
         {
-            aToBConvert = false;
-            bToAConvert = false;
+            aToBConvert.clear();
+            bToAConvert.clear();
         }
 
         public void commit()
         {
-            aToBConvert = false;
-            bToAConvert = false;
+            aToBConvert.clear();
+            bToAConvert.clear();
         }
     };
 
@@ -182,31 +180,59 @@ public abstract class Synchronizer extends Processor
         super.stateChange(eventChannel);
         if (aEventSet.contains(eventChannel.getECD()))
         {
-            if (bToAConvert)
+            if (bToAConvert.size() != 0)
             {
-                throw new IllegalStateException(getName()
-                        + " - Can not convert A to B and B to A in the same"
-                        + " transaction");
+            	StringBuffer sb = new StringBuffer();
+            	sb.append(getFullyQualifiedName());
+            	sb.append(" - Can not convert A to B and B to A in the same transaction!\n");
+            	sb.append("A Event Channel: ");
+            	sb.append(eventChannel.getECD().getEventChannelName());
+            	sb.append("\nB Event Channels:\n");
+            	for (Iterator i=bToAConvert.iterator() ; i.hasNext() ; )
+            	{
+            		sb.append("  ");
+            		sb.append(((EventChannel)i.next()).getECD().getEventChannelName());
+            		sb.append("\n");
+            	}
+            	
+            	aToBConvert.clear();
+            	bToAConvert.clear();
+            	
+                throw new IllegalStateException(sb.toString());
             }
 
-            aToBConvert = true;
+            aToBConvert.add(eventChannel);
         }
         else if (bEventSet.contains(eventChannel.getECD()))
         {
-            if (aToBConvert)
+            if (aToBConvert.size() != 0)
             {
-                throw new IllegalStateException(getName()
-                        + " - Can not convert A to B and B to A in the same"
-                        + " transaction");
+            	StringBuffer sb = new StringBuffer();
+            	sb.append(getFullyQualifiedName());
+            	sb.append(" - Can not convert A to B and B to A in the same transaction!\n");
+            	sb.append("B Event Channel: ");
+            	sb.append(eventChannel.getECD().getEventChannelName());
+            	sb.append("\nA Event Channels:\n");
+            	for (Iterator i=aToBConvert.iterator() ; i.hasNext() ; )
+            	{
+            		sb.append("  ");
+            		sb.append(((EventChannel)i.next()).getECD().getEventChannelName());
+            		sb.append("\n");
+            	}
+            	
+            	aToBConvert.clear();
+            	bToAConvert.clear();
+            	
+                throw new IllegalStateException(sb.toString());
             }
 
-            bToAConvert = true;
+            bToAConvert.add(eventChannel);
         }
     }
 
     void process()
     {
-        if (aToBConvert)
+        if (aToBConvert.size() != 0)
         {
             if (isStateNonNull(aEventSet))
             {
