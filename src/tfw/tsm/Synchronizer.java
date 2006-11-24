@@ -50,21 +50,6 @@ public abstract class Synchronizer extends Processor
     private HashSet aToBConvert = new HashSet();
     private HashSet bToAConvert = new HashSet();
 
-    private CommitRollbackListener crListener = new CommitRollbackListener()
-    {
-        public void rollback()
-        {
-            aToBConvert.clear();
-            bToAConvert.clear();
-        }
-
-        public void commit()
-        {
-            aToBConvert.clear();
-            bToAConvert.clear();
-        }
-    };
-
     /**
      * Creates a synchronizer.
      * 
@@ -174,67 +159,62 @@ public abstract class Synchronizer extends Processor
 
     void stateChange(EventChannel eventChannel)
     {
-        this.getTransactionManager().addCommitRollbackListener(crListener);
-
         // call super to get added to the transaction processors...
         super.stateChange(eventChannel);
         if (aEventSet.contains(eventChannel.getECD()))
         {
-            if (bToAConvert.size() != 0)
-            {
-            	StringBuffer sb = new StringBuffer();
-            	sb.append(getFullyQualifiedName());
-            	sb.append(" - Can not convert A to B and B to A in the same transaction!\n");
-            	sb.append("A Event Channel: ");
-            	sb.append(eventChannel.getECD().getEventChannelName());
-            	sb.append("\nB Event Channels:\n");
-            	for (Iterator i=bToAConvert.iterator() ; i.hasNext() ; )
-            	{
-            		sb.append("  ");
-            		sb.append(((EventChannel)i.next()).getECD().getEventChannelName());
-            		sb.append("\n");
-            	}
-            	
-            	aToBConvert.clear();
-            	bToAConvert.clear();
-            	
-                throw new IllegalStateException(sb.toString());
-            }
-
             aToBConvert.add(eventChannel);
         }
         else if (bEventSet.contains(eventChannel.getECD()))
         {
-            if (aToBConvert.size() != 0)
-            {
-            	StringBuffer sb = new StringBuffer();
-            	sb.append(getFullyQualifiedName());
-            	sb.append(" - Can not convert A to B and B to A in the same transaction!\n");
-            	sb.append("B Event Channel: ");
-            	sb.append(eventChannel.getECD().getEventChannelName());
-            	sb.append("\nA Event Channels:\n");
-            	for (Iterator i=aToBConvert.iterator() ; i.hasNext() ; )
-            	{
-            		sb.append("  ");
-            		sb.append(((EventChannel)i.next()).getECD().getEventChannelName());
-            		sb.append("\n");
-            	}
-            	
-            	aToBConvert.clear();
-            	bToAConvert.clear();
-            	
-                throw new IllegalStateException(sb.toString());
-            }
-
             bToAConvert.add(eventChannel);
         }
+    }
+    
+    private void throwBothSetsChangedException()
+    {
+    	StringBuffer sb = new StringBuffer();
+    	sb.append(getFullyQualifiedName());
+    	sb.append(" - Cannot convert AToB and BToA in the same transaction!\n");
+    	sb.append("A changes:\n");
+    	
+    	for (Iterator i = aToBConvert.iterator(); i.hasNext() ; )
+    	{
+    		EventChannel ec = (EventChannel)i.next();
+    		
+    		sb.append(ec.getECD().getEventChannelName());
+    		sb.append(" by ");
+    		sb.append(ec.getCurrentStateSource());
+    		sb.append("\n");
+    	}
+    	
+    	sb.append("B Changes:\n");
+    	
+    	for (Iterator i = bToAConvert.iterator(); i.hasNext() ; )
+    	{
+    		EventChannel ec = (EventChannel)i.next();
+    		
+    		sb.append(ec.getECD().getEventChannelName());
+    		sb.append(" by ");
+    		sb.append(ec.getCurrentStateSource());
+    		sb.append("\n");
+    	}
+    	
+        aToBConvert.clear();
+        bToAConvert.clear();
+
+        throw new IllegalStateException(sb.toString());
     }
 
     void process()
     {
         if (aToBConvert.size() != 0)
         {
-            if (isStateNonNull(aEventSet))
+        	if (bToAConvert.size() != 0)
+        	{
+        		throwBothSetsChangedException();
+        	}
+        	else if (isStateNonNull(aEventSet))
             {
                 convertAToB();
             }
@@ -245,7 +225,11 @@ public abstract class Synchronizer extends Processor
         }
         else
         {
-            if (isStateNonNull(bEventSet))
+        	if (aToBConvert.size() != 0)
+        	{
+        		throwBothSetsChangedException();
+        	}
+        	else if (isStateNonNull(bEventSet))
             {
                 convertBToA();
             }
@@ -254,6 +238,9 @@ public abstract class Synchronizer extends Processor
                 debugConvertBToA();
             }
         }
+        
+        aToBConvert.clear();
+        bToAConvert.clear();
     }
 
     /**
