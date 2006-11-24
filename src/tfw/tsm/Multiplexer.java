@@ -113,7 +113,8 @@ class Multiplexer implements EventChannel
                         .next();
 
                 Object state = stateAccessor.getState(dm.demultiplexSlotId);
-                if (state != null)
+                if (state != null && 
+                	stateChangeRule.isChange(dm.getPreviousCycleState(), state))
                 {
                     dm.setDeMultiState(state);
                 }
