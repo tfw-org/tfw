@@ -306,9 +306,10 @@ public final class TransactionMgr
      */
     private static void checkDependencies(Set processors, Set delayedProcessors)
     {
-        Set crumbs = new HashSet();
-        Processor[] procs = (Processor[]) processors
-                .toArray(new Processor[processors.size()]);
+    	Set processorCrumbs = new HashSet();
+    	Set terminatorCrumbs = new HashSet();
+		Processor[] procs = (Processor[]) processors
+			.toArray(new Processor[processors.size()]);
 
         for (int i = 0; i < procs.length; i++)
         {
@@ -316,7 +317,7 @@ public final class TransactionMgr
             if (processors.contains(procs[i]))
             {
                 checkDependencies(procs[i], processors, delayedProcessors,
-                        crumbs);
+                        processorCrumbs, terminatorCrumbs);
             }
         }
     }
@@ -328,16 +329,20 @@ public final class TransactionMgr
      *            The processor to checked
      * @param processors
      * @param delayedProcessors
-     * @param crumbs
+     * @param processorCrumbs
      *            Processors that have already been visit in the recursive
+     *            descent algorithm.
+     * @param terminatorCrumbs
+     *            Terminators that have already been visited in the recursive
      *            descent algorithm.
      */
     private static void checkDependencies(TreeComponent processor,
-            Set processors, Set delayedProcessors, Set crumbs)
+            Set processors, Set delayedProcessors, Set processorCrumbs,
+            Set terminatorCrumbs)
     {
         Map map = processor.getSources();
         Iterator itr = map.values().iterator();
-        crumbs.add(processor);
+        processorCrumbs.add(processor);
 
         // For each of the processor's sources
         while (itr.hasNext())
@@ -349,6 +354,10 @@ public final class TransactionMgr
             if (src.getEventChannel() instanceof Terminator)
             {
                 Terminator t = (Terminator) src.getEventChannel();
+                if (terminatorCrumbs.add(t) == false)
+                {
+                	continue;
+                }
                 Sink[] sinks = t.getSinks();
                 // For each sink that the processors might publish too...
                 for (int j = 0; j < sinks.length; j++)
@@ -357,7 +366,7 @@ public final class TransactionMgr
                     TreeComponent tc = sinks[j].getTreeComponent();
 
                     // if we have already visited this component...
-                    if (crumbs.contains(tc))
+                    if (processorCrumbs.contains(tc))
                     {
                         // Break infinite loop...
                         continue;
@@ -371,12 +380,13 @@ public final class TransactionMgr
                     }
 
                     // continue searching the dependency chain...
-                    checkDependencies(tc, processors, delayedProcessors, crumbs);
+                    checkDependencies(tc, processors, delayedProcessors,
+                    	processorCrumbs, terminatorCrumbs);
                 }
             }
         }
 
-        crumbs.remove(processor);
+        processorCrumbs.remove(processor);
     }
 
     private void synchronizeCycleState()
