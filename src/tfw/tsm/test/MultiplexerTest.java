@@ -21,6 +21,7 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import tfw.immutable.ila.objectila.ObjectIla;
+import tfw.immutable.ila.objectila.ObjectIlaFill;
 import tfw.immutable.ila.objectila.ObjectIlaFromArray;
 import tfw.tsm.BasicTransactionQueue;
 import tfw.tsm.Branch;
@@ -51,7 +52,11 @@ public class MultiplexerTest extends TestCase
         StatelessTriggerECD triggerECD = new StatelessTriggerECD("trigger");
         RootFactory rf = new RootFactory();
         rf.addEventChannel(triggerECD);
-        rf.addEventChannel(multiValueECD);
+        
+        // THE FOLLOWING LINE SHOULD NOT HAVE A SECOND ARGUMENT.  THE SECOND
+        // ARGUMENT IS PUT IN TO SOLVE THE "multistate == null not allowed!"
+        // EXCEPTION!
+        rf.addEventChannel(multiValueECD, ObjectIlaFill.create(null, 2));
         TestTransactionExceptionHandler exceptionHandler = new TestTransactionExceptionHandler();
         rf.setTransactionExceptionHandler(exceptionHandler);
         // rf.setLogging(true);

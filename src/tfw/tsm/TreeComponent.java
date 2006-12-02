@@ -26,25 +26,19 @@ package tfw.tsm;
 
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
 import tfw.check.Argument;
 import tfw.tsm.ecd.EventChannelDescription;
-import tfw.tsm.ecd.ObjectECD;
-import tfw.tsm.ecd.StatelessTriggerECD;
 import tfw.value.NullConstraint;
-import tfw.value.ValueException;
 
 /**
  * The base class for all components.
  */
 public class TreeComponent
 {
-    public static final String DEFAULT_EXPORT_TAG = "All";
-
     private static final Map EMPTY = Collections
             .unmodifiableMap(new HashMap(0));
 
@@ -53,9 +47,6 @@ public class TreeComponent
 
     /** This component's parent. */
     private TreeComponent parent = null;
-
-    /** This component's children */
-    private Map children = null;
 
     /** This components sinks. */
     final PortMap sinks;
@@ -69,6 +60,8 @@ public class TreeComponent
     /** The transaction manager for the parent tree. */
     private TransactionMgr transactionMgr = null;
 
+	protected Root immediateRoot = null;
+	protected BranchComponent immediateParent = null;
     /**
      * Creates a tree component with the specified attributes.
      * 
@@ -97,9 +90,9 @@ public class TreeComponent
 	 */
 	public void disconnectFromParent()
 	{
-		if (this.parent != null)
+		if (parent != null && parent instanceof BranchComponent)
 		{
-			this.parent.remove(this);
+			((BranchComponent)parent).remove(this);
 		}
 	}
 
@@ -255,7 +248,7 @@ public class TreeComponent
      * 
      * @return the component's parent.
      */
-    public final TreeComponent getParent()
+    final TreeComponent getParent()
     {
         return parent;
     }
@@ -269,123 +262,6 @@ public class TreeComponent
     void setParent(TreeComponent parent)
     {
         this.parent = parent;
-    }
-
-    /**
-     * Adds the specified component as a child to this component.
-     * 
-     * @param child
-     *            The child to be added.
-     */
-    synchronized void add(TreeComponent child)
-    {
-        Argument.assertNotNull(child, "child");
-        if (isRooted())
-        {
-            getTransactionManager().addComponent(this, child);
-        }
-        else
-        {
-            addToChildren(child);
-        }
-    }
-
-    void addToChildren(TreeComponent child)
-    {
-        if (child.getParent() != null)
-        {
-            throw new IllegalArgumentException("Child, '" + child.getName()
-                    + "', already has a parent.");
-        }
-
-        if (child == this)
-        {
-            throw new IllegalArgumentException("child == this not allowed");
-        }
-
-        if (child.isRooted())
-        {
-            throw new IllegalArgumentException("Child, '" + child.getName()
-                    + "' is rooted. Can't add a rooted tree!");
-        }
-
-        if (children == null)
-        {
-            this.children = new HashMap();
-        }
-        if (children.containsKey(child.getName()))
-        {
-            throw new IllegalArgumentException(
-                    "Attempt to add child with duplicate name, '"
-                            + child.getName() + "'");
-        }
-        children.put(child.getName(), child);
-        child.setParent(this);
-    }
-
-    /**
-     * Removes the specified child component.
-     * 
-     * @param child
-     *            the component to be removed.
-     */
-    synchronized void remove(TreeComponent child)
-    {
-        Argument.assertNotNull(child, "child");
-        if (isRooted())
-        {
-            getTransactionManager().removeComponent(this, child);
-        }
-        else
-        {
-            removeFromChildren(child);
-        }
-    }
-
-    void removeFromChildren(TreeComponent child)
-    {
-        if (child.getParent() != this)
-        {
-            throw new IllegalArgumentException("child, " + child.name
-					+ ", not connected to this component, '"+this.name+"'");
-        }
-        children.remove(child.getName());
-        child.setParent(null);
-    }
-
-    /**
-     * Removes all of this components child components.
-     */
-    public synchronized void removeAll()
-    {
-        if (children == null)
-        {
-            return;
-        }
-        Object[] array = null;
-        array = children.values().toArray();
-        for (int i = 0; i < array.length; i++)
-        {
-            remove((TreeComponent) array[i]);
-        }
-    }
-
-    /**
-     * Returns an copy of this component's map of children.
-     * 
-     * @return an copy of this component's map of children.
-     */
-    public Map getChildren()
-    {
-        if (children == null)
-        {
-            return new HashMap();
-        }
-
-        synchronized (children)
-        {
-            return new HashMap(children);
-        }
     }
 
     /**
@@ -554,39 +430,6 @@ public class TreeComponent
     }
 
     /**
-     * Recursively terminates child component ports and terminates leaf ports.
-     * The initial call to this method to kick off the recursion is made by the
-     * transaction manager.
-     * 
-     * @return Un-terminated ports.
-     */
-    Set terminateChildAndLocalConnections()
-    {
-        HashSet unterminatedConnections = new HashSet();
-        TreeComponent[] treeComponents = getChildComponents();
-        for (int i = 0; i < treeComponents.length; i++)
-        {
-            unterminatedConnections.addAll(treeComponents[i]
-                    .terminateChildAndLocalConnections());
-        }
-
-        return (terminateLocally(unterminatedConnections));
-    }
-
-    private TreeComponent[] getChildComponents()
-    {
-        if (children == null)
-        {
-            return new TreeComponent[0];
-        }
-        synchronized (children)
-        {
-            return ((TreeComponent[]) children.values().toArray(
-                    new TreeComponent[children.size()]));
-        }
-    }
-
-    /**
      * Returns the transaction manager for this component tree.
      * 
      * @return the transaction manager for this component tree.
@@ -675,23 +518,9 @@ public class TreeComponent
     }
 
     /**
-     * Calls disconnectPorts() and then recursively calls disconnect on the
-     * child components.
-     */
-    void disconnect()
-    {
-        disconnectPorts();
-        TreeComponent[] childComponents = getChildComponents();
-        for (int i = 0; i < childComponents.length; i++)
-        {
-            childComponents[i].disconnect();
-        }
-    }
-
-    /**
      * Disconnects this component's sinks and sources from the event channels.
      */
-    private final void disconnectPorts()
+    final void disconnectPorts()
     {
         Iterator itr = sinks.values().iterator();
 
@@ -710,197 +539,4 @@ public class TreeComponent
         }
     }
 
-    /**
-     * Returns the this components tree state using the
-     * {@link #DEFAULT_EXPORT_TAG}.
-     * 
-     * @return this components tree state.
-     * @throws IllegalStateException
-     *             if this component is not rooted.
-     * @throws IllegalStateException
-     *             if called outside of the of the transaction manager's
-     *             transaction queue thread.
-     */
-    public TreeState getTreeState()
-    {
-        return getTreeState(DEFAULT_EXPORT_TAG);
-    }
-
-    /**
-     * Returns the this components tree state using the
-     * {@link #DEFAULT_EXPORT_TAG}.
-     * 
-     * @param exportTag
-     *            The event channel export tag. Only event channels with this
-     *            export tag will be included in the tree state.
-     * @return this components tree state.
-     * @throws IllegalStateException
-     *             if this component is not rooted.
-     * @throws IllegalStateException
-     *             if called outside of the of the transaction manager's
-     *             transaction queue thread.
-     */
-    public TreeState getTreeState(String exportTag)
-    {
-        Argument.assertNotNull(exportTag, "exportTag");
-        if (!isRooted())
-        {
-            throw new IllegalStateException(
-                    "This component is not rooted and therefore it's state is undefined.");
-        }
-
-        if (!getTransactionManager().isDispatchThread())
-        {
-            throw new IllegalStateException(
-                    "This method can not be called from outside the transaction queue thread");
-        }
-
-        TreeStateBuffer buff = new TreeStateBuffer();
-        buff.setName(this.name);
-
-        Iterator itr = this.eventChannels.values().iterator();
-
-        while (itr.hasNext())
-        {
-            EventChannel ec = (EventChannel) itr.next();
-
-            if (isExport(ec, exportTag))
-            {
-                try
-                {
-                    EventChannelState ecs = new EventChannelState(
-                            (ObjectECD) ec.getECD(), ec.getState());
-                    buff.addState(ecs);
-                }
-                catch (ValueException unexpected)
-                {
-                    // This should never happen.
-                    throw new IllegalStateException(
-                            "Event channel has invalid state: "
-                                    + unexpected.getMessage());
-                }
-            }
-        }
-
-        TreeComponent[] childComponents = getChildComponents();
-        for (int i = 0; i < childComponents.length; i++)
-        {
-            buff.addChild(childComponents[i].getTreeState(exportTag));
-        }
-
-        return buff.toTreeState();
-    }
-
-    private static boolean isExport(EventChannel ec, String exportTag)
-    {
-        if ((ec.getECD() instanceof StatelessTriggerECD)
-                || !ec.getECD().isFireOnConnect() || (ec.getState() == null))
-        {
-            return false;
-        }
-
-        if (!(ec instanceof Terminator))
-        {
-            return false;
-        }
-        return ((Terminator) ec).isExportTag(exportTag);
-    }
-
-    /**
-     * Sets the state of this tree.
-     * 
-     * @param state
-     *            The state.
-     * @param skipMissingEventChannels
-     *            A flag indicating whether to allow missing event channels. If
-     *            <code>false</code> an IllegalArgumentException will be
-     *            thrown if the <code>state</code> contains state for an event
-     *            channel which is not present in the tree structure.
-     * @param skipMissingChildBranches
-     *            A flag indicating whether to allow missing child branches. if
-     *            <code>false</code> an IllegalArgumentException will be
-     *            thrown if the <code>state</code> contains child tree states
-     *            for a branch which is not present in the tree structure.
-     * @throws IllegalStateException
-     *             if this component is not rooted.
-     * @throws IllegalStateException
-     *             if called outside of the of the transaction manager's
-     *             transaction queue thread.
-     */
-    public void setTreeState(TreeState state, boolean skipMissingEventChannels,
-            boolean skipMissingChildBranches)
-    {
-        Argument.assertNotNull(state, "state");
-
-        if (!isRooted())
-        {
-            throw new IllegalStateException(
-                    "This component is not rooted and therefore it's state is undefined.");
-        }
-
-        if (!getTransactionManager().isDispatchThread())
-        {
-            throw new IllegalStateException(
-                    "This method can not be called from outside the transaction queue thread");
-        }
-
-        if (!this.name.equals(state.getName()))
-        {
-            throw new IllegalArgumentException(
-                    "TreeState name does not match, expected <" + this.name
-                            + "> found <" + state.getName() + ">.");
-        }
-
-        EventChannelState[] ecs = state.getState();
-
-        for (int i = 0; i < ecs.length; i++)
-        {
-            Terminator ec = (Terminator) this.eventChannels.get(ecs[i]
-                    .getEventChannelName());
-
-            if (ec == null)
-            {
-                if (skipMissingEventChannels)
-                {
-                    continue;
-                }
-                throw new IllegalArgumentException(
-                        "TreeState contains state for an unknown event channel '"
-								+ ecs[i].getEventChannelName() + "'");
-            }
-
-            ec.importState(ecs[i].getState());
-        }
-
-        TreeState[] childTreeState = state.getChildren();
-
-        if (children == null)
-        {
-            if ((childTreeState.length == 0) || skipMissingChildBranches)
-            {
-                return;
-            }
-            throw new IllegalArgumentException(
-                    "'state' contains child tree state and this component has no children");
-        }
-        for (int i = 0; i < childTreeState.length; i++)
-        {
-            TreeComponent child = (TreeComponent) this.children
-                    .get(childTreeState[i].getName());
-
-            if (child == null)
-            {
-                if (skipMissingChildBranches)
-                {
-                    continue;
-                }
-                throw new IllegalArgumentException(
-                        "TreeState contains unknown child tree state with name '"
-                                + childTreeState[i].getName());
-            }
-
-            child.setTreeState(childTreeState[i], skipMissingEventChannels,
-                    skipMissingChildBranches);
-        }
-    }
 }

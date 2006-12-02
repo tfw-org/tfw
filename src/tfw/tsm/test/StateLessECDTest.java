@@ -54,8 +54,6 @@ public class StateLessECDTest extends TestCase
         root.add(initiator);
         initiator.trigger(trigger);
         queue.waitTilEmpty();
-        assertNotNull("get(ECD) of a statelessECD didn't throw an exception",
-            commit.getException);
         assertNotNull("set() of a statelessECD didn't throw an exception",
             commit.setException);
         assertNotNull("get() returned null state map", commit.map);
@@ -79,15 +77,6 @@ public class StateLessECDTest extends TestCase
 
         public void convert()
         {
-            try
-            {
-                get(trigger);
-            }
-            catch (IllegalArgumentException expected)
-            {
-                this.getException = expected;
-            }
-
             try
             {
                 set(trigger, new Object());

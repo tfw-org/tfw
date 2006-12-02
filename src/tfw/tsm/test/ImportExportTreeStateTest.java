@@ -24,19 +24,18 @@
  */
 package tfw.tsm.test;
 
+import junit.framework.TestCase;
 import tfw.tsm.BasicTransactionQueue;
 import tfw.tsm.Branch;
+import tfw.tsm.BranchComponent;
 import tfw.tsm.BranchFactory;
 import tfw.tsm.EventChannelState;
 import tfw.tsm.EventChannelStateBuffer;
 import tfw.tsm.Root;
 import tfw.tsm.RootFactory;
-import tfw.tsm.TreeComponent;
 import tfw.tsm.TreeState;
 import tfw.tsm.ecd.IntegerECD;
 import tfw.tsm.ecd.StringECD;
-
-import junit.framework.TestCase;
 
 /**
  * 
@@ -240,16 +239,16 @@ public class ImportExportTreeStateTest extends TestCase
 
         public RuntimeException exception = null;
 
-        private final TreeComponent component;
+        private final BranchComponent component;
 
         private final String exportTag;
 
-        public GetTreeStateRunnable(TreeComponent component)
+        public GetTreeStateRunnable(BranchComponent component)
         {
-            this(component, TreeComponent.DEFAULT_EXPORT_TAG);
+            this(component, BranchComponent.DEFAULT_EXPORT_TAG);
         }
 
-        public GetTreeStateRunnable(TreeComponent component, String tag)
+        public GetTreeStateRunnable(BranchComponent component, String tag)
         {
             this.component = component;
             this.exportTag = tag;
@@ -274,9 +273,9 @@ public class ImportExportTreeStateTest extends TestCase
 
         public RuntimeException exception = null;
 
-        private final TreeComponent component;
+        private final BranchComponent component;
 
-        public SetTreeStateRunnable(TreeComponent component, TreeState treeState)
+        public SetTreeStateRunnable(BranchComponent component, TreeState treeState)
         {
             this.component = component;
             this.treeState = treeState;

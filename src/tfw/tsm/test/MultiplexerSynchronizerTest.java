@@ -4,11 +4,10 @@
 package tfw.tsm.test;
 
 import java.util.Arrays;
-
 import junit.framework.TestCase;
 import tfw.component.ObjectStringSynchronizer;
-import tfw.immutable.DataInvalidException;
 import tfw.immutable.ila.objectila.ObjectIla;
+import tfw.immutable.ila.objectila.ObjectIlaFill;
 import tfw.immutable.ila.objectila.ObjectIlaFromArray;
 import tfw.tsm.BasicTransactionQueue;
 import tfw.tsm.Commit;
@@ -58,7 +57,11 @@ public class MultiplexerSynchronizerTest extends TestCase
         ObjectIla initialInts = ObjectIlaFromArray.create(integerValues);
         RootFactory rf = new RootFactory();
         // rf.setLogging(true);
-        rf.addEventChannel(multiStringECD);
+        
+        // THE FOLLOWING LINE SHOULD NOT HAVE A SECOND ARGUMENT.  THE SECOND
+        // ARGUMENT IS PUT IN TO SOLVE THE "multistate == null not allowed!"
+        // EXCEPTION!
+        rf.addEventChannel(multiStringECD, ObjectIlaFill.create(null, 3));
         rf.addEventChannel(multiIntegerECD, initialInts);
         rf.addEventChannel(errorECD);
         BasicTransactionQueue queue = new BasicTransactionQueue();

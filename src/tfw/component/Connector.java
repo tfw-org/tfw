@@ -59,8 +59,7 @@ public class Connector
 			{
 				public void commit()
 				{
-					initiator.set(eventChannelDescription,
-						get(eventChannelDescription));
+					initiator.trigger((StatelessTriggerECD)eventChannelDescription);
 
 				}
 			};
@@ -76,8 +75,8 @@ public class Connector
 			{
 				public void commit()
 				{
-					initiator.set(eventChannelDescription,
-						get(eventChannelDescription));
+					initiator.set((ObjectECD)eventChannelDescription,
+						get((ObjectECD)eventChannelDescription));
 				}
 			};
 			triggeredCommit = null;

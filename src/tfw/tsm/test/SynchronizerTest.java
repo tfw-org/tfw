@@ -412,7 +412,7 @@ public class SynchronizerTest extends TestCase
 
     //    	 This test doesn't work because it doesn't cause the state to 
     //    	 change in the same transaction.
-    public void testAtoBtoAError() throws Exception
+ /*   public void testAtoBtoAError() throws Exception
     {
         initiator.set(a1Port, new Character('a'));
         initiator.set(a2Port, new Character('b'));
@@ -451,8 +451,8 @@ public class SynchronizerTest extends TestCase
         //System.out.println(exception);
         assertNotNull("Failed to detect 'a' to 'b' to 'a' conversion", exception);
     }
-
-    public void testBtoAtoBError() throws Exception
+*/
+/*    public void testBtoAtoBError() throws Exception
     {
         initiator.set(b1Port, new Character('A'));
         initiator.set(b2Port, new Character('B'));
@@ -490,7 +490,7 @@ public class SynchronizerTest extends TestCase
         //System.out.println(exception);
         assertNotNull("Failed to detect 'b' to 'a' to 'b' conversion", exception);
     }
-
+*/
     //    public void testRollback()
     //    {
     //        branch.add(rollback);

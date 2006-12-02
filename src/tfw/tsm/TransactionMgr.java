@@ -83,10 +83,6 @@ public final class TransactionMgr
 
     private boolean inTransaction = false;
 
-    private boolean inCommit = false;
-
-    private boolean inConstruction = false;
-
     private boolean executingStateChanges = false;
 
     private TransactionExceptionHandler exceptionHandler = new TransactionExceptionHandler()
@@ -160,7 +156,6 @@ public final class TransactionMgr
 
         try
         {
-            inCommit = true;
             commitTransaction();
             synchronizeTransState();
         }
@@ -170,7 +165,6 @@ public final class TransactionMgr
         }
         finally
         {
-            inCommit = false;
             inTransaction = false;
         }
 
@@ -196,7 +190,9 @@ public final class TransactionMgr
 
             logger.log(Level.INFO, "synchronizeCycleState()");
             synchronizeCycleState();
-
+            
+            logger.log(Level.INFO, "executeEndOfCycleRunnables");
+            executeEndOfCycleRunnables();
         } while ((stateChanges.size() != 0) || (eventChannelFires.size() != 0)
                 || (processors != null));
     }
@@ -308,8 +304,8 @@ public final class TransactionMgr
     {
     	Set processorCrumbs = new HashSet();
     	Set terminatorCrumbs = new HashSet();
-		Processor[] procs = (Processor[]) processors
-			.toArray(new Processor[processors.size()]);
+        Processor[] procs = (Processor[]) processors
+                .toArray(new Processor[processors.size()]);
 
         for (int i = 0; i < procs.length; i++)
         {
@@ -381,7 +377,7 @@ public final class TransactionMgr
 
                     // continue searching the dependency chain...
                     checkDependencies(tc, processors, delayedProcessors,
-                    	processorCrumbs, terminatorCrumbs);
+                        	processorCrumbs, terminatorCrumbs);
                 }
             }
         }
@@ -462,15 +458,14 @@ public final class TransactionMgr
             return;
         }
         logger.log(Level.INFO, "executeComponentChange()");
+        logger.log(Level.INFO, " component = "+componentChange);
 
-        this.inConstruction = true;
         try
         {
             componentChange.run();
         }
         finally
         {
-            this.inConstruction = false;
             componentChange = null;
         }
     }
@@ -574,9 +569,9 @@ public final class TransactionMgr
         }
     }
 
-    void addStateChange(InitiatorSource[] source)
+    void addStateChange(InitiatorSource[] sources, Object[] state)
     {
-        queue.invokeLater(new StateChangeTransaction(source));
+        queue.invokeLater(new StateChangeTransaction(sources, state));
     }
 
     /**
@@ -626,26 +621,6 @@ public final class TransactionMgr
     }
 
     /**
-     * Throws an IllegalStateException if a construction change is attempted
-     * inside the processing phase of a transaction.
-     */
-    private void checkConstructionState()
-    {
-        if (this.queue.isDispatchThread())
-        {
-            if (this.inTransaction)
-            {
-                if ((!this.inCommit) && (!this.inConstruction))
-                {
-                    throw new IllegalStateException(
-                            "Attempt to add/remove components in the processing"
-                                    + " phase of a transaction is not allowed.");
-                }
-            }
-        }
-    }
-
-    /**
      * Creates an adds component change. This is called by {@link TreeComponent}.
      * It can be called at any time from any thread.
      * 
@@ -654,34 +629,9 @@ public final class TransactionMgr
      * @param child
      *            the child component to be added.
      */
-    void addComponent(TreeComponent parent, TreeComponent child)
+    void addComponent(AddComponentRunnable addComponentRunnable)
     {
-        checkConstructionState();
-        if (!parent.isRooted())
-        {
-            throw new IllegalArgumentException(
-                    "only rooted parents can have child added inside a "
-                            + "transaction");
-        }
-
-        AddComponentRunnable acr = new AddComponentRunnable(parent, child);
-        queue.invokeLater(new ComponentChangeTransaction(acr));
-    }
-
-    void addComponent(MultiplexedBranch parent, TreeComponent child,
-            Object slotId)
-    {
-        checkConstructionState();
-        if (!parent.isRooted())
-        {
-            throw new IllegalArgumentException(
-                    "only rooted parents can have child added inside a "
-                            + "transaction");
-        }
-
-        AddComponentMultiplexRunnable acr = new AddComponentMultiplexRunnable(
-                parent, child, slotId);
-        queue.invokeLater(new ComponentChangeTransaction(acr));
+        queue.invokeLater(new ComponentChangeTransaction(addComponentRunnable));
     }
 
     /**
@@ -693,18 +643,9 @@ public final class TransactionMgr
      * @param child
      *            the child component to be added.
      */
-    void removeComponent(TreeComponent parent, TreeComponent child)
+    void removeComponent(RemoveComponentRunnable removeComponentRunnable)
     {
-        checkConstructionState();
-        if (!parent.isRooted())
-        {
-            throw new IllegalArgumentException(
-                    "only rooted parents can have child removed inside a "
-                            + "transaction");
-        }
-
-        RemoveComponentRunnable rcr = new RemoveComponentRunnable(parent, child);
-        queue.invokeLater(new ComponentChangeTransaction(rcr));
+        queue.invokeLater(new ComponentChangeTransaction(removeComponentRunnable));
     }
 
     void addEventChannelFire(EventChannel eventChannel)
@@ -730,6 +671,39 @@ public final class TransactionMgr
     boolean isDispatchThread()
     {
         return queue.isDispatchThread();
+    }
+    
+    private final HashSet endOfCycleRunnables = new HashSet();
+    public void addEndOfCycleRunnable(Runnable runnable)
+    {
+    	Argument.assertNotNull(runnable, "runnable");
+    	
+    	synchronized(this)
+    	{
+    		endOfCycleRunnables.add(runnable);
+    	}
+    }
+    
+    private void executeEndOfCycleRunnables()
+    {
+    	Runnable[] runnables = null;
+    	
+    	synchronized(this)
+    	{
+    		if (endOfCycleRunnables.size() == 0)
+    		{
+    			return;
+    		}
+    		
+    		runnables = (Runnable[])endOfCycleRunnables.toArray(
+    			new Runnable[endOfCycleRunnables.size()]);
+        	endOfCycleRunnables.clear();
+    	}
+    	
+    	for (int i=0 ; i < runnables.length ; i++)
+    	{
+    		runnables[i].run();
+    	}
     }
 
     private class ComponentChangeTransaction implements Runnable
@@ -759,17 +733,30 @@ public final class TransactionMgr
     private class StateChangeTransaction implements Runnable
     {
         private final InitiatorSource[] sources;
+        private final Object[] state;
 
-        public StateChangeTransaction(InitiatorSource[] sources)
+        public StateChangeTransaction(InitiatorSource[] sources, Object[] state)
         {
             this.sources = sources;
+            this.state = state;
         }
 
         public void run()
         {
             for (int i = 0; i < sources.length; i++)
             {
-                stateChanges.add(sources[i]);
+            	if (sources[i].isConnected())
+            	{
+	                sources[i].setState(state[i]);
+	                stateChanges.add(sources[i]);
+            	}
+            	else
+            	{
+            		throw new IllegalStateException(
+            			"Attempting to change state on source " +
+            			sources[i].getFullyQualifiedName() +
+            			"; however, it is not connected!");
+            	}
             }
 
             executeTransaction();
@@ -792,27 +779,12 @@ public final class TransactionMgr
         }
     }
 
-    private static void notifyInitiators(TreeComponent child)
+    static class AddComponentRunnable implements Runnable
     {
-        if (child instanceof Initiator)
-        {
-            ((Initiator) child).fireDeferredState();
-            return;
-        }
-        Iterator children = child.getChildren().values().iterator();
-        while (children.hasNext())
-        {
-            notifyInitiators((TreeComponent) children.next());
-        }
-    }
-
-    private class AddComponentRunnable implements Runnable
-    {
-        private final TreeComponent parent;
-
+        private final BranchComponent parent;
         private final TreeComponent child;
 
-        AddComponentRunnable(final TreeComponent parent,
+        AddComponentRunnable(final BranchComponent parent,
                 final TreeComponent child)
         {
             this.parent = parent;
@@ -821,11 +793,18 @@ public final class TransactionMgr
 
         public void run()
         {
-            logger.info(this.toString());
             parent.addToChildren(child);
-            parent.terminateParentAndLocalConnections(child
+            if (child instanceof BranchComponent)
+            {
+            	parent.terminateParentAndLocalConnections(
+            		((BranchComponent)child)
                     .terminateChildAndLocalConnections());
-            notifyInitiators(child);
+            }
+            else
+            {
+            	parent.terminateParentAndLocalConnections(
+            		((TreeComponent)child).terminateLocally(new HashSet()));
+            }
         }
 
         public String toString()
@@ -835,45 +814,12 @@ public final class TransactionMgr
         }
     }
 
-    private class AddComponentMultiplexRunnable implements Runnable
+    static class RemoveComponentRunnable implements Runnable
     {
-        private final MultiplexedBranch parent;
-
+        private final BranchComponent parent;
         private final TreeComponent child;
 
-        private final Object slotId;
-
-        AddComponentMultiplexRunnable(final MultiplexedBranch parent,
-                final TreeComponent child, Object slotId)
-        {
-            this.parent = parent;
-            this.child = child;
-            this.slotId = slotId;
-        }
-
-        public void run()
-        {
-            logger.info(this.toString());
-            parent.addToSubBranch(child, slotId);
-            parent.terminateParentAndLocalConnections(child
-                    .terminateChildAndLocalConnections());
-            notifyInitiators(child);
-        }
-
-        public String toString()
-        {
-            return "add Component " + child.getName() + " to "
-                    + parent.getName();
-        }
-    }
-
-    private class RemoveComponentRunnable implements Runnable
-    {
-        private final TreeComponent parent;
-
-        private final TreeComponent child;
-
-        RemoveComponentRunnable(final TreeComponent parent,
+        RemoveComponentRunnable(final BranchComponent parent,
                 final TreeComponent child)
         {
             this.parent = parent;
@@ -884,9 +830,15 @@ public final class TransactionMgr
         {
             if (child.isRooted())
             {
-                logger.info(this.toString());
                 parent.removeFromChildren(child);
-                child.disconnect();
+                if (child instanceof BranchComponent)
+                {
+                    ((BranchComponent)child).disconnect();
+                }
+                else
+                {
+                	child.disconnectPorts();
+                }
             }
         }
 
