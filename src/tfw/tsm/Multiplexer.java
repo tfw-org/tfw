@@ -259,17 +259,6 @@ class Multiplexer implements EventChannel
     /*
      * (non-Javadoc)
      * 
-     * @see tfw.tsm.EventChannel#addDeferredStateChange(tfw.tsm.InitiatorSource[])
-     */
-    public void addDeferredStateChange(InitiatorSource[] source)
-    {
-        throw new UnsupportedOperationException(
-                "Multiplexer does not participate directly in transactions.");
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
      * @see tfw.tsm.EventChannel#addDeferredStateChange(tfw.tsm.ProcessorSource)
      */
     public void addDeferredStateChange(ProcessorSource source)

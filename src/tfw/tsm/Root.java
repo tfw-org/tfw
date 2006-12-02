@@ -73,6 +73,7 @@ public class Root extends Branch
     {
         super(name, null, null, eventChannels);
         this.transactionMgr = transactionMgr;
+        this.immediateRoot = this;
     }
     
     /**

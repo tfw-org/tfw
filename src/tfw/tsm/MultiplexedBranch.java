@@ -25,7 +25,6 @@
 package tfw.tsm;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -36,12 +35,10 @@ import tfw.check.Argument;
  * channel and demultiplex the single parent event channel into multiple child
  * event channels. To create one you must use {@link MultiplexedBranchFactory}.
  */
-public class MultiplexedBranch extends TreeComponent
+public class MultiplexedBranch extends BranchComponent
 {
-    private final Map children = new HashMap();
-
-    private final Map subBranches = new HashMap();
-
+    private final Map slotIdFromChild = new HashMap();
+    private final Map subBranchFromSlotId = new HashMap();
     private final Multiplexer[] multiplexers;
 
     /**
@@ -56,9 +53,8 @@ public class MultiplexedBranch extends TreeComponent
     MultiplexedBranch(String name, Multiplexer[] multiplexers)
     {
         super(name, null, null, multiplexers);
-        this.multiplexers = new Multiplexer[multiplexers.length];
-        System.arraycopy(multiplexers, 0, this.multiplexers, 0,
-                multiplexers.length);
+        
+        this.multiplexers = (Multiplexer[])multiplexers.clone();
     }
 
     /**
@@ -87,6 +83,7 @@ public class MultiplexedBranch extends TreeComponent
     {
         Argument.assertNotNull(child, "child");
         Argument.assertGreaterThanOrEqualTo(multipexIndex, 0, "multipexIndex");
+        
         add(child, new Integer(multipexIndex));
     }
 
@@ -94,54 +91,25 @@ public class MultiplexedBranch extends TreeComponent
     {
         Argument.assertNotNull(child, "child");
         Argument.assertNotNull(slotId, "slotId");
-        if (isRooted())
+        
+        Branch subBranch = (Branch)subBranchFromSlotId.get(slotId);
+        if (subBranch == null)
         {
-            getTransactionManager().addComponent(this, child, slotId);
+        	subBranch = new Branch(getName() + "[" + slotId + "]");
+        	
+        	addChild(subBranch);
+        	subBranchFromSlotId.put(slotId, subBranch);
         }
-        else
-        {
-            addToSubBranch(child, slotId);
-        }
+        
+    	slotIdFromChild.put(child, slotId);        
+    	subBranch.add(child);
     }
-
-    private void addAll(TreeComponent child, Object slotId)
+    
+    public synchronized final void add(BranchBox branchBox, Object slotId)
     {
-        children.put(child, slotId);
-
-        if (child instanceof Branch)
-        {
-            for (Iterator i = ((Branch) child).getChildren().values()
-                    .iterator(); i.hasNext();)
-            {
-                addAll((TreeComponent) i.next(), slotId);
-            }
-        }
-    }
-
-    void addToSubBranch(TreeComponent child, Object slotId)
-    {
-        addAll(child, slotId);
-        Branch branch = (Branch) this.subBranches.get(slotId);
-        if (branch == null)
-        {
-            branch = createSubBranch(slotId);
-            // Add the child to the new branch...
-            branch.addToChildren(child);
-            // Add the new branch to the super class...
-            super.addToChildren(branch);
-            this.subBranches.put(slotId, branch);
-            this.children.put(branch, slotId);
-        }
-        else
-        {
-            branch.addToChildren(child);
-        }
-    }
-
-    private Branch createSubBranch(Object slotId)
-    {
-        BranchFactory bf = new BranchFactory();
-        return bf.create(this.getName() + "[" + slotId + "]");
+    	Argument.assertNotNull(branchBox, "branchBox");
+    	
+    	add(branchBox.getBranch(), slotId);
     }
 
     /**
@@ -152,19 +120,8 @@ public class MultiplexedBranch extends TreeComponent
     public synchronized final void remove(TreeComponent child)
     {
         Argument.assertNotNull(child, "child");
-        if (isRooted())
-        {
-            getTransactionManager().removeComponent(this, child);
-        }
-        else
-        {
-            removeFromChildren(child);
-        }
-    }
-
-    void removeFromChildren(TreeComponent child)
-    {
-        Object slotId = children.get(child);
+        
+        Object slotId = slotIdFromChild.get(child);
         if (slotId == null)
         {
             throw new IllegalStateException("Attempt to remove '"
@@ -172,65 +129,49 @@ public class MultiplexedBranch extends TreeComponent
                     + ")' for which no slot identifier exists");
         }
 
-        Branch subBranch = (Branch) this.subBranches.get(slotId);
+        Branch subBranch = (Branch)subBranchFromSlotId.get(slotId);
         if (subBranch == null)
         {
             throw new IllegalStateException("Attempt to remove '"
                     + child.getName() + "(" + child
                     + ")' for which no sub-branch exists");
         }
-
-        // If the child is the subBranch...
-        if (subBranch == child)
+        
+        slotIdFromChild.remove(child);
+        subBranch.remove(child);
+        
+        if (subBranch.immediateChildren.size() == 0)
         {
-            // Remove it from the sub-branch map...
-            this.subBranches.remove(slotId);
-            // Remove it from the super class childern...
-            super.removeFromChildren(child);
-        }
-        else
-        {
-            subBranch.removeFromChildren(child);
-            if (subBranch.getChildren().isEmpty())
-            {
-                super.remove(subBranch);
-            }
-        }
-        removeAll(child);
-    }
-
-    private synchronized void removeAll(TreeComponent child)
-    {
-        children.remove(child);
-
-        if (child instanceof Branch)
-        {
-            for (Iterator i = ((Branch) child).getChildren().values()
-                    .iterator(); i.hasNext();)
-            {
-                removeAll((TreeComponent) i.next());
-            }
+        	removeChild(subBranch);
+        	subBranchFromSlotId.remove(slotId);
         }
     }
-
-    public synchronized void removeAll()
+    
+    public synchronized final void remove(BranchBox branchBox)
     {
-        Object[] slotIds = this.subBranches.keySet().toArray();
+    	Argument.assertNotNull(branchBox, "branchBox");
+    	
+    	remove(branchBox.getBranch());
+    }
+
+    public synchronized final void removeAll()
+    {
+        Object[] slotIds = this.subBranchFromSlotId.keySet().toArray();
         for (int i = 0; i < slotIds.length; i++)
         {
             removeAll( slotIds[i]);
         }
     }
 
-    public synchronized void removeAll(Object slotId)
+    public synchronized final void removeAll(Object slotId)
     {
-        Branch subBranch = (Branch) this.subBranches.get(slotId);
+        Branch subBranch = (Branch) this.subBranchFromSlotId.get(slotId);
         if (subBranch != null)
         {
-            Object[] tc = subBranch.getChildren().values().toArray();
-            for (int i = 0; i < tc.length; i++)
+            Object[] children = subBranch.immediateChildren.toArray();
+            for (int i = 0; i < children.length; i++)
             {
-                remove((TreeComponent) tc[i]);
+                remove((TreeComponent)children[i]);
             }
         }
     }
@@ -243,8 +184,8 @@ public class MultiplexedBranch extends TreeComponent
      * @return the multiplexer slot identifier of the specified child if it is
      *         found, otherwise null.
      */
-    Object getSlotId(TreeComponent child)
+    final Object getSlotId(TreeComponent child)
     {
-        return children.get(child);
+        return slotIdFromChild.get(child);
     }
 }

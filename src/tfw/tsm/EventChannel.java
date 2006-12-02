@@ -143,6 +143,4 @@ interface EventChannel
      *            the source with the state change.
      */
     public void addDeferredStateChange(ProcessorSource source);
-
-    public void addDeferredStateChange(InitiatorSource[] source);
 }

@@ -432,11 +432,6 @@ class Terminator implements EventChannel, CommitRollbackListener
         this.component.getTransactionManager().addStateChange(source);
     }
 
-    public void addDeferredStateChange(InitiatorSource[] source)
-    {
-        this.component.getTransactionManager().addStateChange(source);
-    }
-
     /**
      * Fires and then clears uninitialized sinks. This method should only be
      * called by {@link TransactionMgr}.
@@ -492,7 +487,7 @@ class Terminator implements EventChannel, CommitRollbackListener
      */
     boolean isExportTag(String exportTag)
     {
-        if (TreeComponent.DEFAULT_EXPORT_TAG.equals(exportTag))
+        if (BranchComponent.DEFAULT_EXPORT_TAG.equals(exportTag))
         {
             return true;
         }

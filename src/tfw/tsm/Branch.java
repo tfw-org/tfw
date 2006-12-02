@@ -24,6 +24,7 @@
  */
 package tfw.tsm;
 
+import java.util.Iterator;
 import tfw.check.Argument;
 
 /**
@@ -32,7 +33,7 @@ import tfw.check.Argument;
  * and leaves.
  *  
  */
-public class Branch extends TreeComponent
+public class Branch extends BranchComponent
 {
     /**
      * Constructs a trivial branch with no event channels or ports. To create a
@@ -65,16 +66,12 @@ public class Branch extends TreeComponent
     {
         super(name, sinks, sources, eventChannels);
     }
-
-    /**
-     * Adds a child component to this branch.
-     * 
-     * @param child
-     *            the child component.
-     */
-    public final void add(final TreeComponent child)
+    
+    public final void add(TreeComponent child)
     {
-        super.add(child);
+    	Argument.assertNotNull(child, "child");
+    	
+    	addChild(child);
     }
 
     /**
@@ -87,18 +84,14 @@ public class Branch extends TreeComponent
     {
         Argument.assertNotNull(branchBox, "branchBox");
 
-        add(branchBox.getBranch());
+        addChild(branchBox.getBranch());
     }
-
-    /**
-     * Removes a child component.
-     * 
-     * @param child
-     *            the component to be removed.
-     */
-    public final void remove(final TreeComponent child)
+    
+    public final void remove(TreeComponent child)
     {
-        super.remove(child);
+    	Argument.assertNotNull(child, "child");
+    	
+    	removeChild(child);
     }
 
     /**
@@ -110,6 +103,18 @@ public class Branch extends TreeComponent
     public final void remove(BranchBox branchBox)
     {
         Argument.assertNotNull(branchBox, "branchBox");
-        remove(branchBox.getBranch());
+        
+        removeChild(branchBox.getBranch());
+    }
+    
+    public final synchronized void removeAll()
+    {
+    	if (immediateChildren != null)
+    	{
+    		for (Iterator i=immediateChildren.iterator() ; i.hasNext() ; )
+    		{
+    			removeChild((TreeComponent)i.next());
+    		}
+    	}
     }
 }

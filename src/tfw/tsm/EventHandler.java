@@ -33,7 +33,6 @@ import tfw.tsm.ecd.EventChannelDescription;
 import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.RollbackECD;
 import tfw.tsm.ecd.StatelessTriggerECD;
-import tfw.value.ValueException;
 
 /**
  * The base class for event handling leaf components.
@@ -197,7 +196,7 @@ abstract class EventHandler extends Leaf
      *            the event channel whose state is to be returned.
      * @return the current state for the specified event channel.
      */
-    protected final Object get(EventChannelDescription sinkEventChannel)
+    protected final Object get(ObjectECD sinkEventChannel)
     {
         Argument.assertNotNull(sinkEventChannel, "sinkEventChannel");
         assertNotStateless(sinkEventChannel);
@@ -208,7 +207,7 @@ abstract class EventHandler extends Leaf
         {
             throw new IllegalArgumentException(
 					"The component, '"+this.getName()+"', does not subscribe to the requested event channel, '"
-							+ sinkEventChannel.getEventChannelName() + "'.");
+					+ sinkEventChannel.getEventChannelName() + "'.");
         }
 
         if (sink.getEventChannel() == null)
@@ -239,7 +238,7 @@ abstract class EventHandler extends Leaf
             if (sinkEventChannel instanceof ObjectECD)
             {
                 stateMap.put((ObjectECD) sinkEventChannel,
-                        get(sinkEventChannel));
+                        get((ObjectECD)sinkEventChannel));
             }
         }
 
@@ -266,19 +265,11 @@ abstract class EventHandler extends Leaf
         {
             throw new IllegalArgumentException(
 					"initiateECD.getEventChannelName() == "
-							+ initiateECD.getEventChannelName()
-							+ " is not a known event channel.");
-        }
-        try
-        {
-            source.setState(state);
-        }
-        catch (ValueException ve)
-        {
-            throw new IllegalArgumentException(ve.getMessage());
+					+ initiateECD.getEventChannelName()
+					+ " is not a known event channel.");
         }
 
-        newTransaction(new InitiatorSource[] { source });
+        newTransaction(new InitiatorSource[] { source }, new Object[] {state});
     }
 
     final void initiatorSet(EventChannelState[] eventChannelState)
@@ -287,11 +278,13 @@ abstract class EventHandler extends Leaf
         Argument.assertElementNotNull(eventChannelState, "eventChannelState");
 
         InitiatorSource[] sources = new InitiatorSource[eventChannelState.length];
+        Object[] state = new Object[eventChannelState.length];
 
         for (int i = 0; i < eventChannelState.length; i++)
         {
             String ecName = eventChannelState[i].getEventChannelName();
             sources[i] = (InitiatorSource) getSource(ecName);
+            state[i] = eventChannelState[i].getState();
 
             if (sources[i] == null)
             {
@@ -299,21 +292,12 @@ abstract class EventHandler extends Leaf
                         + "].getECD().getEventChannelName() == " + ecName
                         + " is not a known event channel");
             }
-
-            try
-            {
-                sources[i].setState(eventChannelState[i].getState());
-            }
-            catch (ValueException ve)
-            {
-                throw new IllegalArgumentException(ve.getMessage());
-            }
         }
 
-        newTransaction(sources);
+        newTransaction(sources, state);
     }
 
-    private void newTransaction(InitiatorSource[] sources)
+    private void newTransaction(InitiatorSource[] sources, Object[] objects)
     {
         if (!isRooted())
         {
@@ -321,7 +305,7 @@ abstract class EventHandler extends Leaf
                     "This component is not connected to a root");
         }
 
-        getTransactionManager().addStateChange(sources);
+        getTransactionManager().addStateChange(sources, objects);
     }
 
     /**

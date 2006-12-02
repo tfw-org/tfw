@@ -26,9 +26,9 @@ package tfw.tsm;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import tfw.check.Argument;
 import tfw.tsm.ecd.EventChannelDescription;
+import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.StatelessTriggerECD;
 import tfw.value.ValueException;
 
@@ -124,34 +124,21 @@ public class Initiator extends Leaf
         }
     }
 
-    synchronized void fireDeferredState()
+    synchronized SourceNState[] getDeferredStateChangesAndClear()
     {
-        synchronized (this)
+        if (deferredStateChanges != null)
         {
-            if (this.deferredStateChanges != null)
-            {
-                for (int i = 0; i < deferredStateChanges.size(); i++)
-                {
-                    SourceNState[] sns = (SourceNState[]) deferredStateChanges
-                            .get(i);
-                    InitiatorSource[] iSource = setState(sns);
-                    this.getTransactionManager().addStateChange(iSource);
-                }
+        	SourceNState[] sns = (SourceNState[])deferredStateChanges.toArray(
+        		new SourceNState[deferredStateChanges.size()]);
 
-                this.deferredStateChanges = null;
-            }
+            deferredStateChanges = null;
+            
+            return(sns);
         }
-    }
-
-    private InitiatorSource[] setState(SourceNState[] sns)
-    {
-        InitiatorSource[] is = new InitiatorSource[sns.length];
-        for (int i = 0; i < sns.length; i++)
+        else
         {
-            sns[i].source.setState(sns[i].state);
-            is[i] = sns[i].source;
+        	return(null);
         }
-        return is;
     }
 
     private static Source[] createSources(String name,
@@ -171,55 +158,33 @@ public class Initiator extends Leaf
         return srcs;
     }
 
-    private void newTransaction(InitiatorSource[] sources, Object[] state)
+    private synchronized void newTransaction(
+    	InitiatorSource[] sources, Object[] state)
     {
-        /*
-         * Check both rooting and source connection before scheduling a
-         * state change transaction. It is possible during construction to
-         * be rooted but not connected.
-         */
-        if (isRooted() && isConnected(sources))
-        {
-            for (int i = 0; i < sources.length; i++)
-            {
-                sources[i].setState(state[i]);
-            }
-            getTransactionManager().addStateChange(sources);
-
-            return;
-        }
-        SourceNState[] sns = new SourceNState[sources.length];
-        for (int i = 0; i < sources.length; i++)
-        {
-            sns[i] = new SourceNState(sources[i], state[i]);
-        }
-
-        if (this.deferredStateChanges == null)
-        {
-            this.deferredStateChanges = new ArrayList();
-        }
-
-        this.deferredStateChanges.add(sns);
-    }
-
-    /**
-     * Checks whether all of the sources are connected.
-     * 
-     * @param sources
-     *            The sources to be checked.
-     * @return <tt>true</tt> if all of the sources are connected, otherwise
-     *         returns <tt>false</tt>.
-     */
-    private boolean isConnected(InitiatorSource[] sources)
-    {
-        for (int i = 0; i < sources.length; i++)
-        {
-            if (!sources[i].isConnected())
-            {
-                return false;
-            }
-        }
-        return true;
+    	if (immediateRoot == null)
+    	{
+    		if (immediateParent == null)
+    		{
+	            if (deferredStateChanges == null)
+	            {
+	                deferredStateChanges = new ArrayList();
+	            }
+	            
+	            deferredStateChanges.add(new SourceNState(sources, state));
+    		}
+    		else
+    		{
+    			immediateParent.addStateChange(
+    				new SourceNState(sources, state));
+    		}
+    	}
+    	else
+    	{
+    		synchronized(immediateRoot)
+    		{
+                immediateRoot.getTransactionManager().addStateChange(sources, state);
+    		}
+    	}
     }
 
     /**
@@ -235,7 +200,7 @@ public class Initiator extends Leaf
      * @param state
      *            the new state for the event channel.
      */
-    public synchronized final void set(
+    private synchronized final void unifiedSet(
             EventChannelDescription sourceEventChannel, final Object state)
     {
 
@@ -304,18 +269,22 @@ public class Initiator extends Leaf
     public synchronized final void trigger(
             StatelessTriggerECD triggerEventChannel)
     {
-        set(triggerEventChannel, null);
+        unifiedSet(triggerEventChannel, null);
+    }
+    
+    public synchronized final void set(ObjectECD objectECD, Object state)
+    {
+    	unifiedSet(objectECD, state);
     }
 
-    private class SourceNState
+    static class SourceNState
     {
-        private final InitiatorSource source;
+        public final InitiatorSource[] sources;
+        public final Object[] state;
 
-        private final Object state;
-
-        public SourceNState(InitiatorSource source, Object state)
+        public SourceNState(InitiatorSource[] sources, Object[] state)
         {
-            this.source = source;
+            this.sources = sources;
             this.state = state;
         }
     }
