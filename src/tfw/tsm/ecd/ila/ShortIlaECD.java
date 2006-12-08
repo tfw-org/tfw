@@ -32,8 +32,6 @@ public class ShortIlaECD extends ObjectECD
 {
 	public ShortIlaECD(String name)
 	{
-		super(name,
-			ClassValueConstraint.getInstance(ShortIla.class),
-			null);
+		super(name, ClassValueConstraint.getInstance(ShortIla.class));
 	}
 }

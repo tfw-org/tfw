@@ -32,8 +32,6 @@ public class ByteIlaECD extends ObjectECD
 {
 	public ByteIlaECD(String name)
 	{
-		super(name,
-			ClassValueConstraint.getInstance(ByteIla.class),
-			null);
+		super(name, ClassValueConstraint.getInstance(ByteIla.class));
 	}
 }

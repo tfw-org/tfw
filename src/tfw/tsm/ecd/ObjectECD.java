@@ -25,7 +25,6 @@
 package tfw.tsm.ecd;
 
 import tfw.value.ClassValueConstraint;
-import tfw.value.ValueCodec;
 import tfw.value.ValueConstraint;
 
 /**
@@ -42,7 +41,7 @@ public class ObjectECD extends EventChannelDescription
      */
     public ObjectECD(String name)
     {
-        super(name, ClassValueConstraint.OBJECT, null);
+        super(name, ClassValueConstraint.OBJECT);
     }
 
     /**
@@ -54,10 +53,9 @@ public class ObjectECD extends EventChannelDescription
      * @param constraint
      *            the value constraint for the event channel.
      */
-    protected ObjectECD(String eventChannelName, ValueConstraint constraint,
-            ValueCodec codec)
+    protected ObjectECD(String eventChannelName, ValueConstraint constraint)
     {
-        super(eventChannelName, constraint, codec, true, true);
+        super(eventChannelName, constraint, true, true);
     }
 
     /**
@@ -68,9 +66,6 @@ public class ObjectECD extends EventChannelDescription
      *            the name of the event channel.
      * @param constraint
      *            the value constraint for the evnet channel.
-     * @param codec
-     *            the codec for the event channel values. <code>null</code> is
-     *            a valid value.
      * @param fireOnConnect
      *            flag indicating whether the event channel fires state when a
      *            new sink is connected.
@@ -79,9 +74,9 @@ public class ObjectECD extends EventChannelDescription
      *            transaction rollbacks.
      */
     ObjectECD(String eventChannelName, ValueConstraint constraint,
-            ValueCodec codec, boolean fireOnConnect, boolean rollbackParticipant)
+            boolean fireOnConnect, boolean rollbackParticipant)
     {
-        super(eventChannelName, constraint, codec, fireOnConnect,
+        super(eventChannelName, constraint, fireOnConnect,
                 rollbackParticipant);
     }
 }

@@ -26,15 +26,14 @@ package tfw.visualizer;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-
 import javax.swing.JPanel;
-
 import tfw.awt.ecd.FontECD;
 import tfw.awt.ecd.GraphicECD;
 import tfw.awt.event.ComponentInitiator;
 import tfw.awt.event.MouseInitiator;
 import tfw.awt.event.WindowInitiator;
 import tfw.immutable.ila.booleanila.BooleanIlaFromArray;
+import tfw.immutable.ila.objectila.ObjectIlaFill;
 import tfw.immutable.ila.objectila.ObjectIlaFromArray;
 import tfw.plot.BackgroundGraphicConverter;
 import tfw.plot.PlotPanel;
@@ -472,7 +471,8 @@ public class Visualizer extends JFrameBB
         rf.addEventChannel(GENERATE_GRAPHIC_TRIGGER_ECD);
         rf.addEventChannel(INCREASE_FONT_ENABLED_ECD);
         rf.addEventChannel(INCREASE_FONT_TRIGGER_ECD);
-        rf.addEventChannel(MULTI_GRAPHIC_ECD);
+        rf.addEventChannel(MULTI_GRAPHIC_ECD,
+        	ObjectIlaFill.create(null, 4));
         rf.addEventChannel(MULTI_TOOL_SELECTED_ECD,
         	ObjectIlaFromArray.create(
         		new Object[] {Boolean.TRUE, Boolean.FALSE}));

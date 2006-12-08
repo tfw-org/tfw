@@ -24,7 +24,6 @@
  */
 package tfw.tsm.ecd;
 
-import tfw.value.BooleanCodec;
 import tfw.value.ClassValueConstraint;
 
 /**
@@ -36,6 +35,6 @@ public class BooleanECD extends ObjectECD {
 	 * @param name the name of the event channel.
 	 */
 	public BooleanECD(String name){
-		super(name, ClassValueConstraint.BOOLEAN, BooleanCodec.INSTANCE);
+		super(name, ClassValueConstraint.BOOLEAN);
 	}
 }

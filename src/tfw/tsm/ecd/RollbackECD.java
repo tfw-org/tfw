@@ -24,7 +24,6 @@
  */
 package tfw.tsm.ecd;
 
-import tfw.value.ValueCodec;
 import tfw.value.ValueConstraint;
 
 /**
@@ -45,9 +44,8 @@ public abstract class RollbackECD extends ObjectECD
      *            the codec for the event channel values. <code>null</code> is
      *            a valid value.
      */
-    public RollbackECD(String eventChannelName, ValueConstraint constraint,
-            ValueCodec codec)
+    public RollbackECD(String eventChannelName, ValueConstraint constraint)
     {
-        super(eventChannelName, constraint, codec, false, false);
+        super(eventChannelName, constraint, false, false);
     }
 }

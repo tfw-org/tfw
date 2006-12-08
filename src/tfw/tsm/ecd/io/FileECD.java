@@ -32,6 +32,6 @@ public class FileECD extends ObjectECD
 {
 	public FileECD(String name)
 	{
-		super(name, ClassValueConstraint.getInstance(File.class), null);
+		super(name, ClassValueConstraint.getInstance(File.class));
 	}
 }

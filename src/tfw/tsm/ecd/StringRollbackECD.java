@@ -25,7 +25,6 @@
 package tfw.tsm.ecd;
 
 import tfw.value.ClassValueConstraint;
-import tfw.value.StringCodec;
 
 /**
  * A <code>java.lang.String</code> rollback event channel description
@@ -37,6 +36,6 @@ public class StringRollbackECD extends RollbackECD {
 	 */
 	public StringRollbackECD(String name)
 	{
-		super(name, ClassValueConstraint.STRING, StringCodec.INSTANCE);
+		super(name, ClassValueConstraint.STRING);
 	}
 }

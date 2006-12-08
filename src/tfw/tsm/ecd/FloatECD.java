@@ -25,7 +25,6 @@
 package tfw.tsm.ecd;
 
 import tfw.value.ClassValueConstraint;
-import tfw.value.FloatCodec;
 import tfw.value.FloatConstraint;
 
 /**
@@ -45,7 +44,7 @@ public class FloatECD extends ObjectECD {
 	 */
 	public FloatECD(String name, float min, float max, boolean minInclusive, boolean maxInclusive)
 	{
-		super(name, new FloatConstraint(min, max, minInclusive, maxInclusive), FloatCodec.INSTANCE);
+		super(name, new FloatConstraint(min, max, minInclusive, maxInclusive));
 	}
 	
 	/**
@@ -53,7 +52,7 @@ public class FloatECD extends ObjectECD {
 	 * @param name the name of the event channel.
 	 */
 	public FloatECD(String name){
-		super(name, ClassValueConstraint.FLOAT, FloatCodec.INSTANCE);
+		super(name, ClassValueConstraint.FLOAT);
 	}
 
 

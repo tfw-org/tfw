@@ -32,8 +32,6 @@ public class DoubleIlmECD extends ObjectECD
 {
 	public DoubleIlmECD(String name)
 	{
-		super(name,
-			ClassValueConstraint.getInstance(DoubleIlm.class),
-			null);
+		super(name, ClassValueConstraint.getInstance(DoubleIlm.class));
 	}
 }

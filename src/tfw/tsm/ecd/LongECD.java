@@ -25,7 +25,6 @@
 package tfw.tsm.ecd;
 
 import tfw.value.ClassValueConstraint;
-import tfw.value.LongCodec;
 import tfw.value.LongConstraint;
 
 /**
@@ -39,7 +38,7 @@ public class LongECD extends ObjectECD {
 	 * @param max the maximum value allowed.
 	 */
 	public LongECD(String name, long min, long max){
-		super(name, new LongConstraint(min, max), LongCodec.INSTANCE);
+		super(name, new LongConstraint(min, max));
 	}
 
 	/**
@@ -47,6 +46,6 @@ public class LongECD extends ObjectECD {
 	 * @param name the name of the event channel.
 	 */
 	public LongECD(String name){
-		super(name, ClassValueConstraint.LONG, LongCodec.INSTANCE);
+		super(name, ClassValueConstraint.LONG);
 	}
 }

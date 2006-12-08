@@ -25,7 +25,6 @@
 package tfw.tsm.ecd;
 
 import tfw.value.ClassValueConstraint;
-import tfw.value.IntegerCodec;
 import tfw.value.IntegerConstraint;
 
 
@@ -42,7 +41,7 @@ public class IntegerECD extends ObjectECD
      */
     public IntegerECD(String name, int min, int max)
     {
-        super(name, new IntegerConstraint(min, max), IntegerCodec.INSTANCE);
+        super(name, new IntegerConstraint(min, max));
     }
 
     /**
@@ -51,6 +50,6 @@ public class IntegerECD extends ObjectECD
      */
     public IntegerECD(String name)
     {
-        super(name, ClassValueConstraint.INTEGER, IntegerCodec.INSTANCE);
+        super(name, ClassValueConstraint.INTEGER);
     }
 }

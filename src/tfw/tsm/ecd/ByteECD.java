@@ -24,7 +24,6 @@
  */
 package tfw.tsm.ecd;
 
-import tfw.value.ByteCodec;
 import tfw.value.ByteConstraint;
 import tfw.value.ClassValueConstraint;
 
@@ -40,7 +39,7 @@ public class ByteECD extends ObjectECD {
 	 */
 	public ByteECD(String name, byte min, byte max)
 	{
-		super(name, new ByteConstraint(min, max), ByteCodec.INSTANCE);
+		super(name, new ByteConstraint(min, max));
 	}
 
 	/**
@@ -49,7 +48,7 @@ public class ByteECD extends ObjectECD {
 	 */
 	public ByteECD(String name)
 	{
-		super(name, ClassValueConstraint.BYTE, ByteCodec.INSTANCE);
+		super(name, ClassValueConstraint.BYTE);
 	}
 
 }

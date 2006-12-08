@@ -26,7 +26,6 @@ package tfw.tsm.ecd;
 
 import tfw.value.ClassValueConstraint;
 import tfw.value.SetConstraint;
-import tfw.value.StringCodec;
 
 /**
  * A <code>java.lang.String</code> event channel description
@@ -41,7 +40,7 @@ public class StringECD extends ObjectECD
      */
     public StringECD(String name)
     {
-        super(name, ClassValueConstraint.STRING, StringCodec.INSTANCE);
+        super(name, ClassValueConstraint.STRING);
     }
 
     /**
@@ -55,6 +54,6 @@ public class StringECD extends ObjectECD
      */
     public StringECD(String name, String[] validValues)
     {
-        super(name, new SetConstraint(validValues), StringCodec.INSTANCE);
+        super(name, new SetConstraint(validValues));
     }
 }

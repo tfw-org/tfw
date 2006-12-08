@@ -25,7 +25,6 @@
 package tfw.tsm.ecd;
 
 import tfw.check.Argument;
-import tfw.value.ValueCodec;
 import tfw.value.ValueConstraint;
 
 /**
@@ -39,9 +38,6 @@ public abstract class EventChannelDescription
 
     /** The value constraint for this event channel. */
     private final ValueConstraint constraint;
-
-    /** The codec for this event channel. */
-    private final ValueCodec codec;
 
     /** A flag indicating whether the event channel fires on connection. */
     private final boolean fireOnConnect;
@@ -58,9 +54,9 @@ public abstract class EventChannelDescription
      *            the value constraint for the event channel.
      */
     EventChannelDescription(String eventChannelName,
-            ValueConstraint constraint, ValueCodec codec)
+            ValueConstraint constraint)
     {
-        this(eventChannelName, constraint, codec, true, true);
+        this(eventChannelName, constraint, true, true);
     }
 
     /**
@@ -81,7 +77,7 @@ public abstract class EventChannelDescription
      *            transaction rollbacks.
      */
     EventChannelDescription(String eventChannelName,
-            ValueConstraint constraint, ValueCodec codec,
+            ValueConstraint constraint,
             boolean fireOnConnect, boolean rollbackParticipant)
     {
         Argument.assertNotNull(eventChannelName, "eventChannelName");
@@ -90,7 +86,6 @@ public abstract class EventChannelDescription
 
         this.eventChannelName = eventChannelName.trim();
         this.constraint = constraint;
-        this.codec = codec;
         this.fireOnConnect = fireOnConnect;
         this.rollbackParticipant = rollbackParticipant;
 
@@ -119,16 +114,6 @@ public abstract class EventChannelDescription
     public final ValueConstraint getConstraint()
     {
         return constraint;
-    }
-
-    /**
-     * Returns the value codec.
-     * 
-     * @return the value codec.
-     */
-    public final ValueCodec getCodec()
-    {
-        return codec;
     }
 
     /**
@@ -178,7 +163,7 @@ public abstract class EventChannelDescription
         EventChannelDescription ecd = (EventChannelDescription) object;
 
         return ecd.eventChannelName.equals(this.eventChannelName)
-                && ecd.constraint == this.constraint && ecd.codec == this.codec
+                && ecd.constraint == this.constraint
                 && ecd.fireOnConnect == this.fireOnConnect
                 && ecd.rollbackParticipant == this.rollbackParticipant;
     }

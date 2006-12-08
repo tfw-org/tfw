@@ -31,8 +31,6 @@ public class GraphECD extends ObjectECD
 {
 	public GraphECD(String name)
 	{
-		super(name,
-			ClassValueConstraint.getInstance(Graph.class),
-			null);
+		super(name, ClassValueConstraint.getInstance(Graph.class));
 	}
 }

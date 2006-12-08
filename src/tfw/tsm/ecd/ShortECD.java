@@ -25,7 +25,6 @@
 package tfw.tsm.ecd;
 
 import tfw.value.ClassValueConstraint;
-import tfw.value.ShortCodec;
 import tfw.value.ShortConstraint;
 
 /**
@@ -41,7 +40,7 @@ public class ShortECD extends ObjectECD {
 	 */
 	public ShortECD(String name, short min, short max)
 	{
-		super(name, new ShortConstraint(min, max), ShortCodec.INSTANCE);
+		super(name, new ShortConstraint(min, max));
 	}
 	
 	/**
@@ -49,6 +48,6 @@ public class ShortECD extends ObjectECD {
 	 * @param name The name of the event channel.
 	 */
 	public ShortECD(String name){
-		super(name, ClassValueConstraint.SHORT, ShortCodec.INSTANCE);
+		super(name, ClassValueConstraint.SHORT);
 	}
 }

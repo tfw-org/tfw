@@ -32,8 +32,6 @@ public class IntIlaECD extends ObjectECD
 {
 	public IntIlaECD(String name)
 	{
-		super(name,
-			ClassValueConstraint.getInstance(IntIla.class),
-			null);
+		super(name, ClassValueConstraint.getInstance(IntIla.class));
 	}
 }

@@ -32,8 +32,6 @@ public class ByteIlmECD extends ObjectECD
 {
 	public ByteIlmECD(String name)
 	{
-		super(name,
-			ClassValueConstraint.getInstance(ByteIlm.class),
-			null);
+		super(name, ClassValueConstraint.getInstance(ByteIlm.class));
 	}
 }

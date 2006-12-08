@@ -32,8 +32,6 @@ public class BooleanIlaECD extends ObjectECD
 {
 	public BooleanIlaECD(String name)
 	{
-		super(name,
-			ClassValueConstraint.getInstance(BooleanIla.class),
-			null);
+		super(name, ClassValueConstraint.getInstance(BooleanIla.class));
 	}
 }

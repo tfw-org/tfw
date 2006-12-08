@@ -24,7 +24,6 @@
  */
 package tfw.tsm.ecd;
 
-import tfw.value.CharacterCodec;
 import tfw.value.ClassValueConstraint;
 
 /**
@@ -36,6 +35,6 @@ public class CharacterECD extends ObjectECD {
 	 * @param name the name of the event channel.
 	 */
 	public CharacterECD(String name){
-		super(name, ClassValueConstraint.CHARACTER, CharacterCodec.INSTANCE);
+		super(name, ClassValueConstraint.CHARACTER);
 	}
 }

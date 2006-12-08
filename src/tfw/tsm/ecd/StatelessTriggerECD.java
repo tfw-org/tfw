@@ -37,6 +37,6 @@ public class StatelessTriggerECD extends EventChannelDescription {
 	 * @param eventChannelName the name of the event channel.
 	 */
 	public StatelessTriggerECD(String eventChannelName){
-		super(eventChannelName, NullConstraint.INSTANCE, null, false, false);
+		super(eventChannelName, NullConstraint.INSTANCE, false, false);
 	}
 }

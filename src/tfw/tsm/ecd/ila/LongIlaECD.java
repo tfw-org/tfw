@@ -32,8 +32,6 @@ public class LongIlaECD extends ObjectECD
 {
 	public LongIlaECD(String name)
 	{
-		super(name,
-			ClassValueConstraint.getInstance(LongIla.class),
-			null);
+		super(name, ClassValueConstraint.getInstance(LongIla.class));
 	}
 }

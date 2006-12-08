@@ -25,7 +25,6 @@
 package tfw.tsm.ecd;
 
 import tfw.value.ClassValueConstraint;
-import tfw.value.DoubleCodec;
 import tfw.value.DoubleConstraint;
 
 /**
@@ -45,7 +44,7 @@ public class DoubleECD extends ObjectECD {
 	 */
 	public DoubleECD(String name, double min, double max, boolean minInclusive, boolean maxInclusive)
 	{
-		super(name, new DoubleConstraint(min, max, minInclusive, maxInclusive), DoubleCodec.INSTANCE);
+		super(name, new DoubleConstraint(min, max, minInclusive, maxInclusive));
 	}
 	
 	/**
@@ -53,7 +52,7 @@ public class DoubleECD extends ObjectECD {
 	 * @param name the name of the event channel.
 	 */
 	public DoubleECD(String name){
-		super(name, ClassValueConstraint.DOUBLE, DoubleCodec.INSTANCE);
+		super(name, ClassValueConstraint.DOUBLE);
 	}
 
 }
