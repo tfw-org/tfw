@@ -32,6 +32,6 @@ public class IconECD extends ObjectECD
 {
 	public IconECD(String name)
 	{
-		super(name, ClassValueConstraint.getInstance(Icon.class), null);
+		super(name, ClassValueConstraint.getInstance(Icon.class));
 	}
 }

@@ -32,6 +32,6 @@ public class FontMetricsECD extends ObjectECD
 {
 	public FontMetricsECD(String name)
 	{
-		super(name, ClassValueConstraint.getInstance(FontMetrics.class), null);
+		super(name, ClassValueConstraint.getInstance(FontMetrics.class));
 	}
 }
