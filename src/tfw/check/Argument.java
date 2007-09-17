@@ -274,4 +274,20 @@ public class Argument
             throw new IllegalArgumentException(leftName + " (=" + left
                     + ") >= " + rightName + " (=" + right + ") not allowed!");
     }
+    
+    public static final void assertNotEquals(int value, int constant,
+        String valueName)
+    {
+        if (value == constant)
+            throw new IllegalArgumentException(valueName + " == " + constant
+                + " not allowed!");
+    }
+
+    public static final void assertNotGreaterThanOrEquals(int left, int right,
+        String leftName, String rightName)
+    {
+        if (left >= right)
+            throw new IllegalArgumentException(leftName + " (=" + left
+                + ") >= " + rightName + " (=" + right + ") not allowed!");
+    }
 }
