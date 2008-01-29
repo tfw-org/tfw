@@ -27,22 +27,23 @@ package tfw.swing.demo;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.GridLayout;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import tfw.awt.event.ActionInitiator;
+import javax.swing.JPanel;
+import tfw.component.TriggeredEventChannelCopy;
 import tfw.swing.JButtonBB;
 import tfw.swing.JFrameBB;
-import tfw.swing.JLabelBB;
 import tfw.swing.JPanelBB;
 import tfw.swing.JTextFieldBB;
 import tfw.tsm.BasicTransactionQueue;
+import tfw.tsm.Commit;
 import tfw.tsm.Converter;
 import tfw.tsm.Root;
 import tfw.tsm.RootFactory;
 import tfw.tsm.Synchronizer;
-import tfw.tsm.TriggeredConverter;
 import tfw.tsm.ecd.BooleanECD;
-import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.IntegerECD;
+import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.StatelessTriggerECD;
 import tfw.tsm.ecd.StringECD;
 import tfw.tsm.ecd.StringRollbackECD;
@@ -63,26 +64,24 @@ public class AdditionDemo
 			new IntegerECD("sum");
 		final BooleanECD SUM_ENABLED_ECD =
 			new BooleanECD("sumEnabled");
-		final StringECD SUM_LABEL_ECD =
-			new StringECD("sumLabel");
 		final StringECD SUM_TEXT_ECD =
 			new StringECD("sumText");
 		final IntegerECD VALUE_ONE_ECD =
 			new IntegerECD("valueOne");
 		final BooleanECD VALUE_ONE_ENABLED_ECD =
 			new BooleanECD("valueOneEnabled");
-		final StringECD VALUE_ONE_LABEL_ECD =
-			new StringECD("valueOneLabel");
 		final StringECD VALUE_ONE_TEXT_ECD =
 			new StringECD("valueOneText");
+		final StringECD VALUE_ONE_TEXT_ADJ_ECD =
+			new StringECD("valueOneTextAdj");
 		final IntegerECD VALUE_TWO_ECD =
 			new IntegerECD("valueTwo");
 		final BooleanECD VALUE_TWO_ENABLED_ECD =
 			new BooleanECD("valueTwoEnabled");
-		final StringECD VALUE_TWO_LABEL_ECD =
-			new StringECD("valueTwoLabel");
 		final StringECD VALUE_TWO_TEXT_ECD =
 			new StringECD("valueTwoText");
+		final StringECD VALUE_TWO_TEXT_ADJ_ECD =
+			new StringECD("valueTwoTextAdj");
 		
 		RootFactory rootFactory = new RootFactory();
 		rootFactory.addEventChannel(CALCULATE_ENABLED_ECD, Boolean.TRUE);
@@ -90,43 +89,39 @@ public class AdditionDemo
 		rootFactory.addEventChannel(ERROR_TEXT_ECD);
 		rootFactory.addEventChannel(SUM_ECD);
 		rootFactory.addEventChannel(SUM_ENABLED_ECD, Boolean.FALSE);
-		rootFactory.addEventChannel(SUM_LABEL_ECD, "Sum:");
 		rootFactory.addEventChannel(SUM_TEXT_ECD, "");
 		rootFactory.addEventChannel(VALUE_ONE_ECD);
 		rootFactory.addEventChannel(VALUE_ONE_ENABLED_ECD, Boolean.TRUE);
-		rootFactory.addEventChannel(VALUE_ONE_LABEL_ECD, "Value One:");
 		rootFactory.addEventChannel(VALUE_ONE_TEXT_ECD, "");
+		rootFactory.addEventChannel(VALUE_ONE_TEXT_ADJ_ECD, "");
 		rootFactory.addEventChannel(VALUE_TWO_ECD);
 		rootFactory.addEventChannel(VALUE_TWO_ENABLED_ECD, Boolean.TRUE);
-		rootFactory.addEventChannel(VALUE_TWO_LABEL_ECD, "Value Two:");
 		rootFactory.addEventChannel(VALUE_TWO_TEXT_ECD, "");
+		rootFactory.addEventChannel(VALUE_TWO_TEXT_ADJ_ECD, "");
+		rootFactory.setLogging(true);
 		Root root = rootFactory.create("AdditionDemo",
 			new BasicTransactionQueue());
 		
 		JFrameBB frame = new JFrameBB(root);
 		
-		JLabelBB valueOneL = new JLabelBB("valueOne", VALUE_ONE_LABEL_ECD);
-		valueOneL.setHorizontalAlignment(JLabelBB.RIGHT);
-		JLabelBB valueTwoL = new JLabelBB("valueTwo", VALUE_TWO_LABEL_ECD);
-		valueTwoL.setHorizontalAlignment(JLabelBB.RIGHT);
-		JLabelBB sumL = new JLabelBB("sum", SUM_LABEL_ECD);
-		sumL.setHorizontalAlignment(JLabelBB.RIGHT);
+		JLabel valueOneL = new JLabel("Value One:");
+		valueOneL.setHorizontalAlignment(JLabel.RIGHT);
+		JLabel valueTwoL = new JLabel("Value Two:");
+		valueTwoL.setHorizontalAlignment(JLabel.RIGHT);
+		JLabel sumL = new JLabel("Sum:");
+		sumL.setHorizontalAlignment(JLabel.RIGHT);
 		
-		JPanelBB labelPanel = new JPanelBB("label");
+		JPanel labelPanel = new JPanel();
 		labelPanel.setLayout(new GridLayout(3, 1));
-		labelPanel.addToBoth(valueOneL);
-		labelPanel.addToBoth(valueTwoL);
-		labelPanel.addToBoth(sumL);
+		labelPanel.add(valueOneL);
+		labelPanel.add(valueTwoL);
+		labelPanel.add(sumL);
 		
 		JTextFieldBB valueOneTF = new JTextFieldBB("valueOne",
-			VALUE_ONE_TEXT_ECD, VALUE_ONE_ENABLED_ECD);
-		valueOneTF.addActionListenerToBoth(
-			new ActionInitiator("valueOne", CALCULATE_TRIGGER_ECD));
+			VALUE_ONE_TEXT_ADJ_ECD, VALUE_ONE_ENABLED_ECD);
 		valueOneTF.setColumns(10);
 		JTextFieldBB valueTwoTF = new JTextFieldBB("valueTwo",
-			VALUE_TWO_TEXT_ECD, VALUE_TWO_ENABLED_ECD);
-		valueTwoTF.addActionListenerToBoth(
-			new ActionInitiator("valueTwo", CALCULATE_TRIGGER_ECD));
+			VALUE_TWO_TEXT_ADJ_ECD, VALUE_TWO_ENABLED_ECD);
 		valueTwoTF.setColumns(10);
 		JTextFieldBB sumTF = new JTextFieldBB("sum",
 			SUM_TEXT_ECD, SUM_ENABLED_ECD);
@@ -140,7 +135,7 @@ public class AdditionDemo
 		
 		JPanelBB centerPanel = new JPanelBB("center");
 		centerPanel.setLayout(new BorderLayout());
-		centerPanel.addToBoth(labelPanel, BorderLayout.WEST);
+		centerPanel.add(labelPanel, BorderLayout.WEST);
 		centerPanel.addToBoth(textFieldPanel, BorderLayout.EAST);
 		
 		JButtonBB calculateB = new JButtonBB("calculate",
@@ -154,16 +149,19 @@ public class AdditionDemo
 		contentPane.setLayout(new BorderLayout());
 		contentPane.addToBoth(centerPanel, BorderLayout.CENTER);
 		contentPane.addToBoth(southPanel, BorderLayout.SOUTH);
-		
+
+		root.add(new TriggeredEventChannelCopy("ValueOne",
+			CALCULATE_TRIGGER_ECD, VALUE_ONE_TEXT_ADJ_ECD, VALUE_ONE_TEXT_ECD));
+		root.add(new TriggeredEventChannelCopy("ValueTwo",
+			CALCULATE_TRIGGER_ECD, VALUE_TWO_TEXT_ADJ_ECD, VALUE_TWO_TEXT_ECD));
 		root.add(new IntegerSynchronizer(
 			"sum", SUM_ECD, SUM_TEXT_ECD, ERROR_TEXT_ECD));
 		root.add(new IntegerSynchronizer(
 			"valueOne", VALUE_ONE_ECD, VALUE_ONE_TEXT_ECD, ERROR_TEXT_ECD));
 		root.add(new IntegerSynchronizer(
 			"valueTwo", VALUE_TWO_ECD, VALUE_TWO_TEXT_ECD, ERROR_TEXT_ECD));
-		root.add(new AdditionConverter(CALCULATE_TRIGGER_ECD,
-			VALUE_ONE_ECD, VALUE_TWO_ECD, SUM_ECD));
-		root.add(new ErrorMessageConverter(frame, ERROR_TEXT_ECD));
+		root.add(new AdditionConverter(VALUE_ONE_ECD, VALUE_TWO_ECD, SUM_ECD));
+		root.add(new ErrorMessageCommit(frame, ERROR_TEXT_ECD));
 		
 		frame.setContentPaneForBoth(contentPane);
 		frame.setTitle("AdditionDemo");
@@ -214,7 +212,7 @@ public class AdditionDemo
 			
 			if (s.length() == 0)
 			{
-				set(integerECD, new Integer(-Integer.MAX_VALUE - 1));
+				set(integerECD, new Integer(-Integer.MIN_VALUE));
 			}
 			else
 			{
@@ -224,25 +222,24 @@ public class AdditionDemo
 				}
 				catch(NumberFormatException nfe)
 				{
-					this.rollback(errorECD,
-						"Bad Value for "+name+" ("+s+")");
+					rollback(errorECD, "Bad Value for "+name+" ("+s+")");
 				}
 			}
 		}
 	}
 	
-	private static class AdditionConverter extends TriggeredConverter
+	private static class AdditionConverter extends Converter
 	{
 		private final IntegerECD valueOneECD;
 		private final IntegerECD valueTwoECD;
 		private final IntegerECD sumECD;
 		
-		public AdditionConverter(StatelessTriggerECD triggerECD,
-			IntegerECD valueOneECD, IntegerECD valueTwoECD, IntegerECD sumECD)
+		public AdditionConverter(IntegerECD valueOneECD,
+			IntegerECD valueTwoECD, IntegerECD sumECD)
 		{
 			super("AdditionConverter",
-				triggerECD,
 				new ObjectECD[] {valueOneECD, valueTwoECD},
+				null,
 				new ObjectECD[] {sumECD});
 			
 			this.valueOneECD = valueOneECD;
@@ -259,24 +256,22 @@ public class AdditionDemo
 		}
 	}
 	
-	private static class ErrorMessageConverter extends Converter
+	private static class ErrorMessageCommit extends Commit
 	{
 		private final Component component;
 		private final StringRollbackECD errorMessageECD;
 		
-		public ErrorMessageConverter(Component component,
+		public ErrorMessageCommit(Component component,
 			StringRollbackECD errorMessageECD)
 		{
 			super("ErrorMessageConverter",
-				new ObjectECD[] {errorMessageECD},
-				null,
-				null);
+				new ObjectECD[] {errorMessageECD});
 			
 			this.component = component;
 			this.errorMessageECD = errorMessageECD;
 		}
 		
-		protected void convert()
+		protected void commit()
 		{
 			JOptionPane.showMessageDialog(component, get(errorMessageECD),
 				"Error", JOptionPane.ERROR_MESSAGE);
