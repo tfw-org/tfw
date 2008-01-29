@@ -11,7 +11,7 @@
  * 
  * This library is distributed in the hope that it
  * will be useful, but WITHOUT ANY WARRANTY;
- * witout even the implied warranty of
+ * without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR
  * PURPOSE.  See the GNU Lesser General Public
  * License for more details.
@@ -32,6 +32,7 @@ import java.util.Set;
 
 import tfw.check.Argument;
 import tfw.tsm.ecd.EventChannelDescription;
+import tfw.tsm.ecd.ObjectECD;
 import tfw.value.NullConstraint;
 
 /**
@@ -39,8 +40,12 @@ import tfw.value.NullConstraint;
  */
 public class TreeComponent
 {
-    private static final Map EMPTY = Collections
-            .unmodifiableMap(new HashMap(0));
+    private static final Map<EventChannelDescription, Sink> EMPTY_SINK_MAP =
+    	Collections.unmodifiableMap(new HashMap<EventChannelDescription, Sink>(0));
+    private static final Map<String, Source> EMPTY_SOURCE_MAP =
+    	Collections.unmodifiableMap(new HashMap<String, Source>(0));
+    private static final Map<String, EventChannel> EMPTY_EVENTCHANNEL_MAP =
+    	Collections.unmodifiableMap(new HashMap<String, EventChannel>(0));
 
     /** The name of the component. */
     private final String name;
@@ -49,13 +54,13 @@ public class TreeComponent
     private TreeComponent parent = null;
 
     /** This components sinks. */
-    final PortMap sinks;
+    final Map<EventChannelDescription, Sink> sinks;
 
     /** This components sources. */
-    final Map sources;
+    final Map<String, Source> sources;
 
     /** This components event channels. */
-    final Map eventChannels;
+    final Map<String, EventChannel> eventChannels;
 
     /** The transaction manager for the parent tree. */
     private TransactionMgr transactionMgr = null;
@@ -103,25 +108,31 @@ public class TreeComponent
      *            the sinks.
      * @return an unmodifiable map of the sinks, mapped by event channel name.
      */
-    private PortMap initializeSinks(Sink[] sinks)
+    private Map<EventChannelDescription, Sink> initializeSinks(Sink[] sinks)
     {
-        PortMap map;
-
-        if ((sinks != null) && (sinks.length > 0))
+        if ((sources != null) && (sinks.length > 0))
         {
-            map = new PortMap("sinks", sinks);
+            Map<EventChannelDescription, Sink> map =
+            	new HashMap<EventChannelDescription, Sink>(sinks.length);
 
             for (int i = 0; i < sinks.length; i++)
             {
                 sinks[i].setTreeComponent(this);
+
+                if (map.put(sinks[i].getECD(), sinks[i]) != null)
+                {
+                    throw new IllegalArgumentException(
+                            "Multiple sinks detected for event channel '"
+                                    + sinks[i].getEventChannelName() + "'");
+                }
             }
+
+            return(Collections.unmodifiableMap(map));
         }
         else
         {
-            map = PortMap.EMPTY;
+            return(EMPTY_SINK_MAP);
         }
-
-        return map;
     }
 
     /**
@@ -131,13 +142,13 @@ public class TreeComponent
      *            the sources.
      * @return an unmodifiable map of the sources, mapped by event channel name.
      */
-    private Map initializeSources(Source[] sources)
+    private Map<String, Source> initializeSources(Source[] sources)
     {
-        Map map;
+        Map<String, Source> map;
 
         if ((sources != null) && (sources.length > 0))
         {
-            map = new HashMap(sources.length);
+            map = new HashMap<String, Source>(sources.length);
 
             for (int i = 0; i < sources.length; i++)
             {
@@ -151,14 +162,12 @@ public class TreeComponent
                 }
             }
 
-            map = Collections.unmodifiableMap(map);
+            return(Collections.unmodifiableMap(map));
         }
         else
         {
-            map = EMPTY;
+            return(EMPTY_SOURCE_MAP);
         }
-
-        return map;
     }
 
     /**
@@ -169,14 +178,15 @@ public class TreeComponent
      * @return an unmodifiable map of the event channels, mapped by event
      *         channel name.
      */
-    private Map initializeEventChannels(EventChannel[] eventChannels)
+    private Map<String, EventChannel> initializeEventChannels(
+    	EventChannel[] eventChannels)
     {
-        Map map;
+        Map<String, EventChannel> map;
 
         if ((eventChannels != null) && (eventChannels.length > 0))
         {
             Argument.assertElementNotNull(eventChannels, "eventChannels");
-            map = new HashMap(eventChannels.length);
+            map = new HashMap<String, EventChannel>(eventChannels.length);
 
             for (int i = 0; i < eventChannels.length; i++)
             {
@@ -193,7 +203,7 @@ public class TreeComponent
         }
         else
         {
-            map = EMPTY;
+            map = EMPTY_EVENTCHANNEL_MAP;
         }
 
         if (eventChannels != null)
@@ -269,7 +279,7 @@ public class TreeComponent
      * 
      * @return an unmodifiable map of the sinks, mapped by event channel name.
      */
-    final PortMap getSinks()
+    final Map<EventChannelDescription, Sink> getSinks()
     {
         return sinks;
     }
@@ -279,7 +289,7 @@ public class TreeComponent
      * 
      * @return an unmodifiable map of the sources, mapped by event channel name.
      */
-    final Map getSources()
+    final Map<String, Source> getSources()
     {
         return sources;
     }
@@ -335,19 +345,9 @@ public class TreeComponent
      */
     public String[] getSourceNames()
     {
-        Set kset = sources.keySet();
+        Set<String> kset = sources.keySet();
 
-        return (String[]) kset.toArray(new String[kset.size()]);
-    }
-
-    /**
-     * Returns the names of the sinks for the leaves.
-     * 
-     * @return the names of the sinks for the leaves.
-     */
-    public EventChannelDescription[] getSinkNames()
-    {
-        return sinks.getKeys();
+        return kset.toArray(new String[kset.size()]);
     }
 
     /**
@@ -357,9 +357,9 @@ public class TreeComponent
      */
     public String[] getEventChannelNames()
     {
-        Set kset = eventChannels.keySet();
+        Set<String> kset = eventChannels.keySet();
 
-        return (String[]) kset.toArray(new String[kset.size()]);
+        return kset.toArray(new String[kset.size()]);
     }
 
     /**
@@ -378,18 +378,15 @@ public class TreeComponent
      * Returns <code>true</code> if the specified set of event channels are
      * non-null, otherwise returns <code>false</code>.
      * 
-     * @param eventChannels
+     * @param eventSet
      *            the set of event channels
      * @return <code>true</code> if the specified set of event channels are
      *         non-null, otherwise returns <code>false</code>.
      */
-    final boolean isStateNonNull(Set eventChannels)
+    final boolean isStateNonNull(Set<EventChannelDescription> eventSet)
     {
-        Iterator itr = eventChannels.iterator();
-
-        while (itr.hasNext())
+        for (EventChannelDescription ecd : eventSet)
         {
-            EventChannelDescription ecd = (EventChannelDescription) itr.next();
             checkSink(ecd);
 
             Sink sink = (Sink) sinks.get(ecd);
@@ -495,7 +492,7 @@ public class TreeComponent
      *            the set of unterminated ports.
      * @return the set of unterminated ports.
      */
-    Set terminateLocally(Set connections)
+    Set<Port> terminateLocally(Set<Port> connections)
     {
         Port[] ports = (Port[]) connections
                 .toArray(new Port[connections.size()]);

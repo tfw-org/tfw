@@ -11,7 +11,7 @@
  * 
  * This library is distributed in the hope that it
  * will be useful, but WITHOUT ANY WARRANTY;
- * witout even the implied warranty of
+ * without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR
  * PURPOSE.  See the GNU Lesser General Public
  * License for more details.
@@ -66,7 +66,7 @@ public class Initiator extends Leaf
      * The list of state changes which occur while the component is not
      * connected.
      */
-    private List deferredStateChanges = null;
+    private List<SourceNState> deferredStateChanges = null;
 
     /**
      * Constructs an <code>Initiator</code> with the specified name and source
@@ -167,7 +167,7 @@ public class Initiator extends Leaf
     		{
 	            if (deferredStateChanges == null)
 	            {
-	                deferredStateChanges = new ArrayList();
+	                deferredStateChanges = new ArrayList<SourceNState>();
 	            }
 	            
 	            deferredStateChanges.add(new SourceNState(sources, state));

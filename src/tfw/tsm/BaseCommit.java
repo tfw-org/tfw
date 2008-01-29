@@ -11,7 +11,7 @@
  * 
  * This library is distributed in the hope that it
  * will be useful, but WITHOUT ANY WARRANTY;
- * witout even the implied warranty of
+ * without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR
  * PURPOSE.  See the GNU Lesser General Public
  * License for more details.
@@ -35,7 +35,7 @@ import tfw.tsm.ecd.EventChannelDescription;
  * The base class for commit components
  */
 abstract class BaseCommit extends EventHandler {
-	private final HashSet triggers;
+	private final HashSet<String> triggers;
 	private final Initiator[] initiators;
 	private CommitRollbackListener crListener = new CommitRollbackListener()
 		{
@@ -45,7 +45,6 @@ abstract class BaseCommit extends EventHandler {
 
 			public void commit()
 			{
-				//System.out.println("Commit.listener().commit()");
 				if (isStateNonNull())
 				{
 					BaseCommit.this.commit();
@@ -74,7 +73,7 @@ abstract class BaseCommit extends EventHandler {
 			this.initiators = new Initiator[0];
 		}
 
-		this.triggers = new HashSet(Arrays.asList(
+		this.triggers = new HashSet<String>(Arrays.asList(
 					ECDUtility.toEventChannelNames(triggerSinks)));
 	}
 
@@ -124,7 +123,7 @@ abstract class BaseCommit extends EventHandler {
 	}
 
 	/**
-	 * Addes this commit component to the transaction manager if the source
+	 * Adds this commit component to the transaction manager if the source
 	 * of the state change is not one of this commit's initiator and the event
 	 * channel is one of this commit's trigger ports.
 	 */

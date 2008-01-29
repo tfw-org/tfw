@@ -11,7 +11,7 @@
  * 
  * This library is distributed in the hope that it
  * will be useful, but WITHOUT ANY WARRANTY;
- * witout even the implied warranty of
+ * without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR
  * PURPOSE.  See the GNU Lesser General Public
  * License for more details.
@@ -27,9 +27,6 @@ package tfw.tsm.ecd.test;
 import junit.framework.TestCase;
 import tfw.tsm.ecd.ObjectECD;
 import tfw.value.ClassValueConstraint;
-import tfw.value.IntegerCodec;
-import tfw.value.StringCodec;
-import tfw.value.ValueCodec;
 import tfw.value.ValueConstraint;
 
 
@@ -42,8 +39,7 @@ public class EventChannelDescriptionTest extends TestCase
     {
         try
         {
-            new TestECD(null, ClassValueConstraint.STRING,
-                StringCodec.INSTANCE);
+            new TestECD(null, ClassValueConstraint.STRING);
             fail("constructor accepted null name");
         }
         catch (IllegalArgumentException expected)
@@ -53,7 +49,7 @@ public class EventChannelDescriptionTest extends TestCase
 
         try
         {
-            new TestECD(" ", ClassValueConstraint.STRING, StringCodec.INSTANCE);
+            new TestECD(" ", ClassValueConstraint.STRING);
             fail("constructor accepted empty name");
         }
         catch (IllegalArgumentException expected)
@@ -63,7 +59,7 @@ public class EventChannelDescriptionTest extends TestCase
 
         try
         {
-            new TestECD("A", null, StringCodec.INSTANCE);
+            new TestECD("A", null);
             fail("constructor accepted constraint");
         }
         catch (IllegalArgumentException expected)
@@ -73,7 +69,7 @@ public class EventChannelDescriptionTest extends TestCase
 
         try
         {
-            new TestECD("A", ClassValueConstraint.STRING, null);
+            new TestECD("A", ClassValueConstraint.STRING);
         }
         catch (IllegalArgumentException expected)
         {
@@ -83,23 +79,18 @@ public class EventChannelDescriptionTest extends TestCase
 
     public void testEquals()
     {
-		TestECD ecd1 = new TestECD("A", ClassValueConstraint.STRING,
-				StringCodec.INSTANCE);
-		TestECD ecd2 = new TestECD("A", ClassValueConstraint.STRING,
-				StringCodec.INSTANCE);
+		TestECD ecd1 = new TestECD("A", ClassValueConstraint.STRING);
+		TestECD ecd2 = new TestECD("A", ClassValueConstraint.STRING);
         assertEquals("Equivalent instances not equal",ecd1, ecd2);
 		assertFalse("equal to null.",ecd1.equals(null));
        
-        ecd2 = new TestECD("different", ClassValueConstraint.STRING,
-		StringCodec.INSTANCE);
+        ecd2 = new TestECD("different", ClassValueConstraint.STRING);
 		assertFalse("different names equal",ecd1.equals(ecd2));
 		
-		ecd2 = new TestECD("A", ClassValueConstraint.BOOLEAN,
-						StringCodec.INSTANCE);
+		ecd2 = new TestECD("A", ClassValueConstraint.BOOLEAN);
 		assertFalse("different constraints equal",ecd1.equals(ecd2));
 		
-		ecd2 = new TestECD("A", ClassValueConstraint.STRING,
-						IntegerCodec.INSTANCE);
+		ecd2 = new TestECD("A", ClassValueConstraint.STRING);
 		assertFalse("different codecs equal",ecd1.equals(ecd2));
 		
 //		ecd2 = new TestECD("A", ClassValueConstraint.STRING,
@@ -113,10 +104,9 @@ public class EventChannelDescriptionTest extends TestCase
 
     private class TestECD extends ObjectECD
     {
-        public TestECD(String eventChannelName, ValueConstraint constraint,
-            ValueCodec codec)
+        public TestECD(String eventChannelName, ValueConstraint constraint)
         {
-            super(eventChannelName, constraint, codec);
+            super(eventChannelName, constraint);
         }
     }
 }

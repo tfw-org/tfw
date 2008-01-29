@@ -11,7 +11,7 @@
  *
  * This library is distributed in the hope that it
  * will be useful, but WITHOUT ANY WARRANTY;
- * witout even the implied warranty of
+ * without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR
  * PURPOSE.  See the GNU Lesser General Public
  * License for more details.
@@ -25,8 +25,6 @@
 package tfw.tsm;
 
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -65,19 +63,19 @@ public final class TransactionMgr
 
     private long transactionCount = 0;
 
-    private final HashSet stateChanges = new HashSet();
+    private final HashSet<Source> stateChanges = new HashSet<Source>();
 
-    private HashSet validators = null;
+    private HashSet<Validator> validators = null;
 
-    private HashSet processors = null;
+    private HashSet<TreeComponent> processors = null;
 
-    private HashSet crListeners = new HashSet();
+    private HashSet<CommitRollbackListener> crListeners = new HashSet<CommitRollbackListener>();
 
-    private HashSet cycleStateChanges = new HashSet();
+    private HashSet<EventChannel> cycleStateChanges = new HashSet<EventChannel>();
 
-    private HashSet transStateChanges = new HashSet();
+    private HashSet<EventChannel> transStateChanges = new HashSet<EventChannel>();
 
-    private HashSet eventChannelFires = new HashSet();
+    private HashSet<EventChannel> eventChannelFires = new HashSet<EventChannel>();
 
     private Runnable componentChange = null;
 
@@ -259,7 +257,7 @@ public final class TransactionMgr
 
         if (processors.size() > 1)
         {
-            HashSet delayedProcessors = new HashSet();
+            HashSet<TreeComponent> delayedProcessors = new HashSet<TreeComponent>();
             checkDependencies(processors, delayedProcessors);
 
             // process the independent processors...
@@ -300,10 +298,11 @@ public final class TransactionMgr
      * @param delayedProcessors
      *            The set of dependent processors which are to be delayed.
      */
-    private static void checkDependencies(Set processors, Set delayedProcessors)
+    private static void checkDependencies(Set<TreeComponent> processors,
+    	Set<TreeComponent> delayedProcessors)
     {
-    	Set processorCrumbs = new HashSet();
-    	Set terminatorCrumbs = new HashSet();
+    	Set<TreeComponent> processorCrumbs = new HashSet<TreeComponent>();
+    	Set<Terminator> terminatorCrumbs = new HashSet<Terminator>();
         Processor[] procs = (Processor[]) processors
                 .toArray(new Processor[processors.size()]);
 
@@ -333,17 +332,14 @@ public final class TransactionMgr
      *            descent algorithm.
      */
     private static void checkDependencies(TreeComponent processor,
-            Set processors, Set delayedProcessors, Set processorCrumbs,
-            Set terminatorCrumbs)
+        Set<TreeComponent> processors, Set<TreeComponent> delayedProcessors,
+        Set<TreeComponent> processorCrumbs, Set<Terminator> terminatorCrumbs)
     {
-        Map map = processor.getSources();
-        Iterator itr = map.values().iterator();
         processorCrumbs.add(processor);
 
         // For each of the processor's sources
-        while (itr.hasNext())
+        for (Source src : processor.getSources().values())
         {
-            Source src = (Source) itr.next();
             // If the source is connected to a terminator...
             // TODO: Climb up through multiplexors/demultiplexors to
             // to find the terminators (This isn't going to be fun).
@@ -591,7 +587,7 @@ public final class TransactionMgr
 
         if (processors == null)
         {
-            processors = new HashSet();
+            processors = new HashSet<TreeComponent>();
         }
 
         processors.add(processor);
@@ -614,7 +610,7 @@ public final class TransactionMgr
 
         if (validators == null)
         {
-            validators = new HashSet();
+            validators = new HashSet<Validator>();
         }
 
         validators.add(validator);
@@ -673,7 +669,7 @@ public final class TransactionMgr
         return queue.isDispatchThread();
     }
     
-    private final HashSet endOfCycleRunnables = new HashSet();
+    private final HashSet<Runnable> endOfCycleRunnables = new HashSet<Runnable>();
     public void addEndOfCycleRunnable(Runnable runnable)
     {
     	Argument.assertNotNull(runnable, "runnable");
@@ -803,7 +799,7 @@ public final class TransactionMgr
             else
             {
             	parent.terminateParentAndLocalConnections(
-            		((TreeComponent)child).terminateLocally(new HashSet()));
+            		((TreeComponent)child).terminateLocally(new HashSet<Port>()));
             }
         }
 

@@ -11,7 +11,7 @@
  * 
  * This library is distributed in the hope that it
  * will be useful, but WITHOUT ANY WARRANTY;
- * witout even the implied warranty of
+ * without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR
  * PURPOSE.  See the GNU Lesser General Public
  * License for more details.
@@ -25,8 +25,6 @@
 package tfw.tsm;
 
 import java.util.Map;
-import java.util.Set;
-
 import tfw.check.Argument;
 import tfw.tsm.ecd.EventChannelDescription;
 import tfw.tsm.ecd.StatelessTriggerECD;
@@ -65,22 +63,10 @@ abstract class Processor extends RollbackHandler
      */
     boolean isDependent(Processor processor)
     {
-        Map sources = processor.getSources();
+        Map<String, Source> sources = processor.getSources();
         for (int i = 0; i < this.triggeringSinks.length; i++)
         {
             if (sources.containsKey(triggeringSinks[i].getEventChannelName()))
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    boolean isDependent(Set sources)
-    {
-        for (int i = 0; i < triggeringSinks.length; i++)
-        {
-            if (sources.contains(triggeringSinks[i].getEventChannelName()))
             {
                 return true;
             }

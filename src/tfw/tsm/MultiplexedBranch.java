@@ -11,7 +11,7 @@
  * 
  * This library is distributed in the hope that it
  * will be useful, but WITHOUT ANY WARRANTY;
- * witout even the implied warranty of
+ * without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR
  * PURPOSE.  See the GNU Lesser General Public
  * License for more details.
@@ -37,8 +37,10 @@ import tfw.check.Argument;
  */
 public class MultiplexedBranch extends BranchComponent
 {
-    private final Map slotIdFromChild = new HashMap();
-    private final Map subBranchFromSlotId = new HashMap();
+    private final Map<TreeComponent, Object> slotIdFromChild =
+    	new HashMap<TreeComponent, Object>();
+    private final Map<Object, Branch> subBranchFromSlotId =
+    	new HashMap<Object, Branch>();
     private final Multiplexer[] multiplexers;
 
     /**
@@ -60,7 +62,7 @@ public class MultiplexedBranch extends BranchComponent
     /**
      * Over-ride the super method so we can add the special multiplexer ports.
      */
-    Set terminateLocally(Set connections)
+    Set<Port> terminateLocally(Set<Port> connections)
     {
         for (int i = 0; i < this.multiplexers.length; i++)
         {

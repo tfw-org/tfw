@@ -11,7 +11,7 @@
  * 
  * This library is distributed in the hope that it
  * will be useful, but WITHOUT ANY WARRANTY;
- * witout even the implied warranty of
+ * without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR
  * PURPOSE.  See the GNU Lesser General Public
  * License for more details.
@@ -25,9 +25,10 @@
 package tfw.tsm;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-
+import java.util.Map;
 import tfw.check.Argument;
 import tfw.tsm.ecd.EventChannelDescription;
 import tfw.tsm.ecd.ObjectECD;
@@ -39,8 +40,6 @@ import tfw.tsm.ecd.StatelessTriggerECD;
  */
 abstract class EventHandler extends Leaf
 {
-    // private final List initiators;
-
     /**
      * Creates an event handler with the specified attributes.
      * 
@@ -86,7 +85,7 @@ abstract class EventHandler extends Leaf
             EventChannelDescription[] triggeringSinks,
             EventChannelDescription[] nonTriggeringSinks)
     {
-        ArrayList list = new ArrayList();
+        ArrayList<EventHandlerSink> list = new ArrayList<EventHandlerSink>();
 
         if (nonTriggeringSinks != null)
         {
@@ -112,7 +111,7 @@ abstract class EventHandler extends Leaf
 
         if (list.size() > 0)
         {
-            return (Sink[]) list.toArray(new Sink[list.size()]);
+            return list.toArray(new Sink[list.size()]);
         }
         else
         {
@@ -123,7 +122,7 @@ abstract class EventHandler extends Leaf
     private static Source[] createSources(String name,
             EventChannelDescription[] sources)
     {
-        List list = new ArrayList();
+        List<Source> list = new ArrayList<Source>();
 
         if (sources != null)
         {
@@ -145,7 +144,7 @@ abstract class EventHandler extends Leaf
             }
         }
 
-        return (Source[]) list.toArray(new Source[list.size()]);
+        return list.toArray(new Source[list.size()]);
     }
 
     static void assertNotStateless(EventChannelDescription ecd)
@@ -225,16 +224,14 @@ abstract class EventHandler extends Leaf
      * 
      * @return the state of all of the sink event channels for this component.
      */
-    protected final StateMap get()
+    protected final Map<ObjectECD, Object> get()
     {
-        PortMap map = getSinks();
-        StateMap stateMap = new StateMap(map.size());
+        Map<EventChannelDescription, Sink> map = getSinks();
+        Map<ObjectECD, Object> stateMap =
+        	new HashMap<ObjectECD, Object>(map.size());
 
-        for (Iterator itr = map.keySet().iterator(); itr.hasNext();)
+        for (EventChannelDescription sinkEventChannel : map.keySet())
         {
-            EventChannelDescription sinkEventChannel = (EventChannelDescription) itr
-                    .next();
-
             if (sinkEventChannel instanceof ObjectECD)
             {
                 stateMap.put((ObjectECD) sinkEventChannel,

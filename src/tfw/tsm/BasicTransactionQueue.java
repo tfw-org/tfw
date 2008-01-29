@@ -11,7 +11,7 @@
  * 
  * This library is distributed in the hope that it
  * will be useful, but WITHOUT ANY WARRANTY;
- * witout even the implied warranty of
+ * without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR
  * PURPOSE.  See the GNU Lesser General Public
  * License for more details.
@@ -30,7 +30,7 @@ import tfw.check.Argument;
 
 /**
  * A basic transaction queue and event dispatch thread. This queue should not be
- * used with AWT or Swing compoents. Use the {@link AWTTransactionQueue} for AWT
+ * used with AWT or Swing components. Use the {@link AWTTransactionQueue} for AWT
  * and Swing components.
  */
 public final class BasicTransactionQueue implements TransactionQueue
@@ -38,7 +38,7 @@ public final class BasicTransactionQueue implements TransactionQueue
     /** The default name for the transaction queue thread. */
     public static final String DEFAULT_THREAD_NAME = "BasicTransactionQueue";
 
-    private final ArrayList queue = new ArrayList();
+    private final ArrayList<Runnable> queue = new ArrayList<Runnable>();
 
     private Thread thread = null;
 

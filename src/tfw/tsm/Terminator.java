@@ -11,7 +11,7 @@
  * 
  * This library is distributed in the hope that it
  * will be useful, but WITHOUT ANY WARRANTY;
- * witout even the implied warranty of
+ * without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR
  * PURPOSE.  See the GNU Lesser General Public
  * License for more details.
@@ -25,9 +25,7 @@
 package tfw.tsm;
 
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
-
 import tfw.check.Argument;
 import tfw.tsm.ecd.EventChannelDescription;
 import tfw.value.ValueException;
@@ -40,7 +38,7 @@ class Terminator implements EventChannel, CommitRollbackListener
     private final EventChannelDescription ecd;
 
     /** The subscribing sinks for this event channel. */
-    private final HashSet sinks = new HashSet();
+    private final HashSet<Sink> sinks = new HashSet<Sink>();
 
     /** The current state value for the event channel. */
     private Object state = null;
@@ -58,19 +56,19 @@ class Terminator implements EventChannel, CommitRollbackListener
     private Source rollbackSource = null;
 
     /** Any sinks which haven't been initialized. */
-    private Set uninitializedSinks = null;
+    private Set<Sink> uninitializedSinks = null;
 
     /** The branch associated with this terminator. */
     protected TreeComponent component = null;
 
     private final StateChangeRule stateChangeRule;
 
-    private Set exportTags = null;
+    private Set<String> exportTags = null;
 
     private boolean isStateChanged = false;
 
     /**
-     * Create an event channel termainator.
+     * Create an event channel terminator.
      * 
      * @param ecd
      *            the description of the event channel.
@@ -108,14 +106,10 @@ class Terminator implements EventChannel, CommitRollbackListener
         return (Sink[]) sinks.toArray(new Sink[sinks.size()]);
     }
 
-    private void updateSinks(Set set)
+    private void updateSinks(Set<Sink> set)
     {
-        Iterator itr = set.iterator();
-
-        while (itr.hasNext())
+        for (Sink sink : set)
         {
-            Sink sink = (Sink) itr.next();
-
             if (sink.isTriggering())
             {
                 sink.stateChange();
@@ -245,7 +239,7 @@ class Terminator implements EventChannel, CommitRollbackListener
         {
             if (uninitializedSinks == null)
             {
-                uninitializedSinks = new HashSet();
+                uninitializedSinks = new HashSet<Sink>();
             }
 
             uninitializedSinks.add(sink);
@@ -391,15 +385,15 @@ class Terminator implements EventChannel, CommitRollbackListener
         isStateChanged = false;
     }
 
-    private Set resetUninitializedSinks()
+    private Set<Sink> resetUninitializedSinks()
     {
-        Set temp = null;
+        Set<Sink> temp = null;
 
         synchronized (this)
         {
             if (uninitializedSinks == null)
             {
-                temp = new HashSet();
+                temp = new HashSet<Sink>();
             }
             else
             {
@@ -473,7 +467,7 @@ class Terminator implements EventChannel, CommitRollbackListener
     {
         if (this.exportTags == null)
         {
-            this.exportTags = new HashSet();
+            this.exportTags = new HashSet<String>();
         }
         this.exportTags.add(exportTag);
     }

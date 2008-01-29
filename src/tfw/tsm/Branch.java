@@ -11,7 +11,7 @@
  * 
  * This library is distributed in the hope that it
  * will be useful, but WITHOUT ANY WARRANTY;
- * witout even the implied warranty of
+ * without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR
  * PURPOSE.  See the GNU Lesser General Public
  * License for more details.
@@ -24,7 +24,6 @@
  */
 package tfw.tsm;
 
-import java.util.Iterator;
 import tfw.check.Argument;
 
 /**
@@ -37,7 +36,7 @@ public class Branch extends BranchComponent
 {
     /**
      * Constructs a trivial branch with no event channels or ports. To create a
-     * non-trival branch see {@link BranchFactory}.
+     * non-trivial branch see {@link BranchFactory}.
      * 
      * @param name
      *            The name of the branch.
@@ -111,9 +110,9 @@ public class Branch extends BranchComponent
     {
     	if (immediateChildren != null)
     	{
-    		for (Iterator i=immediateChildren.iterator() ; i.hasNext() ; )
-    		{
-    			removeChild((TreeComponent)i.next());
+    		for (TreeComponent child : immediateChildren)
+			{
+    			removeChild(child);
     		}
     	}
     }

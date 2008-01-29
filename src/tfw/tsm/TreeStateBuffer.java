@@ -11,7 +11,7 @@
  * 
  * This library is distributed in the hope that it
  * will be useful, but WITHOUT ANY WARRANTY;
- * witout even the implied warranty of
+ * without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR
  * PURPOSE.  See the GNU Lesser General Public
  * License for more details.
@@ -39,8 +39,8 @@ import java.util.Set;
 public class TreeStateBuffer
 {
     private String name = null;
-    private Set stateMap = new HashSet();
-    private Set children = new HashSet();
+    private Set<EventChannelState> stateMap = new HashSet<EventChannelState>();
+    private Set<TreeState> children = new HashSet<TreeState>();
 
     /**
      * Set the name of the tree component.

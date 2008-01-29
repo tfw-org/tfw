@@ -11,7 +11,7 @@
  * 
  * This library is distributed in the hope that it
  * will be useful, but WITHOUT ANY WARRANTY;
- * witout even the implied warranty of
+ * without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR
  * PURPOSE.  See the GNU Lesser General Public
  * License for more details.
@@ -27,10 +27,10 @@ package tfw.tsm;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import tfw.check.Argument;
+import tfw.tsm.TransactionMgrUtil.AddRemoveSetContainer;
 import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.StatelessTriggerECD;
 import tfw.value.ValueException;
@@ -40,10 +40,9 @@ public abstract class BranchComponent extends TreeComponent
     public static final String DEFAULT_EXPORT_TAG = "All";
 
     /** This component's children */
-    private Map children = null;
-    private ArrayList deferredAddRemoveSets = null;
-
-	protected Set immediateChildren = null;
+    private Map<String, TreeComponent> children = null;
+    private ArrayList<AddRemoveSetContainer> deferredAddRemoveSets = null;
+	protected Set<TreeComponent> immediateChildren = null;
 	
 	public abstract void remove(TreeComponent treeComponent);
 	
@@ -74,7 +73,7 @@ public abstract class BranchComponent extends TreeComponent
 
         if (children == null)
         {
-            this.children = new HashMap();
+            this.children = new HashMap<String, TreeComponent>();
         }
         if (children.containsKey(child.getName()))
         {
@@ -103,16 +102,16 @@ public abstract class BranchComponent extends TreeComponent
      * 
      * @return an copy of this component's map of children.
      */
-    Map getChildren()
+    Map<String, TreeComponent> getChildren()
     {
         if (children == null)
         {
-            return new HashMap();
+            return new HashMap<String, TreeComponent>();
         }
 
         synchronized (children)
         {
-            return new HashMap(children);
+            return new HashMap<String, TreeComponent>(children);
         }
     }
 
@@ -121,12 +120,13 @@ public abstract class BranchComponent extends TreeComponent
      * The initial call to this method to kick off the recursion is made by the
      * transaction manager.
      * 
-     * @return Un-terminated ports.
+     * @return Unterminated ports.
      */
-    Set terminateChildAndLocalConnections()
+    Set<Port> terminateChildAndLocalConnections()
     {
-        HashSet unterminatedConnections = new HashSet();
+        HashSet<Port> unterminatedConnections = new HashSet<Port>();
         TreeComponent[] treeComponents = getChildComponents();
+        
         for (int i = 0; i < treeComponents.length; i++)
         {
         	if (treeComponents[i] instanceof BranchComponent)
@@ -219,12 +219,8 @@ public abstract class BranchComponent extends TreeComponent
         TreeStateBuffer buff = new TreeStateBuffer();
         buff.setName(this.getName());
 
-        Iterator itr = this.eventChannels.values().iterator();
-
-        while (itr.hasNext())
+        for (EventChannel ec : this.eventChannels.values())
         {
-            EventChannel ec = (EventChannel) itr.next();
-
             if (isExport(ec, exportTag))
             {
                 try
@@ -384,7 +380,7 @@ public abstract class BranchComponent extends TreeComponent
     	// Create the PARENT -> CHILD relationship.
 		if (immediateChildren == null)
 		{
-			immediateChildren = new HashSet();
+			immediateChildren = new HashSet<TreeComponent>();
 		}
 		if (!immediateChildren.add(child))
 		{
@@ -408,14 +404,14 @@ public abstract class BranchComponent extends TreeComponent
 		TransactionMgr.AddComponentRunnable addComponentRunnable =
 			new TransactionMgr.AddComponentRunnable(this, child);
 		
-		// Perform deferred add on child & descendents if this node has a Root.
+		// Perform deferred add on child & descendants if this node has a Root.
     	if (immediateRoot != null)
     	{
     		synchronized(immediateRoot)
     		{
                 immediateRoot.getTransactionManager().addComponent(
                 	addComponentRunnable);
-                ArrayList allDeferredAddRemoveSets = new ArrayList();
+                ArrayList<AddRemoveSetContainer> allDeferredAddRemoveSets = new ArrayList<AddRemoveSetContainer>();
         		
     			addChildAndDescendents(this, child, allDeferredAddRemoveSets);
     			
@@ -430,7 +426,7 @@ public abstract class BranchComponent extends TreeComponent
     	{
     		if (deferredAddRemoveSets == null)
     		{
-    			deferredAddRemoveSets = new ArrayList();
+    			deferredAddRemoveSets = new ArrayList<AddRemoveSetContainer>();
     		}
     		deferredAddRemoveSets.add(
     			TransactionMgrUtil.createAddRemoveSetContainer(
@@ -454,7 +450,7 @@ public abstract class BranchComponent extends TreeComponent
     
     private final synchronized void addChildAndDescendents(
     	final TreeComponent parent, final TreeComponent child,
-    	ArrayList allDeferredAddRemoveSets)
+    	ArrayList<AddRemoveSetContainer> allDeferredAddRemoveSets)
     {
     	synchronized(child)
     	{
@@ -478,9 +474,9 @@ public abstract class BranchComponent extends TreeComponent
     			
     			if (ptc.immediateChildren != null)
     			{
-	    			for(Iterator i=ptc.immediateChildren.iterator() ; i.hasNext() ; )
-	    			{
-	    				addChildAndDescendents(child, (TreeComponent)i.next(),
+	    			for (TreeComponent element : ptc.immediateChildren)
+					{
+	    				addChildAndDescendents(child, element,
 	    					allDeferredAddRemoveSets);
 	    			}
     			}
@@ -510,7 +506,7 @@ public abstract class BranchComponent extends TreeComponent
     	
     	if (deferredAddRemoveSets == null)
     	{
-    		deferredAddRemoveSets = new ArrayList();
+    		deferredAddRemoveSets = new ArrayList<AddRemoveSetContainer>();
     	}
     	
     	deferredAddRemoveSets.add(
@@ -569,7 +565,7 @@ public abstract class BranchComponent extends TreeComponent
     	{
     		if (deferredAddRemoveSets == null)
     		{
-    			deferredAddRemoveSets = new ArrayList();
+    			deferredAddRemoveSets = new ArrayList<AddRemoveSetContainer>();
     		}
     		deferredAddRemoveSets.add(
     			TransactionMgrUtil.createAddRemoveSetContainer(
@@ -588,9 +584,9 @@ public abstract class BranchComponent extends TreeComponent
     			
 	    		if (ptc.immediateChildren != null)
 	    		{
-	    			for(Iterator i=ptc.immediateChildren.iterator() ; i.hasNext() ; )
-	    			{
-	    				removeChildAndDescendents(child, (TreeComponent)i.next());
+	    			for (TreeComponent element : ptc.immediateChildren)
+					{
+	    				removeChildAndDescendents(child, element);
 	    			}
 	    		}
     		}

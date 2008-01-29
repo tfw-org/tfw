@@ -24,6 +24,7 @@
  */
 package tfw.tsm.test;
 
+import java.util.Map;
 import junit.framework.TestCase;
 import tfw.tsm.AlwaysChangeRule;
 import tfw.tsm.BasicTransactionQueue;
@@ -32,7 +33,6 @@ import tfw.tsm.EventChannelStateBuffer;
 import tfw.tsm.Initiator;
 import tfw.tsm.Root;
 import tfw.tsm.RootFactory;
-import tfw.tsm.StateMap;
 import tfw.tsm.TransactionExceptionHandler;
 import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.StringECD;
@@ -278,9 +278,8 @@ public class InitiatorTest extends TestCase
 
     private class TestCommit extends Commit
     {
-        public StateMap commitState = null;
-
-        public StateMap debugCommitState = null;
+        public Map<ObjectECD, Object> commitState = null;
+        public Map<ObjectECD, Object> debugCommitState = null;
 
         public TestCommit(String name, ObjectECD[] ecds)
         {

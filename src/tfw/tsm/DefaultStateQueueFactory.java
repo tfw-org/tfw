@@ -11,7 +11,7 @@
  * 
  * This library is distributed in the hope that it
  * will be useful, but WITHOUT ANY WARRANTY;
- * witout even the implied warranty of
+ * without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR
  * PURPOSE.  See the GNU Lesser General Public
  * License for more details.
@@ -33,7 +33,7 @@ import java.util.NoSuchElementException;
  */
 class DefaultStateQueueFactory implements StateQueueFactory
 {
-    /* (non-Javadoc)
+    /**
      * @see co2.ui.fw.StateQueueFactory#create()
      */
     public StateQueue create()
@@ -46,9 +46,9 @@ class DefaultStateQueueFactory implements StateQueueFactory
 	 */
     private static class BasicStateQueue implements StateQueue
     {
-        ArrayList queue = new ArrayList();
+        ArrayList<Object> queue = new ArrayList<Object>();
 
-        /* (non-Javadoc)
+        /**
         * @see co2.ui.fw.StateQueue#isEmpty()
         */
         public boolean isEmpty()
@@ -56,7 +56,7 @@ class DefaultStateQueueFactory implements StateQueueFactory
             return queue.size() == 0;
         }
 
-        /* (non-Javadoc)
+        /**
          * @see co2.ui.fw.StateQueue#pop()
          */
         public Object pop() throws NoSuchElementException
@@ -69,7 +69,7 @@ class DefaultStateQueueFactory implements StateQueueFactory
             return queue.remove(0);
         }
 
-        /* (non-Javadoc)
+        /**
          * @see co2.ui.fw.StateQueue#push(java.lang.Object)
          */
         public void push(Object state)

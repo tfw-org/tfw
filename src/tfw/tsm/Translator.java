@@ -11,7 +11,7 @@
  * 
  * This library is distributed in the hope that it
  * will be useful, but WITHOUT ANY WARRANTY;
- * witout even the implied warranty of
+ * without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR
  * PURPOSE.  See the GNU Lesser General Public
  * License for more details.
@@ -60,7 +60,7 @@ class Translator extends Terminator
      * into the child event channel.
      *
      * @throws IllegalArgumentException if the child and parent port
-     * discription value constraints are not two way compatible.
+     * description value constraints are not two way compatible.
      */
     public Translator(EventChannelDescription childPort, EventChannelDescription parentPort)
         throws ValueException

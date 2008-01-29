@@ -11,7 +11,7 @@
  * 
  * This library is distributed in the hope that it
  * will be useful, but WITHOUT ANY WARRANTY;
- * witout even the implied warranty of
+ * without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR
  * PURPOSE.  See the GNU Lesser General Public
  * License for more details.
@@ -25,7 +25,7 @@
 package tfw.tsm;
 
 /**
- * Handler for processing un-caught exceptions that occur during the execution
+ * Handler for processing uncaught exceptions that occur during the execution
  * of a transaction. To set the handler see
  * {@link RootFactory#setTransactionExceptionHandler(TransactionExceptionHandler)}
  */
@@ -36,7 +36,7 @@ public interface TransactionExceptionHandler
      * during a transaction.
      * 
      * @param exception
-     *            an un-caught exception thrown during a transaction.
+     *            an uncaught exception thrown during a transaction.
      */
     public void handle(Exception exception);
 }

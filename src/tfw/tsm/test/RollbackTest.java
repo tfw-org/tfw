@@ -24,6 +24,10 @@
  */
 package tfw.tsm.test;
 
+import java.util.Map;
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
 import tfw.tsm.BasicTransactionQueue;
 import tfw.tsm.Commit;
 import tfw.tsm.Converter;
@@ -31,16 +35,11 @@ import tfw.tsm.EventChannelState;
 import tfw.tsm.Initiator;
 import tfw.tsm.Root;
 import tfw.tsm.RootFactory;
-import tfw.tsm.StateMap;
 import tfw.tsm.Validator;
 import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.RollbackECD;
 import tfw.tsm.ecd.StringECD;
 import tfw.tsm.ecd.StringRollbackECD;
-
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 
 public class RollbackTest extends TestCase
 {
@@ -66,28 +65,14 @@ public class RollbackTest extends TestCase
 
     private String errorState1 = null;
 
-    private String errorState2 = null;
-
     private String aCommitState = null;
 
     private String bCommitState = null;
 
     private String cCommitState = null;
 
-    private EventChannelState aRollbackState = new EventChannelState(aECD,
-            "A set after rolledback");
-
-    private EventChannelState bRollbackState = new EventChannelState(bECD,
-            "B set after rolledback");
-
-    private EventChannelState cRollbackState = new EventChannelState(cECD,
-            "C set after rolledback");
-
     private EventChannelState aErrorState = new EventChannelState(error1ECD,
             "A is invalid");
-
-    private EventChannelState bErrorState = new EventChannelState(error1ECD,
-            "B is invalid");
 
     private EventChannelState cErrorState = new EventChannelState(error1ECD,
             "C is invalid");
@@ -173,21 +158,6 @@ public class RollbackTest extends TestCase
         protected void debugCommit()
         {
             // System.out.println("errorHandler1.debugCommit()");
-        }
-    };
-
-    private Commit errorHandler2 = new Commit("Error Handler 2",
-            new ObjectECD[] { error2ECD })
-    {
-        protected void commit()
-        {
-            System.out.println("errorHandler2.commit()");
-            errorState2 = (String) get(error2ECD);
-        }
-
-        protected void debugCommit()
-        {
-            // System.out.println("errorHandler2.debugCommit()");
         }
     };
 
@@ -435,18 +405,6 @@ public class RollbackTest extends TestCase
         junit.textui.TestRunner.run(suite());
     }
 
-    private static RollbackECD[] getECDs(EventChannelState[] ecs)
-    {
-        RollbackECD[] ecds = new RollbackECD[ecs.length];
-
-        // for (int i = 0; i < ecs.length; i++)
-        // {
-        // ecds[i] = (RollbackECD) ecs[i].getECD();
-        // }
-
-        return ecds;
-    }
-
     private class TestValidator extends Validator
     {
         private final StringECD triggerECD;
@@ -454,8 +412,6 @@ public class RollbackTest extends TestCase
         private final StringRollbackECD rollbackECD;
 
         private final String errorMsg;
-
-        private final RollbackECD[] rollbackECDs;
 
         private final EventChannelState[] rollbackState;
 
@@ -467,7 +423,6 @@ public class RollbackTest extends TestCase
             this.triggerECD = triggerECD;
             this.errorMsg = null;
             this.rollbackECD = null;
-            this.rollbackECDs = rollbackECDs;
             this.rollbackState = rollbackState;
         }
 
@@ -480,7 +435,6 @@ public class RollbackTest extends TestCase
             this.triggerECD = triggerECD;
             this.rollbackECD = rollbackECD;
             this.errorMsg = errorMsg;
-            this.rollbackECDs = null;
             this.rollbackState = null;
         }
 
@@ -506,7 +460,7 @@ public class RollbackTest extends TestCase
     {
         String commitValue = null;
 
-        StateMap stateMap = null;
+        Map<ObjectECD, Object> stateMap = null;
 
         private final ObjectECD trigger;
 

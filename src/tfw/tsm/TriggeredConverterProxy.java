@@ -11,7 +11,7 @@
  * 
  * This library is distributed in the hope that it
  * will be useful, but WITHOUT ANY WARRANTY;
- * witout even the implied warranty of
+ * without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR
  * PURPOSE.  See the GNU Lesser General Public
  * License for more details.
@@ -47,8 +47,9 @@ public final class TriggeredConverterProxy implements Proxy
 	
 	public SourceProxy[] getSourceProxies()
 	{
-		Collection collection = new TreeMap(triggeredConverter.sources).values();
-		Iterator iterator = collection.iterator();
+		Collection<Source> collection = new TreeMap<String, Source>(
+			triggeredConverter.sources).values();
+		Iterator<Source> iterator = collection.iterator();
 		SourceProxy[] sp = new SourceProxy[collection.size()];
 		
 		for (int i=0 ; iterator.hasNext() ; i++)

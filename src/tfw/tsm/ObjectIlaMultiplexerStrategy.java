@@ -1,6 +1,4 @@
 /*
- * Created on Feb 13, 2006
- *
  * The Framework Project
  * Copyright (C) 2005 Anonymous
  * 
@@ -13,7 +11,7 @@
  * 
  * This library is distributed in the hope that it
  * will be useful, but WITHOUT ANY WARRANTY;
- * witout even the implied warranty of
+ * without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR
  * PURPOSE.  See the GNU Lesser General Public
  * License for more details.
@@ -41,7 +39,7 @@ import tfw.immutable.ila.objectila.ObjectIlaFromArray;
  */
 public class ObjectIlaMultiplexerStrategy implements MultiplexerStrategy
 {
-    /* (non-Javadoc)
+    /**
      * @see tfw.tsm.MultiplexerStrategy#toMultiStateAccessor(java.lang.Object)
      */
     public MultiStateAccessor toMultiStateAccessor(Object multiState)
@@ -50,7 +48,7 @@ public class ObjectIlaMultiplexerStrategy implements MultiplexerStrategy
         return new MyMultiStateAccessor((ObjectIla) multiState);
     }
 
-    /* (non-Javadoc)
+    /**
      * @see tfw.tsm.MultiplexerStrategy#toMultiStateFactory(java.lang.Object)
      */
     public MultiStateFactory toMultiStateFactory(Object multiState)
@@ -80,9 +78,7 @@ public class ObjectIlaMultiplexerStrategy implements MultiplexerStrategy
             }
         }
 
-        /*
-         * (non-Javadoc)
-         * 
+        /**
          * @see tfw.tsm.MultiplexerStrategy.MultiStateAccessor#getState(java.lang.Object)
          */
         public Object getState(Object key)
@@ -99,7 +95,7 @@ public class ObjectIlaMultiplexerStrategy implements MultiplexerStrategy
     private class MyMultiStateFactory implements MultiStateFactory
     {
 
-        List list = new ArrayList();
+        List<Object> list = new ArrayList<Object>();
 
         MyMultiStateFactory(ObjectIla ila)
         {
@@ -118,9 +114,7 @@ public class ObjectIlaMultiplexerStrategy implements MultiplexerStrategy
             }
         }
 
-        /*
-         * (non-Javadoc)
-         * 
+        /**
          * @see tfw.tsm.MultiplexerStrategy.MultiStateFactory#setState(java.lang.Object,
          *      java.lang.Object)
          */
@@ -134,9 +128,7 @@ public class ObjectIlaMultiplexerStrategy implements MultiplexerStrategy
             list.set(index, state);
         }
 
-        /*
-         * (non-Javadoc)
-         * 
+        /**
          * @see tfw.tsm.MultiplexerStrategy.MultiStateFactory#toMultiState()
          */
         public Object toMultiState()

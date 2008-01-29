@@ -11,7 +11,7 @@
  * 
  * This library is distributed in the hope that it
  * will be useful, but WITHOUT ANY WARRANTY;
- * witout even the implied warranty of
+ * without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR
  * PURPOSE.  See the GNU Lesser General Public
  * License for more details.
@@ -37,23 +37,23 @@ import tfw.tsm.ecd.ila.ObjectIlaECD;
  */
 public class MultiplexedBranchFactory
 {
-    /** A map of multi value event channel discriptions. */
-    HashMap multiValueECDMap = new HashMap();
+    /** A map of multi value event channel descriptions. */
+    HashMap<String, ObjectECD> multiValueECDMap = new HashMap<String, ObjectECD>();
 
-    /** A map of value event channel discriptions. */
-    HashMap valueECDMap = new HashMap();
+    /** A map of value event channel descriptions. */
+    HashMap<String, ObjectECD> valueECDMap = new HashMap<String, ObjectECD>();
 
     /** A list of multi value event channel descriptions. */
-    ArrayList multiValueECDList = new ArrayList();
+    ArrayList<ObjectECD> multiValueECDList = new ArrayList<ObjectECD>();
 
     /** A list of value event channel descriptions. */
-    ArrayList valueECDList = new ArrayList();
+    ArrayList<ObjectECD> valueECDList = new ArrayList<ObjectECD>();
 
     /** A list of State change rules. */
-    ArrayList stateChangeRules = new ArrayList();
+    ArrayList<StateChangeRule> stateChangeRules = new ArrayList<StateChangeRule>();
 
     /** A list of multiplexer strategies. */
-    ArrayList strategyList = new ArrayList();
+    ArrayList<MultiplexerStrategy> strategyList = new ArrayList<MultiplexerStrategy>();
 
     /**
      * Addes a multiplexer for the specified event channels.
@@ -121,17 +121,17 @@ public class MultiplexedBranchFactory
     }
 
     private static Multiplexer[] generateMulitplexers(String name,
-            List valueECDList, List multiValueECDList, List stateChangeRules,
-            List strategyList)
+            List<ObjectECD> valueECDList, List<ObjectECD> multiValueECDList,
+            List<StateChangeRule> stateChangeRules,
+            List<MultiplexerStrategy> strategyList)
     {
-        ArrayList list = new ArrayList();
+        ArrayList<Multiplexer> list = new ArrayList<Multiplexer>();
 
         for (int i = 0; i < valueECDList.size(); i++)
         {
-            list.add(new Multiplexer(name, (ObjectECD) valueECDList.get(i),
-                    (ObjectECD) multiValueECDList.get(i),
-                    (StateChangeRule) stateChangeRules.get(i),
-                    (MultiplexerStrategy) strategyList.get(i)));
+            list.add(new Multiplexer(name, valueECDList.get(i),
+                    multiValueECDList.get(i), stateChangeRules.get(i),
+                    strategyList.get(i)));
         }
 
         return (Multiplexer[]) list.toArray(new Multiplexer[list.size()]);

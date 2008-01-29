@@ -11,7 +11,7 @@
  * 
  * This library is distributed in the hope that it
  * will be useful, but WITHOUT ANY WARRANTY;
- * witout even the implied warranty of
+ * without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR
  * PURPOSE.  See the GNU Lesser General Public
  * License for more details.
@@ -24,15 +24,15 @@
  */
 package tfw.tsm.test;
 
+import java.util.Map;
+import junit.framework.TestCase;
 import tfw.tsm.BasicTransactionQueue;
 import tfw.tsm.Initiator;
 import tfw.tsm.Root;
 import tfw.tsm.RootFactory;
-import tfw.tsm.StateMap;
 import tfw.tsm.TriggeredConverter;
+import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.StatelessTriggerECD;
-
-import junit.framework.TestCase;
 
 
 /**
@@ -67,7 +67,7 @@ public class StateLessECDTest extends TestCase
         final StatelessTriggerECD trigger;
         IllegalArgumentException getException = null;
         IllegalArgumentException setException = null;
-        StateMap map = null;
+        Map<ObjectECD, Object> map = null;
 
         public MyTriggeredCommit(StatelessTriggerECD trigger)
         {

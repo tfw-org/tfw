@@ -11,7 +11,7 @@
  * 
  * This library is distributed in the hope that it
  * will be useful, but WITHOUT ANY WARRANTY;
- * witout even the implied warranty of
+ * without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR
  * PURPOSE.  See the GNU Lesser General Public
  * License for more details.
@@ -53,7 +53,7 @@ public abstract class Validator extends RollbackHandler
     }
 
     /**
-     * Creates a validator with the specified attriubutes.
+     * Creates a validator with the specified attributes.
      * 
      * @param name
      *            the name of this validator component.

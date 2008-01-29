@@ -11,7 +11,7 @@
  * 
  * This library is distributed in the hope that it
  * will be useful, but WITHOUT ANY WARRANTY;
- * witout even the implied warranty of
+ * without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR
  * PURPOSE.  See the GNU Lesser General Public
  * License for more details.
@@ -27,11 +27,10 @@ package tfw.tsm;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
-
 import tfw.check.Argument;
 import tfw.tsm.ecd.ECDUtility;
+import tfw.tsm.ecd.EventChannelDescription;
 import tfw.tsm.ecd.ObjectECD;
 
 /**
@@ -45,10 +44,10 @@ import tfw.tsm.ecd.ObjectECD;
  */
 public abstract class Synchronizer extends Processor
 {
-    private final Set aEventSet;
-    private final Set bEventSet;
-    private HashSet aToBConvert = new HashSet();
-    private HashSet bToAConvert = new HashSet();
+    private final Set<EventChannelDescription> aEventSet;
+    private final Set<EventChannelDescription> bEventSet;
+    private HashSet<EventChannel> aToBConvert = new HashSet<EventChannel>();
+    private HashSet<EventChannel> bToAConvert = new HashSet<EventChannel>();
 
     /**
      * Creates a synchronizer.
@@ -75,10 +74,12 @@ public abstract class Synchronizer extends Processor
                         sourceEventChannels, aPortDescriptions,
                         bPortDescriptions));
 
-        this.aEventSet = Collections.unmodifiableSet(new HashSet(Arrays
-                .asList(aPortDescriptions)));
-        this.bEventSet = Collections.unmodifiableSet(new HashSet(Arrays
-                .asList(bPortDescriptions)));
+        this.aEventSet = Collections.unmodifiableSet(
+        	new HashSet<EventChannelDescription>(
+        	Arrays.asList(aPortDescriptions)));
+        this.bEventSet = Collections.unmodifiableSet(
+        	new HashSet<EventChannelDescription>(
+        	Arrays.asList(bPortDescriptions)));
     }
 
     private static ObjectECD[] checkAdditionalSinks(
@@ -178,10 +179,8 @@ public abstract class Synchronizer extends Processor
     	sb.append(" - Cannot convert AToB and BToA in the same transaction!\n");
     	sb.append("A changes:\n");
     	
-    	for (Iterator i = aToBConvert.iterator(); i.hasNext() ; )
+    	for (EventChannel ec : aToBConvert)
     	{
-    		EventChannel ec = (EventChannel)i.next();
-    		
     		sb.append(ec.getECD().getEventChannelName());
     		sb.append(" by ");
     		sb.append(ec.getCurrentStateSource());
@@ -190,10 +189,8 @@ public abstract class Synchronizer extends Processor
     	
     	sb.append("B Changes:\n");
     	
-    	for (Iterator i = bToAConvert.iterator(); i.hasNext() ; )
+    	for (EventChannel ec : bToAConvert)
     	{
-    		EventChannel ec = (EventChannel)i.next();
-    		
     		sb.append(ec.getECD().getEventChannelName());
     		sb.append(" by ");
     		sb.append(ec.getCurrentStateSource());
@@ -261,7 +258,7 @@ public abstract class Synchronizer extends Processor
      * This method is called during the processing phase of a transaction when
      * one or more of the event channels in set 'A' has it's state changed and
      * one or more it's dependent event channels have null state. This method
-     * can be overriden for debuging purposes to determine what event channels
+     * can be overridden for debugging purposes to determine what event channels
      * are null.
      */
     protected void debugConvertAToB()
@@ -272,7 +269,7 @@ public abstract class Synchronizer extends Processor
      * This method is called during the processing phase of a transaction when
      * one or more of the event channels in set 'B' has it's state changed and
      * one or more its dependent event channels have null state. This method
-     * can be overriden for debuging purposes to determine what event channels
+     * can be overridden for debugging purposes to determine what event channels
      * are null.
      */
     protected void debugConvertBToA()

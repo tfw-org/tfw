@@ -11,7 +11,7 @@
  * 
  * This library is distributed in the hope that it
  * will be useful, but WITHOUT ANY WARRANTY;
- * witout even the implied warranty of
+ * without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR
  * PURPOSE.  See the GNU Lesser General Public
  * License for more details.
@@ -31,9 +31,7 @@ import tfw.tsm.Commit;
 import tfw.tsm.Converter;
 import tfw.tsm.Initiator;
 import tfw.tsm.RootFactory;
-import tfw.tsm.ecd.EventChannelDescription;
 import tfw.tsm.ecd.ObjectECD;
-import tfw.tsm.ecd.StatelessTriggerECD;
 import tfw.tsm.ecd.StringECD;
 
 
@@ -200,7 +198,6 @@ public class CommitTest extends TestCase
     private class SetAOnC extends Converter
     {
         private final ObjectECD portA;
-        private final ObjectECD portC;
 
         public SetAOnC(String name, ObjectECD portC,
             ObjectECD portA)
@@ -208,7 +205,6 @@ public class CommitTest extends TestCase
             super(name, new ObjectECD[]{ portC },
                 new ObjectECD[]{ portA });
             this.portA = portA;
-            this.portC = portC;
         }
 
         public void convert()

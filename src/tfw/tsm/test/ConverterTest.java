@@ -11,7 +11,7 @@
  * 
  * This library is distributed in the hope that it
  * will be useful, but WITHOUT ANY WARRANTY;
- * witout even the implied warranty of
+ * without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR
  * PURPOSE.  See the GNU Lesser General Public
  * License for more details.
@@ -24,31 +24,26 @@
  */
 package tfw.tsm.test;
 
+import java.util.Map;
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
 import tfw.tsm.BasicTransactionQueue;
 import tfw.tsm.Converter;
 import tfw.tsm.Initiator;
 import tfw.tsm.Root;
 import tfw.tsm.RootFactory;
-import tfw.tsm.StateMap;
 import tfw.tsm.ecd.ObjectECD;
-import tfw.tsm.ecd.StatelessTriggerECD;
 import tfw.tsm.ecd.StringECD;
-
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 
 
 public class ConverterTest extends TestCase
 {
-    private StateMap state = null;
-    private final String answer = "Hello World";
+    private Map<ObjectECD, Object> state = null;
     private String convertA = null;
     private String convertB = null;
-    private String convertC = null;
     private String debugConvertA = null;
     private String debugConvertB = null;
-    private String debugConvertC = null;
     private ObjectECD porta = new StringECD("a");
     private ObjectECD portb = new StringECD("b");
     private ObjectECD portc = new StringECD("c");
@@ -64,7 +59,6 @@ public class ConverterTest extends TestCase
         {
             porta, portb
         };
-    private Initiator initiator = new Initiator("Initiator", sources);
     private Converter converter = new Converter("Commit", triggeringSinks,
             nonTriggeringSinks, sources)
         {
@@ -73,7 +67,6 @@ public class ConverterTest extends TestCase
                 state = get();
                 convertA = (String) get(porta);
                 convertB = (String) get(portb);
-                convertC = (String) get(portc);
             }
 
             protected void debugConvert()
@@ -81,7 +74,6 @@ public class ConverterTest extends TestCase
                 state = get();
                 debugConvertA = (String) get(porta);
                 debugConvertB = (String) get(portb);
-                debugConvertC = (String) get(portc);
             }
         };
 
@@ -139,10 +131,8 @@ public class ConverterTest extends TestCase
             state.get(portc));
         convertA = null;
         convertB = null;
-        convertC = null;
         debugConvertA = null;
         debugConvertB = null;
-        debugConvertC = null;
     }
 
     public void testConstructor()

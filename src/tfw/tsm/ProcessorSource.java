@@ -11,7 +11,7 @@
  * 
  * This library is distributed in the hope that it
  * will be useful, but WITHOUT ANY WARRANTY;
- * witout even the implied warranty of
+ * without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR
  * PURPOSE.  See the GNU Lesser General Public
  * License for more details.
@@ -45,9 +45,7 @@ class ProcessorSource extends Source
 		return state;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
      * @see co2.ui.fw.Source#setState(java.lang.Object)
      */
     void setState(Object state) throws ValueException
@@ -70,9 +68,7 @@ class ProcessorSource extends Source
         getEventChannel().addDeferredStateChange(this);
     }
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
      * @see co2.ui.fw.Source#fire()
      */
     Object fire()

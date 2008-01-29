@@ -11,7 +11,7 @@
  * 
  * This library is distributed in the hope that it
  * will be useful, but WITHOUT ANY WARRANTY;
- * witout even the implied warranty of
+ * without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR
  * PURPOSE.  See the GNU Lesser General Public
  * License for more details.
@@ -49,7 +49,7 @@ public final class RootProxy implements Proxy
 	{
 		EventChannelProxy[] eventChannelProxies =
 			new EventChannelProxy[root.eventChannels.size()];
-		Iterator iterator = root.eventChannels.values().iterator();
+		Iterator<EventChannel> iterator = root.eventChannels.values().iterator();
 
 		for (int i=0 ; iterator.hasNext() ; i++)
 		{
@@ -62,10 +62,10 @@ public final class RootProxy implements Proxy
 	
 	public Proxy[] getChildProxies()
 	{
-		Map children = root.getChildren();
+		Map<String, TreeComponent> children = root.getChildren();
 		
 		Proxy[] proxies = new Proxy[children.size()];
-		Iterator iterator = children.values().iterator();
+		Iterator<TreeComponent> iterator = children.values().iterator();
 		
 		for (int i=0 ; i < proxies.length ; i++)
 		{

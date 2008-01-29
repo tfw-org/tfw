@@ -11,7 +11,7 @@
  * 
  * This library is distributed in the hope that it
  * will be useful, but WITHOUT ANY WARRANTY;
- * witout even the implied warranty of
+ * without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR
  * PURPOSE.  See the GNU Lesser General Public
  * License for more details.
@@ -96,7 +96,7 @@ class InitiatorSource extends Source
             TreeComponent component = ecs.ec.getParent();
             /*
              * if the event channel is rooted and is rooted to the same
-             * transaction mananager as is running the current transaction, then
+             * transaction manager as is running the current transaction, then
              * set the state on the event channel.
              */
             if ((component != null)

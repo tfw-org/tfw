@@ -11,7 +11,7 @@
  * 
  * This library is distributed in the hope that it
  * will be useful, but WITHOUT ANY WARRANTY;
- * witout even the implied warranty of
+ * without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR
  * PURPOSE.  See the GNU Lesser General Public
  * License for more details.
@@ -61,10 +61,11 @@ public final class BranchProxy implements Proxy
 	
 	public Proxy[] getChildProxies()
 	{
-		Map children = new TreeMap(branch.getChildren());
+		Map<String, TreeComponent> children =
+			new TreeMap<String, TreeComponent>(branch.getChildren());
 		
 		Proxy[] proxies = new Proxy[children.size()];
-		Iterator iterator = children.values().iterator();
+		Iterator<TreeComponent> iterator = children.values().iterator();
 		
 		for (int i=0 ; i < proxies.length ; i++)
 		{

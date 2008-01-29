@@ -11,7 +11,7 @@
  *
  * This library is distributed in the hope that it
  * will be useful, but WITHOUT ANY WARRANTY;
- * witout even the implied warranty of
+ * without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR
  * PURPOSE.  See the GNU Lesser General Public
  * License for more details.
@@ -24,7 +24,6 @@
  */
 package tfw.tsm;
 
-import java.util.Arrays;
 import java.util.Comparator;
 
 class TransactionMgrUtil
@@ -66,8 +65,6 @@ class TransactionMgrUtil
 	public static void postAddRemoveSetsToQueue(AddRemoveSetContainer[] containers,
 		TransactionMgr transactionMgr)
 	{
-//		Arrays.sort(containers, comparator);
-		
 		for (int i=0 ; i < containers.length ; i++)
 		{
 			if (containers[i].object instanceof TransactionMgr.AddComponentRunnable)

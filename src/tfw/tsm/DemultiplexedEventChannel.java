@@ -1,6 +1,4 @@
 /*
- * Created on Dec 17, 2005
- *
  * The Framework Project
  * Copyright (C) 2005 Anonymous
  * 
@@ -13,7 +11,7 @@
  * 
  * This library is distributed in the hope that it
  * will be useful, but WITHOUT ANY WARRANTY;
- * witout even the implied warranty of
+ * without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR
  * PURPOSE.  See the GNU Lesser General Public
  * License for more details.
@@ -56,7 +54,7 @@ class DemultiplexedEventChannel extends Terminator
      * @param parent
      *            The parent multiplexer.
      * @param demultiplexSlotId
-     *            The sub-channel indentifier of this event channel.
+     *            The sub-channel identifier of this event channel.
      * @param stateChangeRule
      *            The state change rule for this event channel.
      */
@@ -98,7 +96,7 @@ class DemultiplexedEventChannel extends Terminator
     }
 
     /**
-     * Overrides the Terminator method inorder to count connections and remove
+     * Overrides the Terminator method in order to count connections and remove
      * this demultiplexer event channel when connections reach zero.
      */
     public void remove(Port port)

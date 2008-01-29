@@ -13,7 +13,7 @@
  * 
  * This library is distributed in the hope that it
  * will be useful, but WITHOUT ANY WARRANTY;
- * witout even the implied warranty of
+ * without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR
  * PURPOSE.  See the GNU Lesser General Public
  * License for more details.
@@ -28,10 +28,8 @@ package tfw.tsm;
 
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
-
 import tfw.check.Argument;
 import tfw.tsm.MultiplexerStrategy.MultiStateAccessor;
 import tfw.tsm.MultiplexerStrategy.MultiStateFactory;
@@ -58,7 +56,8 @@ class Multiplexer implements EventChannel
     final MultiSource processorMultiSource;
 
     /** The set of demultiplexing event channels. */
-    private final Map demultiplexedEventChannels = new HashMap();
+    private final Map<Object, DemultiplexedEventChannel> demultiplexedEventChannels =
+    	new HashMap<Object, DemultiplexedEventChannel>();
 
     /**
      * Creates a multiplexer with the specified value and multi-value event
@@ -91,9 +90,7 @@ class Multiplexer implements EventChannel
             super("MultiplexSink[" + ecd.getEventChannelName() + "]", ecd, true);
         }
 
-        /*
-         * (non-Javadoc)
-         * 
+        /**
          * @see co2.ui.fw.Sink#stateChange()
          */
         void stateChange()
@@ -105,13 +102,10 @@ class Multiplexer implements EventChannel
 
             MultiStateAccessor stateAccessor = multiStrategy
                     .toMultiStateAccessor(getState());
-            Iterator itr = Multiplexer.this.demultiplexedEventChannels.values()
-                    .iterator();
-            while (itr.hasNext())
+            
+            for (DemultiplexedEventChannel dm :
+            	Multiplexer.this.demultiplexedEventChannels.values())
             {
-                DemultiplexedEventChannel dm = (DemultiplexedEventChannel) itr
-                        .next();
-
                 Object state = stateAccessor.getState(dm.demultiplexSlotId);
                 if (state != null && 
                 	stateChangeRule.isChange(dm.getPreviousCycleState(), state))
@@ -124,7 +118,8 @@ class Multiplexer implements EventChannel
 
     class MultiSource extends ProcessorSource
     {
-        Set pendingStateChanges = new HashSet();
+        Set<DemultiplexedEventChannel> pendingStateChanges =
+        	new HashSet<DemultiplexedEventChannel>();
 
         MultiSource(String name, EventChannelDescription ecd)
         {
@@ -149,9 +144,8 @@ class Multiplexer implements EventChannel
             }
             MultiStateFactory stateFactory = Multiplexer.this.multiStrategy
                     .toMultiStateFactory(this.getEventChannel().getState());
-            DemultiplexedEventChannel[] dms = (DemultiplexedEventChannel[]) pendingStateChanges
-                    .toArray(new DemultiplexedEventChannel[pendingStateChanges
-                            .size()]);
+            DemultiplexedEventChannel[] dms = pendingStateChanges.toArray(
+            	new DemultiplexedEventChannel[pendingStateChanges.size()]);
             pendingStateChanges.clear();
 
             for (int i = 0; i < dms.length; i++)
@@ -229,9 +223,7 @@ class Multiplexer implements EventChannel
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /**
      * @see tfw.tsm.EventChannel#add(tfw.tsm.Port)
      */
     public void add(Port port)
@@ -256,9 +248,7 @@ class Multiplexer implements EventChannel
         getDemultiplexedEventChannel(slotId).add(port);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /**
      * @see tfw.tsm.EventChannel#addDeferredStateChange(tfw.tsm.ProcessorSource)
      */
     public void addDeferredStateChange(ProcessorSource source)
@@ -267,9 +257,7 @@ class Multiplexer implements EventChannel
                 "Multiplexer does not participate directly in transactions.");
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /**
      * @see tfw.tsm.EventChannel#fire()
      */
     public Object fire()
@@ -278,9 +266,7 @@ class Multiplexer implements EventChannel
                 "Multiplexer does not participate directly in transactions.");
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /**
      * @see tfw.tsm.EventChannel#getParent()
      */
     public TreeComponent getParent()
@@ -288,9 +274,7 @@ class Multiplexer implements EventChannel
         return this.component;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /**
      * @see tfw.tsm.EventChannel#getCurrentStateSource()
      */
     public Source getCurrentStateSource()
@@ -299,9 +283,7 @@ class Multiplexer implements EventChannel
                 "Multiplexer does not participate directly in transactions.");
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /**
      * @see tfw.tsm.EventChannel#getECD()
      */
     public EventChannelDescription getECD()
@@ -309,9 +291,7 @@ class Multiplexer implements EventChannel
         return valueECD;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /**
      * @see tfw.tsm.EventChannel#getPreviousCycleState()
      */
     public Object getPreviousCycleState()
@@ -320,9 +300,7 @@ class Multiplexer implements EventChannel
                 "Multiplexer does not participate directly in transactions.");
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /**
      * @see tfw.tsm.EventChannel#getPreviousTransactionState()
      */
     public Object getPreviousTransactionState()
@@ -336,9 +314,7 @@ class Multiplexer implements EventChannel
         return false;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /**
      * @see tfw.tsm.EventChannel#getState()
      */
     public Object getState()
@@ -346,9 +322,7 @@ class Multiplexer implements EventChannel
         return this.multiSink.getEventChannel().getState();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /**
      * @see tfw.tsm.EventChannel#isFireOnConnect()
      */
     public boolean isFireOnConnect()
@@ -357,9 +331,7 @@ class Multiplexer implements EventChannel
                 "Multiplexer does not participate directly in transactions.");
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /**
      * @see tfw.tsm.EventChannel#isRollbackParticipant()
      */
     public boolean isRollbackParticipant()
@@ -368,9 +340,7 @@ class Multiplexer implements EventChannel
                 "Multiplexer does not participate directly in transactions.");
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /**
      * @see tfw.tsm.EventChannel#remove(tfw.tsm.Port)
      */
     public void remove(Port port)
@@ -378,9 +348,7 @@ class Multiplexer implements EventChannel
         port.getEventChannel().remove(port);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /**
      * @see tfw.tsm.EventChannel#setState(tfw.tsm.Source, java.lang.Object,
      *      tfw.tsm.EventChannel)
      */
@@ -391,9 +359,7 @@ class Multiplexer implements EventChannel
                 "Multiplexer does not participate directly in transactions.");
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /**
      * @see tfw.tsm.EventChannel#setTreeComponent(tfw.tsm.TreeComponent)
      */
     public void setTreeComponent(TreeComponent component)
@@ -403,9 +369,7 @@ class Multiplexer implements EventChannel
         this.processorMultiSource.setTreeComponent(component);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /**
      * @see tfw.tsm.EventChannel#synchronizeCycleState()
      */
     public void synchronizeCycleState()
@@ -414,9 +378,7 @@ class Multiplexer implements EventChannel
                 "Multiplexer does not participate directly in transactions.");
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /**
      * @see tfw.tsm.EventChannel#synchronizeTransactionState()
      */
     public void synchronizeTransactionState()

@@ -5,7 +5,7 @@ package tfw.tsm.test;
 
 import java.util.Arrays;
 import junit.framework.TestCase;
-import tfw.component.ObjectStringSynchronizer;
+//import tfw.component.ObjectStringSynchronizer;
 import tfw.immutable.ila.objectila.ObjectIla;
 import tfw.immutable.ila.objectila.ObjectIlaFill;
 import tfw.immutable.ila.objectila.ObjectIlaFromArray;
@@ -72,12 +72,12 @@ public class MultiplexerSynchronizerTest extends TestCase
         mbf.addMultiplexer(integerECD, multiIntegerECD);
         MultiplexedBranch mbranch = mbf.create("multiBranch");
 
-        mbranch.add(new ObjectStringSynchronizer("sync 0", "sync0", integerECD,
-                stringECD, errorECD, integerECD.getCodec()), 0);
-        mbranch.add(new ObjectStringSynchronizer("sync 1", "sync1", integerECD,
-                stringECD, errorECD, integerECD.getCodec()), 1);
-        mbranch.add(new ObjectStringSynchronizer("sync 2", "sync2", integerECD,
-                stringECD, errorECD, integerECD.getCodec()), 2);
+//        mbranch.add(new ObjectStringSynchronizer("sync 0", "sync0", integerECD,
+//                stringECD, errorECD, integerECD.getCodec()), 0);
+//        mbranch.add(new ObjectStringSynchronizer("sync 1", "sync1", integerECD,
+//                stringECD, errorECD, integerECD.getCodec()), 1);
+//        mbranch.add(new ObjectStringSynchronizer("sync 2", "sync2", integerECD,
+//                stringECD, errorECD, integerECD.getCodec()), 2);
 
         MultiCommit stringMultiCommit = new MultiCommit("StringMultiCommit",
                 multiStringECD);

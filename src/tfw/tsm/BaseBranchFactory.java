@@ -11,7 +11,7 @@
  * 
  * This library is distributed in the hope that it
  * will be useful, but WITHOUT ANY WARRANTY;
- * witout even the implied warranty of
+ * without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR
  * PURPOSE.  See the GNU Lesser General Public
  * License for more details.
@@ -39,7 +39,8 @@ import tfw.value.ValueException;
  */
 public class BaseBranchFactory
 {
-    private final HashMap terminators = new HashMap();
+    private final HashMap<String, Terminator> terminators =
+    	new HashMap<String, Terminator>();
 
     /**
      * Creates a factory. The constructor is package private to prevent

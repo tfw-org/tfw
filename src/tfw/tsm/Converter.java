@@ -11,7 +11,7 @@
  * 
  * This library is distributed in the hope that it
  * will be useful, but WITHOUT ANY WARRANTY;
- * witout even the implied warranty of
+ * without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR
  * PURPOSE.  See the GNU Lesser General Public
  * License for more details.
@@ -95,7 +95,7 @@ public abstract class Converter extends Processor
 
     /**
      * Called when one or more of the <code>sinkEventChannels</code>
-     * specified at contruction has it's state changed and all of the
+     * specified at construction has it's state changed and all of the
      * <code>sinkEventChannels</code> have non-null state. The call to this
      * method will occur in the processing phase immediately following the
      * the state change phase in which one or more of the
@@ -105,7 +105,7 @@ public abstract class Converter extends Processor
 
     /**
      * Called when one or more of the <code>sinkEventChannels</code>
-     * specified at contruction has it's state changed and all of the
+     * specified at construction has it's state changed and all of the
      * <code>sinkEventChannels</code> have non-null state. The call to this
      * method will occur in the processing phase immediately following the
      * the state change phase in which one or more of the

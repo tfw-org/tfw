@@ -11,7 +11,7 @@
  * 
  * This library is distributed in the hope that it
  * will be useful, but WITHOUT ANY WARRANTY;
- * witout even the implied warranty of
+ * without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR
  * PURPOSE.  See the GNU Lesser General Public
  * License for more details.
@@ -26,14 +26,11 @@ package tfw.tsm;
 
 import tfw.check.Argument;
 import tfw.tsm.ecd.EventChannelDescription;
-
 import tfw.value.ValueException;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 
 /**
  * A factory for creating an {@link Branch}.
@@ -41,47 +38,42 @@ import java.util.Iterator;
 public class BranchFactory extends BaseBranchFactory
 {
     /** The set of translators. */
-    private final HashMap translators = new HashMap();
+    private final HashMap<String, Translator> translators =
+    	new HashMap<String, Translator>();
 
     EventChannel[] getTerminators()
     {
-        ArrayList list = new ArrayList();
+        ArrayList<EventChannel> list = new ArrayList<EventChannel>();
         list.addAll(Arrays.asList(super.getTerminators()));
         list.addAll(translators.values());
 
-        return (EventChannel[]) list.toArray(new EventChannel[list.size()]);
+        return list.toArray(new EventChannel[list.size()]);
     }
 
     private Sink[] getSinks()
     {
-        HashSet ports = new HashSet();
+        HashSet<Sink> ports = new HashSet<Sink>();
 
         // add all translator ports to the ports hash set.
-        Iterator itr = translators.values().iterator();
-
-        while (itr.hasNext())
+        for (Translator translator : translators.values())
         {
-            Translator translator = (Translator) itr.next();
             ports.add(translator.getParentSink());
         }
 
-        return (Sink[]) ports.toArray(new Sink[ports.size()]);
+        return ports.toArray(new Sink[ports.size()]);
     }
 
     private Source[] getSources()
     {
-        HashSet ports = new HashSet();
+        HashSet<Source> ports = new HashSet<Source>();
 
         // add all translator ports to the ports hash set.
-        Iterator itr = translators.values().iterator();
-
-        while (itr.hasNext())
+        for (Translator translator : translators.values())
         {
-            Translator translator = (Translator) itr.next();
             ports.add(translator.getParentSource());
         }
 
-        return (Source[]) ports.toArray(new Source[ports.size()]);
+        return ports.toArray(new Source[ports.size()]);
     }
 
     /**

@@ -11,7 +11,7 @@
  * 
  * This library is distributed in the hope that it
  * will be useful, but WITHOUT ANY WARRANTY;
- * witout even the implied warranty of
+ * without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR
  * PURPOSE.  See the GNU Lesser General Public
  * License for more details.
@@ -30,7 +30,7 @@ import tfw.tsm.ecd.StatelessTriggerECD;
 
 
 /**
- * The base class for components which particpate in transactions base on
+ * The base class for components which participate in transactions base on
  * the firing of a stateless event channel.
  */
 public abstract class TriggeredConverter extends Processor

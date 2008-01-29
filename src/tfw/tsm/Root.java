@@ -11,7 +11,7 @@
  * 
  * This library is distributed in the hope that it
  * will be useful, but WITHOUT ANY WARRANTY;
- * witout even the implied warranty of
+ * without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR
  * PURPOSE.  See the GNU Lesser General Public
  * License for more details.
@@ -28,7 +28,7 @@ package tfw.tsm;
 
 
 /**
- * The base of the event channel commuications structure. All event channels
+ * The base of the event channel communications structure. All event channels
  * which reach the <code>Root<\code> must be terminated at the root or an
  * exception will be thrown.
  *

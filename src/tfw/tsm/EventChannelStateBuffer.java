@@ -11,7 +11,7 @@
  * 
  * This library is distributed in the hope that it
  * will be useful, but WITHOUT ANY WARRANTY;
- * witout even the implied warranty of
+ * without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR
  * PURPOSE.  See the GNU Lesser General Public
  * License for more details.
@@ -36,7 +36,8 @@ import tfw.value.ValueException;
  */
 public class EventChannelStateBuffer
 {
-    private Map state = new HashMap();
+    private Map<String, EventChannelState> state =
+    	new HashMap<String, EventChannelState>();
 
 	/**
 	 * Adds an {@link EventChannelState} based on the specified event 
@@ -59,14 +60,14 @@ public class EventChannelStateBuffer
 	 */
     public EventChannelState[] toArray()
     {
-        return (EventChannelState[]) state.values().toArray(new EventChannelState[state.size()]);
+        return state.values().toArray(new EventChannelState[state.size()]);
     }
     
     /**
      * Clears the contents of the buffer.
      */
     public void clear(){
-    	this.state.clear();
+    	state.clear();
     }
     
     /**
@@ -74,6 +75,6 @@ public class EventChannelStateBuffer
      * @return the number of item in the buffer.
      */
     public int size(){
-    	return this.state.size();
+    	return state.size();
     }
 }
