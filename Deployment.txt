@@ -1,0 +1,23 @@
+1. Tag Source Tree (from Eclipse's Package Explorer)
+   a. Select TFW project
+   b. Right Click -> Team -> Tag As Version...
+   c. Enter tag (e.g. "tfw0_14")
+2. Build jar files using "build_tfw.xml" (from Eclipse's Ant View)
+   a. drag build_tfw.xml from Package Explorer to Ant
+   b. double-click "clean"
+   c. double-click "jarclasses"
+   d. double-click "jar javadoc"
+   e. rename build/jars/* appropriately
+3. Upload to SourceForge (Document "Release Files for Download (FRS)")
+   a. Go to https://frs.sourceforge.net/webupload
+   b. Browse and upload the three files created in #2.
+   c. Log into Sourceforge.net
+   d. Click on Admin -> File Releases
+   e. Click on "[Add Release]" link for "theframework"
+   f. Specify "New Release name:" (e.g. "tfw0.14")
+   g. Click on "Create This Release".
+   h. Make changes to "Step 1" and press "Submit/Refresh".
+   i. Check files in "Step 2" and press "Add Files and/or refresh View"
+   j. Modify values in "Step 3" for each file while pressing "update/refresh"
+   k. Do "Step 4" if desired...
+4. Verify that everything worked.
