@@ -100,8 +100,8 @@ class InitiatorSource extends Source
              * set the state on the event channel.
              */
             if ((component != null)
-                    || (component.isRooted())
-                    || component.getTransactionManager().queue
+                    && (component.isRooted())
+                    && component.getTransactionManager().queue
                             .isDispatchThread())
             {
                 ecs.ec.setState(this, ecs.state, null);

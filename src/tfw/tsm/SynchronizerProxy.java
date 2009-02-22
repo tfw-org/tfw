@@ -24,9 +24,10 @@
  */
 package tfw.tsm;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.TreeMap;
+
 import tfw.check.Argument;
 
 public final class SynchronizerProxy implements Proxy
@@ -47,8 +48,8 @@ public final class SynchronizerProxy implements Proxy
 	
 	public SourceProxy[] getSourceProxies()
 	{
-		Collection<Source> collection = new TreeMap<String, Source>(
-			synchronizer.sources).values();
+		Collection<Source> collection = new ArrayList<Source>(
+			synchronizer.sources);
 		Iterator<Source> iterator = collection.iterator();
 		SourceProxy[] sp = new SourceProxy[collection.size()];
 		

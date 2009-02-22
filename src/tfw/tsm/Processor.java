@@ -24,7 +24,6 @@
  */
 package tfw.tsm;
 
-import java.util.Map;
 import tfw.check.Argument;
 import tfw.tsm.ecd.EventChannelDescription;
 import tfw.tsm.ecd.StatelessTriggerECD;
@@ -36,42 +35,16 @@ import tfw.value.ValueException;
  */
 abstract class Processor extends RollbackHandler
 {
-    private final EventChannelDescription[] triggeringSinks;
-
     Processor(String name, EventChannelDescription[] triggeringSinks,
             EventChannelDescription[] nonTriggeringSinks,
             EventChannelDescription[] sources)
     {
         super(name, triggeringSinks, nonTriggeringSinks, sources);
-        this.triggeringSinks = (EventChannelDescription[]) triggeringSinks
-                .clone();
     }
 
     void stateChange(EventChannel eventChannel)
     {
         getTransactionManager().addProcessor(this);
-    }
-
-    /**
-     * Returns true if the specified processor publishes to one or more event
-     * channels for which this processor has triggering sinks.
-     * 
-     * @param processor
-     *            The processor to check for dependency.
-     * @return true if the specified processor publishes to one or more event
-     *         channels for which this processor has triggering sinks.
-     */
-    boolean isDependent(Processor processor)
-    {
-        Map<String, Source> sources = processor.getSources();
-        for (int i = 0; i < this.triggeringSinks.length; i++)
-        {
-            if (sources.containsKey(triggeringSinks[i].getEventChannelName()))
-            {
-                return true;
-            }
-        }
-        return false;
     }
 
     /**

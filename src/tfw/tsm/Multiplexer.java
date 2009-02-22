@@ -26,10 +26,11 @@
  */
 package tfw.tsm;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map;
-import java.util.Set;
+
 import tfw.check.Argument;
 import tfw.tsm.MultiplexerStrategy.MultiStateAccessor;
 import tfw.tsm.MultiplexerStrategy.MultiStateFactory;
@@ -83,7 +84,7 @@ class Multiplexer implements EventChannel
         this.multiStrategy = multiStrategy;
     }
 
-    private class MultiSink extends Sink
+    class MultiSink extends Sink
     {
         public MultiSink(ObjectECD ecd)
         {
@@ -114,12 +115,17 @@ class Multiplexer implements EventChannel
                 }
             }
         }
+        
+        Iterator<DemultiplexedEventChannel> getDemultiplexedEventChannels()
+        {
+        	return(demultiplexedEventChannels.values().iterator());
+        }
     }
 
     class MultiSource extends ProcessorSource
     {
-        Set<DemultiplexedEventChannel> pendingStateChanges =
-        	new HashSet<DemultiplexedEventChannel>();
+        ArrayList<DemultiplexedEventChannel> pendingStateChanges =
+        	new ArrayList<DemultiplexedEventChannel>();
 
         MultiSource(String name, EventChannelDescription ecd)
         {
@@ -128,13 +134,16 @@ class Multiplexer implements EventChannel
 
         void setState(DemultiplexedEventChannel deMultiplexer)
         {
-            if (pendingStateChanges.size() == 0)
+            if (!pendingStateChanges.contains(deMultiplexer))
             {
-                getEventChannel().addDeferredStateChange(this);
+                pendingStateChanges.add(deMultiplexer);
             }
-            pendingStateChanges.add(deMultiplexer);
+            fire();
         }
 
+        private int pendingStateChangesArraySize = 0;
+        private DemultiplexedEventChannel[] pendingStateChangesArray =
+        	new DemultiplexedEventChannel[pendingStateChangesArraySize];
         Object fire()
         {
             if (pendingStateChanges.size() == 0)
@@ -144,17 +153,27 @@ class Multiplexer implements EventChannel
             }
             MultiStateFactory stateFactory = Multiplexer.this.multiStrategy
                     .toMultiStateFactory(this.getEventChannel().getState());
-            DemultiplexedEventChannel[] dms = pendingStateChanges.toArray(
-            	new DemultiplexedEventChannel[pendingStateChanges.size()]);
+
+            pendingStateChangesArraySize = pendingStateChanges.size();
+            if (pendingStateChangesArray.length < pendingStateChangesArraySize)
+            {
+            	pendingStateChangesArray =
+            		new DemultiplexedEventChannel[pendingStateChangesArraySize];
+            }
+            pendingStateChanges.toArray(pendingStateChangesArray);
             pendingStateChanges.clear();
 
-            for (int i = 0; i < dms.length; i++)
+            for (int i=0; i < pendingStateChangesArraySize ; i++)
             {
-                stateFactory.setState(dms[i].demultiplexSlotId, dms[i]
-                        .getState());
+                stateFactory.setState(
+                	pendingStateChangesArray[i].demultiplexSlotId,
+                	pendingStateChangesArray[i].getState());
             }
             Object multiState = stateFactory.toMultiState();
             getEventChannel().setState(this, multiState, null);
+            getTreeComponent().getTransactionManager().addChangedEventChannel(
+            	getEventChannel());
+            
             return multiState;
         }
     }
@@ -204,7 +223,7 @@ class Multiplexer implements EventChannel
             demultiplexedEventChannels.put(slotId, dm);
         }
 
-        return ((EventChannel) demultiplexedEventChannels.get(slotId));
+        return (demultiplexedEventChannels.get(slotId));
     }
 
     TreeComponent getTreeComponent()

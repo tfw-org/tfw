@@ -24,15 +24,14 @@
  */
 package tfw.tsm;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import tfw.check.Argument;
 import tfw.tsm.ecd.EventChannelDescription;
-import tfw.tsm.ecd.ObjectECD;
 import tfw.value.NullConstraint;
 
 /**
@@ -42,8 +41,10 @@ public class TreeComponent
 {
     private static final Map<EventChannelDescription, Sink> EMPTY_SINK_MAP =
     	Collections.unmodifiableMap(new HashMap<EventChannelDescription, Sink>(0));
-    private static final Map<String, Source> EMPTY_SOURCE_MAP =
-    	Collections.unmodifiableMap(new HashMap<String, Source>(0));
+    private static final List<EventChannelDescription> EMPTY_ECD_LIST =
+    	Collections.unmodifiableList(new ArrayList<EventChannelDescription>(0));
+    private static final List<Source> EMPTY_SOURCE_LIST =
+    	Collections.unmodifiableList(new ArrayList<Source>(0));
     private static final Map<String, EventChannel> EMPTY_EVENTCHANNEL_MAP =
     	Collections.unmodifiableMap(new HashMap<String, EventChannel>(0));
 
@@ -55,9 +56,10 @@ public class TreeComponent
 
     /** This components sinks. */
     final Map<EventChannelDescription, Sink> sinks;
+    final List<EventChannelDescription> sinksECDList;
 
     /** This components sources. */
-    final Map<String, Source> sources;
+    final List<Source> sources;
 
     /** This components event channels. */
     final Map<String, EventChannel> eventChannels;
@@ -87,6 +89,22 @@ public class TreeComponent
         this.sinks = initializeSinks(sinks);
         this.sources = initializeSources(sources);
         this.eventChannels = initializeEventChannels(eventChannels);
+        
+        if (sinks != null && sinks.length > 0)
+        {
+        	ArrayList<EventChannelDescription> arrayList =
+        		new ArrayList<EventChannelDescription>(sinks.length);
+        	
+        	for (int i=0 ; i < sinks.length ; i++)
+        	{
+        		arrayList.add(sinks[i].getECD());
+        	}
+        	sinksECDList = Collections.unmodifiableList(arrayList);
+        }
+        else
+        {
+        	sinksECDList = EMPTY_ECD_LIST;
+        }
     }
 
     /**
@@ -110,7 +128,7 @@ public class TreeComponent
      */
     private Map<EventChannelDescription, Sink> initializeSinks(Sink[] sinks)
     {
-        if ((sources != null) && (sinks.length > 0))
+        if ((sinks != null) && (sinks.length > 0))
         {
             Map<EventChannelDescription, Sink> map =
             	new HashMap<EventChannelDescription, Sink>(sinks.length);
@@ -142,31 +160,33 @@ public class TreeComponent
      *            the sources.
      * @return an unmodifiable map of the sources, mapped by event channel name.
      */
-    private Map<String, Source> initializeSources(Source[] sources)
+    private List<Source> initializeSources(Source[] sources)
     {
-        Map<String, Source> map;
+        List<Source> list;
 
         if ((sources != null) && (sources.length > 0))
         {
-            map = new HashMap<String, Source>(sources.length);
+            list = new ArrayList<Source>(sources.length);
 
             for (int i = 0; i < sources.length; i++)
             {
                 sources[i].setTreeComponent(this);
 
-                if (map.put(sources[i].getEventChannelName(), sources[i]) != null)
+                if (list.contains(sources[i]))
                 {
                     throw new IllegalArgumentException(
                             "Multiple sources detected for event channel '"
                                     + sources[i].getEventChannelName() + "'");
                 }
+                
+                list.add(sources[i]);
             }
 
-            return(Collections.unmodifiableMap(map));
+            return(Collections.unmodifiableList(list));
         }
         else
         {
-            return(EMPTY_SOURCE_MAP);
+            return(EMPTY_SOURCE_LIST);
         }
     }
 
@@ -289,7 +309,7 @@ public class TreeComponent
      * 
      * @return an unmodifiable map of the sources, mapped by event channel name.
      */
-    final Map<String, Source> getSources()
+    final List<Source> getSources()
     {
         return sources;
     }
@@ -303,8 +323,17 @@ public class TreeComponent
      */
     final Source getSource(String eventChannelName)
     {
-        // checkSource(eventChannelName);
-        return ((Source) sources.get(eventChannelName));
+    	for (int i=0 ; i < sources.size(); i++)
+    	{
+    		Source source = sources.get(i);
+    		
+    		if (source.getEventChannelName().equals(eventChannelName))
+    		{
+    			return(source);
+    		}
+    	}
+    	
+    	return(null);
     }
 
     /**
@@ -317,16 +346,7 @@ public class TreeComponent
     final Sink getSink(EventChannelDescription eventChannelName)
     {
         // checkSink(eventChannelName);
-        return ((Sink) sinks.get(eventChannelName));
-    }
-
-    final void checkSource(String eventChannelName)
-    {
-        if (!sources.containsKey(eventChannelName))
-        {
-            throw new IllegalArgumentException(eventChannelName
-                    + " is invalid source in Leaf[" + getName() + "]");
-        }
+        return (sinks.get(eventChannelName));
     }
 
     final void checkSink(EventChannelDescription eventChannelName)
@@ -336,18 +356,6 @@ public class TreeComponent
             throw new IllegalArgumentException(eventChannelName
                     + " is invalid sink in Leaf[" + getName() + "]");
         }
-    }
-
-    /**
-     * Returns the names of the sources for the leaves.
-     * 
-     * @return the names of the sources for the leaves.
-     */
-    public String[] getSourceNames()
-    {
-        Set<String> kset = sources.keySet();
-
-        return kset.toArray(new String[kset.size()]);
     }
 
     /**
@@ -371,7 +379,7 @@ public class TreeComponent
      */
     final boolean isStateNonNull()
     {
-        return (isStateNonNull(sinks.keySet()));
+        return (isStateNonNull(sinksECDList));
     }
 
     /**
@@ -383,17 +391,28 @@ public class TreeComponent
      * @return <code>true</code> if the specified set of event channels are
      *         non-null, otherwise returns <code>false</code>.
      */
-    final boolean isStateNonNull(Set<EventChannelDescription> eventSet)
+    private int eventChannelArraySize = 0;
+    private EventChannelDescription[] eventChannelArray =
+    	new EventChannelDescription[eventChannelArraySize];
+    final boolean isStateNonNull(List<? extends EventChannelDescription> eventSet)
     {
-        for (EventChannelDescription ecd : eventSet)
+    	eventChannelArraySize = eventSet.size();
+    	if (eventChannelArray.length < eventChannelArraySize)
+    	{
+    		eventChannelArray =
+    			new EventChannelDescription[eventChannelArraySize];
+    	}
+    	eventSet.toArray(eventChannelArray);
+    	
+        for (int i=0 ; i < eventChannelArraySize ; i++)
         {
-            checkSink(ecd);
+            checkSink(eventChannelArray[i]);
 
-            Sink sink = (Sink) sinks.get(ecd);
+            Sink sink = sinks.get(eventChannelArray[i]);
 
             if (sink.getEventChannel() == null)
             {
-                throw new IllegalStateException(ecd
+                throw new IllegalStateException(eventChannelArray[i]
                         + " is not connected to an event channel");
             }
 
@@ -459,7 +478,7 @@ public class TreeComponent
      * @param connections
      *            The set of ports to be terminated.
      */
-    void terminateParentAndLocalConnections(Set connections)
+    void terminateParentAndLocalConnections(Set<Port> connections)
     {
         Argument.assertNotNull(connections, "connections");
 
@@ -501,15 +520,15 @@ public class TreeComponent
         {
             if (eventChannels.containsKey(ports[i].getEventChannelName()))
             {
-                EventChannel t = (EventChannel) eventChannels.get(ports[i]
-                        .getEventChannelName());
+                EventChannel t = eventChannels.get(ports[i]
+                    .getEventChannelName());
                 t.add(ports[i]);
                 connections.remove(ports[i]);
             }
         }
 
         connections.addAll(sinks.values());
-        connections.addAll(sources.values());
+        connections.addAll(sources);
 
         return connections;
     }
@@ -519,19 +538,15 @@ public class TreeComponent
      */
     final void disconnectPorts()
     {
-        Iterator itr = sinks.values().iterator();
+    	for (Sink sink : sinks.values())
+    	{
+    		sink.getEventChannel().remove(sink);
+    	}
 
-        while (itr.hasNext())
+        for (int i=0 ; i < sources.size(); i++)
         {
-            Sink sink = (Sink) itr.next();
-            sink.getEventChannel().remove(sink);
-        }
-
-        itr = sources.values().iterator();
-
-        while (itr.hasNext())
-        {
-            Source source = (Source) itr.next();
+            Source source = sources.get(i);
+            
             source.getEventChannel().remove(source);
         }
     }

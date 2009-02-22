@@ -116,4 +116,11 @@ public class Branch extends BranchComponent
     		}
     	}
     }
+    
+    public final void addAndRemove(AddRemoveOperation[] operations)
+    {
+    	Argument.assertElementNotNull(operations, "operations");
+    	
+    	performAddRemoveOperations(operations);
+    }
 }

@@ -27,11 +27,14 @@ package tfw.tsm;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import tfw.check.Argument;
-import tfw.tsm.TransactionMgrUtil.AddRemoveSetContainer;
-import tfw.tsm.ecd.ObjectECD;
+import tfw.tsm.AddRemoveOperation.Operation;
+import tfw.tsm.TransactionMgr.AddComponentRunnable;
+import tfw.tsm.TransactionMgr.RemoveComponentRunnable;
 import tfw.tsm.ecd.StatelessTriggerECD;
 import tfw.value.ValueException;
 
@@ -41,7 +44,7 @@ public abstract class BranchComponent extends TreeComponent
 
     /** This component's children */
     private Map<String, TreeComponent> children = null;
-    private ArrayList<AddRemoveSetContainer> deferredAddRemoveSets = null;
+    private List<Object> deferredAddRemoveSets = null;
 	protected Set<TreeComponent> immediateChildren = null;
 	
 	public abstract void remove(TreeComponent treeComponent);
@@ -135,6 +138,12 @@ public abstract class BranchComponent extends TreeComponent
         			((BranchComponent)treeComponents[i])
                     .terminateChildAndLocalConnections());
         	}
+        	else
+        	{
+        		unterminatedConnections.addAll(
+        			treeComponents[i].terminateLocally(
+        				unterminatedConnections));
+        	}
         }
 
         return (terminateLocally(unterminatedConnections));
@@ -148,8 +157,8 @@ public abstract class BranchComponent extends TreeComponent
         }
         synchronized (children)
         {
-            return ((TreeComponent[]) children.values().toArray(
-                    new TreeComponent[children.size()]));
+            return (children.values().toArray(
+            	new TreeComponent[children.size()]));
         }
     }
 
@@ -167,6 +176,10 @@ public abstract class BranchComponent extends TreeComponent
         	if (childComponents[i] instanceof BranchComponent)
         	{
         		((BranchComponent)childComponents[i]).disconnect();
+        	}
+        	else
+        	{
+        		childComponents[i].disconnectPorts();
         	}
         }
     }
@@ -226,7 +239,7 @@ public abstract class BranchComponent extends TreeComponent
                 try
                 {
                     EventChannelState ecs = new EventChannelState(
-                            (ObjectECD) ec.getECD(), ec.getState());
+                        ec.getECD(), ec.getState());
                     buff.addState(ecs);
                 }
                 catch (ValueException unexpected)
@@ -345,8 +358,7 @@ public abstract class BranchComponent extends TreeComponent
         }
         for (int i = 0; i < childTreeState.length; i++)
         {
-            TreeComponent child = (TreeComponent) this.children
-                    .get(childTreeState[i].getName());
+            TreeComponent child = children.get(childTreeState[i].getName());
 
             if (child == null)
             {
@@ -365,6 +377,156 @@ public abstract class BranchComponent extends TreeComponent
             		skipMissingEventChannels, skipMissingChildBranches);
             }
         }
+    }
+    
+    final synchronized void performAddRemoveOperations(
+    	AddRemoveOperation[] operations)
+    {
+    	Argument.assertElementNotNull(operations, "operations");
+    	
+    	boolean containsAdd = false;
+    	for (AddRemoveOperation operation : operations)
+    	{
+    		if (operation.getOperation() == Operation.ADD){
+    			containsAdd = true;
+    			break;
+    		}
+    	}
+    	if (containsAdd && immediateChildren == null)
+    	{
+    		immediateChildren = new HashSet<TreeComponent>();
+    	}
+    	List<Runnable> runnables = new LinkedList<Runnable>();
+    	for (AddRemoveOperation operation : operations)
+    	{
+    		TreeComponent child = operation.getTreeComponent();
+    		if (operation.getOperation() == Operation.ADD)
+    		{
+    			if (!immediateChildren.add(child))
+    			{
+    				throw new IllegalStateException(
+    					child.getFullyQualifiedName() +
+    					" is already a child of this Branch");
+    			}
+    			// Create the CHILD -> PARENT relationship.
+    			if (child.immediateParent == null)
+    			{
+    				child.immediateParent = this;
+    			}
+    			else
+    			{
+    				throw new IllegalStateException(
+    					child.getFullyQualifiedName() +
+    					" already has a parent!");
+    			}
+    			runnables.add(new TransactionMgr.AddComponentRunnable(this, child));
+    		}
+    		else if (operation.getOperation() == Operation.REMOVE)
+    		{
+    			if (immediateChildren == null ||
+    				!immediateChildren.remove(child))
+    			{
+    				throw new IllegalStateException(
+    					child.getFullyQualifiedName() +
+    					" is not a child of this Branch!");
+    			}
+    			//Remove the CHILD -> PARENT relationship.
+    			if (child.immediateParent == this)
+    			{
+    				child.immediateParent = null;
+    			}
+    			else
+    			{
+    				throw new IllegalStateException(
+    					child.getFullyQualifiedName() +
+    					" has " + child.immediateParent + " Parent!");
+    			}
+    			runnables.add(new RemoveComponentRunnable(this, child));
+    		}
+    	}
+    	
+    	if (immediateChildren != null && immediateChildren.isEmpty())
+    	{
+    		immediateChildren = null;
+    	}
+    	
+    	//Perform deferred add on child & descendants if this node has a Root.
+    	if (immediateRoot != null)
+    	{
+    		synchronized(immediateRoot)
+    		{
+    			TransactionMgr transactionMgr =
+    				immediateRoot.getTransactionManager();
+    			
+    			transactionMgr.lockTransactionQueue();
+    			try
+    			{
+    				for (Runnable runnable : runnables)
+    				{
+    					if (runnable instanceof AddComponentRunnable)
+    					{
+    						AddComponentRunnable acr =
+    							(AddComponentRunnable)runnable;
+    						
+    						acr.setTransactionMgr(transactionMgr);
+    						transactionMgr.addComponent(acr);
+    						
+    						ArrayList<Object> allDeferredAddRemoveSets =
+    							new ArrayList<Object>();
+    						
+    						addChildAndDescendents(this, acr.child,
+    							allDeferredAddRemoveSets);
+    						TransactionMgrUtil.postAddRemoveSetsToQueue(
+    							allDeferredAddRemoveSets.toArray(),
+    							transactionMgr);
+    					}
+    					else if (runnable instanceof RemoveComponentRunnable)
+    					{
+    						RemoveComponentRunnable rcr =
+    							(RemoveComponentRunnable)runnable;
+    						
+    						rcr.setTransactionMgr(transactionMgr);
+    						transactionMgr.removeComponent(rcr);
+    						removeChildAndDescendents(this, rcr.child);
+    					}
+    				}
+    			}
+    			finally
+    			{
+    				transactionMgr.unlockTransactionQueue();
+    			}
+    		}
+    	}
+    	else
+    	{
+    		if (deferredAddRemoveSets == null)
+    		{
+    			deferredAddRemoveSets = new ArrayList<Object>();
+    		}
+    		for (Runnable runnable : runnables)
+    		{
+    			deferredAddRemoveSets.add(runnable);
+    			if (runnable instanceof AddComponentRunnable)
+    			{
+    				AddComponentRunnable acr = (AddComponentRunnable)runnable;
+    				
+    				if (acr.child instanceof Initiator)
+    				{
+    					Initiator initiator = (Initiator)acr.child;
+    					
+    					Initiator.TransactionContainer[] sourceNState =
+    						initiator.getDeferredStateChangesAndClear();
+    					if (sourceNState != null)
+    					{
+    						for (int i=0 ; i < sourceNState.length ; i++)
+    						{
+    							addStateChange(sourceNState[i]);
+    						}
+    					}
+    				}
+    			}
+    		}
+    	}
     }
     
     /**
@@ -409,16 +571,16 @@ public abstract class BranchComponent extends TreeComponent
     	{
     		synchronized(immediateRoot)
     		{
+    			addComponentRunnable.setTransactionMgr(
+    				immediateRoot.getTransactionManager());
                 immediateRoot.getTransactionManager().addComponent(
                 	addComponentRunnable);
-                ArrayList<AddRemoveSetContainer> allDeferredAddRemoveSets = new ArrayList<AddRemoveSetContainer>();
+                List<Object> allDeferredAddRemoveSets = new ArrayList<Object>();
         		
     			addChildAndDescendents(this, child, allDeferredAddRemoveSets);
     			
     			TransactionMgrUtil.postAddRemoveSetsToQueue(
-    				(TransactionMgrUtil.AddRemoveSetContainer[])
-    				allDeferredAddRemoveSets.toArray(
-    				new TransactionMgrUtil.AddRemoveSetContainer[allDeferredAddRemoveSets.size()]),
+    				allDeferredAddRemoveSets.toArray(),
     				immediateRoot.getTransactionManager());
     		}
     	}
@@ -426,22 +588,20 @@ public abstract class BranchComponent extends TreeComponent
     	{
     		if (deferredAddRemoveSets == null)
     		{
-    			deferredAddRemoveSets = new ArrayList<AddRemoveSetContainer>();
+    			deferredAddRemoveSets = new ArrayList<Object>();
     		}
-    		deferredAddRemoveSets.add(
-    			TransactionMgrUtil.createAddRemoveSetContainer(
-    			addComponentRunnable));
+    		deferredAddRemoveSets.add(addComponentRunnable);
     		
     		if (child instanceof Initiator)
             {
-    			Initiator.SourceNState[] sourceNState = 
+    			Initiator.TransactionContainer[] containers = 
     				((Initiator)child).getDeferredStateChangesAndClear();
     			
-    			if (sourceNState != null)
+    			if (containers != null)
     			{
-	    			for (int i=0 ; i < sourceNState.length ; i++)
+	    			for (int i=0 ; i < containers.length ; i++)
 	    			{
-	    				addStateChange(sourceNState[i]);
+	    				addStateChange(containers[i]);
 	    			}
     			}
             }
@@ -450,7 +610,7 @@ public abstract class BranchComponent extends TreeComponent
     
     private final synchronized void addChildAndDescendents(
     	final TreeComponent parent, final TreeComponent child,
-    	ArrayList<AddRemoveSetContainer> allDeferredAddRemoveSets)
+    	List<Object> allDeferredAddRemoveSets)
     {
     	synchronized(child)
     	{
@@ -484,15 +644,19 @@ public abstract class BranchComponent extends TreeComponent
     		
     		if (child instanceof Initiator)
             {
-    			Initiator.SourceNState[] sourceNState = 
+    			Initiator.TransactionContainer[] transactionContainers = 
     				((Initiator)child).getDeferredStateChangesAndClear();
     			
-    			if (sourceNState != null)
+    			if (transactionContainers != null)
     			{
-	    			for (int i=0 ; i < sourceNState.length ; i++)
+	    			for (int i=0 ; i < transactionContainers.length ; i++)
 	    			{
+	    				Initiator.SourceNState sourceNState =
+	    					transactionContainers[i].state;
+	    				
 						immediateRoot.getTransactionManager().addStateChange(
-    							sourceNState[i].sources, sourceNState[i].state);
+    						sourceNState.sources, sourceNState.state,
+    						transactionContainers[i].transactionState);
 	    			}
     			}
             }
@@ -500,17 +664,17 @@ public abstract class BranchComponent extends TreeComponent
     	}
     }
     
-    synchronized void addStateChange(Initiator.SourceNState sourceNState)
+    synchronized void addStateChange(
+    	Initiator.TransactionContainer transactionContainer)
     {
-    	Argument.assertNotNull(sourceNState, "sourceNState");
+    	Argument.assertNotNull(transactionContainer, "transactionContainer");
     	
     	if (deferredAddRemoveSets == null)
     	{
-    		deferredAddRemoveSets = new ArrayList<AddRemoveSetContainer>();
+    		deferredAddRemoveSets = new ArrayList<Object>();
     	}
     	
-    	deferredAddRemoveSets.add(
-    		TransactionMgrUtil.createAddRemoveSetContainer(sourceNState));
+    	deferredAddRemoveSets.add(transactionContainer);
     }
     
     /**
@@ -555,6 +719,8 @@ public abstract class BranchComponent extends TreeComponent
     	{
     		synchronized(immediateRoot)
     		{
+    			removeComponentRunnable.setTransactionMgr(
+    				immediateRoot.getTransactionManager());
                 immediateRoot.getTransactionManager().removeComponent(
                 	removeComponentRunnable);
         		
@@ -565,11 +731,9 @@ public abstract class BranchComponent extends TreeComponent
     	{
     		if (deferredAddRemoveSets == null)
     		{
-    			deferredAddRemoveSets = new ArrayList<AddRemoveSetContainer>();
+    			deferredAddRemoveSets = new ArrayList<Object>();
     		}
-    		deferredAddRemoveSets.add(
-    			TransactionMgrUtil.createAddRemoveSetContainer(
-    			removeComponentRunnable));
+    		deferredAddRemoveSets.add(removeComponentRunnable);
     	}
     }
     

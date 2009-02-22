@@ -42,6 +42,44 @@ public final class MultiplexedBranchProxy implements Proxy
 		return(multiplexedBranch.getName());
 	}
 	
+	public EventChannelProxy[] getEventChannelProxies()
+	{
+		Multiplexer[] multiplexers = multiplexedBranch.getMultiplexers();
+		EventChannelProxy[] ecp = new EventChannelProxy[multiplexers.length];
+		
+		for (int i=0 ; i < multiplexers.length ; i++)
+		{
+			ecp[i] = new EventChannelProxy(multiplexers[i]);
+		}
+		
+		return(ecp);
+	}
+	
+	public Proxy getParentProxy()
+	{
+		TreeComponent branchParent = multiplexedBranch.immediateParent;
+		
+		if (branchParent == null)
+		{
+			return(null);
+		}
+		else if (branchParent instanceof Root)
+		{
+			return(new RootProxy((Root)branchParent));
+		}
+		else if (branchParent instanceof MultiplexedBranch)
+		{
+			return(new MultiplexedBranchProxy((MultiplexedBranch)branchParent));
+		}
+		else if (branchParent instanceof Branch)
+		{
+			return(new BranchProxy((Branch)branchParent));
+		}
+		
+		throw new IllegalStateException(
+			"Parent is not a branch/multiplexedBranch!");
+	}
+	
 	public boolean equals(Object obj)
 	{
 		if (obj instanceof MultiplexedBranchProxy)

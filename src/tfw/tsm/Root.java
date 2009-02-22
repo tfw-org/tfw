@@ -93,6 +93,16 @@ public class Root extends Branch
         return true;
     }
     
+    public boolean isLogging()
+    {
+    	return(transactionMgr.isLogging());
+    }
+    
+    public void setLogging(boolean logging)
+    {
+    	transactionMgr.setLogging(logging);
+    }
+    
 //    /**
 //     * Sets the exception handler for this roots transaction manager. This
 //     * method will over-write any previously set handlers. If an un-handle 

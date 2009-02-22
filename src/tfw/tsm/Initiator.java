@@ -66,7 +66,7 @@ public class Initiator extends Leaf
      * The list of state changes which occur while the component is not
      * connected.
      */
-    private List<SourceNState> deferredStateChanges = null;
+    private List<TransactionContainer> deferredStateChanges = null;
 
     /**
      * Constructs an <code>Initiator</code> with the specified name and source
@@ -88,7 +88,7 @@ public class Initiator extends Leaf
      * 
      * @param name
      *            the non-null name for the <code>Initiator</code>
-     * @param sourceEventChannels
+     * @param sources
      *            A non-null, non-empty array of source event channels for the
      *            <code>Initiator</code>.
      */
@@ -103,7 +103,7 @@ public class Initiator extends Leaf
      * 
      * @param name
      *            the non-null name for the <code>Initiator</code>
-     * @param sourceEventChannels
+     * @param sources
      *            A non-null, non-empty array of source event channels for the
      *            <code>Initiator</code>.
      * @param queueFactory
@@ -124,12 +124,12 @@ public class Initiator extends Leaf
         }
     }
 
-    synchronized SourceNState[] getDeferredStateChangesAndClear()
+    synchronized TransactionContainer[] getDeferredStateChangesAndClear()
     {
         if (deferredStateChanges != null)
         {
-        	SourceNState[] sns = (SourceNState[])deferredStateChanges.toArray(
-        		new SourceNState[deferredStateChanges.size()]);
+        	TransactionContainer[] sns = deferredStateChanges.toArray(
+        		new TransactionContainer[deferredStateChanges.size()]);
 
             deferredStateChanges = null;
             
@@ -158,32 +158,52 @@ public class Initiator extends Leaf
         return srcs;
     }
 
-    private synchronized void newTransaction(
+    private TransactionState newTransaction(
     	InitiatorSource[] sources, Object[] state)
     {
-    	if (immediateRoot == null)
+    	Root localImmediateRoot = null;
+    	BranchComponent localImmediateParent = null;
+    	
+    	synchronized(this)
     	{
-    		if (immediateParent == null)
+    		localImmediateRoot = immediateRoot;
+    		localImmediateParent = immediateParent;
+    	}
+    	
+    	if (localImmediateRoot == null)
+    	{
+    		TransactionStateImpl transactionState = new TransactionStateImpl();
+    		
+    		if (localImmediateParent == null)
     		{
-	            if (deferredStateChanges == null)
-	            {
-	                deferredStateChanges = new ArrayList<SourceNState>();
-	            }
-	            
-	            deferredStateChanges.add(new SourceNState(sources, state));
+    			synchronized(this)
+    			{
+    				if (deferredStateChanges == null)
+    				{
+    					deferredStateChanges =
+    						new ArrayList<TransactionContainer>();
+    				}
+    				
+    				deferredStateChanges.add(new TransactionContainer(
+    					new SourceNState(sources, state), transactionState));
+    			}
     		}
     		else
     		{
-    			immediateParent.addStateChange(
-    				new SourceNState(sources, state));
+    			localImmediateParent.addStateChange(new TransactionContainer(
+    				new SourceNState(sources, state), transactionState));
     		}
+    		
+    		return(transactionState);
     	}
     	else
     	{
-    		synchronized(immediateRoot)
-    		{
-                immediateRoot.getTransactionManager().addStateChange(sources, state);
-    		}
+    		TransactionStateImpl transactionState = new TransactionStateImpl();
+    		
+    		localImmediateRoot.getTransactionManager().addStateChange(
+    			sources, state, transactionState);
+    		
+    		return(transactionState);
     	}
     }
 
@@ -200,7 +220,7 @@ public class Initiator extends Leaf
      * @param state
      *            the new state for the event channel.
      */
-    private synchronized final void unifiedSet(
+    private final TransactionState unifiedSet(
             EventChannelDescription sourceEventChannel, final Object state)
     {
 
@@ -225,16 +245,22 @@ public class Initiator extends Leaf
         {
             throw new IllegalArgumentException(ve.getMessage());
         }
-        newTransaction(new InitiatorSource[] { source }, new Object[] { state });
+        return(newTransaction(
+        	new InitiatorSource[] {source}, new Object[] {state}));
     }
 
     /**
-     * Sets the state of the eventChannels with values specfied.
+     * Sets the state of the eventChannels with values specified.
      * 
      * @param state
      *            the event channel state to set.
      */
-    public synchronized final void set(EventChannelState[] state)
+    public final void set(EventChannelState[] state)
+    {
+    	fset(state);
+    }
+    
+    public final TransactionState fset(EventChannelState[] state)
     {
         Argument.assertNotEmpty(state, "state");
 
@@ -255,7 +281,7 @@ public class Initiator extends Leaf
             stateObjects[i] = state[i].getState();
         }
 
-        newTransaction(sources, stateObjects);
+        return(newTransaction(sources, stateObjects));
     }
 
     /**
@@ -263,18 +289,29 @@ public class Initiator extends Leaf
      * <code>new Object()</code>. This is intended to be used to activate
      * {@link TriggeredConverter}s where the state changes is not relevant.
      * 
-     * @param sourceEventChannel
+     * @param triggerEventChannel
      *            The event channel to receive the trigger event.
      */
-    public synchronized final void trigger(
-            StatelessTriggerECD triggerEventChannel)
+    public final void trigger(
+        StatelessTriggerECD triggerEventChannel)
     {
-        unifiedSet(triggerEventChannel, null);
+    	ftrigger(triggerEventChannel);
     }
     
-    public synchronized final void set(ObjectECD objectECD, Object state)
+    public final TransactionState ftrigger(
+    	StatelessTriggerECD triggerEventChannel)
     {
-    	unifiedSet(objectECD, state);
+        return(unifiedSet(triggerEventChannel, null));
+    }
+    
+    public final void set(ObjectECD objectECD, Object state)
+    {
+    	fset(objectECD, state);
+    }
+    
+    public final TransactionState fset(ObjectECD objectECD, Object state)
+    {
+    	return(unifiedSet(objectECD, state));
     }
 
     static class SourceNState
@@ -287,5 +324,18 @@ public class Initiator extends Leaf
             this.sources = sources;
             this.state = state;
         }
+    }
+    
+    static class TransactionContainer
+    {
+    	public final SourceNState state;
+    	public final TransactionStateImpl transactionState;
+    	
+    	public TransactionContainer(SourceNState state,
+    		TransactionStateImpl transactionState)
+    	{
+    		this.state = state;
+    		this.transactionState = transactionState;
+    	}
     }
 }

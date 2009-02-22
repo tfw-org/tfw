@@ -45,10 +45,12 @@ class ProcessorSource extends Source
 		return state;
 	}
 
-	/**
-     * @see co2.ui.fw.Source#setState(java.lang.Object)
-     */
     void setState(Object state) throws ValueException
+    {
+    	setState(state, true);
+    }
+    
+    void setState(Object state, boolean defer) throws ValueException
     {
         // This check is potentially invalid if a rollback occurs
         //        if (this.state != null)
@@ -65,7 +67,16 @@ class ProcessorSource extends Source
 		getConstraint().checkValue(state);
 
         this.state = state;
-        getEventChannel().addDeferredStateChange(this);
+        if (defer)
+        {
+        	getEventChannel().addDeferredStateChange(this);
+        }
+        else
+        {
+        	fire();
+        	getTreeComponent().getTransactionManager().addChangedEventChannel(
+        		getEventChannel());
+        }
     }
 
 	/**

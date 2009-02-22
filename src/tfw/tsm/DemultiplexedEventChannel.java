@@ -111,6 +111,11 @@ class DemultiplexedEventChannel extends Terminator
             parent.remove(this);
         }
     }
+    
+    public Multiplexer getMultiplexer()
+    {
+    	return(parent);
+    }
 
     /**
      * Called by MultiSink to push state into the demultiplexed sub-channel.
@@ -131,7 +136,7 @@ class DemultiplexedEventChannel extends Terminator
         this.deMultiSource.setState(state);
     }
 
-	private class DemultiSource extends ProcessorSource
+	class DemultiSource extends ProcessorSource
 	{
 		private int fireCount = 0;
 
@@ -154,7 +159,12 @@ class DemultiplexedEventChannel extends Terminator
 				// +this)).printStackTrace();
 			}
 			this.fireCount = 0;
-			super.setState(state);
+			super.setState(state, false);
+		}
+		
+		DemultiplexedEventChannel getDemultiplexedEventChannel()
+		{
+			return(DemultiplexedEventChannel.this);
 		}
 
 		Object fire()

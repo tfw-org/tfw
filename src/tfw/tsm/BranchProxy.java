@@ -69,7 +69,7 @@ public final class BranchProxy implements Proxy
 		
 		for (int i=0 ; i < proxies.length ; i++)
 		{
-			TreeComponent treeComponent = (TreeComponent)iterator.next();
+			TreeComponent treeComponent = iterator.next();
 			
 			if (treeComponent instanceof Root)
 			{
@@ -116,6 +116,31 @@ public final class BranchProxy implements Proxy
 		}
 		
 		return(proxies);
+	}
+	
+	public Proxy getParentProxy()
+	{
+		TreeComponent branchParent = branch.immediateParent;
+		
+		if (branchParent == null)
+		{
+			return(null);
+		}
+		else if (branchParent instanceof Root)
+		{
+			return(new RootProxy((Root)branchParent));
+		}
+		else if (branchParent instanceof MultiplexedBranch)
+		{
+			return(new MultiplexedBranchProxy((MultiplexedBranch)branchParent));
+		}
+		else if (branchParent instanceof Branch)
+		{
+			return(new BranchProxy((Branch)branchParent));
+		}
+		
+		throw new IllegalStateException(
+			"Parent is not a branch/multiplexedBranch");
 	}
 	
 	public boolean equals(Object obj)

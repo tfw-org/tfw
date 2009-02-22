@@ -24,10 +24,13 @@
  */
 package tfw.tsm;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 import tfw.check.Argument;
+import tfw.tsm.DemultiplexedEventChannel.DemultiSource;
 import tfw.tsm.ecd.EventChannelDescription;
+import tfw.tsm.ecd.StatelessTriggerECD;
 import tfw.value.ValueException;
 
 /**
@@ -38,7 +41,7 @@ class Terminator implements EventChannel, CommitRollbackListener
     private final EventChannelDescription ecd;
 
     /** The subscribing sinks for this event channel. */
-    private final HashSet<Sink> sinks = new HashSet<Sink>();
+    private final ArrayList<Sink> sinks = new ArrayList<Sink>();
 
     /** The current state value for the event channel. */
     private Object state = null;
@@ -56,7 +59,7 @@ class Terminator implements EventChannel, CommitRollbackListener
     private Source rollbackSource = null;
 
     /** Any sinks which haven't been initialized. */
-    private Set<Sink> uninitializedSinks = null;
+    private ArrayList<Sink> uninitializedSinks = null;
 
     /** The branch associated with this terminator. */
     protected TreeComponent component = null;
@@ -103,13 +106,24 @@ class Terminator implements EventChannel, CommitRollbackListener
     // It should be removed if the investigation does not pan out.
     Sink[] getSinks()
     {
-        return (Sink[]) sinks.toArray(new Sink[sinks.size()]);
+        return (sinks.toArray(new Sink[sinks.size()]));
     }
 
-    private void updateSinks(Set<Sink> set)
+    private int updateSinksArrayLength = 0;
+    private Sink[] updateSinksArray = new Sink[updateSinksArrayLength];
+    private void updateSinks(ArrayList<Sink> set)
     {
-        for (Sink sink : set)
+    	updateSinksArrayLength = set.size();
+    	if (updateSinksArray.length < updateSinksArrayLength)
+    	{
+    		updateSinksArray = new Sink[updateSinksArrayLength];
+    	}
+    	
+    	set.toArray(updateSinksArray);
+        for (int i=0 ; i < updateSinksArrayLength ; i++)
         {
+        	Sink sink = updateSinksArray[i];
+        	
             if (sink.isTriggering())
             {
                 sink.stateChange();
@@ -232,17 +246,23 @@ class Terminator implements EventChannel, CommitRollbackListener
                     + ecd.getConstraint() + "'");
         }
 
-        sinks.add(sink);
+        if (!sinks.contains(sink))
+        {
+        	sinks.add(sink);
+        }
         sink.setEventChannel(this);
 
         if (ecd.isFireOnConnect() && (state != null))
         {
             if (uninitializedSinks == null)
             {
-                uninitializedSinks = new HashSet<Sink>();
+                uninitializedSinks = new ArrayList<Sink>();
             }
 
-            uninitializedSinks.add(sink);
+            if (!uninitializedSinks.contains(sink))
+            {
+                uninitializedSinks.add(sink);
+            }
             component.getTransactionManager().addEventChannelFire(this);
         }
     }
@@ -321,9 +341,13 @@ class Terminator implements EventChannel, CommitRollbackListener
         }
 
         if ((forwardingEventChannel == null)
-                && (this.state != this.previousState))
+            && (this.state != this.previousState)
+            && !(getECD() instanceof StatelessTriggerECD)
+            && !(source instanceof Multiplexer.MultiSource)
+            && !(source instanceof DemultiplexedEventChannel.DemultiSource)
+            && !(differentSlotChange(source, stateSource)))
         {
-            String stateSourceName = "Unkown";
+            String stateSourceName = "Unknown";
             if ((stateSource != null)
                     && (stateSource.getTreeComponent() != null))
             {
@@ -342,7 +366,8 @@ class Terminator implements EventChannel, CommitRollbackListener
                             + ". The second attempt was made by "
                             + source.getTreeComponent().getName() + "("
                             + source.getTreeComponent() + ")"
-                            + " and the new state value is " + state);
+                            + " and the new state value is " + state
+                            + " source=" + source);
         }
 
         if (stateChangeRule.isChange(this.state, state))
@@ -385,15 +410,15 @@ class Terminator implements EventChannel, CommitRollbackListener
         isStateChanged = false;
     }
 
-    private Set<Sink> resetUninitializedSinks()
+    private ArrayList<Sink> resetUninitializedSinks()
     {
-        Set<Sink> temp = null;
+        ArrayList<Sink> temp = null;
 
         synchronized (this)
         {
             if (uninitializedSinks == null)
             {
-                temp = new HashSet<Sink>();
+                temp = new ArrayList<Sink>();
             }
             else
             {
@@ -470,6 +495,25 @@ class Terminator implements EventChannel, CommitRollbackListener
             this.exportTags = new HashSet<String>();
         }
         this.exportTags.add(exportTag);
+    }
+    
+    private static boolean differentSlotChange(Source source, Source stateSource)
+    {
+    	if (stateSource == null)
+    	{
+    		return(true);
+    	}
+    	if (source instanceof DemultiplexedEventChannel.DemultiSource &&
+    		stateSource instanceof DemultiplexedEventChannel.DemultiSource)
+    	{
+    		DemultiSource s1 = (DemultiSource)source;
+    		DemultiSource s2 = (DemultiSource)stateSource;
+    		
+    		return(s1.getDemultiplexedEventChannel().demultiplexSlotId !=
+    			s2.getDemultiplexedEventChannel().demultiplexSlotId);
+    	}
+    	
+    	return(true);
     }
 
     /**

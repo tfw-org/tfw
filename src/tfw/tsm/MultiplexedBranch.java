@@ -24,6 +24,7 @@
  */
 package tfw.tsm;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -56,7 +57,7 @@ public class MultiplexedBranch extends BranchComponent
     {
         super(name, null, null, multiplexers);
         
-        this.multiplexers = (Multiplexer[])multiplexers.clone();
+        this.multiplexers = multiplexers.clone();
     }
 
     /**
@@ -94,7 +95,7 @@ public class MultiplexedBranch extends BranchComponent
         Argument.assertNotNull(child, "child");
         Argument.assertNotNull(slotId, "slotId");
         
-        Branch subBranch = (Branch)subBranchFromSlotId.get(slotId);
+        Branch subBranch = subBranchFromSlotId.get(slotId);
         if (subBranch == null)
         {
         	subBranch = new Branch(getName() + "[" + slotId + "]");
@@ -131,7 +132,7 @@ public class MultiplexedBranch extends BranchComponent
                     + ")' for which no slot identifier exists");
         }
 
-        Branch subBranch = (Branch)subBranchFromSlotId.get(slotId);
+        Branch subBranch = subBranchFromSlotId.get(slotId);
         if (subBranch == null)
         {
             throw new IllegalStateException("Attempt to remove '"
@@ -142,7 +143,8 @@ public class MultiplexedBranch extends BranchComponent
         slotIdFromChild.remove(child);
         subBranch.remove(child);
         
-        if (subBranch.immediateChildren.size() == 0)
+        if (subBranch.immediateChildren == null ||
+        	subBranch.immediateChildren.size() == 0)
         {
         	removeChild(subBranch);
         	subBranchFromSlotId.remove(slotId);
@@ -167,7 +169,7 @@ public class MultiplexedBranch extends BranchComponent
 
     public synchronized final void removeAll(Object slotId)
     {
-        Branch subBranch = (Branch) this.subBranchFromSlotId.get(slotId);
+        Branch subBranch = subBranchFromSlotId.get(slotId);
         if (subBranch != null)
         {
             Object[] children = subBranch.immediateChildren.toArray();
@@ -189,5 +191,15 @@ public class MultiplexedBranch extends BranchComponent
     final Object getSlotId(TreeComponent child)
     {
         return slotIdFromChild.get(child);
+    }
+    
+    public Collection<Branch> getSubBranches()
+    {
+    	return(subBranchFromSlotId.values());
+    }
+    
+    Multiplexer[] getMultiplexers()
+    {
+    	return(multiplexers.clone());
     }
 }

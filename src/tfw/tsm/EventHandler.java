@@ -73,7 +73,7 @@ abstract class EventHandler extends Leaf
                             + " == 0 not allowed");
         }
 
-        Iterator sinks = getSinks().values().iterator();
+        Iterator<Sink> sinks = getSinks().values().iterator();
 
         while (sinks.hasNext())
         {
@@ -155,6 +155,11 @@ abstract class EventHandler extends Leaf
                     + ecd.getEventChannelName()
                     + "' is stateless, no state available.");
         }
+    }
+    
+    protected final long getTransactionId()
+    {
+    	return(getTransactionManager().getCurrentlyExecutingTransactionId());
     }
 
     /**

@@ -24,84 +24,49 @@
  */
 package tfw.tsm;
 
-import java.util.Comparator;
+import tfw.tsm.TransactionMgr.AddComponentRunnable;
+import tfw.tsm.TransactionMgr.RemoveComponentRunnable;
 
 class TransactionMgrUtil
 {
 	private TransactionMgrUtil() {}
 	
-	private static long counter = 0;
-	
-	public static class AddRemoveSetContainer
-	{
-		private final long count;
-		private final Object object;
-		
-		private AddRemoveSetContainer(Object object)
-		{
-			this.count = counter++;
-			this.object = object;
-		}
-	}
-	
-	public static synchronized AddRemoveSetContainer createAddRemoveSetContainer(
-		TransactionMgr.AddComponentRunnable addComponentRunnable)
-	{
-		return(new AddRemoveSetContainer(addComponentRunnable));
-	}
-	
-	public static synchronized AddRemoveSetContainer createAddRemoveSetContainer(
-		TransactionMgr.RemoveComponentRunnable removeComponentRunnable)
-	{
-		return(new AddRemoveSetContainer(removeComponentRunnable));
-	}
-	
-	public static synchronized AddRemoveSetContainer createAddRemoveSetContainer(
-		Initiator.SourceNState sourceNState)
-	{
-		return(new AddRemoveSetContainer(sourceNState));
-	}
-	
-	public static void postAddRemoveSetsToQueue(AddRemoveSetContainer[] containers,
+	public static void postAddRemoveSetsToQueue(Object[] objects,
 		TransactionMgr transactionMgr)
 	{
-		for (int i=0 ; i < containers.length ; i++)
+		transactionMgr.lockTransactionQueue();
+		
+		try
 		{
-			if (containers[i].object instanceof TransactionMgr.AddComponentRunnable)
+			for (int i=0 ; i < objects.length ; i++)
 			{
-				transactionMgr.addComponent(
-					(TransactionMgr.AddComponentRunnable)containers[i].object);
+				if (objects[i] instanceof TransactionMgr.AddComponentRunnable)
+				{
+					AddComponentRunnable acr = (AddComponentRunnable)objects[i];
+					acr.setTransactionMgr(transactionMgr);
+					transactionMgr.addComponent(acr);
+				}
+				else if (objects[i] instanceof TransactionMgr.RemoveComponentRunnable)
+				{
+					RemoveComponentRunnable rcr = (RemoveComponentRunnable)objects[i];
+					rcr.setTransactionMgr(transactionMgr);
+					transactionMgr.removeComponent(rcr);
+				}
+				else if (objects[i] instanceof Initiator.TransactionContainer)
+				{
+					Initiator.TransactionContainer transactionContainer =
+						(Initiator.TransactionContainer)objects[i];
+					
+					transactionMgr.addStateChange(
+						transactionContainer.state.sources,
+						transactionContainer.state.state,
+						transactionContainer.transactionState);
+				}
 			}
-			else if (containers[i].object instanceof TransactionMgr.RemoveComponentRunnable)
-			{
-				transactionMgr.removeComponent(
-					(TransactionMgr.RemoveComponentRunnable)containers[i].object);
-			}
-			else if (containers[i].object instanceof Initiator.SourceNState)
-			{
-				Initiator.SourceNState sourceNState =
-					(Initiator.SourceNState)containers[i].object;
-				
-				transactionMgr.addStateChange(
-					sourceNState.sources, sourceNState.state);
-			}
+		}
+		finally
+		{
+			transactionMgr.unlockTransactionQueue();
 		}
 	}
-	
-	private static Comparator comparator = new Comparator()
-	{
-		public int compare(Object object1, Object object2)
-		{
-			AddRemoveSetContainer aRSC1 = (AddRemoveSetContainer)object1;
-			AddRemoveSetContainer aRSC2 = (AddRemoveSetContainer)object2;
-			
-			if (aRSC1.count < aRSC2.count)
-				return(-1);
-			else if (aRSC1.count > aRSC2.count)
-				return(1);
-			else
-				return(0);
-		}
-		
-	};
 }

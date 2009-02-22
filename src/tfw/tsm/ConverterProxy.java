@@ -24,9 +24,10 @@
  */
 package tfw.tsm;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.TreeMap;
+
 import tfw.check.Argument;
 
 public final class ConverterProxy implements Proxy
@@ -48,7 +49,7 @@ public final class ConverterProxy implements Proxy
 	public SourceProxy[] getSourceProxies()
 	{
 		Collection<Source> collection =
-			new TreeMap<String, Source>(converter.sources).values();
+			new ArrayList<Source>(converter.sources);
 		Iterator<Source> iterator = collection.iterator();
 		SourceProxy[] sp = new SourceProxy[collection.size()];
 		

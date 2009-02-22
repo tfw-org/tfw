@@ -76,24 +76,27 @@ public class ClassValueConstraint extends ValueConstraint
     /** The string used to represent a value which complies with the constraint. */
     public static final String VALID = "Valid";
     
-    private static final Map constraints = getIntialConstraints();
-
+    private static final Map<Class<?>, ClassValueConstraint> constraints =
+    	getInitialConstraints();
+    
     /** The class of the value. */
-    protected final Class valueType;
+    protected final Class<?> valueType;
 
     /**
      * Constructs a constraint
      * @param valueType the type for this constraint.
      */
-    protected ClassValueConstraint(Class valueType)
+    protected ClassValueConstraint(Class<?> valueType)
     {
         Argument.assertNotNull(valueType, "valueType");
         this.valueType = valueType;
     }
 
-    private static Map getIntialConstraints()
+    private static Map<Class<?>, ClassValueConstraint> getInitialConstraints()
     {
-        HashMap map = new HashMap();
+        HashMap<Class<?>, ClassValueConstraint> map =
+        	new HashMap<Class<?>, ClassValueConstraint>();
+        
         map.put(BOOLEAN.valueType, BOOLEAN);
         map.put(OBJECT.valueType, OBJECT);
         map.put(STRING.valueType, STRING);
@@ -106,9 +109,9 @@ public class ClassValueConstraint extends ValueConstraint
      * @param valueType the class for the value constraint.
      * @return an instance of a value constraint based on the specified class.
      */
-    public static ClassValueConstraint getInstance(Class valueType)
+    public static ClassValueConstraint getInstance(Class<?> valueType)
     {
-        ClassValueConstraint constraint = (ClassValueConstraint) constraints.get(valueType);
+        ClassValueConstraint constraint = constraints.get(valueType);
 
         if (constraint == null)
         {
