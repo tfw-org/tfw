@@ -13,13 +13,11 @@ class TransactionStateImpl implements TransactionState
 		transactionIdFuture = new CdlFuture<Long>();
 	}
 	
-	@Override
 	public Future<?> getResultFuture()
 	{
 		return(resultFuture);
 	}
 
-	@Override
 	public Future<Long> getTransactionIdFuture()
 	{
 		return(transactionIdFuture);
