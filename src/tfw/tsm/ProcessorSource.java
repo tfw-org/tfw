@@ -27,7 +27,6 @@ package tfw.tsm;
 import tfw.tsm.ecd.EventChannelDescription;
 import tfw.value.ValueException;
 
-
 /**
  *
  */
@@ -59,23 +58,23 @@ class ProcessorSource extends Source
         //                "Attempt to overwrite state on event channel '" +
         //                this.getEventChannelName() + "'.");
         //        }
-        if (getEventChannel() == null)
+        if (eventChannel == null)
         {
             throw new IllegalStateException(
                 "Attempt to set state using disconnected source");
         }
-		getConstraint().checkValue(state);
+		ecd.getConstraint().checkValue(state);
 
         this.state = state;
         if (defer)
         {
-        	getEventChannel().addDeferredStateChange(this);
+        	eventChannel.addDeferredStateChange(this);
         }
         else
         {
         	fire();
         	getTreeComponent().getTransactionManager().addChangedEventChannel(
-        		getEventChannel());
+        		eventChannel);
         }
     }
 
@@ -86,7 +85,7 @@ class ProcessorSource extends Source
     {
         Object temp = state;
         state = null;
-        getEventChannel().setState(this, temp, null);
+        eventChannel.setState(this, temp, null);
         return temp;
     }
 }

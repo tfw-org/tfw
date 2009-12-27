@@ -39,12 +39,12 @@ public final class SinkProxy implements Proxy
 	
 	public EventChannelProxy getEventChannelProxy()
 	{
-		return(new EventChannelProxy((Terminator)sink.getEventChannel()));
+		return(new EventChannelProxy((Terminator)sink.eventChannel));
 	}
 	
 	public String getName()
 	{
-		return(sink.getEventChannelName());
+		return(sink.ecd.getEventChannelName());
 	}
 	
 	public boolean isTriggering()

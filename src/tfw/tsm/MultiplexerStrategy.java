@@ -38,14 +38,6 @@ public interface MultiplexerStrategy
      */
     public MultiStateAccessor toMultiStateAccessor(Object multiState);
     
-    /**
-     * Provides a factory for build a multi-state object.
-     * @param multiState The initial state. This value may be <code>null</code>.
-     * @return A factory for creating a multi-state object.
-     */
-    public MultiStateFactory toMultiStateFactory(Object multiState);
-
-    
     public Object getDefaultSlotState();
     
     /**
@@ -65,21 +57,6 @@ public interface MultiplexerStrategy
 
     }
     
-    /**
-     * An interface for creating a multi-state object.
-     */
-    public interface MultiStateFactory{
-        /**
-         * Sets the state associated with the given key.
-         * @param key The key to which the state is associated.
-         * @param state The new state value.
-         */
-        public void setState(Object key, Object state);
-
-        /**
-         * Returns an object which represents the multiplexed state.
-         * @return The multi-state object.
-         */
-        public Object toMultiState();
-    }
+    public Object addToMultiState(Object originalMultiState, Object[] keys,
+    	Object[] values, int numberOfKeyValues);
 }

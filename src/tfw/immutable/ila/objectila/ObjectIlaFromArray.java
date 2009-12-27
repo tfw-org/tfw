@@ -32,12 +32,17 @@ import tfw.immutable.ImmutableProxy;
 public final class ObjectIlaFromArray
 {
     private ObjectIlaFromArray() {}
-
+    
     public static ObjectIla create(Object[] array)
+    {
+    	return create(array, true);
+    }
+
+    public static ObjectIla create(Object[] array, boolean copyArrayIn)
     {
     	Argument.assertNotNull(array, "array");
 
-		return new MyObjectIla(array);
+		return new MyObjectIla(array, copyArrayIn);
     }
 
     private static class MyObjectIla extends AbstractObjectIla
@@ -45,11 +50,11 @@ public final class ObjectIlaFromArray
     {
 		private final Object[] array;
 
-		MyObjectIla(Object[] array)
+		MyObjectIla(Object[] array, boolean copyArrayIn)
 		{
 		    super(array.length);
 		    
-		    this.array = (Object[])array.clone();
+		    this.array = copyArrayIn ? (Object[])array.clone() : array;
 		}
 
 		protected void toArrayImpl(Object[] array, int offset,

@@ -77,10 +77,11 @@ class InitiatorSource extends Source
         if (!this.getTreeComponent().isRooted())
         {
             throw new IllegalStateException(
-                    "Attempt to set state on disconnected source.");
+            	"Attempt to set state on disconnected event channel (" +
+            	eventChannel.getECD()+").");
         }
-        getConstraint().checkValue(state);
-        this.stateQueue.push(new EventChannelNState(this.getEventChannel(),
+        ecd.getConstraint().checkValue(state);
+        this.stateQueue.push(new EventChannelNState(this.eventChannel,
                 state));
     }
 

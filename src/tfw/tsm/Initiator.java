@@ -239,7 +239,7 @@ public class Initiator extends Leaf
 
         try
         {
-            source.getConstraint().checkValue(state);
+            source.ecd.getConstraint().checkValue(state);
         }
         catch (ValueException ve)
         {

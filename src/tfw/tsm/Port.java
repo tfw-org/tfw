@@ -26,18 +26,15 @@ package tfw.tsm;
 
 import tfw.tsm.ecd.EventChannelDescription;
 
-import tfw.value.ValueConstraint;
-
 /**
  * The base class for sinks and sources.
  */
 abstract class Port
 {
-    private final EventChannelDescription ecd;
-
-    private final String name;
-
-    private EventChannel eventChannel = null;
+	final EventChannelDescription ecd;
+	final String name;
+	
+	EventChannel eventChannel = null;
 
     private TreeComponent component = null;
 
@@ -55,11 +52,6 @@ abstract class Port
     {
         this.name = name;
         this.ecd = ecd;
-    }
-
-    EventChannelDescription getECD()
-    {
-        return ecd;
     }
 
     /**
@@ -107,43 +99,6 @@ abstract class Port
     }
 
     /**
-     * Returns the event channel for this port. The value may be null.
-     * 
-     * @return the event channel for this port.
-     */
-    EventChannel getEventChannel()
-    {
-        if (eventChannel == null)
-        {
-            throw new IllegalStateException(name
-                    + " is not connected to event channel '"
-                    + ecd.getEventChannelName() + "'");
-        }
-
-        return eventChannel;
-    }
-
-    /**
-     * Returns the name of the event channel for this port.
-     * 
-     * @return the name of the event channel for this port.
-     */
-    String getEventChannelName()
-    {
-        return ecd.getEventChannelName();
-    }
-
-    /**
-     * Returns the value constraint for this port.
-     * 
-     * @return the value constraint for this port.
-     */
-    ValueConstraint getConstraint()
-    {
-        return ecd.getConstraint();
-    }
-
-    /**
      * Sets this ports associated tree component.
      * 
      * @param component
@@ -175,15 +130,5 @@ abstract class Port
         }
 
         return this.component;
-    }
-
-    /**
-     * Get the name of this port.
-     * 
-     * @return the port name.
-     */
-    String getPortName()
-    {
-        return this.name;
     }
 }

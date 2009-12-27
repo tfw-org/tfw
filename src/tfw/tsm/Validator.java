@@ -124,13 +124,13 @@ public abstract class Validator extends RollbackHandler
                     + " not found");
         }
 
-        if (sink.getEventChannel() == null)
+        if (sink.eventChannel == null)
         {
             throw new IllegalStateException(sinkEventChannel
                     + " is not connected to an event channel");
         }
 
-        return (sink.getEventChannel().getPreviousCycleState());
+        return (sink.eventChannel.getPreviousCycleState());
     }
 
     final void stateChange(EventChannel eventChannel)

@@ -106,7 +106,7 @@ class Terminator implements EventChannel, CommitRollbackListener
     // It should be removed if the investigation does not pan out.
     Sink[] getSinks()
     {
-        return (sinks.toArray(new Sink[sinks.size()]));
+        return sinks.toArray(new Sink[sinks.size()]);
     }
 
     private int updateSinksArrayLength = 0;
@@ -208,11 +208,11 @@ class Terminator implements EventChannel, CommitRollbackListener
 
     void addSource(Source source)
     {
-        if (!ecd.getConstraint().isCompatible(source.getConstraint()))
+        if (!ecd.getConstraint().isCompatible(source.ecd.getConstraint()))
         {
             throw new TerminatorException("The source '"
                     + source.getFullyQualifiedName() + ", with '"
-                    + source.getConstraint()
+                    + source.ecd.getConstraint()
                     + "' is not compatible with the event channel '"
                     + ecd.getEventChannelName() + "' with '"
                     + ecd.getConstraint() + "'");
@@ -236,11 +236,11 @@ class Terminator implements EventChannel, CommitRollbackListener
     {
         Argument.assertNotNull(sink, "sink");
 
-        if (!sink.getConstraint().isCompatible(ecd.getConstraint()))
+        if (!sink.ecd.getConstraint().isCompatible(ecd.getConstraint()))
         {
             throw new TerminatorException("The sink '"
                     + sink.getFullyQualifiedName() + ", with '"
-                    + sink.getConstraint()
+                    + sink.ecd.getConstraint()
                     + "' is not compatible with the event channel '"
                     + ecd.getEventChannelName() + "' with '"
                     + ecd.getConstraint() + "'");
@@ -501,7 +501,7 @@ class Terminator implements EventChannel, CommitRollbackListener
     {
     	if (stateSource == null)
     	{
-    		return(true);
+    		return true;
     	}
     	if (source instanceof DemultiplexedEventChannel.DemultiSource &&
     		stateSource instanceof DemultiplexedEventChannel.DemultiSource)
@@ -509,11 +509,11 @@ class Terminator implements EventChannel, CommitRollbackListener
     		DemultiSource s1 = (DemultiSource)source;
     		DemultiSource s2 = (DemultiSource)stateSource;
     		
-    		return(s1.getDemultiplexedEventChannel().demultiplexSlotId !=
-    			s2.getDemultiplexedEventChannel().demultiplexSlotId);
+    		return s1.getDemultiplexedEventChannel().demultiplexSlotId !=
+    			s2.getDemultiplexedEventChannel().demultiplexSlotId;
     	}
     	
-    	return(true);
+    	return true;
     }
 
     /**
@@ -534,5 +534,10 @@ class Terminator implements EventChannel, CommitRollbackListener
             return this.exportTags.contains(exportTag);
         }
         return false;
+    }
+    
+    public String getName()
+    {
+    	return "EventChannel: "+ecd.getEventChannelName();
     }
 }

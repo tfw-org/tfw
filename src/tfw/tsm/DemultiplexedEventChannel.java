@@ -65,8 +65,8 @@ class DemultiplexedEventChannel extends Terminator
         Argument.assertNotNull(parent, "parent");
         this.parent = parent;
         this.demultiplexSlotId = demultiplexSlotId;
-		this.deMultiSource = new DemultiSource(parent.processorMultiSource
-                .getPortName()
+		this.deMultiSource = new DemultiSource(
+			parent.processorMultiSource.name
                 + "[" + demultiplexSlotId + "]", parent.valueECD);
         this.deMultiSource.setTreeComponent(parent.getTreeComponent());
         super.add(this.deMultiSource);
@@ -131,7 +131,7 @@ class DemultiplexedEventChannel extends Terminator
                     "Demultiplexing error, attempt to set state to null in sub-channel '"
                             + this.demultiplexSlotId
                             + "' of multiplexed channel '"
-                            + parent.multiSink.getEventChannelName() + "'");
+                            + parent.multiSink.ecd.getEventChannelName() + "'");
         }
         this.deMultiSource.setState(state);
     }

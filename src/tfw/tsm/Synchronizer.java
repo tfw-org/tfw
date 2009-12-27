@@ -57,6 +57,11 @@ public abstract class Synchronizer extends Processor
     	}
     	
     	public void commit() {}
+    	
+    	public String getName()
+    	{
+    		return Synchronizer.this.getName();
+    	}
     };
     
     /**

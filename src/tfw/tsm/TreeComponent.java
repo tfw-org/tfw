@@ -97,7 +97,7 @@ public class TreeComponent
         	
         	for (int i=0 ; i < sinks.length ; i++)
         	{
-        		arrayList.add(sinks[i].getECD());
+        		arrayList.add(sinks[i].ecd);
         	}
         	sinksECDList = Collections.unmodifiableList(arrayList);
         }
@@ -137,11 +137,11 @@ public class TreeComponent
             {
                 sinks[i].setTreeComponent(this);
 
-                if (map.put(sinks[i].getECD(), sinks[i]) != null)
+                if (map.put(sinks[i].ecd, sinks[i]) != null)
                 {
                     throw new IllegalArgumentException(
                             "Multiple sinks detected for event channel '"
-                                    + sinks[i].getEventChannelName() + "'");
+                                    + sinks[i].ecd.getEventChannelName() + "'");
                 }
             }
 
@@ -176,7 +176,7 @@ public class TreeComponent
                 {
                     throw new IllegalArgumentException(
                             "Multiple sources detected for event channel '"
-                                    + sources[i].getEventChannelName() + "'");
+                                    + sources[i].ecd.getEventChannelName() + "'");
                 }
                 
                 list.add(sources[i]);
@@ -327,7 +327,7 @@ public class TreeComponent
     	{
     		Source source = sources.get(i);
     		
-    		if (source.getEventChannelName().equals(eventChannelName))
+    		if (source.ecd.getEventChannelName().equals(eventChannelName))
     		{
     			return(source);
     		}
@@ -410,15 +410,15 @@ public class TreeComponent
 
             Sink sink = sinks.get(eventChannelArray[i]);
 
-            if (sink.getEventChannel() == null)
+            if (sink.eventChannel == null)
             {
                 throw new IllegalStateException(eventChannelArray[i]
                         + " is not connected to an event channel");
             }
 
-            if (!(sink.getConstraint() instanceof NullConstraint))
+            if (!(sink.ecd.getConstraint() instanceof NullConstraint))
             {
-                if (sink.getEventChannel().getState() == null)
+                if (sink.eventChannel.getState() == null)
                 {
                     return false;
                 }
@@ -518,10 +518,10 @@ public class TreeComponent
 
         for (int i = 0; i < ports.length; i++)
         {
-            if (eventChannels.containsKey(ports[i].getEventChannelName()))
+            if (eventChannels.containsKey(ports[i].ecd.getEventChannelName()))
             {
-                EventChannel t = eventChannels.get(ports[i]
-                    .getEventChannelName());
+                EventChannel t = eventChannels.get(
+                	ports[i].ecd.getEventChannelName());
                 t.add(ports[i]);
                 connections.remove(ports[i]);
             }
@@ -540,14 +540,14 @@ public class TreeComponent
     {
     	for (Sink sink : sinks.values())
     	{
-    		sink.getEventChannel().remove(sink);
+    		sink.eventChannel.remove(sink);
     	}
 
         for (int i=0 ; i < sources.size(); i++)
         {
             Source source = sources.get(i);
             
-            source.getEventChannel().remove(source);
+            source.eventChannel.remove(source);
         }
     }
 

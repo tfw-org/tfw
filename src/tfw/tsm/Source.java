@@ -39,7 +39,7 @@ abstract class Source extends Port
     
     boolean isStateSource()
     {
-        return (getEventChannel().getCurrentStateSource() == this);
+        return (eventChannel.getCurrentStateSource() == this);
     }
 
 
@@ -48,7 +48,7 @@ abstract class Source extends Port
         StringBuffer sb = new StringBuffer();
         sb.append(super.toString());
         sb.append("[name = ").append(getFullyQualifiedName());
-        sb.append(", eventChannelName = ").append(getEventChannelName());
+        sb.append(", eventChannelName = ").append(ecd.getEventChannelName());
 //        sb.append(", stateQueue = ").append(stateQueue).append("]");
 
         return sb.toString();

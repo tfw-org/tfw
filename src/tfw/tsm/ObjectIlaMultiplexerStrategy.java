@@ -24,10 +24,6 @@
  */
 package tfw.tsm;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
 import tfw.immutable.ila.objectila.ObjectIla;
@@ -46,14 +42,6 @@ public class ObjectIlaMultiplexerStrategy implements MultiplexerStrategy
     {
         Argument.assertNotNull(multiState, "multiState");
         return new MyMultiStateAccessor((ObjectIla) multiState);
-    }
-
-    /**
-     * @see tfw.tsm.MultiplexerStrategy#toMultiStateFactory(java.lang.Object)
-     */
-    public MultiStateFactory toMultiStateFactory(Object multiState)
-    {
-        return new MyMultiStateFactory((ObjectIla) multiState);
     }
 
     public Object getDefaultSlotState(){
@@ -91,50 +79,37 @@ public class ObjectIlaMultiplexerStrategy implements MultiplexerStrategy
             return null;
         }
     }
-
-    private class MyMultiStateFactory implements MultiStateFactory
+    
+    public Object addToMultiState(Object originalMultiState, Object[] keys,
+    	Object[] values, int numberOfKeyValuePairs)
     {
-
-        List<Object> list = new ArrayList<Object>();
-
-        MyMultiStateFactory(ObjectIla ila)
-        {
-            if (ila != null)
-            {
-                try
-                {
-                    list.addAll(Arrays.asList(ila.toArray()));
-                }
-                catch (DataInvalidException e)
-                {
-                    throw new RuntimeException(
-                            "Exception occurred accessing multiplexed state:"
-                                    + e.getMessage(), e);
-                }
-            }
-        }
-
-        /**
-         * @see tfw.tsm.MultiplexerStrategy.MultiStateFactory#setState(java.lang.Object,
-         *      java.lang.Object)
-         */
-        public void setState(Object key, Object state)
-        {
-            int index = ((Integer) key).intValue();
-            while (list.size() - 1 < index)
-            {
-                list.add(null);
-            }
-            list.set(index, state);
-        }
-
-        /**
-         * @see tfw.tsm.MultiplexerStrategy.MultiStateFactory#toMultiState()
-         */
-        public Object toMultiState()
-        {
-            return ObjectIlaFromArray.create(this.list.toArray());
-        }
+    	Object[] array = null;
+    	
+    	try
+    	{
+    		array = ((ObjectIla)originalMultiState).toArray();
+    	}
+    	catch (DataInvalidException e)
+    	{
+    		throw new RuntimeException(
+    			"Exception occurred accessing multiplexed state:" +
+    				e.getMessage(), e);
+    	}
+    	
+    	for (int i=0 ; i < numberOfKeyValuePairs ; i++)
+    	{
+    		int index = ((Integer)keys[i]).intValue();
+    		
+    		if (array.length -1 < index)
+    		{
+    			Object[] newArray = new Object[index+1];
+    			System.arraycopy(array, 0, newArray, 0, array.length);
+    			array = newArray;
+    		}
+    		
+    		array[index] = values[i];
+    	}
+    	
+    	return ObjectIlaFromArray.create(array, false);
     }
-
 }

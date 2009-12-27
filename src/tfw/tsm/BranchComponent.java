@@ -44,7 +44,8 @@ public abstract class BranchComponent extends TreeComponent
 
     /** This component's children */
     private Map<String, TreeComponent> children = null;
-    private List<Object> deferredAddRemoveSets = null;
+    private final ArrayList<Object> deferredAddRemoveSets =
+    	new ArrayList<Object>();
 	protected Set<TreeComponent> immediateChildren = null;
 	
 	public abstract void remove(TreeComponent treeComponent);
@@ -499,13 +500,12 @@ public abstract class BranchComponent extends TreeComponent
     	}
     	else
     	{
-    		if (deferredAddRemoveSets == null)
-    		{
-    			deferredAddRemoveSets = new ArrayList<Object>();
-    		}
     		for (Runnable runnable : runnables)
     		{
-    			deferredAddRemoveSets.add(runnable);
+    			synchronized (deferredAddRemoveSets)
+    			{
+        			deferredAddRemoveSets.add(runnable);
+    			}
     			if (runnable instanceof AddComponentRunnable)
     			{
     				AddComponentRunnable acr = (AddComponentRunnable)runnable;
@@ -586,11 +586,10 @@ public abstract class BranchComponent extends TreeComponent
     	}
     	else
     	{
-    		if (deferredAddRemoveSets == null)
+    		synchronized (deferredAddRemoveSets)
     		{
-    			deferredAddRemoveSets = new ArrayList<Object>();
+        		deferredAddRemoveSets.add(addComponentRunnable);
     		}
-    		deferredAddRemoveSets.add(addComponentRunnable);
     		
     		if (child instanceof Initiator)
             {
@@ -626,10 +625,10 @@ public abstract class BranchComponent extends TreeComponent
     		{
     			BranchComponent ptc = (BranchComponent)child;
     			
-    			if (ptc.deferredAddRemoveSets != null)
+    			synchronized (ptc.deferredAddRemoveSets)
     			{
     				allDeferredAddRemoveSets.addAll(ptc.deferredAddRemoveSets);
-    				ptc.deferredAddRemoveSets = null;
+    				ptc.deferredAddRemoveSets.clear();
     			}
     			
     			if (ptc.immediateChildren != null)
@@ -669,12 +668,10 @@ public abstract class BranchComponent extends TreeComponent
     {
     	Argument.assertNotNull(transactionContainer, "transactionContainer");
     	
-    	if (deferredAddRemoveSets == null)
+    	synchronized (deferredAddRemoveSets)
     	{
-    		deferredAddRemoveSets = new ArrayList<Object>();
+        	deferredAddRemoveSets.add(transactionContainer);
     	}
-    	
-    	deferredAddRemoveSets.add(transactionContainer);
     }
     
     /**
@@ -729,11 +726,10 @@ public abstract class BranchComponent extends TreeComponent
     	}
     	else
     	{
-    		if (deferredAddRemoveSets == null)
+    		synchronized (deferredAddRemoveSets)
     		{
-    			deferredAddRemoveSets = new ArrayList<Object>();
+        		deferredAddRemoveSets.add(removeComponentRunnable);
     		}
-    		deferredAddRemoveSets.add(removeComponentRunnable);
     	}
     }
     

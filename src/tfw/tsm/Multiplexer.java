@@ -30,10 +30,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-
 import tfw.check.Argument;
 import tfw.tsm.MultiplexerStrategy.MultiStateAccessor;
-import tfw.tsm.MultiplexerStrategy.MultiStateFactory;
 import tfw.tsm.ecd.EventChannelDescription;
 import tfw.tsm.ecd.ObjectECD;
 
@@ -141,9 +139,9 @@ class Multiplexer implements EventChannel
             fire();
         }
 
-        private int pendingStateChangesArraySize = 0;
-        private DemultiplexedEventChannel[] pendingStateChangesArray =
-        	new DemultiplexedEventChannel[pendingStateChangesArraySize];
+        private int keyValueArraySize = 0;
+        private Object[] keys = new Object[keyValueArraySize];
+        private Object[] values = new Object[keyValueArraySize];
         Object fire()
         {
             if (pendingStateChanges.size() == 0)
@@ -151,28 +149,28 @@ class Multiplexer implements EventChannel
                 throw new IllegalStateException(
                         "No pending state changes to fire.");
             }
-            MultiStateFactory stateFactory = Multiplexer.this.multiStrategy
-                    .toMultiStateFactory(this.getEventChannel().getState());
 
-            pendingStateChangesArraySize = pendingStateChanges.size();
-            if (pendingStateChangesArray.length < pendingStateChangesArraySize)
+            keyValueArraySize = pendingStateChanges.size();
+            if (keys.length < keyValueArraySize)
             {
-            	pendingStateChangesArray =
-            		new DemultiplexedEventChannel[pendingStateChangesArraySize];
+            	keys = new Object[keyValueArraySize];
+            	values = new Object[keyValueArraySize];
             }
-            pendingStateChanges.toArray(pendingStateChangesArray);
+            
+            for (int i=0 ; i < keyValueArraySize ; i++)
+            {
+            	DemultiplexedEventChannel dec = pendingStateChanges.get(i);
+            	
+            	keys[i] = dec.demultiplexSlotId;
+            	values[i] = dec.getState();
+            }
             pendingStateChanges.clear();
-
-            for (int i=0; i < pendingStateChangesArraySize ; i++)
-            {
-                stateFactory.setState(
-                	pendingStateChangesArray[i].demultiplexSlotId,
-                	pendingStateChangesArray[i].getState());
-            }
-            Object multiState = stateFactory.toMultiState();
-            getEventChannel().setState(this, multiState, null);
-            getTreeComponent().getTransactionManager().addChangedEventChannel(
-            	getEventChannel());
+            
+            Object multiState = Multiplexer.this.multiStrategy.addToMultiState(
+            	eventChannel.getState(), keys, values, keyValueArraySize);
+            eventChannel.setState(this, multiState, null);
+            
+            getTreeComponent().getTransactionManager().addChangedEventChannel(eventChannel);
             
             return multiState;
         }
@@ -260,7 +258,7 @@ class Multiplexer implements EventChannel
         if (slotId == null)
         {
             throw new IllegalArgumentException("The specified port, '"
-                    + port.getEventChannelName()
+                    + port.ecd.getEventChannelName()
                     + "', is not from a multiplexed component.");
         }
 
@@ -338,7 +336,7 @@ class Multiplexer implements EventChannel
      */
     public Object getState()
     {
-        return this.multiSink.getEventChannel().getState();
+        return this.multiSink.eventChannel.getState();
     }
 
     /**
@@ -364,7 +362,7 @@ class Multiplexer implements EventChannel
      */
     public void remove(Port port)
     {
-        port.getEventChannel().remove(port);
+        port.eventChannel.remove(port);
     }
 
     /**

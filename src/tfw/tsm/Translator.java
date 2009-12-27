@@ -155,11 +155,11 @@ class Translator extends Terminator
 
         void stateChange()
         {
-            if (getEventChannel().getCurrentStateSource() != translator.parentRelaySource)
+            if (eventChannel.getCurrentStateSource() != translator.parentRelaySource)
             {
 				try{
-					translator.childRelaySource.setState(this.getEventChannel()
-																	 .getState());
+					translator.childRelaySource.setState(
+						eventChannel.getState());
 				} catch (ValueException ve){
 					throw new IllegalArgumentException(ve.getMessage());
 				}

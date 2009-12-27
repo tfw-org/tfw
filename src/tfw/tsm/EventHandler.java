@@ -184,13 +184,13 @@ abstract class EventHandler extends Leaf
                     + " not found");
         }
 
-        if (sink.getEventChannel() == null)
+        if (sink.eventChannel == null)
         {
             throw new IllegalStateException(sinkEventChannel
                     + " is not connected to an event channel");
         }
 
-        return (sink.getEventChannel().getPreviousTransactionState());
+        return (sink.eventChannel.getPreviousTransactionState());
     }
 
     /**
@@ -214,14 +214,14 @@ abstract class EventHandler extends Leaf
 					+ sinkEventChannel.getEventChannelName() + "'.");
         }
 
-        if (sink.getEventChannel() == null)
+        if (sink.eventChannel == null)
         {
             throw new IllegalStateException("The requested sink, '"
                     + sinkEventChannel.getEventChannelName()
                     + "', is not connected to an event channel");
         }
 
-        return (sink.getEventChannel().getState());
+        return (sink.eventChannel.getState());
     }
 
     /**
@@ -331,14 +331,14 @@ abstract class EventHandler extends Leaf
 
         void stateChange()
         {
-            Source source = handler.getSource(getEventChannelName());
+            Source source = handler.getSource(ecd.getEventChannelName());
 
             if ((source != null) && source.isStateSource())
             {
                 return;
             }
 
-            handler.stateChange(EventHandlerSink.this.getEventChannel());
+            handler.stateChange(EventHandlerSink.this.eventChannel);
         }
 
         void setHandler(EventHandler handler)

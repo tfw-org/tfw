@@ -325,13 +325,13 @@ public final class TransactionMgr
         for (int i=0; i < sourcesArraySize ; i++)
         {
             Object state = sourcesArray[i].fire();
-            cycleStateChanges.add(sourcesArray[i].getEventChannel());
-            transStateChanges.add(sourcesArray[i].getEventChannel());
+            cycleStateChanges.add(sourcesArray[i].eventChannel);
+            transStateChanges.add(sourcesArray[i].eventChannel);
             if (logger != null)
             {
             	logger.log(Level.INFO, sourcesArray[i].getTreeComponent().getName()
                     + ": sources[" + i + "].fire(): "
-                    + sourcesArray[i].getEventChannelName() + " = " + state);
+                    + sourcesArray[i].ecd.getEventChannelName() + " = " + state);
             }
         }
 
@@ -434,8 +434,8 @@ public final class TransactionMgr
     	if (origProcessorsArray.length < origProcessorsArraySize)
     	{
     		origProcessorsArray = new Processor[origProcessorsArraySize];
-    		processors.toArray(origProcessorsArray);
     	}
+		processors.toArray(origProcessorsArray);
     	
     	for (int i=0 ; i <origProcessorsArraySize ; i++)
     	{
@@ -559,7 +559,7 @@ public final class TransactionMgr
     	for (int i=0 ; i < sources.size() ; i++)
     	{
     		Source source = sources.get(i);
-    		EventChannel eventChannel = source.getEventChannel();
+    		EventChannel eventChannel = source.eventChannel;
     		
     		checkDependenciesNew(fromProcessor, eventChannel, processors,
     			delayedProcessors, visitedProcessors, visitedEventChannels,
@@ -589,7 +589,7 @@ public final class TransactionMgr
     		Source multiSource =
     			demultiplexedEventChannel.getMultiplexer().processorMultiSource;
     		
-    		checkDependenciesNew(fromProcessor, multiSource.getEventChannel(),
+    		checkDependenciesNew(fromProcessor, multiSource.eventChannel,
     			processors, delayedProcessors, visitedProcessors,
     			visitedEventChannels, cache, spaces + 2, dependencyChain);
     	}
@@ -693,9 +693,9 @@ public final class TransactionMgr
             // If the source is connected to a terminator...
             // TODO: Climb up through multiplexors/demultiplexors to
             // to find the terminators (This isn't going to be fun).
-            if (src.getEventChannel() instanceof Terminator)
+            if (src.eventChannel instanceof Terminator)
             {
-                Terminator t = (Terminator) src.getEventChannel();
+                Terminator t = (Terminator) src.eventChannel;
                 if (terminatorCrumbs.add(t) == false)
                 {
                 	continue;
@@ -891,7 +891,7 @@ public final class TransactionMgr
         	if (logger != null)
         	{
         		logger.log(Level.INFO, "commitRollbackListeners[" + i
-                    + "].commit(): ");
+                    + "]: "+commitRollbackListeners[i].getName());
         	}
 
             // System.out.print("*");
@@ -905,7 +905,10 @@ public final class TransactionMgr
     {
         synchronized (this)
         {
-            crListeners.add(listener);
+        	if (!crListeners.contains(listener))
+        	{
+                crListeners.add(listener);
+        	}
         }
     }
 
@@ -923,7 +926,7 @@ public final class TransactionMgr
             StringBuffer sb = new StringBuffer();
             sb
                     .append("A Processor attempted to change state of event channel '");
-            sb.append(source.getEventChannelName());
+            sb.append(source.ecd.getEventChannelName());
             sb.append("' outside of the transaction thread.");
             sb.append(" The source for the state change is '");
             sb.append(source.getFullyQualifiedName()).append("'");
@@ -935,7 +938,7 @@ public final class TransactionMgr
             StringBuffer sb = new StringBuffer();
             sb
                     .append("A Processor attempted to change state of event channel '");
-            sb.append(source.getEventChannelName());
+            sb.append(source.ecd.getEventChannelName());
             sb.append("' outside of an active transaction.");
             sb.append(" The source for the state change is '");
             sb.append(source.getFullyQualifiedName()).append("'");
@@ -946,7 +949,7 @@ public final class TransactionMgr
         {
             throw new IllegalStateException(source.getTreeComponent().getName()
                     + " attempted to change the state of '"
-                    + source.getEventChannelName()
+                    + source.ecd.getEventChannelName()
                     + "' twice in the same state change cycle.");
         }
     }
@@ -983,8 +986,6 @@ public final class TransactionMgr
         {
             processors.add(processor);
         }
-
-        processors.add(processor);
     }
 
     /**

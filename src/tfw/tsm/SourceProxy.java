@@ -39,12 +39,12 @@ public final class SourceProxy implements Proxy
 	
 	public EventChannelProxy getEventChannelProxy()
 	{
-		return(new EventChannelProxy((Terminator)source.getEventChannel()));
+		return(new EventChannelProxy((Terminator)source.eventChannel));
 	}
 	
 	public String getName()
 	{
-		return(source.getEventChannelName());
+		return(source.ecd.getEventChannelName());
 	}
 	
 	public boolean equals(Object obj)

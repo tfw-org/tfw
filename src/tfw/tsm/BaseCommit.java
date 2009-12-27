@@ -54,6 +54,11 @@ abstract class BaseCommit extends EventHandler {
 					BaseCommit.this.debugCommit();
 				}
 			}
+			
+			public String getName()
+			{
+				return BaseCommit.this.getName();
+			}
 		};
 
 	BaseCommit(String name, EventChannelDescription[] triggerSinks,
@@ -118,7 +123,7 @@ abstract class BaseCommit extends EventHandler {
 			throw new IllegalArgumentException(sinkEventChannel + " not found");
 		}
 
-        return sink.getEventChannel().isStateChanged();
+        return sink.eventChannel.isStateChanged();
 
 	}
 
