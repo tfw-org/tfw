@@ -25,37 +25,36 @@
 
 package tfw.immutable.ila.longila.test;
 
-import java.util.Arrays;
 import java.util.Random;
 import junit.framework.TestCase;
+import tfw.immutable.ila.test.IlaTestDimensions;
 import tfw.immutable.ila.longila.LongIla;
-import tfw.immutable.ila.longila.LongIlaFill;
 import tfw.immutable.ila.longila.LongIlaFromArray;
+import tfw.immutable.ila.longila.LongIlaFill;
 
+/**
+ *
+ * @immutables.types=all
+ */
 public class LongIlaFillTest extends TestCase
 {
-	public void testLongIlaFill()
-	{
-		final Random random = new Random();
-		final int LENGTH = 29;
-		final long element = random.nextLong();
-	
-		long[] array = new long[LENGTH];
-	
-		Arrays.fill(array, element);
-		
-		LongIla ila = LongIlaFromArray.create(array);
-		
-		try
-		{
-			LongIlaFill.create(element, -1);
-			fail("length < 0 not checked for!");
-		}
-		catch (IllegalArgumentException iae) {}
-		
-		String s = LongIlaCheck.check(ila,
-			LongIlaFill.create(element, LENGTH));
-		
-		assertNull(s, s);
-	}
+    public void testAll() throws Exception
+    {
+        final Random random = new Random(0);
+        final long value = random.nextLong();
+        final int length = IlaTestDimensions.defaultIlaLength();
+        final long[] array = new long[length];
+        for(int ii = 0; ii < array.length; ++ii)
+        {
+            array[ii] = value;
+        }
+        LongIla targetIla = LongIlaFromArray.create(array);
+        LongIla actualIla = LongIlaFill.create(value, length);
+        final long epsilon = 0L;
+        LongIlaCheck.checkAll(targetIla, actualIla,
+                                  IlaTestDimensions.defaultOffsetLength(),
+                                  IlaTestDimensions.defaultMaxStride(),
+                                  epsilon);
+    }
 }
+// AUTO GENERATED FROM TEMPLATE

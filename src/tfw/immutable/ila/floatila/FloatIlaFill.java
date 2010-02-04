@@ -24,50 +24,62 @@
  */
 package tfw.immutable.ila.floatila;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import tfw.check.Argument;
 import tfw.immutable.ImmutableProxy;
 
+/**
+ *
+ * @immutables.types=all
+ */
 public final class FloatIlaFill
 {
-    private FloatIlaFill() {}
+    private FloatIlaFill()
+    {
+        // non-instantiable class
+    }
 
     public static FloatIla create(float value, long length)
     {
-    	Argument.assertNotLessThan(length, 0, "length");
+        Argument.assertNotLessThan(length, 0, "length");
 
-		return new MyFloatIla(value, length);
+        return new MyFloatIla(value, length);
     }
 
     private static class MyFloatIla extends AbstractFloatIla
-    	implements ImmutableProxy
+        implements ImmutableProxy
     {
-		private float value;
+        private final float value;
 
-		MyFloatIla(float value, long length)
-		{
-		    super(length);
-		    
-		    this.value = value;
-		}
+        MyFloatIla(float value, long length)
+        {
+            super(length);
+            this.value = value;
+        }
 
-		protected void toArrayImpl(float[] array, int offset,
-			long start, int length)
-		{
-		    Arrays.fill(array, offset, offset + length, value);
-		}
-		
-		public Map getParameters()
-		{
-			HashMap map = new HashMap();
-			
-			map.put("name", "FloatIlaFill");
-			map.put("value", new Float(value));
-			map.put("length", new Long(length()));
-			
-			return(map);
-		}
+        protected void toArrayImpl(float[] array, int offset,
+                                   int stride, long start, int length)
+        {
+            final int startPlusLength = (int) (start + length);
+            for(int startInt = (int) start;
+                startInt != startPlusLength;
+                ++startInt, offset += stride)
+            {
+                array[offset] = value;
+            }
+        }
+                
+        public Map getParameters()
+        {
+            HashMap map = new HashMap();
+                        
+            map.put("name", "FloatIlaFill");
+            map.put("length", new Long(length()));
+            map.put("value", new Float(value));
+
+            return(map);
+        }
     }
 }
+// AUTO GENERATED FROM TEMPLATE

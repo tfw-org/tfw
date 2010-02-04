@@ -25,37 +25,36 @@
 
 package tfw.immutable.ila.booleanila.test;
 
-import java.util.Arrays;
 import java.util.Random;
 import junit.framework.TestCase;
+import tfw.immutable.ila.test.IlaTestDimensions;
 import tfw.immutable.ila.booleanila.BooleanIla;
-import tfw.immutable.ila.booleanila.BooleanIlaFill;
 import tfw.immutable.ila.booleanila.BooleanIlaFromArray;
+import tfw.immutable.ila.booleanila.BooleanIlaFill;
 
+/**
+ *
+ * @immutables.types=all
+ */
 public class BooleanIlaFillTest extends TestCase
 {
-	public void testBooleanIlaFill()
-	{
-		final Random random = new Random();
-		final int LENGTH = 29;
-		final boolean element = random.nextBoolean();
-	
-		boolean[] array = new boolean[LENGTH];
-	
-		Arrays.fill(array, element);
-		
-		BooleanIla ila = BooleanIlaFromArray.create(array);
-		
-		try
-		{
-			BooleanIlaFill.create(element, -1);
-			fail("length < 0 not checked for!");
-		}
-		catch (IllegalArgumentException iae) {}
-		
-		String s = BooleanIlaCheck.check(ila,
-			BooleanIlaFill.create(element, LENGTH));
-		
-		assertNull(s, s);
-	}
+    public void testAll() throws Exception
+    {
+        final Random random = new Random(0);
+        final boolean value = random.nextBoolean();
+        final int length = IlaTestDimensions.defaultIlaLength();
+        final boolean[] array = new boolean[length];
+        for(int ii = 0; ii < array.length; ++ii)
+        {
+            array[ii] = value;
+        }
+        BooleanIla targetIla = BooleanIlaFromArray.create(array);
+        BooleanIla actualIla = BooleanIlaFill.create(value, length);
+        final boolean epsilon = false;
+        BooleanIlaCheck.checkAll(targetIla, actualIla,
+                                  IlaTestDimensions.defaultOffsetLength(),
+                                  IlaTestDimensions.defaultMaxStride(),
+                                  epsilon);
+    }
 }
+// AUTO GENERATED FROM TEMPLATE

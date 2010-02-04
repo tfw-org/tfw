@@ -25,37 +25,36 @@
 
 package tfw.immutable.ila.floatila.test;
 
-import java.util.Arrays;
 import java.util.Random;
 import junit.framework.TestCase;
+import tfw.immutable.ila.test.IlaTestDimensions;
 import tfw.immutable.ila.floatila.FloatIla;
-import tfw.immutable.ila.floatila.FloatIlaFill;
 import tfw.immutable.ila.floatila.FloatIlaFromArray;
+import tfw.immutable.ila.floatila.FloatIlaFill;
 
+/**
+ *
+ * @immutables.types=all
+ */
 public class FloatIlaFillTest extends TestCase
 {
-	public void testFloatIlaFill()
-	{
-		final Random random = new Random();
-		final int LENGTH = 29;
-		final float element = random.nextFloat();
-	
-		float[] array = new float[LENGTH];
-	
-		Arrays.fill(array, element);
-		
-		FloatIla ila = FloatIlaFromArray.create(array);
-		
-		try
-		{
-			FloatIlaFill.create(element, -1);
-			fail("length < 0 not checked for!");
-		}
-		catch (IllegalArgumentException iae) {}
-		
-		String s = FloatIlaCheck.check(ila,
-			FloatIlaFill.create(element, LENGTH));
-		
-		assertNull(s, s);
-	}
+    public void testAll() throws Exception
+    {
+        final Random random = new Random(0);
+        final float value = random.nextFloat();
+        final int length = IlaTestDimensions.defaultIlaLength();
+        final float[] array = new float[length];
+        for(int ii = 0; ii < array.length; ++ii)
+        {
+            array[ii] = value;
+        }
+        FloatIla targetIla = FloatIlaFromArray.create(array);
+        FloatIla actualIla = FloatIlaFill.create(value, length);
+        final float epsilon = 0.0f;
+        FloatIlaCheck.checkAll(targetIla, actualIla,
+                                  IlaTestDimensions.defaultOffsetLength(),
+                                  IlaTestDimensions.defaultMaxStride(),
+                                  epsilon);
+    }
 }
+// AUTO GENERATED FROM TEMPLATE

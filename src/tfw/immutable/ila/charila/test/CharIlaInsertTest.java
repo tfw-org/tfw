@@ -27,62 +27,46 @@ package tfw.immutable.ila.charila.test;
 
 import java.util.Random;
 import junit.framework.TestCase;
+import tfw.immutable.ila.test.IlaTestDimensions;
 import tfw.immutable.ila.charila.CharIla;
 import tfw.immutable.ila.charila.CharIlaFromArray;
 import tfw.immutable.ila.charila.CharIlaInsert;
 
+/**
+ *
+ * @immutables.types=all
+ */
 public class CharIlaInsertTest extends TestCase
 {
-	public void testCharIlaInsert()
-	{
-		final Random random = new Random();
-		final int LENGTH = 29;
-		
-		char[] array = new char[LENGTH];
-		char element = (char)random.nextInt();
-		
-		for (int i=0 ; i < LENGTH ; i++)
-		{
-			array[0] = (char)random.nextInt();
-		}
-		
-		CharIla ila = CharIlaFromArray.create(array);
-		
-		try
-		{
-			CharIlaInsert.create(null, 0, element);
-			fail("ila == null not checked for!");
-		}
-		catch (IllegalArgumentException iae) {}
-		
-		try
-		{
-			CharIlaInsert.create(ila, -1, element);
-			fail("index < 0 not checked for!");
-		}
-		catch (IllegalArgumentException iae) {}
-		
-		try
-		{
-			CharIlaInsert.create(ila, LENGTH+1, element);
-			fail("index > ila.length not checked for!");
-		}
-		catch (IllegalArgumentException iae) {}
-		
-		for (int i=0 ; i < LENGTH ; i++)
-		{
-			char[] a = new char[LENGTH + 1];
-			
-			System.arraycopy(array, 0, a, 0, i);
-			a[i] = element;
-			System.arraycopy(array, i, a, i + 1, LENGTH - i);
-			
-			CharIla ia = CharIlaFromArray.create(a);
-			
-			String s = CharIlaCheck.check(ia,
-				CharIlaInsert.create(ila, i, element));
-			
-			assertNull(s, s);
-		}
-	}
+    public void testAll() throws Exception
+    {
+        final Random random = new Random(0);
+        final int length = IlaTestDimensions.defaultIlaLength();
+        final char[] array = new char[length];
+        final char[] target = new char[length+1];
+        for(int index = 0; index < length; ++index)
+        {
+            final char value = (char)random.nextInt();
+            int skipit = 0;
+            for(int ii = 0; ii < array.length; ++ii)
+            {
+                if(index == ii)
+                {
+                    skipit = 1;
+                    target[ii] = value;
+                }
+                target[ii + skipit] = array[ii] = (char)random.nextInt();
+            }
+            CharIla origIla = CharIlaFromArray.create(array);
+            CharIla targetIla = CharIlaFromArray.create(target);
+            CharIla actualIla = CharIlaInsert.create(origIla, index,
+                                                             value);
+            final char epsilon = (char)0;
+            CharIlaCheck.checkAll(targetIla, actualIla,
+                                      IlaTestDimensions.defaultOffsetLength(),
+                                      IlaTestDimensions.defaultMaxStride(),
+                                      epsilon);
+        }
+    }
 }
+// AUTO GENERATED FROM TEMPLATE

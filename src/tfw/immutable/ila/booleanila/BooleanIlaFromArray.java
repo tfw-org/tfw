@@ -29,43 +29,57 @@ import java.util.Map;
 import tfw.check.Argument;
 import tfw.immutable.ImmutableProxy;
 
+/**
+ *
+ * @immutables.types=all
+ */
 public final class BooleanIlaFromArray
 {
-    private BooleanIlaFromArray() {}
+    private BooleanIlaFromArray()
+    {
+        // non-instantiable class
+    }
 
     public static BooleanIla create(boolean[] array)
     {
-    	Argument.assertNotNull(array, "array");
+        Argument.assertNotNull(array, "array");
 
-		return new MyBooleanIla(array);
+        return new MyBooleanIla(array);
     }
 
     private static class MyBooleanIla extends AbstractBooleanIla
-    	implements ImmutableProxy
+        implements ImmutableProxy
     {
-		private final boolean[] array;
+        private final boolean[] array;
 
-		MyBooleanIla(boolean[] array)
-		{
-		    super(array.length);
-		    
-		    this.array = (boolean[])array.clone();
-		}
+        MyBooleanIla(boolean[] array)
+        {
+            super(array.length);
+                    
+            this.array = (boolean[])array.clone();
+        }
 
-		protected void toArrayImpl(boolean[] array, int offset,
-			long start, int length)
-		{
-		    System.arraycopy(this.array, (int) start, array, offset, length);
-		}
-		
-		public Map getParameters()
-		{
-			HashMap map = new HashMap();
-			
-			map.put("name", "BooleanIlaFromArray");
-			map.put("length", new Long(length()));
-			
-			return(map);
-		}
+        protected void toArrayImpl(boolean[] array, int offset,
+                                   int stride, long start, int length)
+        {
+            final int startPlusLength = (int) (start + length);
+            for(int startInt = (int) start;
+                startInt != startPlusLength;
+                ++startInt, offset += stride)
+            {
+                array[offset] = this.array[startInt];
+            }
+        }
+                
+        public Map getParameters()
+        {
+            HashMap map = new HashMap();
+                        
+            map.put("name", "BooleanIlaFromArray");
+            map.put("length", new Long(length()));
+                        
+            return(map);
+        }
     }
 }
+// AUTO GENERATED FROM TEMPLATE

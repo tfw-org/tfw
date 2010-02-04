@@ -289,7 +289,7 @@ public class Generate extends MatchingTask
             + type + "." + property[0]);
         String realName = file.getName()
             .replaceAll("__", immutableName).replaceFirst(
-                "\\.template", ".java");
+                "\\.template2", ".java");
         File result = new File(dest, realPackag + File.separator
             + realName);
         return result;

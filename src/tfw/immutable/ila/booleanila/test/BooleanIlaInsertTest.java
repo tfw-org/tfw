@@ -27,62 +27,46 @@ package tfw.immutable.ila.booleanila.test;
 
 import java.util.Random;
 import junit.framework.TestCase;
+import tfw.immutable.ila.test.IlaTestDimensions;
 import tfw.immutable.ila.booleanila.BooleanIla;
 import tfw.immutable.ila.booleanila.BooleanIlaFromArray;
 import tfw.immutable.ila.booleanila.BooleanIlaInsert;
 
+/**
+ *
+ * @immutables.types=all
+ */
 public class BooleanIlaInsertTest extends TestCase
 {
-	public void testBooleanIlaInsert()
-	{
-		final Random random = new Random();
-		final int LENGTH = 29;
-		
-		boolean[] array = new boolean[LENGTH];
-		boolean element = random.nextBoolean();
-		
-		for (int i=0 ; i < LENGTH ; i++)
-		{
-			array[0] = random.nextBoolean();
-		}
-		
-		BooleanIla ila = BooleanIlaFromArray.create(array);
-		
-		try
-		{
-			BooleanIlaInsert.create(null, 0, element);
-			fail("ila == null not checked for!");
-		}
-		catch (IllegalArgumentException iae) {}
-		
-		try
-		{
-			BooleanIlaInsert.create(ila, -1, element);
-			fail("index < 0 not checked for!");
-		}
-		catch (IllegalArgumentException iae) {}
-		
-		try
-		{
-			BooleanIlaInsert.create(ila, LENGTH+1, element);
-			fail("index > ila.length not checked for!");
-		}
-		catch (IllegalArgumentException iae) {}
-		
-		for (int i=0 ; i < LENGTH ; i++)
-		{
-			boolean[] a = new boolean[LENGTH + 1];
-			
-			System.arraycopy(array, 0, a, 0, i);
-			a[i] = element;
-			System.arraycopy(array, i, a, i + 1, LENGTH - i);
-			
-			BooleanIla ia = BooleanIlaFromArray.create(a);
-			
-			String s = BooleanIlaCheck.check(ia,
-				BooleanIlaInsert.create(ila, i, element));
-			
-			assertNull(s, s);
-		}
-	}
+    public void testAll() throws Exception
+    {
+        final Random random = new Random(0);
+        final int length = IlaTestDimensions.defaultIlaLength();
+        final boolean[] array = new boolean[length];
+        final boolean[] target = new boolean[length+1];
+        for(int index = 0; index < length; ++index)
+        {
+            final boolean value = random.nextBoolean();
+            int skipit = 0;
+            for(int ii = 0; ii < array.length; ++ii)
+            {
+                if(index == ii)
+                {
+                    skipit = 1;
+                    target[ii] = value;
+                }
+                target[ii + skipit] = array[ii] = random.nextBoolean();
+            }
+            BooleanIla origIla = BooleanIlaFromArray.create(array);
+            BooleanIla targetIla = BooleanIlaFromArray.create(target);
+            BooleanIla actualIla = BooleanIlaInsert.create(origIla, index,
+                                                             value);
+            final boolean epsilon = false;
+            BooleanIlaCheck.checkAll(targetIla, actualIla,
+                                      IlaTestDimensions.defaultOffsetLength(),
+                                      IlaTestDimensions.defaultMaxStride(),
+                                      epsilon);
+        }
+    }
 }
+// AUTO GENERATED FROM TEMPLATE

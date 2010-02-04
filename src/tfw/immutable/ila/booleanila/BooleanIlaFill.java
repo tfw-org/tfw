@@ -24,50 +24,62 @@
  */
 package tfw.immutable.ila.booleanila;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import tfw.check.Argument;
 import tfw.immutable.ImmutableProxy;
 
+/**
+ *
+ * @immutables.types=all
+ */
 public final class BooleanIlaFill
 {
-    private BooleanIlaFill() {}
+    private BooleanIlaFill()
+    {
+        // non-instantiable class
+    }
 
     public static BooleanIla create(boolean value, long length)
     {
-    	Argument.assertNotLessThan(length, 0, "length");
+        Argument.assertNotLessThan(length, 0, "length");
 
-		return new MyBooleanIla(value, length);
+        return new MyBooleanIla(value, length);
     }
 
     private static class MyBooleanIla extends AbstractBooleanIla
-    	implements ImmutableProxy
+        implements ImmutableProxy
     {
-		private boolean value;
+        private final boolean value;
 
-		MyBooleanIla(boolean value, long length)
-		{
-		    super(length);
-		    
-		    this.value = value;
-		}
+        MyBooleanIla(boolean value, long length)
+        {
+            super(length);
+            this.value = value;
+        }
 
-		protected void toArrayImpl(boolean[] array, int offset,
-			long start, int length)
-		{
-		    Arrays.fill(array, offset, offset + length, value);
-		}
-		
-		public Map getParameters()
-		{
-			HashMap map = new HashMap();
-			
-			map.put("name", "BooleanIlaFill");
-			map.put("value", new Boolean(value));
-			map.put("length", new Long(length()));
-			
-			return(map);
-		}
+        protected void toArrayImpl(boolean[] array, int offset,
+                                   int stride, long start, int length)
+        {
+            final int startPlusLength = (int) (start + length);
+            for(int startInt = (int) start;
+                startInt != startPlusLength;
+                ++startInt, offset += stride)
+            {
+                array[offset] = value;
+            }
+        }
+                
+        public Map getParameters()
+        {
+            HashMap map = new HashMap();
+                        
+            map.put("name", "BooleanIlaFill");
+            map.put("length", new Long(length()));
+            map.put("value", (value? Boolean.TRUE : Boolean.FALSE));
+
+            return(map);
+        }
     }
 }
+// AUTO GENERATED FROM TEMPLATE

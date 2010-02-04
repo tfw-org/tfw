@@ -1,6 +1,6 @@
 /*
  * The Framework Project
- * Copyright (C) 2006 Anonymous
+ * Copyright (C) 2005 Anonymous
  * 
  * This library is free software; you can
  * redistribute it and/or modify it under the
@@ -33,50 +33,67 @@ import tfw.immutable.ila.intila.IntIla;
 import tfw.immutable.ila.intila.IntIlaIterator;
 import tfw.immutable.ila.intila.IntIlaSegment;
 
+/**
+ *
+ * @immutables.types=numericnotint
+ */
 public final class DoubleIlaFromCastIntIla
 {
-    private DoubleIlaFromCastIntIla() {}
+    private DoubleIlaFromCastIntIla()
+    {
+    	// non-instantiable class
+    }
 
     public static DoubleIla create(IntIla intIla)
     {
-    	Argument.assertNotNull(intIla, "intIla");
+        return create(intIla, IntIlaIterator.DEFAULT_BUFFER_SIZE);
+    }
 
-		return new MyDoubleIla(intIla);
+    public static DoubleIla create(IntIla intIla, int bufferSize)
+    {
+        Argument.assertNotNull(intIla, "intIla");
+        Argument.assertNotLessThan(bufferSize, 1, "bufferSize");
+
+        return new MyDoubleIla(intIla, bufferSize);
     }
 
     private static class MyDoubleIla extends AbstractDoubleIla
-    	implements ImmutableProxy
+        implements ImmutableProxy
     {
-		private IntIla intIla;
+        private final IntIla intIla;
+        private final int bufferSize;
 
-		MyDoubleIla(IntIla intIla)
-		{
-		    super(intIla.length());
-		    
-		    this.intIla = intIla;
-		}
+        MyDoubleIla(IntIla intIla, int bufferSize)
+        {
+            super(intIla.length());
+                    
+            this.intIla = intIla;
+            this.bufferSize = bufferSize;
+        }
 
-		protected void toArrayImpl(double[] array, int offset,
-			long start, int length) throws DataInvalidException
-		{
-		    IntIlaIterator ii = new IntIlaIterator(
-		    	IntIlaSegment.create(intIla, start, length));
-		    
-		    for (int i=0 ; ii.hasNext() ; i++)
-		    {
-		    	array[offset+i] = (double)ii.next();
-		    }
-		}
-		
-		public Map getParameters()
-		{
-			HashMap map = new HashMap();
-			
-			map.put("name", "DoubleIlaFromCastedIntIla");
-			map.put("intIla", getImmutableInfo(intIla));
-			map.put("length", new Long(length()));
-			
-			return(map);
-		}
+        protected void toArrayImpl(double[] array, int offset,
+                                   int stride, long start, int length)
+            throws DataInvalidException
+        {
+            IntIlaIterator fi = new IntIlaIterator(
+                IntIlaSegment.create(intIla, start, length), bufferSize);
+
+            for (int ii = offset; length > 0; ii += stride, --length)
+            {
+                array[ii] = (double) fi.next();
+            }
+        }
+                
+        public Map getParameters()
+        {
+            HashMap map = new HashMap();
+                        
+            map.put("name", "DoubleIlaFromCastIntIla");
+            map.put("intIla", getImmutableInfo(intIla));
+            map.put("length", new Long(length()));
+                        
+            return(map);
+        }
     }
 }
+// AUTO GENERATED FROM TEMPLATE

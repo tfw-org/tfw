@@ -25,64 +25,48 @@
 
 package tfw.immutable.ila.objectila.test;
 
-import java.util.Random;
+
 import junit.framework.TestCase;
+import tfw.immutable.ila.test.IlaTestDimensions;
 import tfw.immutable.ila.objectila.ObjectIla;
 import tfw.immutable.ila.objectila.ObjectIlaFromArray;
 import tfw.immutable.ila.objectila.ObjectIlaInsert;
 
+/**
+ *
+ * @immutables.types=all
+ */
 public class ObjectIlaInsertTest extends TestCase
 {
-	public void testObjectIlaInsert()
-	{
-		final Random random = new Random();
-		final int LENGTH = 29;
-		
-		Object[] array = new Object[LENGTH];
-		Object element = new Object();
-		
-		for (int i=0 ; i < LENGTH ; i++)
-		{
-			array[0] = new Object();
-		}
-		
-		ObjectIla ila = ObjectIlaFromArray.create(array);
-		
-		try
-		{
-			ObjectIlaInsert.create(null, 0, element);
-			fail("ila == null not checked for!");
-		}
-		catch (IllegalArgumentException iae) {}
-		
-		try
-		{
-			ObjectIlaInsert.create(ila, -1, element);
-			fail("index < 0 not checked for!");
-		}
-		catch (IllegalArgumentException iae) {}
-		
-		try
-		{
-			ObjectIlaInsert.create(ila, LENGTH+1, element);
-			fail("index > ila.length not checked for!");
-		}
-		catch (IllegalArgumentException iae) {}
-		
-		for (int i=0 ; i < LENGTH ; i++)
-		{
-			Object[] a = new Object[LENGTH + 1];
-			
-			System.arraycopy(array, 0, a, 0, i);
-			a[i] = element;
-			System.arraycopy(array, i, a, i + 1, LENGTH - i);
-			
-			ObjectIla ia = ObjectIlaFromArray.create(a);
-			
-			String s = ObjectIlaCheck.check(ia,
-				ObjectIlaInsert.create(ila, i, element));
-			
-			assertNull(s, s);
-		}
-	}
+    public void testAll() throws Exception
+    {
+        
+        final int length = IlaTestDimensions.defaultIlaLength();
+        final Object[] array = new Object[length];
+        final Object[] target = new Object[length+1];
+        for(int index = 0; index < length; ++index)
+        {
+            final Object value = new Object();
+            int skipit = 0;
+            for(int ii = 0; ii < array.length; ++ii)
+            {
+                if(index == ii)
+                {
+                    skipit = 1;
+                    target[ii] = value;
+                }
+                target[ii + skipit] = array[ii] = new Object();
+            }
+            ObjectIla origIla = ObjectIlaFromArray.create(array);
+            ObjectIla targetIla = ObjectIlaFromArray.create(target);
+            ObjectIla actualIla = ObjectIlaInsert.create(origIla, index,
+                                                             value);
+            final Object epsilon = Object.class;
+            ObjectIlaCheck.checkAll(targetIla, actualIla,
+                                      IlaTestDimensions.defaultOffsetLength(),
+                                      IlaTestDimensions.defaultMaxStride(),
+                                      epsilon);
+        }
+    }
 }
+// AUTO GENERATED FROM TEMPLATE

@@ -29,43 +29,57 @@ import java.util.Map;
 import tfw.check.Argument;
 import tfw.immutable.ImmutableProxy;
 
+/**
+ *
+ * @immutables.types=all
+ */
 public final class StringIlaFromArray
 {
-    private StringIlaFromArray() {}
+    private StringIlaFromArray()
+    {
+        // non-instantiable class
+    }
 
     public static StringIla create(String[] array)
     {
-    	Argument.assertNotNull(array, "array");
+        Argument.assertNotNull(array, "array");
 
-		return new MyStringIla(array);
+        return new MyStringIla(array);
     }
 
     private static class MyStringIla extends AbstractStringIla
-    	implements ImmutableProxy
+        implements ImmutableProxy
     {
-		private final String[] array;
+        private final String[] array;
 
-		MyStringIla(String[] array)
-		{
-		    super(array.length);
-		    
-		    this.array = (String[])array.clone();
-		}
+        MyStringIla(String[] array)
+        {
+            super(array.length);
+                    
+            this.array = (String[])array.clone();
+        }
 
-		protected void toArrayImpl(String[] array, int offset,
-			long start, int length)
-		{
-		    System.arraycopy(this.array, (int) start, array, offset, length);
-		}
-		
-		public Map getParameters()
-		{
-			HashMap map = new HashMap();
-			
-			map.put("name", "StringIlaFromArray");
-			map.put("length", new Long(length()));
-			
-			return(map);
-		}
+        protected void toArrayImpl(String[] array, int offset,
+                                   int stride, long start, int length)
+        {
+            final int startPlusLength = (int) (start + length);
+            for(int startInt = (int) start;
+                startInt != startPlusLength;
+                ++startInt, offset += stride)
+            {
+                array[offset] = this.array[startInt];
+            }
+        }
+                
+        public Map getParameters()
+        {
+            HashMap map = new HashMap();
+                        
+            map.put("name", "StringIlaFromArray");
+            map.put("length", new Long(length()));
+                        
+            return(map);
+        }
     }
 }
+// AUTO GENERATED FROM TEMPLATE

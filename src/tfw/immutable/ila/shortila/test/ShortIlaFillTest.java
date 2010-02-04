@@ -25,37 +25,36 @@
 
 package tfw.immutable.ila.shortila.test;
 
-import java.util.Arrays;
 import java.util.Random;
 import junit.framework.TestCase;
+import tfw.immutable.ila.test.IlaTestDimensions;
 import tfw.immutable.ila.shortila.ShortIla;
-import tfw.immutable.ila.shortila.ShortIlaFill;
 import tfw.immutable.ila.shortila.ShortIlaFromArray;
+import tfw.immutable.ila.shortila.ShortIlaFill;
 
+/**
+ *
+ * @immutables.types=all
+ */
 public class ShortIlaFillTest extends TestCase
 {
-	public void testShortIlaFill()
-	{
-		final Random random = new Random();
-		final int LENGTH = 29;
-		final short element = (short)random.nextInt();
-	
-		short[] array = new short[LENGTH];
-	
-		Arrays.fill(array, element);
-		
-		ShortIla ila = ShortIlaFromArray.create(array);
-		
-		try
-		{
-			ShortIlaFill.create(element, -1);
-			fail("length < 0 not checked for!");
-		}
-		catch (IllegalArgumentException iae) {}
-		
-		String s = ShortIlaCheck.check(ila,
-			ShortIlaFill.create(element, LENGTH));
-		
-		assertNull(s, s);
-	}
+    public void testAll() throws Exception
+    {
+        final Random random = new Random(0);
+        final short value = (short)random.nextInt();
+        final int length = IlaTestDimensions.defaultIlaLength();
+        final short[] array = new short[length];
+        for(int ii = 0; ii < array.length; ++ii)
+        {
+            array[ii] = value;
+        }
+        ShortIla targetIla = ShortIlaFromArray.create(array);
+        ShortIla actualIla = ShortIlaFill.create(value, length);
+        final short epsilon = (short)0;
+        ShortIlaCheck.checkAll(targetIla, actualIla,
+                                  IlaTestDimensions.defaultOffsetLength(),
+                                  IlaTestDimensions.defaultMaxStride(),
+                                  epsilon);
+    }
 }
+// AUTO GENERATED FROM TEMPLATE

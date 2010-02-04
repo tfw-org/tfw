@@ -1,6 +1,6 @@
 /*
  * The Framework Project
- * Copyright (C) 2006 Anonymous
+ * Copyright (C) 2005 Anonymous
  * 
  * This library is free software; you can
  * redistribute it and/or modify it under the
@@ -24,44 +24,67 @@
  */
 package tfw.immutable.ila.doubleila;
 
+import java.util.HashMap;
+import java.util.Map;
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
-import tfw.immutable.ila.doubleila.AbstractDoubleIla;
-import tfw.immutable.ila.doubleila.DoubleIla;
+import tfw.immutable.ImmutableProxy;
 
-public class DoubleIlaScalarMultiply
+/**
+ *
+ * @immutables.types=numeric
+ */
+public final class DoubleIlaScalarMultiply
 {
-	private DoubleIlaScalarMultiply() {}
-	
-	public static DoubleIla create(DoubleIla doubleIla, double value)
-	{
-		Argument.assertNotNull(doubleIla, "doubleIla");
-		
-		return(new MyDoubleIla(doubleIla, value));
-	}
-	
-	private static class MyDoubleIla extends AbstractDoubleIla
-	{
-		private final DoubleIla doubleIla;
-		private final double value;
-		
-		public MyDoubleIla(DoubleIla doubleIla, double value)
-		{
-			super(doubleIla.length());
-			
-			this.doubleIla = doubleIla;
-			this.value = value;
-		}
+    private DoubleIlaScalarMultiply()
+    {
+    	// non-instantiable class
+    }
 
-		protected void toArrayImpl(double[] array, int offset,
-			long start, int length) throws DataInvalidException
-		{
-			doubleIla.toArray(array, offset, start, length);
-			
-			for (int i=0 ; i < length ; i++)
-			{
-				array[offset + i] *= value;
-			}
-		}
-	}
+    public static DoubleIla create(DoubleIla ila, double scalar)
+    {
+        Argument.assertNotNull(ila, "ila");
+
+        return new MyDoubleIla(ila, scalar);
+    }
+
+    private static class MyDoubleIla extends AbstractDoubleIla
+        implements ImmutableProxy
+    {
+        private final DoubleIla ila;
+        private final double scalar;
+
+        MyDoubleIla(DoubleIla ila, double scalar)
+        {
+            super(ila.length());
+                    
+            this.ila = ila;
+            this.scalar = scalar;
+        }
+
+        protected void toArrayImpl(double[] array, int offset,
+                                   int stride, long start, int length)
+            throws DataInvalidException
+        {
+            ila.toArray(array, offset, stride, start, length);
+
+            for (int ii = offset; length > 0; ii += stride, --length)
+            {
+                array[ii] *= scalar;
+            }
+        }
+                
+        public Map getParameters()
+        {
+            HashMap map = new HashMap();
+                        
+            map.put("name", "DoubleIlaScalarMultiply");
+            map.put("ila", getImmutableInfo(ila));
+            map.put("scalar", new Double(scalar));
+            map.put("length", new Long(length()));
+                        
+            return(map);
+        }
+    }
 }
+// AUTO GENERATED FROM TEMPLATE

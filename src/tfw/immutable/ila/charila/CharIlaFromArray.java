@@ -29,43 +29,57 @@ import java.util.Map;
 import tfw.check.Argument;
 import tfw.immutable.ImmutableProxy;
 
+/**
+ *
+ * @immutables.types=all
+ */
 public final class CharIlaFromArray
 {
-    private CharIlaFromArray() {}
+    private CharIlaFromArray()
+    {
+        // non-instantiable class
+    }
 
     public static CharIla create(char[] array)
     {
-    	Argument.assertNotNull(array, "array");
+        Argument.assertNotNull(array, "array");
 
-		return new MyCharIla(array);
+        return new MyCharIla(array);
     }
 
     private static class MyCharIla extends AbstractCharIla
-    	implements ImmutableProxy
+        implements ImmutableProxy
     {
-		private final char[] array;
+        private final char[] array;
 
-		MyCharIla(char[] array)
-		{
-		    super(array.length);
-		    
-		    this.array = (char[])array.clone();
-		}
+        MyCharIla(char[] array)
+        {
+            super(array.length);
+                    
+            this.array = (char[])array.clone();
+        }
 
-		protected void toArrayImpl(char[] array, int offset,
-			long start, int length)
-		{
-		    System.arraycopy(this.array, (int) start, array, offset, length);
-		}
-		
-		public Map getParameters()
-		{
-			HashMap map = new HashMap();
-			
-			map.put("name", "CharIlaFromArray");
-			map.put("length", new Long(length()));
-			
-			return(map);
-		}
+        protected void toArrayImpl(char[] array, int offset,
+                                   int stride, long start, int length)
+        {
+            final int startPlusLength = (int) (start + length);
+            for(int startInt = (int) start;
+                startInt != startPlusLength;
+                ++startInt, offset += stride)
+            {
+                array[offset] = this.array[startInt];
+            }
+        }
+                
+        public Map getParameters()
+        {
+            HashMap map = new HashMap();
+                        
+            map.put("name", "CharIlaFromArray");
+            map.put("length", new Long(length()));
+                        
+            return(map);
+        }
     }
 }
+// AUTO GENERATED FROM TEMPLATE

@@ -27,60 +27,43 @@ package tfw.immutable.ila.doubleila.test;
 
 import java.util.Random;
 import junit.framework.TestCase;
+import tfw.immutable.ila.test.IlaTestDimensions;
 import tfw.immutable.ila.doubleila.DoubleIla;
 import tfw.immutable.ila.doubleila.DoubleIlaFromArray;
 import tfw.immutable.ila.doubleila.DoubleIlaRemove;
 
+/**
+ *
+ * @immutables.types=all
+ */
 public class DoubleIlaRemoveTest extends TestCase
 {
-	public void testDoubleIlaRemove()
-	{
-		final Random random = new Random();
-		final int LENGTH = 29;
-		
-		double[] array = new double[LENGTH];
-		
-		for (int i=0 ; i < LENGTH ; i++)
-		{
-			array[0] = random.nextDouble();
-		}
-		
-		DoubleIla ila = DoubleIlaFromArray.create(array);
-		
-		try
-		{
-			DoubleIlaRemove.create(null, 0);
-			fail("ila == null not checked for!");
-		}
-		catch (IllegalArgumentException iae) {}
-		
-		try
-		{
-			DoubleIlaRemove.create(ila, -1);
-			fail("index < 0 not checked for!");
-		}
-		catch (IllegalArgumentException iae) {}
-		
-		try
-		{
-			DoubleIlaRemove.create(ila, LENGTH);
-			fail("index >= ila.length not checked for!");
-		}
-		catch (IllegalArgumentException iae) {}
-		
-		for (int i=0 ; i < LENGTH ; i++)
-		{
-			double[] a = new double[LENGTH - 1];
-			
-			System.arraycopy(array, 0, a, 0, i);
-			System.arraycopy(array, i + 1, a, i, LENGTH - i - 1);
-			
-			DoubleIla ia = DoubleIlaFromArray.create(a);
-			
-			String s = DoubleIlaCheck.check(ia,
-				DoubleIlaRemove.create(ila, i));
-			
-			assertNull(s, s);
-		}
-	}
+    public void testAll() throws Exception
+    {
+        final Random random = new Random(0);
+        final int length = IlaTestDimensions.defaultIlaLength();
+        final double[] array = new double[length];
+        final double[] target = new double[length-1];
+        for(int index = 0; index < length; ++index)
+        {
+            int targetii = 0;
+            for(int ii = 0; ii < array.length; ++ii)
+            {
+                array[ii] = random.nextDouble();
+                if(ii != index)
+                {
+                    target[targetii++] = array[ii];
+                }
+            }
+            DoubleIla origIla = DoubleIlaFromArray.create(array);
+            DoubleIla targetIla = DoubleIlaFromArray.create(target);
+            DoubleIla actualIla = DoubleIlaRemove.create(origIla, index);
+            final double epsilon = 0.0;
+            DoubleIlaCheck.checkAll(targetIla, actualIla,
+                                      IlaTestDimensions.defaultOffsetLength(),
+                                      IlaTestDimensions.defaultMaxStride(),
+                                      epsilon);
+        }
+    }
 }
+// AUTO GENERATED FROM TEMPLATE

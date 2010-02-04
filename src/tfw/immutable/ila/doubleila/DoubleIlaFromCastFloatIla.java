@@ -1,6 +1,6 @@
 /*
  * The Framework Project
- * Copyright (C) 2006 Anonymous
+ * Copyright (C) 2005 Anonymous
  * 
  * This library is free software; you can
  * redistribute it and/or modify it under the
@@ -33,50 +33,67 @@ import tfw.immutable.ila.floatila.FloatIla;
 import tfw.immutable.ila.floatila.FloatIlaIterator;
 import tfw.immutable.ila.floatila.FloatIlaSegment;
 
+/**
+ *
+ * @immutables.types=numericnotfloat
+ */
 public final class DoubleIlaFromCastFloatIla
 {
-    private DoubleIlaFromCastFloatIla() {}
+    private DoubleIlaFromCastFloatIla()
+    {
+    	// non-instantiable class
+    }
 
     public static DoubleIla create(FloatIla floatIla)
     {
-    	Argument.assertNotNull(floatIla, "floatIla");
+        return create(floatIla, FloatIlaIterator.DEFAULT_BUFFER_SIZE);
+    }
 
-		return new MyDoubleIla(floatIla);
+    public static DoubleIla create(FloatIla floatIla, int bufferSize)
+    {
+        Argument.assertNotNull(floatIla, "floatIla");
+        Argument.assertNotLessThan(bufferSize, 1, "bufferSize");
+
+        return new MyDoubleIla(floatIla, bufferSize);
     }
 
     private static class MyDoubleIla extends AbstractDoubleIla
-    	implements ImmutableProxy
+        implements ImmutableProxy
     {
-		private FloatIla floatIla;
+        private final FloatIla floatIla;
+        private final int bufferSize;
 
-		MyDoubleIla(FloatIla floatIla)
-		{
-		    super(floatIla.length());
-		    
-		    this.floatIla = floatIla;
-		}
+        MyDoubleIla(FloatIla floatIla, int bufferSize)
+        {
+            super(floatIla.length());
+                    
+            this.floatIla = floatIla;
+            this.bufferSize = bufferSize;
+        }
 
-		protected void toArrayImpl(double[] array, int offset,
-			long start, int length) throws DataInvalidException
-		{
-		    FloatIlaIterator fi = new FloatIlaIterator(
-		    	FloatIlaSegment.create(floatIla, start, length));
-		    
-		    for (int i=0 ; fi.hasNext() ; i++)
-		    {
-		    	array[offset+i] = (double)fi.next();
-		    }
-		}
-		
-		public Map getParameters()
-		{
-			HashMap map = new HashMap();
-			
-			map.put("name", "DoubleIlaFromCastedFloatIla");
-			map.put("floatIla", getImmutableInfo(floatIla));
-			map.put("length", new Long(length()));
-			
-			return(map);
-		}
+        protected void toArrayImpl(double[] array, int offset,
+                                   int stride, long start, int length)
+            throws DataInvalidException
+        {
+            FloatIlaIterator fi = new FloatIlaIterator(
+                FloatIlaSegment.create(floatIla, start, length), bufferSize);
+
+            for (int ii = offset; length > 0; ii += stride, --length)
+            {
+                array[ii] = (double) fi.next();
+            }
+        }
+                
+        public Map getParameters()
+        {
+            HashMap map = new HashMap();
+                        
+            map.put("name", "DoubleIlaFromCastFloatIla");
+            map.put("floatIla", getImmutableInfo(floatIla));
+            map.put("length", new Long(length()));
+                        
+            return(map);
+        }
     }
 }
+// AUTO GENERATED FROM TEMPLATE

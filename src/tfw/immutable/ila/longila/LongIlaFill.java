@@ -24,50 +24,62 @@
  */
 package tfw.immutable.ila.longila;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import tfw.check.Argument;
 import tfw.immutable.ImmutableProxy;
 
+/**
+ *
+ * @immutables.types=all
+ */
 public final class LongIlaFill
 {
-    private LongIlaFill() {}
+    private LongIlaFill()
+    {
+        // non-instantiable class
+    }
 
     public static LongIla create(long value, long length)
     {
-    	Argument.assertNotLessThan(length, 0, "length");
+        Argument.assertNotLessThan(length, 0, "length");
 
-		return new MyLongIla(value, length);
+        return new MyLongIla(value, length);
     }
 
     private static class MyLongIla extends AbstractLongIla
-    	implements ImmutableProxy
+        implements ImmutableProxy
     {
-		private long value;
+        private final long value;
 
-		MyLongIla(long value, long length)
-		{
-		    super(length);
-		    
-		    this.value = value;
-		}
+        MyLongIla(long value, long length)
+        {
+            super(length);
+            this.value = value;
+        }
 
-		protected void toArrayImpl(long[] array, int offset,
-			long start, int length)
-		{
-		    Arrays.fill(array, offset, offset + length, value);
-		}
-		
-		public Map getParameters()
-		{
-			HashMap map = new HashMap();
-			
-			map.put("name", "LongIlaFill");
-			map.put("value", new Long(value));
-			map.put("length", new Long(length()));
-			
-			return(map);
-		}
+        protected void toArrayImpl(long[] array, int offset,
+                                   int stride, long start, int length)
+        {
+            final int startPlusLength = (int) (start + length);
+            for(int startInt = (int) start;
+                startInt != startPlusLength;
+                ++startInt, offset += stride)
+            {
+                array[offset] = value;
+            }
+        }
+                
+        public Map getParameters()
+        {
+            HashMap map = new HashMap();
+                        
+            map.put("name", "LongIlaFill");
+            map.put("length", new Long(length()));
+            map.put("value", new Long(value));
+
+            return(map);
+        }
     }
 }
+// AUTO GENERATED FROM TEMPLATE

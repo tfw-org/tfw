@@ -30,58 +30,77 @@ import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
 import tfw.immutable.ImmutableProxy;
 
+/**
+ *
+ * @immutables.types=numeric
+ */
 public final class FloatIlaSubtract
 {
-    private FloatIlaSubtract() {}
+    private FloatIlaSubtract()
+    {
+    	// non-instantiable class
+    }
 
     public static FloatIla create(FloatIla leftIla, FloatIla rightIla)
     {
-    	Argument.assertNotNull(leftIla, "leftIla");
-    	Argument.assertNotNull(rightIla, "rightIla");
-    	Argument.assertEquals(leftIla.length(), rightIla.length(),
-    		"leftIla.length()", "rightIla.length");
+    	return create(leftIla, rightIla, FloatIlaIterator.DEFAULT_BUFFER_SIZE);
+    }
+    
+    public static FloatIla create(FloatIla leftIla, FloatIla rightIla,
+        int bufferSize)
+    {
+        Argument.assertNotNull(leftIla, "leftIla");
+        Argument.assertNotNull(rightIla, "rightIla");
+        Argument.assertEquals(leftIla.length(), rightIla.length(),
+                              "leftIla.length()", "rightIla.length()");
+        Argument.assertNotLessThan(bufferSize, 1, "bufferSize");
 
-		return new MyFloatIla(leftIla, rightIla);
+        return new MyFloatIla(leftIla, rightIla, bufferSize);
     }
 
     private static class MyFloatIla extends AbstractFloatIla
-    	implements ImmutableProxy
+        implements ImmutableProxy
     {
-		private FloatIla leftIla;
-		private FloatIla rightIla;
+        private final FloatIla leftIla;
+        private final FloatIla rightIla;
+        private final int bufferSize;
 
-		MyFloatIla(FloatIla leftIla, FloatIla rightIla)
-		{
-		    super(leftIla.length());
-		    
-		    this.leftIla = leftIla;
-		    this.rightIla = rightIla;
-		}
+        MyFloatIla(FloatIla leftIla, FloatIla rightIla, int bufferSize)
+        {
+            super(leftIla.length());
+                    
+            this.leftIla = leftIla;
+            this.rightIla = rightIla;
+            this.bufferSize = bufferSize;
+        }
 
-		protected void toArrayImpl(float[] array, int offset,
-			long start, int length) throws DataInvalidException
-		{
-		    FloatIlaIterator li = new FloatIlaIterator(
-		    	FloatIlaSegment.create(leftIla, start, length));
-		    FloatIlaIterator ri = new FloatIlaIterator(
-		    	FloatIlaSegment.create(rightIla, start, length));
-		    
-		    for (int i=0 ; li.hasNext() ; i++)
-		    {
-		    	array[offset+i] = li.next() - ri.next();
-		    }
-		}
-		
-		public Map getParameters()
-		{
-			HashMap map = new HashMap();
-			
-			map.put("name", "FloatIlaSubtract");
-			map.put("leftIla", getImmutableInfo(leftIla));
-			map.put("rightIla", getImmutableInfo(rightIla));
-			map.put("length", new Long(length()));
-			
-			return(map);
-		}
+        protected void toArrayImpl(float[] array, int offset,
+                                   int stride, long start, int length)
+            throws DataInvalidException
+        {
+            FloatIlaIterator li = new FloatIlaIterator(
+                FloatIlaSegment.create(leftIla, start, length), bufferSize);
+            FloatIlaIterator ri = new FloatIlaIterator(
+                FloatIlaSegment.create(rightIla, start, length), bufferSize);
+
+            for (int ii = offset; li.hasNext(); ii += stride)
+            {
+                array[ii] = (float) (li.next() - ri.next());
+            }
+        }
+                
+        public Map getParameters()
+        {
+            HashMap map = new HashMap();
+                        
+            map.put("name", "FloatIlaSubtract");
+            map.put("leftIla", getImmutableInfo(leftIla));
+            map.put("rightIla", getImmutableInfo(rightIla));
+            map.put("bufferSize", new Integer(bufferSize));
+            map.put("length", new Long(length()));
+                        
+            return(map);
+        }
     }
 }
+// AUTO GENERATED FROM TEMPLATE

@@ -27,40 +27,51 @@ package tfw.immutable.ila.charila.test;
 
 import java.util.Random;
 import junit.framework.TestCase;
+import tfw.immutable.ila.test.IlaTestDimensions;
 import tfw.immutable.ila.charila.CharIla;
-import tfw.immutable.ila.charila.CharIlaSegment;
 import tfw.immutable.ila.charila.CharIlaFromArray;
+import tfw.immutable.ila.charila.CharIlaSegment;
 
+/**
+ *
+ * @immutables.types=all
+ */
 public class CharIlaSegmentTest extends TestCase
 {
-	public void testCharIlaSegment()
-	{
-		final Random random = new Random();
-		final int LENGTH = 29;	
-		char[] array = new char[LENGTH];
-		
-		for (int i=0 ; i < array.length ; i++)
-		{
-			array[i] = (char)random.nextInt();
-		}
-		
-		CharIla ila = CharIlaFromArray.create(array);
-		
-		for (int start=0 ; start < array.length ; start++)
-		{
-			for (int length=0 ; length < array.length - start ; length++)
-			{
-				char[] a = new char[length];
-				
-				System.arraycopy(array, start, a, 0, length);
-				
-				CharIla i = CharIlaFromArray.create(a);
-		
-				String s = CharIlaCheck.check(i,
-					CharIlaSegment.create(ila, start, length));
-		
-				assertNull(s, s);
-			}
-		}
-	}
+    public void testAll() throws Exception
+    {
+        final Random random = new Random(0);
+        final int length = IlaTestDimensions.defaultIlaLength();
+        final char[] master = new char[length];
+        for(int ii = 0; ii < master.length; ++ii)
+        {
+            master[ii] = (char)random.nextInt();
+        }
+        CharIla masterIla = CharIlaFromArray.create(master);
+        CharIla checkIla = CharIlaSegment.create(masterIla, 0,
+                                                         masterIla.length());
+        final int offsetLength = IlaTestDimensions.defaultOffsetLength();
+        final int maxStride = IlaTestDimensions.defaultMaxStride();
+        final char epsilon = (char)0;
+        CharIlaCheck.checkWithoutCorrectness(checkIla, offsetLength,
+                                                 epsilon);
+        for(long start = 0; start < length; ++start)
+        {
+            for(long len = 0; len < length - start; ++len)
+            {
+                char[] array = new char[(int) len];
+                for(int ii = 0; ii < array.length; ++ii)
+                {
+                    array[ii] = master[ii + (int) start];
+                }
+                CharIla targetIla = CharIlaFromArray.create(array);
+                CharIla actualIla = CharIlaSegment.create(masterIla,
+                                                                  start, len);
+                CharIlaCheck.checkCorrectness(targetIla, actualIla,
+                                                  offsetLength, maxStride,
+                                                  epsilon);
+            }
+        }
+    }
 }
+// AUTO GENERATED FROM TEMPLATE

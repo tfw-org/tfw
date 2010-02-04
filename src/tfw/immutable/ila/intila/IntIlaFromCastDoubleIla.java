@@ -1,6 +1,6 @@
 /*
  * The Framework Project
- * Copyright (C) 2006 Anonymous
+ * Copyright (C) 2005 Anonymous
  * 
  * This library is free software; you can
  * redistribute it and/or modify it under the
@@ -24,46 +24,76 @@
  */
 package tfw.immutable.ila.intila;
 
+import java.util.HashMap;
+import java.util.Map;
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
+import tfw.immutable.ImmutableProxy;
 import tfw.immutable.ila.doubleila.DoubleIla;
 import tfw.immutable.ila.doubleila.DoubleIlaIterator;
 import tfw.immutable.ila.doubleila.DoubleIlaSegment;
 
-public class IntIlaFromCastDoubleIla
+/**
+ *
+ * @immutables.types=numericnotdouble
+ */
+public final class IntIlaFromCastDoubleIla
 {
-	private IntIlaFromCastDoubleIla() {}
-	
-	public static IntIla create(DoubleIla doubleIla)
-	{
-		Argument.assertNotNull(doubleIla, "doubleIla");
-		
-		return(new MyIntIla(doubleIla));
-	}
-	
-	private static class MyIntIla extends AbstractIntIla
-	{
-		private final DoubleIla doubleIla;
-		
-		public MyIntIla(DoubleIla doubleIla)
-		{
-			super(doubleIla.length());
-			
-			this.doubleIla = doubleIla;
-		}
+    private IntIlaFromCastDoubleIla()
+    {
+    	// non-instantiable class
+    }
 
-		protected void toArrayImpl(int[] array, int offset, long start,
-			int length) throws DataInvalidException
-		{
-			DoubleIlaIterator dii = new DoubleIlaIterator(
-				DoubleIlaSegment.create(doubleIla, start, length));
-			
-			for (int i=0 ; i < length ; i++)
-			{
-				double d = dii.next();
-				
-				array[offset + i] = (int)d;
-			}
-		}
-	}
+    public static IntIla create(DoubleIla doubleIla)
+    {
+        return create(doubleIla, DoubleIlaIterator.DEFAULT_BUFFER_SIZE);
+    }
+
+    public static IntIla create(DoubleIla doubleIla, int bufferSize)
+    {
+        Argument.assertNotNull(doubleIla, "doubleIla");
+        Argument.assertNotLessThan(bufferSize, 1, "bufferSize");
+
+        return new MyIntIla(doubleIla, bufferSize);
+    }
+
+    private static class MyIntIla extends AbstractIntIla
+        implements ImmutableProxy
+    {
+        private final DoubleIla doubleIla;
+        private final int bufferSize;
+
+        MyIntIla(DoubleIla doubleIla, int bufferSize)
+        {
+            super(doubleIla.length());
+                    
+            this.doubleIla = doubleIla;
+            this.bufferSize = bufferSize;
+        }
+
+        protected void toArrayImpl(int[] array, int offset,
+                                   int stride, long start, int length)
+            throws DataInvalidException
+        {
+            DoubleIlaIterator fi = new DoubleIlaIterator(
+                DoubleIlaSegment.create(doubleIla, start, length), bufferSize);
+
+            for (int ii = offset; length > 0; ii += stride, --length)
+            {
+                array[ii] = (int) fi.next();
+            }
+        }
+                
+        public Map getParameters()
+        {
+            HashMap map = new HashMap();
+                        
+            map.put("name", "IntIlaFromCastDoubleIla");
+            map.put("doubleIla", getImmutableInfo(doubleIla));
+            map.put("length", new Long(length()));
+                        
+            return(map);
+        }
+    }
 }
+// AUTO GENERATED FROM TEMPLATE

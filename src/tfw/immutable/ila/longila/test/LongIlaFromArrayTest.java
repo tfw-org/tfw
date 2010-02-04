@@ -25,97 +25,102 @@
 
 package tfw.immutable.ila.longila.test;
 
-import java.util.Arrays;
 import java.util.Random;
 import junit.framework.TestCase;
-import tfw.immutable.DataInvalidException;
+import tfw.immutable.ila.test.IlaTestDimensions;
 import tfw.immutable.ila.longila.LongIla;
 import tfw.immutable.ila.longila.LongIlaFromArray;
 
+/**
+ *
+ * @immutables.types=all
+ */
 public class LongIlaFromArrayTest extends TestCase
 {
-	public void testLongIlaFromArray()
-		throws DataInvalidException
-	{
-		final int LENGTH = 25;
-		final Random random = new Random();
-		final long[] array = new long[LENGTH];
-		
-		for (int i=0 ; i < array.length ; i++)
-		{
-			array[i] = random.nextLong();
-		}
-		
-		final LongIla ila = LongIlaFromArray.create(array);
-		
-		try
-		{
-			LongIlaFromArray.create(null);
-			fail("array == null not checked for!");
-		}
-		catch (IllegalArgumentException iae) {}
-		
-		if (ila.length() != array.length)
-		{
-			fail("ila.length() (="+ila.length()+
-				") != array.length() (="+array.length+")");
-		}
-				
-		// Check to see if the zero argument toArray() methods return
-		// the same result.
-		
-		long[] a = ila.toArray();
-		
-		if (!Arrays.equals(array, a))
-		{
-			fail("array != ila.toArray()");
-		}
-		
-		// Check to see if the two argument toArray() methods return
-		// the same result.
-		
-		for (int s=0 ; s < LENGTH ; s++)
-		{
-			int remainingLength = LENGTH - s;
-			
-			for (int l=0 ; l < remainingLength ; l++)
-			{
-				long[] a1 = new long[l];
-				System.arraycopy(array, s, a1, 0, l);
-				long[] a2 = ila.toArray(s, l);
-				
-				if (!Arrays.equals(a1, a2))
-				{
-					fail("array.subarray(start="+s+", length="+l+
-						") != ila.toArray(start="+s+", length="+l+")");
-				}
-			}
-		}
-		
-		// Check to see if the four argument toArray() methods return
-		// the same result.
+    public void testImmutabilityCheck()
+        throws Exception
+    {
+        final int ilaLength = IlaTestDimensions.defaultIlaLength();
+        final Random random = new Random(0);
+        final long[] creation = new long[ilaLength];
+        for(int ii = 0; ii < creation.length; ++ii)
+        {
+            creation[ii] = random.nextLong();
+        }
+        final LongIla ila = LongIlaFromArray.create(creation);
+        final int offsetLength = IlaTestDimensions.defaultOffsetLength();
+        final long epsilon = 0L;
+        LongIlaCheck.checkWithoutCorrectness(ila, offsetLength, epsilon);
+    }
 
-		for (int s=0 ; s < LENGTH ; s++)
-		{
-			for (int l=0 ; l < LENGTH - s ; l++)
-			{
-				for (int o=0 ; o < LENGTH - l ; o++)
-				{
-					long[] a1 = new long[LENGTH];
-					long[] a2 = new long[LENGTH];
+    public void testValueCorrectness()
+        throws Exception
+    {
+        final int ilaLength =
+            IlaTestDimensions.defaultIlaLength();
+        final int addlOffsetLength =
+            IlaTestDimensions.defaultOffsetLength();
+        final int maxAbsStride =
+            IlaTestDimensions.defaultMaxStride();
+        final Random random = new Random(0);
+        final long[] creation = new long[ilaLength];
+        for(int ii = 0; ii < creation.length; ++ii)
+        {
+            creation[ii] = random.nextLong();
+        }
+        final LongIla ila = LongIlaFromArray.create(creation);
 
-					System.arraycopy(array, s, a1, o, l);
-					ila.toArray(a2, o, s, l);
-					
-					if (!Arrays.equals(a1, a2))
-					{
-						fail("array(array, offset="+o+
-								", start="+s+", length="+l+
-								") != ila2.toArray(array, offset="+o+
-								", start="+s+", length="+l+")");
-					}
-				}
-			}
-		}
-	}
+        for(int stride = -maxAbsStride; stride <= maxAbsStride; ++stride)
+        {
+            if(stride != 0)
+            {
+                int absStride = stride < 0 ? -stride : stride;
+                int offsetStart = stride < 0 ? (ilaLength - 1) * absStride : 0;
+                int offsetEnd = offsetStart + addlOffsetLength;
+                for(int offset = offsetStart; offset < offsetEnd; ++offset)
+                {
+                    final long[] arrayBase = new long
+                        [(ilaLength - 1) * absStride + 1 + addlOffsetLength];
+                    final long[] ilaBase = new long
+                        [(ilaLength - 1) * absStride + 1 + addlOffsetLength];
+                    for(int length = 1; length <= ilaLength; ++length)
+                    {
+                        for(long start = 0; start < ilaLength - length + 1;
+                            ++start)
+                        {
+                            for(int ii = 0; ii < arrayBase.length; ++ii)
+                            {
+                                arrayBase[ii] = ilaBase[ii]
+                                    = random.nextLong();
+                            }
+                            for(int ii = (int) start, index = offset;
+                                ii < start + length;
+                                ++ii, index += stride)
+                            {
+                                arrayBase[index] = creation[ii];
+                            }
+                            ila.toArray(ilaBase, offset, stride,
+                                        start, length);
+                            for(int ii = 0; ii < arrayBase.length; ++ii)
+                            {
+                                if(arrayBase[ii] != ilaBase[ii])
+                                    throw new Exception("actual[" + ii + "] ("
+                                                        + ilaBase[ii]
+                                                        + ") !~ target["
+                                                        + ii + "] ("
+                                                        + arrayBase[ii]
+                                                        + ") {length="
+                                                        + length
+                                                        + ",start=" + start
+                                                        + ",offset=" + offset
+                                                        + ",stride=" + stride
+                                                        + "}");
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
+// AUTO GENERATED FROM TEMPLATE

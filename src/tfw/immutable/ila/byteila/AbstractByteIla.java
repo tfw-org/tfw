@@ -29,58 +29,73 @@ import tfw.immutable.ImmutableProxy;
 import tfw.immutable.ila.AbstractIla;
 import tfw.immutable.ila.ImmutableLongArray;
 
-public abstract class AbstractByteIla extends AbstractIla
-	implements ByteIla
+/**
+ *
+ * @immutables.types=all
+ */
+public abstract class AbstractByteIla
+    extends AbstractIla
+    implements ByteIla
 {
     protected abstract void toArrayImpl(byte[] array, int offset,
-			long start, int length) throws DataInvalidException;
+                                        int stride, long start, int length)
+        throws DataInvalidException;
 
     protected AbstractByteIla(long length)
     {
-    	super(length);
+        super(length);
     }
     
     public static Object getImmutableInfo(ImmutableLongArray ila)
     {
-    	if (ila instanceof ImmutableProxy)
-    	{
-    		return(((ImmutableProxy)ila).getParameters());
-    	}
-    	else
-    	{
-    		return(ila.toString());
-    	}
+        if(ila instanceof ImmutableProxy)
+        {
+            return(((ImmutableProxy) ila).getParameters());
+        }
+        else
+        {
+            return(ila.toString());
+        }
     }
 
     public final byte[] toArray()
-    	throws DataInvalidException
+        throws DataInvalidException
     {
-    	if(length() > (long) Integer.MAX_VALUE)
-    		throw new ArrayIndexOutOfBoundsException
-				("Ila too large for native array");
-    	
-    	return toArray((long) 0, (int) length());
+        if(length() > (long) Integer.MAX_VALUE)
+            throw new ArrayIndexOutOfBoundsException
+                ("Ila too large for native array");
+
+        return toArray((long) 0, (int) length());
     }
 
     public final byte[] toArray(long start, int length)
-    	throws DataInvalidException
+        throws DataInvalidException
     {
-    	byte[] result = new byte[length];
-    	
-    	toArray(result, 0, start, length);
-    	
-    	return result;
+        byte[] result = new byte[length];
+        
+        toArray(result, 0, start, length);
+        
+        return result;
     }
 
     public final void toArray(byte[] array, int offset,
-    	long start, int length) throws DataInvalidException
+                              long start, int length)
+        throws DataInvalidException
     {
-    	if (length == 0)
-    	{
-    		return;
-    	}
-    	
-    	boundsCheck(array.length, offset, start, length);
-    	toArrayImpl(array, offset, start, length);
+        toArray(array, offset, 1, start, length);
+    }
+
+    public final void toArray(byte[] array, int offset, int stride,
+                              long start, int length)
+        throws DataInvalidException
+    {
+        if(length == 0)
+        {
+            return;
+        }
+        
+        boundsCheck(array.length, offset, stride, start, length);
+        toArrayImpl(array, offset, stride, start, length);
     }
 }
+// AUTO GENERATED FROM TEMPLATE

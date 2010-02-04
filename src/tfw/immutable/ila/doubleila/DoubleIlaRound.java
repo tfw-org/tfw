@@ -1,6 +1,6 @@
 /*
  * The Framework Project
- * Copyright (C) 2006 Anonymous
+ * Copyright (C) 2005 Anonymous
  * 
  * This library is free software; you can
  * redistribute it and/or modify it under the
@@ -24,41 +24,64 @@
  */
 package tfw.immutable.ila.doubleila;
 
+import java.util.HashMap;
+import java.util.Map;
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
+import tfw.immutable.ImmutableProxy;
 
-public class DoubleIlaRound
+/**
+ *
+ * @immutables.types=floating
+ */
+public final class DoubleIlaRound
 {
-	private DoubleIlaRound() {}
-	
-	public static DoubleIla create(DoubleIla doubleIla)
-	{
-		Argument.assertNotNull(doubleIla, "doubleIla");
-		
-		return(new MyDoubleIla(doubleIla));
-	}
-	
-	private static class MyDoubleIla extends AbstractDoubleIla
-	{
-		private final DoubleIla doubleIla;
-		
-		public MyDoubleIla(DoubleIla doubleIla)
-		{
-			super(doubleIla.length());
-			
-			this.doubleIla = doubleIla;
-		}
+    private DoubleIlaRound()
+    {
+    	// non-instantiable class
+    }
 
-		protected void toArrayImpl(double[] array, int offset,
-			long start, int length) throws DataInvalidException
-		{
-			DoubleIlaIterator dii = new DoubleIlaIterator(
-				DoubleIlaSegment.create(doubleIla, start, length));
-			
-			for (int i=0 ; i < length ; i++)
-			{
-				array[offset+i] = Math.round(dii.next());
-			}
-		}
-	}
+    public static DoubleIla create(DoubleIla ila)
+    {
+        Argument.assertNotNull(ila, "ila");
+
+        return new MyDoubleIla(ila);
+    }
+
+    private static class MyDoubleIla extends AbstractDoubleIla
+        implements ImmutableProxy
+    {
+        private final DoubleIla ila;
+
+        MyDoubleIla(DoubleIla ila)
+        {
+            super(ila.length());
+                    
+            this.ila = ila;
+        }
+
+        protected void toArrayImpl(double[] array, int offset,
+                                   int stride, long start, int length)
+            throws DataInvalidException
+        {
+            ila.toArray(array, offset, stride, start, length);
+
+            for (int ii = offset; length > 0; ii += stride, --length)
+            {
+                array[ii] = (double) StrictMath.rint(array[ii]);
+            }
+        }
+                
+        public Map getParameters()
+        {
+            HashMap map = new HashMap();
+                        
+            map.put("name", "DoubleIlaRound");
+            map.put("ila", getImmutableInfo(ila));
+            map.put("length", new Long(length()));
+                        
+            return(map);
+        }
+    }
 }
+// AUTO GENERATED FROM TEMPLATE

@@ -25,42 +25,53 @@
 
 package tfw.immutable.ila.objectila.test;
 
-import java.util.Random;
-import junit.framework.TestCase;
-import tfw.immutable.ila.objectila.ObjectIla;
-import tfw.immutable.ila.objectila.ObjectIlaSegment;
-import tfw.immutable.ila.objectila.ObjectIlaFromArray;
 
+import junit.framework.TestCase;
+import tfw.immutable.ila.test.IlaTestDimensions;
+import tfw.immutable.ila.objectila.ObjectIla;
+import tfw.immutable.ila.objectila.ObjectIlaFromArray;
+import tfw.immutable.ila.objectila.ObjectIlaSegment;
+
+/**
+ *
+ * @immutables.types=all
+ */
 public class ObjectIlaSegmentTest extends TestCase
 {
-	public void testObjectIlaSegment()
-	{
-		final Random random = new Random();
-		final int LENGTH = 29;	
-		Object[] array = new Object[LENGTH];
-		
-		for (int i=0 ; i < array.length ; i++)
-		{
-			array[i] = new Object();
-		}
-		
-		ObjectIla ila = ObjectIlaFromArray.create(array);
-		
-		for (int start=0 ; start < array.length ; start++)
-		{
-			for (int length=0 ; length < array.length - start ; length++)
-			{
-				Object[] a = new Object[length];
-				
-				System.arraycopy(array, start, a, 0, length);
-				
-				ObjectIla i = ObjectIlaFromArray.create(a);
-		
-				String s = ObjectIlaCheck.check(i,
-					ObjectIlaSegment.create(ila, start, length));
-		
-				assertNull(s, s);
-			}
-		}
-	}
+    public void testAll() throws Exception
+    {
+        
+        final int length = IlaTestDimensions.defaultIlaLength();
+        final Object[] master = new Object[length];
+        for(int ii = 0; ii < master.length; ++ii)
+        {
+            master[ii] = new Object();
+        }
+        ObjectIla masterIla = ObjectIlaFromArray.create(master);
+        ObjectIla checkIla = ObjectIlaSegment.create(masterIla, 0,
+                                                         masterIla.length());
+        final int offsetLength = IlaTestDimensions.defaultOffsetLength();
+        final int maxStride = IlaTestDimensions.defaultMaxStride();
+        final Object epsilon = Object.class;
+        ObjectIlaCheck.checkWithoutCorrectness(checkIla, offsetLength,
+                                                 epsilon);
+        for(long start = 0; start < length; ++start)
+        {
+            for(long len = 0; len < length - start; ++len)
+            {
+                Object[] array = new Object[(int) len];
+                for(int ii = 0; ii < array.length; ++ii)
+                {
+                    array[ii] = master[ii + (int) start];
+                }
+                ObjectIla targetIla = ObjectIlaFromArray.create(array);
+                ObjectIla actualIla = ObjectIlaSegment.create(masterIla,
+                                                                  start, len);
+                ObjectIlaCheck.checkCorrectness(targetIla, actualIla,
+                                                  offsetLength, maxStride,
+                                                  epsilon);
+            }
+        }
+    }
 }
+// AUTO GENERATED FROM TEMPLATE

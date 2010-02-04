@@ -27,61 +27,41 @@ package tfw.immutable.ila.longila.test;
 
 import java.util.Random;
 import junit.framework.TestCase;
+import tfw.immutable.ila.test.IlaTestDimensions;
 import tfw.immutable.ila.longila.LongIla;
 import tfw.immutable.ila.longila.LongIlaFromArray;
 import tfw.immutable.ila.longila.LongIlaMutate;
 
+/**
+ *
+ * @immutables.types=all
+ */
 public class LongIlaMutateTest extends TestCase
 {
-	public void testLongIlaMutate()
-	{
-		final Random random = new Random();
-		final int LENGTH = 29;
-		
-		long[] array = new long[LENGTH];
-		long element = random.nextLong();
-		
-		for (int i=0 ; i < LENGTH ; i++)
-		{
-			array[0] = random.nextLong();
-		}
-		
-		LongIla ila = LongIlaFromArray.create(array);
-		
-		try
-		{
-			LongIlaMutate.create(null, 0, element);
-			fail("ila == null not checked for!");
-		}
-		catch (IllegalArgumentException iae) {}
-		
-		try
-		{
-			LongIlaMutate.create(ila, -1, element);
-			fail("index < 0 not checked for!");
-		}
-		catch (IllegalArgumentException iae) {}
-		
-		try
-		{
-			LongIlaMutate.create(ila, LENGTH, element);
-			fail("index >= ila.length not checked for!");
-		}
-		catch (IllegalArgumentException iae) {}
-		
-		for (int i=0 ; i < LENGTH ; i++)
-		{
-			long[] a = new long[LENGTH];
-			
-			System.arraycopy(array, 0, a, 0, LENGTH);
-			a[i] = element;
-			
-			LongIla ia = LongIlaFromArray.create(a);
-			
-			String s = LongIlaCheck.check(ia,
-				LongIlaMutate.create(ila, i, element));
-			
-			assertNull(s, s);
-		}
-	}
+    public void testAll() throws Exception
+    {
+        final Random random = new Random(0);
+        final int length = IlaTestDimensions.defaultIlaLength();
+        final long[] array = new long[length];
+        final long[] target = new long[length];
+        for(int index = 0; index < length; ++index)
+        {
+            for(int ii = 0; ii < array.length; ++ii)
+            {
+                array[ii] = target[ii] = random.nextLong();
+            }
+            final long value = random.nextLong();
+            target[index] = value;
+            LongIla origIla = LongIlaFromArray.create(array);
+            LongIla targetIla = LongIlaFromArray.create(target);
+            LongIla actualIla = LongIlaMutate.create(origIla, index,
+                                                             value);
+            final long epsilon = 0L;
+            LongIlaCheck.checkAll(targetIla, actualIla,
+                                      IlaTestDimensions.defaultOffsetLength(),
+                                      IlaTestDimensions.defaultMaxStride(),
+                                      epsilon);
+        }
+    }
 }
+// AUTO GENERATED FROM TEMPLATE

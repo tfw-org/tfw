@@ -27,60 +27,43 @@ package tfw.immutable.ila.byteila.test;
 
 import java.util.Random;
 import junit.framework.TestCase;
+import tfw.immutable.ila.test.IlaTestDimensions;
 import tfw.immutable.ila.byteila.ByteIla;
 import tfw.immutable.ila.byteila.ByteIlaFromArray;
 import tfw.immutable.ila.byteila.ByteIlaRemove;
 
+/**
+ *
+ * @immutables.types=all
+ */
 public class ByteIlaRemoveTest extends TestCase
 {
-	public void testByteIlaRemove()
-	{
-		final Random random = new Random();
-		final int LENGTH = 29;
-		
-		byte[] array = new byte[LENGTH];
-		
-		for (int i=0 ; i < LENGTH ; i++)
-		{
-			array[0] = (byte)random.nextInt();
-		}
-		
-		ByteIla ila = ByteIlaFromArray.create(array);
-		
-		try
-		{
-			ByteIlaRemove.create(null, 0);
-			fail("ila == null not checked for!");
-		}
-		catch (IllegalArgumentException iae) {}
-		
-		try
-		{
-			ByteIlaRemove.create(ila, -1);
-			fail("index < 0 not checked for!");
-		}
-		catch (IllegalArgumentException iae) {}
-		
-		try
-		{
-			ByteIlaRemove.create(ila, LENGTH);
-			fail("index >= ila.length not checked for!");
-		}
-		catch (IllegalArgumentException iae) {}
-		
-		for (int i=0 ; i < LENGTH ; i++)
-		{
-			byte[] a = new byte[LENGTH - 1];
-			
-			System.arraycopy(array, 0, a, 0, i);
-			System.arraycopy(array, i + 1, a, i, LENGTH - i - 1);
-			
-			ByteIla ia = ByteIlaFromArray.create(a);
-			
-			String s = ByteIlaCheck.check(ia,
-				ByteIlaRemove.create(ila, i));
-			
-			assertNull(s, s);
-		}
-	}
+    public void testAll() throws Exception
+    {
+        final Random random = new Random(0);
+        final int length = IlaTestDimensions.defaultIlaLength();
+        final byte[] array = new byte[length];
+        final byte[] target = new byte[length-1];
+        for(int index = 0; index < length; ++index)
+        {
+            int targetii = 0;
+            for(int ii = 0; ii < array.length; ++ii)
+            {
+                array[ii] = (byte)random.nextInt();
+                if(ii != index)
+                {
+                    target[targetii++] = array[ii];
+                }
+            }
+            ByteIla origIla = ByteIlaFromArray.create(array);
+            ByteIla targetIla = ByteIlaFromArray.create(target);
+            ByteIla actualIla = ByteIlaRemove.create(origIla, index);
+            final byte epsilon = (byte)0;
+            ByteIlaCheck.checkAll(targetIla, actualIla,
+                                      IlaTestDimensions.defaultOffsetLength(),
+                                      IlaTestDimensions.defaultMaxStride(),
+                                      epsilon);
+        }
+    }
 }
+// AUTO GENERATED FROM TEMPLATE

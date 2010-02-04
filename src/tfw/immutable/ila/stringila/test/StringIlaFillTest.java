@@ -25,37 +25,36 @@
 
 package tfw.immutable.ila.stringila.test;
 
-import java.util.Arrays;
-import java.util.Random;
-import junit.framework.TestCase;
-import tfw.immutable.ila.stringila.StringIla;
-import tfw.immutable.ila.stringila.StringIlaFill;
-import tfw.immutable.ila.stringila.StringIlaFromArray;
 
+import junit.framework.TestCase;
+import tfw.immutable.ila.test.IlaTestDimensions;
+import tfw.immutable.ila.stringila.StringIla;
+import tfw.immutable.ila.stringila.StringIlaFromArray;
+import tfw.immutable.ila.stringila.StringIlaFill;
+
+/**
+ *
+ * @immutables.types=all
+ */
 public class StringIlaFillTest extends TestCase
 {
-	public void testStringIlaFill()
-	{
-		final Random random = new Random();
-		final int LENGTH = 29;
-		final String element = new String();
-	
-		String[] array = new String[LENGTH];
-	
-		Arrays.fill(array, element);
-		
-		StringIla ila = StringIlaFromArray.create(array);
-		
-		try
-		{
-			StringIlaFill.create(element, -1);
-			fail("length < 0 not checked for!");
-		}
-		catch (IllegalArgumentException iae) {}
-		
-		String s = StringIlaCheck.check(ila,
-			StringIlaFill.create(element, LENGTH));
-		
-		assertNull(s, s);
-	}
+    public void testAll() throws Exception
+    {
+        
+        final String value = new String();
+        final int length = IlaTestDimensions.defaultIlaLength();
+        final String[] array = new String[length];
+        for(int ii = 0; ii < array.length; ++ii)
+        {
+            array[ii] = value;
+        }
+        StringIla targetIla = StringIlaFromArray.create(array);
+        StringIla actualIla = StringIlaFill.create(value, length);
+        final String epsilon = "";
+        StringIlaCheck.checkAll(targetIla, actualIla,
+                                  IlaTestDimensions.defaultOffsetLength(),
+                                  IlaTestDimensions.defaultMaxStride(),
+                                  epsilon);
+    }
 }
+// AUTO GENERATED FROM TEMPLATE

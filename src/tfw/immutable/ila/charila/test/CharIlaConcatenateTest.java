@@ -27,56 +27,43 @@ package tfw.immutable.ila.charila.test;
 
 import java.util.Random;
 import junit.framework.TestCase;
+import tfw.immutable.ila.test.IlaTestDimensions;
 import tfw.immutable.ila.charila.CharIla;
-import tfw.immutable.ila.charila.CharIlaConcatenate;
 import tfw.immutable.ila.charila.CharIlaFromArray;
+import tfw.immutable.ila.charila.CharIlaConcatenate;
 
+/**
+ *
+ * @immutables.types=all
+ */
 public class CharIlaConcatenateTest extends TestCase
 {
-	public void testCharIlaConcatenate()
-	{
-		final Random random = new Random();
-		final int LENGTH1 = 29;
-		final int LENGTH2 = 17;
-		
-		char[] array1 = new char[LENGTH1];
-		char[] array2 = new char[LENGTH2];
-		
-		for (int i=0 ; i < LENGTH1 ; i++)
-		{
-			array1[i] = (char)random.nextInt();
-		}
-		for (int i=0 ; i < LENGTH2 ; i++)
-		{
-			array2[i] = (char)random.nextInt();
-		}
-		
-		char[] array3 = new char[LENGTH1 + LENGTH2];
-		
-		System.arraycopy(array1, 0, array3, 0, LENGTH1);
-		System.arraycopy(array2, 0, array3, LENGTH1, LENGTH2);
-		
-		CharIla ila1 = CharIlaFromArray.create(array1);
-		CharIla ila2 = CharIlaFromArray.create(array2);
-		CharIla ila3 = CharIlaFromArray.create(array3);
-		
-		try
-		{
-			CharIlaConcatenate.create(null, ila2);
-			fail("firstIla == null not checked for!");
-		}
-		catch (IllegalArgumentException iae) {}
-		
-		try
-		{
-			CharIlaConcatenate.create(ila1, null);
-			fail("secondIla == null not checked for!");
-		}
-		catch (IllegalArgumentException iae) {}
-		
-		String s = CharIlaCheck.check(ila3,
-			CharIlaConcatenate.create(ila1, ila2));
-		
-		assertNull(s, s);
-	}
+    public void testAll() throws Exception
+    {
+        final Random random = new Random(0);
+        final int leftLength = IlaTestDimensions.defaultIlaLength();
+        final int rightLength = 1 + random.nextInt(leftLength);
+        final char[] leftArray = new char[leftLength];
+        final char[] rightArray = new char[rightLength];
+        final char[] array = new char[leftLength + rightLength];
+        for(int ii = 0; ii < leftArray.length; ++ii)
+        {
+            array[ii] = leftArray[ii] = (char)random.nextInt();
+        }
+        for(int ii = 0; ii < rightArray.length; ++ii)
+        {
+            array[ii + leftLength] = rightArray[ii] = (char)random.nextInt();
+        }
+        CharIla leftIla = CharIlaFromArray.create(leftArray);
+        CharIla rightIla = CharIlaFromArray.create(rightArray);
+        CharIla targetIla = CharIlaFromArray.create(array);
+        CharIla actualIla = CharIlaConcatenate.create(leftIla,
+                                                              rightIla);
+        final char epsilon = (char)0;
+        CharIlaCheck.checkAll(targetIla, actualIla,
+                                IlaTestDimensions.defaultOffsetLength(),
+                                IlaTestDimensions.defaultMaxStride(),
+                                epsilon);
+    }
 }
+// AUTO GENERATED FROM TEMPLATE

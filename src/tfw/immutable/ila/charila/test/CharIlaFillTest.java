@@ -25,37 +25,36 @@
 
 package tfw.immutable.ila.charila.test;
 
-import java.util.Arrays;
 import java.util.Random;
 import junit.framework.TestCase;
+import tfw.immutable.ila.test.IlaTestDimensions;
 import tfw.immutable.ila.charila.CharIla;
-import tfw.immutable.ila.charila.CharIlaFill;
 import tfw.immutable.ila.charila.CharIlaFromArray;
+import tfw.immutable.ila.charila.CharIlaFill;
 
+/**
+ *
+ * @immutables.types=all
+ */
 public class CharIlaFillTest extends TestCase
 {
-	public void testCharIlaFill()
-	{
-		final Random random = new Random();
-		final int LENGTH = 29;
-		final char element = (char)random.nextInt();
-	
-		char[] array = new char[LENGTH];
-	
-		Arrays.fill(array, element);
-		
-		CharIla ila = CharIlaFromArray.create(array);
-		
-		try
-		{
-			CharIlaFill.create(element, -1);
-			fail("length < 0 not checked for!");
-		}
-		catch (IllegalArgumentException iae) {}
-		
-		String s = CharIlaCheck.check(ila,
-			CharIlaFill.create(element, LENGTH));
-		
-		assertNull(s, s);
-	}
+    public void testAll() throws Exception
+    {
+        final Random random = new Random(0);
+        final char value = (char)random.nextInt();
+        final int length = IlaTestDimensions.defaultIlaLength();
+        final char[] array = new char[length];
+        for(int ii = 0; ii < array.length; ++ii)
+        {
+            array[ii] = value;
+        }
+        CharIla targetIla = CharIlaFromArray.create(array);
+        CharIla actualIla = CharIlaFill.create(value, length);
+        final char epsilon = (char)0;
+        CharIlaCheck.checkAll(targetIla, actualIla,
+                                  IlaTestDimensions.defaultOffsetLength(),
+                                  IlaTestDimensions.defaultMaxStride(),
+                                  epsilon);
+    }
 }
+// AUTO GENERATED FROM TEMPLATE

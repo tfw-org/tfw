@@ -25,62 +25,45 @@
 
 package tfw.immutable.ila.objectila.test;
 
-import java.util.Random;
+
 import junit.framework.TestCase;
+import tfw.immutable.ila.test.IlaTestDimensions;
 import tfw.immutable.ila.objectila.ObjectIla;
 import tfw.immutable.ila.objectila.ObjectIlaFromArray;
 import tfw.immutable.ila.objectila.ObjectIlaRemove;
 
+/**
+ *
+ * @immutables.types=all
+ */
 public class ObjectIlaRemoveTest extends TestCase
 {
-	public void testObjectIlaRemove()
-	{
-		final Random random = new Random();
-		final int LENGTH = 29;
-		
-		Object[] array = new Object[LENGTH];
-		
-		for (int i=0 ; i < LENGTH ; i++)
-		{
-			array[0] = new Object();
-		}
-		
-		ObjectIla ila = ObjectIlaFromArray.create(array);
-		
-		try
-		{
-			ObjectIlaRemove.create(null, 0);
-			fail("ila == null not checked for!");
-		}
-		catch (IllegalArgumentException iae) {}
-		
-		try
-		{
-			ObjectIlaRemove.create(ila, -1);
-			fail("index < 0 not checked for!");
-		}
-		catch (IllegalArgumentException iae) {}
-		
-		try
-		{
-			ObjectIlaRemove.create(ila, LENGTH);
-			fail("index >= ila.length not checked for!");
-		}
-		catch (IllegalArgumentException iae) {}
-		
-		for (int i=0 ; i < LENGTH ; i++)
-		{
-			Object[] a = new Object[LENGTH - 1];
-			
-			System.arraycopy(array, 0, a, 0, i);
-			System.arraycopy(array, i + 1, a, i, LENGTH - i - 1);
-			
-			ObjectIla ia = ObjectIlaFromArray.create(a);
-			
-			String s = ObjectIlaCheck.check(ia,
-				ObjectIlaRemove.create(ila, i));
-			
-			assertNull(s, s);
-		}
-	}
+    public void testAll() throws Exception
+    {
+        
+        final int length = IlaTestDimensions.defaultIlaLength();
+        final Object[] array = new Object[length];
+        final Object[] target = new Object[length-1];
+        for(int index = 0; index < length; ++index)
+        {
+            int targetii = 0;
+            for(int ii = 0; ii < array.length; ++ii)
+            {
+                array[ii] = new Object();
+                if(ii != index)
+                {
+                    target[targetii++] = array[ii];
+                }
+            }
+            ObjectIla origIla = ObjectIlaFromArray.create(array);
+            ObjectIla targetIla = ObjectIlaFromArray.create(target);
+            ObjectIla actualIla = ObjectIlaRemove.create(origIla, index);
+            final Object epsilon = Object.class;
+            ObjectIlaCheck.checkAll(targetIla, actualIla,
+                                      IlaTestDimensions.defaultOffsetLength(),
+                                      IlaTestDimensions.defaultMaxStride(),
+                                      epsilon);
+        }
+    }
 }
+// AUTO GENERATED FROM TEMPLATE

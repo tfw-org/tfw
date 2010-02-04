@@ -29,48 +29,57 @@ import java.util.Map;
 import tfw.check.Argument;
 import tfw.immutable.ImmutableProxy;
 
+/**
+ *
+ * @immutables.types=all
+ */
 public final class ObjectIlaFromArray
 {
-    private ObjectIlaFromArray() {}
-    
-    public static ObjectIla create(Object[] array)
+    private ObjectIlaFromArray()
     {
-    	return create(array, true);
+        // non-instantiable class
     }
 
-    public static ObjectIla create(Object[] array, boolean copyArrayIn)
+    public static ObjectIla create(Object[] array)
     {
-    	Argument.assertNotNull(array, "array");
+        Argument.assertNotNull(array, "array");
 
-		return new MyObjectIla(array, copyArrayIn);
+        return new MyObjectIla(array);
     }
 
     private static class MyObjectIla extends AbstractObjectIla
-    	implements ImmutableProxy
+        implements ImmutableProxy
     {
-		private final Object[] array;
+        private final Object[] array;
 
-		MyObjectIla(Object[] array, boolean copyArrayIn)
-		{
-		    super(array.length);
-		    
-		    this.array = copyArrayIn ? (Object[])array.clone() : array;
-		}
+        MyObjectIla(Object[] array)
+        {
+            super(array.length);
+                    
+            this.array = (Object[])array.clone();
+        }
 
-		protected void toArrayImpl(Object[] array, int offset,
-			long start, int length)
-		{
-		    System.arraycopy(this.array, (int) start, array, offset, length);
-		}
-		
-		public Map getParameters()
-		{
-			HashMap map = new HashMap();
-			
-			map.put("name", "ObjectIlaFromArray");
-			map.put("length", new Long(length()));
-			
-			return(map);
-		}
+        protected void toArrayImpl(Object[] array, int offset,
+                                   int stride, long start, int length)
+        {
+            final int startPlusLength = (int) (start + length);
+            for(int startInt = (int) start;
+                startInt != startPlusLength;
+                ++startInt, offset += stride)
+            {
+                array[offset] = this.array[startInt];
+            }
+        }
+                
+        public Map getParameters()
+        {
+            HashMap map = new HashMap();
+                        
+            map.put("name", "ObjectIlaFromArray");
+            map.put("length", new Long(length()));
+                        
+            return(map);
+        }
     }
 }
+// AUTO GENERATED FROM TEMPLATE

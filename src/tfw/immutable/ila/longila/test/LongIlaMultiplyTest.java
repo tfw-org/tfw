@@ -27,49 +27,39 @@ package tfw.immutable.ila.longila.test;
 
 import java.util.Random;
 import junit.framework.TestCase;
+import tfw.immutable.ila.test.IlaTestDimensions;
 import tfw.immutable.ila.longila.LongIla;
-import tfw.immutable.ila.longila.LongIlaMultiply;
 import tfw.immutable.ila.longila.LongIlaFromArray;
+import tfw.immutable.ila.longila.LongIlaMultiply;
 
+/**
+ *
+ * @immutables.types=numeric
+ */
 public class LongIlaMultiplyTest extends TestCase
 {
-	public void testLongIlaMultiply()
-	{
-		final Random random = new Random();
-		final int LENGTH = 29;
-		
-		long[] array1 = new long[LENGTH];
-		long[] array2 = new long[LENGTH];
-		long[] array3 = new long[LENGTH];
-		
-		for (int i=0 ; i < LENGTH ; i++)
-		{
-			array1[i] = random.nextLong();
-			array2[i] = random.nextLong();
-			array3[i] = array1[i] * array2[i];
-		}
-		
-		LongIla ila1 = LongIlaFromArray.create(array1);
-		LongIla ila2 = LongIlaFromArray.create(array2);
-		LongIla ila3 = LongIlaFromArray.create(array3);
-		
-		try
-		{
-			LongIlaMultiply.create(null, ila2);
-			fail("firstIla == null not checked for!");
-		}
-		catch (IllegalArgumentException iae) {}
-		
-		try
-		{
-			LongIlaMultiply.create(ila1, null);
-			fail("secondIla == null not checked for!");
-		}
-		catch (IllegalArgumentException iae) {}
-		
-		String s = LongIlaCheck.check(ila3,
-			LongIlaMultiply.create(ila1, ila2));
-		
-		assertNull(s, s);
-	}
+    public void testAll() throws Exception
+    {
+        final Random random = new Random(0);
+        final int length = IlaTestDimensions.defaultIlaLength();
+        final long[] leftArray = new long[length];
+        final long[] rightArray = new long[length];
+        final long[] array = new long[length];
+        for(int ii = 0; ii < leftArray.length; ++ii)
+        {
+            leftArray[ii] = random.nextLong();
+            rightArray[ii] = random.nextLong();
+            array[ii] = (long) (leftArray[ii] * rightArray[ii]);
+        }
+        LongIla leftIla = LongIlaFromArray.create(leftArray);
+        LongIla rightIla = LongIlaFromArray.create(rightArray);
+        LongIla targetIla = LongIlaFromArray.create(array);
+        LongIla actualIla = LongIlaMultiply.create(leftIla, rightIla);
+        final long epsilon = (long) 0.0;
+        LongIlaCheck.checkAll(targetIla, actualIla,
+                                IlaTestDimensions.defaultOffsetLength(),
+                                IlaTestDimensions.defaultMaxStride(),
+                                epsilon);
+    }
 }
+// AUTO GENERATED FROM TEMPLATE

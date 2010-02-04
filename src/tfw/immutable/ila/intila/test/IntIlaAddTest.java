@@ -27,49 +27,39 @@ package tfw.immutable.ila.intila.test;
 
 import java.util.Random;
 import junit.framework.TestCase;
+import tfw.immutable.ila.test.IlaTestDimensions;
 import tfw.immutable.ila.intila.IntIla;
-import tfw.immutable.ila.intila.IntIlaAdd;
 import tfw.immutable.ila.intila.IntIlaFromArray;
+import tfw.immutable.ila.intila.IntIlaAdd;
 
+/**
+ *
+ * @immutables.types=numeric
+ */
 public class IntIlaAddTest extends TestCase
 {
-	public void testIntIlaAdd()
-	{
-		final Random random = new Random();
-		final int LENGTH = 29;
-		
-		int[] array1 = new int[LENGTH];
-		int[] array2 = new int[LENGTH];
-		int[] array3 = new int[LENGTH];
-		
-		for (int i=0 ; i < LENGTH ; i++)
-		{
-			array1[i] = random.nextInt();
-			array2[i] = random.nextInt();
-			array3[i] = array1[i] + array2[i];
-		}
-		
-		IntIla ila1 = IntIlaFromArray.create(array1);
-		IntIla ila2 = IntIlaFromArray.create(array2);
-		IntIla ila3 = IntIlaFromArray.create(array3);
-		
-		try
-		{
-			IntIlaAdd.create(null, ila2);
-			fail("firstIla == null not checked for!");
-		}
-		catch (IllegalArgumentException iae) {}
-		
-		try
-		{
-			IntIlaAdd.create(ila1, null);
-			fail("secondIla == null not checked for!");
-		}
-		catch (IllegalArgumentException iae) {}
-		
-		String s = IntIlaCheck.check(ila3,
-			IntIlaAdd.create(ila1, ila2));
-		
-		assertNull(s, s);
-	}
+    public void testAll() throws Exception
+    {
+        final Random random = new Random(0);
+        final int length = IlaTestDimensions.defaultIlaLength();
+        final int[] leftArray = new int[length];
+        final int[] rightArray = new int[length];
+        final int[] array = new int[length];
+        for(int ii = 0; ii < leftArray.length; ++ii)
+        {
+            leftArray[ii] = random.nextInt();
+            rightArray[ii] = random.nextInt();
+            array[ii] = (int) (leftArray[ii] + rightArray[ii]);
+        }
+        IntIla leftIla = IntIlaFromArray.create(leftArray);
+        IntIla rightIla = IntIlaFromArray.create(rightArray);
+        IntIla targetIla = IntIlaFromArray.create(array);
+        IntIla actualIla = IntIlaAdd.create(leftIla, rightIla);
+        final int epsilon = (int) 0.0;
+        IntIlaCheck.checkAll(targetIla, actualIla,
+                                IlaTestDimensions.defaultOffsetLength(),
+                                IlaTestDimensions.defaultMaxStride(),
+                                epsilon);
+    }
 }
+// AUTO GENERATED FROM TEMPLATE

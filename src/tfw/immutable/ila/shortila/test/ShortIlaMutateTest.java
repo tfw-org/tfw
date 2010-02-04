@@ -27,61 +27,41 @@ package tfw.immutable.ila.shortila.test;
 
 import java.util.Random;
 import junit.framework.TestCase;
+import tfw.immutable.ila.test.IlaTestDimensions;
 import tfw.immutable.ila.shortila.ShortIla;
 import tfw.immutable.ila.shortila.ShortIlaFromArray;
 import tfw.immutable.ila.shortila.ShortIlaMutate;
 
+/**
+ *
+ * @immutables.types=all
+ */
 public class ShortIlaMutateTest extends TestCase
 {
-	public void testShortIlaMutate()
-	{
-		final Random random = new Random();
-		final int LENGTH = 29;
-		
-		short[] array = new short[LENGTH];
-		short element = (short)random.nextInt();
-		
-		for (int i=0 ; i < LENGTH ; i++)
-		{
-			array[0] = (short)random.nextInt();
-		}
-		
-		ShortIla ila = ShortIlaFromArray.create(array);
-		
-		try
-		{
-			ShortIlaMutate.create(null, 0, element);
-			fail("ila == null not checked for!");
-		}
-		catch (IllegalArgumentException iae) {}
-		
-		try
-		{
-			ShortIlaMutate.create(ila, -1, element);
-			fail("index < 0 not checked for!");
-		}
-		catch (IllegalArgumentException iae) {}
-		
-		try
-		{
-			ShortIlaMutate.create(ila, LENGTH, element);
-			fail("index >= ila.length not checked for!");
-		}
-		catch (IllegalArgumentException iae) {}
-		
-		for (int i=0 ; i < LENGTH ; i++)
-		{
-			short[] a = new short[LENGTH];
-			
-			System.arraycopy(array, 0, a, 0, LENGTH);
-			a[i] = element;
-			
-			ShortIla ia = ShortIlaFromArray.create(a);
-			
-			String s = ShortIlaCheck.check(ia,
-				ShortIlaMutate.create(ila, i, element));
-			
-			assertNull(s, s);
-		}
-	}
+    public void testAll() throws Exception
+    {
+        final Random random = new Random(0);
+        final int length = IlaTestDimensions.defaultIlaLength();
+        final short[] array = new short[length];
+        final short[] target = new short[length];
+        for(int index = 0; index < length; ++index)
+        {
+            for(int ii = 0; ii < array.length; ++ii)
+            {
+                array[ii] = target[ii] = (short)random.nextInt();
+            }
+            final short value = (short)random.nextInt();
+            target[index] = value;
+            ShortIla origIla = ShortIlaFromArray.create(array);
+            ShortIla targetIla = ShortIlaFromArray.create(target);
+            ShortIla actualIla = ShortIlaMutate.create(origIla, index,
+                                                             value);
+            final short epsilon = (short)0;
+            ShortIlaCheck.checkAll(targetIla, actualIla,
+                                      IlaTestDimensions.defaultOffsetLength(),
+                                      IlaTestDimensions.defaultMaxStride(),
+                                      epsilon);
+        }
+    }
 }
+// AUTO GENERATED FROM TEMPLATE

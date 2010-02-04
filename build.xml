@@ -3,12 +3,12 @@
   <property name="src.dir" location="src" />
   <property name="log.dir" location="log" />
   <property name="lib.dir" location="lib" />
+  <property name="dist.dir" location="dist" />
   <property name="bin.dir" location="bin" />
-  <property name="build.dir" location="bin" />
-  <property name="release.jar" location="${bin.dir}/tfw.jar" />
+  <property name="release.jar" location="${dist.dir}/tfw.jar" />
 
   <path id="classpath">
-    <pathelement path="${build.dir}" />
+    <pathelement path="${bin.dir}" />
     <fileset dir="${lib.dir}">
     <!-- may become a problem if jars need to be ordered -->
       <include name="**/*.jar" />
@@ -31,14 +31,14 @@
 	   classpathref="classpath"
 	   srcdir="${src.dir}"
 	   includes="tfw/ant/Generate.java"
-	   destdir="${build.dir}" />
+	   destdir="${bin.dir}" />
   </target>
 
   <target name="immutables" depends="bootstrap-taskdef-compile">
     <taskdef name="generate" classname="tfw.ant.Generate"
-             classpath="${build.dir}" />
+             classpath="${bin.dir}" />
     <generate srcdir="${src.dir}" destdir="${src.dir}">
-      <include name="**/*.template" />
+      <include name="**/*.template2" />
     </generate>
   </target>
 
@@ -47,13 +47,13 @@
            optimize="off"
 	   classpathref="classpath"
 	   srcdir="${src.dir}"
-	   destdir="${build.dir}">
+	   destdir="${bin.dir}">
     </javac>
   </target>
 
   <target name="jar" depends="compile">
     <jar destfile="${release.jar}">
-      <fileset dir="${build.dir}">
+      <fileset dir="${bin.dir}">
         <include name="**/*.class" />
       </fileset>
     </jar>
@@ -61,7 +61,7 @@
 
   <target name="clean" depends="init">
     <delete includeEmptyDirs="true">
-      <fileset dir="${build.dir}">
+      <fileset dir="${bin.dir}">
         <include name="**/*" />
       </fileset>
     </delete>

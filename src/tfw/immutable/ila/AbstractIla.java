@@ -32,26 +32,39 @@ public abstract class AbstractIla implements ImmutableLongArray
     
     protected AbstractIla(long length)
     {
-    	Argument.assertNotLessThan(length, 0, "length");
-    	
-    	this.length = length;
+        Argument.assertNotLessThan(length, 0, "length");
+        
+        this.length = length;
     }
 
     public final long length()
     {
-    	return length;
+        return length;
     }
 
     protected final void boundsCheck(int arrayLength, int offset,
-    	long start, int length)
+                                     int stride, long start, int length)
     {
-    	Argument.assertNotLessThan(arrayLength, 0, "arrayLength");
-    	Argument.assertNotLessThan(offset, 0, "offset");
-    	Argument.assertNotLessThan(start, 0, "start");
-    	Argument.assertNotLessThan(length, 0, "length");
-    	Argument.assertNotGreaterThan(offset + length, arrayLength,
-    		"offset + length", "arrayLength");
-    	Argument.assertNotGreaterThan(start + length, this.length,
-    		"start + length", "Ila.length");
+        Argument.assertNotLessThan(arrayLength, 0, "array.length");
+        Argument.assertNotLessThan(offset, 0, "offset");
+        Argument.assertNotGreaterThanOrEquals(offset, arrayLength,
+                                              "offset", "array.length");
+        Argument.assertNotEquals(stride, 0, "stride");
+        Argument.assertNotLessThan(start, 0, "start");
+        Argument.assertNotLessThan(length, 0, "length");
+        if(stride < 0)
+        {
+            Argument.assertNotLessThan(offset+(length-1)*stride, 0,
+                                       "offset+(length-1)*stride");
+        }
+        else
+        {
+            Argument.assertNotGreaterThan(offset+(length-1)*stride+1,
+                                          arrayLength,
+                                          "offset+(length-1)*stride+1",
+                                          "array.length");
+        }
+        Argument.assertNotGreaterThan(start + length, this.length,
+                                      "start+length", "Ila.length()");
     }
 }

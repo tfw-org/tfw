@@ -27,61 +27,41 @@ package tfw.immutable.ila.doubleila.test;
 
 import java.util.Random;
 import junit.framework.TestCase;
+import tfw.immutable.ila.test.IlaTestDimensions;
 import tfw.immutable.ila.doubleila.DoubleIla;
 import tfw.immutable.ila.doubleila.DoubleIlaFromArray;
 import tfw.immutable.ila.doubleila.DoubleIlaMutate;
 
+/**
+ *
+ * @immutables.types=all
+ */
 public class DoubleIlaMutateTest extends TestCase
 {
-	public void testDoubleIlaMutate()
-	{
-		final Random random = new Random();
-		final int LENGTH = 29;
-		
-		double[] array = new double[LENGTH];
-		double element = random.nextDouble();
-		
-		for (int i=0 ; i < LENGTH ; i++)
-		{
-			array[0] = random.nextDouble();
-		}
-		
-		DoubleIla ila = DoubleIlaFromArray.create(array);
-		
-		try
-		{
-			DoubleIlaMutate.create(null, 0, element);
-			fail("ila == null not checked for!");
-		}
-		catch (IllegalArgumentException iae) {}
-		
-		try
-		{
-			DoubleIlaMutate.create(ila, -1, element);
-			fail("index < 0 not checked for!");
-		}
-		catch (IllegalArgumentException iae) {}
-		
-		try
-		{
-			DoubleIlaMutate.create(ila, LENGTH, element);
-			fail("index >= ila.length not checked for!");
-		}
-		catch (IllegalArgumentException iae) {}
-		
-		for (int i=0 ; i < LENGTH ; i++)
-		{
-			double[] a = new double[LENGTH];
-			
-			System.arraycopy(array, 0, a, 0, LENGTH);
-			a[i] = element;
-			
-			DoubleIla ia = DoubleIlaFromArray.create(a);
-			
-			String s = DoubleIlaCheck.check(ia,
-				DoubleIlaMutate.create(ila, i, element));
-			
-			assertNull(s, s);
-		}
-	}
+    public void testAll() throws Exception
+    {
+        final Random random = new Random(0);
+        final int length = IlaTestDimensions.defaultIlaLength();
+        final double[] array = new double[length];
+        final double[] target = new double[length];
+        for(int index = 0; index < length; ++index)
+        {
+            for(int ii = 0; ii < array.length; ++ii)
+            {
+                array[ii] = target[ii] = random.nextDouble();
+            }
+            final double value = random.nextDouble();
+            target[index] = value;
+            DoubleIla origIla = DoubleIlaFromArray.create(array);
+            DoubleIla targetIla = DoubleIlaFromArray.create(target);
+            DoubleIla actualIla = DoubleIlaMutate.create(origIla, index,
+                                                             value);
+            final double epsilon = 0.0;
+            DoubleIlaCheck.checkAll(targetIla, actualIla,
+                                      IlaTestDimensions.defaultOffsetLength(),
+                                      IlaTestDimensions.defaultMaxStride(),
+                                      epsilon);
+        }
+    }
 }
+// AUTO GENERATED FROM TEMPLATE

@@ -27,49 +27,39 @@ package tfw.immutable.ila.doubleila.test;
 
 import java.util.Random;
 import junit.framework.TestCase;
+import tfw.immutable.ila.test.IlaTestDimensions;
 import tfw.immutable.ila.doubleila.DoubleIla;
-import tfw.immutable.ila.doubleila.DoubleIlaSubtract;
 import tfw.immutable.ila.doubleila.DoubleIlaFromArray;
+import tfw.immutable.ila.doubleila.DoubleIlaSubtract;
 
+/**
+ *
+ * @immutables.types=numeric
+ */
 public class DoubleIlaSubtractTest extends TestCase
 {
-	public void testDoubleIlaSubtract()
-	{
-		final Random random = new Random();
-		final int LENGTH = 29;
-		
-		double[] array1 = new double[LENGTH];
-		double[] array2 = new double[LENGTH];
-		double[] array3 = new double[LENGTH];
-		
-		for (int i=0 ; i < LENGTH ; i++)
-		{
-			array1[i] = random.nextDouble();
-			array2[i] = random.nextDouble();
-			array3[i] = array1[i] - array2[i];
-		}
-		
-		DoubleIla ila1 = DoubleIlaFromArray.create(array1);
-		DoubleIla ila2 = DoubleIlaFromArray.create(array2);
-		DoubleIla ila3 = DoubleIlaFromArray.create(array3);
-		
-		try
-		{
-			DoubleIlaSubtract.create(null, ila2);
-			fail("firstIla == null not checked for!");
-		}
-		catch (IllegalArgumentException iae) {}
-		
-		try
-		{
-			DoubleIlaSubtract.create(ila1, null);
-			fail("secondIla == null not checked for!");
-		}
-		catch (IllegalArgumentException iae) {}
-		
-		String s = DoubleIlaCheck.check(ila3,
-			DoubleIlaSubtract.create(ila1, ila2));
-		
-		assertNull(s, s);
-	}
+    public void testAll() throws Exception
+    {
+        final Random random = new Random(0);
+        final int length = IlaTestDimensions.defaultIlaLength();
+        final double[] leftArray = new double[length];
+        final double[] rightArray = new double[length];
+        final double[] array = new double[length];
+        for(int ii = 0; ii < leftArray.length; ++ii)
+        {
+            leftArray[ii] = random.nextDouble();
+            rightArray[ii] = random.nextDouble();
+            array[ii] = (double) (leftArray[ii] - rightArray[ii]);
+        }
+        DoubleIla leftIla = DoubleIlaFromArray.create(leftArray);
+        DoubleIla rightIla = DoubleIlaFromArray.create(rightArray);
+        DoubleIla targetIla = DoubleIlaFromArray.create(array);
+        DoubleIla actualIla = DoubleIlaSubtract.create(leftIla, rightIla);
+        final double epsilon = (double) 0.0;
+        DoubleIlaCheck.checkAll(targetIla, actualIla,
+                                IlaTestDimensions.defaultOffsetLength(),
+                                IlaTestDimensions.defaultMaxStride(),
+                                epsilon);
+    }
 }
+// AUTO GENERATED FROM TEMPLATE

@@ -25,42 +25,53 @@
 
 package tfw.immutable.ila.stringila.test;
 
-import java.util.Random;
-import junit.framework.TestCase;
-import tfw.immutable.ila.stringila.StringIla;
-import tfw.immutable.ila.stringila.StringIlaSegment;
-import tfw.immutable.ila.stringila.StringIlaFromArray;
 
+import junit.framework.TestCase;
+import tfw.immutable.ila.test.IlaTestDimensions;
+import tfw.immutable.ila.stringila.StringIla;
+import tfw.immutable.ila.stringila.StringIlaFromArray;
+import tfw.immutable.ila.stringila.StringIlaSegment;
+
+/**
+ *
+ * @immutables.types=all
+ */
 public class StringIlaSegmentTest extends TestCase
 {
-	public void testStringIlaSegment()
-	{
-		final Random random = new Random();
-		final int LENGTH = 29;	
-		String[] array = new String[LENGTH];
-		
-		for (int i=0 ; i < array.length ; i++)
-		{
-			array[i] = new String();
-		}
-		
-		StringIla ila = StringIlaFromArray.create(array);
-		
-		for (int start=0 ; start < array.length ; start++)
-		{
-			for (int length=0 ; length < array.length - start ; length++)
-			{
-				String[] a = new String[length];
-				
-				System.arraycopy(array, start, a, 0, length);
-				
-				StringIla i = StringIlaFromArray.create(a);
-		
-				String s = StringIlaCheck.check(i,
-					StringIlaSegment.create(ila, start, length));
-		
-				assertNull(s, s);
-			}
-		}
-	}
+    public void testAll() throws Exception
+    {
+        
+        final int length = IlaTestDimensions.defaultIlaLength();
+        final String[] master = new String[length];
+        for(int ii = 0; ii < master.length; ++ii)
+        {
+            master[ii] = new String();
+        }
+        StringIla masterIla = StringIlaFromArray.create(master);
+        StringIla checkIla = StringIlaSegment.create(masterIla, 0,
+                                                         masterIla.length());
+        final int offsetLength = IlaTestDimensions.defaultOffsetLength();
+        final int maxStride = IlaTestDimensions.defaultMaxStride();
+        final String epsilon = "";
+        StringIlaCheck.checkWithoutCorrectness(checkIla, offsetLength,
+                                                 epsilon);
+        for(long start = 0; start < length; ++start)
+        {
+            for(long len = 0; len < length - start; ++len)
+            {
+                String[] array = new String[(int) len];
+                for(int ii = 0; ii < array.length; ++ii)
+                {
+                    array[ii] = master[ii + (int) start];
+                }
+                StringIla targetIla = StringIlaFromArray.create(array);
+                StringIla actualIla = StringIlaSegment.create(masterIla,
+                                                                  start, len);
+                StringIlaCheck.checkCorrectness(targetIla, actualIla,
+                                                  offsetLength, maxStride,
+                                                  epsilon);
+            }
+        }
+    }
 }
+// AUTO GENERATED FROM TEMPLATE

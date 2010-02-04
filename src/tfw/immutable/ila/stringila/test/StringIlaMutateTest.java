@@ -25,63 +25,43 @@
 
 package tfw.immutable.ila.stringila.test;
 
-import java.util.Random;
+
 import junit.framework.TestCase;
+import tfw.immutable.ila.test.IlaTestDimensions;
 import tfw.immutable.ila.stringila.StringIla;
 import tfw.immutable.ila.stringila.StringIlaFromArray;
 import tfw.immutable.ila.stringila.StringIlaMutate;
 
+/**
+ *
+ * @immutables.types=all
+ */
 public class StringIlaMutateTest extends TestCase
 {
-	public void testStringIlaMutate()
-	{
-		final Random random = new Random();
-		final int LENGTH = 29;
-		
-		String[] array = new String[LENGTH];
-		String element = new String();
-		
-		for (int i=0 ; i < LENGTH ; i++)
-		{
-			array[0] = new String();
-		}
-		
-		StringIla ila = StringIlaFromArray.create(array);
-		
-		try
-		{
-			StringIlaMutate.create(null, 0, element);
-			fail("ila == null not checked for!");
-		}
-		catch (IllegalArgumentException iae) {}
-		
-		try
-		{
-			StringIlaMutate.create(ila, -1, element);
-			fail("index < 0 not checked for!");
-		}
-		catch (IllegalArgumentException iae) {}
-		
-		try
-		{
-			StringIlaMutate.create(ila, LENGTH, element);
-			fail("index >= ila.length not checked for!");
-		}
-		catch (IllegalArgumentException iae) {}
-		
-		for (int i=0 ; i < LENGTH ; i++)
-		{
-			String[] a = new String[LENGTH];
-			
-			System.arraycopy(array, 0, a, 0, LENGTH);
-			a[i] = element;
-			
-			StringIla ia = StringIlaFromArray.create(a);
-			
-			String s = StringIlaCheck.check(ia,
-				StringIlaMutate.create(ila, i, element));
-			
-			assertNull(s, s);
-		}
-	}
+    public void testAll() throws Exception
+    {
+        
+        final int length = IlaTestDimensions.defaultIlaLength();
+        final String[] array = new String[length];
+        final String[] target = new String[length];
+        for(int index = 0; index < length; ++index)
+        {
+            for(int ii = 0; ii < array.length; ++ii)
+            {
+                array[ii] = target[ii] = new String();
+            }
+            final String value = new String();
+            target[index] = value;
+            StringIla origIla = StringIlaFromArray.create(array);
+            StringIla targetIla = StringIlaFromArray.create(target);
+            StringIla actualIla = StringIlaMutate.create(origIla, index,
+                                                             value);
+            final String epsilon = "";
+            StringIlaCheck.checkAll(targetIla, actualIla,
+                                      IlaTestDimensions.defaultOffsetLength(),
+                                      IlaTestDimensions.defaultMaxStride(),
+                                      epsilon);
+        }
+    }
 }
+// AUTO GENERATED FROM TEMPLATE

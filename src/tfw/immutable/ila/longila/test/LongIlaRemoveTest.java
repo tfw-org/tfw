@@ -27,60 +27,43 @@ package tfw.immutable.ila.longila.test;
 
 import java.util.Random;
 import junit.framework.TestCase;
+import tfw.immutable.ila.test.IlaTestDimensions;
 import tfw.immutable.ila.longila.LongIla;
 import tfw.immutable.ila.longila.LongIlaFromArray;
 import tfw.immutable.ila.longila.LongIlaRemove;
 
+/**
+ *
+ * @immutables.types=all
+ */
 public class LongIlaRemoveTest extends TestCase
 {
-	public void testLongIlaRemove()
-	{
-		final Random random = new Random();
-		final int LENGTH = 29;
-		
-		long[] array = new long[LENGTH];
-		
-		for (int i=0 ; i < LENGTH ; i++)
-		{
-			array[0] = random.nextLong();
-		}
-		
-		LongIla ila = LongIlaFromArray.create(array);
-		
-		try
-		{
-			LongIlaRemove.create(null, 0);
-			fail("ila == null not checked for!");
-		}
-		catch (IllegalArgumentException iae) {}
-		
-		try
-		{
-			LongIlaRemove.create(ila, -1);
-			fail("index < 0 not checked for!");
-		}
-		catch (IllegalArgumentException iae) {}
-		
-		try
-		{
-			LongIlaRemove.create(ila, LENGTH);
-			fail("index >= ila.length not checked for!");
-		}
-		catch (IllegalArgumentException iae) {}
-		
-		for (int i=0 ; i < LENGTH ; i++)
-		{
-			long[] a = new long[LENGTH - 1];
-			
-			System.arraycopy(array, 0, a, 0, i);
-			System.arraycopy(array, i + 1, a, i, LENGTH - i - 1);
-			
-			LongIla ia = LongIlaFromArray.create(a);
-			
-			String s = LongIlaCheck.check(ia,
-				LongIlaRemove.create(ila, i));
-			
-			assertNull(s, s);
-		}
-	}
+    public void testAll() throws Exception
+    {
+        final Random random = new Random(0);
+        final int length = IlaTestDimensions.defaultIlaLength();
+        final long[] array = new long[length];
+        final long[] target = new long[length-1];
+        for(int index = 0; index < length; ++index)
+        {
+            int targetii = 0;
+            for(int ii = 0; ii < array.length; ++ii)
+            {
+                array[ii] = random.nextLong();
+                if(ii != index)
+                {
+                    target[targetii++] = array[ii];
+                }
+            }
+            LongIla origIla = LongIlaFromArray.create(array);
+            LongIla targetIla = LongIlaFromArray.create(target);
+            LongIla actualIla = LongIlaRemove.create(origIla, index);
+            final long epsilon = 0L;
+            LongIlaCheck.checkAll(targetIla, actualIla,
+                                      IlaTestDimensions.defaultOffsetLength(),
+                                      IlaTestDimensions.defaultMaxStride(),
+                                      epsilon);
+        }
+    }
 }
+// AUTO GENERATED FROM TEMPLATE

@@ -27,49 +27,39 @@ package tfw.immutable.ila.floatila.test;
 
 import java.util.Random;
 import junit.framework.TestCase;
+import tfw.immutable.ila.test.IlaTestDimensions;
 import tfw.immutable.ila.floatila.FloatIla;
-import tfw.immutable.ila.floatila.FloatIlaMultiply;
 import tfw.immutable.ila.floatila.FloatIlaFromArray;
+import tfw.immutable.ila.floatila.FloatIlaMultiply;
 
+/**
+ *
+ * @immutables.types=numeric
+ */
 public class FloatIlaMultiplyTest extends TestCase
 {
-	public void testFloatIlaMultiply()
-	{
-		final Random random = new Random();
-		final int LENGTH = 29;
-		
-		float[] array1 = new float[LENGTH];
-		float[] array2 = new float[LENGTH];
-		float[] array3 = new float[LENGTH];
-		
-		for (int i=0 ; i < LENGTH ; i++)
-		{
-			array1[i] = random.nextFloat();
-			array2[i] = random.nextFloat();
-			array3[i] = array1[i] * array2[i];
-		}
-		
-		FloatIla ila1 = FloatIlaFromArray.create(array1);
-		FloatIla ila2 = FloatIlaFromArray.create(array2);
-		FloatIla ila3 = FloatIlaFromArray.create(array3);
-		
-		try
-		{
-			FloatIlaMultiply.create(null, ila2);
-			fail("firstIla == null not checked for!");
-		}
-		catch (IllegalArgumentException iae) {}
-		
-		try
-		{
-			FloatIlaMultiply.create(ila1, null);
-			fail("secondIla == null not checked for!");
-		}
-		catch (IllegalArgumentException iae) {}
-		
-		String s = FloatIlaCheck.check(ila3,
-			FloatIlaMultiply.create(ila1, ila2));
-		
-		assertNull(s, s);
-	}
+    public void testAll() throws Exception
+    {
+        final Random random = new Random(0);
+        final int length = IlaTestDimensions.defaultIlaLength();
+        final float[] leftArray = new float[length];
+        final float[] rightArray = new float[length];
+        final float[] array = new float[length];
+        for(int ii = 0; ii < leftArray.length; ++ii)
+        {
+            leftArray[ii] = random.nextFloat();
+            rightArray[ii] = random.nextFloat();
+            array[ii] = (float) (leftArray[ii] * rightArray[ii]);
+        }
+        FloatIla leftIla = FloatIlaFromArray.create(leftArray);
+        FloatIla rightIla = FloatIlaFromArray.create(rightArray);
+        FloatIla targetIla = FloatIlaFromArray.create(array);
+        FloatIla actualIla = FloatIlaMultiply.create(leftIla, rightIla);
+        final float epsilon = (float) 0.0;
+        FloatIlaCheck.checkAll(targetIla, actualIla,
+                                IlaTestDimensions.defaultOffsetLength(),
+                                IlaTestDimensions.defaultMaxStride(),
+                                epsilon);
+    }
 }
+// AUTO GENERATED FROM TEMPLATE

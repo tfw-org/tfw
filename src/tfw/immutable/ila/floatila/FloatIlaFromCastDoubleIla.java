@@ -1,6 +1,6 @@
 /*
  * The Framework Project
- * Copyright (C) 2006 Anonymous
+ * Copyright (C) 2005 Anonymous
  * 
  * This library is free software; you can
  * redistribute it and/or modify it under the
@@ -24,46 +24,76 @@
  */
 package tfw.immutable.ila.floatila;
 
+import java.util.HashMap;
+import java.util.Map;
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
+import tfw.immutable.ImmutableProxy;
 import tfw.immutable.ila.doubleila.DoubleIla;
 import tfw.immutable.ila.doubleila.DoubleIlaIterator;
 import tfw.immutable.ila.doubleila.DoubleIlaSegment;
 
-public class FloatIlaFromCastDoubleIla
+/**
+ *
+ * @immutables.types=numericnotdouble
+ */
+public final class FloatIlaFromCastDoubleIla
 {
-	private FloatIlaFromCastDoubleIla() {}
-	
-	public static FloatIla create(DoubleIla doubleIla)
-	{
-		Argument.assertNotNull(doubleIla, "doubleIla");
-		
-		return(new MyFloatIla(doubleIla));
-	}
-	
-	private static class MyFloatIla extends AbstractFloatIla
-	{
-		private final DoubleIla doubleIla;
-		
-		public MyFloatIla(DoubleIla doubleIla)
-		{
-			super(doubleIla.length());
-			
-			this.doubleIla = doubleIla;
-		}
+    private FloatIlaFromCastDoubleIla()
+    {
+    	// non-instantiable class
+    }
 
-		protected void toArrayImpl(float[] array, int offset, long start,
-			int length) throws DataInvalidException
-		{
-			DoubleIlaIterator dii = new DoubleIlaIterator(
-				DoubleIlaSegment.create(doubleIla, start, length));
-			
-			for (int i=0 ; i < length ; i++)
-			{
-				double d = dii.next();
-				
-				array[offset + i] = (float)d;
-			}
-		}
-	}
+    public static FloatIla create(DoubleIla doubleIla)
+    {
+        return create(doubleIla, DoubleIlaIterator.DEFAULT_BUFFER_SIZE);
+    }
+
+    public static FloatIla create(DoubleIla doubleIla, int bufferSize)
+    {
+        Argument.assertNotNull(doubleIla, "doubleIla");
+        Argument.assertNotLessThan(bufferSize, 1, "bufferSize");
+
+        return new MyFloatIla(doubleIla, bufferSize);
+    }
+
+    private static class MyFloatIla extends AbstractFloatIla
+        implements ImmutableProxy
+    {
+        private final DoubleIla doubleIla;
+        private final int bufferSize;
+
+        MyFloatIla(DoubleIla doubleIla, int bufferSize)
+        {
+            super(doubleIla.length());
+                    
+            this.doubleIla = doubleIla;
+            this.bufferSize = bufferSize;
+        }
+
+        protected void toArrayImpl(float[] array, int offset,
+                                   int stride, long start, int length)
+            throws DataInvalidException
+        {
+            DoubleIlaIterator fi = new DoubleIlaIterator(
+                DoubleIlaSegment.create(doubleIla, start, length), bufferSize);
+
+            for (int ii = offset; length > 0; ii += stride, --length)
+            {
+                array[ii] = (float) fi.next();
+            }
+        }
+                
+        public Map getParameters()
+        {
+            HashMap map = new HashMap();
+                        
+            map.put("name", "FloatIlaFromCastDoubleIla");
+            map.put("doubleIla", getImmutableInfo(doubleIla));
+            map.put("length", new Long(length()));
+                        
+            return(map);
+        }
+    }
 }
+// AUTO GENERATED FROM TEMPLATE

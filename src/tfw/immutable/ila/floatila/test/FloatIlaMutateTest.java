@@ -27,61 +27,41 @@ package tfw.immutable.ila.floatila.test;
 
 import java.util.Random;
 import junit.framework.TestCase;
+import tfw.immutable.ila.test.IlaTestDimensions;
 import tfw.immutable.ila.floatila.FloatIla;
 import tfw.immutable.ila.floatila.FloatIlaFromArray;
 import tfw.immutable.ila.floatila.FloatIlaMutate;
 
+/**
+ *
+ * @immutables.types=all
+ */
 public class FloatIlaMutateTest extends TestCase
 {
-	public void testFloatIlaMutate()
-	{
-		final Random random = new Random();
-		final int LENGTH = 29;
-		
-		float[] array = new float[LENGTH];
-		float element = random.nextFloat();
-		
-		for (int i=0 ; i < LENGTH ; i++)
-		{
-			array[0] = random.nextFloat();
-		}
-		
-		FloatIla ila = FloatIlaFromArray.create(array);
-		
-		try
-		{
-			FloatIlaMutate.create(null, 0, element);
-			fail("ila == null not checked for!");
-		}
-		catch (IllegalArgumentException iae) {}
-		
-		try
-		{
-			FloatIlaMutate.create(ila, -1, element);
-			fail("index < 0 not checked for!");
-		}
-		catch (IllegalArgumentException iae) {}
-		
-		try
-		{
-			FloatIlaMutate.create(ila, LENGTH, element);
-			fail("index >= ila.length not checked for!");
-		}
-		catch (IllegalArgumentException iae) {}
-		
-		for (int i=0 ; i < LENGTH ; i++)
-		{
-			float[] a = new float[LENGTH];
-			
-			System.arraycopy(array, 0, a, 0, LENGTH);
-			a[i] = element;
-			
-			FloatIla ia = FloatIlaFromArray.create(a);
-			
-			String s = FloatIlaCheck.check(ia,
-				FloatIlaMutate.create(ila, i, element));
-			
-			assertNull(s, s);
-		}
-	}
+    public void testAll() throws Exception
+    {
+        final Random random = new Random(0);
+        final int length = IlaTestDimensions.defaultIlaLength();
+        final float[] array = new float[length];
+        final float[] target = new float[length];
+        for(int index = 0; index < length; ++index)
+        {
+            for(int ii = 0; ii < array.length; ++ii)
+            {
+                array[ii] = target[ii] = random.nextFloat();
+            }
+            final float value = random.nextFloat();
+            target[index] = value;
+            FloatIla origIla = FloatIlaFromArray.create(array);
+            FloatIla targetIla = FloatIlaFromArray.create(target);
+            FloatIla actualIla = FloatIlaMutate.create(origIla, index,
+                                                             value);
+            final float epsilon = 0.0f;
+            FloatIlaCheck.checkAll(targetIla, actualIla,
+                                      IlaTestDimensions.defaultOffsetLength(),
+                                      IlaTestDimensions.defaultMaxStride(),
+                                      epsilon);
+        }
+    }
 }
+// AUTO GENERATED FROM TEMPLATE

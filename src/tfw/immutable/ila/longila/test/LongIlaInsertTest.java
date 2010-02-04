@@ -27,62 +27,46 @@ package tfw.immutable.ila.longila.test;
 
 import java.util.Random;
 import junit.framework.TestCase;
+import tfw.immutable.ila.test.IlaTestDimensions;
 import tfw.immutable.ila.longila.LongIla;
 import tfw.immutable.ila.longila.LongIlaFromArray;
 import tfw.immutable.ila.longila.LongIlaInsert;
 
+/**
+ *
+ * @immutables.types=all
+ */
 public class LongIlaInsertTest extends TestCase
 {
-	public void testLongIlaInsert()
-	{
-		final Random random = new Random();
-		final int LENGTH = 29;
-		
-		long[] array = new long[LENGTH];
-		long element = random.nextLong();
-		
-		for (int i=0 ; i < LENGTH ; i++)
-		{
-			array[0] = random.nextLong();
-		}
-		
-		LongIla ila = LongIlaFromArray.create(array);
-		
-		try
-		{
-			LongIlaInsert.create(null, 0, element);
-			fail("ila == null not checked for!");
-		}
-		catch (IllegalArgumentException iae) {}
-		
-		try
-		{
-			LongIlaInsert.create(ila, -1, element);
-			fail("index < 0 not checked for!");
-		}
-		catch (IllegalArgumentException iae) {}
-		
-		try
-		{
-			LongIlaInsert.create(ila, LENGTH+1, element);
-			fail("index > ila.length not checked for!");
-		}
-		catch (IllegalArgumentException iae) {}
-		
-		for (int i=0 ; i < LENGTH ; i++)
-		{
-			long[] a = new long[LENGTH + 1];
-			
-			System.arraycopy(array, 0, a, 0, i);
-			a[i] = element;
-			System.arraycopy(array, i, a, i + 1, LENGTH - i);
-			
-			LongIla ia = LongIlaFromArray.create(a);
-			
-			String s = LongIlaCheck.check(ia,
-				LongIlaInsert.create(ila, i, element));
-			
-			assertNull(s, s);
-		}
-	}
+    public void testAll() throws Exception
+    {
+        final Random random = new Random(0);
+        final int length = IlaTestDimensions.defaultIlaLength();
+        final long[] array = new long[length];
+        final long[] target = new long[length+1];
+        for(int index = 0; index < length; ++index)
+        {
+            final long value = random.nextLong();
+            int skipit = 0;
+            for(int ii = 0; ii < array.length; ++ii)
+            {
+                if(index == ii)
+                {
+                    skipit = 1;
+                    target[ii] = value;
+                }
+                target[ii + skipit] = array[ii] = random.nextLong();
+            }
+            LongIla origIla = LongIlaFromArray.create(array);
+            LongIla targetIla = LongIlaFromArray.create(target);
+            LongIla actualIla = LongIlaInsert.create(origIla, index,
+                                                             value);
+            final long epsilon = 0L;
+            LongIlaCheck.checkAll(targetIla, actualIla,
+                                      IlaTestDimensions.defaultOffsetLength(),
+                                      IlaTestDimensions.defaultMaxStride(),
+                                      epsilon);
+        }
+    }
 }
+// AUTO GENERATED FROM TEMPLATE
