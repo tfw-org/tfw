@@ -42,9 +42,14 @@ public final class CharIlaFromArray
 
     public static CharIla create(char[] array)
     {
+        return create(array, true);
+    }
+
+    public static CharIla create(char[] array, boolean cloneArray)
+    {
         Argument.assertNotNull(array, "array");
 
-        return new MyCharIla(array);
+        return new MyCharIla(array, cloneArray);
     }
 
     private static class MyCharIla extends AbstractCharIla
@@ -52,11 +57,16 @@ public final class CharIlaFromArray
     {
         private final char[] array;
 
-        MyCharIla(char[] array)
+        MyCharIla(char[] array, boolean cloneArray)
         {
             super(array.length);
-                    
-            this.array = (char[])array.clone();
+
+            if (cloneArray)
+            {
+                this.array = (char[])array.clone();
+            } else {
+                this.array = array;
+            }
         }
 
         protected void toArrayImpl(char[] array, int offset,

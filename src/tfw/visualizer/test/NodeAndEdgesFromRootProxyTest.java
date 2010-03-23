@@ -30,6 +30,7 @@ import junit.framework.TestCase;
 import tfw.immutable.ila.objectila.ObjectIla;
 import tfw.immutable.ila.objectila.ObjectIlaFromArray;
 import tfw.immutable.ila.objectila.test.ObjectIlaCheck;
+import tfw.immutable.ila.test.IlaTestDimensions;
 import tfw.tsm.BasicTransactionQueue;
 import tfw.tsm.Branch;
 import tfw.tsm.BranchFactory;
@@ -190,17 +191,19 @@ public class NodeAndEdgesFromRootProxyTest extends TestCase
 			new TriggeredCommitProxy(triggeredCommit),
 			new TriggeredConverterProxy(triggeredConverter),
 			new ValidatorProxy(validator)};
-		Object[] nodesObjectIlaArray = nodeAndEdgesFromRootProxy.nodesObjectIla.toArray();
+		Object[] nodesObjectIlaArray = nodeAndEdgesFromRootProxy.getNodesObjectIla().toArray();
 		
 		Arrays.sort(nodesArray, ProxyNameComparator.INSTANCE);
 		Arrays.sort(nodesObjectIlaArray, ProxyNameComparator.INSTANCE);
 
-		ObjectIla nodesIla1 = ObjectIlaFromArray.create(nodesArray);
-		ObjectIla nodesIla2 = ObjectIlaFromArray.create(nodesObjectIlaArray);
+		ObjectIla targetIla = ObjectIlaFromArray.create(nodesArray);
+		ObjectIla actualIla = ObjectIlaFromArray.create(nodesObjectIlaArray);
 
-		String nodesString = ObjectIlaCheck.check(nodesIla1, nodesIla2);
-		
-		assertNull(nodesString, nodesString);
+        final Object epsilon = Object.class;
+        ObjectIlaCheck.checkAll(targetIla, actualIla,
+                                IlaTestDimensions.defaultOffsetLength(),
+                                IlaTestDimensions.defaultMaxStride(),
+                                epsilon);
 		
 		Object[] edgeFromsArray = new Object[] {
 			new RootProxy(root),
@@ -229,12 +232,13 @@ public class NodeAndEdgesFromRootProxyTest extends TestCase
 			rootECs[0],
 			rootECs[1]};
 
-		ObjectIla edgeFromsIla1 = ObjectIlaFromArray.create(edgeFromsArray);
-		ObjectIla edgeFromsIla2 = nodeAndEdgesFromRootProxy.edgeFromsLongIla;
+		targetIla = ObjectIlaFromArray.create(edgeFromsArray);
+		actualIla = nodeAndEdgesFromRootProxy.getEdgeFromsObjectIla();
 
-		String edgeFromsString = ObjectIlaCheck.check(edgeFromsIla1, edgeFromsIla2);
-		
-		assertNull(edgeFromsString, edgeFromsString);
+        ObjectIlaCheck.checkAll(targetIla, actualIla,
+                                IlaTestDimensions.defaultOffsetLength(),
+                                IlaTestDimensions.defaultMaxStride(),
+                                epsilon);
 		
 		Object[] edgeTosArray = new Object[] {
 			rootECs[0],
@@ -263,11 +267,12 @@ public class NodeAndEdgesFromRootProxyTest extends TestCase
 			new ValidatorProxy(validator),
 			new ValidatorProxy(validator)};
 
-		ObjectIla edgeTosIla1 = ObjectIlaFromArray.create(edgeTosArray);
-		ObjectIla edgeTosIla2 = nodeAndEdgesFromRootProxy.edgeTosLongIla;
+		targetIla = ObjectIlaFromArray.create(edgeTosArray);
+		actualIla = nodeAndEdgesFromRootProxy.getEdgeTosObjectIla();
 
-		String edgeTosString = ObjectIlaCheck.check(edgeTosIla1, edgeTosIla2);
-				
-		assertNull(edgeTosString, edgeTosString);
+        ObjectIlaCheck.checkAll(targetIla, actualIla,
+                IlaTestDimensions.defaultOffsetLength(),
+                IlaTestDimensions.defaultMaxStride(),
+                epsilon);
 	}
 }

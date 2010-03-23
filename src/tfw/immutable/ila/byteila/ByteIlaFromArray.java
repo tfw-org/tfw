@@ -42,9 +42,14 @@ public final class ByteIlaFromArray
 
     public static ByteIla create(byte[] array)
     {
+        return create(array, true);
+    }
+
+    public static ByteIla create(byte[] array, boolean cloneArray)
+    {
         Argument.assertNotNull(array, "array");
 
-        return new MyByteIla(array);
+        return new MyByteIla(array, cloneArray);
     }
 
     private static class MyByteIla extends AbstractByteIla
@@ -52,11 +57,16 @@ public final class ByteIlaFromArray
     {
         private final byte[] array;
 
-        MyByteIla(byte[] array)
+        MyByteIla(byte[] array, boolean cloneArray)
         {
             super(array.length);
-                    
-            this.array = (byte[])array.clone();
+
+            if (cloneArray)
+            {
+                this.array = (byte[])array.clone();
+            } else {
+                this.array = array;
+            }
         }
 
         protected void toArrayImpl(byte[] array, int offset,

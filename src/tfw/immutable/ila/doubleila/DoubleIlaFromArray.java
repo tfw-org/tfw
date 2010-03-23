@@ -42,9 +42,14 @@ public final class DoubleIlaFromArray
 
     public static DoubleIla create(double[] array)
     {
+        return create(array, true);
+    }
+
+    public static DoubleIla create(double[] array, boolean cloneArray)
+    {
         Argument.assertNotNull(array, "array");
 
-        return new MyDoubleIla(array);
+        return new MyDoubleIla(array, cloneArray);
     }
 
     private static class MyDoubleIla extends AbstractDoubleIla
@@ -52,11 +57,16 @@ public final class DoubleIlaFromArray
     {
         private final double[] array;
 
-        MyDoubleIla(double[] array)
+        MyDoubleIla(double[] array, boolean cloneArray)
         {
             super(array.length);
-                    
-            this.array = (double[])array.clone();
+
+            if (cloneArray)
+            {
+                this.array = (double[])array.clone();
+            } else {
+                this.array = array;
+            }
         }
 
         protected void toArrayImpl(double[] array, int offset,

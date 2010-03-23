@@ -29,6 +29,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import tfw.immutable.ila.objectila.ObjectIla;
+import tfw.immutable.ila.objectila.ObjectIlaFromArray;
 import tfw.tsm.BranchProxy;
 import tfw.tsm.CommitProxy;
 import tfw.tsm.ConverterProxy;
@@ -44,10 +45,34 @@ import tfw.tsm.ValidatorProxy;
 
 public final class NodeAndEdgesFromRootProxy
 {
-	public final ObjectIla nodesObjectIla = new NodesObjectIla();
-	public final ObjectIla edgeFromsLongIla = new EdgeFromsLongIla();
-	public final ObjectIla edgeTosLongIla = new EdgeTosLongIla();
+	private ObjectIla nodesObjectIla = null;
+	private ObjectIla edgeFromsObjectIla = null;
+	private ObjectIla edgeTosObjectIla = null;
 	
+	public ObjectIla getNodesObjectIla() {
+		if (nodesObjectIla == null) {
+			calculateArrays();
+			nodesObjectIla = ObjectIlaFromArray.create(nodes, false);
+		}
+		return nodesObjectIla;
+	}
+
+	public ObjectIla getEdgeFromsObjectIla() {
+		if (edgeFromsObjectIla == null) {
+			calculateArrays();
+			edgeFromsObjectIla = ObjectIlaFromArray.create(edgeFroms, false);
+		}
+		return edgeFromsObjectIla;
+	}
+
+	public ObjectIla getEdgeTosObjectIla() {
+		if (edgeTosObjectIla == null) {
+			calculateArrays();
+			edgeTosObjectIla = ObjectIlaFromArray.create(edgeTos, false);
+		}
+		return edgeTosObjectIla;
+	}
+
 	private final RootProxy rootProxy;
 	
 	private Object[] nodes = null;
@@ -58,118 +83,7 @@ public final class NodeAndEdgesFromRootProxy
 	{
 		this.rootProxy = rootProxy;
 	}
-	
-	private class NodesObjectIla implements ObjectIla
-	{
-		public NodesObjectIla() {}
-		
-		public long length()
-		{
-			calculateArrays();
-			
-			return(nodes.length);
-		}
-		
-		public Object[] toArray()
-		{
-			calculateArrays();
-			
-			return((Object[])nodes.clone());
-		}
-		
-		public Object[] toArray(long start, int length)
-		{
-			calculateArrays();
-			
-			Object[] array = new Object[length];
-			
-			System.arraycopy(nodes, (int)start, array, 0, length);
-			
-			return(array);
-		}
-		
-		public void toArray(Object[] array, int offset, long start, int length)
-		{
-			calculateArrays();
-			
-			System.arraycopy(nodes, (int)start, array, offset, length);
-		}
-	}
-	
-	private class EdgeFromsLongIla implements ObjectIla
-	{
-		public EdgeFromsLongIla() {}
-		
-		public long length()
-		{
-			calculateArrays();
-			
-			return(edgeFroms.length);
-		}
-		
-		public Object[] toArray()
-		{
-			calculateArrays();
-			
-			return((Object[])edgeFroms.clone());
-		}
-		
-		public Object[] toArray(long start, int length)
-		{
-			calculateArrays();
-			
-			Object[] array = new Object[length];
-			
-			System.arraycopy(edgeFroms, (int)start, array, 0, length);
-			
-			return(array);
-		}
-		
-		public void toArray(Object[] array, int offset, long start, int length)
-		{
-			calculateArrays();
-			
-			System.arraycopy(edgeFroms, (int)start, array, offset, length);
-		}
-	}
-	
-	private class EdgeTosLongIla implements ObjectIla
-	{
-		public EdgeTosLongIla() {}
-		
-		public long length()
-		{
-			calculateArrays();
-			
-			return(edgeTos.length);
-		}
-		
-		public Object[] toArray()
-		{
-			calculateArrays();
-			
-			return((Object[])edgeTos.clone());
-		}
-		
-		public Object[] toArray(long start, int length)
-		{
-			calculateArrays();
-			
-			Object[] array = new Object[length];
-			
-			System.arraycopy(edgeTos, (int)start, array, 0, length);
-			
-			return(array);
-		}
-		
-		public void toArray(Object[] array, int offset, long start, int length)
-		{
-			calculateArrays();
-			
-			System.arraycopy(edgeTos, (int)start, array, offset, length);
-		}
-	}
-	
+
 	private void calculateArrays()
 	{
 		if (nodes != null)

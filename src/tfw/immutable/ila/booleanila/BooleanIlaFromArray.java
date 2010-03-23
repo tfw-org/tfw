@@ -42,9 +42,14 @@ public final class BooleanIlaFromArray
 
     public static BooleanIla create(boolean[] array)
     {
+        return create(array, true);
+    }
+
+    public static BooleanIla create(boolean[] array, boolean cloneArray)
+    {
         Argument.assertNotNull(array, "array");
 
-        return new MyBooleanIla(array);
+        return new MyBooleanIla(array, cloneArray);
     }
 
     private static class MyBooleanIla extends AbstractBooleanIla
@@ -52,11 +57,16 @@ public final class BooleanIlaFromArray
     {
         private final boolean[] array;
 
-        MyBooleanIla(boolean[] array)
+        MyBooleanIla(boolean[] array, boolean cloneArray)
         {
             super(array.length);
-                    
-            this.array = (boolean[])array.clone();
+
+            if (cloneArray)
+            {
+                this.array = (boolean[])array.clone();
+            } else {
+                this.array = array;
+            }
         }
 
         protected void toArrayImpl(boolean[] array, int offset,

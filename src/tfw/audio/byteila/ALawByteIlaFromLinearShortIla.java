@@ -61,13 +61,13 @@ public final class ALawByteIlaFromLinearShortIla
 		    this.shortIla = shortIla;
 		}
 
-		protected void toArrayImpl(byte[] array, int offset,
+		protected void toArrayImpl(byte[] array, int offset, int stride,
 			long start, int length) throws DataInvalidException
 		{
 		    ShortIlaIterator si = new ShortIlaIterator(
 		    	ShortIlaSegment.create(shortIla, start, length));
 		    
-		    for (int i=0 ; si.hasNext() ; i++)
+		    for (int i=offset ; si.hasNext() ; i+=stride)
 		    {
 		    	/*
 		    	 * The following algorithm is from the file g711.c from
@@ -112,14 +112,14 @@ public final class ALawByteIlaFromLinearShortIla
 		    	/* Combine the sign, segment, and quantization bits. */
 
 		    	if (seg >= 8)		/* out of range, return maximum value. */
-		    		array[offset + i] = (byte)(0x7F ^ mask);
+		    		array[i] = (byte)(0x7F ^ mask);
 		    	else {
 		    		int aval = seg << SEG_SHIFT;
 		    		if (seg < 2)
 		    			aval |= (pcm_val >> 4) & QUANT_MASK;
 		    		else
 		    			aval |= (pcm_val >> (seg + 3)) & QUANT_MASK;
-		    		array[offset + i] = (byte)(aval ^ mask);
+		    		array[i] = (byte)(aval ^ mask);
 		    	}
 		    }
 		}

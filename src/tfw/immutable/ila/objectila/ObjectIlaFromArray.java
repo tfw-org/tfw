@@ -42,9 +42,14 @@ public final class ObjectIlaFromArray
 
     public static ObjectIla create(Object[] array)
     {
+        return create(array, true);
+    }
+
+    public static ObjectIla create(Object[] array, boolean cloneArray)
+    {
         Argument.assertNotNull(array, "array");
 
-        return new MyObjectIla(array);
+        return new MyObjectIla(array, cloneArray);
     }
 
     private static class MyObjectIla extends AbstractObjectIla
@@ -52,11 +57,16 @@ public final class ObjectIlaFromArray
     {
         private final Object[] array;
 
-        MyObjectIla(Object[] array)
+        MyObjectIla(Object[] array, boolean cloneArray)
         {
             super(array.length);
-                    
-            this.array = (Object[])array.clone();
+
+            if (cloneArray)
+            {
+                this.array = (Object[])array.clone();
+            } else {
+                this.array = array;
+            }
         }
 
         protected void toArrayImpl(Object[] array, int offset,

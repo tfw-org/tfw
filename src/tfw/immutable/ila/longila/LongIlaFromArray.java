@@ -42,9 +42,14 @@ public final class LongIlaFromArray
 
     public static LongIla create(long[] array)
     {
+        return create(array, true);
+    }
+
+    public static LongIla create(long[] array, boolean cloneArray)
+    {
         Argument.assertNotNull(array, "array");
 
-        return new MyLongIla(array);
+        return new MyLongIla(array, cloneArray);
     }
 
     private static class MyLongIla extends AbstractLongIla
@@ -52,11 +57,16 @@ public final class LongIlaFromArray
     {
         private final long[] array;
 
-        MyLongIla(long[] array)
+        MyLongIla(long[] array, boolean cloneArray)
         {
             super(array.length);
-                    
-            this.array = (long[])array.clone();
+
+            if (cloneArray)
+            {
+                this.array = (long[])array.clone();
+            } else {
+                this.array = array;
+            }
         }
 
         protected void toArrayImpl(long[] array, int offset,

@@ -58,7 +58,7 @@ public class IndexedEdgesFromNodesAndEdges
 			Object[] edgeArray = edges.toArray();
 			long[] indexArray = new long[edgeArray.length];
 			
-			createIndexArray(nodeArray, edgeArray, indexArray, 0);
+			createIndexArray(nodeArray, edgeArray, indexArray, 0, 1);
 			
 			return(indexArray);
 		}
@@ -70,7 +70,7 @@ public class IndexedEdgesFromNodesAndEdges
 			Object[] edgeArray = edges.toArray(start, length);
 			long[] indexArray = new long[edgeArray.length];
 			
-			createIndexArray(nodeArray, edgeArray, indexArray, 0);
+			createIndexArray(nodeArray, edgeArray, indexArray, 0, 1);
 			
 			return(indexArray);
 		}
@@ -81,11 +81,20 @@ public class IndexedEdgesFromNodesAndEdges
 			Object[] nodeArray = nodes.toArray();
 			Object[] edgeArray = edges.toArray(start, length);
 			
-			createIndexArray(nodeArray, edgeArray, array, offset);
+			createIndexArray(nodeArray, edgeArray, array, offset, 1);
 		}
 		
+		public void toArray(long[] array, int offset, int stride, long start, int length)
+			throws DataInvalidException
+		{
+			Object[] nodeArray = nodes.toArray();
+			Object[] edgeArray = edges.toArray(start, length);
+			
+			createIndexArray(nodeArray, edgeArray, array, offset, stride);
+		}
+
 		private void createIndexArray(Object[] nodeArray, Object[] edgeArray,
-			long[] indexArray, int indexArrayOffset)
+			long[] indexArray, int indexArrayOffset, int stride)
 		{
 			for (int i=0 ; i < nodeArray.length ; i++)
 			{
@@ -93,7 +102,7 @@ public class IndexedEdgesFromNodesAndEdges
 				{
 					if (nodeArray[i].equals(edgeArray[j]))
 					{
-						indexArray[j+indexArrayOffset] = i;
+						indexArray[(j*stride)+indexArrayOffset] = i;
 					}
 				}
 			}			

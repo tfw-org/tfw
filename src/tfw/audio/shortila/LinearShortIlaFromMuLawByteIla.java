@@ -64,13 +64,13 @@ public final class LinearShortIlaFromMuLawByteIla
 		    this.byteIla = byteIla;
 		}
 
-		protected void toArrayImpl(short[] array, int offset,
+		protected void toArrayImpl(short[] array, int offset, int stride,
 			long start, int length) throws DataInvalidException
 		{
 		    ByteIlaIterator bi = new ByteIlaIterator(
 		    	ByteIlaSegment.create(byteIla, start, length));
 		    
-		    for (int i=0 ; bi.hasNext() ; i++)
+		    for (int i=offset ; bi.hasNext() ; i+=stride)
 		    {
 		    	/*
 		    	 * The following algorithm is from the file g711.c from
@@ -86,11 +86,11 @@ public final class LinearShortIlaFromMuLawByteIla
 		    	
 		    	if ((u_val & SIGN_BIT) == 0)
 		    	{
-		    		array[offset+i] = (short)(t - BIAS);
+		    		array[i] = (short)(t - BIAS);
 		    	}
 		    	else
 		    	{
-		    		array[offset+i] = (short)(BIAS - t);
+		    		array[i] = (short)(BIAS - t);
 		    	}
 		    }
 		}

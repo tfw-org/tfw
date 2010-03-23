@@ -30,11 +30,12 @@ import tfw.immutable.ila.longila.LongIlaFromArray;
 import tfw.immutable.ila.longila.test.LongIlaCheck;
 import tfw.immutable.ila.objectila.ObjectIla;
 import tfw.immutable.ila.objectila.ObjectIlaFromArray;
+import tfw.immutable.ila.test.IlaTestDimensions;
 import tfw.visualizer.IndexedEdgesFromNodesAndEdges;
 
 public class IndexedEdgesFromNodesAndEdgesTest extends TestCase
 {
-	public void testIndexedEdgesFromNodesAndEdges()
+	public void testIndexedEdgesFromNodesAndEdges() throws Exception
 	{
 		Object[] nodesArray = new Object[] {
 			new Object(),
@@ -58,11 +59,13 @@ public class IndexedEdgesFromNodesAndEdgesTest extends TestCase
 		
 		long[] indexes = new long[] {0, 1, 2, 3, 4, 3, 2, 1, 0};
 		
-		LongIla longIla1 = LongIlaFromArray.create(indexes);
-		LongIla longIla2 = IndexedEdgesFromNodesAndEdges.create(nodes, edges);
+		LongIla targetIla = LongIlaFromArray.create(indexes);
+		LongIla actualIla = IndexedEdgesFromNodesAndEdges.create(nodes, edges);
 		
-		String s = LongIlaCheck.check(longIla1, longIla2);
-		
-		assertNull(s, s);
+        final long epsilon = (long) 0.0;
+        LongIlaCheck.checkAll(targetIla, actualIla,
+                                IlaTestDimensions.defaultOffsetLength(),
+                                IlaTestDimensions.defaultMaxStride(),
+                                epsilon);
 	}
 }

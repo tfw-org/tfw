@@ -42,9 +42,14 @@ public final class IntIlaFromArray
 
     public static IntIla create(int[] array)
     {
+        return create(array, true);
+    }
+
+    public static IntIla create(int[] array, boolean cloneArray)
+    {
         Argument.assertNotNull(array, "array");
 
-        return new MyIntIla(array);
+        return new MyIntIla(array, cloneArray);
     }
 
     private static class MyIntIla extends AbstractIntIla
@@ -52,11 +57,16 @@ public final class IntIlaFromArray
     {
         private final int[] array;
 
-        MyIntIla(int[] array)
+        MyIntIla(int[] array, boolean cloneArray)
         {
             super(array.length);
-                    
-            this.array = (int[])array.clone();
+
+            if (cloneArray)
+            {
+                this.array = (int[])array.clone();
+            } else {
+                this.array = array;
+            }
         }
 
         protected void toArrayImpl(int[] array, int offset,

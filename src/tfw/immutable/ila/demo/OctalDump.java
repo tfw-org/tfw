@@ -174,7 +174,7 @@ public class OctalDump
 				this.type = type;
 			}
 			
-			protected void toArrayImpl(Object[] array, int offset,
+			protected void toArrayImpl(Object[] array, int offset, int stride,
 					long start, int length) throws DataInvalidException
 			{
 				ByteIlaIterator bii = new ByteIlaIterator(
@@ -209,7 +209,7 @@ public class OctalDump
 					}
 					sb.append("\n");
 					
-					array[offset+i] = sb.toString();
+					array[offset+(i*stride)] = sb.toString();
 				}
 			}
 			
@@ -256,7 +256,7 @@ public class OctalDump
 				this.type = type;
 			}
 			
-			protected void toArrayImpl(Object[] array, int offset,
+			protected void toArrayImpl(Object[] array, int offset, int stride,
 					long start, int length) throws DataInvalidException
 			{
 				ShortIlaIterator sii = new ShortIlaIterator(
@@ -291,7 +291,7 @@ public class OctalDump
 					}
 					sb.append("\n");
 					
-					array[offset+i] = sb.toString();
+					array[offset+(i*stride)] = sb.toString();
 				}
 			}
 			
@@ -338,7 +338,7 @@ public class OctalDump
 				this.type = type;
 			}
 			
-			protected void toArrayImpl(Object[] array, int offset,
+			protected void toArrayImpl(Object[] array, int offset, int stride,
 					long start, int length) throws DataInvalidException
 			{
 				IntIlaIterator iii = new IntIlaIterator(
@@ -368,7 +368,7 @@ public class OctalDump
 					}
 					sb.append("\n");
 					
-					array[offset+i] = sb.toString();
+					array[offset+(i*stride)] = sb.toString();
 				}
 			}
 			
@@ -415,7 +415,7 @@ public class OctalDump
 				this.type = type;
 			}
 			
-			protected void toArrayImpl(Object[] array, int offset,
+			protected void toArrayImpl(Object[] array, int offset, int stride,
 					long start, int length) throws DataInvalidException
 			{
 				LongIlaIterator lii = new LongIlaIterator(
@@ -445,7 +445,7 @@ public class OctalDump
 					}
 					sb.append("\n");
 					
-					array[offset+i] = sb.toString();
+					array[offset+(i*stride)] = sb.toString();
 				}
 			}
 			
@@ -490,7 +490,7 @@ public class OctalDump
 				this.floatIla = floatIla;
 			}
 			
-			protected void toArrayImpl(Object[] array, int offset,
+			protected void toArrayImpl(Object[] array, int offset, int stride,
 					long start, int length) throws DataInvalidException
 			{
 				FloatIlaIterator fii = new FloatIlaIterator(
@@ -509,7 +509,7 @@ public class OctalDump
 					}
 					sb.append("\n");
 					
-					array[offset+i] = sb.toString();
+					array[offset+(i*stride)] = sb.toString();
 				}
 			}
 			
@@ -551,7 +551,7 @@ public class OctalDump
 				this.doubleIla = doubleIla;
 			}
 			
-			protected void toArrayImpl(Object[] array, int offset,
+			protected void toArrayImpl(Object[] array, int offset, int stride,
 					long start, int length) throws DataInvalidException
 			{
 				DoubleIlaIterator dii = new DoubleIlaIterator(
@@ -570,7 +570,7 @@ public class OctalDump
 					}
 					sb.append("\n");
 					
-					array[offset+i] = sb.toString();
+					array[offset+(i*stride)] = sb.toString();
 				}
 			}
 			

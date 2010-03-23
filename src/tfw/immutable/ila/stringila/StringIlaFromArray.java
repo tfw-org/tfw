@@ -42,9 +42,14 @@ public final class StringIlaFromArray
 
     public static StringIla create(String[] array)
     {
+        return create(array, true);
+    }
+
+    public static StringIla create(String[] array, boolean cloneArray)
+    {
         Argument.assertNotNull(array, "array");
 
-        return new MyStringIla(array);
+        return new MyStringIla(array, cloneArray);
     }
 
     private static class MyStringIla extends AbstractStringIla
@@ -52,11 +57,16 @@ public final class StringIlaFromArray
     {
         private final String[] array;
 
-        MyStringIla(String[] array)
+        MyStringIla(String[] array, boolean cloneArray)
         {
             super(array.length);
-                    
-            this.array = (String[])array.clone();
+
+            if (cloneArray)
+            {
+                this.array = (String[])array.clone();
+            } else {
+                this.array = array;
+            }
         }
 
         protected void toArrayImpl(String[] array, int offset,

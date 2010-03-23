@@ -42,9 +42,14 @@ public final class ShortIlaFromArray
 
     public static ShortIla create(short[] array)
     {
+        return create(array, true);
+    }
+
+    public static ShortIla create(short[] array, boolean cloneArray)
+    {
         Argument.assertNotNull(array, "array");
 
-        return new MyShortIla(array);
+        return new MyShortIla(array, cloneArray);
     }
 
     private static class MyShortIla extends AbstractShortIla
@@ -52,11 +57,16 @@ public final class ShortIlaFromArray
     {
         private final short[] array;
 
-        MyShortIla(short[] array)
+        MyShortIla(short[] array, boolean cloneArray)
         {
             super(array.length);
-                    
-            this.array = (short[])array.clone();
+
+            if (cloneArray)
+            {
+                this.array = (short[])array.clone();
+            } else {
+                this.array = array;
+            }
         }
 
         protected void toArrayImpl(short[] array, int offset,

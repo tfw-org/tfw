@@ -42,9 +42,14 @@ public final class FloatIlaFromArray
 
     public static FloatIla create(float[] array)
     {
+        return create(array, true);
+    }
+
+    public static FloatIla create(float[] array, boolean cloneArray)
+    {
         Argument.assertNotNull(array, "array");
 
-        return new MyFloatIla(array);
+        return new MyFloatIla(array, cloneArray);
     }
 
     private static class MyFloatIla extends AbstractFloatIla
@@ -52,11 +57,16 @@ public final class FloatIlaFromArray
     {
         private final float[] array;
 
-        MyFloatIla(float[] array)
+        MyFloatIla(float[] array, boolean cloneArray)
         {
             super(array.length);
-                    
-            this.array = (float[])array.clone();
+
+            if (cloneArray)
+            {
+                this.array = (float[])array.clone();
+            } else {
+                this.array = array;
+            }
         }
 
         protected void toArrayImpl(float[] array, int offset,

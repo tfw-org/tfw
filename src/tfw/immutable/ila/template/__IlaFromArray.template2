@@ -42,9 +42,14 @@ public final class %%NAME%%IlaFromArray
 
     public static %%NAME%%Ila create(%%TYPE%%[] array)
     {
+        return create(array, true);
+    }
+
+    public static %%NAME%%Ila create(%%TYPE%%[] array, boolean cloneArray)
+    {
         Argument.assertNotNull(array, "array");
 
-        return new My%%NAME%%Ila(array);
+        return new My%%NAME%%Ila(array, cloneArray);
     }
 
     private static class My%%NAME%%Ila extends Abstract%%NAME%%Ila
@@ -52,11 +57,16 @@ public final class %%NAME%%IlaFromArray
     {
         private final %%TYPE%%[] array;
 
-        My%%NAME%%Ila(%%TYPE%%[] array)
+        My%%NAME%%Ila(%%TYPE%%[] array, boolean cloneArray)
         {
             super(array.length);
-                    
-            this.array = (%%TYPE%%[])array.clone();
+
+            if (cloneArray)
+            {
+                this.array = (%%TYPE%%[])array.clone();
+            } else {
+                this.array = array;
+            }
         }
 
         protected void toArrayImpl(%%TYPE%%[] array, int offset,
