@@ -56,7 +56,7 @@ public final class ByteIlaFromIntIla
 		    this.intIla = intIla;
 		}
 
-		protected void toArrayImpl(byte[] array, int offset,
+		protected void toArrayImpl(byte[] array, int offset, int stride,
 			long start, int length) throws DataInvalidException
 		{
 			IntIlaIterator iii = new IntIlaIterator(
@@ -70,7 +70,7 @@ public final class ByteIlaFromIntIla
 				
 				for (int c=col ; c < 4 && totalElements < length ; c++)
 				{
-					array[offset + totalElements++] =
+					array[offset + (totalElements++ * stride)] =
 						(byte)((value >>> (24 - (8 * c))) & 0xFF);
 				}
 				

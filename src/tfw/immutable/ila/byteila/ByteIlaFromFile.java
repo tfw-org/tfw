@@ -31,6 +31,7 @@ import java.io.RandomAccessFile;
 import java.util.HashMap;
 import java.util.Map;
 import tfw.check.Argument;
+import tfw.immutable.DataInvalidException;
 import tfw.immutable.ImmutableProxy;
 
 public final class ByteIlaFromFile
@@ -66,9 +67,10 @@ public final class ByteIlaFromFile
 			this.file = file;
 		}
 		
-	    protected synchronized void toArrayImpl(byte[] array, int offset,
-	    	long start, int length)
-	    {
+		@Override
+		protected void toArrayImpl(byte[] array, int offset, int stride,
+				long start, int length) throws DataInvalidException
+		{
     		if (raf == null)
     		{
     			try
@@ -84,7 +86,14 @@ public final class ByteIlaFromFile
     		try
 			{
     			raf.seek(start);
-    			raf.readFully(array, offset, length);
+    			if (stride == 1) {
+	    			raf.readFully(array, offset, length);
+    			} else {
+    				final int end = offset + length;
+    				for(; offset < end; offset += stride) {
+    					raf.read(array, offset, 1);
+    				}
+    			}
 			}
     		catch(IOException ioe)
 			{

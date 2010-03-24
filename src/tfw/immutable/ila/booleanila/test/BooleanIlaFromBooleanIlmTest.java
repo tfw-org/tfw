@@ -30,12 +30,13 @@ import junit.framework.TestCase;
 import tfw.immutable.ila.booleanila.BooleanIla;
 import tfw.immutable.ila.booleanila.BooleanIlaFromArray;
 import tfw.immutable.ila.booleanila.BooleanIlaFromBooleanIlm;
+import tfw.immutable.ila.test.IlaTestDimensions;
 import tfw.immutable.ilm.booleanilm.BooleanIlm;
 import tfw.immutable.ilm.booleanilm.BooleanIlmFromArray;
 
 public class BooleanIlaFromBooleanIlmTest extends TestCase
 {
-	public void testBooleanIlaFromBooleanIlm()
+	public void testBooleanIlaFromBooleanIlm() throws Exception
 	{
 		final Random random = new Random();
 		final int WIDTH = 11;
@@ -57,7 +58,7 @@ public class BooleanIlaFromBooleanIlmTest extends TestCase
 		}
 		
 		BooleanIlm ilm = BooleanIlmFromArray.create(ilmArray);
-		BooleanIla ila = BooleanIlaFromArray.create(ilaArray);
+		BooleanIla targetIla = BooleanIlaFromArray.create(ilaArray);
 		
 		try
 		{
@@ -66,9 +67,11 @@ public class BooleanIlaFromBooleanIlmTest extends TestCase
 		}
 		catch (IllegalArgumentException iae) {}
 		
-		String s = BooleanIlaCheck.check(ila,
-			BooleanIlaFromBooleanIlm.create(ilm));
-		
-		assertNull(s, s);
+		BooleanIla actualIla = BooleanIlaFromBooleanIlm.create(ilm);
+        final boolean epsilon = false;
+        BooleanIlaCheck.checkAll(targetIla, actualIla,
+                                  IlaTestDimensions.defaultOffsetLength(),
+                                  IlaTestDimensions.defaultMaxStride(),
+                                  epsilon);
 	}
 }

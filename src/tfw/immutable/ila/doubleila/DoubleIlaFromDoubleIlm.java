@@ -55,9 +55,12 @@ public final class DoubleIlaFromDoubleIlm
 		    this.ilm = ilm;
 		}
 
-		protected void toArrayImpl(double[] array, int offset,
+		protected void toArrayImpl(double[] array, int offset, int stride,
 			long start, int length) throws DataInvalidException
 		{
+			if (stride != 1) {
+				throw new RuntimeException("stride != 1 not implemented");
+			}
 			double[][] tempArray = new double[][] {array};
 			long row = start / ilm.width();
 			long col = start % ilm.width();

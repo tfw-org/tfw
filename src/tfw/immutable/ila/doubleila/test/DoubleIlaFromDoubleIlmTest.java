@@ -30,12 +30,13 @@ import junit.framework.TestCase;
 import tfw.immutable.ila.doubleila.DoubleIla;
 import tfw.immutable.ila.doubleila.DoubleIlaFromArray;
 import tfw.immutable.ila.doubleila.DoubleIlaFromDoubleIlm;
+import tfw.immutable.ila.test.IlaTestDimensions;
 import tfw.immutable.ilm.doubleilm.DoubleIlm;
 import tfw.immutable.ilm.doubleilm.DoubleIlmFromArray;
 
 public class DoubleIlaFromDoubleIlmTest extends TestCase
 {
-	public void testDoubleIlaFromDoubleIlm()
+	public void testDoubleIlaFromDoubleIlm() throws Exception
 	{
 		final Random random = new Random();
 		final int WIDTH = 11;
@@ -57,7 +58,7 @@ public class DoubleIlaFromDoubleIlmTest extends TestCase
 		}
 		
 		DoubleIlm ilm = DoubleIlmFromArray.create(ilmArray);
-		DoubleIla ila = DoubleIlaFromArray.create(ilaArray);
+		DoubleIla targetIla = DoubleIlaFromArray.create(ilaArray);
 		
 		try
 		{
@@ -66,9 +67,11 @@ public class DoubleIlaFromDoubleIlmTest extends TestCase
 		}
 		catch (IllegalArgumentException iae) {}
 		
-		String s = DoubleIlaCheck.check(ila,
-			DoubleIlaFromDoubleIlm.create(ilm));
-		
-		assertNull(s, s);
+		DoubleIla actualIla = DoubleIlaFromDoubleIlm.create(ilm);
+        final double epsilon = (double) 0.0;
+        DoubleIlaCheck.checkAll(targetIla, actualIla,
+                                IlaTestDimensions.defaultOffsetLength(),
+                                IlaTestDimensions.defaultMaxStride(),
+                                epsilon);
 	}
 }

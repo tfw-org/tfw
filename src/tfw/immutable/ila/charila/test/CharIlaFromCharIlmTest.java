@@ -30,12 +30,13 @@ import junit.framework.TestCase;
 import tfw.immutable.ila.charila.CharIla;
 import tfw.immutable.ila.charila.CharIlaFromArray;
 import tfw.immutable.ila.charila.CharIlaFromCharIlm;
+import tfw.immutable.ila.test.IlaTestDimensions;
 import tfw.immutable.ilm.charilm.CharIlm;
 import tfw.immutable.ilm.charilm.CharIlmFromArray;
 
 public class CharIlaFromCharIlmTest extends TestCase
 {
-	public void testCharIlaFromCharIlm()
+	public void testCharIlaFromCharIlm() throws Exception
 	{
 		final Random random = new Random();
 		final int WIDTH = 11;
@@ -57,7 +58,7 @@ public class CharIlaFromCharIlmTest extends TestCase
 		}
 		
 		CharIlm ilm = CharIlmFromArray.create(ilmArray);
-		CharIla ila = CharIlaFromArray.create(ilaArray);
+		CharIla targetIla = CharIlaFromArray.create(ilaArray);
 		
 		try
 		{
@@ -66,9 +67,11 @@ public class CharIlaFromCharIlmTest extends TestCase
 		}
 		catch (IllegalArgumentException iae) {}
 		
-		String s = CharIlaCheck.check(ila,
-			CharIlaFromCharIlm.create(ilm));
-		
-		assertNull(s, s);
+		CharIla actualIla = CharIlaFromCharIlm.create(ilm);
+        final char epsilon = (char)0;
+        CharIlaCheck.checkAll(targetIla, actualIla,
+                                  IlaTestDimensions.defaultOffsetLength(),
+                                  IlaTestDimensions.defaultMaxStride(),
+                                  epsilon);
 	}
 }

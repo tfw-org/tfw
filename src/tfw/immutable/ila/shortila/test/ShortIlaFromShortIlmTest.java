@@ -30,12 +30,13 @@ import junit.framework.TestCase;
 import tfw.immutable.ila.shortila.ShortIla;
 import tfw.immutable.ila.shortila.ShortIlaFromArray;
 import tfw.immutable.ila.shortila.ShortIlaFromShortIlm;
+import tfw.immutable.ila.test.IlaTestDimensions;
 import tfw.immutable.ilm.shortilm.ShortIlm;
 import tfw.immutable.ilm.shortilm.ShortIlmFromArray;
 
 public class ShortIlaFromShortIlmTest extends TestCase
 {
-	public void testShortIlaFromShortIlm()
+	public void testShortIlaFromShortIlm() throws Exception
 	{
 		final Random random = new Random();
 		final int WIDTH = 11;
@@ -57,7 +58,7 @@ public class ShortIlaFromShortIlmTest extends TestCase
 		}
 		
 		ShortIlm ilm = ShortIlmFromArray.create(ilmArray);
-		ShortIla ila = ShortIlaFromArray.create(ilaArray);
+		ShortIla targetIla = ShortIlaFromArray.create(ilaArray);
 		
 		try
 		{
@@ -66,9 +67,11 @@ public class ShortIlaFromShortIlmTest extends TestCase
 		}
 		catch (IllegalArgumentException iae) {}
 		
-		String s = ShortIlaCheck.check(ila,
-			ShortIlaFromShortIlm.create(ilm));
-		
-		assertNull(s, s);
+		ShortIla actualIla = ShortIlaFromShortIlm.create(ilm);
+        final short epsilon = (short) 0.0;
+        ShortIlaCheck.checkAll(targetIla, actualIla,
+                                IlaTestDimensions.defaultOffsetLength(),
+                                IlaTestDimensions.defaultMaxStride(),
+                                epsilon);
 	}
 }

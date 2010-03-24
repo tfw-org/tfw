@@ -30,12 +30,13 @@ import junit.framework.TestCase;
 import tfw.immutable.ila.floatila.FloatIla;
 import tfw.immutable.ila.floatila.FloatIlaFromArray;
 import tfw.immutable.ila.floatila.FloatIlaFromFloatIlm;
+import tfw.immutable.ila.test.IlaTestDimensions;
 import tfw.immutable.ilm.floatilm.FloatIlm;
 import tfw.immutable.ilm.floatilm.FloatIlmFromArray;
 
 public class FloatIlaFromFloatIlmTest extends TestCase
 {
-	public void testFloatIlaFromFloatIlm()
+	public void testFloatIlaFromFloatIlm() throws Exception
 	{
 		final Random random = new Random();
 		final int WIDTH = 11;
@@ -57,7 +58,7 @@ public class FloatIlaFromFloatIlmTest extends TestCase
 		}
 		
 		FloatIlm ilm = FloatIlmFromArray.create(ilmArray);
-		FloatIla ila = FloatIlaFromArray.create(ilaArray);
+		FloatIla targetIla = FloatIlaFromArray.create(ilaArray);
 		
 		try
 		{
@@ -66,9 +67,11 @@ public class FloatIlaFromFloatIlmTest extends TestCase
 		}
 		catch (IllegalArgumentException iae) {}
 		
-		String s = FloatIlaCheck.check(ila,
-			FloatIlaFromFloatIlm.create(ilm));
-		
-		assertNull(s, s);
+		FloatIla actualIla = FloatIlaFromFloatIlm.create(ilm);
+        final float epsilon = 0.0f;
+        FloatIlaCheck.checkAll(targetIla, actualIla,
+                                  IlaTestDimensions.defaultOffsetLength(),
+                                  IlaTestDimensions.defaultMaxStride(),
+                                  epsilon);
 	}
 }

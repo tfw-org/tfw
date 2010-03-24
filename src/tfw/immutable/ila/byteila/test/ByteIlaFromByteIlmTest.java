@@ -30,12 +30,13 @@ import junit.framework.TestCase;
 import tfw.immutable.ila.byteila.ByteIla;
 import tfw.immutable.ila.byteila.ByteIlaFromArray;
 import tfw.immutable.ila.byteila.ByteIlaFromByteIlm;
+import tfw.immutable.ila.test.IlaTestDimensions;
 import tfw.immutable.ilm.byteilm.ByteIlm;
 import tfw.immutable.ilm.byteilm.ByteIlmFromArray;
 
 public class ByteIlaFromByteIlmTest extends TestCase
 {
-	public void testByteIlaFromByteIlm()
+	public void testByteIlaFromByteIlm() throws Exception
 	{
 		final Random random = new Random();
 		final int WIDTH = 11;
@@ -57,7 +58,7 @@ public class ByteIlaFromByteIlmTest extends TestCase
 		}
 		
 		ByteIlm ilm = ByteIlmFromArray.create(ilmArray);
-		ByteIla ila = ByteIlaFromArray.create(ilaArray);
+		ByteIla targetIla = ByteIlaFromArray.create(ilaArray);
 		
 		try
 		{
@@ -66,9 +67,11 @@ public class ByteIlaFromByteIlmTest extends TestCase
 		}
 		catch (IllegalArgumentException iae) {}
 		
-		String s = ByteIlaCheck.check(ila,
-			ByteIlaFromByteIlm.create(ilm));
-		
-		assertNull(s, s);
+		ByteIla actualIla = ByteIlaFromByteIlm.create(ilm);
+        final byte epsilon = (byte)0;
+        ByteIlaCheck.checkAll(targetIla, actualIla,
+                                  IlaTestDimensions.defaultOffsetLength(),
+                                  IlaTestDimensions.defaultMaxStride(),
+                                  epsilon);
 	}
 }

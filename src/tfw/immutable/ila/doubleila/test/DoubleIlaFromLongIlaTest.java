@@ -30,10 +30,11 @@ import tfw.immutable.ila.doubleila.DoubleIlaFromArray;
 import tfw.immutable.ila.doubleila.DoubleIlaFromLongIla;
 import tfw.immutable.ila.longila.LongIla;
 import tfw.immutable.ila.longila.LongIlaFromArray;
+import tfw.immutable.ila.test.IlaTestDimensions;
 
 public class DoubleIlaFromLongIlaTest extends TestCase
 {
-	public void testDoubleIlaFromLongIla()
+	public void testDoubleIlaFromLongIla() throws Exception
 	{
 		final int LENGTH = 64;
 		final long SKIP = Long.MAX_VALUE / LENGTH * 2;
@@ -48,12 +49,14 @@ public class DoubleIlaFromLongIlaTest extends TestCase
 		}
 		
 		LongIla longIla = LongIlaFromArray.create(longArray);
-		DoubleIla doubleIla = DoubleIlaFromArray.create(doubleArray);
+		DoubleIla targetIla = DoubleIlaFromArray.create(doubleArray);
 		
-		String s = DoubleIlaCheck.check(doubleIla,
-			DoubleIlaFromLongIla.create(longIla));
-			
-		assertNull(s, s);
+		DoubleIla actualIla = DoubleIlaFromLongIla.create(longIla);
+        final double epsilon = (double) 0.0;
+        DoubleIlaCheck.checkAll(targetIla, actualIla,
+                                IlaTestDimensions.defaultOffsetLength(),
+                                IlaTestDimensions.defaultMaxStride(),
+                                epsilon);
 
 	}
 }

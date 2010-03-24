@@ -56,7 +56,7 @@ public class ByteIlaSwap
 		    this.bytesToSwap = bytesToSwap;
 		}
 
-		protected void toArrayImpl(byte[] array, int offset,
+		protected void toArrayImpl(byte[] array, int offset, int stride,
 			long start, int length) throws DataInvalidException
 		{
 			long end = start + length - 1;
@@ -84,7 +84,7 @@ public class ByteIlaSwap
 		    		bs = 0;
 		    	}
 
-		    	array[offset+l] = bytes[bs];
+		    	array[offset+(l * stride)] = bytes[bs];
 		    }
 		}
 		

@@ -30,12 +30,13 @@ import junit.framework.TestCase;
 import tfw.immutable.ila.intila.IntIla;
 import tfw.immutable.ila.intila.IntIlaFromArray;
 import tfw.immutable.ila.intila.IntIlaFromIntIlm;
+import tfw.immutable.ila.test.IlaTestDimensions;
 import tfw.immutable.ilm.intilm.IntIlm;
 import tfw.immutable.ilm.intilm.IntIlmFromArray;
 
 public class IntIlaFromIntIlmTest extends TestCase
 {
-	public void testIntIlaFromIntIlm()
+	public void testIntIlaFromIntIlm() throws Exception
 	{
 		final Random random = new Random();
 		final int WIDTH = 11;
@@ -57,7 +58,7 @@ public class IntIlaFromIntIlmTest extends TestCase
 		}
 		
 		IntIlm ilm = IntIlmFromArray.create(ilmArray);
-		IntIla ila = IntIlaFromArray.create(ilaArray);
+		IntIla targetIla = IntIlaFromArray.create(ilaArray);
 		
 		try
 		{
@@ -66,9 +67,11 @@ public class IntIlaFromIntIlmTest extends TestCase
 		}
 		catch (IllegalArgumentException iae) {}
 		
-		String s = IntIlaCheck.check(ila,
-			IntIlaFromIntIlm.create(ilm));
-		
-		assertNull(s, s);
+		IntIla actualIla = IntIlaFromIntIlm.create(ilm);
+        final int epsilon = 0;
+        IntIlaCheck.checkAll(targetIla, actualIla,
+                                  IlaTestDimensions.defaultOffsetLength(),
+                                  IlaTestDimensions.defaultMaxStride(),
+                                  epsilon);
 	}
 }

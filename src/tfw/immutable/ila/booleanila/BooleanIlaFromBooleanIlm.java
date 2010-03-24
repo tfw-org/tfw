@@ -55,9 +55,12 @@ public final class BooleanIlaFromBooleanIlm
 		    this.ilm = ilm;
 		}
 
-		protected void toArrayImpl(boolean[] array, int offset,
+		protected void toArrayImpl(boolean[] array, int offset, int stride,
 			long start, int length) throws DataInvalidException
 		{
+			if (stride != 1) {
+				throw new RuntimeException("stride != 1 not implemented");
+			}
 			boolean[][] tempArray = new boolean[][] {array};
 			long row = start / ilm.width();
 			long col = start % ilm.width();

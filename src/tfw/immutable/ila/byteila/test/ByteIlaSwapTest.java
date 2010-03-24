@@ -29,10 +29,11 @@ import junit.framework.TestCase;
 import tfw.immutable.ila.byteila.ByteIla;
 import tfw.immutable.ila.byteila.ByteIlaFromArray;
 import tfw.immutable.ila.byteila.ByteIlaSwap;
+import tfw.immutable.ila.test.IlaTestDimensions;
 
 public class ByteIlaSwapTest extends TestCase
 {
-	public void testByteIlaFromLongIla()
+	public void testByteIlaFromLongIla() throws Exception
 	{
 		byte[] byteArray = new byte[] {
 			(byte)0x00, (byte)0x01, (byte)0x02, (byte)0x03,
@@ -99,16 +100,23 @@ public class ByteIlaSwapTest extends TestCase
 		}
 		catch (IllegalArgumentException iae) {}
 		
-		String s2 = ByteIlaCheck.check(swap2Ila,
-			ByteIlaSwap.create(byteIla, 2));		
-		assertNull(s2, s2);
+		ByteIla actualIla = ByteIlaSwap.create(byteIla, 2);
+        final byte epsilon = (byte)0;
+        ByteIlaCheck.checkAll(swap2Ila, actualIla,
+                                IlaTestDimensions.defaultOffsetLength(),
+                                IlaTestDimensions.defaultMaxStride(),
+                                epsilon);
+
+		actualIla = ByteIlaSwap.create(byteIla, 4);
+        ByteIlaCheck.checkAll(swap4Ila, actualIla,
+                                IlaTestDimensions.defaultOffsetLength(),
+                                IlaTestDimensions.defaultMaxStride(),
+                                epsilon);
 		
-		String s4 = ByteIlaCheck.check(swap4Ila,
-			ByteIlaSwap.create(byteIla, 4));
-		assertNull(s4, s4);
-		
-		String s8 = ByteIlaCheck.check(swap8Ila,
-			ByteIlaSwap.create(byteIla, 8));
-		assertNull(s8, s8);
+		actualIla = ByteIlaSwap.create(byteIla, 8);
+        ByteIlaCheck.checkAll(swap8Ila, actualIla,
+                                IlaTestDimensions.defaultOffsetLength(),
+                                IlaTestDimensions.defaultMaxStride(),
+                                epsilon);
 	}
 }

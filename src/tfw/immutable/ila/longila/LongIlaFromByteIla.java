@@ -56,7 +56,7 @@ public final class LongIlaFromByteIla
 		    this.byteIla = byteIla;
 		}
 
-		protected void toArrayImpl(long[] array, int offset,
+		protected void toArrayImpl(long[] array, int offset, int stride,
 			long start, int length) throws DataInvalidException
 		{
 			ByteIlaIterator bii = new ByteIlaIterator(
@@ -64,7 +64,7 @@ public final class LongIlaFromByteIla
 				
 		    for (int i=0 ; i < length ; i++)
 		    {
-		    	array[offset+i] =
+		    	array[offset+(i * stride)] =
 		    		(((long)bii.next() & 0xFF) << 56) |
 					(((long)bii.next() & 0xFF) << 48) |
 					(((long)bii.next() & 0xFF) << 40) |

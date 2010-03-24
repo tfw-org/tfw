@@ -31,10 +31,11 @@ import tfw.immutable.ila.byteila.ByteIlaFromArray;
 import tfw.immutable.ila.byteila.ByteIlaFromIntIla;
 import tfw.immutable.ila.intila.IntIla;
 import tfw.immutable.ila.intila.IntIlaFromArray;
+import tfw.immutable.ila.test.IlaTestDimensions;
 
 public class ByteIlaFromIntIlaTest extends TestCase
 {
-	public void testByteIlaFromIntIla()
+	public void testByteIlaFromIntIla() throws Exception
 	{
 		byte[] byteArray = new byte[] {
 			(byte)0x00, (byte)0x01, (byte)0x02, (byte)0x03,
@@ -54,7 +55,7 @@ public class ByteIlaFromIntIlaTest extends TestCase
 			0x00102030, 0x40506070, 0x8090a0b0, 0xc0d0e0f0,
 			0x00112233, 0x44556677, 0x8899aabb, 0xccddeeff};
 				
-		ByteIla byteIla = ByteIlaFromArray.create(byteArray);
+		ByteIla targetIla = ByteIlaFromArray.create(byteArray);
 		IntIla intIla = IntIlaFromArray.create(intArray);
 
 		try
@@ -64,9 +65,11 @@ public class ByteIlaFromIntIlaTest extends TestCase
 		}
 		catch (IllegalArgumentException iae) {}
 		
-		String s = ByteIlaCheck.check(byteIla,
-			ByteIlaFromIntIla.create(intIla));
-		
-		assertNull(s, s);
+		ByteIla actualIla = ByteIlaFromIntIla.create(intIla);
+        final byte epsilon = (byte)0;
+        ByteIlaCheck.checkAll(targetIla, actualIla,
+                                IlaTestDimensions.defaultOffsetLength(),
+                                IlaTestDimensions.defaultMaxStride(),
+                                epsilon);
 	}
 }

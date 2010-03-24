@@ -55,9 +55,12 @@ public final class LongIlaFromLongIlm
 		    this.ilm = ilm;
 		}
 
-		protected void toArrayImpl(long[] array, int offset,
+		protected void toArrayImpl(long[] array, int offset, int stride,
 			long start, int length) throws DataInvalidException
 		{
+			if (stride != 1) {
+				throw new RuntimeException("stride != 1 not implemented");
+			}
 			long[][] tempArray = new long[][] {array};
 			long row = start / ilm.width();
 			long col = start % ilm.width();

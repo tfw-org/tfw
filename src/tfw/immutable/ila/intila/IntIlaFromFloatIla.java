@@ -56,7 +56,7 @@ public final class IntIlaFromFloatIla
 		    this.floatIla = floatIla;
 		}
 
-		protected void toArrayImpl(int[] array, int offset,
+		protected void toArrayImpl(int[] array, int offset, int stride,
 			long start, int length) throws DataInvalidException
 		{
 			FloatIlaIterator fii = new FloatIlaIterator(
@@ -64,7 +64,7 @@ public final class IntIlaFromFloatIla
 				
 		    for (int i=0 ; i < length ; i++)
 		    {
-		    	array[offset+i] = Float.floatToRawIntBits(fii.next());
+		    	array[offset+(i * stride)] = Float.floatToRawIntBits(fii.next());
 		    }
 		}
 		

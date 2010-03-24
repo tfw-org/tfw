@@ -56,7 +56,7 @@ public final class DoubleIlaFromLongIla
 		    this.longIla = longIla;
 		}
 
-		protected void toArrayImpl(double[] array, int offset,
+		protected void toArrayImpl(double[] array, int offset, int stride,
 			long start, int length) throws DataInvalidException
 		{
 			LongIlaIterator lii = new LongIlaIterator(
@@ -64,7 +64,7 @@ public final class DoubleIlaFromLongIla
 				
 		    for (int i=0 ; i < length ; i++)
 		    {
-		    	array[offset+i] = Double.longBitsToDouble(lii.next());
+		    	array[offset+(i * stride)] = Double.longBitsToDouble(lii.next());
 		    }
 		}
 		

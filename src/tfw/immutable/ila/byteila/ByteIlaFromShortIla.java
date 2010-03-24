@@ -56,7 +56,7 @@ public final class ByteIlaFromShortIla
 		    this.shortIla = shortIla;
 		}
 
-		protected void toArrayImpl(byte[] array, int offset,
+		protected void toArrayImpl(byte[] array, int offset, int stride,
 			long start, int length) throws DataInvalidException
 		{
 			ShortIlaIterator sii = new ShortIlaIterator(
@@ -70,7 +70,7 @@ public final class ByteIlaFromShortIla
 				
 				for (int c=col ; c < 2 && totalElements < length ; c++)
 				{
-					array[offset + totalElements++] =
+					array[offset + (totalElements++ * stride)] =
 						(byte)((value >>> (8 - (8 * c))) & 0xFF);
 				}
 				

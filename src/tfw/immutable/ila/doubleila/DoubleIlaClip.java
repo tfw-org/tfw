@@ -54,7 +54,7 @@ public class DoubleIlaClip
 			this.max = max;
 		}
 
-		protected void toArrayImpl(double[] array, int offset,
+		protected void toArrayImpl(double[] array, int offset, int stride,
 			long start, int length) throws DataInvalidException
 		{
 			DoubleIlaIterator dii = new DoubleIlaIterator(
@@ -67,7 +67,7 @@ public class DoubleIlaClip
 				d = (d < min) ? min : d;
 				d = (d > max) ? max : d;
 				
-				array[offset+i] = d;
+				array[offset+(i * stride)] = d;
 			}
 		}
 	}
