@@ -150,15 +150,6 @@ public class MultiplexedBranchFactory
     {
         Argument.assertNotNull(name, "name");
 
-        if (multiValueECDMap.size() == 0)
-        {
-            throw new IllegalStateException(
-                    "Attempt to create a "
-                            + MultiplexedBranch.class.getName()
-                            + " with no multiplexed channels. At least one multiplexer "
-                            + "must be added by calling the addMultiplexer() method.");
-        }
-
         return new MultiplexedBranch(name,
                 generateMulitplexers(name, valueECDList, multiValueECDList,
                         stateChangeRules, strategyList));
