@@ -84,9 +84,9 @@ public final class ByteIlaFromCastShortIla
             }
         }
                 
-        public Map getParameters()
+        public Map<String, Object> getParameters()
         {
-            HashMap map = new HashMap();
+            HashMap<String, Object> map = new HashMap<String, Object>();
                         
             map.put("name", "ByteIlaFromCastShortIla");
             map.put("shortIla", getImmutableInfo(shortIla));

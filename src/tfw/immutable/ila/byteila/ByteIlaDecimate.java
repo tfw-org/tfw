@@ -88,9 +88,9 @@ public final class ByteIlaDecimate
             }
         }
                 
-        public Map getParameters()
+        public Map<String, Object> getParameters()
         {
-            HashMap map = new HashMap();
+            HashMap<String, Object> map = new HashMap<String, Object>();
                         
             map.put("name", "ByteIlaDecimate");
             map.put("ila", getImmutableInfo(ila));

@@ -28,5 +28,5 @@ import java.util.Map;
 
 public interface ImmutableProxy
 {
-	public Map getParameters();
+	public Map<String, Object> getParameters();
 }

@@ -25,7 +25,6 @@
 
 package tfw.immutable.ila.objectila.test;
 
-import java.util.Random;
 import junit.framework.TestCase;
 import tfw.immutable.ila.objectila.ObjectIla;
 import tfw.immutable.ila.objectila.ObjectIlaFromArray;
@@ -38,7 +37,6 @@ public class ObjectIlaFromObjectIlmTest extends TestCase
 {
 	public void testObjectIlaFromObjectIlm() throws Exception
 	{
-		final Random random = new Random();
 		final int WIDTH = 11;
 		final int HEIGHT = 7;
 		final int LENGTH = WIDTH * HEIGHT;

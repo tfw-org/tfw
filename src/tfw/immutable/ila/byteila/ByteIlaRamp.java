@@ -83,9 +83,9 @@ public final class ByteIlaRamp
             }
         }
                 
-        public Map getParameters()
+        public Map<String, Object> getParameters()
         {
-            HashMap map = new HashMap();
+            HashMap<String, Object> map = new HashMap<String, Object>();
                         
             map.put("name", "ByteIlaRamp");
             map.put("length", new Long(length()));

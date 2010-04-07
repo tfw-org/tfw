@@ -79,9 +79,9 @@ public final class BooleanIlaFromBooleanIlm
 			}
 		}
 		
-		public Map getParameters()
+		public Map<String, Object> getParameters()
 		{
-			HashMap map = new HashMap();
+			HashMap<String, Object> map = new HashMap<String, Object>();
 			
 			map.put("name", "BooleanIlaFromBooleanIlm");
 			map.put("ilm", AbstractBooleanIlm.getImmutableInfo(ilm));

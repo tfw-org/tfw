@@ -84,9 +84,9 @@ public final class IntIlaFromCastCharIla
             }
         }
                 
-        public Map getParameters()
+        public Map<String, Object> getParameters()
         {
-            HashMap map = new HashMap();
+            HashMap<String, Object> map = new HashMap<String, Object>();
                         
             map.put("name", "IntIlaFromCastCharIla");
             map.put("charIla", getImmutableInfo(charIla));

@@ -83,9 +83,9 @@ public final class IntIlaRamp
             }
         }
                 
-        public Map getParameters()
+        public Map<String, Object> getParameters()
         {
-            HashMap map = new HashMap();
+            HashMap<String, Object> map = new HashMap<String, Object>();
                         
             map.put("name", "IntIlaRamp");
             map.put("length", new Long(length()));

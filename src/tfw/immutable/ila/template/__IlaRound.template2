@@ -72,9 +72,9 @@ public final class %%NAME%%IlaRound
             }
         }
                 
-        public Map getParameters()
+        public Map<String, Object> getParameters()
         {
-            HashMap map = new HashMap();
+            HashMap<String, Object> map = new HashMap<String, Object>();
                         
             map.put("name", "%%NAME%%IlaRound");
             map.put("ila", getImmutableInfo(ila));

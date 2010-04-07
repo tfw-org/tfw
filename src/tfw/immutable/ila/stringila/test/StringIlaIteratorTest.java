@@ -25,19 +25,17 @@
 
 package tfw.immutable.ila.stringila.test;
 
-import java.util.Random;
 import junit.framework.TestCase;
 import tfw.immutable.DataInvalidException;
 import tfw.immutable.ila.stringila.StringIla;
-import tfw.immutable.ila.stringila.StringIlaIterator;
 import tfw.immutable.ila.stringila.StringIlaFromArray;
+import tfw.immutable.ila.stringila.StringIlaIterator;
 
 public class StringIlaIteratorTest extends TestCase
 {
 	public void testStringIlaFill()
 		throws DataInvalidException
 	{
-		final Random random = new Random();
 		final int LENGTH = 29;	
 		String[] array = new String[LENGTH];
 	

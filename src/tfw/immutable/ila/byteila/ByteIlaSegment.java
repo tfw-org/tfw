@@ -77,9 +77,9 @@ public final class ByteIlaSegment
             ila.toArray(array, offset, stride, this.start + start, length);
         }
                 
-        public Map getParameters()
+        public Map<String, Object> getParameters()
         {
-            HashMap map = new HashMap();
+            HashMap<String, Object> map = new HashMap<String, Object>();
                         
             map.put("name", "ByteIlaSegment");
             map.put("length", new Long(length()));

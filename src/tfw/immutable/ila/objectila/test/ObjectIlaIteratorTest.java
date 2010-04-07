@@ -25,19 +25,17 @@
 
 package tfw.immutable.ila.objectila.test;
 
-import java.util.Random;
 import junit.framework.TestCase;
 import tfw.immutable.DataInvalidException;
 import tfw.immutable.ila.objectila.ObjectIla;
-import tfw.immutable.ila.objectila.ObjectIlaIterator;
 import tfw.immutable.ila.objectila.ObjectIlaFromArray;
+import tfw.immutable.ila.objectila.ObjectIlaIterator;
 
 public class ObjectIlaIteratorTest extends TestCase
 {
 	public void testObjectIlaFill()
 		throws DataInvalidException
 	{
-		final Random random = new Random();
 		final int LENGTH = 29;	
 		Object[] array = new Object[LENGTH];
 	

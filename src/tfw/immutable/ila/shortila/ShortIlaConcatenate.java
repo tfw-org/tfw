@@ -96,9 +96,9 @@ public final class ShortIlaConcatenate
             }
         }
                 
-        public Map getParameters()
+        public Map<String, Object> getParameters()
         {
-            HashMap map = new HashMap();
+            HashMap<String, Object> map = new HashMap<String, Object>();
                         
             map.put("name", "ShortIlaConcatenate");
             map.put("length", new Long(length()));

@@ -79,9 +79,9 @@ public final class FloatIlaFromFloatIlm
 			}
 		}
 		
-		public Map getParameters()
+		public Map<String, Object> getParameters()
 		{
-			HashMap map = new HashMap();
+			HashMap<String, Object> map = new HashMap<String, Object>();
 			
 			map.put("name", "FloatIlaFromFloatIlm");
 			map.put("ilm", AbstractFloatIlm.getImmutableInfo(ilm));

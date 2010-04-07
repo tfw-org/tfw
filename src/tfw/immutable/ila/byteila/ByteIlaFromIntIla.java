@@ -78,9 +78,9 @@ public final class ByteIlaFromIntIla
 			}
 		}
 		
-		public Map getParameters()
+		public Map<String, Object> getParameters()
 		{
-			HashMap map = new HashMap();
+			HashMap<String, Object> map = new HashMap<String, Object>();
 			
 			map.put("name", "ByteIlaFromIntIla");
 			map.put("intIla", getImmutableInfo(intIla));

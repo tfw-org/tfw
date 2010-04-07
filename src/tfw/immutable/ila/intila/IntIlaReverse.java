@@ -67,9 +67,9 @@ public final class IntIlaReverse
                         -stride, length() - (start + length), length);
         }
                 
-        public Map getParameters()
+        public Map<String, Object> getParameters()
         {
-            HashMap map = new HashMap();
+            HashMap<String, Object> map = new HashMap<String, Object>();
                         
             map.put("name", "IntIlaReverse");
             map.put("length", new Long(length()));

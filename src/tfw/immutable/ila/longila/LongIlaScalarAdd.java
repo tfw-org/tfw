@@ -74,9 +74,9 @@ public final class LongIlaScalarAdd
             }
         }
                 
-        public Map getParameters()
+        public Map<String, Object> getParameters()
         {
-            HashMap map = new HashMap();
+            HashMap<String, Object> map = new HashMap<String, Object>();
                         
             map.put("name", "LongIlaScalarAdd");
             map.put("ila", getImmutableInfo(ila));

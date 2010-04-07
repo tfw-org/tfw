@@ -68,9 +68,9 @@ public final class DoubleIlaFromLongIla
 		    }
 		}
 		
-		public Map getParameters()
+		public Map<String, Object> getParameters()
 		{
-			HashMap map = new HashMap();
+			HashMap<String, Object> map = new HashMap<String, Object>();
 			
 			map.put("name", "DoubleIlaFromLongIla");
 			map.put("longIla", getImmutableInfo(longIla));

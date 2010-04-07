@@ -89,9 +89,9 @@ public final class ByteIlaAdd
             }
         }
                 
-        public Map getParameters()
+        public Map<String, Object> getParameters()
         {
-            HashMap map = new HashMap();
+            HashMap<String, Object> map = new HashMap<String, Object>();
                         
             map.put("name", "ByteIlaAdd");
             map.put("leftIla", getImmutableInfo(leftIla));

@@ -86,9 +86,9 @@ public final class CharIlaRemove
             }
         }
                 
-        public Map getParameters()
+        public Map<String, Object> getParameters()
         {
-            HashMap map = new HashMap();
+            HashMap<String, Object> map = new HashMap<String, Object>();
                         
             map.put("name", "CharIlaRemove");
             map.put("length", new Long(length()));

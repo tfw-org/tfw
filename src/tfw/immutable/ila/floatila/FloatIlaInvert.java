@@ -72,9 +72,9 @@ public final class FloatIlaInvert
             }
         }
                 
-        public Map getParameters()
+        public Map<String, Object> getParameters()
         {
-            HashMap map = new HashMap();
+            HashMap<String, Object> map = new HashMap<String, Object>();
                         
             map.put("name", "FloatIlaInvert");
             map.put("ila", getImmutableInfo(ila));

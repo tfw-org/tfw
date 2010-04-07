@@ -79,9 +79,9 @@ public final class IntIlaFromIntIlm
 			}
 		}
 		
-		public Map getParameters()
+		public Map<String, Object> getParameters()
 		{
-			HashMap map = new HashMap();
+			HashMap<String, Object> map = new HashMap<String, Object>();
 			
 			map.put("name", "IntIlaFromIntIlm");
 			map.put("ilm", AbstractIntIlm.getImmutableInfo(ilm));

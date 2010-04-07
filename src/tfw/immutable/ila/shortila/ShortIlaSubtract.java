@@ -89,9 +89,9 @@ public final class ShortIlaSubtract
             }
         }
                 
-        public Map getParameters()
+        public Map<String, Object> getParameters()
         {
-            HashMap map = new HashMap();
+            HashMap<String, Object> map = new HashMap<String, Object>();
                         
             map.put("name", "ShortIlaSubtract");
             map.put("leftIla", getImmutableInfo(leftIla));

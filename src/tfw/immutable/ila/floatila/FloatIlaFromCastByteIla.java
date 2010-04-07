@@ -84,9 +84,9 @@ public final class FloatIlaFromCastByteIla
             }
         }
                 
-        public Map getParameters()
+        public Map<String, Object> getParameters()
         {
-            HashMap map = new HashMap();
+            HashMap<String, Object> map = new HashMap<String, Object>();
                         
             map.put("name", "FloatIlaFromCastByteIla");
             map.put("byteIla", getImmutableInfo(byteIla));

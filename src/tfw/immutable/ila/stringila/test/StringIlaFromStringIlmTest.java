@@ -25,7 +25,6 @@
 
 package tfw.immutable.ila.stringila.test;
 
-import java.util.Random;
 import junit.framework.TestCase;
 import tfw.immutable.ila.stringila.StringIla;
 import tfw.immutable.ila.stringila.StringIlaFromArray;
@@ -38,7 +37,6 @@ public class StringIlaFromStringIlmTest extends TestCase
 {
 	public void testStringIlaFromStringIlm() throws Exception
 	{
-		final Random random = new Random();
 		final int WIDTH = 11;
 		final int HEIGHT = 7;
 		final int LENGTH = WIDTH * HEIGHT;

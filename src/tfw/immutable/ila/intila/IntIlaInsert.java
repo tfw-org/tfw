@@ -97,9 +97,9 @@ public final class IntIlaInsert
             }
         }
                 
-        public Map getParameters()
+        public Map<String, Object> getParameters()
         {
-            HashMap map = new HashMap();
+            HashMap<String, Object> map = new HashMap<String, Object>();
                         
             map.put("name", "IntIlaInsert");
             map.put("length", new Long(length()));

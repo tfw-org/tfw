@@ -121,7 +121,6 @@ public final class CharIlaFiltered
             AbstractIlaCheck.boundsCheck(this.length, array.length, offset, stride, start, length);
 
             CharIlaIterator oii = new CharIlaIterator(CharIlaSegment.create(ila, start));
-            long endingNode = start + length;
             
             // left off here
             for (int i=offset; oii.hasNext(); i+=stride) {
@@ -152,11 +151,11 @@ public final class CharIlaFiltered
             }
         }
 
-        public Map getParameters()
+        public Map<String, Object> getParameters()
         {
             calculateLength();
 
-            HashMap map = new HashMap();
+            HashMap<String, Object> map = new HashMap<String, Object>();
                         
             map.put("name", "CharIlaFromArray");
             map.put("length", new Long(length()));

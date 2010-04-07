@@ -93,9 +93,9 @@ public final class BooleanIlaMutate
             }
         }
                 
-        public Map getParameters()
+        public Map<String, Object> getParameters()
         {
-            HashMap map = new HashMap();
+            HashMap<String, Object> map = new HashMap<String, Object>();
                         
             map.put("name", "BooleanIlaMutate");
             map.put("length", new Long(length()));

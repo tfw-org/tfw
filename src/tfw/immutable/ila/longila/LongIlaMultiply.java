@@ -89,9 +89,9 @@ public final class LongIlaMultiply
             }
         }
                 
-        public Map getParameters()
+        public Map<String, Object> getParameters()
         {
-            HashMap map = new HashMap();
+            HashMap<String, Object> map = new HashMap<String, Object>();
                         
             map.put("name", "LongIlaMultiply");
             map.put("leftIla", getImmutableInfo(leftIla));

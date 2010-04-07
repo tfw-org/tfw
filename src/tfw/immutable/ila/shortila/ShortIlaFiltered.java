@@ -121,7 +121,6 @@ public final class ShortIlaFiltered
             AbstractIlaCheck.boundsCheck(this.length, array.length, offset, stride, start, length);
 
             ShortIlaIterator oii = new ShortIlaIterator(ShortIlaSegment.create(ila, start));
-            long endingNode = start + length;
             
             // left off here
             for (int i=offset; oii.hasNext(); i+=stride) {
@@ -152,11 +151,11 @@ public final class ShortIlaFiltered
             }
         }
 
-        public Map getParameters()
+        public Map<String, Object> getParameters()
         {
             calculateLength();
 
-            HashMap map = new HashMap();
+            HashMap<String, Object> map = new HashMap<String, Object>();
                         
             map.put("name", "ShortIlaFromArray");
             map.put("length", new Long(length()));
