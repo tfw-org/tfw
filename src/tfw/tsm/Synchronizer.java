@@ -46,6 +46,7 @@ public abstract class Synchronizer extends Processor
 {
     private final List<ObjectECD> aEventList;
     private final List<ObjectECD> bEventList;
+    private final List<ObjectECD> addlInsEventList;
     private HashSet<EventChannel> aToBConvert = new HashSet<EventChannel>();
     private HashSet<EventChannel> bToAConvert = new HashSet<EventChannel>();
     private CommitRollbackListener crListener = new CommitRollbackListener()
@@ -88,12 +89,15 @@ public abstract class Synchronizer extends Processor
         	checkTriggeringSinks(aPortInputDescriptions,
         		bPortInputDescriptions),
             checkAdditionalSinks(additionalInputDescriptions),
-        	outputDescriptions);
+        	ECDUtility.concat(aPortInputDescriptions,
+        			ECDUtility.concat(bPortInputDescriptions, outputDescriptions)));
 
         this.aEventList = Collections.unmodifiableList(
         	Arrays.asList(aPortInputDescriptions));
         this.bEventList = Collections.unmodifiableList(
         	Arrays.asList(bPortInputDescriptions));
+        this.addlInsEventList = Collections.unmodifiableList(
+            	Arrays.asList(additionalInputDescriptions));
     }
 
     /**
@@ -139,7 +143,7 @@ public abstract class Synchronizer extends Processor
         	if (bToAConvert.isEmpty() ||
         		getTransactionManager().isComponentChangeTransactionExecuting())
         	{
-            	if (isStateNonNull(aEventList))
+            	if (isStateNonNull(aEventList) && isStateNonNull(addlInsEventList))
                 {
                     convertAToB();
                 }
@@ -157,7 +161,7 @@ public abstract class Synchronizer extends Processor
         {
         	if (aToBConvert.isEmpty())
         	{
-            	if (isStateNonNull(bEventList))
+            	if (isStateNonNull(bEventList) && isStateNonNull(addlInsEventList))
                 {
                     convertBToA();
                 }
