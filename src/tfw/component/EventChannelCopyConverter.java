@@ -29,31 +29,43 @@ import tfw.tsm.ecd.ObjectECD;
 
 public class EventChannelCopyConverter extends Converter
 {
-	private final ObjectECD inputECD;
-	private final ObjectECD outputECD;
+	private final ObjectECD[] inputECDs;
+	private final ObjectECD[] outputECDs;
 
 	public EventChannelCopyConverter(String name,
 		ObjectECD inputECD, ObjectECD outputECD)
 	{
+		this(name, new ObjectECD[] {inputECD}, new ObjectECD[] {outputECD});
+	}
+	
+	public EventChannelCopyConverter(String name,
+		ObjectECD[] inputECDs, ObjectECD[] outputECDs)
+	{
 		super("EventChannelCopyConverter[" + name + "]",
-			new ObjectECD[] {inputECD},
+			inputECDs,
 			null,
-			new ObjectECD[] {outputECD});
+			outputECDs);
 		
-		if (outputECD.getConstraint().isCompatible(
-			inputECD.getConstraint()) == false)
+		for (int i=0 ; i < inputECDs.length ; i++)
 		{
-			throw new IllegalArgumentException(
-				"outputECD.getConstraint().isCompatible("+
-				"inputECD.getConstraint()) == false not allowed");
+			if (outputECDs[i].getConstraint().isCompatible(
+					inputECDs[i].getConstraint()) == false)
+				{
+					throw new IllegalArgumentException(
+						"outputECD.getConstraint().isCompatible("+
+						"inputECD.getConstraint()) == false not allowed");
+				}
 		}
 
-		this.inputECD = inputECD;
-		this.outputECD = outputECD;
+		this.inputECDs = inputECDs;
+		this.outputECDs = outputECDs;
 	}
 
 	protected void convert()
 	{
-		set(outputECD, get(inputECD));
+		for (int i=0 ; i < inputECDs.length ; i++)
+		{
+			set(outputECDs[i], get(inputECDs[i]));
+		}
 	}
 }

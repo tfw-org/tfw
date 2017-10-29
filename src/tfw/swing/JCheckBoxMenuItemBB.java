@@ -17,6 +17,7 @@
  */
 package tfw.swing;
 
+import java.awt.event.ItemListener;
 import javax.swing.JCheckBoxMenuItem;
 import tfw.awt.component.EnabledCommit;
 import tfw.swing.button.ButtonSelectedCommit;
@@ -44,14 +45,15 @@ public class JCheckBoxMenuItemBB extends JCheckBoxMenuItem implements BranchBox
 		ButtonSelectedInitiator buttonSelectedInitiator =
 			new ButtonSelectedInitiator("JCheckBoxBB", selectedECD, this);
 
-		addChangeListener(buttonSelectedInitiator);
+		addItemListener(buttonSelectedInitiator);
 		branch.add(buttonSelectedInitiator);
 
 		if (enabledECD != null){
             branch.add(new EnabledCommit("JCheckBoxBB", enabledECD, this, null));
         }
 		branch.add(new ButtonSelectedCommit("JCheckBoxBB", selectedECD,
-				new Initiator[] { buttonSelectedInitiator }, this));
+				new Initiator[] { buttonSelectedInitiator },
+				new ItemListener[] { buttonSelectedInitiator }, this));
 	}
 
 	public final Branch getBranch()

@@ -1,0 +1,4 @@
+<module rename-to="tfw">
+	<inherits name="tfw" />
+	<source path="tfw" />
+</module>

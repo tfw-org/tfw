@@ -128,32 +128,6 @@ public class Argument
     }
 
     /**
-     * Checks the type of the argument.
-     * 
-     * @param argument
-     *            The argument to be checked.
-     * @param argumentName
-     *            The name of the argument to be checked.
-     * @param type
-     *            The expected type of the argument.
-     * 
-     * @throws IllegalArgumentException
-     *             if <code>argument</code> is not assignable to
-     *             <code>type</code>.
-     */
-    public static void assertInstanceOf(Object argument, String argumentName,
-            Class type)
-    {
-        assertNotNull(type, "type");
-
-        if (!(type.isInstance(argument)))
-        {
-            throw new IllegalArgumentException(argumentName
-                    + " is not assignable to type '" + type.getName() + "'");
-        }
-    }
-
-    /**
      * Checks that the argument is greater than a constant.
      * 
      * @param argument
@@ -243,6 +217,14 @@ public class Argument
                     + rightName + " (=" + right + ") not allowed!");
     }
 
+    public static final void assertNotGreaterThan(int value, int constant,
+    		String valueName)
+    {
+    	if (value > constant)
+    		throw new IllegalArgumentException(valueName + " (=" + value
+    			+ ") > " + constant + " not allowed!");
+    }
+    
     public static final void assertNotLessThan(int value, int constant,
             String valueName)
     {
@@ -291,7 +273,15 @@ public class Argument
                 + ") >= " + rightName + " (=" + right + ") not allowed!");
     }
 
-	public static void assertNotGreaterThan(double left, double right,
+	public static final void assertNotGreaterThanOrEquals(long left, long right,
+			String leftName, String rightName)
+	{
+		if (left >= right)
+			throw new IllegalArgumentException(leftName + " (=" + left
+				+ ") >= " + rightName + " (=" + right + ") not allowed!");
+	}
+	
+	public static final void assertNotGreaterThan(double left, double right,
 			String leftName, String rightName) {
         if (left > right)
             throw new IllegalArgumentException(leftName + " (=" + left + ") > "

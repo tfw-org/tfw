@@ -25,12 +25,11 @@
 package tfw.swing.combobox;
 
 import java.awt.EventQueue;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
-
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
-
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
 import tfw.immutable.ila.objectila.ObjectIla;
@@ -43,16 +42,15 @@ import tfw.tsm.ecd.ila.ObjectIlaECD;
 public class SelectionAndListCommit extends Commit
 {
     private final ObjectIlaECD listECD;
-
     private final ObjectECD selectedItemECD;
-
     private final IntegerECD selectedIndexECD;
-
+    private final ActionListener[] actionListeners;
     private final JComboBox comboBox;
 
     public SelectionAndListCommit(String name, ObjectIlaECD listECD,
             ObjectECD selectedItemECD, IntegerECD selectedIndexECD,
-            Initiator[] initiators, JComboBox comboBox)
+            Initiator[] initiators, ActionListener[] actionListeners,
+            JComboBox comboBox)
     {
         super("SelectionAndListCommit[" + name + "]", toArray(listECD,
                 selectedItemECD, selectedIndexECD), null, initiators);
@@ -60,6 +58,15 @@ public class SelectionAndListCommit extends Commit
         this.listECD = listECD;
         this.selectedItemECD = selectedItemECD;
         this.selectedIndexECD = selectedIndexECD;
+        if (actionListeners == null)
+        {
+        	this.actionListeners = null;
+        }
+        else
+        {
+        	this.actionListeners = new ActionListener[actionListeners.length];
+        	System.arraycopy(actionListeners, 0, this.actionListeners, 0, actionListeners.length);
+        }
         this.comboBox = comboBox;
     }
 
@@ -72,7 +79,7 @@ public class SelectionAndListCommit extends Commit
             throw new IllegalStateException(
                     "(selectedItemECD == null) && (selectedIndexECD == null) not allowed");
         }
-        ArrayList list = new ArrayList();
+        ArrayList<ObjectECD> list = new ArrayList<ObjectECD>();
         list.add(listECD);
         if (selectedItemECD != null)
         {
@@ -82,7 +89,7 @@ public class SelectionAndListCommit extends Commit
         {
             list.add(selectedIndexECD);
         }
-        return (ObjectECD[]) list.toArray(new ObjectECD[list.size()]);
+        return list.toArray(new ObjectECD[list.size()]);
     }
 
     protected void commit()
@@ -112,12 +119,30 @@ public class SelectionAndListCommit extends Commit
                             return;
                         }
                     }
+                    
+                    if (actionListeners != null)
+                    {
+                    	for (int i=0 ; i < actionListeners.length ; i++)
+                		{
+                    		comboBox.removeActionListener(actionListeners[i]);
+                		}
+                    }
+                    
                     DefaultComboBoxModel model = new DefaultComboBoxModel(list);
                     if (model.getIndexOf(comboBox.getSelectedItem()) > 0)
                     {
                         model.setSelectedItem(comboBox.getSelectedItem());
                     }
                     comboBox.setModel(model);
+                    
+                    
+                    if (actionListeners != null)
+                    {
+                    	for (int i=0 ; i < actionListeners.length ; i++)
+                		{
+                    		comboBox.addActionListener(actionListeners[i]);
+                		}
+                    }
                 }
             });
         }
@@ -127,15 +152,32 @@ public class SelectionAndListCommit extends Commit
 
 		if (selectedItemECD != null) 
 		{
-            final Object selectedItem = (Object) get(selectedItemECD);
+            final Object selectedItem = get(selectedItemECD);
 
 			EventQueue.invokeLater(new Runnable() 
 			{
 				public void run() 
 				{
-					if (selectedItem != comboBox.getSelectedItem()) {
-                    comboBox.setSelectedItem(selectedItem);
-                }
+					if (selectedItem != comboBox.getSelectedItem())
+					{
+	                    if (actionListeners != null)
+	                    {
+	                    	for (int i=0 ; i < actionListeners.length ; i++)
+	                		{
+	                    		comboBox.removeActionListener(actionListeners[i]);
+	                		}
+	                    }
+
+	                    comboBox.setSelectedItem(selectedItem);
+
+	                    if (actionListeners != null)
+	                    {
+	                    	for (int i=0 ; i < actionListeners.length ; i++)
+	                		{
+	                    		comboBox.addActionListener(actionListeners[i]);
+	                		}
+	                    }
+					}
 				}
             });
         }
@@ -148,8 +190,26 @@ public class SelectionAndListCommit extends Commit
 			{
 				public void run() 
 				{
-					if (selectedIndex != comboBox.getSelectedIndex()) {
-                    	comboBox.setSelectedIndex(selectedIndex);
+					if (selectedIndex != comboBox.getSelectedIndex())
+					{
+	                    
+	                    if (actionListeners != null)
+	                    {
+	                    	for (int i=0 ; i < actionListeners.length ; i++)
+	                		{
+	                    		comboBox.removeActionListener(actionListeners[i]);
+	                		}
+	                    }
+
+	                    comboBox.setSelectedIndex(selectedIndex);
+	                    
+	                    if (actionListeners != null)
+	                    {
+	                    	for (int i=0 ; i < actionListeners.length ; i++)
+	                		{
+	                    		comboBox.addActionListener(actionListeners[i]);
+	                		}
+	                    }
                 	}
 				}
             });

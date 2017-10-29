@@ -309,7 +309,7 @@ public abstract class BranchComponent extends TreeComponent
         if (!isRooted())
         {
             throw new IllegalStateException(
-                    "This component is not rooted and therefore it's state is undefined.");
+                    "This component ("+getName()+") is not rooted and therefore it's state is undefined.");
         }
 
         if (!getTransactionManager().isDispatchThread())
@@ -470,7 +470,10 @@ public abstract class BranchComponent extends TreeComponent
     							(AddComponentRunnable)runnable;
     						
     						acr.setTransactionMgr(transactionMgr);
-    						transactionMgr.addComponent(acr);
+    						transactionMgr.addComponent(acr,
+    							TransactionMgr.isTraceLogging() ?
+    								new Throwable("AddComponent") :
+    								null);
     						
     						ArrayList<Object> allDeferredAddRemoveSets =
     							new ArrayList<Object>();
@@ -487,7 +490,10 @@ public abstract class BranchComponent extends TreeComponent
     							(RemoveComponentRunnable)runnable;
     						
     						rcr.setTransactionMgr(transactionMgr);
-    						transactionMgr.removeComponent(rcr);
+    						transactionMgr.removeComponent(rcr,
+    							TransactionMgr.isTraceLogging() ?
+    								new Throwable("RemoveComponent") :
+    								null);
     						removeChildAndDescendents(this, rcr.child);
     					}
     				}
@@ -574,7 +580,9 @@ public abstract class BranchComponent extends TreeComponent
     			addComponentRunnable.setTransactionMgr(
     				immediateRoot.getTransactionManager());
                 immediateRoot.getTransactionManager().addComponent(
-                	addComponentRunnable);
+                	addComponentRunnable, TransactionMgr.isTraceLogging() ?
+                		new Throwable("AddComponent") :
+                		null);
                 List<Object> allDeferredAddRemoveSets = new ArrayList<Object>();
         		
     			addChildAndDescendents(this, child, allDeferredAddRemoveSets);
@@ -655,7 +663,8 @@ public abstract class BranchComponent extends TreeComponent
 	    				
 						immediateRoot.getTransactionManager().addStateChange(
     						sourceNState.sources, sourceNState.state,
-    						transactionContainers[i].transactionState);
+    						transactionContainers[i].transactionState,
+    						transactionContainers[i].setLocation);
 	    			}
     			}
             }
@@ -719,7 +728,9 @@ public abstract class BranchComponent extends TreeComponent
     			removeComponentRunnable.setTransactionMgr(
     				immediateRoot.getTransactionManager());
                 immediateRoot.getTransactionManager().removeComponent(
-                	removeComponentRunnable);
+                	removeComponentRunnable, TransactionMgr.isTraceLogging() ?
+                		new Throwable("RemoveComponent") :
+                		null);
         		
     			removeChildAndDescendents(this, child);
     		}

@@ -44,7 +44,7 @@ public final class WaveUtil
 		{
 			byteIla = ByteIlaSwap.create(byteIla, 4);
 		}
-		byte[] b = ByteIlaSegment.create(byteIla, offset).toArray();
+		byte[] b = ByteIlaSegment.create(byteIla, offset, 4).toArray();
 		ByteArrayInputStream bais = new ByteArrayInputStream(b);
 		DataInputStream dis = new DataInputStream(bais);
 		
@@ -62,7 +62,7 @@ public final class WaveUtil
 		throws DataInvalidException
 	{
 		byteIla = ByteIlaSwap.create(byteIla, 2);
-		byte[] b = ByteIlaSegment.create(byteIla, offset).toArray();
+		byte[] b = ByteIlaSegment.create(byteIla, offset, 2).toArray();
 		ByteArrayInputStream bais = new ByteArrayInputStream(b);
 		DataInputStream dis = new DataInputStream(bais);
 		

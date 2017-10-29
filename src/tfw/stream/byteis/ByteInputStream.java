@@ -22,32 +22,15 @@
  * Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307 USA
  */
-package tfw.swing.button;
+package tfw.stream.byteis;
 
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import javax.swing.AbstractButton;
-import tfw.tsm.Initiator;
-import tfw.tsm.ecd.BooleanECD;
-import tfw.tsm.ecd.ObjectECD;
+import tfw.immutable.DataInvalidException;
 
-public class ButtonSelectedInitiator extends Initiator implements ItemListener
+public interface ByteInputStream
 {
-	private final BooleanECD selectedECD;
-	private final AbstractButton abstractButton;
-	
-	public ButtonSelectedInitiator(String name, BooleanECD selectedECD,
-		AbstractButton abstractButton)
-	{
-		super("ButtonSelectedInitiator["+name+"]",
-			new ObjectECD[] {selectedECD});
-		
-		this.selectedECD = selectedECD;
-		this.abstractButton = abstractButton;
-	}
-	
-	public void itemStateChanged(ItemEvent e)
-	{
-		set(selectedECD, new Boolean(abstractButton.isSelected()));
-	}
+	public long available() throws DataInvalidException;
+	public void close() throws DataInvalidException;
+	public int read(byte[] array) throws DataInvalidException;
+	public int read(byte[] array, int offset, int length) throws DataInvalidException;
+	public long skip(long n) throws DataInvalidException;
 }

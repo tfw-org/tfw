@@ -24,6 +24,7 @@
  */
 package tfw.swing;
 
+import java.awt.event.ItemListener;
 import javax.swing.JToggleButton;
 import tfw.awt.component.EnabledCommit;
 import tfw.swing.button.ButtonSelectedCommit;
@@ -53,12 +54,13 @@ public class JToggleButtonBB extends JToggleButton implements BranchBox
 		ButtonSelectedInitiator buttonSelectedInitiator =
 			new ButtonSelectedInitiator("JToggleButtonBB", selectedECD, this);
 		
-		addChangeListener(buttonSelectedInitiator);
+		addItemListener(buttonSelectedInitiator);
 		branch.add(buttonSelectedInitiator);
 		
 		ButtonSelectedCommit buttonSelectedCommit =
 			new ButtonSelectedCommit("JToggleButtonBB", selectedECD, 
-				new Initiator[] {buttonSelectedInitiator}, this);
+				new Initiator[] {buttonSelectedInitiator},
+				new ItemListener[] { buttonSelectedInitiator }, this);
 		
 		branch.add(buttonSelectedCommit);
 	}

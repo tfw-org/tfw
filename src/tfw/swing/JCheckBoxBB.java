@@ -17,8 +17,8 @@
  */
 package tfw.swing;
 
+import java.awt.event.ItemListener;
 import javax.swing.JCheckBox;
-
 import tfw.awt.component.EnabledCommit;
 import tfw.swing.button.ButtonSelectedCommit;
 import tfw.swing.button.ButtonSelectedInitiator;
@@ -42,14 +42,15 @@ public class JCheckBoxBB extends JCheckBox implements BranchBox {
 		ButtonSelectedInitiator buttonSelectedInitiator = new ButtonSelectedInitiator(
 				"JCheckBoxBB", selectedECD, this);
 
-		addChangeListener(buttonSelectedInitiator);
+		addItemListener(buttonSelectedInitiator);
 		branch.add(buttonSelectedInitiator);
 
 		if (enabledECD != null){
             branch.add(new EnabledCommit("JCheckBoxBB", enabledECD, this, null));
         }
 		branch.add(new ButtonSelectedCommit("JCheckBoxBB", selectedECD,
-				new Initiator[] { buttonSelectedInitiator }, this));
+				new Initiator[] { buttonSelectedInitiator },
+				new ItemListener[] { buttonSelectedInitiator }, this));
 	}
 
 	public final Branch getBranch() {

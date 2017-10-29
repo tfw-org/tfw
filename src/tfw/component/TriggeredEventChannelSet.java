@@ -29,23 +29,34 @@ import tfw.tsm.ecd.StatelessTriggerECD;
 
 public class TriggeredEventChannelSet extends TriggeredConverter
 {
-	private final ObjectECD outputECD;
-	private final Object value;
+	private final ObjectECD[] outputECDs;
+	private final Object[] constants;
 	
-	public TriggeredEventChannelSet(String name, StatelessTriggerECD trigger,
-		ObjectECD outputECD, Object value)
+	public TriggeredEventChannelSet(String name, StatelessTriggerECD triggerECD,
+		ObjectECD outputECD, Object constant)
+	{
+		this(name, triggerECD, new ObjectECD[] {outputECD},
+			new Object[] {constant});
+	}
+	public TriggeredEventChannelSet(String name, StatelessTriggerECD triggerECD,
+		ObjectECD[] outputECDs, Object[] constants)
 	{
 		super("TriggeredEventChannelSet[" + name +"]",
-			trigger,
+			triggerECD,
 			null,
-			new ObjectECD[] {outputECD});
-		
-		this.outputECD = outputECD;
-		this.value = value;
+			outputECDs);
+
+		this.outputECDs = new ObjectECD[outputECDs.length];
+		System.arraycopy(outputECDs, 0, this.outputECDs, 0, outputECDs.length);
+		this.constants = new Object[constants.length];
+		System.arraycopy(constants, 0, this.constants, 0, constants.length);
 	}
 
 	protected void convert()
 	{
-		set(outputECD, value);
+		for (int i=0 ; i < outputECDs.length ; i++)
+		{
+			set(outputECDs[i], constants[i]);
+		}
 	}
 }

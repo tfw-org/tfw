@@ -24,11 +24,9 @@
  */
 package tfw.tsm;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-
 import tfw.check.Argument;
 
 /**
@@ -193,9 +191,9 @@ public class MultiplexedBranch extends BranchComponent
         return slotIdFromChild.get(child);
     }
     
-    public Collection<Branch> getSubBranches()
+    Map<Object, Branch> getSlotIdSubBranchMap()
     {
-    	return(subBranchFromSlotId.values());
+    	return new HashMap<Object, Branch>(subBranchFromSlotId);
     }
     
     Multiplexer[] getMultiplexers()

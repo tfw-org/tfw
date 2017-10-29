@@ -201,7 +201,10 @@ public class Initiator extends Leaf
     		TransactionStateImpl transactionState = new TransactionStateImpl();
     		
     		localImmediateRoot.getTransactionManager().addStateChange(
-    			sources, state, transactionState);
+    			sources, state, transactionState,
+    			TransactionMgr.isTraceLogging() ?
+    				new Throwable("StateChange") :
+    				null);
     		
     		return(transactionState);
     	}
@@ -330,12 +333,16 @@ public class Initiator extends Leaf
     {
     	public final SourceNState state;
     	public final TransactionStateImpl transactionState;
+    	public final Throwable setLocation;
     	
     	public TransactionContainer(SourceNState state,
     		TransactionStateImpl transactionState)
     	{
     		this.state = state;
     		this.transactionState = transactionState;
+    		this.setLocation = TransactionMgr.isTraceLogging() ?
+    			new Throwable("StateChange") :
+    			null;
     	}
     }
 }

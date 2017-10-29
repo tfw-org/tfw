@@ -94,6 +94,10 @@ public final class Wave
 	
 	public WaveChunk[] getChunks()
 	{
-		return((WaveChunk[])waveChunks.clone());
+		WaveChunk[] wc = new WaveChunk[waveChunks.length];
+		
+		System.arraycopy(waveChunks, 0, wc, 0, waveChunks.length);
+		
+		return(wc);
 	}
 }

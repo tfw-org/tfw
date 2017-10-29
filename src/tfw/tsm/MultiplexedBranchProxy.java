@@ -24,6 +24,10 @@
  */
 package tfw.tsm;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
 import tfw.check.Argument;
 
 public final class MultiplexedBranchProxy implements Proxy
@@ -78,6 +82,22 @@ public final class MultiplexedBranchProxy implements Proxy
 		
 		throw new IllegalStateException(
 			"Parent is not a branch/multiplexedBranch!");
+	}
+	
+	public Map<Object, BranchProxy> getSlotIdSubBranchProxyMap()
+	{
+		Map<Object, Branch> multiMap = multiplexedBranch.getSlotIdSubBranchMap();
+		Map<Object, BranchProxy> map = new HashMap<Object, BranchProxy>();
+		
+		for (Iterator<Entry<Object, Branch>> i=multiMap.entrySet().iterator() ;
+			i.hasNext() ; )
+		{
+			final Entry<Object, Branch> entry = i.next();
+			
+			map.put(entry.getKey(), new BranchProxy(entry.getValue()));
+		}
+		
+		return map;
 	}
 	
 	public boolean equals(Object obj)

@@ -44,13 +44,13 @@ class TransactionMgrUtil
 				{
 					AddComponentRunnable acr = (AddComponentRunnable)objects[i];
 					acr.setTransactionMgr(transactionMgr);
-					transactionMgr.addComponent(acr);
+					transactionMgr.addComponent(acr, new Throwable("Add"));
 				}
 				else if (objects[i] instanceof TransactionMgr.RemoveComponentRunnable)
 				{
 					RemoveComponentRunnable rcr = (RemoveComponentRunnable)objects[i];
 					rcr.setTransactionMgr(transactionMgr);
-					transactionMgr.removeComponent(rcr);
+					transactionMgr.removeComponent(rcr, new Throwable("REMOVE"));
 				}
 				else if (objects[i] instanceof Initiator.TransactionContainer)
 				{
@@ -60,7 +60,8 @@ class TransactionMgrUtil
 					transactionMgr.addStateChange(
 						transactionContainer.state.sources,
 						transactionContainer.state.state,
-						transactionContainer.transactionState);
+						transactionContainer.transactionState,
+						transactionContainer.setLocation);
 				}
 			}
 		}

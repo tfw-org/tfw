@@ -166,8 +166,18 @@ class Multiplexer implements EventChannel
             }
             pendingStateChanges.clear();
             
-            Object multiState = Multiplexer.this.multiStrategy.addToMultiState(
-            	eventChannel.getState(), keys, values, keyValueArraySize);
+            Object multiState = null;
+            
+            try
+            {
+                multiState = Multiplexer.this.multiStrategy.addToMultiState(
+                    eventChannel.getState(), keys, values, keyValueArraySize);
+            }
+            catch (Exception e)
+            {
+            	throw new RuntimeException("ECD="+ecd.getEventChannelName(), e);
+            }
+
             eventChannel.setState(this, multiState, null);
             
             getTreeComponent().getTransactionManager().addChangedEventChannel(eventChannel);

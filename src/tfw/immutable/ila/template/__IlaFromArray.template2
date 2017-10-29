@@ -63,7 +63,8 @@ public final class %%NAME%%IlaFromArray
 
             if (cloneArray)
             {
-                this.array = (%%TYPE%%[])array.clone();
+            	this.array = new %%TYPE%%[array.length];
+            	System.arraycopy(array, 0, this.array, 0, array.length);
             } else {
                 this.array = array;
             }

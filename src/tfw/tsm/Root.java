@@ -103,6 +103,17 @@ public class Root extends Branch
     	transactionMgr.setLogging(logging);
     }
     
+    public static final void setTraceLogging(boolean traceLogging)
+    {
+    	TransactionMgr.setTraceLogging(traceLogging);
+    }
+    
+    public void setLocationFormatter(
+    	TransactionMgr.LocationFormatter locationFormatter)
+    {
+    	transactionMgr.setLocationFormatter(locationFormatter);
+    }
+    
 //    /**
 //     * Sets the exception handler for this roots transaction manager. This
 //     * method will over-write any previously set handlers. If an un-handle 

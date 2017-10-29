@@ -24,6 +24,7 @@
  */
 package tfw.tsm;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -46,7 +47,7 @@ public abstract class Synchronizer extends Processor
 {
     private final List<ObjectECD> aEventList;
     private final List<ObjectECD> bEventList;
-    private final List<ObjectECD> addlInsEventList;
+    private final List<ObjectECD> additionalList;
     private HashSet<EventChannel> aToBConvert = new HashSet<EventChannel>();
     private HashSet<EventChannel> bToAConvert = new HashSet<EventChannel>();
     private CommitRollbackListener crListener = new CommitRollbackListener()
@@ -96,8 +97,10 @@ public abstract class Synchronizer extends Processor
         	Arrays.asList(aPortInputDescriptions));
         this.bEventList = Collections.unmodifiableList(
         	Arrays.asList(bPortInputDescriptions));
-        this.addlInsEventList = Collections.unmodifiableList(
-            	Arrays.asList(additionalInputDescriptions));
+        this.additionalList = (additionalInputDescriptions == null) ?
+        	Collections.unmodifiableList(new ArrayList<ObjectECD>()) :
+        	Collections.unmodifiableList(
+        		Arrays.asList(additionalInputDescriptions));
     }
 
     /**
@@ -140,10 +143,10 @@ public abstract class Synchronizer extends Processor
     {
         if (!aToBConvert.isEmpty())
         {
-        	if (bToAConvert.isEmpty() ||
-        		getTransactionManager().isComponentChangeTransactionExecuting())
-        	{
-            	if (isStateNonNull(aEventList) && isStateNonNull(addlInsEventList))
+//        	if (bToAConvert.isEmpty() ||
+//        		getTransactionManager().isComponentChangeTransactionExecuting())
+//        	{
+            	if (isStateNonNull(aEventList) && isStateNonNull(additionalList))
                 {
                     convertAToB();
                 }
@@ -151,17 +154,17 @@ public abstract class Synchronizer extends Processor
                 {
                     debugConvertAToB();
                 }
-        	}
-        	else
-        	{
-        		throwBothSetsChangedException();
-        	}
+//        	}
+//        	else
+//        	{
+//        		throwBothSetsChangedException();
+//        	}
         }
         else if (!bToAConvert.isEmpty())
         {
-        	if (aToBConvert.isEmpty())
-        	{
-            	if (isStateNonNull(bEventList) && isStateNonNull(addlInsEventList))
+//        	if (aToBConvert.isEmpty())
+//        	{
+            	if (isStateNonNull(bEventList) && isStateNonNull(additionalList))
                 {
                     convertBToA();
                 }
@@ -169,11 +172,11 @@ public abstract class Synchronizer extends Processor
                 {
                     debugConvertBToA();
                 }
-        	}
-        	else
-        	{
-        		throwBothSetsChangedException();
-        	}
+//        	}
+//        	else
+//        	{
+//        		throwBothSetsChangedException();
+//        	}
         }
         
         aToBConvert.clear();

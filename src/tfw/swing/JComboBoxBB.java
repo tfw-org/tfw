@@ -17,12 +17,11 @@
  */
 package tfw.swing;
 
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
 import javax.swing.JComboBox;
-
 import tfw.awt.component.EnabledCommit;
 import tfw.swing.combobox.SelectionAndListCommit;
 import tfw.swing.combobox.SelectionInitiator;
@@ -63,12 +62,12 @@ public class JComboBoxBB extends JComboBox implements BranchBox {
 		addActionListener(selectionInitiator);
 		branch.add(selectionInitiator);
 
-		List list = new ArrayList(Arrays.asList(initiators));
+		List<Initiator> list = new ArrayList<Initiator>(Arrays.asList(initiators));
 		list.add(selectionInitiator);
-		initiators = (Initiator[])list.toArray(new Initiator[list.size()]);
-		SelectionAndListCommit selectionAndListCommit = new SelectionAndListCommit(
-				"JComboBoxBB", listECD, selectedItemECD, selectedIndexECD,
-				initiators, this);
+		initiators = list.toArray(new Initiator[list.size()]);
+		SelectionAndListCommit selectionAndListCommit = new SelectionAndListCommit("JComboBoxBB",
+				listECD, selectedItemECD, selectedIndexECD, initiators,
+				new ActionListener[] { selectionInitiator }, this);
 
 		if (enabledECD != null) {
 			branch

@@ -24,13 +24,13 @@
  */
 package tfw.stream.doubleis;
 
-import java.io.IOException;
+import tfw.immutable.DataInvalidException;
 
 public interface DoubleInputStream
 {
-	public int available() throws IOException;
-	public void close() throws IOException;
-	public int read(double[] array) throws IOException;
-	public int read(double[] array, int offset, int length) throws IOException;
-	public long skip(long n) throws IOException;
+	public long available() throws DataInvalidException;
+	public void close() throws DataInvalidException;
+	public int read(double[] array) throws DataInvalidException;
+	public int read(double[] array, int offset, int length) throws DataInvalidException;
+	public long skip(long n) throws DataInvalidException;
 }

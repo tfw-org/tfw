@@ -26,59 +26,77 @@ package tfw.stream.doubleis;
 
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
+import tfw.stream.byteis.ByteInputStream;
 
-public class DoubleInputStreamScalarMultiply
+public class DoubleInputStreamFromByteInputStream
 {
-	public static DoubleInputStream create(DoubleInputStream doubleInputStream,
-		double value)
+	public static DoubleInputStream create(ByteInputStream byteInputStream)
 	{
-		Argument.assertNotNull(doubleInputStream, "doubleInputStream");
+		Argument.assertNotNull(byteInputStream, "byteInputStream");
 		
-		return new MyDoubleInputStream(doubleInputStream, value);
+		return new MyDoubleInputStream(byteInputStream);
 	}
 	
 	private static class MyDoubleInputStream implements DoubleInputStream
 	{
-		private final DoubleInputStream doubleInputStream;
-		private final double value;
+		private final ByteInputStream byteInputStream;
+		private final byte[] buffer = new byte[1000];
 		
-		MyDoubleInputStream(DoubleInputStream doubleInputStream, double value)
+		public MyDoubleInputStream(ByteInputStream byteInputStream)
 		{
-			this.doubleInputStream = doubleInputStream;
-			this.value = value;
+			this.byteInputStream = byteInputStream;
 		}
 
+		@Override
 		public long available() throws DataInvalidException
 		{
-			return doubleInputStream.available();
+			return byteInputStream.available();
 		}
 
+		@Override
 		public void close() throws DataInvalidException
 		{
-			doubleInputStream.close();
+			byteInputStream.close();
 		}
 
+		@Override
 		public int read(double[] array) throws DataInvalidException
 		{
 			return read(array, 0, array.length);
 		}
 
-		public int read(double[] array, int offset, int length)
+		@Override
+		public synchronized int read(double[] array, int offset, int length)
 			throws DataInvalidException
 		{
-			int elementsRead = doubleInputStream.read(array, offset, length);
+			int totalElementsRead = 0;
 			
-			for (int i=0 ; i < elementsRead ; i++)
+			for (int i=0 ; i < length ; i++)
 			{
-				array[offset+i] *= value;
+				int cachePosition = i % buffer.length;
+				
+				if (cachePosition == 0)
+				{
+					int remaining = length - i;
+					int elementsRead = byteInputStream.read(buffer, 0,
+						buffer.length < remaining ? buffer.length : remaining);
+					
+					if (elementsRead > 0)
+					{
+						totalElementsRead += elementsRead;
+					}
+				}
+				
+				array[offset + i] = (double)buffer[cachePosition];
 			}
 			
-			return elementsRead;
+			return totalElementsRead;
 		}
 
+		@Override
 		public long skip(long n) throws DataInvalidException
 		{
-			return doubleInputStream.skip(n);
+			return byteInputStream.skip(n);
 		}
 	}
 }

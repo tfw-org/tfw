@@ -24,7 +24,6 @@
  */
 package tfw.tsm;
 
-import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
 import tfw.immutable.ila.objectila.ObjectIla;
 import tfw.immutable.ila.objectila.ObjectIlaFromArray;
@@ -40,8 +39,8 @@ public class ObjectIlaMultiplexerStrategy implements MultiplexerStrategy
      */
     public MultiStateAccessor toMultiStateAccessor(Object multiState)
     {
-        Argument.assertNotNull(multiState, "multiState");
-        return new MyMultiStateAccessor((ObjectIla) multiState);
+        return new MyMultiStateAccessor((multiState == null) ?
+        	ObjectIlaFromArray.create(new Object[0]) : (ObjectIla)multiState);
     }
 
     public Object getDefaultSlotState(){
@@ -80,20 +79,28 @@ public class ObjectIlaMultiplexerStrategy implements MultiplexerStrategy
         }
     }
     
+    @Override
     public Object addToMultiState(Object originalMultiState, Object[] keys,
     	Object[] values, int numberOfKeyValuePairs)
     {
     	Object[] array = null;
     	
-    	try
+    	if (originalMultiState == null)
     	{
-    		array = ((ObjectIla)originalMultiState).toArray();
+    		array = new Object[0];
     	}
-    	catch (DataInvalidException e)
+    	else
     	{
-    		throw new RuntimeException(
-    			"Exception occurred accessing multiplexed state:" +
-    				e.getMessage(), e);
+        	try
+        	{
+        		array = ((ObjectIla)originalMultiState).toArray();
+        	}
+        	catch (DataInvalidException e)
+        	{
+        		throw new RuntimeException(
+        			"Exception occurred accessing multiplexed state:" +
+        				e.getMessage(), e);
+        	}
     	}
     	
     	for (int i=0 ; i < numberOfKeyValuePairs ; i++)

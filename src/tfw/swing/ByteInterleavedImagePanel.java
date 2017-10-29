@@ -30,16 +30,14 @@ import java.awt.image.ColorModel;
 import java.awt.image.DataBufferByte;
 import java.awt.image.Raster;
 import java.awt.image.WritableRaster;
-
 import tfw.awt.ecd.ColorModelECD;
 import tfw.immutable.DataInvalidException;
 import tfw.immutable.ila.byteila.ByteIla;
-import tfw.immutable.ila.byteila.ByteIlaFromByteIlm;
 import tfw.immutable.ilm.byteilm.ByteIlm;
 import tfw.tsm.Branch;
 import tfw.tsm.Commit;
-import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.IntegerECD;
+import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.ilm.ByteIlmECD;
 
 public class ByteInterleavedImagePanel extends JPanelBB
@@ -86,7 +84,8 @@ public class ByteInterleavedImagePanel extends JPanelBB
 			int width = (int)byteIlm.width();
 			int height = (int)byteIlm.height();
 			ColorModel colorModel = (ColorModel)get(colorModelECD);
-			ByteIla byteIla = ByteIlaFromByteIlm.create(byteIlm);
+//			ByteIla byteIla = ByteIlaFromByteIlm.create(byteIlm);
+			ByteIla byteIla = null;
 			
 			DataBufferByte dbb = null;
 			
