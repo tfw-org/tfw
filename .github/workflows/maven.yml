@@ -10,7 +10,7 @@ jobs:
   build:
     strategy:
       matrix:
-        distribution: [ 'zulu', 'temurin', 'corretto', 'oracle' ]
+        distribution: [ 'zulu', 'temurin', 'corretto' ]
         java: [ '8', '11', '17', '19' ]
     runs-on: ubuntu-latest
 
