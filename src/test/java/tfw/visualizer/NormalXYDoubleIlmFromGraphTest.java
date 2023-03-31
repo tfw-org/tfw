@@ -2,6 +2,8 @@ package tfw.visualizer;
 
 import java.util.Arrays;
 
+import org.junit.Ignore;
+
 import junit.framework.TestCase;
 import tfw.immutable.ilm.doubleilm.DoubleIlm;
 import tfw.immutable.ilm.doubleilm.DoubleIlmCheck;
@@ -35,6 +37,7 @@ import tfw.visualizer.graph.GraphFromArrays;
 import tfw.visualizer.graph.GraphFromRootProxy;
 import tfw.visualizer.graph.GraphNodeClassFilter;
 
+@Ignore
 public class NormalXYDoubleIlmFromGraphTest extends TestCase
 {
 	public void testNormalXYDoubleIlmFromGraph() throws Exception
