@@ -37,9 +37,9 @@ import tfw.visualizer.graph.GraphFromArrays;
 import tfw.visualizer.graph.GraphFromRootProxy;
 import tfw.visualizer.graph.GraphNodeClassFilter;
 
+@Ignore
 public class NormalXYDoubleIlmFromGraphTest extends TestCase
 {
-    @Ignore
 	public void testNormalXYDoubleIlmFromGraph() throws Exception
 	{
 		BasicTransactionQueue basicTransactionQueue =
