@@ -1,7 +1,8 @@
 package tfw.tsm;
 
 import java.util.ArrayList;
-
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 import tfw.check.Argument;
 
 /**
@@ -231,4 +232,21 @@ public final class BasicTransactionQueue implements TransactionQueue
             }
         }
     }
+    
+    private final Lock transactionQueueLock = new ReentrantLock();
+
+	@Override
+	public void lock() {
+		transactionQueueLock.lock();
+	}
+
+	@Override
+	public void unlock() {
+		transactionQueueLock.unlock();
+	}
+
+	@Override
+	public TransactionState createTransactionState() {
+		return new TransactionStateImpl();
+	}
 }

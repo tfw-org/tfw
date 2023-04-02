@@ -5,7 +5,7 @@ import tfw.tsm.ecd.EventChannelDescription;
 /**
  * An interface which defines the services an event channel must provide.
  */
-interface EventChannel
+public interface EventChannel
 {
     /**
      * Returns the non_name of this event channel

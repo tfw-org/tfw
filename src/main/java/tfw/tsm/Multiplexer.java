@@ -9,7 +9,7 @@ import tfw.tsm.MultiplexerStrategy.MultiStateAccessor;
 import tfw.tsm.ecd.EventChannelDescription;
 import tfw.tsm.ecd.ObjectECD;
 
-class Multiplexer implements EventChannel
+public class Multiplexer implements EventChannel
 {
     private final MultiplexerStrategy multiStrategy;
 
@@ -26,7 +26,7 @@ class Multiplexer implements EventChannel
     final Sink multiSink;
 
     /** The multiplexed value initiator source. */
-    final MultiSource processorMultiSource;
+    public final MultiSource processorMultiSource;
 
     /** The set of demultiplexing event channels. */
     private final Map<Object, DemultiplexedEventChannel> demultiplexedEventChannels =
@@ -56,7 +56,7 @@ class Multiplexer implements EventChannel
         this.multiStrategy = multiStrategy;
     }
 
-    class MultiSink extends Sink
+    public class MultiSink extends Sink
     {
         public MultiSink(ObjectECD ecd)
         {
@@ -88,7 +88,7 @@ class Multiplexer implements EventChannel
             }
         }
         
-        Iterator<DemultiplexedEventChannel> getDemultiplexedEventChannels()
+        public Iterator<DemultiplexedEventChannel> getDemultiplexedEventChannels()
         {
         	return(demultiplexedEventChannels.values().iterator());
         }
@@ -243,7 +243,9 @@ class Multiplexer implements EventChannel
         {
             throw new IllegalArgumentException("The specified port, '"
                     + port.ecd.getEventChannelName()
-                    + "', is not from a multiplexed component.");
+                    + "', is not from a multiplexed component.\n"+
+                    " p.tc="+port.getTreeComponent()+
+                    " p.fqn="+port.getFullyQualifiedName());
         }
 
         getDemultiplexedEventChannel(slotId).add(port);

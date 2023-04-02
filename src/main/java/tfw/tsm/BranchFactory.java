@@ -175,7 +175,7 @@ public class BranchFactory extends BaseBranchFactory
     {
         Branch branch = new Branch(name, getSinks(), getSources(),
                 getTerminators());
-        this.clear();
+
         return branch;
     }
 }

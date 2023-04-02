@@ -24,6 +24,10 @@ public final class EventChannelProxy implements Proxy
 		return(eventChannel.getECD());
 	}
 	
+	public String getObject() {
+		return eventChannel.getState().getClass().getName()+" : "+eventChannel.getState().toString();
+	}
+	
 	public boolean equals(Object obj)
 	{
 		if (obj instanceof EventChannelProxy)

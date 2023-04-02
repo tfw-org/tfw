@@ -46,15 +46,15 @@ public abstract class Synchronizer extends Processor
      * Creates a synchronizer.
      * 
      * @param name
-     *            the name of the component.
-     * @param aPortDescriptions
+     *            The name of the component.
+     * @param aPortInputDescriptions
      *            The 'A' set of event channels.
-     * @param bPortDescriptions
-     *            The 'B' set of event channels
-     * @param sinkEventChannels
-     *            Additional sinks for the component.
-     * @param sourceEventChannels
-     *            Additional sources for the component.
+     * @param bPortInputDescriptions
+     *            The 'B' set of event channels.
+     * @param additionalInputDescriptions
+     *            The "additional" set of event channels.
+     * @param outputDescriptions
+     *            The array of EventChannelDescriptions for output.
      */
     public Synchronizer(String name,
             ObjectECD[] aPortInputDescriptions,

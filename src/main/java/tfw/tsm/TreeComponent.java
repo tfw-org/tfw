@@ -285,7 +285,7 @@ public class TreeComponent
      * 
      * @return an unmodifiable map of the sources, mapped by event channel name.
      */
-    final List<Source> getSources()
+    public final List<Source> getSources()
     {
         return sources;
     }

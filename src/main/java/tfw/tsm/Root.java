@@ -1,8 +1,5 @@
 package tfw.tsm;
 
-
-
-
 /**
  * The base of the event channel communications structure. All event channels
  * which reach the <code>Root<\code> must be terminated at the root or an
@@ -12,31 +9,6 @@ package tfw.tsm;
 public class Root extends Branch
 {
     private final TransactionMgr transactionMgr;
-
-    /**
-     * Creates a trivial root with no event channels. To create a root with
-     * event channels use {@link RootFactory}.
-     *
-     * @param name the name of the root.
-     */
-    public Root(String name)
-    {
-        this(name, null);
-    }
-
-	/**
-	 * Creates a root with the specified attriubtes and an asynchronous
-	 * AWT transaction queue.
-	 * 
-	 * @param name the name of the root.
-	 * @param terminators a map of terminators.
-	 * @param ports a set of ports.
-	 */
-    Root(String name, EventChannel[] eventChannels)
-    {
-        this(name, eventChannels,
-            new TransactionMgr(new AWTTransactionQueue(), false));
-    }
 
     /**
      * Creates a root with the specified event channels and ports.

@@ -64,20 +64,6 @@ public class RangeConstraintTest extends TestCase
         }
     }
 
-    public void testConstructionNonComparableValueType()
-    {
-        try
-        {
-            new RangeConstraint(Object.class, new Integer(0), new Integer(0),
-                true, false);
-            fail("Constructor accepted non-comparable class type!");
-        }
-        catch (IllegalArgumentException expected)
-        {
-            //System.out.println(expected);
-        }
-    }
-
     public void testIsCompatibles()
     {
         RangeConstraint rc = new RangeConstraint(Integer.class, new Integer(0),

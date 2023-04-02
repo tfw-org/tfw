@@ -30,10 +30,24 @@ import tfw.check.Argument;
 /**
  * The transaction manager for the framework.
  * 
+ * Three kinds of transaction initiation:
+ * <UL>
+ * <LI>State Change - any call to (@link #addStateChange(InitiatorSource[], Object[]))
+ * causes a new transaction to be create.</LI>
+ * <LI>Component Change - consecutive calls to
+ * @link #addComponent(AddComponentRunnable, Throwable) and
+ * @link #removeComponent(RemoveComponentRunnable, Throwable) may or may not be
+ * coalesced into one or more transactions. A call to
+ * @link #addStateChange(InitiatorSource[], Object[]) will cause the coalescing of
+ * component changes in order to insure the correct ordering of transactions.
+ * </LI>
+ * <LI>Event channelfiring (Need to verify the validity of this type).</LI>
+ * </UL>
  */
 public final class TransactionMgr
 {
     final TransactionQueue queue;
+    final CheckDependencies checkDependencies;
 
     private long transactionCount = 0;
 
@@ -127,10 +141,11 @@ public final class TransactionMgr
      * @param logging
      *            a flag to turn logging on or off.
      */
-    TransactionMgr(TransactionQueue queue, boolean logging)
+    TransactionMgr(TransactionQueue queue, CheckDependencies checkDependencies, boolean logging)
     {
         Argument.assertNotNull(queue, "queue");
         this.queue = queue;
+        this.checkDependencies = checkDependencies;
         this.logging = logging;
     }
     
@@ -214,7 +229,7 @@ public final class TransactionMgr
         this.exceptionHandler = exceptionHandler;
     }
     
-    private void executeTransaction(TransactionStateImpl transactionState,
+    private void executeTransaction(TransactionState transactionState,
     	Throwable location)
     {
     	Throwable thrown = null;
@@ -227,7 +242,7 @@ public final class TransactionMgr
     	{
     		if (transactionState != null)
     		{
-    			transactionState.getCdlResultFuture().setResultAndRelease(thrown);
+    			transactionState.getResultFuture().setResultAndRelease(thrown);
     		}
     	}
     }
@@ -292,7 +307,7 @@ public final class TransactionMgr
     }
 
     private Throwable executeTransactionHelper(
-    	TransactionStateImpl transactionState, Throwable location)
+    	TransactionState transactionState, Throwable location)
     {
         inTransaction = true;
 
@@ -307,8 +322,7 @@ public final class TransactionMgr
         			
         			break;
         		}
-        		catch(InterruptedException e) {}
-        		catch (ExecutionException e) {}
+        		catch (Exception e) {}
         	}
         }
         
@@ -446,7 +460,7 @@ public final class TransactionMgr
 
         if (processors.size() > 1)
         {
-        	checkDependenciesNew(processors, delayedProcessors, processorCache);
+        	checkDependencies.checkDependencies(processors, delayedProcessors, logger);
         }
         
         // process the independent processors...
@@ -477,231 +491,16 @@ public final class TransactionMgr
         		logger.log(Level.INFO, "    P"+i+" : "+
                     executeProcessorsArray[i].getName());
         	}
-            executeProcessorsArray[i].process();
+        	try {
+                executeProcessorsArray[i].process();
+        	}
+        	catch (Exception e) {
+        		Logger.getLogger(TransactionMgr.class.getName()).log(
+        			Level.WARNING, "Exception in "+executeProcessorsArray[i].getName(), e);
+        	}
         }
     }
 
-    private static int origProcessorsArraySize = 0;
-    private static Processor[] origProcessorsArray =
-    	new Processor[origProcessorsArraySize];
-    private static int processorsArraySize = 0;
-    private static Processor[] processorsArray =
-    	new Processor[processorsArraySize];
-    private static int toProcessorsSize = 0;
-    private static Processor[] toProcessors =
-    	new Processor[toProcessorsSize];
-    private static Set<Processor> processorCrumbs = new HashSet<Processor>();
-    private static Set<EventChannel> terminatorCrumbs = new HashSet<EventChannel>();
-    private static void checkDependenciesNew(ArrayList<Processor> processors,
-    	ArrayList<Processor> delayedProcessors,
-    	Map<Processor, Map<Processor, Boolean>> cache)
-    {
-    	origProcessorsArraySize = processors.size();
-    	if (origProcessorsArray.length < origProcessorsArraySize)
-    	{
-    		origProcessorsArray = new Processor[origProcessorsArraySize];
-    	}
-		processors.toArray(origProcessorsArray);
-    	
-    	for (int i=0 ; i <origProcessorsArraySize ; i++)
-    	{
-    		Processor origProcessor = origProcessorsArray[i];
-    	
-	    	// if the ith processor has not already been delayed...
-	    	if (processors.contains(origProcessor))
-	    	{
-	    		boolean skipDependencyCheck = false;
-	    		Map<Processor, Boolean> map = cache.get(origProcessor);
-	    		if (map != null)
-	    		{
-	    			skipDependencyCheck = true;
-	    			toProcessorsSize = processors.size();
-	    			if (toProcessors.length < toProcessorsSize)
-	    			{
-	    				toProcessors = new Processor[toProcessorsSize];
-	    			}
-	    			processors.toArray(toProcessors);
-	    			
-	    			for (int j=0 ; j < toProcessorsSize ; j++)
-	    			{
-	    				Processor p = toProcessors[j];
-	    				
-	    				if (p == origProcessor)
-	    				{
-	    					continue;
-	    				}
-	    				
-	    				Boolean b = map.get(p);
-	    				
-	    				if (b == null)
-	    				{
-	    					skipDependencyCheck = false;
-	    					break;
-	    				}
-	    				else if (b.booleanValue()){
-	    					processors.remove(p);
-	    					delayedProcessors.add(p);
-	    				}
-	    			}
-	    		}
-	    		
-	    		if (!skipDependencyCheck)
-	    		{
-	    			processorCrumbs.clear();
-	    			terminatorCrumbs.clear();
-	    			
-	    			checkDependenciesNew(origProcessor, origProcessor,
-	    				processors, delayedProcessors, processorCrumbs,
-	    				terminatorCrumbs, cache, 2, null);
-	    			
-	    			map = cache.get(origProcessor);
-	    			
-	    			processorsArraySize = processors.size();
-	    			if (processorsArray.length < processorsArraySize)
-	    			{
-	    				processorsArray = new Processor[processorsArraySize];
-	    			}
-	    			processors.toArray(processorsArray);
-	    			
-	    			for (int j=0 ; j < processorsArraySize ; j++)
-	    			{
-	    				Processor p = processorsArray[j];
-	    				
-	    				if (p != origProcessor)
-	    				{
-	    					if (map == null)
-	    					{
-	    						map = new HashMap<Processor, Boolean>();
-	    						cache.put(origProcessor, map);
-	    					}
-	    					map.put(p, Boolean.FALSE);
-	    				}
-	    			}
-	    		}
-	    	}
-    	}
-    }
-    
-    private static void checkDependenciesNew(Processor fromProcessor,
-    	Processor toProcessor, ArrayList<Processor> processors,
-    	ArrayList<Processor> delayedProcessors,
-    	Set<Processor> visitedProcessors,
-    	Set<EventChannel> visitedEventChannels,
-    	Map<Processor, Map<Processor, Boolean>> cache,
-    	int spaces, List<Processor> dependencyChain)
-    {
-    	if (visitedProcessors.contains(toProcessor))
-    	{
-    		return;
-    	}
-    	
-    	if (fromProcessor != toProcessor && processors.remove(toProcessor))
-    	{
-    		delayedProcessors.add(toProcessor);
-    		
-    		Map<Processor, Boolean> map = cache.get(fromProcessor);
-    		if (map == null)
-    		{
-    			map = new HashMap<Processor, Boolean>();
-    			cache.put(fromProcessor, map);
-    		}
-    		
-    		map.put(toProcessor, Boolean.TRUE);
-    		if (dependencyChain != null)
-    		{
-    			StringBuilder sb = new StringBuilder();
-    			for (Processor p : dependencyChain)
-    			{
-    				sb.append(p.getName());
-    				sb.append(", ");
-    			}
-    			System.out.println(sb.toString());
-    		}
-    	}
-    	
-    	visitedProcessors.add(toProcessor);
-    	
-    	List<Source> sources = toProcessor.getSources();
-    	for (int i=0 ; i < sources.size() ; i++)
-    	{
-    		Source source = sources.get(i);
-    		EventChannel eventChannel = source.eventChannel;
-    		
-    		checkDependenciesNew(fromProcessor, eventChannel, processors,
-    			delayedProcessors, visitedProcessors, visitedEventChannels,
-    			cache, spaces + 2, dependencyChain);
-    	}
-    }
-    
-    private static void checkDependenciesNew(Processor fromProcessor,
-    	EventChannel eventChannel, ArrayList<Processor> processors,
-    	ArrayList<Processor> delayedProcessors,
-    	Set<Processor> visitedProcessors,
-    	Set<EventChannel> visitedEventChannels,
-    	Map<Processor, Map<Processor, Boolean>> cache, int spaces,
-    	List<Processor> dependencyChain)
-    {
-    	if (visitedEventChannels.contains(eventChannel))
-    	{
-    		return;
-    	}
-    	
-    	visitedEventChannels.add(eventChannel);
-    	
-    	if (eventChannel instanceof DemultiplexedEventChannel)
-    	{
-    		DemultiplexedEventChannel demultiplexedEventChannel =
-    			(DemultiplexedEventChannel)eventChannel;
-    		Source multiSource =
-    			demultiplexedEventChannel.getMultiplexer().processorMultiSource;
-    		
-    		checkDependenciesNew(fromProcessor, multiSource.eventChannel,
-    			processors, delayedProcessors, visitedProcessors,
-    			visitedEventChannels, cache, spaces + 2, dependencyChain);
-    	}
-    	
-    	Terminator terminator = (Terminator)eventChannel;
-    	Sink[] sinks = terminator.getSinks();
-    	
-    	for (int i=0 ; i < sinks.length ; i++)
-    	{
-    		if (sinks[i] instanceof Multiplexer.MultiSink)
-    		{
-    			Multiplexer.MultiSink multiSink = (Multiplexer.MultiSink)sinks[i];
-    			
-    			for (Iterator<DemultiplexedEventChannel> d =
-    				multiSink.getDemultiplexedEventChannels() ; d.hasNext() ; )
-    			{
-    				DemultiplexedEventChannel demultiplexedEventChannel = d.next();
-    				
-    				checkDependenciesNew(fromProcessor, demultiplexedEventChannel,
-    					processors, delayedProcessors, visitedProcessors,
-    					visitedEventChannels, cache, spaces+4, dependencyChain);
-    			}
-    		}
-    		else
-    		{
-    			TreeComponent treeComponent = sinks[i].getTreeComponent();
-    			
-    			if (treeComponent instanceof Processor)
-    			{
-    				if (dependencyChain != null)
-    				{
-    					dependencyChain.add((Processor)treeComponent);
-    				}
-    				
-    				checkDependenciesNew(fromProcessor, (Processor)treeComponent,
-    					processors, delayedProcessors, visitedProcessors,
-    					visitedEventChannels, cache, spaces+4, dependencyChain);
-    				
-    				if (dependencyChain != null)
-    				{
-    					dependencyChain.remove(dependencyChain.size() - 1);
-    				}
-    			}
-    		}
-    	}
-    }
     /**
      * Searches the set of processors for dependencies. If a dependency is
      * found, the dependent processor is removed from the processor set and
@@ -968,7 +767,14 @@ public final class TransactionMgr
         	}
 
             // System.out.print("*");
-            commitRollbackListeners[i].commit();
+        	try {
+                commitRollbackListeners[i].commit();
+        	}
+        	catch (Exception e) {
+        		Logger.getLogger(TransactionMgr.class.getName()).log(
+        				Level.WARNING, "Exception in "+
+        				commitRollbackListeners[i].getName(), e);
+        	}
         }
 
         // System.out.println();
@@ -1029,15 +835,15 @@ public final class TransactionMgr
     
     void addStateChange(InitiatorSource[] sources, Object[] state)
     {
-    	addStateChange(sources, state, new TransactionStateImpl(), null);
+    	addStateChange(sources, state, queue.createTransactionState(), null);
     }
 
     void addStateChange(InitiatorSource[] sources, Object[] state,
-    	TransactionStateImpl transactionState, Throwable setLocation)
+    	TransactionState transactionState, Throwable setLocation)
     {
     	long id = invokeLater(new StateChangeTransaction(sources, state,
     		transactionState, setLocation));
-        transactionState.getCdlTransactionIdFuture().setResultAndRelease(id);
+        transactionState.getTransactionIdFuture().setResultAndRelease(Long.valueOf(id));
     }
 
     /**
@@ -1180,26 +986,26 @@ public final class TransactionMgr
     
     void lockTransactionQueue()
     {
-    	transactionQueueLock.lock();
+    	queue.lock();
     }
     
     void unlockTransactionQueue()
     {
-    	transactionQueueLock.unlock();
+    	queue.unlock();
     }
     
     private long invokeLater(Runnable runnable)
     {
     	try
     	{
-    		transactionQueueLock.lock();
+    		queue.lock();
     		queue.invokeLater(runnable);
     		
     		return(transactionId++);
     	}
     	finally
     	{
-    		transactionQueueLock.unlock();
+    		queue.unlock();
     	}
     }
 
@@ -1234,11 +1040,11 @@ public final class TransactionMgr
     {
         private final InitiatorSource[] sources;
         private final Object[] state;
-        private final TransactionStateImpl transactionState;
+        private final TransactionState transactionState;
         private final Throwable setLocation;
 
         public StateChangeTransaction(InitiatorSource[] sources, Object[] state,
-        	TransactionStateImpl transactionState, Throwable setLocation)
+        	TransactionState transactionState, Throwable setLocation)
         {
             this.sources = sources;
             this.state = state;
@@ -1257,10 +1063,17 @@ public final class TransactionMgr
             	}
             	else
             	{
-            		throw new IllegalStateException(
+            		IllegalStateException ise = new IllegalStateException(
             			"Attempting to change state on source " +
             			sources[i].getFullyQualifiedName() +
             			"; however, it is not connected!");
+            		
+            		if (transactionState != null) {
+            			transactionState.getResultFuture().setResultAndRelease(ise);
+            		}
+            		else {
+            			throw ise;
+            		}
             	}
             }
 
@@ -1316,7 +1129,7 @@ public final class TransactionMgr
             }
             if (!(child instanceof Initiator) && !(child instanceof BaseCommit))
             {
-            	transactionMgr.processorCache.clear();
+            	transactionMgr.checkDependencies.clearCache();
             }
         }
         
@@ -1341,6 +1154,7 @@ public final class TransactionMgr
     {
         final BranchComponent parent;
         final TreeComponent child;
+        final TreeComponent[] children;
         private TransactionMgr transactionMgr;
 
         RemoveComponentRunnable(final BranchComponent parent,
@@ -1348,6 +1162,14 @@ public final class TransactionMgr
         {
             this.parent = parent;
             this.child = child;
+            this.children = null;
+        }
+        
+        RemoveComponentRunnable(final BranchComponent parent,
+        		final TreeComponent[] children) {
+        	this.parent = parent;
+        	this.child = null;
+        	this.children = children;
         }
 
         public void run()
@@ -1357,6 +1179,26 @@ public final class TransactionMgr
         	{
         		logger.info(this.toString());
         	}
+        	
+        	boolean clearCache = false;
+        	
+        	if (child != null) {
+        		clearCache = removeChild(child);
+        	}
+        	
+        	if (children != null) {
+        		for (int i=0 ; i < children.length ; i++) {
+        			clearCache = removeChild(children[i]) ? true : clearCache;
+        		}
+        	}
+        	
+        	if (clearCache) {
+        		transactionMgr.checkDependencies.clearCache();
+        	}
+        }
+        
+        private boolean removeChild(final TreeComponent child) {
+        	
             if (child.isRooted())
             {
                 parent.removeFromChildren(child);
@@ -1368,11 +1210,9 @@ public final class TransactionMgr
                 {
                 	child.disconnectPorts();
                 }
-                if (!(child instanceof Initiator) && !(child instanceof BaseCommit))
-                {
-                	transactionMgr.processorCache.clear();
-                }
             }
+            
+            return !(child instanceof Initiator) && !(child instanceof BaseCommit);
         }
         
         public TransactionMgr getTransactionMgr()

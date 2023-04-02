@@ -551,7 +551,8 @@ public class Visualizer extends JFrameBB
     
     public static void main(String[] args)
     {
-        Visualizer v = new Visualizer(new Root("TestBranch"));
+    	RootFactory rootFactory = new RootFactory();
+        Visualizer v = new Visualizer(rootFactory.create("TestBranch", new BasicTransactionQueue()));
         
         Visualizer v2 = new Visualizer(v.getBranch());
         v2.setSize(500, 500);

@@ -9,7 +9,7 @@ import tfw.value.ValueException;
  * The base class for all event handling components which participate in the
  * processing phase of transactions.
  */
-abstract class Processor extends RollbackHandler
+public abstract class Processor extends RollbackHandler
 {
     Processor(String name, EventChannelDescription[] triggeringSinks,
             EventChannelDescription[] nonTriggeringSinks,
@@ -74,7 +74,11 @@ abstract class Processor extends RollbackHandler
         if (source == null)
         {
             throw new IllegalArgumentException("Source event channel '"
-                    + sourceEventChannel + "' not found");
+                    + sourceEventChannel + "' not found in "+getFullyQualifiedName());
+        }
+        if (!(sourceEventChannel instanceof StatelessTriggerECD) && state == null) {
+        	throw new IllegalArgumentException("Cannot set null on event channel "+
+        			sourceEventChannel.getEventChannelName());
         }
 
         try

@@ -10,6 +10,10 @@ public class RootFactory extends BaseBranchFactory
     private boolean logging = false;
 
     private TransactionExceptionHandler handler = null;
+    
+    public Root create(String name, TransactionQueue queue) {
+    	return create(name, queue, new DefaultCheckDependencies());
+    }
 
     /**
      * Creates a root with the given name and values previously specified. Note
@@ -19,10 +23,10 @@ public class RootFactory extends BaseBranchFactory
      *            The name of the root.
      * @return a new root.
      */
-    public Root create(String name, TransactionQueue queue)
+    public Root create(String name, TransactionQueue queue, CheckDependencies checkDependencies)
     {
         Argument.assertNotNull(name, "name");
-        TransactionMgr mgr = new TransactionMgr(queue, logging);
+        TransactionMgr mgr = new TransactionMgr(queue, checkDependencies, logging);
 
         if (handler != null)
         {
