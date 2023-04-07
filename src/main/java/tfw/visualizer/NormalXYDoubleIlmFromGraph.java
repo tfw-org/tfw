@@ -42,7 +42,7 @@ public class NormalXYDoubleIlmFromGraph
 	    	return(2);
 	    }
 
-	    public double[][] toArray()
+	    public double[] toArray()
 	    	throws DataInvalidException
     	{
 //System.out.println("NormalXYDoubleIlmFromGraph:  starting");
@@ -177,7 +177,7 @@ public class NormalXYDoubleIlmFromGraph
 			}
 	    	
 //System.out.println("NormalXYDoubleIlmFromGraph:  ending");
-	    	return(new double[][] {normalXs, normalYs});
+	    	return(new double[0]);
     	}
 	    
 	    private static void xxx(ArrayList levels, HashSet nodes, Object[] froms, Object[] tos)
@@ -240,21 +240,21 @@ public class NormalXYDoubleIlmFromGraph
 //System.out.println("Leaving xxx");
 	    }
 	    	    
-	    public double[][] toArray(long rowStart, long columnStart,
+	    public double[] toArray(long rowStart, long columnStart,
 	    	int width, int height) throws DataInvalidException
     	{
-	    	double[][] array = toArray();
-	    	double[][] returnArray = new double[height][width];
+//	    	double[][] array = toArray();
+//	    	double[][] returnArray = new double[height][width];
+//	    	
+//	    	for (int i=0 ; i < height ; i++)
+//	    	{
+//	    		System.arraycopy(array[i+(int)rowStart], (int)columnStart, returnArray[i], 0, width);
+//	    	}
 	    	
-	    	for (int i=0 ; i < height ; i++)
-	    	{
-	    		System.arraycopy(array[i+(int)rowStart], (int)columnStart, returnArray[i], 0, width);
-	    	}
-	    	
-	    	return(returnArray);
+	    	return(new double[0]);
     	}
 	    
-	    public void toArray(double[][] array, int rowOffset, int columnOffset,
+	    public void toArray(double[] array, int rowOffset,
 	    	long rowStart, long columnStart, int width, int height)
     		throws DataInvalidException
 		{
@@ -272,5 +272,12 @@ public class NormalXYDoubleIlmFromGraph
 	    	
 	    	return(map);
 	    }
+
+		@Override
+		public void toArray(double[] array, int offset, int rowStride, int colStride, long rowStart, long columnStart,
+				int rowCount, int colCount) throws DataInvalidException {
+			// TODO Auto-generated method stub
+			
+		}
 	}
 }

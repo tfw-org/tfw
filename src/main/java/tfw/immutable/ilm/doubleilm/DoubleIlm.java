@@ -5,11 +5,14 @@ import tfw.immutable.ilm.ImmutableLongMatrix;
 
 public interface DoubleIlm extends ImmutableLongMatrix
 {
-    public double[][] toArray()
+    public double[] toArray()
     	throws DataInvalidException;
-    public double[][] toArray(long rowStart, long columnStart,
-    	int width, int height) throws DataInvalidException;
-    public void toArray(double[][] array, int rowOffset, int columnOffset,
-    	long rowStart, long columnStart, int width, int height)
+    public double[] toArray(long rowStart, long columnStart,
+    	int rowCount, int colCount) throws DataInvalidException;
+    public void toArray(double[] array, int offset,
+    	long rowStart, long columnStart, int rowCount, int colCount)
     	throws DataInvalidException;
+    public void toArray(double[] array, int offset, int rowStride, int colStride,
+        	long rowStart, long columnStart, int rowCount, int colCount)
+        	throws DataInvalidException;
 }

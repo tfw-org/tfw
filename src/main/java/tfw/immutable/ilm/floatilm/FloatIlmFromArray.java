@@ -1,63 +1,46 @@
 package tfw.immutable.ilm.floatilm;
 
-import java.util.HashMap;
-import java.util.Map;
 import tfw.check.Argument;
-import tfw.immutable.ImmutableProxy;
 
 public final class FloatIlmFromArray
 {
     private FloatIlmFromArray() {}
 
-    public static FloatIlm create(float[][] array)
+    public static FloatIlm create(float[] array, int width)
     {
     	Argument.assertNotNull(array, "array");
+    	Argument.assertNotLessThan(width, 0, "width");
+    	
+    	if (width != 0) {
+    		Argument.assertEquals(array.length % width, 0, "array.length % width", "0");
+    	}
 
-		return new MyFloatIlm(array);
+		return new MyFloatIlm(array, width);
     }
 
     private static class MyFloatIlm extends AbstractFloatIlm
-    	implements ImmutableProxy
     {
-		private final float[][] array;
+		private final float[] array;
 
-		MyFloatIlm(float[][] array)
+		MyFloatIlm(float[] array, int width)
 		{
-		    super(array.length > 0 ? array[0].length : 0, array.length);
+		    super(width, width == 0 ? 0 : array.length / width);
 		    
-		    this.array = (float[][])array.clone();
-		    
-		    for (int i=0 ; i < array.length ; i++)
-		    {
-		    	Argument.assertNotNull(array[i], "array["+i+"]");
-		    	Argument.assertEquals(array[i].length, width,
-		    		"array["+i+"].length", "width");
-		    	
-		    	this.array[i] = (float[])array[i].clone();
-		    }
+		    this.array = array;
 		}
 
-		protected void toArrayImpl(float[][] array, int rowOffset,
-			int columnOffset, long rowStart, long columnStart,
-			int width, int height)
+		protected void toArrayImpl(float[] array, int offset, int rowStride,
+			int colStride, long rowStart, long colStart, int rowCount, int colCount)
 		{
-			for (int i=0 ; i < height ; i++)
+			int intWidth = (int)width();
+			
+			for (int i=0 ; i < rowCount ; i++)
 			{
-				System.arraycopy(this.array[(int)(rowStart + i)],
-					(int)columnStart, array[rowOffset+i],
-					columnOffset, width);
+				for (int j=0 ; j < colCount ; j++) {
+					array[offset+(i*rowStride)+(j*colStride)] =
+							this.array[(i+(int)rowStart)*intWidth+(j+(int)colStart)];
+				}
 			} 
-		}
-		
-		public Map getParameters()
-		{
-			HashMap map = new HashMap();
-			
-			map.put("name", "FloatIlmFromArray");
-			map.put("width", new Long(width()));
-			map.put("height", new Long(height()));
-			
-			return(map);
 		}
     }
 }

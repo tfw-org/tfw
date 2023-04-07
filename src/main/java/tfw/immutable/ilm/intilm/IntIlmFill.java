@@ -1,57 +1,35 @@
 package tfw.immutable.ilm.intilm;
 
-import java.util.HashMap;
-import java.util.Map;
 import tfw.check.Argument;
-import tfw.immutable.ImmutableProxy;
+import tfw.immutable.DataInvalidException;
 
-public final class IntIlmFill
-{
-    private IntIlmFill() {}
-
-    public static IntIlm create(int value, long width, long height)
-    {
-    	Argument.assertNotLessThan(width, 0, "width");
-    	Argument.assertNotLessThan(height, 0, "height");
-
-		return new MyIntIlm(width, height, value);
-    }
-
-    private static class MyIntIlm extends AbstractIntIlm
-    	implements ImmutableProxy
-    {
-		private final int value;
-
-		MyIntIlm(long width, long height, int value)
-		{
-		    super(width, height);
-		    
-		    this.value = value;
-		}
-
-		protected void toArrayImpl(int[][] array, int rowOffset,
-			int columnOffset, long rowStart, long columnStart,
-			int width, int height)
-		{
-			for (int r=0 ; r < height ; r++)
-			{
-				for (int c=0 ; c < width ; c++)
-				{
-					array[rowOffset+r][columnOffset+c] = value;
-				}
-			} 
-		}
+public class IntIlmFill {
+	private IntIlmFill() {}
+	
+	public static IntIlm create(int value, long width, long height) {
+		Argument.assertNotLessThan(width, 0, "width");
+		Argument.assertNotLessThan(height, 0, "height");
 		
-		public Map getParameters()
-		{
-			HashMap map = new HashMap();
+		return new MyIntIlm(value, width, height);
+	}
+
+	private static class MyIntIlm extends AbstractIntIlm {
+		private final int value;
+		
+		public MyIntIlm(int value, long width, long height) {
+			super(width, height);
 			
-			map.put("name", "IntIlmFill");
-			map.put("value", new Integer(value));
-			map.put("width", new Long(width()));
-			map.put("height", new Long(height()));
-			
-			return(map);
+			this.value = value;
 		}
-    }
+
+		@Override
+		protected void toArrayImpl(int[] array, int offset, int rowStride, int colStride, long rowStart, long colStart,
+				int rowCount, int colCount) throws DataInvalidException {
+			for (int i=0 ; i < rowCount ; i++) {
+				for (int j=0 ; j < colCount ; j++) {
+					array[offset+(i*rowStride)+(j*colStride)] = value;
+				}
+			}
+		}
+	}
 }

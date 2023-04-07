@@ -38,7 +38,7 @@ public class SelectionToGraphicConverter extends Converter
 	protected void convert()
 	{
 		boolean[] selectedNodes = null;
-		int[][] tlbr = null;
+		int[] tlbr = null;
 		int width = -1;
 		Graphic graphic = SetStrokeGraphic.create(
 			SetColorGraphic.create(null, Color.red), new BasicStroke(3.0f));
@@ -56,17 +56,17 @@ public class SelectionToGraphicConverter extends Converter
 			return;
 		}
 		
-		int[] tops = tlbr[0];
-		int[] lefts = tlbr[1];
-		int[] bottoms = tlbr[2];
-		int[] rights = tlbr[3];
+//		int[] tops = tlbr[0];
+//		int[] lefts = tlbr[1];
+//		int[] bottoms = tlbr[2];
+//		int[] rights = tlbr[3];
 		
 		for (int i=0 ; i < width ; i++)
 		{
 			if (i < selectedNodes.length && selectedNodes[i])
 			{
-				graphic = DrawRectGraphic.create(graphic, lefts[i]-1, tops[i]-1,
-					rights[i]-lefts[i]+2, bottoms[i]-tops[i]+2);
+//				graphic = DrawRectGraphic.create(graphic, lefts[i]-1, tops[i]-1,
+//					rights[i]-lefts[i]+2, bottoms[i]-tops[i]+2);
 			}
 		}
 		

@@ -120,11 +120,11 @@ public class NodeToGraphicConverter extends Converter
 		
 		try
 		{
-			int[][] pixelNodeTLBR = ((IntIlm)get(pixelNodeTLBRECD)).toArray();
-			tops = pixelNodeTLBR[0];
-			lefts = pixelNodeTLBR[1];
-			bottoms = pixelNodeTLBR[2];
-			rights = pixelNodeTLBR[3];
+//			int[][] pixelNodeTLBR = ((IntIlm)get(pixelNodeTLBRECD)).toArray();
+//			tops = pixelNodeTLBR[0];
+//			lefts = pixelNodeTLBR[1];
+//			bottoms = pixelNodeTLBR[2];
+//			rights = pixelNodeTLBR[3];
 
 			graph.toArray(nodes, 0, 0, (int)graph.nodesLength(),
 				null, null, 0, 0, 0);

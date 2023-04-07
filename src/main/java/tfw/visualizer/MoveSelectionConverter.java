@@ -62,7 +62,7 @@ public class MoveSelectionConverter extends Converter
 			try
 			{
 				selectedNodes = ((BooleanIla)get(selectedNodesECD)).toArray();
-				tlbr = ((IntIlm)get(pixelNodeTLBRECD)).toArray();
+//				tlbr = ((IntIlm)get(pixelNodeTLBRECD)).toArray();
 				
 				tops = tlbr[0];
 				lefts = tlbr[1];
@@ -92,7 +92,7 @@ public class MoveSelectionConverter extends Converter
 				}
 			}
 			
-			set(pixelNodeTLBRECD, IntIlmFromArray.create(tlbr));
+//			set(pixelNodeTLBRECD, IntIlmFromArray.create(tlbr));
 		}
 	}
 }

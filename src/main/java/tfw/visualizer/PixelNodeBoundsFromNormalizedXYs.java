@@ -55,7 +55,7 @@ public final class PixelNodeBoundsFromNormalizedXYs
 	    	return(4);
 	    }
 	    
-	    public int[][] toArray()
+	    public int[] toArray()
 	    	throws DataInvalidException
     	{
 	    	Object[] nodes = new Object[(int)graph.nodesLength()];
@@ -65,7 +65,7 @@ public final class PixelNodeBoundsFromNormalizedXYs
 	    	graph.toArray(nodes, 0, 0, (int)graph.nodesLength(),
 	    		froms, tos, 0, 0, 0);
 	    	
-	    	double[][] xys = normalizedXYs.toArray();
+	    	double[][] xys = null; // normalizedXYs.toArray();
 	    	double[] xs = xys[0];
 	    	double[] ys = xys[1];
 	    	
@@ -92,19 +92,18 @@ public final class PixelNodeBoundsFromNormalizedXYs
 	    		}
 	    	}
 	    	
-	    	return(new int[][] {tops, lefts, bottoms, rights});
+//	    	return(new int[][] {tops, lefts, bottoms, rights});
+	    	return null;
     	}
 	    
-	    public int[][] toArray(long rowStart, long columnStart,
+	    public int[] toArray(long rowStart, long columnStart,
 	    	int width, int height) throws DataInvalidException
     	{
 	    	throw new DataInvalidException("Method not implemented!");
     	}
 	    
-	    public void toArray(int[][] array, int rowOffset, int columnOffset,
-	    	long rowStart, long columnStart, int width, int height)
-	    	throws DataInvalidException
-    	{
+		public void toArray(int[] array, int offset, long rowStart, long columnStart, int rowCount, int colCount)
+				throws DataInvalidException {
 	    	throw new DataInvalidException("Method not implemented!");    	
     	}
 	    
@@ -125,5 +124,12 @@ public final class PixelNodeBoundsFromNormalizedXYs
 	    	
 	    	return(map);
 	    }
+
+		@Override
+		public void toArray(int[] array, int offset, int rowStride, int colStride, long rowStart, long columnStart,
+				int rowCount, int colCount) throws DataInvalidException {
+			// TODO Auto-generated method stub
+			
+		}
 	}
 }

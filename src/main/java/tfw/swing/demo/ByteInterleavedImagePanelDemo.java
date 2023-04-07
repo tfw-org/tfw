@@ -18,7 +18,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import tfw.awt.ecd.ColorModelECD;
-import tfw.immutable.ilm.byteilm.ByteIlmFill;
+//import tfw.immutable.ilm.byteilm.ByteIlmFill;
 import tfw.swing.ByteInterleavedImagePanel;
 import tfw.tsm.AWTTransactionQueue;
 import tfw.tsm.EventChannelStateBuffer;
@@ -111,7 +111,7 @@ public class ByteInterleavedImagePanelDemo
 						new EventChannelStateBuffer();
 					ecsb.put(xECD, new Integer(xTF.getText()));
 					ecsb.put(yECD, new Integer(yTF.getText()));
-					ecsb.put(ilmECD, ByteIlmFill.create((byte)1, w, h));
+//					ecsb.put(ilmECD, ByteIlmFill.create((byte)1, w, h));
 					
 					initiator.set(ecsb.toArray());
 				}
