@@ -1,63 +1,46 @@
 package tfw.immutable.ilm.longilm;
 
-import java.util.HashMap;
-import java.util.Map;
 import tfw.check.Argument;
-import tfw.immutable.ImmutableProxy;
 
 public final class LongIlmFromArray
 {
     private LongIlmFromArray() {}
 
-    public static LongIlm create(long[][] array)
+    public static LongIlm create(long[] array, int width)
     {
     	Argument.assertNotNull(array, "array");
+    	Argument.assertNotLessThan(width, 0, "width");
+    	
+    	if (width != 0) {
+    		Argument.assertEquals(array.length % width, 0, "array.length % width", "0");
+    	}
 
-		return new MyLongIlm(array);
+		return new MyLongIlm(array, width);
     }
 
     private static class MyLongIlm extends AbstractLongIlm
-    	implements ImmutableProxy
     {
-		private final long[][] array;
+		private final long[] array;
 
-		MyLongIlm(long[][] array)
+		MyLongIlm(long[] array, int width)
 		{
-		    super(array.length > 0 ? array[0].length : 0, array.length);
+		    super(width, width == 0 ? 0 : array.length / width);
 		    
-		    this.array = (long[][])array.clone();
-		    
-		    for (int i=0 ; i < array.length ; i++)
-		    {
-		    	Argument.assertNotNull(array[i], "array["+i+"]");
-		    	Argument.assertEquals(array[i].length, width,
-		    		"array["+i+"].length", "width");
-		    	
-		    	this.array[i] = (long[])array[i].clone();
-		    }
+		    this.array = array;
 		}
 
-		protected void toArrayImpl(long[][] array, int rowOffset,
-			int columnOffset, long rowStart, long columnStart,
-			int width, int height)
+		protected void toArrayImpl(long[] array, int offset, int rowStride,
+			int colStride, long rowStart, long colStart, int rowCount, int colCount)
 		{
-			for (int i=0 ; i < height ; i++)
+			int intWidth = (int)width();
+			
+			for (int i=0 ; i < rowCount ; i++)
 			{
-				System.arraycopy(this.array[(int)(rowStart + i)],
-					(int)columnStart, array[rowOffset+i],
-					columnOffset, width);
+				for (int j=0 ; j < colCount ; j++) {
+					array[offset+(i*rowStride)+(j*colStride)] =
+							this.array[(i+(int)rowStart)*intWidth+(j+(int)colStart)];
+				}
 			} 
-		}
-		
-		public Map getParameters()
-		{
-			HashMap map = new HashMap();
-			
-			map.put("name", "LongIlmFromArray");
-			map.put("width", new Long(width()));
-			map.put("height", new Long(height()));
-			
-			return(map);
 		}
     }
 }

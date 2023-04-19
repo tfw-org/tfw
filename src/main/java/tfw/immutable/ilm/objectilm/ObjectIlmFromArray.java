@@ -1,63 +1,46 @@
 package tfw.immutable.ilm.objectilm;
 
-import java.util.HashMap;
-import java.util.Map;
 import tfw.check.Argument;
-import tfw.immutable.ImmutableProxy;
 
 public final class ObjectIlmFromArray
 {
     private ObjectIlmFromArray() {}
 
-    public static ObjectIlm create(Object[][] array)
+    public static ObjectIlm create(Object[] array, int width)
     {
     	Argument.assertNotNull(array, "array");
+    	Argument.assertNotLessThan(width, 0, "width");
+    	
+    	if (width != 0) {
+    		Argument.assertEquals(array.length % width, 0, "array.length % width", "0");
+    	}
 
-		return new MyObjectIlm(array);
+		return new MyObjectIlm(array, width);
     }
 
     private static class MyObjectIlm extends AbstractObjectIlm
-    	implements ImmutableProxy
     {
-		private final Object[][] array;
+		private final Object[] array;
 
-		MyObjectIlm(Object[][] array)
+		MyObjectIlm(Object[] array, int width)
 		{
-		    super(array.length > 0 ? array[0].length : 0, array.length);
+		    super(width, width == 0 ? 0 : array.length / width);
 		    
-		    this.array = (Object[][])array.clone();
-		    
-		    for (int i=0 ; i < array.length ; i++)
-		    {
-		    	Argument.assertNotNull(array[i], "array["+i+"]");
-		    	Argument.assertEquals(array[i].length, width,
-		    		"array["+i+"].length", "width");
-		    	
-		    	this.array[i] = (Object[])array[i].clone();
-		    }
+		    this.array = array;
 		}
 
-		protected void toArrayImpl(Object[][] array, int rowOffset,
-			int columnOffset, long rowStart, long columnStart,
-			int width, int height)
+		protected void toArrayImpl(Object[] array, int offset, int rowStride,
+			int colStride, long rowStart, long colStart, int rowCount, int colCount)
 		{
-			for (int i=0 ; i < height ; i++)
+			int intWidth = (int)width();
+			
+			for (int i=0 ; i < rowCount ; i++)
 			{
-				System.arraycopy(this.array[(int)(rowStart + i)],
-					(int)columnStart, array[rowOffset+i],
-					columnOffset, width);
+				for (int j=0 ; j < colCount ; j++) {
+					array[offset+(i*rowStride)+(j*colStride)] =
+							this.array[(i+(int)rowStart)*intWidth+(j+(int)colStart)];
+				}
 			} 
-		}
-		
-		public Map getParameters()
-		{
-			HashMap map = new HashMap();
-			
-			map.put("name", "ObjectIlmFromArray");
-			map.put("width", new Long(width()));
-			map.put("height", new Long(height()));
-			
-			return(map);
 		}
     }
 }

@@ -58,7 +58,7 @@ public class SelectionConverter extends Converter
 			int x = ((Integer)get(xMouseECD)).intValue();
 			int y = ((Integer)get(yMouseECD)).intValue();
 			
-			int[][] tlbr = null;
+			int[] tlbr = null;
 			int width = -1;
 			
 			try
@@ -73,10 +73,10 @@ public class SelectionConverter extends Converter
 				return;
 			}
 			
-			int[] tops = tlbr[0];
-			int[] lefts = tlbr[1];
-			int[] bottoms = tlbr[2];
-			int[] rights = tlbr[3];
+//			int[] tops = tlbr[0];
+//			int[] lefts = tlbr[1];
+//			int[] bottoms = tlbr[2];
+//			int[] rights = tlbr[3];
 			BooleanIla ila = BooleanIlaFill.create(false, width);
 			
 			if (((Boolean)get(controlKeyPressedECD)).booleanValue())
@@ -90,19 +90,19 @@ public class SelectionConverter extends Converter
 			
 			for (int i=width-1 ; i >= 0 ; i--)
 			{
-				if (tops[i] <= y && y <= bottoms[i] &&
-					lefts[i] <= x && x <= rights[i])
-				{
-					try
-					{
-						ila = BooleanIlaMutate.create(ila, i, !ila.toArray(i, 1)[0]);
-					}
-					catch (DataInvalidException die)
-					{
-						return;
-					}
-					break;
-				}
+//				if (tops[i] <= y && y <= bottoms[i] &&
+//					lefts[i] <= x && x <= rights[i])
+//				{
+//					try
+//					{
+//						ila = BooleanIlaMutate.create(ila, i, !ila.toArray(i, 1)[0]);
+//					}
+//					catch (DataInvalidException die)
+//					{
+//						return;
+//					}
+//					break;
+//				}
 			}
 			
 			set(selectedNodesECD, ila);

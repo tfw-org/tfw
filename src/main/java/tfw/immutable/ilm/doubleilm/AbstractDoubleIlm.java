@@ -9,9 +9,9 @@ import tfw.immutable.ilm.ImmutableLongMatrix;
 public abstract class AbstractDoubleIlm extends AbstractIlm
 	implements DoubleIlm
 {
-    protected abstract void toArrayImpl(double[][] array,
-    	int xOffset, int yOffset, long xStart, long yStart,
-    	int xLength, int yLength) throws DataInvalidException;
+    protected abstract void toArrayImpl(double[] array, int offset,
+    	int rowStride, int colStride, long rowStart, long colStart,
+    	int rowCount, int colCount) throws DataInvalidException;
 
     protected AbstractDoubleIlm(long width, long height)
     {
@@ -30,7 +30,7 @@ public abstract class AbstractDoubleIlm extends AbstractIlm
     	}
     }
 
-    public final double[][] toArray()
+    public final double[] toArray()
     	throws DataInvalidException
     {
     	Argument.assertNotGreaterThan(width(), Integer.MAX_VALUE,
@@ -38,25 +38,30 @@ public abstract class AbstractDoubleIlm extends AbstractIlm
     	Argument.assertNotGreaterThan(height(), Integer.MAX_VALUE,
     		"height()", "native array size");
     	
-    	return toArray(0, 0, (int)width(), (int)height());
+    	return toArray(0, 0, (int)height(), (int)width());
     }
 
-    public final double[][] toArray(long rowStart, long columnStart,
-    	int width, int height) throws DataInvalidException
+    public final double[] toArray(long rowStart, long columnStart,
+    	int rowCount, int colCount) throws DataInvalidException
     {
-    	Argument.assertNotLessThan(width, 0, "width");
-    	Argument.assertNotLessThan(height, 0, "height");
+    	Argument.assertNotLessThan(rowCount, 0, "rowCount");
+    	Argument.assertNotLessThan(colCount, 0, "colCount");
     	
-    	double[][] result = new double[height][width];
+    	double[] result = new double[rowCount * colCount];
     	
-    	toArray(result, 0, 0, rowStart, columnStart, width, height);
+    	toArray(result, 0, rowStart, columnStart, rowCount, colCount);
     	
     	return result;
     }
+    
+    public final void toArray(double[] array, int offset, long rowStart,
+    	long colStart, int rowCount, int colCount) throws DataInvalidException {
+    	toArray(array, offset, colCount, 1, rowStart, colStart, rowCount, colCount);
+    }
 
-    public final void toArray(double[][] array, int rowOffset,
-    	int columnOffset, long rowStart, long columnStart,
-    	int width, int height) throws DataInvalidException
+    public final void toArray(double[] array, int offset, int rowStride,
+    	int colStride, long rowStart, long columnStart,
+    	int rowCount, int colCount) throws DataInvalidException
     {
     	Argument.assertNotNull(array, "array");
     	
@@ -65,9 +70,9 @@ public abstract class AbstractDoubleIlm extends AbstractIlm
     		return;
     	}
     	
-    	boundsCheck(array[0].length, array.length, rowOffset, columnOffset,
-    		rowStart, columnStart, width, height);
-    	toArrayImpl(array, rowOffset, columnOffset, rowStart, columnStart,
-    		width, height);
+    	boundsCheck(array.length, offset, rowStride, colStride,
+    		rowStart, columnStart, rowCount, colCount);
+    	toArrayImpl(array, offset, rowStride, colStride, rowStart, columnStart,
+    		rowCount, colCount);
     }
 }

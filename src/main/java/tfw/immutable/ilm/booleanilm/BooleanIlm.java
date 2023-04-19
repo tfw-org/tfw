@@ -5,11 +5,14 @@ import tfw.immutable.ilm.ImmutableLongMatrix;
 
 public interface BooleanIlm extends ImmutableLongMatrix
 {
-    public boolean[][] toArray()
+    public boolean[] toArray()
     	throws DataInvalidException;
-    public boolean[][] toArray(long rowStart, long columnStart,
-    	int width, int height) throws DataInvalidException;
-    public void toArray(boolean[][] array, int rowOffset, int columnOffset,
-    	long rowStart, long columnStart, int width, int height)
+    public boolean[] toArray(long rowStart, long columnStart,
+    	int rowCount, int colCount) throws DataInvalidException;
+    public void toArray(boolean[] array, int offset,
+    	long rowStart, long columnStart, int rowCount, int colCount)
     	throws DataInvalidException;
+    public void toArray(boolean[] array, int offset, int rowStride, int colStride,
+        	long rowStart, long columnStart, int rowCount, int colCount)
+        	throws DataInvalidException;
 }

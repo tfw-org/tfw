@@ -2,35 +2,21 @@ package tfw.immutable.ilm.longilm;
 
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
-import tfw.immutable.ImmutableProxy;
 import tfw.immutable.ilm.AbstractIlm;
-import tfw.immutable.ilm.ImmutableLongMatrix;
 
 public abstract class AbstractLongIlm extends AbstractIlm
 	implements LongIlm
 {
-    protected abstract void toArrayImpl(long[][] array,
-    	int xOffset, int yOffset, long xStart, long yStart,
-    	int xLength, int yLength) throws DataInvalidException;
+    protected abstract void toArrayImpl(long[] array, int offset,
+    	int rowStride, int colStride, long rowStart, long colStart,
+    	int rowCount, int colCount) throws DataInvalidException;
 
     protected AbstractLongIlm(long width, long height)
     {
     	super(width, height);
     }
 
-    public static Object getImmutableInfo(ImmutableLongMatrix ilm)
-    {
-    	if (ilm instanceof ImmutableProxy)
-    	{
-    		return(((ImmutableProxy)ilm).getParameters());
-    	}
-    	else
-    	{
-    		return(ilm.toString());
-    	}
-    }
-
-    public final long[][] toArray()
+    public final long[] toArray()
     	throws DataInvalidException
     {
     	Argument.assertNotGreaterThan(width(), Integer.MAX_VALUE,
@@ -38,25 +24,30 @@ public abstract class AbstractLongIlm extends AbstractIlm
     	Argument.assertNotGreaterThan(height(), Integer.MAX_VALUE,
     		"height()", "native array size");
     	
-    	return toArray(0, 0, (int)width(), (int)height());
+    	return toArray(0, 0, (int)height(), (int)width());
     }
 
-    public final long[][] toArray(long rowStart, long columnStart,
-    	int width, int height) throws DataInvalidException
+    public final long[] toArray(long rowStart, long columnStart,
+    	int rowCount, int colCount) throws DataInvalidException
     {
-    	Argument.assertNotLessThan(width, 0, "width");
-    	Argument.assertNotLessThan(height, 0, "height");
+    	Argument.assertNotLessThan(rowCount, 0, "rowCount");
+    	Argument.assertNotLessThan(colCount, 0, "colCount");
     	
-    	long[][] result = new long[height][width];
+    	long[] result = new long[rowCount * colCount];
     	
-    	toArray(result, 0, 0, rowStart, columnStart, width, height);
+    	toArray(result, 0, rowStart, columnStart, rowCount, colCount);
     	
     	return result;
     }
+    
+    public final void toArray(long[] array, int offset, long rowStart,
+    	long colStart, int rowCount, int colCount) throws DataInvalidException {
+    	toArray(array, offset, colCount, 1, rowStart, colStart, rowCount, colCount);
+    }
 
-    public final void toArray(long[][] array, int rowOffset,
-    	int columnOffset, long rowStart, long columnStart,
-    	int width, int height) throws DataInvalidException
+    public final void toArray(long[] array, int offset, int rowStride,
+    	int colStride, long rowStart, long columnStart,
+    	int rowCount, int colCount) throws DataInvalidException
     {
     	Argument.assertNotNull(array, "array");
     	
@@ -65,9 +56,9 @@ public abstract class AbstractLongIlm extends AbstractIlm
     		return;
     	}
     	
-    	boundsCheck(array[0].length, array.length, rowOffset, columnOffset,
-    		rowStart, columnStart, width, height);
-    	toArrayImpl(array, rowOffset, columnOffset, rowStart, columnStart,
-    		width, height);
+    	boundsCheck(array.length, offset, rowStride, colStride,
+    		rowStart, columnStart, rowCount, colCount);
+    	toArrayImpl(array, offset, rowStride, colStride, rowStart, columnStart,
+    		rowCount, colCount);
     }
 }
