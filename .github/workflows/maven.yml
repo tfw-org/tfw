@@ -16,14 +16,25 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
     - name: Set up Java ${{ matrix.java }}-${{ matrix.distribution }}
       uses: actions/setup-java@v3
       with:
         java-version: ${{ matrix.java }}
         distribution: ${{ matrix.distribution }}
         cache: maven
+    - name: Cache SonarCloud packages
+      uses: actions/cache@v3
+      with:
+        path: ~/.sonar/cache
+        key: ${{ runner.os }}-sonar
+        restore-keys: ${{ runner.os }}-sonar
     - name: Build with Maven
-      run: mvn -B verify sonar:sonar -P coverage -D sonar.projectKey=tfw-org_tfw -D sonar.organization=tfw-org -D sonar.host.url=https://sonarcloud.io
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      run: mvn -B verify sonar:sonar -P coverage -D sonar.projectKey=tfw-org_tfw
 
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
     - name: Update dependency graph
