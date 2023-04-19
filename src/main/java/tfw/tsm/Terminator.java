@@ -12,7 +12,7 @@ import tfw.value.ValueException;
 /**
  * A terminating event channel.
  */
-class Terminator implements EventChannel, CommitRollbackListener
+public class Terminator implements EventChannel, CommitRollbackListener
 {
     private final EventChannelDescription ecd;
 
@@ -80,7 +80,7 @@ class Terminator implements EventChannel, CommitRollbackListener
 
     // TODO: this method was added to investigate indirect dependencies.
     // It should be removed if the investigation does not pan out.
-    Sink[] getSinks()
+    public Sink[] getSinks()
     {
         return sinks.toArray(new Sink[sinks.size()]);
     }
@@ -346,12 +346,23 @@ class Terminator implements EventChannel, CommitRollbackListener
                             + " source=" + source);
         }
 
-        if (stateChangeRule.isChange(this.state, state))
-        {
-            this.isStateChanged = true;
-            stateSource = source;
-            this.state = state;
-            updateSinks(sinks);
+        try {
+            if (stateChangeRule.isChange(this.state, state))
+            {
+                this.isStateChanged = true;
+                stateSource = source;
+                this.state = state;
+                updateSinks(sinks);
+            }
+        }
+        catch (IllegalArgumentException iae) {
+        	String stateSourceName = "unknown";
+        	
+        	if (stateSource != null && stateSource.getTreeComponent() != null) {
+        		stateSourceName = stateSource.getTreeComponent().getName();
+        	}
+        	
+        	throw new IllegalArgumentException("ECD="+getECD().getEventChannelName()+" S="+stateSourceName, iae);
         }
     }
 

@@ -25,18 +25,12 @@ public class RangeConstraint extends ClassValueConstraint
      * @param maxInclusive if true <code>max</code> is a valid value,
      * otherwise it is not valid.
      */
-    public RangeConstraint(Class valueType, Comparable min, Comparable max,
+    public RangeConstraint(Class<? extends Comparable> valueType, Comparable min, Comparable max,
         boolean minInclusive, boolean maxInclusive)
     {
         super(valueType);
         Argument.assertNotNull(min, "min");
         Argument.assertNotNull(max, "max");
-
-        if (!Comparable.class.isAssignableFrom(valueType))
-        {
-            throw new IllegalArgumentException(
-                "valueType is not assignable to " + Comparable.class.getName());
-        }
 
         int compare = min.compareTo(max);
 

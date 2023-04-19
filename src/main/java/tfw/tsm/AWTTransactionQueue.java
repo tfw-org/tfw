@@ -2,7 +2,8 @@ package tfw.tsm;
 
 import java.awt.EventQueue;
 import java.lang.reflect.InvocationTargetException;
-
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 import tfw.check.Argument;
 
 /**
@@ -45,5 +46,21 @@ public class AWTTransactionQueue implements TransactionQueue
     {
         return EventQueue.isDispatchThread();
     }
+    
+    private final Lock transactionQueueLock = new ReentrantLock();
 
+	@Override
+	public void lock() {
+		transactionQueueLock.lock();
+	}
+
+	@Override
+	public void unlock() {
+		transactionQueueLock.unlock();
+	}
+
+	@Override
+	public TransactionState createTransactionState() {
+		return new TransactionStateImpl();
+	}
 }

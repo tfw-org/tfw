@@ -148,7 +148,7 @@ public class Initiator extends Leaf
     	
     	if (localImmediateRoot == null)
     	{
-    		TransactionStateImpl transactionState = new TransactionStateImpl();
+    		TransactionState transactionState = new DeferredTransactionState();
     		
     		if (localImmediateParent == null)
     		{
@@ -166,6 +166,10 @@ public class Initiator extends Leaf
     		}
     		else
     		{
+    			final Root immediateRoot = localImmediateParent.immediateRoot;
+    			final TransactionMgr transactionMgr = immediateRoot.getTransactionManager();
+    			final TransactionQueue transactionQueue = transactionMgr.queue;
+    			
     			localImmediateParent.addStateChange(new TransactionContainer(
     				new SourceNState(sources, state), transactionState));
     		}
@@ -174,7 +178,7 @@ public class Initiator extends Leaf
     	}
     	else
     	{
-    		TransactionStateImpl transactionState = new TransactionStateImpl();
+    		TransactionState transactionState = localImmediateRoot.getTransactionManager().getTransactionQueue().createTransactionState();
     		
     		localImmediateRoot.getTransactionManager().addStateChange(
     			sources, state, transactionState,
@@ -308,11 +312,11 @@ public class Initiator extends Leaf
     static class TransactionContainer
     {
     	public final SourceNState state;
-    	public final TransactionStateImpl transactionState;
+    	public final TransactionState transactionState;
     	public final Throwable setLocation;
     	
     	public TransactionContainer(SourceNState state,
-    		TransactionStateImpl transactionState)
+    		TransactionState transactionState)
     	{
     		this.state = state;
     		this.transactionState = transactionState;

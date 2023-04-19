@@ -7,7 +7,7 @@ import tfw.value.ValueException;
 /**
  * The event channel for sub-channels under a multiplexer.
  */
-class DemultiplexedEventChannel extends Terminator
+public class DemultiplexedEventChannel extends Terminator
 {
     /** The parent multiplexer. */
     private final Multiplexer parent;

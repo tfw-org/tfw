@@ -1,7 +1,5 @@
 package tfw.tsm;
 
-import java.lang.reflect.InvocationTargetException;
-
 /**
  * Defines a queue for dispatching events which initiate transactions within the
  * framework.
@@ -27,8 +25,7 @@ public interface TransactionQueue
      * @throws Error
      *             if called from the dispatch thread of the queue.
      */
-    public void invokeAndWait(Runnable runnable)
-            throws InvocationTargetException, InterruptedException;
+    public void invokeAndWait(Runnable runnable) throws Exception;
 
     /**
      * Returns true if the calling thread is the current transaction thread.
@@ -36,4 +33,8 @@ public interface TransactionQueue
      * @return true if the calling thread is the current transaction thread.
      */
     public boolean isDispatchThread();
+    
+    public void lock();
+    public void unlock();
+    public TransactionState createTransactionState();
 }

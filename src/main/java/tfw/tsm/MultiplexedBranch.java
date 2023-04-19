@@ -125,6 +125,12 @@ public class MultiplexedBranch extends BranchComponent
         }
     }
     
+    public synchronized final void remove(TreeComponent[] children) {
+    	for (int i=0 ; i < children.length ; i++) {
+    		remove(children[i]);
+    	}
+    }
+    
     public synchronized final void remove(BranchBox branchBox)
     {
     	Argument.assertNotNull(branchBox, "branchBox");

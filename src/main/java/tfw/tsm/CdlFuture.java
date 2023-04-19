@@ -4,12 +4,12 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-public class CdlFuture<T> implements Future<T>
+public class CdlFuture<T> implements TfwFuture<T>
 {
 	private boolean done = false;
 	private T result = null;
 	
-	public synchronized T get() throws InterruptedException
+	public synchronized T get() throws Exception
 	{
 		if (!done)
 		{
@@ -19,12 +19,11 @@ public class CdlFuture<T> implements Future<T>
 		return(result);
 	}
 	
-	public synchronized T get(long timeout, TimeUnit unit)
-		throws InterruptedException, TimeoutException
+	public synchronized T get(long timeoutMillis) throws Exception
 	{
 		if (!done)
 		{
-			wait(unit.toMillis(timeout));
+			wait(timeoutMillis);
 		}
 		
 		return(result);
@@ -35,7 +34,7 @@ public class CdlFuture<T> implements Future<T>
 		return(done);
 	}
 	
-	synchronized void setResultAndRelease(T result)
+	public synchronized void setResultAndRelease(T result)
 	{
 		if (done)
 		{

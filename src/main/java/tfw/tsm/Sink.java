@@ -5,7 +5,7 @@ import tfw.tsm.ecd.EventChannelDescription;
 /**
  * An event sink.
  */
-abstract class Sink extends Port
+public abstract class Sink extends Port
 {
 	private final boolean isTriggering;
 	

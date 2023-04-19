@@ -10,7 +10,7 @@ abstract class Port
 	final EventChannelDescription ecd;
 	final String name;
 	
-	EventChannel eventChannel = null;
+	public EventChannel eventChannel = null;
 
     private TreeComponent component = null;
 
@@ -96,7 +96,7 @@ abstract class Port
      * 
      * @return the component to which this port is bound.
      */
-    TreeComponent getTreeComponent()
+    public TreeComponent getTreeComponent()
     {
         if (this.component == null)
         {
