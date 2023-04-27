@@ -185,6 +185,14 @@ public class Argument
                     + ") != " + rightName + " (=" + right + ") not allowed!");
     }
 
+    public static final void assertNotGreaterThan(int left, int right,
+            String leftName, String rightName)
+    {
+        if (left > right)
+            throw new IllegalArgumentException(leftName + " (=" + left + ") > "
+                    + rightName + " (=" + right + ") not allowed!");
+    }
+
     public static final void assertNotGreaterThan(long left, long right,
             String leftName, String rightName)
     {
