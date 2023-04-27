@@ -27,7 +27,7 @@
  * Portions Copyright (c) 1995  Colin Plumb.  All rights reserved.
  */
 
-package java.math;
+package tfw.math;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -37,10 +37,6 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
-
-import jdk.internal.math.DoubleConsts;
-import jdk.internal.math.FloatConsts;
-import jdk.internal.HotSpotIntrinsicCandidate;
 
 /**
  * Immutable arbitrary-precision integers.  All operations behave as if
@@ -1665,7 +1661,6 @@ public class BigInteger extends Number implements Comparable<BigInteger> {
         return implMultiplyToLen(x, xlen, y, ylen, z);
     }
 
-    @HotSpotIntrinsicCandidate
     private static int[] implMultiplyToLen(int[] x, int xlen, int[] y, int ylen, int[] z) {
         int xstart = xlen - 1;
         int ystart = ylen - 1;
@@ -2038,7 +2033,6 @@ public class BigInteger extends Number implements Comparable<BigInteger> {
      /**
       * Java Runtime may use intrinsic for this method.
       */
-     @HotSpotIntrinsicCandidate
      private static final int[] implSquareToLen(int[] x, int len, int[] z, int zlen) {
         /*
          * The algorithm used here is adapted from Colin Plumb's C library.
@@ -2746,13 +2740,11 @@ public class BigInteger extends Number implements Comparable<BigInteger> {
 
     // These methods are intended to be replaced by virtual machine
     // intrinsics.
-    @HotSpotIntrinsicCandidate
     private static int[] implMontgomeryMultiply(int[] a, int[] b, int[] n, int len,
                                          long inv, int[] product) {
         product = multiplyToLen(a, len, b, len, product);
         return montReduce(product, n, len, (int)inv);
     }
-    @HotSpotIntrinsicCandidate
     private static int[] implMontgomerySquare(int[] a, int[] n, int len,
                                        long inv, int[] product) {
         product = squareToLen(a, len, product);
@@ -3084,7 +3076,6 @@ public class BigInteger extends Number implements Comparable<BigInteger> {
     /**
      * Java Runtime may use intrinsic for this method.
      */
-    @HotSpotIntrinsicCandidate
     private static int implMulAdd(int[] out, int[] in, int offset, int len, int k) {
         long kLong = k & LONG_MASK;
         long carry = 0;
@@ -4585,19 +4576,19 @@ public class BigInteger extends Number implements Comparable<BigInteger> {
 
     // Support for resetting final fields while deserializing
     private static class UnsafeHolder {
-        private static final jdk.internal.misc.Unsafe unsafe
-                = jdk.internal.misc.Unsafe.getUnsafe();
-        private static final long signumOffset
-                = unsafe.objectFieldOffset(BigInteger.class, "signum");
-        private static final long magOffset
-                = unsafe.objectFieldOffset(BigInteger.class, "mag");
+//        private static final jdk.internal.misc.Unsafe unsafe
+//                = jdk.internal.misc.Unsafe.getUnsafe();
+//        private static final long signumOffset
+//                = unsafe.objectFieldOffset(BigInteger.class, "signum");
+//        private static final long magOffset
+//                = unsafe.objectFieldOffset(BigInteger.class, "mag");
 
         static void putSign(BigInteger bi, int sign) {
-            unsafe.putInt(bi, signumOffset, sign);
+//            unsafe.putInt(bi, signumOffset, sign);
         }
 
         static void putMag(BigInteger bi, int[] magnitude) {
-            unsafe.putObject(bi, magOffset, magnitude);
+//            unsafe.putObject(bi, magOffset, magnitude);
         }
     }
 

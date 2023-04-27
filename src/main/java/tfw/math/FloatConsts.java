@@ -23,7 +23,7 @@
  * questions.
  */
 
-package jdk.internal.math;
+package tfw.math;
 
 /**
  * This class contains additional constants documenting limits of the

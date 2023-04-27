@@ -27,9 +27,9 @@
  * Portions Copyright IBM Corporation, 2001. All Rights Reserved.
  */
 
-package java.math;
+package tfw.math;
 
-import static java.math.BigInteger.LONG_MASK;
+import static tfw.math.BigInteger.LONG_MASK;
 import java.util.Arrays;
 
 /**
@@ -1577,7 +1577,7 @@ public class BigDecimal extends Number implements Comparable<BigDecimal> {
      * @see    #ROUND_HALF_EVEN
      * @see    #ROUND_UNNECESSARY
      */
-    @Deprecated(since="9")
+    @Deprecated
     public BigDecimal divide(BigDecimal divisor, int scale, int roundingMode) {
         if (roundingMode < ROUND_UP || roundingMode > ROUND_UNNECESSARY)
             throw new IllegalArgumentException("Invalid rounding mode");
@@ -1643,7 +1643,7 @@ public class BigDecimal extends Number implements Comparable<BigDecimal> {
      * @see    #ROUND_HALF_EVEN
      * @see    #ROUND_UNNECESSARY
      */
-    @Deprecated(since="9")
+    @Deprecated
     public BigDecimal divide(BigDecimal divisor, int roundingMode) {
         return this.divide(divisor, scale, roundingMode);
     }
@@ -1679,7 +1679,7 @@ public class BigDecimal extends Number implements Comparable<BigDecimal> {
      *         terminating decimal expansion
      * @return {@code this / divisor}
      * @since 1.5
-     * @author Joseph D. Darcy
+     * author Joseph D. Darcy
      */
     public BigDecimal divide(BigDecimal divisor) {
         /*
@@ -1848,7 +1848,7 @@ public class BigDecimal extends Number implements Comparable<BigDecimal> {
      * @throws ArithmeticException if {@code mc.precision} {@literal >} 0 and the result
      *         requires a precision of more than {@code mc.precision} digits.
      * @since  1.5
-     * @author Joseph D. Darcy
+     * author Joseph D. Darcy
      */
     public BigDecimal divideToIntegralValue(BigDecimal divisor, MathContext mc) {
         if (mc.precision == 0 || // exact result
@@ -1939,7 +1939,7 @@ public class BigDecimal extends Number implements Comparable<BigDecimal> {
      *         rounding mode is {@code UNNECESSARY}, or {@code mc.precision}
      *         {@literal >} 0 and the result of {@code this.divideToIntgralValue(divisor)} would
      *         require a precision of more than {@code mc.precision} digits.
-     * @see    #divideToIntegralValue(java.math.BigDecimal, java.math.MathContext)
+     * see    #divideToIntegralValue(java.math.BigDecimal, java.math.MathContext)
      * @since  1.5
      */
     public BigDecimal remainder(BigDecimal divisor, MathContext mc) {
@@ -1963,8 +1963,8 @@ public class BigDecimal extends Number implements Comparable<BigDecimal> {
      *         (the result of {@code divideToIntegralValue}) is the initial element
      *         and the remainder is the final element.
      * @throws ArithmeticException if {@code divisor==0}
-     * @see    #divideToIntegralValue(java.math.BigDecimal, java.math.MathContext)
-     * @see    #remainder(java.math.BigDecimal, java.math.MathContext)
+     * see    #divideToIntegralValue(java.math.BigDecimal, java.math.MathContext)
+     * see    #remainder(java.math.BigDecimal, java.math.MathContext)
      * @since  1.5
      */
     public BigDecimal[] divideAndRemainder(BigDecimal divisor) {
@@ -1998,8 +1998,8 @@ public class BigDecimal extends Number implements Comparable<BigDecimal> {
      *         rounding mode is {@code UNNECESSARY}, or {@code mc.precision}
      *         {@literal >} 0 and the result of {@code this.divideToIntgralValue(divisor)} would
      *         require a precision of more than {@code mc.precision} digits.
-     * @see    #divideToIntegralValue(java.math.BigDecimal, java.math.MathContext)
-     * @see    #remainder(java.math.BigDecimal, java.math.MathContext)
+     * see    #divideToIntegralValue(java.math.BigDecimal, java.math.MathContext)
+     * see    #remainder(java.math.BigDecimal, java.math.MathContext)
      * @since  1.5
      */
     public BigDecimal[] divideAndRemainder(BigDecimal divisor, MathContext mc) {
@@ -2581,7 +2581,7 @@ public class BigDecimal extends Number implements Comparable<BigDecimal> {
      *
      * @deprecated Use {@link RoundingMode#UP} instead.
      */
-    @Deprecated(since="9")
+    @Deprecated
     public static final int ROUND_UP =           0;
 
     /**
@@ -2591,7 +2591,7 @@ public class BigDecimal extends Number implements Comparable<BigDecimal> {
      *
      * @deprecated Use {@link RoundingMode#DOWN} instead.
      */
-    @Deprecated(since="9")
+    @Deprecated
     public static final int ROUND_DOWN =         1;
 
     /**
@@ -2603,7 +2603,7 @@ public class BigDecimal extends Number implements Comparable<BigDecimal> {
      *
      * @deprecated Use {@link RoundingMode#CEILING} instead.
      */
-    @Deprecated(since="9")
+    @Deprecated
     public static final int ROUND_CEILING =      2;
 
     /**
@@ -2615,7 +2615,7 @@ public class BigDecimal extends Number implements Comparable<BigDecimal> {
      *
      * @deprecated Use {@link RoundingMode#FLOOR} instead.
      */
-    @Deprecated(since="9")
+    @Deprecated
     public static final int ROUND_FLOOR =        3;
 
     /**
@@ -2628,7 +2628,7 @@ public class BigDecimal extends Number implements Comparable<BigDecimal> {
      *
      * @deprecated Use {@link RoundingMode#HALF_UP} instead.
      */
-    @Deprecated(since="9")
+    @Deprecated
     public static final int ROUND_HALF_UP =      4;
 
     /**
@@ -2640,7 +2640,7 @@ public class BigDecimal extends Number implements Comparable<BigDecimal> {
      *
      * @deprecated Use {@link RoundingMode#HALF_DOWN} instead.
      */
-    @Deprecated(since="9")
+    @Deprecated
     public static final int ROUND_HALF_DOWN =    5;
 
     /**
@@ -2655,7 +2655,7 @@ public class BigDecimal extends Number implements Comparable<BigDecimal> {
      *
      * @deprecated Use {@link RoundingMode#HALF_EVEN} instead.
      */
-    @Deprecated(since="9")
+    @Deprecated
     public static final int ROUND_HALF_EVEN =    6;
 
     /**
@@ -2666,7 +2666,7 @@ public class BigDecimal extends Number implements Comparable<BigDecimal> {
      *
      * @deprecated Use {@link RoundingMode#UNNECESSARY} instead.
      */
-    @Deprecated(since="9")
+    @Deprecated
     public static final int ROUND_UNNECESSARY =  7;
 
 
@@ -2766,7 +2766,7 @@ public class BigDecimal extends Number implements Comparable<BigDecimal> {
      * @see    #ROUND_HALF_EVEN
      * @see    #ROUND_UNNECESSARY
      */
-    @Deprecated(since="9")
+    @Deprecated
     public BigDecimal setScale(int newScale, int roundingMode) {
         if (roundingMode < ROUND_UP || roundingMode > ROUND_UNNECESSARY)
             throw new IllegalArgumentException("Invalid rounding mode");
@@ -3042,7 +3042,7 @@ public class BigDecimal extends Number implements Comparable<BigDecimal> {
      * @return {@code true} if and only if the specified {@code Object} is a
      *         {@code BigDecimal} whose value and scale are equal to this
      *         {@code BigDecimal}'s.
-     * @see    #compareTo(java.math.BigDecimal)
+     * see    #compareTo(java.math.BigDecimal)
      * @see    #hashCode
      */
     @Override
@@ -3075,7 +3075,7 @@ public class BigDecimal extends Number implements Comparable<BigDecimal> {
      *         {@code BigDecimal} and {@code val}.  If they are equal,
      *         as defined by the {@link #compareTo(BigDecimal) compareTo}
      *         method, {@code this} is returned.
-     * @see    #compareTo(java.math.BigDecimal)
+     * see    #compareTo(java.math.BigDecimal)
      */
     public BigDecimal min(BigDecimal val) {
         return (compareTo(val) <= 0 ? this : val);
@@ -3089,7 +3089,7 @@ public class BigDecimal extends Number implements Comparable<BigDecimal> {
      *         {@code BigDecimal} and {@code val}.  If they are equal,
      *         as defined by the {@link #compareTo(BigDecimal) compareTo}
      *         method, {@code this} is returned.
-     * @see    #compareTo(java.math.BigDecimal)
+     * see    #compareTo(java.math.BigDecimal)
      */
     public BigDecimal max(BigDecimal val) {
         return (compareTo(val) >= 0 ? this : val);
@@ -4067,19 +4067,19 @@ public class BigDecimal extends Number implements Comparable<BigDecimal> {
     }
 
     private static class UnsafeHolder {
-        private static final jdk.internal.misc.Unsafe unsafe
-                = jdk.internal.misc.Unsafe.getUnsafe();
-        private static final long intCompactOffset
-                = unsafe.objectFieldOffset(BigDecimal.class, "intCompact");
-        private static final long intValOffset
-                = unsafe.objectFieldOffset(BigDecimal.class, "intVal");
+//        private static final jdk.internal.misc.Unsafe unsafe
+//                = jdk.internal.misc.Unsafe.getUnsafe();
+//        private static final long intCompactOffset
+//                = unsafe.objectFieldOffset(BigDecimal.class, "intCompact");
+//        private static final long intValOffset
+//                = unsafe.objectFieldOffset(BigDecimal.class, "intVal");
 
         static void setIntCompact(BigDecimal bd, long val) {
-            unsafe.putLong(bd, intCompactOffset, val);
+//            unsafe.putLong(bd, intCompactOffset, val);
         }
 
         static void setIntValVolatile(BigDecimal bd, BigInteger val) {
-            unsafe.putObjectVolatile(bd, intValOffset, val);
+//            unsafe.putObjectVolatile(bd, intValOffset, val);
         }
     }
 

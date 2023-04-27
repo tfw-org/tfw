@@ -30,7 +30,7 @@ public class DefaultCheckDependencies implements CheckDependencies {
 	@Override
 	public void checkDependencies(List<Processor> processors, List<Processor> delayedProcessors, Logger logger) {
 		if (logger != null) {
-			logger.log(Level.INFO, "CDN: p.s="+processors.size()+" dp.s="+delayedProcessors.size()+" c.s="+processorCache.size());
+			logger.log(Level.FINE, "CDN: p.s="+processors.size()+" dp.s="+delayedProcessors.size()+" c.s="+processorCache.size());
 		}
 		
 		final long startTime = System.currentTimeMillis();

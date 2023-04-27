@@ -27,7 +27,7 @@
  * Portions Copyright IBM Corporation, 1997, 2001. All Rights Reserved.
  */
 
-package java.math;
+package tfw.math;
 import java.io.*;
 
 /**

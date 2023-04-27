@@ -23,7 +23,7 @@
  * questions.
  */
 
-package java.math;
+package tfw.math;
 
 /**
  * A simple bit sieve used for finding prime number candidates. Allows setting

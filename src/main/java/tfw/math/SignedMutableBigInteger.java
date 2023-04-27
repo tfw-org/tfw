@@ -23,7 +23,7 @@
  * questions.
  */
 
-package java.math;
+package tfw.math;
 
 /**
  * A class used to represent multiprecision integers that makes efficient

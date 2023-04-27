@@ -23,7 +23,7 @@
  * questions.
  */
 
-package java.math;
+package tfw.math;
 
 /**
  * A class used to represent multiprecision integers that makes efficient
@@ -42,8 +42,8 @@ package java.math;
  * @since   1.3
  */
 
-import static java.math.BigDecimal.INFLATED;
-import static java.math.BigInteger.LONG_MASK;
+import static tfw.math.BigDecimal.INFLATED;
+import static tfw.math.BigInteger.LONG_MASK;
 import java.util.Arrays;
 
 class MutableBigInteger {
@@ -406,7 +406,7 @@ class MutableBigInteger {
      * If this MutableBigInteger cannot hold len words, increase the size
      * of the value array to len words.
      */
-    private final void ensureCapacity(int len) {
+    protected final void ensureCapacity(int len) {
         if (value.length < len) {
             value = new int[len];
             offset = 0;
