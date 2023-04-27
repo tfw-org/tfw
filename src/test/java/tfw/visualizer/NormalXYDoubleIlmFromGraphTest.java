@@ -142,7 +142,7 @@ public class NormalXYDoubleIlmFromGraphTest extends TestCase
 		Object[] tos = new Object[(int)graph.edgesLength()];
 
 		graph.toArray(nodes, 0, 0, (int)graph.nodesLength(), froms, tos, 0, 0, (int)graph.edgesLength());
-		Arrays.sort(nodes, ProxyNameComparator.INSTANCE);
+		Arrays.sort(nodes, ProxyNameComparator.OBJECT_INSTANCE);
 		
 		Graph sortedGraph = GraphFromArrays.create(nodes, froms, tos);
 

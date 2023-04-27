@@ -21,30 +21,30 @@ import tfw.tsm.ValidatorProxy;
 
 public final class NodeAndEdgesFromRootProxy
 {
-	private ObjectIla nodesObjectIla = null;
-	private ObjectIla edgeFromsObjectIla = null;
-	private ObjectIla edgeTosObjectIla = null;
+	private ObjectIla<Object> nodesObjectIla = null;
+	private ObjectIla<Object> edgeFromsObjectIla = null;
+	private ObjectIla<Object> edgeTosObjectIla = null;
 	
-	public ObjectIla getNodesObjectIla() {
+	public ObjectIla<Object> getNodesObjectIla() {
 		if (nodesObjectIla == null) {
 			calculateArrays();
-			nodesObjectIla = ObjectIlaFromArray.create(nodes, false);
+			nodesObjectIla = ObjectIlaFromArray.create(nodes);
 		}
 		return nodesObjectIla;
 	}
 
-	public ObjectIla getEdgeFromsObjectIla() {
+	public ObjectIla<Object> getEdgeFromsObjectIla() {
 		if (edgeFromsObjectIla == null) {
 			calculateArrays();
-			edgeFromsObjectIla = ObjectIlaFromArray.create(edgeFroms, false);
+			edgeFromsObjectIla = ObjectIlaFromArray.create(edgeFroms);
 		}
 		return edgeFromsObjectIla;
 	}
 
-	public ObjectIla getEdgeTosObjectIla() {
+	public ObjectIla<Object> getEdgeTosObjectIla() {
 		if (edgeTosObjectIla == null) {
 			calculateArrays();
-			edgeTosObjectIla = ObjectIlaFromArray.create(edgeTos, false);
+			edgeTosObjectIla = ObjectIlaFromArray.create(edgeTos);
 		}
 		return edgeTosObjectIla;
 	}
@@ -67,19 +67,19 @@ public final class NodeAndEdgesFromRootProxy
 			return;
 		}
 		
-		HashSet nodesList = new HashSet();
-		ArrayList edgeFromsList = new ArrayList();
-		ArrayList edgeTosList = new ArrayList();
+		HashSet<Object> nodesList = new HashSet<>();
+		ArrayList<Object> edgeFromsList = new ArrayList<>();
+		ArrayList<Object> edgeTosList = new ArrayList<>();
 		
 		addStructuralNode(nodesList, edgeFromsList, edgeTosList, rootProxy, null);
 		
-		nodes = nodesList.toArray();;
+		nodes = nodesList.toArray();
 		edgeFroms = edgeFromsList.toArray();
 		edgeTos = edgeTosList.toArray();
 	}
 	
-	private static void addStructuralNode(Set nodes, ArrayList edgeFroms,
-			ArrayList edgeTos, Object proxy, Object parent)
+	private static void addStructuralNode(Set<Object> nodes, ArrayList<Object> edgeFroms,
+			ArrayList<Object> edgeTos, Object proxy, Object parent)
 	{
 		nodes.add(proxy);
 		
@@ -95,8 +95,8 @@ public final class NodeAndEdgesFromRootProxy
 			Object[] childProxies = rootProxy.getChildProxies();
 			EventChannelProxy[] eventChannelProxies = rootProxy.getEventChannelProxies();
 			
-			Arrays.sort(childProxies, ProxyNameComparator.INSTANCE);
-			Arrays.sort(eventChannelProxies, ProxyNameComparator.INSTANCE);
+			Arrays.sort(childProxies, ProxyNameComparator.OBJECT_INSTANCE);
+			Arrays.sort(eventChannelProxies, ProxyNameComparator.OBJECT_INSTANCE);
 			
 			for (int i=0 ; i < eventChannelProxies.length ; i++)
 			{
@@ -116,8 +116,8 @@ public final class NodeAndEdgesFromRootProxy
 			Object[] childProxies = (branchProxy).getChildProxies();
 			EventChannelProxy[] eventChannelProxies = branchProxy.getEventChannelProxies();
 			
-			Arrays.sort(childProxies, ProxyNameComparator.INSTANCE);
-			Arrays.sort(eventChannelProxies, ProxyNameComparator.INSTANCE);
+			Arrays.sort(childProxies, ProxyNameComparator.OBJECT_INSTANCE);
+			Arrays.sort(eventChannelProxies, ProxyNameComparator.OBJECT_INSTANCE);
 			
 			for (int i=0 ; i < eventChannelProxies.length ; i++)
 			{
@@ -189,9 +189,9 @@ public final class NodeAndEdgesFromRootProxy
 	}
 	
 	private static void addSourceEdges(SourceProxy[] sourceProxies,
-		Object proxy, ArrayList edgeFroms, ArrayList edgeTos)
+		Object proxy, ArrayList<Object> edgeFroms, ArrayList<Object> edgeTos)
 	{
-		Arrays.sort(sourceProxies, ProxyNameComparator.INSTANCE);
+		Arrays.sort(sourceProxies, ProxyNameComparator.OBJECT_INSTANCE);
 		
 		for (int i=0 ; i < sourceProxies.length ; i++)
 		{
@@ -201,9 +201,9 @@ public final class NodeAndEdgesFromRootProxy
 	}
 	
 	private static void addSinkEdges(SinkProxy[] sinkProxies,
-		Object proxy, ArrayList edgeFroms, ArrayList edgeTos)
+		Object proxy, ArrayList<Object> edgeFroms, ArrayList<Object> edgeTos)
 	{
-		Arrays.sort(sinkProxies, ProxyNameComparator.INSTANCE);
+		Arrays.sort(sinkProxies, ProxyNameComparator.OBJECT_INSTANCE);
 		
 		for (int i=0 ; i < sinkProxies.length ; i++)
 		{

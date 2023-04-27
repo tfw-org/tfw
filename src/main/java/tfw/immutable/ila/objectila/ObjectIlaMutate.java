@@ -1,9 +1,6 @@
 package tfw.immutable.ila.objectila;
 
-import java.util.HashMap;
-import java.util.Map;
 import tfw.check.Argument;
-import tfw.immutable.ImmutableProxy;
 import tfw.immutable.DataInvalidException;
 
 /**
@@ -12,28 +9,24 @@ import tfw.immutable.DataInvalidException;
  */
 public final class ObjectIlaMutate
 {
-    private ObjectIlaMutate()
-    {
-        // non-instantiable class
-    }
+    private ObjectIlaMutate() {}
 
-    public static ObjectIla create(ObjectIla ila, long index, Object value)
+    public static <T> ObjectIla<T> create(ObjectIla<T> ila, long index, T value)
     {
         Argument.assertNotNull(ila, "ila");
         Argument.assertNotLessThan(index, 0, "index");
         Argument.assertLessThan(index, ila.length(), "index", "ila.length()");
 
-        return new MyObjectIla(ila, index, value);
+        return new MyObjectIla<>(ila, index, value);
     }
 
-    private static class MyObjectIla extends AbstractObjectIla
-        implements ImmutableProxy
+    private static class MyObjectIla<T> extends AbstractObjectIla<T>
     {
-        private final ObjectIla ila;
+        private final ObjectIla<T> ila;
         private final long index;
-        private final Object value;
+        private final T value;
 
-        MyObjectIla(ObjectIla ila, long index, Object value)
+        MyObjectIla(ObjectIla<T> ila, long index, T value)
         {
             super(ila.length());
             this.ila = ila;
@@ -41,8 +34,8 @@ public final class ObjectIlaMutate
             this.value = value;
         }
 
-        protected void toArrayImpl(Object[] array, int offset,
-                                   int stride, long start, int length)
+        protected void toArrayImpl(final T[] array, final int offset,
+                                   final int stride, final long start, final int length)
             throws DataInvalidException
         {
             final long startPlusLength = start + length;
@@ -60,26 +53,11 @@ public final class ObjectIlaMutate
                                 indexMinusStart);
                 }
                 array[offset + indexMinusStart * stride] = value;
-                if(index <= startPlusLength)
-                {
-                    ila.toArray(array, offset + (indexMinusStart + 1) * stride,
-                                stride, index + 1, length - 
-                                indexMinusStart - 1);
-                }
-            }
-        }
-                
-        public Map<String, Object> getParameters()
-        {
-            HashMap<String, Object> map = new HashMap<String, Object>();
-                        
-            map.put("name", "ObjectIlaMutate");
-            map.put("length", new Long(length()));
-            map.put("ila", getImmutableInfo(ila));
-            map.put("index", new Long(index));
-            map.put("value", value);
 
-            return(map);
+                ila.toArray(array, offset + (indexMinusStart + 1) * stride,
+                            stride, index + 1, length - 
+                            indexMinusStart - 1);
+            }
         }
     }
 }

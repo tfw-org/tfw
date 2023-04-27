@@ -1,11 +1,7 @@
 package tfw.immutable.ila.objectila;
 
-
 import junit.framework.TestCase;
 import tfw.immutable.ila.IlaTestDimensions;
-import tfw.immutable.ila.objectila.ObjectIla;
-import tfw.immutable.ila.objectila.ObjectIlaFromArray;
-import tfw.immutable.ila.objectila.ObjectIlaReverse;
 
 /**
  *
@@ -27,14 +23,15 @@ public class ObjectIlaReverseTest extends TestCase
         {
             reversed[ii] = array[length - 1 - ii];
         }
-        ObjectIla origIla = ObjectIlaFromArray.create(array);
-        ObjectIla targetIla = ObjectIlaFromArray.create(reversed);
-        ObjectIla actualIla = ObjectIlaReverse.create(origIla);
+        ObjectIla<Object> origIla = ObjectIlaFromArray.create(array);
+        ObjectIla<Object> targetIla = ObjectIlaFromArray.create(reversed);
+        ObjectIla<Object> actualIla = ObjectIlaReverse.create(origIla);
         final Object epsilon = Object.class;
         ObjectIlaCheck.checkAll(targetIla, actualIla,
                                 IlaTestDimensions.defaultOffsetLength(),
                                 IlaTestDimensions.defaultMaxStride(),
-                                epsilon);
+                                epsilon,
+                                ObjectIlaCheck.OBJECT_CHECK_FACTORY);
     }
 }
 // AUTO GENERATED FROM TEMPLATE

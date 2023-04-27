@@ -43,7 +43,10 @@ public class SelectionAndListCommit extends Commit
 		{
 			try
 			{
-				final Object[] elements = ((ObjectIla)get(listECD)).toArray();
+				final ObjectIla<Object> objectIla = (ObjectIla<Object>)get(listECD);
+				final Object[] elements = new Object[(int)objectIla.length()];
+				
+				objectIla.toArray(elements, 0, 0, elements.length);
 			
 				EventQueue.invokeLater(new Runnable()
 				{
@@ -66,8 +69,10 @@ public class SelectionAndListCommit extends Commit
 		{
 			try
 			{
-				final Object[] selectedItems =
-					((ObjectIla)get(selectedItemsECD)).toArray();
+				final ObjectIla objectIla = (ObjectIla)get(selectedItemsECD);
+				final Object[] selectedItems = new Object[(int)objectIla.length()];
+				
+				objectIla.toArray(selectedItems, 0, 0, selectedItems.length);
 				
 				EventQueue.invokeLater(new Runnable()
 				{

@@ -1,9 +1,6 @@
 package tfw.immutable.ila.objectila;
 
-import java.util.HashMap;
-import java.util.Map;
 import tfw.check.Argument;
-import tfw.immutable.ImmutableProxy;
 import tfw.immutable.DataInvalidException;
 
 /**
@@ -12,35 +9,32 @@ import tfw.immutable.DataInvalidException;
  */
 public final class ObjectIlaRemove
 {
-    private ObjectIlaRemove()
-    {
-        // non-instantiable class
-    }
+    private ObjectIlaRemove() {}
 
-    public static ObjectIla create(ObjectIla ila, long index)
+    public static <T> ObjectIla<T> create(final ObjectIla<T> ila, final long index)
     {
         Argument.assertNotNull(ila, "ila");
         Argument.assertNotLessThan(index, 0, "index");
         Argument.assertLessThan(index, ila.length(), "index", "ila.length()");
 
-        return new MyObjectIla(ila, index);
+        return new MyObjectIla<>(ila, index);
     }
 
-    private static class MyObjectIla extends AbstractObjectIla
-        implements ImmutableProxy
+    private static class MyObjectIla<T> extends AbstractObjectIla<T>
     {
-        private final ObjectIla ila;
+        private final ObjectIla<T> ila;
         private final long index;
 
-        MyObjectIla(ObjectIla ila, long index)
+        private MyObjectIla(final ObjectIla<T> ila, final long index)
         {
             super(ila.length() - 1);
             this.ila = ila;
             this.index = index;
         }
 
-        protected void toArrayImpl(Object[] array, int offset,
-                                   int stride, long start, int length)
+        @Override
+        protected void toArrayImpl(final T[] array, final int offset,
+                                   final int stride, final long start, final int length)
             throws DataInvalidException
         {
             final long startPlusLength = start + length;
@@ -60,18 +54,6 @@ public final class ObjectIlaRemove
                 ila.toArray(array, offset + indexMinusStart * stride,
                             stride, index + 1, length - indexMinusStart);
             }
-        }
-                
-        public Map<String, Object> getParameters()
-        {
-            HashMap<String, Object> map = new HashMap<String, Object>();
-                        
-            map.put("name", "ObjectIlaRemove");
-            map.put("length", new Long(length()));
-            map.put("ila", getImmutableInfo(ila));
-            map.put("index", new Long(index));
-                        
-            return(map);
         }
     }
 }

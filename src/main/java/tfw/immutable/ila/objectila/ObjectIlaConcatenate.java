@@ -1,9 +1,6 @@
 package tfw.immutable.ila.objectila;
 
-import java.util.HashMap;
-import java.util.Map;
 import tfw.check.Argument;
-import tfw.immutable.ImmutableProxy;
 import tfw.immutable.DataInvalidException;
 
 /**
@@ -12,37 +9,30 @@ import tfw.immutable.DataInvalidException;
  */
 public final class ObjectIlaConcatenate
 {
-    private ObjectIlaConcatenate()
-    {
-        // non-instantiable class
-    }
+    private ObjectIlaConcatenate() {}
 
-    public static ObjectIla create(ObjectIla leftIla, ObjectIla rightIla)
+    public static <T> ObjectIla<T> create(final ObjectIla<T> leftIla, final ObjectIla<T> rightIla)
     {
         Argument.assertNotNull(leftIla, "leftIla");
         Argument.assertNotNull(rightIla, "rightIla");
 
-        /*
-          // this efficiency step would help out in a number
-          // of situations, but could be confusing when the
-          // immutable proxy getParameters() is called and you
-          // don't see your concatenation!
-        if(leftIla.length() == 0)
+        if (leftIla.length() == 0) {
             return rightIla;
-        if(rightIla.length() == 0)
+        }
+        if (rightIla.length() == 0) {
             return leftIla;
-        */
-        return new MyObjectIla(leftIla, rightIla);
+        }
+
+        return new MyObjectIla<>(leftIla, rightIla);
     }
 
-    private static class MyObjectIla extends AbstractObjectIla
-        implements ImmutableProxy
+    private static class MyObjectIla<T> extends AbstractObjectIla<T>
     {
-        private final ObjectIla leftIla;
-        private final ObjectIla rightIla;
+        private final ObjectIla<T> leftIla;
+        private final ObjectIla<T> rightIla;
         private final long leftIlaLength;
 
-        MyObjectIla(ObjectIla leftIla, ObjectIla rightIla)
+        private MyObjectIla(final ObjectIla<T> leftIla, final ObjectIla<T> rightIla)
         {
             super(leftIla.length() + rightIla.length());
             this.leftIla = leftIla;
@@ -50,8 +40,9 @@ public final class ObjectIlaConcatenate
             this.leftIlaLength = leftIla.length();
         }
 
-        protected void toArrayImpl(Object[] array, int offset,
-                                   int stride, long start, int length)
+        @Override
+        protected void toArrayImpl(final T[] array, final int offset,
+                                   final int stride, final long start, final int length)
             throws DataInvalidException
         {
             if(start + length <= leftIlaLength)
@@ -70,18 +61,6 @@ public final class ObjectIlaConcatenate
                 rightIla.toArray(array, offset + leftAmount * stride,
                                  stride, 0, length - leftAmount);
             }
-        }
-                
-        public Map<String, Object> getParameters()
-        {
-            HashMap<String, Object> map = new HashMap<String, Object>();
-                        
-            map.put("name", "ObjectIlaConcatenate");
-            map.put("length", new Long(length()));
-            map.put("leftIla", getImmutableInfo(leftIla));
-            map.put("rightIla", getImmutableInfo(rightIla));
-                        
-            return(map);
         }
     }
 }

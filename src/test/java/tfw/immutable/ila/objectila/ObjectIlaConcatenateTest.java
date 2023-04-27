@@ -3,9 +3,6 @@ package tfw.immutable.ila.objectila;
 import java.util.Random;
 import junit.framework.TestCase;
 import tfw.immutable.ila.IlaTestDimensions;
-import tfw.immutable.ila.objectila.ObjectIla;
-import tfw.immutable.ila.objectila.ObjectIlaFromArray;
-import tfw.immutable.ila.objectila.ObjectIlaConcatenate;
 
 /**
  *
@@ -29,16 +26,17 @@ public class ObjectIlaConcatenateTest extends TestCase
         {
             array[ii + leftLength] = rightArray[ii] = new Object();
         }
-        ObjectIla leftIla = ObjectIlaFromArray.create(leftArray);
-        ObjectIla rightIla = ObjectIlaFromArray.create(rightArray);
-        ObjectIla targetIla = ObjectIlaFromArray.create(array);
-        ObjectIla actualIla = ObjectIlaConcatenate.create(leftIla,
+        ObjectIla<Object> leftIla = ObjectIlaFromArray.create(leftArray);
+        ObjectIla<Object> rightIla = ObjectIlaFromArray.create(rightArray);
+        ObjectIla<Object> targetIla = ObjectIlaFromArray.create(array);
+        ObjectIla<Object> actualIla = ObjectIlaConcatenate.create(leftIla,
                                                               rightIla);
         final Object epsilon = Object.class;
         ObjectIlaCheck.checkAll(targetIla, actualIla,
                                 IlaTestDimensions.defaultOffsetLength(),
                                 IlaTestDimensions.defaultMaxStride(),
-                                epsilon);
+                                epsilon,
+                                ObjectIlaCheck.OBJECT_CHECK_FACTORY);
     }
 }
 // AUTO GENERATED FROM TEMPLATE

@@ -1,11 +1,7 @@
 package tfw.immutable.ila.objectila;
 
-
 import junit.framework.TestCase;
 import tfw.immutable.ila.IlaTestDimensions;
-import tfw.immutable.ila.objectila.ObjectIla;
-import tfw.immutable.ila.objectila.ObjectIlaFromArray;
-import tfw.immutable.ila.objectila.ObjectIlaFill;
 
 /**
  *
@@ -23,13 +19,14 @@ public class ObjectIlaFillTest extends TestCase
         {
             array[ii] = value;
         }
-        ObjectIla targetIla = ObjectIlaFromArray.create(array);
-        ObjectIla actualIla = ObjectIlaFill.create(value, length);
+        ObjectIla<Object> targetIla = ObjectIlaFromArray.create(array);
+        ObjectIla<Object> actualIla = ObjectIlaFill.create(value, length);
         final Object epsilon = Object.class;
         ObjectIlaCheck.checkAll(targetIla, actualIla,
                                   IlaTestDimensions.defaultOffsetLength(),
                                   IlaTestDimensions.defaultMaxStride(),
-                                  epsilon);
+                                  epsilon,
+                                  ObjectIlaCheck.OBJECT_CHECK_FACTORY);
     }
 }
 // AUTO GENERATED FROM TEMPLATE

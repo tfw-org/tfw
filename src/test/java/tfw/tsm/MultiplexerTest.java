@@ -32,6 +32,8 @@ public class MultiplexerTest extends TestCase
 
     public void testMultiplexerWithIntermediateBranch() throws Exception
     {
+    	final Object[] mvCommitBuffer = new Object[2];
+    	final Object[] objBuffer = new Object[2];
         StatelessTriggerECD triggerECD = new StatelessTriggerECD("trigger");
         RootFactory rf = new RootFactory();
         rf.addEventChannel(triggerECD);
@@ -101,10 +103,9 @@ public class MultiplexerTest extends TestCase
         queue.waitTilEmpty();
         assertEquals("value 0 not correct", "0", valueCommit0.value);
         assertEquals("value 1 not correct", "one", valueCommit1.value);
-        assertEquals("multiValue[0] not correct", "0",
-                mvCommit.value.toArray()[0]);
-        assertEquals("multiValue[1] not correct", "one", mvCommit.value
-                .toArray()[1]);
+        mvCommit.value.toArray(mvCommitBuffer, 0, 0, mvCommitBuffer.length);
+        assertEquals("multiValue[0] not correct", "0", mvCommitBuffer[0]);
+        assertEquals("multiValue[1] not correct", "one", mvCommitBuffer[1]);
 
         MyTriggeredConverter tc0 = new MyTriggeredConverter("tc0", triggerECD,
                 "tc0", valueECD);
@@ -121,10 +122,9 @@ public class MultiplexerTest extends TestCase
         queue.waitTilEmpty();
         assertEquals("value 0 not correct", "tc0", valueCommit0.value);
         assertEquals("value 1 not correct", "tc1", valueCommit1.value);
-        assertEquals("multiValue[0] not correct", "tc0", mvCommit.value
-                .toArray()[0]);
-        assertEquals("multiValue[1] not correct", "tc1", mvCommit.value
-                .toArray()[1]);
+        mvCommit.value.toArray(mvCommitBuffer, 0, 0, mvCommitBuffer.length);
+        assertEquals("multiValue[0] not correct", "tc0", mvCommitBuffer[0]);
+        assertEquals("multiValue[1] not correct", "tc1", mvCommitBuffer[1]);
         // We remove one of the component to cause a new transaction in order
         // to make sure that no exceptions are thrown...
         subBranch0.remove(valueCommit0);
@@ -140,10 +140,9 @@ public class MultiplexerTest extends TestCase
         tc1.value = tc1Value;
         triggerInitiator.trigger(triggerECD);
         queue.waitTilEmpty();
-        assertEquals("multiValue[0] not correct", tc0Value, mvCommit.value
-                .toArray()[0]);
-        assertEquals("multiValue[1] not correct", tc1Value, mvCommit.value
-                .toArray()[1]);
+        mvCommit.value.toArray(mvCommitBuffer, 0, 0, mvCommitBuffer.length);
+        assertEquals("multiValue[0] not correct", tc0Value, mvCommitBuffer[0]);
+        assertEquals("multiValue[1] not correct", tc1Value, mvCommitBuffer[1]);
 
         assertNull("Unexpected exception thrown during testing",
                 exceptionHandler.exp);
@@ -153,17 +152,16 @@ public class MultiplexerTest extends TestCase
         queue.waitTilEmpty();
         multiInitiator.set(multiValueECD, obj);
         queue.waitTilEmpty();
-        assertEquals("multiValue[0] not correct", obj.toArray()[0],
-                mvCommit.value.toArray()[0]);
-        assertEquals("multiValue[1] not correct", obj.toArray()[1],
-                mvCommit.value.toArray()[1]);
+        obj.toArray(objBuffer, 0, 0, objBuffer.length);
+        mvCommit.value.toArray(mvCommitBuffer, 0, 0, mvCommitBuffer.length);
+        assertEquals("multiValue[0] not correct", objBuffer[0], mvCommitBuffer[0]);
+        assertEquals("multiValue[1] not correct", objBuffer[1], mvCommitBuffer[1]);
         // Now we put the multiplexer back and make sure it still works.
         root.add(multiBranch);
         queue.waitTilEmpty();
-        assertEquals("value 0 not correct", obj.toArray()[0],
-                valueCommit0.value);
-        assertEquals("value 1 not correct", obj.toArray()[1],
-                valueCommit1.value);
+        obj.toArray(objBuffer, 0, 0, objBuffer.length);
+        assertEquals("value 0 not correct", objBuffer[0], valueCommit0.value);
+        assertEquals("value 1 not correct", objBuffer[1], valueCommit1.value);
     }
 
     public void testMultiLayerMultiplexing() throws Exception
@@ -307,9 +305,13 @@ public class MultiplexerTest extends TestCase
     private Object[][] toArray(ObjectIla objs) throws Exception
     {
         Object[][] mmArray = new Object[2][];
-        Object[] mma = objs.toArray();
-        mmArray[0] = ((ObjectIla) mma[0]).toArray();
-        mmArray[1] = ((ObjectIla) mma[1]).toArray();
+        Object[] mma = new Object[(int)objs.length()];
+        objs.toArray(mma, 0, 0, mma.length);
+        mmArray[0] = new Object[(int)((ObjectIla)mma[0]).length()];
+        ((ObjectIla) mma[0]).toArray(mmArray[0], 0, 0, mmArray[0].length);
+        mmArray[1] = new Object[(int)((ObjectIla)mma[1]).length()];
+        ((ObjectIla) mma[1]).toArray(mmArray[1], 0, 0, mmArray[1].length);
+        
         return mmArray;
     }
 

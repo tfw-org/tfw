@@ -1,9 +1,6 @@
 package tfw.immutable.ila.objectila;
 
-import java.util.HashMap;
-import java.util.Map;
 import tfw.check.Argument;
-import tfw.immutable.ImmutableProxy;
 import tfw.immutable.DataInvalidException;
 
 /**
@@ -12,12 +9,9 @@ import tfw.immutable.DataInvalidException;
  */
 public final class ObjectIlaInterleave
 {
-    private ObjectIlaInterleave()
-    {
-        // non-instantiable class
-    }
+    private ObjectIlaInterleave() {}
 
-    public static ObjectIla create(ObjectIla[] ilas)
+    public static <T> ObjectIla<T> create(final ObjectIla<T>[] ilas)
     {
         Argument.assertNotNull(ilas, "ilas");
         Argument.assertNotLessThan(ilas.length, 1, "ilas.length");
@@ -30,25 +24,24 @@ public final class ObjectIlaInterleave
                 "ilas[0].length()", "ilas[" + ii + "].length()");
         }
 
-        return new MyObjectIla(ilas);
+        return new MyObjectIla<>(ilas);
     }
 
-    private static class MyObjectIla extends AbstractObjectIla implements
-        ImmutableProxy
+    private static class MyObjectIla<T> extends AbstractObjectIla<T>
     {
-        private final ObjectIla[] ilas;
-
+        private final ObjectIla<T>[] ilas;
         private final int ilasLength;
 
-        MyObjectIla(ObjectIla[] ilas)
+        private MyObjectIla(final ObjectIla<T>[] ilas)
         {
             super(ilas[0].length() * ilas.length);
             this.ilas = ilas;
             this.ilasLength = ilas.length;
         }
 
-        protected void toArrayImpl(Object[] array, int offset, int stride,
-            long start, int length) throws DataInvalidException
+        @Override
+        protected void toArrayImpl(final T[] array, int offset, final int stride,
+            final long start, final int length) throws DataInvalidException
         {
             int currentIla = (int) (start % ilasLength);
             long ilaStart = start / ilasLength;
@@ -81,20 +74,6 @@ public final class ObjectIlaInterleave
                     ++ilaStart;
                 }
             }
-        }
-
-        public Map<String, Object> getParameters()
-        {
-            HashMap<String, Object> map = new HashMap<String, Object>();
-
-            map.put("name", "ObjectIlaInterleave");
-            map.put("length", new Long(length()));
-            for (int ii = 0; ii < ilas.length; ++ii)
-            {
-                map.put("ilas[" + ii + "]", getImmutableInfo(ilas[ii]));
-            }
-
-            return (map);
         }
     }
 }

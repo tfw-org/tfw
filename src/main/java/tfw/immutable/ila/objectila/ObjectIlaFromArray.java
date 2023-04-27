@@ -1,9 +1,6 @@
 package tfw.immutable.ila.objectila;
 
-import java.util.HashMap;
-import java.util.Map;
 import tfw.check.Argument;
-import tfw.immutable.ImmutableProxy;
 
 /**
  *
@@ -11,42 +8,29 @@ import tfw.immutable.ImmutableProxy;
  */
 public final class ObjectIlaFromArray
 {
-    private ObjectIlaFromArray()
-    {
-        // non-instantiable class
-    }
+    private ObjectIlaFromArray() {}
 
-    public static ObjectIla create(Object[] array)
-    {
-        return create(array, true);
-    }
-
-    public static ObjectIla create(Object[] array, boolean cloneArray)
+    public static <T> ObjectIla<T> create(final T[] array)
     {
         Argument.assertNotNull(array, "array");
 
-        return new MyObjectIla(array, cloneArray);
+        return new MyObjectIla<>(array);
     }
 
-    private static class MyObjectIla extends AbstractObjectIla
-        implements ImmutableProxy
+    private static class MyObjectIla<T> extends AbstractObjectIla<T>
     {
-        private final Object[] array;
+        private final T[] array;
 
-        MyObjectIla(Object[] array, boolean cloneArray)
+        private MyObjectIla(final T[] array)
         {
             super(array.length);
 
-            if (cloneArray)
-            {
-                this.array = (Object[])array.clone();
-            } else {
-                this.array = array;
-            }
+            this.array = array;
         }
 
-        protected void toArrayImpl(Object[] array, int offset,
-                                   int stride, long start, int length)
+        @Override
+        protected void toArrayImpl(final T[] array, int offset,
+                                   final int stride, final long start, final int length)
         {
             final int startPlusLength = (int) (start + length);
             for(int startInt = (int) start;
@@ -55,16 +39,6 @@ public final class ObjectIlaFromArray
             {
                 array[offset] = this.array[startInt];
             }
-        }
-                
-        public Map<String, Object> getParameters()
-        {
-            HashMap<String, Object> map = new HashMap<String, Object>();
-                        
-            map.put("name", "ObjectIlaFromArray");
-            map.put("length", new Long(length()));
-                        
-            return(map);
         }
     }
 }
