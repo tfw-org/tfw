@@ -1,7 +1,6 @@
 package tfw.visualizer;
 
 import java.util.Arrays;
-
 import junit.framework.TestCase;
 import tfw.immutable.ila.IlaTestDimensions;
 import tfw.immutable.ila.objectila.ObjectIla;
@@ -37,8 +36,6 @@ import tfw.tsm.ecd.IntegerECD;
 import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.StatelessTriggerECD;
 import tfw.tsm.ecd.ila.ObjectIlaECD;
-import tfw.visualizer.NodeAndEdgesFromRootProxy;
-import tfw.visualizer.ProxyNameComparator;
 
 public class NodeAndEdgesFromRootProxyTest extends TestCase
 {
@@ -149,8 +146,8 @@ public class NodeAndEdgesFromRootProxyTest extends TestCase
 		EventChannelProxy[] branchECs =
 			new BranchProxy(branch).getEventChannelProxies();
 		
-		Arrays.sort(rootECs, ProxyNameComparator.INSTANCE);
-		Arrays.sort(branchECs, ProxyNameComparator.INSTANCE);
+		Arrays.sort(rootECs, ProxyNameComparator.OBJECT_INSTANCE);
+		Arrays.sort(branchECs, ProxyNameComparator.OBJECT_INSTANCE);
 		
 		Object[] nodesArray = new Object[] {
 			new RootProxy(root),
@@ -167,19 +164,22 @@ public class NodeAndEdgesFromRootProxyTest extends TestCase
 			new TriggeredCommitProxy(triggeredCommit),
 			new TriggeredConverterProxy(triggeredConverter),
 			new ValidatorProxy(validator)};
-		Object[] nodesObjectIlaArray = nodeAndEdgesFromRootProxy.getNodesObjectIla().toArray();
+		ObjectIla<Object> nodesObjectIla = nodeAndEdgesFromRootProxy.getNodesObjectIla();
+		Object[] nodesObjectIlaArray = new Object[(int)nodesObjectIla.length()];
+		nodesObjectIla.toArray(nodesObjectIlaArray, 0, 0, nodesObjectIlaArray.length);
 		
-		Arrays.sort(nodesArray, ProxyNameComparator.INSTANCE);
-		Arrays.sort(nodesObjectIlaArray, ProxyNameComparator.INSTANCE);
+		Arrays.sort(nodesArray, ProxyNameComparator.OBJECT_INSTANCE);
+		Arrays.sort(nodesObjectIlaArray, ProxyNameComparator.OBJECT_INSTANCE);
 
-		ObjectIla targetIla = ObjectIlaFromArray.create(nodesArray);
-		ObjectIla actualIla = ObjectIlaFromArray.create(nodesObjectIlaArray);
+		ObjectIla<Object> targetIla = ObjectIlaFromArray.create(nodesArray);
+		ObjectIla<Object> actualIla = ObjectIlaFromArray.create(nodesObjectIlaArray);
 
         final Object epsilon = Object.class;
         ObjectIlaCheck.checkAll(targetIla, actualIla,
                                 IlaTestDimensions.defaultOffsetLength(),
                                 IlaTestDimensions.defaultMaxStride(),
-                                epsilon);
+                                epsilon,
+                                ObjectIlaCheck.OBJECT_CHECK_FACTORY);
 		
 		Object[] edgeFromsArray = new Object[] {
 			new RootProxy(root),
@@ -214,7 +214,8 @@ public class NodeAndEdgesFromRootProxyTest extends TestCase
         ObjectIlaCheck.checkAll(targetIla, actualIla,
                                 IlaTestDimensions.defaultOffsetLength(),
                                 IlaTestDimensions.defaultMaxStride(),
-                                epsilon);
+                                epsilon,
+                                ObjectIlaCheck.OBJECT_CHECK_FACTORY);
 		
 		Object[] edgeTosArray = new Object[] {
 			rootECs[0],
@@ -249,6 +250,7 @@ public class NodeAndEdgesFromRootProxyTest extends TestCase
         ObjectIlaCheck.checkAll(targetIla, actualIla,
                 IlaTestDimensions.defaultOffsetLength(),
                 IlaTestDimensions.defaultMaxStride(),
-                epsilon);
+                epsilon,
+                ObjectIlaCheck.OBJECT_CHECK_FACTORY);
 	}
 }

@@ -112,8 +112,8 @@ public class GraphFromRootProxy
 				Object[] childProxies = rootProxy.getChildProxies();
 				EventChannelProxy[] eventChannelProxies = rootProxy.getEventChannelProxies();
 				
-				Arrays.sort(childProxies, ProxyNameComparator.INSTANCE);
-				Arrays.sort(eventChannelProxies, ProxyNameComparator.INSTANCE);
+				Arrays.sort(childProxies, ProxyNameComparator.OBJECT_INSTANCE);
+				Arrays.sort(eventChannelProxies, ProxyNameComparator.OBJECT_INSTANCE);
 				
 				for (int i=0 ; i < eventChannelProxies.length ; i++)
 				{
@@ -133,8 +133,8 @@ public class GraphFromRootProxy
 				Object[] childProxies = (branchProxy).getChildProxies();
 				EventChannelProxy[] eventChannelProxies = branchProxy.getEventChannelProxies();
 				
-				Arrays.sort(childProxies, ProxyNameComparator.INSTANCE);
-				Arrays.sort(eventChannelProxies, ProxyNameComparator.INSTANCE);
+				Arrays.sort(childProxies, ProxyNameComparator.OBJECT_INSTANCE);
+				Arrays.sort(eventChannelProxies, ProxyNameComparator.OBJECT_INSTANCE);
 				
 				for (int i=0 ; i < eventChannelProxies.length ; i++)
 				{
@@ -208,7 +208,7 @@ public class GraphFromRootProxy
 		private static void addSourceEdges(SourceProxy[] sourceProxies,
 			Object proxy, ArrayList edgeFroms, ArrayList edgeTos)
 		{
-			Arrays.sort(sourceProxies, ProxyNameComparator.INSTANCE);
+			Arrays.sort(sourceProxies, ProxyNameComparator.OBJECT_INSTANCE);
 			
 			for (int i=0 ; i < sourceProxies.length ; i++)
 			{
@@ -220,7 +220,7 @@ public class GraphFromRootProxy
 		private static void addSinkEdges(SinkProxy[] sinkProxies,
 			Object proxy, ArrayList edgeFroms, ArrayList edgeTos)
 		{
-			Arrays.sort(sinkProxies, ProxyNameComparator.INSTANCE);
+			Arrays.sort(sinkProxies, ProxyNameComparator.OBJECT_INSTANCE);
 			
 			for (int i=0 ; i < sinkProxies.length ; i++)
 			{

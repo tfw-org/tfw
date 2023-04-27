@@ -1,11 +1,7 @@
 package tfw.immutable.ila.objectila;
 
-
 import junit.framework.TestCase;
 import tfw.immutable.ila.IlaTestDimensions;
-import tfw.immutable.ila.objectila.ObjectIla;
-import tfw.immutable.ila.objectila.ObjectIlaFromArray;
-import tfw.immutable.ila.objectila.ObjectIlaInterleave;
 
 /**
  * 
@@ -25,18 +21,19 @@ public class ObjectIlaInterleaveTest extends TestCase
             {
                 array[ii] = target[ii % jj][ii / jj] = new Object();
             }
-            ObjectIla[] ilas = new ObjectIla[jj];
+            ObjectIla<Object>[] ilas = new ObjectIla[jj];
             for (int ii = 0; ii < jj; ++ii)
             {
                 ilas[ii] = ObjectIlaFromArray.create(target[ii]);
             }
-            ObjectIla targetIla = ObjectIlaFromArray.create(array);
-            ObjectIla actualIla = ObjectIlaInterleave.create(ilas);
+            ObjectIla<Object> targetIla = ObjectIlaFromArray.create(array);
+            ObjectIla<Object> actualIla = ObjectIlaInterleave.create(ilas);
             final Object epsilon = Object.class;
             ObjectIlaCheck.checkAll(targetIla, actualIla,
                                       IlaTestDimensions.defaultOffsetLength(),
                                       IlaTestDimensions.defaultMaxStride(),
-                                      epsilon);
+                                      epsilon,
+                                      ObjectIlaCheck.OBJECT_CHECK_FACTORY);
         }
     }
 }

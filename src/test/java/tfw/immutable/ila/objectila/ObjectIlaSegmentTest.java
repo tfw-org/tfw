@@ -1,11 +1,7 @@
 package tfw.immutable.ila.objectila;
 
-
 import junit.framework.TestCase;
 import tfw.immutable.ila.IlaTestDimensions;
-import tfw.immutable.ila.objectila.ObjectIla;
-import tfw.immutable.ila.objectila.ObjectIlaFromArray;
-import tfw.immutable.ila.objectila.ObjectIlaSegment;
 
 /**
  *
@@ -22,14 +18,15 @@ public class ObjectIlaSegmentTest extends TestCase
         {
             master[ii] = new Object();
         }
-        ObjectIla masterIla = ObjectIlaFromArray.create(master);
-        ObjectIla checkIla = ObjectIlaSegment.create(masterIla, 0,
+        ObjectIla<Object> masterIla = ObjectIlaFromArray.create(master);
+        ObjectIla<Object> checkIla = ObjectIlaSegment.create(masterIla, 0,
                                                          masterIla.length());
         final int offsetLength = IlaTestDimensions.defaultOffsetLength();
         final int maxStride = IlaTestDimensions.defaultMaxStride();
         final Object epsilon = Object.class;
         ObjectIlaCheck.checkWithoutCorrectness(checkIla, offsetLength,
-                                                 epsilon);
+                                                 epsilon,
+                                                 ObjectIlaCheck.OBJECT_CHECK_FACTORY);
         for(long start = 0; start < length; ++start)
         {
             for(long len = 0; len < length - start; ++len)
@@ -39,12 +36,13 @@ public class ObjectIlaSegmentTest extends TestCase
                 {
                     array[ii] = master[ii + (int) start];
                 }
-                ObjectIla targetIla = ObjectIlaFromArray.create(array);
-                ObjectIla actualIla = ObjectIlaSegment.create(masterIla,
+                ObjectIla<Object> targetIla = ObjectIlaFromArray.create(array);
+                ObjectIla<Object> actualIla = ObjectIlaSegment.create(masterIla,
                                                                   start, len);
                 ObjectIlaCheck.checkCorrectness(targetIla, actualIla,
                                                   offsetLength, maxStride,
-                                                  epsilon);
+                                                  epsilon,
+                                                  ObjectIlaCheck.OBJECT_CHECK_FACTORY);
             }
         }
     }

@@ -72,7 +72,10 @@ public class SelectionAndListCommit extends Commit
     {
         try
         {
-            final Object[] list = ((ObjectIla) get(listECD)).toArray();
+        	final ObjectIla<Object> objectIla = (ObjectIla<Object>)get(listECD);
+            final Object[] list = new Object[(int)objectIla.length()];
+            
+            objectIla.toArray(list, 0, 0, list.length);
 
             EventQueue.invokeLater(new Runnable()
             {

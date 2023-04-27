@@ -2,9 +2,6 @@ package tfw.immutable.ila.objectila;
 
 import junit.framework.TestCase;
 import tfw.immutable.DataInvalidException;
-import tfw.immutable.ila.objectila.ObjectIla;
-import tfw.immutable.ila.objectila.ObjectIlaFromArray;
-import tfw.immutable.ila.objectila.ObjectIlaIterator;
 
 public class ObjectIlaIteratorTest extends TestCase
 {
@@ -19,8 +16,8 @@ public class ObjectIlaIteratorTest extends TestCase
 			array[i] = new Object();
 		}
 		
-		ObjectIla ila = ObjectIlaFromArray.create(array);
-		ObjectIlaIterator ii = new ObjectIlaIterator(ila);
+		ObjectIla<Object> ila = ObjectIlaFromArray.create(array);
+		ObjectIlaIterator<Object> ii = new ObjectIlaIterator<>(ila, new Object[100]);
 
 		int i=0;
 		for ( ; ii.hasNext() ; i++)

@@ -6,17 +6,19 @@ import tfw.immutable.ila.objectila.ObjectIla;
 
 public class IndexedEdgesFromNodesAndEdges
 {
-	public static LongIla create(ObjectIla nodes, ObjectIla edges)
+	private IndexedEdgesFromNodesAndEdges() {}
+	
+	public static LongIla create(ObjectIla<Object> nodes, ObjectIla<Object> edges)
 	{
 		return(new MyLongIla(nodes, edges));
 	}
 	
 	private static class MyLongIla implements LongIla
 	{
-		private final ObjectIla nodes;
-		private final ObjectIla edges;
+		private final ObjectIla<Object> nodes;
+		private final ObjectIla<Object> edges;
 		
-		public MyLongIla(ObjectIla nodes, ObjectIla edges)
+		public MyLongIla(ObjectIla<Object> nodes, ObjectIla<Object> edges)
 		{
 			this.nodes = nodes;
 			this.edges = edges;
@@ -30,8 +32,10 @@ public class IndexedEdgesFromNodesAndEdges
 		public long[] toArray()
 			throws DataInvalidException
 		{
-			Object[] nodeArray = nodes.toArray();
-			Object[] edgeArray = edges.toArray();
+			Object[] nodeArray = new Object[(int)nodes.length()];
+			nodes.toArray(nodeArray, 0, 0, nodeArray.length);
+			Object[] edgeArray = new Object[(int)edges.length()];
+			edges.toArray(edgeArray, 0, 0, edgeArray.length);
 			long[] indexArray = new long[edgeArray.length];
 			
 			createIndexArray(nodeArray, edgeArray, indexArray, 0, 1);
@@ -42,8 +46,10 @@ public class IndexedEdgesFromNodesAndEdges
 		public long[] toArray(long start, int length)
 			throws DataInvalidException
 		{
-			Object[] nodeArray = nodes.toArray();
-			Object[] edgeArray = edges.toArray(start, length);
+			Object[] nodeArray = new Object[(int)nodes.length()];
+			nodes.toArray(nodeArray, 0, 0, nodeArray.length);
+			Object[] edgeArray = new Object[length];
+			edges.toArray(edgeArray, 0, start, length);
 			long[] indexArray = new long[edgeArray.length];
 			
 			createIndexArray(nodeArray, edgeArray, indexArray, 0, 1);
@@ -54,8 +60,10 @@ public class IndexedEdgesFromNodesAndEdges
 		public void toArray(long[] array, int offset, long start, int length)
 			throws DataInvalidException
 		{
-			Object[] nodeArray = nodes.toArray();
-			Object[] edgeArray = edges.toArray(start, length);
+			Object[] nodeArray = new Object[(int)nodes.length()];
+			nodes.toArray(nodeArray, 0, 0, nodeArray.length);
+			Object[] edgeArray = new Object[length];
+			edges.toArray(edgeArray, 0, start, length);
 			
 			createIndexArray(nodeArray, edgeArray, array, offset, 1);
 		}
@@ -63,8 +71,10 @@ public class IndexedEdgesFromNodesAndEdges
 		public void toArray(long[] array, int offset, int stride, long start, int length)
 			throws DataInvalidException
 		{
-			Object[] nodeArray = nodes.toArray();
-			Object[] edgeArray = edges.toArray(start, length);
+			Object[] nodeArray = new Object[(int)nodes.length()];
+			nodes.toArray(nodeArray, 0, 0, nodeArray.length);
+			Object[] edgeArray = new Object[length];
+			edges.toArray(edgeArray, 0, start, length);
 			
 			createIndexArray(nodeArray, edgeArray, array, offset, stride);
 		}

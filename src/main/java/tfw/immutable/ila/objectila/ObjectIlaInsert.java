@@ -1,9 +1,6 @@
 package tfw.immutable.ila.objectila;
 
-import java.util.HashMap;
-import java.util.Map;
 import tfw.check.Argument;
-import tfw.immutable.ImmutableProxy;
 import tfw.immutable.DataInvalidException;
 
 /**
@@ -12,29 +9,25 @@ import tfw.immutable.DataInvalidException;
  */
 public final class ObjectIlaInsert
 {
-    private ObjectIlaInsert()
-    {
-        // non-instantiable class
-    }
+    private ObjectIlaInsert() {}
 
-    public static ObjectIla create(ObjectIla ila, long index, Object value)
+    public static <T> ObjectIla<T> create(final ObjectIla<T> ila, final long index, final T value)
     {
         Argument.assertNotNull(ila, "ila");
         Argument.assertNotLessThan(index, 0, "index");
         Argument.assertNotGreaterThan(index, ila.length(), "index",
                                       "ila.length()");
 
-        return new MyObjectIla(ila, index, value);
+        return new MyObjectIla<>(ila, index, value);
     }
 
-    private static class MyObjectIla extends AbstractObjectIla
-        implements ImmutableProxy
+    private static class MyObjectIla<T> extends AbstractObjectIla<T>
     {
-        private final ObjectIla ila;
+        private final ObjectIla<T> ila;
         private final long index;
-        private final Object value;
+        private final T value;
 
-        MyObjectIla(ObjectIla ila, long index, Object value)
+        private MyObjectIla(final ObjectIla<T> ila, final long index, final T value)
         {
             super(ila.length() + 1);
             this.ila = ila;
@@ -42,8 +35,9 @@ public final class ObjectIlaInsert
             this.value = value;
         }
 
-        protected void toArrayImpl(Object[] array, int offset,
-                                   int stride, long start, int length)
+        @Override
+        protected void toArrayImpl(final T[] array, final int offset,
+                                   final int stride, final long start, final int length)
             throws DataInvalidException
         {
             final long startPlusLength = start + length;
@@ -71,19 +65,6 @@ public final class ObjectIlaInsert
                                 stride, index, length - indexMinusStart - 1);
                 }
             }
-        }
-                
-        public Map<String, Object> getParameters()
-        {
-            HashMap<String, Object> map = new HashMap<String, Object>();
-                        
-            map.put("name", "ObjectIlaInsert");
-            map.put("length", new Long(length()));
-            map.put("ila", getImmutableInfo(ila));
-            map.put("index", new Long(index));
-            map.put("value", value);
-
-            return(map);
         }
     }
 }

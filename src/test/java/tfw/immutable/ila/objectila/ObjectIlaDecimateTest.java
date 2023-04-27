@@ -1,11 +1,7 @@
 package tfw.immutable.ila.objectila;
 
-
 import junit.framework.TestCase;
 import tfw.immutable.ila.IlaTestDimensions;
-import tfw.immutable.ila.objectila.ObjectIla;
-import tfw.immutable.ila.objectila.ObjectIlaFromArray;
-import tfw.immutable.ila.objectila.ObjectIlaDecimate;
 
 /**
  *
@@ -22,7 +18,7 @@ public class ObjectIlaDecimateTest extends TestCase
         {
             array[ii] = new Object();
         }
-        ObjectIla ila = ObjectIlaFromArray.create(array);
+        ObjectIla<Object> ila = ObjectIlaFromArray.create(array);
         for(int factor = 2; factor <= length; ++factor)
         {
             final int targetLength = (length + factor - 1) / factor;
@@ -31,13 +27,14 @@ public class ObjectIlaDecimateTest extends TestCase
             {
                 target[ii] = array[ii * factor];
             }
-            ObjectIla targetIla = ObjectIlaFromArray.create(target);
-            ObjectIla actualIla = ObjectIlaDecimate.create(ila, factor);
+            ObjectIla<Object> targetIla = ObjectIlaFromArray.create(target);
+            ObjectIla<Object> actualIla = ObjectIlaDecimate.create(ila, factor, new Object[1000]);
             final Object epsilon = Object.class;
             ObjectIlaCheck.checkAll(targetIla, actualIla,
                                     IlaTestDimensions.defaultOffsetLength(),
                                     IlaTestDimensions.defaultMaxStride(),
-                                    epsilon);
+                                    epsilon,
+                                    ObjectIlaCheck.OBJECT_CHECK_FACTORY);
         }
     }
 }

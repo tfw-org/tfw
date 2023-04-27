@@ -114,7 +114,7 @@ public class OctalDump
 					"type="+type+" not allowed!");
 		}
 
-		for (ObjectIlaIterator oii=new ObjectIlaIterator(strings) ;
+		for (ObjectIlaIterator oii=new ObjectIlaIterator(strings, new Object[1000]) ;
 			oii.hasNext() ; )
 		{
 			System.out.println((String)oii.next());

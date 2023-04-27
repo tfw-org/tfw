@@ -1,9 +1,6 @@
 package tfw.immutable.ila.objectila;
 
-import java.util.HashMap;
-import java.util.Map;
 import tfw.check.Argument;
-import tfw.immutable.ImmutableProxy;
 
 /**
  *
@@ -11,31 +8,29 @@ import tfw.immutable.ImmutableProxy;
  */
 public final class ObjectIlaFill
 {
-    private ObjectIlaFill()
-    {
-        // non-instantiable class
-    }
+    private ObjectIlaFill() {}
 
-    public static ObjectIla create(Object value, long length)
+    public static <T> ObjectIla<T> create(final T value, final long length)
     {
         Argument.assertNotLessThan(length, 0, "length");
 
-        return new MyObjectIla(value, length);
+        return new MyObjectIla<>(value, length);
     }
 
-    private static class MyObjectIla extends AbstractObjectIla
-        implements ImmutableProxy
+    private static class MyObjectIla<T> extends AbstractObjectIla<T>
     {
-        private final Object value;
+        private final T value;
 
-        MyObjectIla(Object value, long length)
+        private MyObjectIla(final T value, final long length)
         {
             super(length);
+            
             this.value = value;
         }
 
-        protected void toArrayImpl(Object[] array, int offset,
-                                   int stride, long start, int length)
+        @Override
+        protected void toArrayImpl(final T[] array, int offset,
+                                   final int stride, final long start, final int length)
         {
             final int startPlusLength = (int) (start + length);
             for(int startInt = (int) start;
@@ -44,17 +39,6 @@ public final class ObjectIlaFill
             {
                 array[offset] = value;
             }
-        }
-                
-        public Map<String, Object> getParameters()
-        {
-            HashMap<String, Object> map = new HashMap<String, Object>();
-                        
-            map.put("name", "ObjectIlaFill");
-            map.put("length", new Long(length()));
-            map.put("value", value);
-
-            return(map);
         }
     }
 }

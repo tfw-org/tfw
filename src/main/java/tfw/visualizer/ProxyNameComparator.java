@@ -3,10 +3,10 @@ package tfw.visualizer;
 import java.util.Comparator;
 import tfw.tsm.Proxy;
 
-public class ProxyNameComparator implements Comparator
+public class ProxyNameComparator<T> implements Comparator<T>
 {
-	public static final ProxyNameComparator INSTANCE =
-		new ProxyNameComparator();
+	public static final ProxyNameComparator<Object> OBJECT_INSTANCE =
+		new ProxyNameComparator<>();
 	
 	public int compare(Object obj1, Object obj2)
 	{

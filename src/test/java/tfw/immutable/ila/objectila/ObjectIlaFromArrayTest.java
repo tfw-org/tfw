@@ -1,10 +1,7 @@
 package tfw.immutable.ila.objectila;
 
-
 import junit.framework.TestCase;
 import tfw.immutable.ila.IlaTestDimensions;
-import tfw.immutable.ila.objectila.ObjectIla;
-import tfw.immutable.ila.objectila.ObjectIlaFromArray;
 
 /**
  *
@@ -22,10 +19,11 @@ public class ObjectIlaFromArrayTest extends TestCase
         {
             creation[ii] = new Object();
         }
-        final ObjectIla ila = ObjectIlaFromArray.create(creation);
+        final ObjectIla<Object> ila = ObjectIlaFromArray.create(creation);
         final int offsetLength = IlaTestDimensions.defaultOffsetLength();
         final Object epsilon = Object.class;
-        ObjectIlaCheck.checkWithoutCorrectness(ila, offsetLength, epsilon);
+        ObjectIlaCheck.checkWithoutCorrectness(ila, offsetLength, epsilon,
+                ObjectIlaCheck.OBJECT_CHECK_FACTORY);
     }
 
     public void testValueCorrectness()
@@ -43,7 +41,7 @@ public class ObjectIlaFromArrayTest extends TestCase
         {
             creation[ii] = new Object();
         }
-        final ObjectIla ila = ObjectIlaFromArray.create(creation);
+        final ObjectIla<Object> ila = ObjectIlaFromArray.create(creation);
 
         for(int stride = -maxAbsStride; stride <= maxAbsStride; ++stride)
         {

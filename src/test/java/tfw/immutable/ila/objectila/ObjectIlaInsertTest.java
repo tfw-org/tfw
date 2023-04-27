@@ -1,11 +1,7 @@
 package tfw.immutable.ila.objectila;
 
-
 import junit.framework.TestCase;
 import tfw.immutable.ila.IlaTestDimensions;
-import tfw.immutable.ila.objectila.ObjectIla;
-import tfw.immutable.ila.objectila.ObjectIlaFromArray;
-import tfw.immutable.ila.objectila.ObjectIlaInsert;
 
 /**
  *
@@ -32,15 +28,16 @@ public class ObjectIlaInsertTest extends TestCase
                 }
                 target[ii + skipit] = array[ii] = new Object();
             }
-            ObjectIla origIla = ObjectIlaFromArray.create(array);
-            ObjectIla targetIla = ObjectIlaFromArray.create(target);
-            ObjectIla actualIla = ObjectIlaInsert.create(origIla, index,
+            ObjectIla<Object> origIla = ObjectIlaFromArray.create(array);
+            ObjectIla<Object> targetIla = ObjectIlaFromArray.create(target);
+            ObjectIla<Object> actualIla = ObjectIlaInsert.create(origIla, index,
                                                              value);
             final Object epsilon = Object.class;
             ObjectIlaCheck.checkAll(targetIla, actualIla,
                                       IlaTestDimensions.defaultOffsetLength(),
                                       IlaTestDimensions.defaultMaxStride(),
-                                      epsilon);
+                                      epsilon,
+                                      ObjectIlaCheck.OBJECT_CHECK_FACTORY);
         }
     }
 }

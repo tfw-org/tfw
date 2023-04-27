@@ -27,11 +27,13 @@ public class ObjectIlaMultiplexerStrategy implements MultiplexerStrategy
 
         private final Object[] objs;
 
-        MyMultiStateAccessor(ObjectIla ila)
+        MyMultiStateAccessor(ObjectIla<Object> ila)
         {
             try
             {
-                this.objs = ila.toArray();
+            	this.objs = new Object[(int)ila.length()];
+            	
+                ila.toArray(this.objs, 0, 0, this.objs.length);
             }
             catch (DataInvalidException e)
             {
@@ -69,7 +71,11 @@ public class ObjectIlaMultiplexerStrategy implements MultiplexerStrategy
     	{
         	try
         	{
-        		array = ((ObjectIla)originalMultiState).toArray();
+        		final ObjectIla<Object> objectIla = (ObjectIla<Object>)originalMultiState;
+        		
+        		array = new Object[(int)objectIla.length()];
+        		
+        		objectIla.toArray(array, 0, 0, array.length);
         	}
         	catch (DataInvalidException e)
         	{
@@ -93,6 +99,6 @@ public class ObjectIlaMultiplexerStrategy implements MultiplexerStrategy
     		array[index] = values[i];
     	}
     	
-    	return ObjectIlaFromArray.create(array, false);
+    	return ObjectIlaFromArray.create(array);
     }
 }

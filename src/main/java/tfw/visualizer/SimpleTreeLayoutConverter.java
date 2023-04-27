@@ -47,9 +47,21 @@ public class SimpleTreeLayoutConverter extends Converter
 		
 		try
 		{
-			nodeClusters = ((ObjectIla)get(nodeClustersECD)).toArray();
-			nodeClusterFroms = ((ObjectIla)get(nodeClusterFromsECD)).toArray();
-			nodeClusterTos = ((ObjectIla)get(nodeClusterTosECD)).toArray();
+			final ObjectIla<Object> nodeClustersIla = (ObjectIla<Object>)get(nodeClustersECD);
+			nodeClusters = new Object[(int)nodeClustersIla.length()];
+			
+			nodeClustersIla.toArray(nodeClusters, 0, 0, nodeClusters.length);
+			
+			final ObjectIla<Object> nodeClusterFromsIla = (ObjectIla<Object>)get(nodeClusterFromsECD);
+			nodeClusterFroms = new Object[(int)nodeClusterFromsIla.length()];
+			
+			nodeClusterFromsIla.toArray(nodeClusterFroms, 0, 0, nodeClusterFroms.length);
+			
+			final ObjectIla<Object> nodeClusterTosIla = (ObjectIla<Object>)get(nodeClusterTosECD);
+			nodeClusterTos = new Object[(int)nodeClusterTosIla.length()];
+			
+			nodeClusterTosIla.toArray(nodeClusterTos, 0, 0, nodeClusterTos.length);
+			
 		}
 		catch (DataInvalidException e)
 		{
