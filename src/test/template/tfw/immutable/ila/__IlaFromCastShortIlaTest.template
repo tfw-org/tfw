@@ -1,0 +1,39 @@
+// byteila,charila,doubleila,floatila,intila,longila
+package %%PACKAGE%%;
+
+%%RANDOM_INCLUDE%%
+import junit.framework.TestCase;
+import %%PACKAGE%%.%%NAME%%Ila;
+import %%PACKAGE%%.%%NAME%%IlaFromArray;
+import %%PACKAGE%%.%%NAME%%IlaFromCastShortIla;
+import tfw.immutable.ila.IlaTestDimensions;
+import tfw.immutable.ila.shortila.ShortIla;
+import tfw.immutable.ila.shortila.ShortIlaFromArray;
+
+/**
+ *
+ * @immutables.types=numericnotshort
+ */
+public class %%NAME%%IlaFromCastShortIlaTest extends TestCase
+{
+    public void testAll() throws Exception
+    {
+        %%RANDOM_INIT%%
+        final int length = IlaTestDimensions.defaultIlaLength();
+        final short[] array = new short[length];
+        final %%TYPE%%[] target = new %%TYPE%%[length];
+        for(int ii = 0; ii < array.length; ++ii)
+        {
+            array[ii] = (short) random.nextInt();
+            target[ii] = (%%TYPE%%) array[ii];
+        }
+        ShortIla ila = ShortIlaFromArray.create(array);
+        %%NAME%%Ila targetIla = %%NAME%%IlaFromArray.create(target);
+        %%NAME%%Ila actualIla = %%NAME%%IlaFromCastShortIla.create(ila);
+        final %%TYPE%% epsilon = (%%TYPE%%) 0.0;
+        %%NAME%%IlaCheck.checkAll(targetIla, actualIla,
+                                IlaTestDimensions.defaultOffsetLength(),
+                                IlaTestDimensions.defaultMaxStride(),
+                                epsilon);
+    }
+}

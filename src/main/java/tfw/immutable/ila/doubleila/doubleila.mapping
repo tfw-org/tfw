@@ -1,7 +1,0 @@
-%%TYPE%% = double
-%%NAME%% = Double
-%%PACKAGE%% = double
-%%RANDOM_VALUE%% = random.nextDouble()
-%%ASSERT_EQUALS_DELTA%% = , 0
-%%CREATE_IMMUTABLE_START%% = new Double(
-%%CREATE_IMMUTABLE_END%% = )

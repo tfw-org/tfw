@@ -2,10 +2,10 @@ package tfw.immutable.ila.floatila;
 
 import java.util.Random;
 import junit.framework.TestCase;
-import tfw.immutable.ila.IlaTestDimensions;
 import tfw.immutable.ila.floatila.FloatIla;
 import tfw.immutable.ila.floatila.FloatIlaFromArray;
 import tfw.immutable.ila.floatila.FloatIlaFromCastIntIla;
+import tfw.immutable.ila.IlaTestDimensions;
 import tfw.immutable.ila.intila.IntIla;
 import tfw.immutable.ila.intila.IntIlaFromArray;
 

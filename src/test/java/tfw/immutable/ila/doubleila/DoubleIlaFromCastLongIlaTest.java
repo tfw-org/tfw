@@ -2,10 +2,10 @@ package tfw.immutable.ila.doubleila;
 
 import java.util.Random;
 import junit.framework.TestCase;
-import tfw.immutable.ila.IlaTestDimensions;
 import tfw.immutable.ila.doubleila.DoubleIla;
 import tfw.immutable.ila.doubleila.DoubleIlaFromArray;
 import tfw.immutable.ila.doubleila.DoubleIlaFromCastLongIla;
+import tfw.immutable.ila.IlaTestDimensions;
 import tfw.immutable.ila.longila.LongIla;
 import tfw.immutable.ila.longila.LongIlaFromArray;
 

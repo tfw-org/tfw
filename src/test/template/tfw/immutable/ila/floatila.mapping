@@ -1,0 +1,10 @@
+%%TYPE%% = float
+%%NAME%% = Float
+%%PACKAGE%% = tfw.immutable.ila.floatila
+%%RANDOM_VALUE%% = random.nextFloat()
+%%RANDOM_INCLUDE%%=import java.util.Random;
+%%RANDOM_INIT%%=final Random random = new Random(0);
+%%DEFAULT_VALUE%%=0.0f
+%%ASSERT_EQUALS_DELTA%% = , 0f
+%%CREATE_IMMUTABLE_START%% = new Float(
+%%CREATE_IMMUTABLE_END%% = )

@@ -1,0 +1,10 @@
+%%TYPE%% = double
+%%NAME%% = Double
+%%PACKAGE%% = tfw.immutable.ila.doubleila
+%%RANDOM_VALUE%% = random.nextDouble()
+%%RANDOM_INCLUDE%%=import java.util.Random;
+%%RANDOM_INIT%%=final Random random = new Random(0);
+%%DEFAULT_VALUE%%=0.0
+%%ASSERT_EQUALS_DELTA%% = , 0
+%%CREATE_IMMUTABLE_START%% = new Double(
+%%CREATE_IMMUTABLE_END%% = )

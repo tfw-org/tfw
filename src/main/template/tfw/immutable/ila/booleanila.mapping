@@ -1,0 +1,7 @@
+%%TYPE%% = boolean
+%%NAME%% = Boolean
+%%PACKAGE%% = tfw.immutable.ila.booleanila
+%%RANDOM_VALUE%% = random.nextBoolean()
+%%ASSERT_EQUALS_DELTA%% =
+%%CREATE_IMMUTABLE_START%% = new Boolean(
+%%CREATE_IMMUTABLE_END%% = )

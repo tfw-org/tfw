@@ -1,0 +1,10 @@
+%%TYPE%% = char
+%%NAME%% = Char
+%%PACKAGE%% = tfw.immutable.ila.charila
+%%RANDOM_VALUE%% = (char)random.nextInt()
+%%RANDOM_INCLUDE%%=import java.util.Random;
+%%RANDOM_INIT%%=final Random random = new Random(0);
+%%DEFAULT_VALUE%%=(char)0
+%%ASSERT_EQUALS_DELTA%% =
+%%CREATE_IMMUTABLE_START%% = new Character(
+%%CREATE_IMMUTABLE_END%% = )

@@ -2,10 +2,10 @@ package tfw.immutable.ila.byteila;
 
 import java.util.Random;
 import junit.framework.TestCase;
-import tfw.immutable.ila.IlaTestDimensions;
 import tfw.immutable.ila.byteila.ByteIla;
 import tfw.immutable.ila.byteila.ByteIlaFromArray;
 import tfw.immutable.ila.byteila.ByteIlaFromCastCharIla;
+import tfw.immutable.ila.IlaTestDimensions;
 import tfw.immutable.ila.charila.CharIla;
 import tfw.immutable.ila.charila.CharIlaFromArray;
 

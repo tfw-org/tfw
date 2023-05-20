@@ -1,0 +1,38 @@
+// byteila,charila,doubleila,floatila,intila,longila,shortila
+package %%PACKAGE%%;
+
+%%RANDOM_INCLUDE%%
+import junit.framework.TestCase;
+import tfw.immutable.ila.IlaTestDimensions;
+import %%PACKAGE%%.%%NAME%%Ila;
+import %%PACKAGE%%.%%NAME%%IlaFromArray;
+import %%PACKAGE%%.%%NAME%%IlaRamp;
+
+/**
+ *
+ * @immutables.types=numeric
+ */
+public class %%NAME%%IlaRampTest extends TestCase
+{
+    public void testAll() throws Exception
+    {
+        %%RANDOM_INIT%%
+        final %%TYPE%% startValue = %%RANDOM_VALUE%%;
+        final %%TYPE%% increment = %%RANDOM_VALUE%%;
+        final int length = IlaTestDimensions.defaultIlaLength();
+        final %%TYPE%%[] array = new %%TYPE%%[length];
+        %%TYPE%% value = startValue;
+        for(int ii = 0; ii < array.length; ++ii, value += increment)
+        {
+            array[ii] = value;
+        }
+        %%NAME%%Ila targetIla = %%NAME%%IlaFromArray.create(array);
+        %%NAME%%Ila actualIla = %%NAME%%IlaRamp.create(startValue, increment,
+                                                       length);
+        final %%TYPE%% epsilon = (%%TYPE%%) 0.000001;
+        %%NAME%%IlaCheck.checkAll(targetIla, actualIla,
+                                  IlaTestDimensions.defaultOffsetLength(),
+                                  IlaTestDimensions.defaultMaxStride(),
+                                  epsilon);
+    }
+}
