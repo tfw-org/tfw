@@ -1,0 +1,40 @@
+// byteila,charila,doubleila,floatila,intila,longila,shortila
+package %%PACKAGE%%;
+
+%%RANDOM_INCLUDE%%
+import junit.framework.TestCase;
+import tfw.immutable.ila.IlaTestDimensions;
+import %%PACKAGE%%.%%NAME%%Ila;
+import %%PACKAGE%%.%%NAME%%IlaFromArray;
+import %%PACKAGE%%.%%NAME%%IlaAdd;
+
+/**
+ *
+ * @immutables.types=numeric
+ */
+public class %%NAME%%IlaAddTest extends TestCase
+{
+    public void testAll() throws Exception
+    {
+        %%RANDOM_INIT%%
+        final int length = IlaTestDimensions.defaultIlaLength();
+        final %%TYPE%%[] leftArray = new %%TYPE%%[length];
+        final %%TYPE%%[] rightArray = new %%TYPE%%[length];
+        final %%TYPE%%[] array = new %%TYPE%%[length];
+        for(int ii = 0; ii < leftArray.length; ++ii)
+        {
+            leftArray[ii] = %%RANDOM_VALUE%%;
+            rightArray[ii] = %%RANDOM_VALUE%%;
+            array[ii] = (%%TYPE%%) (leftArray[ii] + rightArray[ii]);
+        }
+        %%NAME%%Ila leftIla = %%NAME%%IlaFromArray.create(leftArray);
+        %%NAME%%Ila rightIla = %%NAME%%IlaFromArray.create(rightArray);
+        %%NAME%%Ila targetIla = %%NAME%%IlaFromArray.create(array);
+        %%NAME%%Ila actualIla = %%NAME%%IlaAdd.create(leftIla, rightIla);
+        final %%TYPE%% epsilon = (%%TYPE%%) 0.0;
+        %%NAME%%IlaCheck.checkAll(targetIla, actualIla,
+                                IlaTestDimensions.defaultOffsetLength(),
+                                IlaTestDimensions.defaultMaxStride(),
+                                epsilon);
+    }
+}

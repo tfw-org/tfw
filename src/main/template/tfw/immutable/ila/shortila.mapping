@@ -1,0 +1,7 @@
+%%TYPE%% = short
+%%NAME%% = Short
+%%PACKAGE%% = tfw.immutable.ila.shortila
+%%RANDOM_VALUE%% = (short)random.nextInt()
+%%ASSERT_EQUALS_DELTA%% =
+%%CREATE_IMMUTABLE_START%% = new Short(
+%%CREATE_IMMUTABLE_END%% = )

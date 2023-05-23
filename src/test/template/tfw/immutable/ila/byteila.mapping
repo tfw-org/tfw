@@ -1,0 +1,10 @@
+%%TYPE%% = byte
+%%NAME%% = Byte
+%%PACKAGE%% = tfw.immutable.ila.byteila
+%%RANDOM_VALUE%% = (byte)random.nextInt()
+%%RANDOM_INCLUDE%%=import java.util.Random;
+%%RANDOM_INIT%%=final Random random = new Random(0);
+%%DEFAULT_VALUE%%=(byte)0
+%%ASSERT_EQUALS_DELTA%% =
+%%CREATE_IMMUTABLE_START%% = new Byte(
+%%CREATE_IMMUTABLE_END%% = )

@@ -52,7 +52,7 @@ public final class BooleanIlaFill
                         
             map.put("name", "BooleanIlaFill");
             map.put("length", new Long(length()));
-            map.put("value", (value? Boolean.TRUE : Boolean.FALSE));
+            map.put("value", new Boolean(value));
 
             return(map);
         }

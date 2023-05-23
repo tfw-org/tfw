@@ -1,4 +1,3 @@
-
 package tfw.immutable.ila.byteila;
 
 import java.util.Random;

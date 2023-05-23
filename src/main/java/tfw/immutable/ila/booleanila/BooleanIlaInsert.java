@@ -81,7 +81,7 @@ public final class BooleanIlaInsert
             map.put("length", new Long(length()));
             map.put("ila", getImmutableInfo(ila));
             map.put("index", new Long(index));
-            map.put("value", (value? Boolean.TRUE : Boolean.FALSE));
+            map.put("value", new Boolean(value));
 
             return(map);
         }
