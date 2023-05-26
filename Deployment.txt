@@ -14,16 +14,17 @@
 13. Press "Create new tag: <version>".
 14. Ensure target is "master".
 15. Enter <version> in Release Title field.
-16. Ensure "Set as a pre-release" is unchecked.
-17. Ensure "Set as the latest release" is checked.
-18. Press "Publish release" button.
-19. Check "Actions" to make sure everything went ok.
-20. Go back to main project screen.
-21. Show pom.xml file.
-22. Ensure on "master" branch by looking at left column.
-23. Press pencil icon on right to edit the pom.xml file.
-24. Increment <version> and add "-SNAPSHOT" to version field.
-25. Press "Commit Changes" button in upper right.
-26. Change commit message to "Prepare for next development iteration".
-27. Make sure "Commit directly to master branch" is selected.
-28. Press "Commit Changes" button.
+16. Press "Generate release notes".
+17. Ensure "Set as a pre-release" is unchecked.
+18. Ensure "Set as the latest release" is checked.
+19. Press "Publish release" button.
+20. Check "Actions" to make sure everything went ok.
+21. Go back to main project screen.
+22. Show pom.xml file.
+23. Ensure on "master" branch by looking at left column.
+24. Press pencil icon on right to edit the pom.xml file.
+25. Increment <version> and add "-SNAPSHOT" to version field.
+26. Press "Commit Changes" button in upper right.
+27. Change commit message to "Prepare for next development iteration".
+28. Make sure "Commit directly to master branch" is selected.
+29. Press "Commit Changes" button.
