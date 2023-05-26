@@ -29,3 +29,12 @@ jobs:
     - name: Update dependency graph when on master
       uses: advanced-security/maven-dependency-submission-action@571e99aab1055c2e71a1e2309b9691de18d6b7d6
       if: ${{ github.ref == 'refs/heads/master' }}
+    - name: Get changed files
+      uses: tj-actions/verify-changed-files@v14.0.2
+      id: verify-changed-files
+    - name: Run step only when files change
+      if: steps.verify-changed-files.outputs.files_changed == 'true'
+      uses: actions/github-script@v6.4.1
+      with:
+        script: |
+            core.setFailed('Changed files found: ${{ steps.verify-changed-files.outputs.changed_files }}')
