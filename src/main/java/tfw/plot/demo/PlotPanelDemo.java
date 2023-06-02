@@ -17,67 +17,55 @@ import tfw.tsm.ecd.IntegerECD;
 import tfw.tsm.ecd.StatelessTriggerECD;
 import tfw.tsm.ecd.ila.ObjectIlaECD;
 
-public final class PlotPanelDemo
-{
-	private PlotPanelDemo() {}
-	
-	public static void main(String[] args)
-	{
-		
-		final ColorECD BACKGROUND_COLOR_ECD =
-			new ColorECD("backgroundColor");
-		final StatelessTriggerECD GENERATE_GRAPHIC_TRIGGER_ECD =
-			new StatelessTriggerECD("generateGraphicTrigger");
-		final GraphicECD GRAPHIC_ECD =
-			new GraphicECD("graphic");
-		final IntegerECD HEIGHT_ECD =
-			new IntegerECD("height");
-		final ImageECD IMAGE_ECD =
-			new ImageECD("image");
-		final ImageObserverECD IMAGE_OBSERVER_ECD =
-			new ImageObserverECD("imageObserver");
-		final IntegerECD IMAGE_X_ECD =
-			new IntegerECD("imageX");
-		final IntegerECD IMAGE_Y_ECD =
-			new IntegerECD("imageY");
-		final ObjectIlaECD MULTI_GRAPHIC_ECD =
-			new ObjectIlaECD("multiGraphic");
-		final IntegerECD WIDTH_ECD =
-			new IntegerECD("width");
+public final class PlotPanelDemo {
+    private PlotPanelDemo() {}
 
-		JFrameBB frame = new JFrameBB("PlotPanelTest");
-		
-		RootFactory rf2 = new RootFactory();
-//		rf2.setLogging(true);
-		rf2.addEventChannel(BACKGROUND_COLOR_ECD, Color.blue);
-		rf2.addEventChannel(GENERATE_GRAPHIC_TRIGGER_ECD);
-		rf2.addEventChannel(HEIGHT_ECD);
-		rf2.addEventChannel(IMAGE_ECD, new BufferedImage(30, 30, BufferedImage.TYPE_INT_RGB));
-		rf2.addEventChannel(IMAGE_OBSERVER_ECD, frame);
-		rf2.addEventChannel(IMAGE_X_ECD, new Integer(10));
-		rf2.addEventChannel(IMAGE_Y_ECD, new Integer(10));
-		rf2.addEventChannel(MULTI_GRAPHIC_ECD);
-		rf2.addEventChannel(WIDTH_ECD);
-		Root root2 = rf2.create("PlotPanelTest", new BasicTransactionQueue());
-		
-		PlotPanel plotPanel = new PlotPanel(root2);
-		plotPanel.addComponentListenerToBoth(new ComponentInitiator(
-			"PlotPanel", null, null, null, WIDTH_ECD, HEIGHT_ECD));
-		
-//		BackgroundGraphicConverter backgroundConverter = new BackgroundGraphicConverter(
-//			"PlotPanel", GENERATE_GRAPHIC_TRIGGER_ECD, BACKGROUND_COLOR_ECD,
-//			WIDTH_ECD, HEIGHT_ECD, GRAPHIC_ECD);
-//		plotPanel.addGraphicProducer(backgroundConverter, 0);
-//		
-//		DrawImageConverter drawImageConverter = new DrawImageConverter(
-//			"PlotPanel", GENERATE_GRAPHIC_TRIGGER_ECD, IMAGE_ECD, IMAGE_X_ECD,
-//			IMAGE_Y_ECD, IMAGE_OBSERVER_ECD, GRAPHIC_ECD);
-//		plotPanel.addGraphicProducer(drawImageConverter, 1);
-		
-		frame.setContentPane(plotPanel);
-		
-		frame.setSize(500, 500);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setVisible(true);
-	}
+    public static void main(String[] args) {
+
+        final ColorECD BACKGROUND_COLOR_ECD = new ColorECD("backgroundColor");
+        final StatelessTriggerECD GENERATE_GRAPHIC_TRIGGER_ECD = new StatelessTriggerECD("generateGraphicTrigger");
+        final GraphicECD GRAPHIC_ECD = new GraphicECD("graphic");
+        final IntegerECD HEIGHT_ECD = new IntegerECD("height");
+        final ImageECD IMAGE_ECD = new ImageECD("image");
+        final ImageObserverECD IMAGE_OBSERVER_ECD = new ImageObserverECD("imageObserver");
+        final IntegerECD IMAGE_X_ECD = new IntegerECD("imageX");
+        final IntegerECD IMAGE_Y_ECD = new IntegerECD("imageY");
+        final ObjectIlaECD MULTI_GRAPHIC_ECD = new ObjectIlaECD("multiGraphic");
+        final IntegerECD WIDTH_ECD = new IntegerECD("width");
+
+        JFrameBB frame = new JFrameBB("PlotPanelTest");
+
+        RootFactory rf2 = new RootFactory();
+        //		rf2.setLogging(true);
+        rf2.addEventChannel(BACKGROUND_COLOR_ECD, Color.blue);
+        rf2.addEventChannel(GENERATE_GRAPHIC_TRIGGER_ECD);
+        rf2.addEventChannel(HEIGHT_ECD);
+        rf2.addEventChannel(IMAGE_ECD, new BufferedImage(30, 30, BufferedImage.TYPE_INT_RGB));
+        rf2.addEventChannel(IMAGE_OBSERVER_ECD, frame);
+        rf2.addEventChannel(IMAGE_X_ECD, new Integer(10));
+        rf2.addEventChannel(IMAGE_Y_ECD, new Integer(10));
+        rf2.addEventChannel(MULTI_GRAPHIC_ECD);
+        rf2.addEventChannel(WIDTH_ECD);
+        Root root2 = rf2.create("PlotPanelTest", new BasicTransactionQueue());
+
+        PlotPanel plotPanel = new PlotPanel(root2);
+        plotPanel.addComponentListenerToBoth(
+                new ComponentInitiator("PlotPanel", null, null, null, WIDTH_ECD, HEIGHT_ECD));
+
+        //		BackgroundGraphicConverter backgroundConverter = new BackgroundGraphicConverter(
+        //			"PlotPanel", GENERATE_GRAPHIC_TRIGGER_ECD, BACKGROUND_COLOR_ECD,
+        //			WIDTH_ECD, HEIGHT_ECD, GRAPHIC_ECD);
+        //		plotPanel.addGraphicProducer(backgroundConverter, 0);
+        //
+        //		DrawImageConverter drawImageConverter = new DrawImageConverter(
+        //			"PlotPanel", GENERATE_GRAPHIC_TRIGGER_ECD, IMAGE_ECD, IMAGE_X_ECD,
+        //			IMAGE_Y_ECD, IMAGE_OBSERVER_ECD, GRAPHIC_ECD);
+        //		plotPanel.addGraphicProducer(drawImageConverter, 1);
+
+        frame.setContentPane(plotPanel);
+
+        frame.setSize(500, 500);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setVisible(true);
+    }
 }
