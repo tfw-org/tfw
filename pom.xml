@@ -102,6 +102,41 @@
                 </executions>
             </plugin>
             <plugin>
+                <groupId>com.diffplug.spotless</groupId>
+                <artifactId>spotless-maven-plugin</artifactId>
+                <version>2.37.0</version>
+                <configuration>
+                    <java>
+                        <includes>
+                            <include>src/main/java/tfw/math/**/*.java</include>
+                            <include>src/main/java/tfw/plot/demo/**/*.java</include>
+                        </includes>
+                        <excludes>
+                            <exclude>src/main/java/tfw/math/BigDecimal.java</exclude>
+                            <exclude>src/main/java/tfw/math/BigInteger.java</exclude>
+                            <exclude>src/main/java/tfw/math/BitSieve.java</exclude>
+                            <exclude>src/main/java/tfw/math/DoubleConsts.java</exclude>
+                            <exclude>src/main/java/tfw/math/FloatConsts.java</exclude>
+                            <exclude>src/main/java/tfw/math/MathContext.java</exclude>
+                            <exclude>src/main/java/tfw/math/MutableBigInteger.java</exclude>
+                            <exclude>src/main/java/tfw/math/RoundingMode.java</exclude>
+                            <exclude>src/main/java/tfw/math/SignedMutableBigInteger.java</exclude>
+                        </excludes>
+                        <palantirJavaFormat>
+                            <version>2.32.0</version>
+                            <style>PALANTIR</style>
+                        </palantirJavaFormat>
+                    </java>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>3.1.0</version>
