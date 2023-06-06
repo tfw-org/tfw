@@ -3,41 +3,35 @@ package tfw.immutable.ila.floatila;
 import java.util.Random;
 import junit.framework.TestCase;
 import tfw.immutable.ila.IlaTestDimensions;
-import tfw.immutable.ila.floatila.FloatIla;
-import tfw.immutable.ila.floatila.FloatIlaFromArray;
-import tfw.immutable.ila.floatila.FloatIlaDecimate;
 
 /**
  *
  * @immutables.types=all
  */
-public class FloatIlaDecimateTest extends TestCase
-{
-    public void testAll() throws Exception
-    {
+public class FloatIlaDecimateTest extends TestCase {
+    public void testAll() throws Exception {
         final Random random = new Random(0);
         final int length = IlaTestDimensions.defaultIlaLength();
         final float[] array = new float[length];
-        for(int ii = 0; ii < array.length; ++ii)
-        {
+        for (int ii = 0; ii < array.length; ++ii) {
             array[ii] = random.nextFloat();
         }
         FloatIla ila = FloatIlaFromArray.create(array);
-        for(int factor = 2; factor <= length; ++factor)
-        {
+        for (int factor = 2; factor <= length; ++factor) {
             final int targetLength = (length + factor - 1) / factor;
             final float[] target = new float[targetLength];
-            for(int ii = 0; ii < target.length; ++ii)
-            {
+            for (int ii = 0; ii < target.length; ++ii) {
                 target[ii] = array[ii * factor];
             }
             FloatIla targetIla = FloatIlaFromArray.create(target);
             FloatIla actualIla = FloatIlaDecimate.create(ila, factor);
             final float epsilon = 0.0f;
-            FloatIlaCheck.checkAll(targetIla, actualIla,
-                                    IlaTestDimensions.defaultOffsetLength(),
-                                    IlaTestDimensions.defaultMaxStride(),
-                                    epsilon);
+            FloatIlaCheck.checkAll(
+                    targetIla,
+                    actualIla,
+                    IlaTestDimensions.defaultOffsetLength(),
+                    IlaTestDimensions.defaultMaxStride(),
+                    epsilon);
         }
     }
 }

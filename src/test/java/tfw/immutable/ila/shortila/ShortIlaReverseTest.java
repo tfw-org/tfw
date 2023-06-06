@@ -3,38 +3,33 @@ package tfw.immutable.ila.shortila;
 import java.util.Random;
 import junit.framework.TestCase;
 import tfw.immutable.ila.IlaTestDimensions;
-import tfw.immutable.ila.shortila.ShortIla;
-import tfw.immutable.ila.shortila.ShortIlaFromArray;
-import tfw.immutable.ila.shortila.ShortIlaReverse;
 
 /**
  *
  * @immutables.types=all
  */
-public class ShortIlaReverseTest extends TestCase
-{
-    public void testAll() throws Exception
-    {
+public class ShortIlaReverseTest extends TestCase {
+    public void testAll() throws Exception {
         final Random random = new Random(0);
         final int length = IlaTestDimensions.defaultIlaLength();
         final short[] array = new short[length];
         final short[] reversed = new short[length];
-        for(int ii = 0; ii < array.length; ++ii)
-        {
-            array[ii] = (short)random.nextInt();
+        for (int ii = 0; ii < array.length; ++ii) {
+            array[ii] = (short) random.nextInt();
         }
-        for(int ii = 0; ii < reversed.length; ++ii)
-        {
+        for (int ii = 0; ii < reversed.length; ++ii) {
             reversed[ii] = array[length - 1 - ii];
         }
         ShortIla origIla = ShortIlaFromArray.create(array);
         ShortIla targetIla = ShortIlaFromArray.create(reversed);
         ShortIla actualIla = ShortIlaReverse.create(origIla);
-        final short epsilon = (short)0;
-        ShortIlaCheck.checkAll(targetIla, actualIla,
-                                IlaTestDimensions.defaultOffsetLength(),
-                                IlaTestDimensions.defaultMaxStride(),
-                                epsilon);
+        final short epsilon = (short) 0;
+        ShortIlaCheck.checkAll(
+                targetIla,
+                actualIla,
+                IlaTestDimensions.defaultOffsetLength(),
+                IlaTestDimensions.defaultMaxStride(),
+                epsilon);
     }
 }
 // AUTO GENERATED FROM TEMPLATE

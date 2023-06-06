@@ -1,25 +1,14 @@
 package tfw.tsm;
 
 import junit.framework.TestCase;
-import tfw.tsm.BasicTransactionQueue;
-import tfw.tsm.Branch;
-import tfw.tsm.BranchComponent;
-import tfw.tsm.BranchFactory;
-import tfw.tsm.EventChannelState;
-import tfw.tsm.EventChannelStateBuffer;
-import tfw.tsm.Root;
-import tfw.tsm.RootFactory;
-import tfw.tsm.TreeState;
 import tfw.tsm.ecd.IntegerECD;
 import tfw.tsm.ecd.StringECD;
 
 /**
- * 
+ *
  */
-public class ImportExportTreeStateTest extends TestCase
-{
-    public void testDefaultExportTreeState() throws Exception
-    {
+public class ImportExportTreeStateTest extends TestCase {
+    public void testDefaultExportTreeState() throws Exception {
         String rootName = "MyRoot";
         String childName = "Child Tree";
         StringECD stringECD = new StringECD("ecd1");
@@ -33,13 +22,10 @@ public class ImportExportTreeStateTest extends TestCase
 
         final Root root = rf.create(rootName, queue);
 
-        try
-        {
+        try {
             root.getTreeState();
             fail("getTreeState() accepted call outside transaction thread");
-        }
-        catch (IllegalStateException expected)
-        {
+        } catch (IllegalStateException expected) {
             // System.out.println(expected);
         }
 
@@ -48,10 +34,8 @@ public class ImportExportTreeStateTest extends TestCase
         queue.invokeLater(getStateRunnable);
         queue.waitTilEmpty();
 
-        assertNotNull("getTreeState() returned null",
-                getStateRunnable.treeState);
-        assertEquals("getTreeState() returned state with wrong name", rootName,
-                getStateRunnable.treeState.getName());
+        assertNotNull("getTreeState() returned null", getStateRunnable.treeState);
+        assertEquals("getTreeState() returned state with wrong name", rootName, getStateRunnable.treeState.getName());
 
         EventChannelState[] ecds = getStateRunnable.treeState.getState();
         assertNotNull("ecds == null", ecds);
@@ -80,14 +64,12 @@ public class ImportExportTreeStateTest extends TestCase
         assertNotNull("children == null", children);
         assertEquals("Wrong number of children", 1, children.length);
 
-        SetTreeStateRunnable setStateRunnable = new SetTreeStateRunnable(root,
-                null);
+        SetTreeStateRunnable setStateRunnable = new SetTreeStateRunnable(root, null);
         queue.invokeLater(setStateRunnable);
         queue.waitTilEmpty();
         assertNotNull("setTreeState() accepted null value");
 
-        setStateRunnable = new SetTreeStateRunnable(root, new TreeState(
-                "wrongname", null, null));
+        setStateRunnable = new SetTreeStateRunnable(root, new TreeState("wrongname", null, null));
         queue.invokeLater(setStateRunnable);
         queue.waitTilEmpty();
         assertNotNull("setTreeState() accepted wrong event channel state");
@@ -99,10 +81,8 @@ public class ImportExportTreeStateTest extends TestCase
         buff.clear();
         buff.put(stringECD, "Goodbye");
 
-        TreeState rootTS = new TreeState(rootName, buff.toArray(),
-                new TreeState[] { childTS });
+        TreeState rootTS = new TreeState(rootName, buff.toArray(), new TreeState[] {childTS});
 
-        
         setStateRunnable = new SetTreeStateRunnable(root, rootTS);
         queue.invokeLater(setStateRunnable);
         queue.waitTilEmpty();
@@ -115,8 +95,7 @@ public class ImportExportTreeStateTest extends TestCase
         buff.clear();
         buff.put(stringECD, "Goodbye");
 
-        rootTS = new TreeState(rootName, buff.toArray(),
-                new TreeState[] { childTS });
+        rootTS = new TreeState(rootName, buff.toArray(), new TreeState[] {childTS});
 
         setStateRunnable = new SetTreeStateRunnable(root, rootTS);
         queue.invokeLater(setStateRunnable);
@@ -128,8 +107,7 @@ public class ImportExportTreeStateTest extends TestCase
         assertEquals("TreeState not equal", rootTS, getStateRunnable.treeState);
     }
 
-    public void testCustomTagExportImportTreeState()
-    {
+    public void testCustomTagExportImportTreeState() {
         RootFactory rf = new RootFactory();
         String tag1 = "tag1";
         String tag2 = "tag2";
@@ -138,40 +116,28 @@ public class ImportExportTreeStateTest extends TestCase
         EventChannelState state1 = new EventChannelState(ecd1, "hello");
         EventChannelState state2 = new EventChannelState(ecd2, new Integer(123));
         rf.addEventChannel(ecd1, state1.getState());
-        try
-        {
+        try {
             rf.addExportTag(null, tag1);
             fail("addExportTag() accepted null ECD");
-        }
-        catch (IllegalArgumentException expected)
-        {
+        } catch (IllegalArgumentException expected) {
             // System.out.println(expected);
         }
-        try
-        {
+        try {
             rf.addExportTag(ecd1, null);
             fail("addExportTag() accepted null tag");
-        }
-        catch (IllegalArgumentException expected)
-        {
+        } catch (IllegalArgumentException expected) {
             // System.out.println(expected);
         }
-        try
-        {
+        try {
             rf.addExportTag(ecd1, "");
             fail("addExportTag() accepted empty tag");
-        }
-        catch (IllegalArgumentException expected)
-        {
+        } catch (IllegalArgumentException expected) {
             // System.out.println(expected);
         }
-        try
-        {
+        try {
             rf.addExportTag(ecd2, tag1);
             fail("addExportTag() accepted unknown ECD");
-        }
-        catch (IllegalArgumentException expected)
-        {
+        } catch (IllegalArgumentException expected) {
             // System.out.println(expected);
         }
 
@@ -192,12 +158,12 @@ public class ImportExportTreeStateTest extends TestCase
 
         assertNotNull("getTreeState() returned null", tsr.treeState);
         EventChannelState[] ecs = tsr.treeState.getState();
-        assertEquals("The wrong number of event channel state returned", 1,
-                ecs.length);
-        assertEquals("The wrong event channel description was returned", state1
-                .getEventChannelName(), ecs[0].getEventChannelName());
-        assertEquals("The wrong event channel state was returned", state1
-                .getState(), ecs[0].getState());
+        assertEquals("The wrong number of event channel state returned", 1, ecs.length);
+        assertEquals(
+                "The wrong event channel description was returned",
+                state1.getEventChannelName(),
+                ecs[0].getEventChannelName());
+        assertEquals("The wrong event channel state was returned", state1.getState(), ecs[0].getState());
 
         tsr = new GetTreeStateRunnable(root, tag2);
         queue.invokeLater(tsr);
@@ -205,12 +171,10 @@ public class ImportExportTreeStateTest extends TestCase
 
         assertNotNull("getTreeState() returned null", tsr.treeState);
         ecs = tsr.treeState.getState();
-        assertEquals("The wrong number of event channel state returned", 2,
-                ecs.length);
+        assertEquals("The wrong number of event channel state returned", 2, ecs.length);
     }
 
-    private class GetTreeStateRunnable implements Runnable
-    {
+    private class GetTreeStateRunnable implements Runnable {
         public TreeState treeState = null;
 
         public RuntimeException exception = null;
@@ -219,52 +183,40 @@ public class ImportExportTreeStateTest extends TestCase
 
         private final String exportTag;
 
-        public GetTreeStateRunnable(BranchComponent component)
-        {
+        public GetTreeStateRunnable(BranchComponent component) {
             this(component, BranchComponent.DEFAULT_EXPORT_TAG);
         }
 
-        public GetTreeStateRunnable(BranchComponent component, String tag)
-        {
+        public GetTreeStateRunnable(BranchComponent component, String tag) {
             this.component = component;
             this.exportTag = tag;
         }
 
-        public void run()
-        {
-            try
-            {
+        public void run() {
+            try {
                 treeState = component.getTreeState(this.exportTag);
-            }
-            catch (RuntimeException e)
-            {
+            } catch (RuntimeException e) {
                 this.exception = e;
             }
         }
     }
 
-    private class SetTreeStateRunnable implements Runnable
-    {
+    private class SetTreeStateRunnable implements Runnable {
         public TreeState treeState = null;
 
         public RuntimeException exception = null;
 
         private final BranchComponent component;
 
-        public SetTreeStateRunnable(BranchComponent component, TreeState treeState)
-        {
+        public SetTreeStateRunnable(BranchComponent component, TreeState treeState) {
             this.component = component;
             this.treeState = treeState;
         }
 
-        public void run()
-        {
-            try
-            {
+        public void run() {
+            try {
                 component.setTreeState(this.treeState, false, false);
-            }
-            catch (RuntimeException e)
-            {
+            } catch (RuntimeException e) {
                 this.exception = e;
             }
         }

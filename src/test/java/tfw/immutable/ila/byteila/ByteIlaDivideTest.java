@@ -3,27 +3,21 @@ package tfw.immutable.ila.byteila;
 import java.util.Random;
 import junit.framework.TestCase;
 import tfw.immutable.ila.IlaTestDimensions;
-import tfw.immutable.ila.byteila.ByteIla;
-import tfw.immutable.ila.byteila.ByteIlaFromArray;
-import tfw.immutable.ila.byteila.ByteIlaDivide;
 
 /**
  *
  * @immutables.types=numeric
  */
-public class ByteIlaDivideTest extends TestCase
-{
-    public void testAll() throws Exception
-    {
+public class ByteIlaDivideTest extends TestCase {
+    public void testAll() throws Exception {
         final Random random = new Random(0);
         final int length = IlaTestDimensions.defaultIlaLength();
         final byte[] leftArray = new byte[length];
         final byte[] rightArray = new byte[length];
         final byte[] array = new byte[length];
-        for(int ii = 0; ii < leftArray.length; ++ii)
-        {
-            leftArray[ii] = (byte)random.nextInt();
-            rightArray[ii] = (byte)random.nextInt();
+        for (int ii = 0; ii < leftArray.length; ++ii) {
+            leftArray[ii] = (byte) random.nextInt();
+            rightArray[ii] = (byte) random.nextInt();
             array[ii] = (byte) (leftArray[ii] / rightArray[ii]);
         }
         ByteIla leftIla = ByteIlaFromArray.create(leftArray);
@@ -31,10 +25,12 @@ public class ByteIlaDivideTest extends TestCase
         ByteIla targetIla = ByteIlaFromArray.create(array);
         ByteIla actualIla = ByteIlaDivide.create(leftIla, rightIla);
         final byte epsilon = (byte) 0.0;
-        ByteIlaCheck.checkAll(targetIla, actualIla,
-                                IlaTestDimensions.defaultOffsetLength(),
-                                IlaTestDimensions.defaultMaxStride(),
-                                epsilon);
+        ByteIlaCheck.checkAll(
+                targetIla,
+                actualIla,
+                IlaTestDimensions.defaultOffsetLength(),
+                IlaTestDimensions.defaultMaxStride(),
+                epsilon);
     }
 }
 // AUTO GENERATED FROM TEMPLATE

@@ -3,41 +3,35 @@ package tfw.immutable.ila.byteila;
 import java.util.Random;
 import junit.framework.TestCase;
 import tfw.immutable.ila.IlaTestDimensions;
-import tfw.immutable.ila.byteila.ByteIla;
-import tfw.immutable.ila.byteila.ByteIlaFromArray;
-import tfw.immutable.ila.byteila.ByteIlaDecimate;
 
 /**
  *
  * @immutables.types=all
  */
-public class ByteIlaDecimateTest extends TestCase
-{
-    public void testAll() throws Exception
-    {
+public class ByteIlaDecimateTest extends TestCase {
+    public void testAll() throws Exception {
         final Random random = new Random(0);
         final int length = IlaTestDimensions.defaultIlaLength();
         final byte[] array = new byte[length];
-        for(int ii = 0; ii < array.length; ++ii)
-        {
-            array[ii] = (byte)random.nextInt();
+        for (int ii = 0; ii < array.length; ++ii) {
+            array[ii] = (byte) random.nextInt();
         }
         ByteIla ila = ByteIlaFromArray.create(array);
-        for(int factor = 2; factor <= length; ++factor)
-        {
+        for (int factor = 2; factor <= length; ++factor) {
             final int targetLength = (length + factor - 1) / factor;
             final byte[] target = new byte[targetLength];
-            for(int ii = 0; ii < target.length; ++ii)
-            {
+            for (int ii = 0; ii < target.length; ++ii) {
                 target[ii] = array[ii * factor];
             }
             ByteIla targetIla = ByteIlaFromArray.create(target);
             ByteIla actualIla = ByteIlaDecimate.create(ila, factor);
-            final byte epsilon = (byte)0;
-            ByteIlaCheck.checkAll(targetIla, actualIla,
-                                    IlaTestDimensions.defaultOffsetLength(),
-                                    IlaTestDimensions.defaultMaxStride(),
-                                    epsilon);
+            final byte epsilon = (byte) 0;
+            ByteIlaCheck.checkAll(
+                    targetIla,
+                    actualIla,
+                    IlaTestDimensions.defaultOffsetLength(),
+                    IlaTestDimensions.defaultMaxStride(),
+                    epsilon);
         }
     }
 }

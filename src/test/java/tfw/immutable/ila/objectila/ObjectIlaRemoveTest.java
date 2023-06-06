@@ -1,32 +1,23 @@
 package tfw.immutable.ila.objectila;
 
-
 import junit.framework.TestCase;
 import tfw.immutable.ila.IlaTestDimensions;
-import tfw.immutable.ila.objectila.ObjectIla;
-import tfw.immutable.ila.objectila.ObjectIlaFromArray;
-import tfw.immutable.ila.objectila.ObjectIlaRemove;
 
 /**
  *
  * @immutables.types=all
  */
-public class ObjectIlaRemoveTest extends TestCase
-{
-    public void testAll() throws Exception
-    {
-        
+public class ObjectIlaRemoveTest extends TestCase {
+    public void testAll() throws Exception {
+
         final int length = IlaTestDimensions.defaultIlaLength();
         final Object[] array = new Object[length];
-        final Object[] target = new Object[length-1];
-        for(int index = 0; index < length; ++index)
-        {
+        final Object[] target = new Object[length - 1];
+        for (int index = 0; index < length; ++index) {
             int targetii = 0;
-            for(int ii = 0; ii < array.length; ++ii)
-            {
+            for (int ii = 0; ii < array.length; ++ii) {
                 array[ii] = new Object();
-                if(ii != index)
-                {
+                if (ii != index) {
                     target[targetii++] = array[ii];
                 }
             }
@@ -34,10 +25,12 @@ public class ObjectIlaRemoveTest extends TestCase
             ObjectIla targetIla = ObjectIlaFromArray.create(target);
             ObjectIla actualIla = ObjectIlaRemove.create(origIla, index);
             final Object epsilon = Object.class;
-            ObjectIlaCheck.checkAll(targetIla, actualIla,
-                                      IlaTestDimensions.defaultOffsetLength(),
-                                      IlaTestDimensions.defaultMaxStride(),
-                                      epsilon);
+            ObjectIlaCheck.checkAll(
+                    targetIla,
+                    actualIla,
+                    IlaTestDimensions.defaultOffsetLength(),
+                    IlaTestDimensions.defaultMaxStride(),
+                    epsilon);
         }
     }
 }
