@@ -77,7 +77,7 @@ public final class LinearShortIlaFromMuLawByteIla
 			
 			map.put("name", "ShortIlaFromMuLawByteIla");
 			map.put("byteIla", getImmutableInfo(byteIla));
-			map.put("length", new Long(length()));
+			map.put("length", length());
 			
 			return(map);
 		}

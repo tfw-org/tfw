@@ -75,7 +75,7 @@ public final class Au
 	 * A long that is set to one of the ISDN, LINEAR, IEEE or CCITT constants
 	 * defined in this file.  The linear formats are signed integers, centered
 	 * at zero.  The floating-point formats are signed, zero-centered and
-	 * normailzed to the unit value (-1.0 <= x <= 1.0).
+	 * normalized to the unit value (-1.0 &lt;= x &lt;= 1.0).
 	 */
 	public final long encoding;
 	

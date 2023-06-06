@@ -30,7 +30,6 @@ public class TreeStateBuffer
 
     /**
      * Adds the state for the specified event channel.
-     * @param ecd the event channel.
      * @param state the event channel state.
      * @throws ValueException if the specfiec state violates the event channel
      * value constraint.

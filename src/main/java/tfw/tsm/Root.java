@@ -2,7 +2,7 @@ package tfw.tsm;
 
 /**
  * The base of the event channel communications structure. All event channels
- * which reach the <code>Root<\code> must be terminated at the root or an
+ * which reach the Root must be terminated at the root or an
  * exception will be thrown.
  *
  */

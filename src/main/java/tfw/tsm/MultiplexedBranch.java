@@ -61,7 +61,7 @@ public class MultiplexedBranch extends BranchComponent
         Argument.assertNotNull(child, "child");
         Argument.assertGreaterThanOrEqualTo(multipexIndex, 0, "multipexIndex");
         
-        add(child, new Integer(multipexIndex));
+        add(child, Integer.valueOf(multipexIndex));
     }
 
     public synchronized final void add(TreeComponent child, Object slotId)

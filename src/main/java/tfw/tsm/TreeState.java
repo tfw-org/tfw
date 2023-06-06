@@ -84,9 +84,6 @@ public class TreeState implements Serializable
      * Returns the state for the specified event channel or null if the event
      * channel is not found in this tree state.
      * 
-     * @param ecd
-     *            the event channel whose state is to be returned.
-     * 
      * @return the state for the specified event channel or null if the event
      *         channel is not found in this tree state.
      */

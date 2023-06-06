@@ -82,7 +82,7 @@ class SignedMutableBigInteger extends MutableBigInteger {
    /**
      * Signed addition built upon unsigned add and subtract.
      */
-    void signedAdd(SignedMutableBigInteger addend) {
+    public void signedAdd(SignedMutableBigInteger addend) {
         if (sign == addend.sign)
             add(addend);
         else
@@ -93,7 +93,7 @@ class SignedMutableBigInteger extends MutableBigInteger {
    /**
      * Signed addition built upon unsigned add and subtract.
      */
-    void signedAdd(MutableBigInteger addend) {
+    public void signedAdd(MutableBigInteger addend) {
         if (sign == 1)
             add(addend);
         else
@@ -104,7 +104,7 @@ class SignedMutableBigInteger extends MutableBigInteger {
    /**
      * Signed subtraction built upon unsigned add and subtract.
      */
-    void signedSubtract(SignedMutableBigInteger addend) {
+    public void signedSubtract(SignedMutableBigInteger addend) {
         if (sign == addend.sign)
             sign = sign * subtract(addend);
         else
@@ -115,7 +115,7 @@ class SignedMutableBigInteger extends MutableBigInteger {
    /**
      * Signed subtraction built upon unsigned add and subtract.
      */
-    void signedSubtract(MutableBigInteger addend) {
+    public void signedSubtract(MutableBigInteger addend) {
         if (sign == 1)
             sign = sign * subtract(addend);
         else

@@ -19,8 +19,7 @@ public class AWTTransactionQueue implements TransactionQueue
      * Adds the runnable to the AWT event queue. The runnable will be run
      * asynchronously.
      * 
-     * @param the
-     *            runnable to added to the queue.
+     * @param runnable to be added to the queue.
      */
     public void invokeLater(Runnable runnable)
     {

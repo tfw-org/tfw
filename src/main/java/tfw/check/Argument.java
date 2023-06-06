@@ -113,7 +113,7 @@ public class Argument
      * @param argumentName
      *            The name of the argument.
      * @throws IllegalArgumentException
-     *             if <code>argument <= constant</code>
+     *             if <code>argument &lt;= constant</code>
      */
     public static final void assertGreaterThan(int argument, int constant,
             String argumentName)
@@ -135,7 +135,7 @@ public class Argument
      * @param argumentName
      *            The name of the argument.
      * @throws IllegalArgumentException
-     *             if <code>argument < constant</code>
+     *             if <code>argument &lt; constant</code>
      */
     public static final void assertGreaterThanOrEqualTo(int argument,
             int constant, String argumentName)
@@ -157,7 +157,7 @@ public class Argument
      * @param argumentName
      *            The name of the argument.
      * @throws IllegalArgumentException
-     *             if <code>argument < constant</code>
+     *             if <code>argument &lt; constant</code>
      */
     public static final void assertGreaterThanOrEqualTo(long argument,
             long constant, String argumentName)
@@ -201,6 +201,14 @@ public class Argument
     			+ ") > " + constant + " not allowed!");
     }
     
+    public static final void assertNotGreaterThan(double value, double constant,
+    		String valueName)
+    {
+    	if (value > constant)
+    		throw new IllegalArgumentException(valueName + " (=" + value
+    			+ ") > " + constant + " not allowed!");
+    }
+    
     public static final void assertNotLessThan(int value, int constant,
             String valueName)
     {
@@ -210,6 +218,14 @@ public class Argument
     }
 
     public static final void assertNotLessThan(long value, long constant,
+            String valueName)
+    {
+        if (value < constant)
+            throw new IllegalArgumentException(valueName + " (=" + value
+                    + ") < " + constant + " not allowed!");
+    }
+
+    public static final void assertNotLessThan(double value, double constant,
             String valueName)
     {
         if (value < constant)

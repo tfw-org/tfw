@@ -116,7 +116,7 @@ public class MultiplexedBranchFactory
     /**
      * Creates a multiplexed branch with the set of multiplexed event channels
      * as previously defined by calls to
-     * {@link #addMultiplexer(EventChannelDescription, ObjectIlaECD)}.
+     * {@link #addMultiplexer(ObjectECD, ObjectIlaECD)}.
      * 
      * @param name
      *            the name of the branch.

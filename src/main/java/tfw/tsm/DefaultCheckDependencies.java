@@ -12,12 +12,6 @@ import java.util.logging.Logger;
 public class DefaultCheckDependencies implements CheckDependencies {
 	private final Map<Processor, Map<Processor, Boolean>> processorCache = new HashMap<>();
 	
-	private long mapCount = 0;
-	private Map<Processor, Boolean> getMap() {
-		mapCount++;
-		return new HashMap<>();
-	}
-	
     private static int origProcessorsArraySize = 0;
     private static Processor[] origProcessorsArray = new Processor[origProcessorsArraySize];
     private static int processorsArraySize = 0;
@@ -32,11 +26,6 @@ public class DefaultCheckDependencies implements CheckDependencies {
 		if (logger != null) {
 			logger.log(Level.FINE, "CDN: p.s="+processors.size()+" dp.s="+delayedProcessors.size()+" c.s="+processorCache.size());
 		}
-		
-		final long startTime = System.currentTimeMillis();
-		final long startMapCount = mapCount;
-		
-		long subTime = 0;
 		
     	origProcessorsArraySize = processors.size();
     	if (origProcessorsArray.length < origProcessorsArraySize)
@@ -113,7 +102,7 @@ public class DefaultCheckDependencies implements CheckDependencies {
 	    				{
 	    					if (map == null)
 	    					{
-	    						map = new HashMap<Processor, Boolean>();
+	    						map = new HashMap<>();
 	    						processorCache.put(origProcessor, map);
 	    					}
 	    					map.put(p, Boolean.FALSE);
@@ -144,7 +133,7 @@ public class DefaultCheckDependencies implements CheckDependencies {
         		Map<Processor, Boolean> map = cache.get(fromProcessor);
         		if (map == null)
         		{
-        			map = new HashMap<Processor, Boolean>();
+        			map = new HashMap<>();
         			cache.put(fromProcessor, map);
         		}
         		
@@ -157,7 +146,7 @@ public class DefaultCheckDependencies implements CheckDependencies {
         				sb.append(p.getName());
         				sb.append(", ");
         			}
-        			System.out.println(sb.toString());
+        			logger.log(Level.FINE, sb.toString());
         		}
         	}
         	

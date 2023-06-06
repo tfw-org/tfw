@@ -11,10 +11,8 @@ public class ECDUtility
     /**
      * Creates a new array with the specified description added.
      * 
-     * @param port
-     *            the port to be added.
-     * @param ports
-     *            the ports to add too.
+     * @param eventChannelDescription the eventChannelDescription to be added.
+     * @param eventChannelDescriptions the eventChannelDescriptions to add too.
      * @return the appended array.
      */
     public static EventChannelDescription[] append(
@@ -41,10 +39,8 @@ public class ECDUtility
     /**
      * Creates a new array with the specified descriptions added.
      * 
-     * @param ports1
-     *            the ports to be added too.
-     * @param ports2
-     *            the ports to add too.
+     * @param eventChannelDescriptions1 the eventChannelDescriptions1 to be added.
+     * @param eventChannelDescriptions2 the eventChannelDescriptions2 to add too.
      * @return the concatenated array.
      */
     public static EventChannelDescription[] concat(
