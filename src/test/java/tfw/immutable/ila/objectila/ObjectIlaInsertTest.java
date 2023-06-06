@@ -1,32 +1,23 @@
 package tfw.immutable.ila.objectila;
 
-
 import junit.framework.TestCase;
 import tfw.immutable.ila.IlaTestDimensions;
-import tfw.immutable.ila.objectila.ObjectIla;
-import tfw.immutable.ila.objectila.ObjectIlaFromArray;
-import tfw.immutable.ila.objectila.ObjectIlaInsert;
 
 /**
  *
  * @immutables.types=all
  */
-public class ObjectIlaInsertTest extends TestCase
-{
-    public void testAll() throws Exception
-    {
-        
+public class ObjectIlaInsertTest extends TestCase {
+    public void testAll() throws Exception {
+
         final int length = IlaTestDimensions.defaultIlaLength();
         final Object[] array = new Object[length];
-        final Object[] target = new Object[length+1];
-        for(int index = 0; index < length; ++index)
-        {
+        final Object[] target = new Object[length + 1];
+        for (int index = 0; index < length; ++index) {
             final Object value = new Object();
             int skipit = 0;
-            for(int ii = 0; ii < array.length; ++ii)
-            {
-                if(index == ii)
-                {
+            for (int ii = 0; ii < array.length; ++ii) {
+                if (index == ii) {
                     skipit = 1;
                     target[ii] = value;
                 }
@@ -34,13 +25,14 @@ public class ObjectIlaInsertTest extends TestCase
             }
             ObjectIla origIla = ObjectIlaFromArray.create(array);
             ObjectIla targetIla = ObjectIlaFromArray.create(target);
-            ObjectIla actualIla = ObjectIlaInsert.create(origIla, index,
-                                                             value);
+            ObjectIla actualIla = ObjectIlaInsert.create(origIla, index, value);
             final Object epsilon = Object.class;
-            ObjectIlaCheck.checkAll(targetIla, actualIla,
-                                      IlaTestDimensions.defaultOffsetLength(),
-                                      IlaTestDimensions.defaultMaxStride(),
-                                      epsilon);
+            ObjectIlaCheck.checkAll(
+                    targetIla,
+                    actualIla,
+                    IlaTestDimensions.defaultOffsetLength(),
+                    IlaTestDimensions.defaultMaxStride(),
+                    epsilon);
         }
     }
 }
