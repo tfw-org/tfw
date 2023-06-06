@@ -1,42 +1,34 @@
 // booleanila,byteila,charila,doubleila,floatila,intila,longila,objectila,shortila
 package %%PACKAGE%%;
 
-%%RANDOM_INCLUDE%%
-import junit.framework.TestCase;
+%%RANDOM_INCLUDE%%import junit.framework.TestCase;
 import tfw.immutable.ila.IlaTestDimensions;
-import %%PACKAGE%%.%%NAME%%Ila;
-import %%PACKAGE%%.%%NAME%%IlaFromArray;
-import %%PACKAGE%%.%%NAME%%IlaMutate;
 
 /**
  *
  * @immutables.types=all
  */
-public class %%NAME%%IlaMutateTest extends TestCase
-{
-    public void testAll() throws Exception
-    {
-        %%RANDOM_INIT%%
-        final int length = IlaTestDimensions.defaultIlaLength();
+public class %%NAME%%IlaMutateTest extends TestCase {
+    public void testAll() throws Exception {
+        %%RANDOM_INIT%%final int length = IlaTestDimensions.defaultIlaLength();
         final %%TYPE%%[] array = new %%TYPE%%[length];
         final %%TYPE%%[] target = new %%TYPE%%[length];
-        for(int index = 0; index < length; ++index)
-        {
-            for(int ii = 0; ii < array.length; ++ii)
-            {
+        for (int index = 0; index < length; ++index) {
+            for (int ii = 0; ii < array.length; ++ii) {
                 array[ii] = target[ii] = %%RANDOM_VALUE%%;
             }
             final %%TYPE%% value = %%RANDOM_VALUE%%;
             target[index] = value;
             %%NAME%%Ila origIla = %%NAME%%IlaFromArray.create(array);
             %%NAME%%Ila targetIla = %%NAME%%IlaFromArray.create(target);
-            %%NAME%%Ila actualIla = %%NAME%%IlaMutate.create(origIla, index,
-                                                             value);
+            %%NAME%%Ila actualIla = %%NAME%%IlaMutate.create(origIla, index, value);
             final %%TYPE%% epsilon = %%DEFAULT_VALUE%%;
-            %%NAME%%IlaCheck.checkAll(targetIla, actualIla,
-                                      IlaTestDimensions.defaultOffsetLength(),
-                                      IlaTestDimensions.defaultMaxStride(),
-                                      epsilon);
+            %%NAME%%IlaCheck.checkAll(
+                    targetIla,
+                    actualIla,
+                    IlaTestDimensions.defaultOffsetLength(),
+                    IlaTestDimensions.defaultMaxStride(),
+                    epsilon);
         }
     }
 }

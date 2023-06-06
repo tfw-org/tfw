@@ -43,8 +43,8 @@ public final class ShortIlaDecimate {
                 throws DataInvalidException {
             final long segmentStart = start * factor;
             final long segmentLength = StrictMath.min(ila.length() - segmentStart, length * factor - 1);
-            ShortIlaIterator fi =
-                    new ShortIlaIterator(ShortIlaSegment.create(ila, segmentStart, segmentLength), bufferSize);
+            final ShortIla segment = ShortIlaSegment.create(ila, segmentStart, segmentLength);
+            final ShortIlaIterator fi = new ShortIlaIterator(segment, bufferSize);
 
             for (int ii = offset; length > 0; ii += stride, --length) {
                 array[ii] = (short) fi.next();

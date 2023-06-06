@@ -9,7 +9,6 @@ import tfw.immutable.ila.IlaTestDimensions;
  */
 public class ObjectIlaReverseTest extends TestCase {
     public void testAll() throws Exception {
-
         final int length = IlaTestDimensions.defaultIlaLength();
         final Object[] array = new Object[length];
         final Object[] reversed = new Object[length];

@@ -1,27 +1,19 @@
 // byteila,charila,doubleila,floatila,intila,longila,shortila
 package %%PACKAGE%%;
 
-%%RANDOM_INCLUDE%%
-import junit.framework.TestCase;
+%%RANDOM_INCLUDE%%import junit.framework.TestCase;
 import tfw.immutable.ila.IlaTestDimensions;
-import %%PACKAGE%%.%%NAME%%Ila;
-import %%PACKAGE%%.%%NAME%%IlaFromArray;
-import %%PACKAGE%%.%%NAME%%IlaNegate;
 
 /**
  *
  * @immutables.types=numeric
  */
-public class %%NAME%%IlaNegateTest extends TestCase
-{
-    public void testAll() throws Exception
-    {
-        %%RANDOM_INIT%%
-        final int length = IlaTestDimensions.defaultIlaLength();
+public class %%NAME%%IlaNegateTest extends TestCase {
+    public void testAll() throws Exception {
+        %%RANDOM_INIT%%final int length = IlaTestDimensions.defaultIlaLength();
         final %%TYPE%%[] array = new %%TYPE%%[length];
         final %%TYPE%%[] target = new %%TYPE%%[length];
-        for(int ii = 0; ii < array.length; ++ii)
-        {
+        for (int ii = 0; ii < array.length; ++ii) {
             array[ii] = %%RANDOM_VALUE%%;
             target[ii] = (%%TYPE%%) -array[ii];
         }
@@ -29,9 +21,11 @@ public class %%NAME%%IlaNegateTest extends TestCase
         %%NAME%%Ila targetIla = %%NAME%%IlaFromArray.create(target);
         %%NAME%%Ila actualIla = %%NAME%%IlaNegate.create(ila);
         final %%TYPE%% epsilon = (%%TYPE%%) 0.0;
-        %%NAME%%IlaCheck.checkAll(targetIla, actualIla,
-                                IlaTestDimensions.defaultOffsetLength(),
-                                IlaTestDimensions.defaultMaxStride(),
-                                epsilon);
+        %%NAME%%IlaCheck.checkAll(
+                targetIla,
+                actualIla,
+                IlaTestDimensions.defaultOffsetLength(),
+                IlaTestDimensions.defaultMaxStride(),
+                epsilon);
     }
 }

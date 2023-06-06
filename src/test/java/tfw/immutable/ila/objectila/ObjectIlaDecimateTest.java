@@ -9,7 +9,6 @@ import tfw.immutable.ila.IlaTestDimensions;
  */
 public class ObjectIlaDecimateTest extends TestCase {
     public void testAll() throws Exception {
-
         final int length = IlaTestDimensions.defaultIlaLength();
         final Object[] array = new Object[length];
         for (int ii = 0; ii < array.length; ++ii) {

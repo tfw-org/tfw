@@ -43,8 +43,8 @@ public final class BooleanIlaDecimate {
                 throws DataInvalidException {
             final long segmentStart = start * factor;
             final long segmentLength = StrictMath.min(ila.length() - segmentStart, length * factor - 1);
-            BooleanIlaIterator fi =
-                    new BooleanIlaIterator(BooleanIlaSegment.create(ila, segmentStart, segmentLength), bufferSize);
+            final BooleanIla segment = BooleanIlaSegment.create(ila, segmentStart, segmentLength);
+            final BooleanIlaIterator fi = new BooleanIlaIterator(segment, bufferSize);
 
             for (int ii = offset; length > 0; ii += stride, --length) {
                 array[ii] = (boolean) fi.next();

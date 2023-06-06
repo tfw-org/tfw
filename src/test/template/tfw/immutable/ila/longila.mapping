@@ -2,8 +2,8 @@
 %%NAME%% = Long
 %%PACKAGE%% = tfw.immutable.ila.longila
 %%RANDOM_VALUE%% = random.nextLong()
-%%RANDOM_INCLUDE%%=import java.util.Random;
-%%RANDOM_INIT%%=final Random random = new Random(0);
+%%RANDOM_INCLUDE%%=import java.util.Random;\n
+%%RANDOM_INIT%%=final Random random = new Random(0);\n\ \ \ \ \ \ \ \ 
 %%DEFAULT_VALUE%%=0L
 %%ASSERT_EQUALS_DELTA%% =
 %%CREATE_IMMUTABLE_START%% = new Long(

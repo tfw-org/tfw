@@ -44,7 +44,7 @@ public abstract class AbstractFloatIla extends AbstractIla implements FloatIla {
         toArray(array, offset, 1, start, length);
     }
 
-    public final void toArray(float[] array, int offset, int stride, long start, int length)
+    public final void toArray(final float[] array, int offset, int stride, long start, int length)
             throws DataInvalidException {
         if (length == 0) {
             return;

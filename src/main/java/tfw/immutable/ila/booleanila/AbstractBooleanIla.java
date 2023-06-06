@@ -44,7 +44,7 @@ public abstract class AbstractBooleanIla extends AbstractIla implements BooleanI
         toArray(array, offset, 1, start, length);
     }
 
-    public final void toArray(boolean[] array, int offset, int stride, long start, int length)
+    public final void toArray(final boolean[] array, int offset, int stride, long start, int length)
             throws DataInvalidException {
         if (length == 0) {
             return;

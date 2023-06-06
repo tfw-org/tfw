@@ -44,7 +44,7 @@ public abstract class AbstractByteIla extends AbstractIla implements ByteIla {
         toArray(array, offset, 1, start, length);
     }
 
-    public final void toArray(byte[] array, int offset, int stride, long start, int length)
+    public final void toArray(final byte[] array, int offset, int stride, long start, int length)
             throws DataInvalidException {
         if (length == 0) {
             return;

@@ -43,8 +43,8 @@ public final class DoubleIlaDecimate {
                 throws DataInvalidException {
             final long segmentStart = start * factor;
             final long segmentLength = StrictMath.min(ila.length() - segmentStart, length * factor - 1);
-            DoubleIlaIterator fi =
-                    new DoubleIlaIterator(DoubleIlaSegment.create(ila, segmentStart, segmentLength), bufferSize);
+            final DoubleIla segment = DoubleIlaSegment.create(ila, segmentStart, segmentLength);
+            final DoubleIlaIterator fi = new DoubleIlaIterator(segment, bufferSize);
 
             for (int ii = offset; length > 0; ii += stride, --length) {
                 array[ii] = (double) fi.next();

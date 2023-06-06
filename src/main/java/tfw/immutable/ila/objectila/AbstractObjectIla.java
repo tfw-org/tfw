@@ -44,7 +44,7 @@ public abstract class AbstractObjectIla extends AbstractIla implements ObjectIla
         toArray(array, offset, 1, start, length);
     }
 
-    public final void toArray(Object[] array, int offset, int stride, long start, int length)
+    public final void toArray(final Object[] array, int offset, int stride, long start, int length)
             throws DataInvalidException {
         if (length == 0) {
             return;

@@ -11,72 +11,57 @@ import tfw.immutable.ImmutableProxy;
  *
  * @immutables.types=numeric
  */
-public final class %%NAME%%IlaSubtract
-{
-    private %%NAME%%IlaSubtract()
-    {
-    	// non-instantiable class
+public final class %%NAME%%IlaSubtract {
+    private %%NAME%%IlaSubtract() {
+        // non-instantiable class
     }
 
-    public static %%NAME%%Ila create(%%NAME%%Ila leftIla, %%NAME%%Ila rightIla)
-    {
-    	return create(leftIla, rightIla, %%NAME%%IlaIterator.DEFAULT_BUFFER_SIZE);
+    public static %%NAME%%Ila create(%%NAME%%Ila leftIla, %%NAME%%Ila rightIla) {
+        return create(leftIla, rightIla, %%NAME%%IlaIterator.DEFAULT_BUFFER_SIZE);
     }
-    
-    public static %%NAME%%Ila create(%%NAME%%Ila leftIla, %%NAME%%Ila rightIla,
-        int bufferSize)
-    {
+
+    public static %%NAME%%Ila create(%%NAME%%Ila leftIla, %%NAME%%Ila rightIla, int bufferSize) {
         Argument.assertNotNull(leftIla, "leftIla");
         Argument.assertNotNull(rightIla, "rightIla");
-        Argument.assertEquals(leftIla.length(), rightIla.length(),
-                              "leftIla.length()", "rightIla.length()");
+        Argument.assertEquals(leftIla.length(), rightIla.length(), "leftIla.length()", "rightIla.length()");
         Argument.assertNotLessThan(bufferSize, 1, "bufferSize");
 
         return new My%%NAME%%Ila(leftIla, rightIla, bufferSize);
     }
 
-    private static class My%%NAME%%Ila extends Abstract%%NAME%%Ila
-        implements ImmutableProxy
-    {
+    private static class My%%NAME%%Ila extends Abstract%%NAME%%Ila implements ImmutableProxy {
         private final %%NAME%%Ila leftIla;
         private final %%NAME%%Ila rightIla;
         private final int bufferSize;
 
-        My%%NAME%%Ila(%%NAME%%Ila leftIla, %%NAME%%Ila rightIla, int bufferSize)
-        {
+        My%%NAME%%Ila(%%NAME%%Ila leftIla, %%NAME%%Ila rightIla, int bufferSize) {
             super(leftIla.length());
-                    
+
             this.leftIla = leftIla;
             this.rightIla = rightIla;
             this.bufferSize = bufferSize;
         }
 
-        protected void toArrayImpl(%%TYPE%%[] array, int offset,
-                                   int stride, long start, int length)
-            throws DataInvalidException
-        {
-            %%NAME%%IlaIterator li = new %%NAME%%IlaIterator(
-                %%NAME%%IlaSegment.create(leftIla, start, length), bufferSize);
-            %%NAME%%IlaIterator ri = new %%NAME%%IlaIterator(
-                %%NAME%%IlaSegment.create(rightIla, start, length), bufferSize);
+        protected void toArrayImpl(%%TYPE%%[] array, int offset, int stride, long start, int length)
+                throws DataInvalidException {
+            %%NAME%%IlaIterator li = new %%NAME%%IlaIterator(%%NAME%%IlaSegment.create(leftIla, start, length), bufferSize);
+            %%NAME%%IlaIterator ri = new %%NAME%%IlaIterator(%%NAME%%IlaSegment.create(rightIla, start, length), bufferSize);
 
-            for (int ii = offset; li.hasNext(); ii += stride)
-            {
+            for (int ii = offset; li.hasNext(); ii += stride) {
                 array[ii] = (%%TYPE%%) (li.next() - ri.next());
             }
         }
-                
-        public Map<String, Object> getParameters()
-        {
+
+        public Map<String, Object> getParameters() {
             HashMap<String, Object> map = new HashMap<String, Object>();
-                        
+
             map.put("name", "%%NAME%%IlaSubtract");
             map.put("leftIla", getImmutableInfo(leftIla));
             map.put("rightIla", getImmutableInfo(rightIla));
             map.put("bufferSize", new Integer(bufferSize));
             map.put("length", new Long(length()));
-                        
-            return(map);
+
+            return (map);
         }
     }
 }

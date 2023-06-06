@@ -9,7 +9,6 @@ import tfw.immutable.ila.IlaTestDimensions;
  */
 public class ObjectIlaInterleaveTest extends TestCase {
     public void testAll() throws Exception {
-
         final int length = IlaTestDimensions.defaultIlaLength();
         for (int jj = 2; jj < 6; ++jj) {
             final Object[][] target = new Object[jj][length];
