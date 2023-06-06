@@ -3,27 +3,23 @@ package tfw.immutable.ila.floatila;
 import java.util.HashMap;
 import java.util.Map;
 import tfw.check.Argument;
-import tfw.immutable.ImmutableProxy;
 import tfw.immutable.DataInvalidException;
+import tfw.immutable.ImmutableProxy;
 
 /**
  *
  * @immutables.types=all
  */
-public final class FloatIlaDecimate
-{
-    private FloatIlaDecimate()
-    {
+public final class FloatIlaDecimate {
+    private FloatIlaDecimate() {
         // non-instantiable class
     }
 
-    public static FloatIla create(FloatIla ila, long factor)
-    {
+    public static FloatIla create(FloatIla ila, long factor) {
         return create(ila, factor, FloatIlaIterator.DEFAULT_BUFFER_SIZE);
     }
 
-    public static FloatIla create(FloatIla ila, long factor, int bufferSize)
-    {
+    public static FloatIla create(FloatIla ila, long factor, int bufferSize) {
         Argument.assertNotNull(ila, "ila");
         Argument.assertNotLessThan(factor, 2, "factor");
         Argument.assertNotLessThan(bufferSize, 1, "bufferSize");
@@ -31,49 +27,40 @@ public final class FloatIlaDecimate
         return new MyFloatIla(ila, factor, bufferSize);
     }
 
-    private static class MyFloatIla extends AbstractFloatIla
-        implements ImmutableProxy
-    {
+    private static class MyFloatIla extends AbstractFloatIla implements ImmutableProxy {
         private final FloatIla ila;
         private final long factor;
         private final int bufferSize;
 
-        MyFloatIla(FloatIla ila, long factor, int bufferSize)
-        {
+        MyFloatIla(FloatIla ila, long factor, int bufferSize) {
             super((ila.length() + factor - 1) / factor);
             this.ila = ila;
             this.factor = factor;
             this.bufferSize = bufferSize;
         }
 
-        protected void toArrayImpl(float[] array, int offset,
-                                   int stride, long start, int length)
-            throws DataInvalidException
-        {
+        protected void toArrayImpl(float[] array, int offset, int stride, long start, int length)
+                throws DataInvalidException {
             final long segmentStart = start * factor;
-            final long segmentLength = StrictMath.min(ila.length() -
-                segmentStart, length * factor - 1);
-            FloatIlaIterator fi = new FloatIlaIterator(
-                FloatIlaSegment.create(ila, segmentStart, segmentLength),
-                    bufferSize);
+            final long segmentLength = StrictMath.min(ila.length() - segmentStart, length * factor - 1);
+            FloatIlaIterator fi =
+                    new FloatIlaIterator(FloatIlaSegment.create(ila, segmentStart, segmentLength), bufferSize);
 
-            for (int ii = offset; length > 0; ii += stride, --length)
-            {
+            for (int ii = offset; length > 0; ii += stride, --length) {
                 array[ii] = (float) fi.next();
                 fi.skip(factor - 1);
             }
         }
-                
-        public Map<String, Object> getParameters()
-        {
+
+        public Map<String, Object> getParameters() {
             HashMap<String, Object> map = new HashMap<String, Object>();
-                        
+
             map.put("name", "FloatIlaDecimate");
             map.put("ila", getImmutableInfo(ila));
             map.put("length", new Long(length()));
             map.put("factor", new Long(factor));
-                        
-            return(map);
+
+            return (map);
         }
     }
 }

@@ -1,6 +1,5 @@
 package tfw.tsm;
 
-public interface Proxy
-{
-	public String getName();
+public interface Proxy {
+    public String getName();
 }

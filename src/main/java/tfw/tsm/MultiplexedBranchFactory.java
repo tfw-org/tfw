@@ -3,7 +3,6 @@ package tfw.tsm;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
 import tfw.check.Argument;
 import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.ila.ObjectIlaECD;
@@ -11,8 +10,7 @@ import tfw.tsm.ecd.ila.ObjectIlaECD;
 /**
  * A factory for creating a {@link MultiplexedBranch}.
  */
-public class MultiplexedBranchFactory
-{
+public class MultiplexedBranchFactory {
     /** A map of multi value event channel descriptions. */
     HashMap<String, ObjectECD> multiValueECDMap = new HashMap<String, ObjectECD>();
 
@@ -33,22 +31,20 @@ public class MultiplexedBranchFactory
 
     /**
      * Addes a multiplexer for the specified event channels.
-     * 
+     *
      * @param valueECD
      *            The event channel description of the child values.
      * @param multiValueECD
      *            The event channel description of the parent multiplexed
      *            values.
      */
-    public void addMultiplexer(ObjectECD valueECD, ObjectIlaECD multiValueECD)
-    {
-        this.addMultiplexer(valueECD, multiValueECD, DotEqualsRule
-                .getInstance(), new ObjectIlaMultiplexerStrategy());
+    public void addMultiplexer(ObjectECD valueECD, ObjectIlaECD multiValueECD) {
+        this.addMultiplexer(valueECD, multiValueECD, DotEqualsRule.getInstance(), new ObjectIlaMultiplexerStrategy());
     }
 
     /**
      * Addes a multiplexer for the specified event channels.
-     * 
+     *
      * @param valueECD
      *            The event channel description of the child values.
      * @param multiValueECD
@@ -60,34 +56,28 @@ public class MultiplexedBranchFactory
      * @param multiplexerStrategy
      *            The strategy for multiplexing and demultiplexing state.
      */
-    public void addMultiplexer(ObjectECD valueECD, ObjectECD multiValueECD,
+    public void addMultiplexer(
+            ObjectECD valueECD,
+            ObjectECD multiValueECD,
             StateChangeRule valueStateChangeRule,
-            MultiplexerStrategy multiplexerStrategy)
-    {
+            MultiplexerStrategy multiplexerStrategy) {
         Argument.assertNotNull(valueECD, "valueECD");
         Argument.assertNotNull(multiValueECD, "multiValueECD");
         Argument.assertNotNull(valueStateChangeRule, "valueStateChangeRule");
         Argument.assertNotNull(multiplexerStrategy, "multiplexerStrategy");
 
-        if (valueECD.getEventChannelName().equals(
-                multiValueECD.getEventChannelName()))
-        {
+        if (valueECD.getEventChannelName().equals(multiValueECD.getEventChannelName())) {
             throw new IllegalArgumentException(
                     "valueECD.getEventChannelName().equals(multiValueECD.getEventChannelName()) not allowed");
         }
-        if (multiValueECDMap.put(multiValueECD.getEventChannelName(),
-                multiValueECD) != null)
-        {
-            throw new IllegalArgumentException(
-                    "Attempt to add multiple multiplexers for multi event channel '"
-                            + multiValueECD.getEventChannelName() + "'");
+        if (multiValueECDMap.put(multiValueECD.getEventChannelName(), multiValueECD) != null) {
+            throw new IllegalArgumentException("Attempt to add multiple multiplexers for multi event channel '"
+                    + multiValueECD.getEventChannelName() + "'");
         }
 
-        if (valueECDMap.put(valueECD.getEventChannelName(), multiValueECD) != null)
-        {
-            throw new IllegalArgumentException(
-                    "Attempt to add multiple multiplexers for value event channel '"
-                            + valueECD.getEventChannelName() + "'");
+        if (valueECDMap.put(valueECD.getEventChannelName(), multiValueECD) != null) {
+            throw new IllegalArgumentException("Attempt to add multiple multiplexers for value event channel '"
+                    + valueECD.getEventChannelName() + "'");
         }
 
         valueECDList.add(valueECD);
@@ -96,18 +86,17 @@ public class MultiplexedBranchFactory
         strategyList.add(multiplexerStrategy);
     }
 
-    private static Multiplexer[] generateMulitplexers(String name,
-            List<ObjectECD> valueECDList, List<ObjectECD> multiValueECDList,
+    private static Multiplexer[] generateMulitplexers(
+            String name,
+            List<ObjectECD> valueECDList,
+            List<ObjectECD> multiValueECDList,
             List<StateChangeRule> stateChangeRules,
-            List<MultiplexerStrategy> strategyList)
-    {
+            List<MultiplexerStrategy> strategyList) {
         ArrayList<Multiplexer> list = new ArrayList<Multiplexer>();
 
-        for (int i = 0; i < valueECDList.size(); i++)
-        {
-            list.add(new Multiplexer(name, valueECDList.get(i),
-                    multiValueECDList.get(i), stateChangeRules.get(i),
-                    strategyList.get(i)));
+        for (int i = 0; i < valueECDList.size(); i++) {
+            list.add(new Multiplexer(
+                    name, valueECDList.get(i), multiValueECDList.get(i), stateChangeRules.get(i), strategyList.get(i)));
         }
 
         return (Multiplexer[]) list.toArray(new Multiplexer[list.size()]);
@@ -117,25 +106,22 @@ public class MultiplexedBranchFactory
      * Creates a multiplexed branch with the set of multiplexed event channels
      * as previously defined by calls to
      * {@link #addMultiplexer(ObjectECD, ObjectIlaECD)}.
-     * 
+     *
      * @param name
      *            the name of the branch.
      * @return the multiplexed branch.
      */
-    public MultiplexedBranch create(String name)
-    {
+    public MultiplexedBranch create(String name) {
         Argument.assertNotNull(name, "name");
 
-        return new MultiplexedBranch(name,
-                generateMulitplexers(name, valueECDList, multiValueECDList,
-                        stateChangeRules, strategyList));
+        return new MultiplexedBranch(
+                name, generateMulitplexers(name, valueECDList, multiValueECDList, stateChangeRules, strategyList));
     }
 
     /**
      * Clears any previously added multiplexers.
      */
-    public void clear()
-    {
+    public void clear() {
         valueECDMap.clear();
         multiValueECDMap.clear();
         valueECDList.clear();

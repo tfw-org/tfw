@@ -7,8 +7,7 @@ import tfw.immutable.DataInvalidException;
  *
  * @immutables.types=all
  */
-public final class StringIlaIterator
-{
+public final class StringIlaIterator {
     private final StringIla instance;
     private final long instanceLength;
     private long amountLeftToFetch;
@@ -21,13 +20,11 @@ public final class StringIlaIterator
 
     public static final int DEFAULT_BUFFER_SIZE = 10000;
 
-    public StringIlaIterator(StringIla instance)
-    {
+    public StringIlaIterator(StringIla instance) {
         this(instance, DEFAULT_BUFFER_SIZE);
     }
 
-    public StringIlaIterator(StringIla instance, int bufferSize)
-    {
+    public StringIlaIterator(StringIla instance, int bufferSize) {
         Argument.assertNotNull(instance, "instance");
         Argument.assertNotLessThan(bufferSize, 1, "bufferSize");
 
@@ -42,24 +39,20 @@ public final class StringIlaIterator
         this.amountLeftToFetch = instanceLength - actualPosition;
     }
 
-    public boolean hasNext()
-    {
+    public boolean hasNext() {
         return actualPosition < instanceLength;
     }
 
     /**
-       NOTE: returns GARBAGE if you fall off the end.
-       Either know the length of the StringIla, or use hasNext()
-       properly.
-    */
-    public String next() throws DataInvalidException
-    {
+     * NOTE: returns GARBAGE if you fall off the end.
+     * Either know the length of the StringIla, or use hasNext()
+     * properly.
+     */
+    public String next() throws DataInvalidException {
         // do we need to fetch into buffer?
-        if (bufferIndex == bufferSize)
-        {
+        if (bufferIndex == bufferSize) {
             // how much do we fetch?
-            if (amountLeftToFetch < bufferSize)
-            {
+            if (amountLeftToFetch < bufferSize) {
                 amountToFetch = (int) amountLeftToFetch;
             }
 
@@ -73,30 +66,25 @@ public final class StringIlaIterator
     }
 
     /**
-       Can dork you if you skip enough to fall off end.
-       Either know the length of the StringIla, or use hasNext()
-       properly.
-    */
-    public void skip(long amount) throws DataInvalidException
-    {
+     * Can dork you if you skip enough to fall off end.
+     * Either know the length of the StringIla, or use hasNext()
+     * properly.
+     */
+    public void skip(long amount) throws DataInvalidException {
         long newBufferIndex = bufferIndex + amount;
         actualPosition += amount;
 
         // will we blow our cache?
-        if (newBufferIndex > bufferSize)
-        {
+        if (newBufferIndex > bufferSize) {
             amountLeftToFetch = instanceLength - actualPosition;
             fetchPosition = actualPosition;
             bufferIndex = bufferSize;
-        }
-        else
-        {
+        } else {
             bufferIndex = (int) newBufferIndex;
         }
     }
 
-    public long remaining()
-    {
+    public long remaining() {
         return instanceLength - actualPosition;
     }
 }

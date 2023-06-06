@@ -12,24 +12,20 @@ import tfw.check.Argument;
  * components. It ensures that all state changes occur in the AWT thread and is
  * therefore safe to use with GUI components.
  */
-public class AWTTransactionQueue implements TransactionQueue
-{
+public class AWTTransactionQueue implements TransactionQueue {
 
     /**
      * Adds the runnable to the AWT event queue. The runnable will be run
      * asynchronously.
-     * 
+     *
      * @param runnable to be added to the queue.
      */
-    public void invokeLater(Runnable runnable)
-    {
+    public void invokeLater(Runnable runnable) {
         Argument.assertNotNull(runnable, "runnable");
         EventQueue.invokeLater(runnable);
     }
 
-    public void invokeAndWait(Runnable runnable)
-            throws InvocationTargetException, InterruptedException
-    {
+    public void invokeAndWait(Runnable runnable) throws InvocationTargetException, InterruptedException {
         Argument.assertNotNull(runnable, "runnable");
         EventQueue.invokeAndWait(runnable);
     }
@@ -37,29 +33,28 @@ public class AWTTransactionQueue implements TransactionQueue
     /**
      * Returns true if the calling thread is the current AWT
      * <code>EventQueue's</code> dispatch thread.
-     * 
+     *
      * @return true if the calling thread is the current AWT
      *         <code>EventQueue's</code> dispatch thread.
      */
-    public boolean isDispatchThread()
-    {
+    public boolean isDispatchThread() {
         return EventQueue.isDispatchThread();
     }
-    
+
     private final Lock transactionQueueLock = new ReentrantLock();
 
-	@Override
-	public void lock() {
-		transactionQueueLock.lock();
-	}
+    @Override
+    public void lock() {
+        transactionQueueLock.lock();
+    }
 
-	@Override
-	public void unlock() {
-		transactionQueueLock.unlock();
-	}
+    @Override
+    public void unlock() {
+        transactionQueueLock.unlock();
+    }
 
-	@Override
-	public TransactionState createTransactionState() {
-		return new TransactionStateImpl();
-	}
+    @Override
+    public TransactionState createTransactionState() {
+        return new TransactionStateImpl();
+    }
 }

@@ -10,39 +10,39 @@ import tfw.tsm.ecd.BooleanECD;
 import tfw.tsm.ecd.ila.IntIlaECD;
 import tfw.tsm.ecd.ila.ObjectIlaECD;
 
-public class JListBB extends JList implements BranchBox
-{
-	private final Branch branch;
+public class JListBB extends JList implements BranchBox {
+    private final Branch branch;
 
-	public JListBB(String name, ObjectIlaECD listECD,
-			ObjectIlaECD selectedItemsECD, IntIlaECD selectedIndexesECD,
-			BooleanECD enabledECD)
-	{
-		this(new Branch(name), listECD, selectedItemsECD, selectedIndexesECD,
-			enabledECD);
-	}
+    public JListBB(
+            String name,
+            ObjectIlaECD listECD,
+            ObjectIlaECD selectedItemsECD,
+            IntIlaECD selectedIndexesECD,
+            BooleanECD enabledECD) {
+        this(new Branch(name), listECD, selectedItemsECD, selectedIndexesECD, enabledECD);
+    }
 
-	public JListBB(Branch branch, ObjectIlaECD listECD,
-		ObjectIlaECD selectedItemsECD, IntIlaECD selectedIndexesECD,
-		BooleanECD enabledECD)
-	{
-		this.branch = branch;
+    public JListBB(
+            Branch branch,
+            ObjectIlaECD listECD,
+            ObjectIlaECD selectedItemsECD,
+            IntIlaECD selectedIndexesECD,
+            BooleanECD enabledECD) {
+        this.branch = branch;
 
-		SelectionInitiator selectionInitiator = new SelectionInitiator(
-			"JListBB", selectedItemsECD, selectedIndexesECD, this);
+        SelectionInitiator selectionInitiator =
+                new SelectionInitiator("JListBB", selectedItemsECD, selectedIndexesECD, this);
 
-		addListSelectionListener(selectionInitiator);
-		branch.add(selectionInitiator);
+        addListSelectionListener(selectionInitiator);
+        branch.add(selectionInitiator);
 
-		SelectionAndListCommit selectionAndListCommit = new SelectionAndListCommit(
-			"JListBB", listECD, selectedItemsECD, selectedIndexesECD,
-			new Initiator[] { selectionInitiator }, this);
+        SelectionAndListCommit selectionAndListCommit = new SelectionAndListCommit(
+                "JListBB", listECD, selectedItemsECD, selectedIndexesECD, new Initiator[] {selectionInitiator}, this);
 
-		branch.add(selectionAndListCommit);
-	}
+        branch.add(selectionAndListCommit);
+    }
 
-	public final Branch getBranch()
-	{
-		return (branch);
-	}
+    public final Branch getBranch() {
+        return (branch);
+    }
 }

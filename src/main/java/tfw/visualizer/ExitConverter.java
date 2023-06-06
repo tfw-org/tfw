@@ -3,18 +3,12 @@ package tfw.visualizer;
 import tfw.tsm.TriggeredConverter;
 import tfw.tsm.ecd.StatelessTriggerECD;
 
-public class ExitConverter extends TriggeredConverter
-{
-    public ExitConverter(StatelessTriggerECD triggerECD)
-    {
-        super("ExitConverter",
-            triggerECD,
-            null,
-            null);
+public class ExitConverter extends TriggeredConverter {
+    public ExitConverter(StatelessTriggerECD triggerECD) {
+        super("ExitConverter", triggerECD, null, null);
     }
-    
-    protected void convert()
-    {
+
+    protected void convert() {
         System.exit(0);
     }
 }

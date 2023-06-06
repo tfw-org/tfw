@@ -5,31 +5,28 @@ import tfw.check.Argument;
 /**
  * Factory for creating a {@link Root}.
  */
-public class RootFactory extends BaseBranchFactory
-{
+public class RootFactory extends BaseBranchFactory {
     private boolean logging = false;
 
     private TransactionExceptionHandler handler = null;
-    
+
     public Root create(String name, TransactionQueue queue) {
-    	return create(name, queue, new DefaultCheckDependencies());
+        return create(name, queue, new DefaultCheckDependencies());
     }
 
     /**
      * Creates a root with the given name and values previously specified. Note
      * that this method calls {@link #clear()}.
-     * 
+     *
      * @param name
      *            The name of the root.
      * @return a new root.
      */
-    public Root create(String name, TransactionQueue queue, CheckDependencies checkDependencies)
-    {
+    public Root create(String name, TransactionQueue queue, CheckDependencies checkDependencies) {
         Argument.assertNotNull(name, "name");
         TransactionMgr mgr = new TransactionMgr(queue, checkDependencies, logging);
 
-        if (handler != null)
-        {
+        if (handler != null) {
             mgr.setExceptionHandler(handler);
         }
         Root root = new Root(name, getTerminators(), mgr);
@@ -39,13 +36,12 @@ public class RootFactory extends BaseBranchFactory
 
     /**
      * Sets the transaction logging state.
-     * 
+     *
      * @param logging
      *            flag indicating whether logging is to be turned on (<code>true</code>)
      *            or off(<code>false</code>).
      */
-    public void setLogging(boolean logging)
-    {
+    public void setLogging(boolean logging) {
         this.logging = logging;
     }
 
@@ -54,13 +50,11 @@ public class RootFactory extends BaseBranchFactory
      * will over-write any previously set handlers. If an un-handle exception
      * reaches the transaction manager the
      * {@link TransactionExceptionHandler#handle(Exception)} will be called.
-     * 
+     *
      * @param handler
      *            the exception handler.
      */
-    public final void setTransactionExceptionHandler(
-            TransactionExceptionHandler handler)
-    {
+    public final void setTransactionExceptionHandler(TransactionExceptionHandler handler) {
         Argument.assertNotNull(handler, "handler");
         this.handler = handler;
     }

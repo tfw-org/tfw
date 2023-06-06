@@ -114,8 +114,7 @@
                 <configuration>
                     <java>
                         <includes>
-                            <include>src/main/java/tfw/math/**/*.java</include>
-                            <include>src/main/java/tfw/plot/demo/**/*.java</include>
+                            <include>src/main/java/**/*.java</include>
                         </includes>
                         <excludes>
                             <exclude>src/main/java/tfw/math/BigDecimal.java</exclude>

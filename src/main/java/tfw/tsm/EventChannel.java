@@ -5,18 +5,17 @@ import tfw.tsm.ecd.EventChannelDescription;
 /**
  * An interface which defines the services an event channel must provide.
  */
-public interface EventChannel
-{
+public interface EventChannel {
     /**
      * Returns the non_name of this event channel
-     * 
+     *
      * @return the non-null name for this event channel.
      */
     public EventChannelDescription getECD();
 
     /**
      * Sets the component associated with this event channel.
-     * 
+     *
      * @param component
      *            the component associated with this event channel.
      */
@@ -24,21 +23,21 @@ public interface EventChannel
 
     /**
      * Connects a {@link Port} to the event channel.
-     * 
+     *
      * @param port the port to be connected.
      */
     public void add(Port port);
 
     /**
      * Disconnects a {@link Port} from this event channel.
-     * 
+     *
      * @param port the port to be disconnected.
      */
     public void remove(Port port);
 
     /**
      * Get the parent of this event channel.
-     * 
+     *
      * @return The event channels parent
      */
     public TreeComponent getParent();
@@ -69,12 +68,11 @@ public interface EventChannel
 
     /**
      * Sets the state of this event channel.
-     * 
+     *
      * @param state
      *            the new value.
      */
-    public void setState(Source source, Object state,
-            EventChannel forwardingEventChannel);
+    public void setState(Source source, Object state, EventChannel forwardingEventChannel);
 
     /**
      * Returns the Source which set the current state.
@@ -112,7 +110,7 @@ public interface EventChannel
     /**
      * Adds an asynchronous state change. This method is generally called by an
      * {@link Source} to notify the event channel that it has a state change
-     * 
+     *
      * @param source
      *            the source with the state change.
      */

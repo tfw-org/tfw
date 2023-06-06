@@ -8,91 +8,70 @@ import tfw.immutable.ila.objectila.ObjectIlaFromArray;
  * A strategy for multiplexing/de-multiplexing an {@link ObjectIla} event
  * channel.
  */
-public class ObjectIlaMultiplexerStrategy implements MultiplexerStrategy
-{
+public class ObjectIlaMultiplexerStrategy implements MultiplexerStrategy {
     /**
      * @see tfw.tsm.MultiplexerStrategy#toMultiStateAccessor(java.lang.Object)
      */
-    public MultiStateAccessor toMultiStateAccessor(Object multiState)
-    {
-        return new MyMultiStateAccessor((multiState == null) ?
-        	ObjectIlaFromArray.create(new Object[0]) : (ObjectIla)multiState);
+    public MultiStateAccessor toMultiStateAccessor(Object multiState) {
+        return new MyMultiStateAccessor(
+                (multiState == null) ? ObjectIlaFromArray.create(new Object[0]) : (ObjectIla) multiState);
     }
 
-    public Object getDefaultSlotState(){
-    	return null;
+    public Object getDefaultSlotState() {
+        return null;
     }
-    private class MyMultiStateAccessor implements MultiStateAccessor
-    {
+
+    private class MyMultiStateAccessor implements MultiStateAccessor {
 
         private final Object[] objs;
 
-        MyMultiStateAccessor(ObjectIla ila)
-        {
-            try
-            {
+        MyMultiStateAccessor(ObjectIla ila) {
+            try {
                 this.objs = ila.toArray();
-            }
-            catch (DataInvalidException e)
-            {
-                throw new RuntimeException(
-                        "Exception occurred accessing multiplexed state:"
-                                + e.getMessage(), e);
+            } catch (DataInvalidException e) {
+                throw new RuntimeException("Exception occurred accessing multiplexed state:" + e.getMessage(), e);
             }
         }
 
         /**
          * @see tfw.tsm.MultiplexerStrategy.MultiStateAccessor#getState(java.lang.Object)
          */
-        public Object getState(Object key)
-        {
+        public Object getState(Object key) {
             int index = ((Integer) key).intValue();
-            if ((index >= 0) && (index < this.objs.length))
-            {
+            if ((index >= 0) && (index < this.objs.length)) {
                 return objs[index];
             }
             return null;
         }
     }
-    
+
     @Override
-    public Object addToMultiState(Object originalMultiState, Object[] keys,
-    	Object[] values, int numberOfKeyValuePairs)
-    {
-    	Object[] array = null;
-    	
-    	if (originalMultiState == null)
-    	{
-    		array = new Object[0];
-    	}
-    	else
-    	{
-        	try
-        	{
-        		array = ((ObjectIla)originalMultiState).toArray();
-        	}
-        	catch (DataInvalidException e)
-        	{
-        		throw new RuntimeException(
-        			"Exception occurred accessing multiplexed state:" +
-        				e.getMessage(), e);
-        	}
-    	}
-    	
-    	for (int i=0 ; i < numberOfKeyValuePairs ; i++)
-    	{
-    		int index = ((Integer)keys[i]).intValue();
-    		
-    		if (array.length -1 < index)
-    		{
-    			Object[] newArray = new Object[index+1];
-    			System.arraycopy(array, 0, newArray, 0, array.length);
-    			array = newArray;
-    		}
-    		
-    		array[index] = values[i];
-    	}
-    	
-    	return ObjectIlaFromArray.create(array, false);
+    public Object addToMultiState(
+            Object originalMultiState, Object[] keys, Object[] values, int numberOfKeyValuePairs) {
+        Object[] array = null;
+
+        if (originalMultiState == null) {
+            array = new Object[0];
+        } else {
+            try {
+                array = ((ObjectIla) originalMultiState).toArray();
+            } catch (DataInvalidException e) {
+                throw new RuntimeException("Exception occurred accessing multiplexed state:" + e.getMessage(), e);
+            }
+        }
+
+        for (int i = 0; i < numberOfKeyValuePairs; i++) {
+            int index = ((Integer) keys[i]).intValue();
+
+            if (array.length - 1 < index) {
+                Object[] newArray = new Object[index + 1];
+                System.arraycopy(array, 0, newArray, 0, array.length);
+                array = newArray;
+            }
+
+            array[index] = values[i];
+        }
+
+        return ObjectIlaFromArray.create(array, false);
     }
 }

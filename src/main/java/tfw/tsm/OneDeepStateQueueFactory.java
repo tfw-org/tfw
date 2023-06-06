@@ -5,36 +5,31 @@ import java.util.NoSuchElementException;
 /**
  * A factory for creating one deep queue's.
  */
-public class OneDeepStateQueueFactory implements StateQueueFactory
-{
+public class OneDeepStateQueueFactory implements StateQueueFactory {
     /**
      * Returns a new instance of a queue
      */
-    public StateQueue create()
-    {
+    public StateQueue create() {
         return new OneDeepStateQueue();
     }
 
     /**
      * A state queue that has a depth of one.
      */
-    private static class OneDeepStateQueue implements StateQueue
-    {
+    private static class OneDeepStateQueue implements StateQueue {
         private Object state = null;
 
         private boolean empty = true;
 
         /**
          * Returns the current state
-         * 
+         *
          * @return the current state.
          * @throws NoSuchElementException
          *             if the queue is empty.
          */
-        public Object pop() throws NoSuchElementException
-        {
-            if (empty)
-            {
+        public Object pop() throws NoSuchElementException {
+            if (empty) {
                 throw new NoSuchElementException("Queue is empty");
             }
             empty = true;
@@ -45,14 +40,12 @@ public class OneDeepStateQueueFactory implements StateQueueFactory
          * Puts the specified value on the queue, over writing any previously
          * pushed state that hasn't been removed.
          */
-        public void push(Object state)
-        {
+        public void push(Object state) {
             this.state = state;
             this.empty = false;
         }
 
-        public boolean isEmpty()
-        {
+        public boolean isEmpty() {
             return empty;
         }
     }
