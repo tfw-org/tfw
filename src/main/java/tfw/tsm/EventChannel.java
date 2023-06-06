@@ -23,18 +23,16 @@ public interface EventChannel
     public void setTreeComponent(TreeComponent component);
 
     /**
-     * Connects a {@link Sink} to the event channel.
+     * Connects a {@link Port} to the event channel.
      * 
-     * @param sink
-     *            the sink to be connected.
+     * @param port the port to be connected.
      */
     public void add(Port port);
 
     /**
-     * Disconnects a {@link Sink} from this event channel.
+     * Disconnects a {@link Port} from this event channel.
      * 
-     * @param sink
-     *            the sink to be disconnected.
+     * @param port the port to be disconnected.
      */
     public void remove(Port port);
 

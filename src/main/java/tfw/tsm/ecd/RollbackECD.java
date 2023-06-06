@@ -16,9 +16,6 @@ public abstract class RollbackECD extends ObjectECD
      *            the name of the event channel.
      * @param constraint
      *            the value constraint for the evnet channel.
-     * @param codec
-     *            the codec for the event channel values. <code>null</code> is
-     *            a valid value.
      */
     public RollbackECD(String eventChannelName, ValueConstraint constraint)
     {

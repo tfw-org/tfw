@@ -19,8 +19,8 @@ public abstract class Converter extends Processor
      * inputs and outputs.
      *
      * @param name the name of this converter.
-     * @param sinkEventChannels the input event channels.
-     * @param sourceEventChannels the output event channels.
+     * @param sinkDescriptions the input event channels.
+     * @param sourceDescriptions the output event channels.
      */
     public Converter(String name, EventChannelDescription[] sinkDescriptions,
         EventChannelDescription[] sourceDescriptions)
