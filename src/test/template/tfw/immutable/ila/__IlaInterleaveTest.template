@@ -1,43 +1,35 @@
 // booleanila,byteila,charila,doubleila,floatila,intila,longila,objectila,shortila
 package %%PACKAGE%%;
 
-%%RANDOM_INCLUDE%%
-import junit.framework.TestCase;
+%%RANDOM_INCLUDE%%import junit.framework.TestCase;
 import tfw.immutable.ila.IlaTestDimensions;
-import %%PACKAGE%%.%%NAME%%Ila;
-import %%PACKAGE%%.%%NAME%%IlaFromArray;
-import %%PACKAGE%%.%%NAME%%IlaInterleave;
 
 /**
- * 
+ *
  * @immutables.types=all
  */
-public class %%NAME%%IlaInterleaveTest extends TestCase
-{
-    public void testAll() throws Exception
-    {
-        %%RANDOM_INIT%%
-        final int length = IlaTestDimensions.defaultIlaLength();
-        for (int jj = 2; jj < 6; ++jj)
-        {
+public class %%NAME%%IlaInterleaveTest extends TestCase {
+    public void testAll() throws Exception {
+        %%RANDOM_INIT%%final int length = IlaTestDimensions.defaultIlaLength();
+        for (int jj = 2; jj < 6; ++jj) {
             final %%TYPE%%[][] target = new %%TYPE%%[jj][length];
             final %%TYPE%%[] array = new %%TYPE%%[jj * length];
-            for (int ii = 0; ii < jj * length; ++ii)
-            {
+            for (int ii = 0; ii < jj * length; ++ii) {
                 array[ii] = target[ii % jj][ii / jj] = %%RANDOM_VALUE%%;
             }
             %%NAME%%Ila[] ilas = new %%NAME%%Ila[jj];
-            for (int ii = 0; ii < jj; ++ii)
-            {
+            for (int ii = 0; ii < jj; ++ii) {
                 ilas[ii] = %%NAME%%IlaFromArray.create(target[ii]);
             }
             %%NAME%%Ila targetIla = %%NAME%%IlaFromArray.create(array);
             %%NAME%%Ila actualIla = %%NAME%%IlaInterleave.create(ilas);
             final %%TYPE%% epsilon = %%DEFAULT_VALUE%%;
-            %%NAME%%IlaCheck.checkAll(targetIla, actualIla,
-                                      IlaTestDimensions.defaultOffsetLength(),
-                                      IlaTestDimensions.defaultMaxStride(),
-                                      epsilon);
+            %%NAME%%IlaCheck.checkAll(
+                    targetIla,
+                    actualIla,
+                    IlaTestDimensions.defaultOffsetLength(),
+                    IlaTestDimensions.defaultMaxStride(),
+                    epsilon);
         }
     }
 }

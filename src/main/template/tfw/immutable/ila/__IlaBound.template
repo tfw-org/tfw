@@ -11,69 +11,55 @@ import tfw.immutable.ImmutableProxy;
  *
  * @immutables.types=numeric
  */
-public final class %%NAME%%IlaBound
-{
-    private %%NAME%%IlaBound()
-    {
+public final class %%NAME%%IlaBound {
+    private %%NAME%%IlaBound() {
         // non-instantiable class
     }
 
-    public static %%NAME%%Ila create(%%NAME%%Ila ila, %%TYPE%% minimum,
-        %%TYPE%% maximum)
-    {
+    public static %%NAME%%Ila create(%%NAME%%Ila ila, %%TYPE%% minimum, %%TYPE%% maximum) {
         Argument.assertNotNull(ila, "ila");
         Argument.assertNotGreaterThan(minimum, maximum, "minimum", "maximum");
 
         return new My%%NAME%%Ila(ila, minimum, maximum);
     }
 
-    private static class My%%NAME%%Ila extends Abstract%%NAME%%Ila
-        implements ImmutableProxy
-    {
+    private static class My%%NAME%%Ila extends Abstract%%NAME%%Ila implements ImmutableProxy {
         private final %%NAME%%Ila ila;
         private final %%TYPE%% minimum;
         private final %%TYPE%% maximum;
 
-        My%%NAME%%Ila(%%NAME%%Ila ila, %%TYPE%% minimum, %%TYPE%% maximum)
-        {
+        My%%NAME%%Ila(%%NAME%%Ila ila, %%TYPE%% minimum, %%TYPE%% maximum) {
             super(ila.length());
-                    
+
             this.ila = ila;
             this.minimum = minimum;
             this.maximum = maximum;
         }
 
-        protected void toArrayImpl(%%TYPE%%[] array, int offset,
-                                   int stride, long start, int length)
-            throws DataInvalidException
-        {
+        protected void toArrayImpl(%%TYPE%%[] array, int offset, int stride, long start, int length)
+                throws DataInvalidException {
             ila.toArray(array, offset, stride, start, length);
 
-            for (int ii = offset; length > 0; ii += stride, --length)
-            {
+            for (int ii = offset; length > 0; ii += stride, --length) {
                 %%TYPE%% tmp = array[ii];
-                if (tmp < minimum)
-                {
+                if (tmp < minimum) {
                     array[ii] = minimum;
-                }
-                else if (tmp > maximum)
-                {
+                } else if (tmp > maximum) {
                     array[ii] = maximum;
                 }
             }
         }
-                
-        public Map<String, Object> getParameters()
-        {
+
+        public Map<String, Object> getParameters() {
             HashMap<String, Object> map = new HashMap<String, Object>();
-                        
+
             map.put("name", "%%NAME%%IlaBound");
             map.put("ila", getImmutableInfo(ila));
             map.put("minimum", %%CREATE_IMMUTABLE_START%%minimum%%CREATE_IMMUTABLE_END%%);
             map.put("maximum", %%CREATE_IMMUTABLE_START%%maximum%%CREATE_IMMUTABLE_END%%);
             map.put("length", new Long(length()));
-                        
-            return(map);
+
+            return (map);
         }
     }
 }

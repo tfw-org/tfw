@@ -43,7 +43,8 @@ public final class IntIlaDecimate {
                 throws DataInvalidException {
             final long segmentStart = start * factor;
             final long segmentLength = StrictMath.min(ila.length() - segmentStart, length * factor - 1);
-            IntIlaIterator fi = new IntIlaIterator(IntIlaSegment.create(ila, segmentStart, segmentLength), bufferSize);
+            final IntIla segment = IntIlaSegment.create(ila, segmentStart, segmentLength);
+            final IntIlaIterator fi = new IntIlaIterator(segment, bufferSize);
 
             for (int ii = offset; length > 0; ii += stride, --length) {
                 array[ii] = (int) fi.next();

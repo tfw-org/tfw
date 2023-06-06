@@ -9,7 +9,6 @@ import tfw.immutable.ila.IlaTestDimensions;
  */
 public class ObjectIlaFillTest extends TestCase {
     public void testAll() throws Exception {
-
         final Object value = new Object();
         final int length = IlaTestDimensions.defaultIlaLength();
         final Object[] array = new Object[length];

@@ -1,28 +1,20 @@
 // byteila,charila,doubleila,floatila,intila,longila,shortila
 package %%PACKAGE%%;
 
-%%RANDOM_INCLUDE%%
-import junit.framework.TestCase;
+%%RANDOM_INCLUDE%%import junit.framework.TestCase;
 import tfw.immutable.ila.IlaTestDimensions;
-import %%PACKAGE%%.%%NAME%%Ila;
-import %%PACKAGE%%.%%NAME%%IlaFromArray;
-import %%PACKAGE%%.%%NAME%%IlaScalarMultiply;
 
 /**
  *
  * @immutables.types=numeric
  */
-public class %%NAME%%IlaScalarMultiplyTest extends TestCase
-{
-    public void testAll() throws Exception
-    {
-        %%RANDOM_INIT%%
-        final int length = IlaTestDimensions.defaultIlaLength();
+public class %%NAME%%IlaScalarMultiplyTest extends TestCase {
+    public void testAll() throws Exception {
+        %%RANDOM_INIT%%final int length = IlaTestDimensions.defaultIlaLength();
         final %%TYPE%% scalar = %%RANDOM_VALUE%%;
         final %%TYPE%%[] array = new %%TYPE%%[length];
         final %%TYPE%%[] target = new %%TYPE%%[length];
-        for(int ii = 0; ii < array.length; ++ii)
-        {
+        for (int ii = 0; ii < array.length; ++ii) {
             array[ii] = %%RANDOM_VALUE%%;
             target[ii] = (%%TYPE%%) (array[ii] * scalar);
         }
@@ -30,9 +22,11 @@ public class %%NAME%%IlaScalarMultiplyTest extends TestCase
         %%NAME%%Ila targetIla = %%NAME%%IlaFromArray.create(target);
         %%NAME%%Ila actualIla = %%NAME%%IlaScalarMultiply.create(ila, scalar);
         final %%TYPE%% epsilon = (%%TYPE%%) 0.0;
-        %%NAME%%IlaCheck.checkAll(targetIla, actualIla,
-                                IlaTestDimensions.defaultOffsetLength(),
-                                IlaTestDimensions.defaultMaxStride(),
-                                epsilon);
+        %%NAME%%IlaCheck.checkAll(
+                targetIla,
+                actualIla,
+                IlaTestDimensions.defaultOffsetLength(),
+                IlaTestDimensions.defaultMaxStride(),
+                epsilon);
     }
 }

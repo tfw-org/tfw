@@ -10,7 +10,6 @@ import tfw.immutable.ila.IlaTestDimensions;
 public class ObjectIlaFromArrayTest extends TestCase {
     public void testImmutabilityCheck() throws Exception {
         final int ilaLength = IlaTestDimensions.defaultIlaLength();
-
         final Object[] creation = new Object[ilaLength];
         for (int ii = 0; ii < creation.length; ++ii) {
             creation[ii] = new Object();
@@ -25,7 +24,6 @@ public class ObjectIlaFromArrayTest extends TestCase {
         final int ilaLength = IlaTestDimensions.defaultIlaLength();
         final int addlOffsetLength = IlaTestDimensions.defaultOffsetLength();
         final int maxAbsStride = IlaTestDimensions.defaultMaxStride();
-
         final Object[] creation = new Object[ilaLength];
         for (int ii = 0; ii < creation.length; ++ii) {
             creation[ii] = new Object();

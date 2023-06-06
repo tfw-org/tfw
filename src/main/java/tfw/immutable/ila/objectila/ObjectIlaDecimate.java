@@ -43,8 +43,8 @@ public final class ObjectIlaDecimate {
                 throws DataInvalidException {
             final long segmentStart = start * factor;
             final long segmentLength = StrictMath.min(ila.length() - segmentStart, length * factor - 1);
-            ObjectIlaIterator fi =
-                    new ObjectIlaIterator(ObjectIlaSegment.create(ila, segmentStart, segmentLength), bufferSize);
+            final ObjectIla segment = ObjectIlaSegment.create(ila, segmentStart, segmentLength);
+            final ObjectIlaIterator fi = new ObjectIlaIterator(segment, bufferSize);
 
             for (int ii = offset; length > 0; ii += stride, --length) {
                 array[ii] = (Object) fi.next();

@@ -43,8 +43,8 @@ public final class LongIlaDecimate {
                 throws DataInvalidException {
             final long segmentStart = start * factor;
             final long segmentLength = StrictMath.min(ila.length() - segmentStart, length * factor - 1);
-            LongIlaIterator fi =
-                    new LongIlaIterator(LongIlaSegment.create(ila, segmentStart, segmentLength), bufferSize);
+            final LongIla segment = LongIlaSegment.create(ila, segmentStart, segmentLength);
+            final LongIlaIterator fi = new LongIlaIterator(segment, bufferSize);
 
             for (int ii = offset; length > 0; ii += stride, --length) {
                 array[ii] = (long) fi.next();

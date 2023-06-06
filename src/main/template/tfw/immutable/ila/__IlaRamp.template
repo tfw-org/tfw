@@ -10,66 +10,55 @@ import tfw.immutable.ImmutableProxy;
  *
  * @immutables.types=numeric
  */
-public final class %%NAME%%IlaRamp
-{
-    private %%NAME%%IlaRamp()
-    {
+public final class %%NAME%%IlaRamp {
+    private %%NAME%%IlaRamp() {
         // non-instantiable class
     }
 
-    public static %%NAME%%Ila create(%%TYPE%% startValue, %%TYPE%% increment,
-                                   long length)
-    {
+    public static %%NAME%%Ila create(%%TYPE%% startValue, %%TYPE%% increment, long length) {
         Argument.assertNotLessThan(length, 0, "length");
 
         return new My%%NAME%%Ila(startValue, increment, length);
     }
 
-    private static class My%%NAME%%Ila extends Abstract%%NAME%%Ila
-        implements ImmutableProxy
-    {
+    private static class My%%NAME%%Ila extends Abstract%%NAME%%Ila implements ImmutableProxy {
         private final %%TYPE%% startValue;
         private final %%TYPE%% increment;
 
-        My%%NAME%%Ila(%%TYPE%% startValue, %%TYPE%% increment, long length)
-        {
+        My%%NAME%%Ila(%%TYPE%% startValue, %%TYPE%% increment, long length) {
             super(length);
             this.startValue = startValue;
             this.increment = increment;
         }
 
-        protected void toArrayImpl(%%TYPE%%[] array, int offset,
-                                   int stride, long start, int length)
-        {
+        protected void toArrayImpl(%%TYPE%%[] array, int offset, int stride, long start, int length) {
             final int startPlusLength = (int) (start + length);
 
             // CORRECT, BUT WAY TOO SLOW
-            //%%TYPE%% value = startValue;
-            //for(long ii = 0; ii < start; ++ii)
-            //{
+            // %%TYPE%% value = startValue;
+            // for(long ii = 0; ii < start; ++ii)
+            // {
             //    value += increment;
-            //}
-            
+            // }
+
             // INCORRECT, BUT FAST
             %%TYPE%% value = (%%TYPE%%) (startValue + increment * start);
-            for(int startInt = (int) start;
-                startInt != startPlusLength;
-                ++startInt, offset += stride, value += increment)
-            {
+            for (int startInt = (int) start;
+                    startInt != startPlusLength;
+                    ++startInt, offset += stride, value += increment) {
                 array[offset] = value;
             }
         }
-                
-        public Map<String, Object> getParameters()
-        {
+
+        public Map<String, Object> getParameters() {
             HashMap<String, Object> map = new HashMap<String, Object>();
-                        
+
             map.put("name", "%%NAME%%IlaRamp");
             map.put("length", new Long(length()));
             map.put("startValue", %%CREATE_IMMUTABLE_START%%startValue%%CREATE_IMMUTABLE_END%%);
             map.put("increment", %%CREATE_IMMUTABLE_START%%increment%%CREATE_IMMUTABLE_END%%);
 
-            return(map);
+            return (map);
         }
     }
 }

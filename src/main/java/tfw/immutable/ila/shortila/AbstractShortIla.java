@@ -44,7 +44,7 @@ public abstract class AbstractShortIla extends AbstractIla implements ShortIla {
         toArray(array, offset, 1, start, length);
     }
 
-    public final void toArray(short[] array, int offset, int stride, long start, int length)
+    public final void toArray(final short[] array, int offset, int stride, long start, int length)
             throws DataInvalidException {
         if (length == 0) {
             return;

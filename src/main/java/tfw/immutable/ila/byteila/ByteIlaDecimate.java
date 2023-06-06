@@ -43,8 +43,8 @@ public final class ByteIlaDecimate {
                 throws DataInvalidException {
             final long segmentStart = start * factor;
             final long segmentLength = StrictMath.min(ila.length() - segmentStart, length * factor - 1);
-            ByteIlaIterator fi =
-                    new ByteIlaIterator(ByteIlaSegment.create(ila, segmentStart, segmentLength), bufferSize);
+            final ByteIla segment = ByteIlaSegment.create(ila, segmentStart, segmentLength);
+            final ByteIlaIterator fi = new ByteIlaIterator(segment, bufferSize);
 
             for (int ii = offset; length > 0; ii += stride, --length) {
                 array[ii] = (byte) fi.next();
