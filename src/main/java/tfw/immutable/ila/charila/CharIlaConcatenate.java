@@ -3,22 +3,19 @@ package tfw.immutable.ila.charila;
 import java.util.HashMap;
 import java.util.Map;
 import tfw.check.Argument;
-import tfw.immutable.ImmutableProxy;
 import tfw.immutable.DataInvalidException;
+import tfw.immutable.ImmutableProxy;
 
 /**
  *
  * @immutables.types=all
  */
-public final class CharIlaConcatenate
-{
-    private CharIlaConcatenate()
-    {
+public final class CharIlaConcatenate {
+    private CharIlaConcatenate() {
         // non-instantiable class
     }
 
-    public static CharIla create(CharIla leftIla, CharIla rightIla)
-    {
+    public static CharIla create(CharIla leftIla, CharIla rightIla) {
         Argument.assertNotNull(leftIla, "leftIla");
         Argument.assertNotNull(rightIla, "rightIla");
 
@@ -35,53 +32,40 @@ public final class CharIlaConcatenate
         return new MyCharIla(leftIla, rightIla);
     }
 
-    private static class MyCharIla extends AbstractCharIla
-        implements ImmutableProxy
-    {
+    private static class MyCharIla extends AbstractCharIla implements ImmutableProxy {
         private final CharIla leftIla;
         private final CharIla rightIla;
         private final long leftIlaLength;
 
-        MyCharIla(CharIla leftIla, CharIla rightIla)
-        {
+        MyCharIla(CharIla leftIla, CharIla rightIla) {
             super(leftIla.length() + rightIla.length());
             this.leftIla = leftIla;
             this.rightIla = rightIla;
             this.leftIlaLength = leftIla.length();
         }
 
-        protected void toArrayImpl(char[] array, int offset,
-                                   int stride, long start, int length)
-            throws DataInvalidException
-        {
-            if(start + length <= leftIlaLength)
-            {
+        protected void toArrayImpl(char[] array, int offset, int stride, long start, int length)
+                throws DataInvalidException {
+            if (start + length <= leftIlaLength) {
                 leftIla.toArray(array, offset, stride, start, length);
-            }
-            else if(start >= leftIlaLength)
-            {
-                rightIla.toArray(array, offset, stride, start - leftIlaLength,
-                                 length);
-            }
-            else
-            {
+            } else if (start >= leftIlaLength) {
+                rightIla.toArray(array, offset, stride, start - leftIlaLength, length);
+            } else {
                 final int leftAmount = (int) (leftIlaLength - start);
                 leftIla.toArray(array, offset, stride, start, leftAmount);
-                rightIla.toArray(array, offset + leftAmount * stride,
-                                 stride, 0, length - leftAmount);
+                rightIla.toArray(array, offset + leftAmount * stride, stride, 0, length - leftAmount);
             }
         }
-                
-        public Map<String, Object> getParameters()
-        {
+
+        public Map<String, Object> getParameters() {
             HashMap<String, Object> map = new HashMap<String, Object>();
-                        
+
             map.put("name", "CharIlaConcatenate");
             map.put("length", new Long(length()));
             map.put("leftIla", getImmutableInfo(leftIla));
             map.put("rightIla", getImmutableInfo(rightIla));
-                        
-            return(map);
+
+            return (map);
         }
     }
 }

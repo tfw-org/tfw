@@ -1,7 +1,6 @@
 package tfw.tsm;
 
 import java.io.Serializable;
-
 import tfw.array.ArrayUtil;
 import tfw.check.Argument;
 
@@ -10,10 +9,9 @@ import tfw.check.Argument;
  * tree component includes its name, the state of its event channels and the
  * state of its child sub-trees.
  */
-public class TreeState implements Serializable
-{
-	private static final long serialVersionUID = -3717409984084594135L;
-	
+public class TreeState implements Serializable {
+    private static final long serialVersionUID = -3717409984084594135L;
+
     /** The name of the tree component. */
     private final String name;
 
@@ -25,7 +23,7 @@ public class TreeState implements Serializable
 
     /**
      * Creates a tree state with the specified values.
-     * 
+     *
      * @param name
      *            The name of the component.
      * @param state
@@ -33,28 +31,20 @@ public class TreeState implements Serializable
      * @param children
      *            The set of sub-trees
      */
-    public TreeState(String name, EventChannelState[] state,
-            TreeState[] children)
-    {
+    public TreeState(String name, EventChannelState[] state, TreeState[] children) {
         Argument.assertNotNull(name, "name");
         this.name = name;
 
-        if (children == null)
-        {
+        if (children == null) {
             this.children = new TreeState[0];
-        }
-        else
-        {
+        } else {
             Argument.assertElementNotNull(children, "children");
             this.children = children;
         }
 
-        if (state == null)
-        {
+        if (state == null) {
             this.state = new EventChannelState[0];
-        }
-        else
-        {
+        } else {
             Argument.assertElementNotNull(state, "state");
             this.state = (EventChannelState[]) state.clone();
         }
@@ -62,47 +52,42 @@ public class TreeState implements Serializable
 
     /**
      * Returns the name the tree for which this is the state.
-     * 
+     *
      * @return the name the tree for which this is the state.
      */
-    public String getName()
-    {
+    public String getName() {
         return name;
     }
 
     /**
      * Returns the child tree state for this tree state.
-     * 
+     *
      * @return the child tree state for this tree state.
      */
-    public TreeState[] getChildren()
-    {
+    public TreeState[] getChildren() {
         return (TreeState[]) children.clone();
     }
 
     /**
      * Returns the state for the specified event channel or null if the event
      * channel is not found in this tree state.
-     * 
+     *
      * @return the state for the specified event channel or null if the event
      *         channel is not found in this tree state.
      */
-    public EventChannelState[] getState()
-    {
+    public EventChannelState[] getState() {
         return (EventChannelState[]) state.clone();
     }
 
     /**
      * Returns true if the specified object is a TreeState and is equivalent to
      * this one.
-     * 
+     *
      * @return true if the specified object is a TreeState and is equivalent to
      *         this one.
      */
-    public boolean equals(Object object)
-    {
-        if (!(object instanceof TreeState))
-        {
+    public boolean equals(Object object) {
+        if (!(object instanceof TreeState)) {
             return false;
         }
 
@@ -115,37 +100,31 @@ public class TreeState implements Serializable
 
     /**
      * Returns a hash code for this TreeState.
-     * 
+     *
      * @return a hash code for this TreeState.
      */
-    public int hashCode()
-    {
+    public int hashCode() {
         return name.hashCode();
     }
 
     /**
      * Creates a string representation of this treestate.
      */
-    public String toString()
-    {
+    public String toString() {
         StringBuffer sb = new StringBuffer();
         sb.append("TreeState[");
         sb.append("name = ").append(this.name);
         sb.append(", state = {");
-        for (int i = 0; i < this.state.length; i++)
-        {
-            if (i != 0)
-            {
+        for (int i = 0; i < this.state.length; i++) {
+            if (i != 0) {
                 sb.append(", ");
             }
             sb.append(state[i]);
         }
         sb.append("}, children = {");
 
-        for (int i = 0; i < this.children.length; i++)
-        {
-            if (i != 0)
-            {
+        for (int i = 0; i < this.children.length; i++) {
+            if (i != 0) {
                 sb.append(", ");
             }
             sb.append(children[i]);

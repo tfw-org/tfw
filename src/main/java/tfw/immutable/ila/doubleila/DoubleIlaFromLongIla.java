@@ -9,50 +9,41 @@ import tfw.immutable.ila.longila.LongIla;
 import tfw.immutable.ila.longila.LongIlaIterator;
 import tfw.immutable.ila.longila.LongIlaSegment;
 
-public final class DoubleIlaFromLongIla
-{
+public final class DoubleIlaFromLongIla {
     private DoubleIlaFromLongIla() {}
 
-    public static DoubleIla create(LongIla longIla)
-    {
-    	Argument.assertNotNull(longIla, "longIla");
+    public static DoubleIla create(LongIla longIla) {
+        Argument.assertNotNull(longIla, "longIla");
 
-		return new MyDoubleIla(longIla);
+        return new MyDoubleIla(longIla);
     }
 
-    private static class MyDoubleIla extends AbstractDoubleIla
-		implements ImmutableProxy
-    {
-		private LongIla longIla;
+    private static class MyDoubleIla extends AbstractDoubleIla implements ImmutableProxy {
+        private LongIla longIla;
 
-		MyDoubleIla(LongIla longIla)
-		{
-		    super(longIla.length());
-		    
-		    this.longIla = longIla;
-		}
+        MyDoubleIla(LongIla longIla) {
+            super(longIla.length());
 
-		protected void toArrayImpl(double[] array, int offset, int stride,
-			long start, int length) throws DataInvalidException
-		{
-			LongIlaIterator lii = new LongIlaIterator(
-				LongIlaSegment.create(longIla, start, length));
-				
-		    for (int i=0 ; i < length ; i++)
-		    {
-		    	array[offset+(i * stride)] = Double.longBitsToDouble(lii.next());
-		    }
-		}
-		
-		public Map<String, Object> getParameters()
-		{
-			HashMap<String, Object> map = new HashMap<String, Object>();
-			
-			map.put("name", "DoubleIlaFromLongIla");
-			map.put("longIla", getImmutableInfo(longIla));
-			map.put("length", new Long(length()));
-			
-			return(map);
-		}
+            this.longIla = longIla;
+        }
+
+        protected void toArrayImpl(double[] array, int offset, int stride, long start, int length)
+                throws DataInvalidException {
+            LongIlaIterator lii = new LongIlaIterator(LongIlaSegment.create(longIla, start, length));
+
+            for (int i = 0; i < length; i++) {
+                array[offset + (i * stride)] = Double.longBitsToDouble(lii.next());
+            }
+        }
+
+        public Map<String, Object> getParameters() {
+            HashMap<String, Object> map = new HashMap<String, Object>();
+
+            map.put("name", "DoubleIlaFromLongIla");
+            map.put("longIla", getImmutableInfo(longIla));
+            map.put("length", new Long(length()));
+
+            return (map);
+        }
     }
 }

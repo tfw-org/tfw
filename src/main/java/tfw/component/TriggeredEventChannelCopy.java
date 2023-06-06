@@ -9,40 +9,39 @@ import tfw.tsm.ecd.StatelessTriggerECD;
  * based on a trigger.
  */
 public class TriggeredEventChannelCopy extends TriggeredConverter {
-	private final ObjectECD inputECD;
+    private final ObjectECD inputECD;
 
-	private final ObjectECD outputECD;
+    private final ObjectECD outputECD;
 
-	/**
-	 * Creates a component with specified attributes.
-	 * 
-	 * @param name
-	 *            The name of this component.
-	 * @param triggerECD
-	 *            The description of the triggering event channel that causes
-	 *            the copy to be performed.
-	 * @param inputECD
-	 *            The description of the input channel to be copied.
-	 * @param outputECD
-	 *            The description of the output channel into which the input
-	 *            channels state is to be copied.
-	 */
-	public TriggeredEventChannelCopy(String name,
-			StatelessTriggerECD triggerECD, ObjectECD inputECD,
-			ObjectECD outputECD) {
-		super("TriggeredEventChannelCopy[" + name + "]", triggerECD,
-				new ObjectECD[] { inputECD },
-				new ObjectECD[] { outputECD });
-		if (outputECD.getConstraint().isCompatible(inputECD.getConstraint()) == false) {
-			throw new IllegalArgumentException(
-					"outputECD.getConstraint().isCompatible(inputECD.getConstraint()) == false not allowed");
-		}
+    /**
+     * Creates a component with specified attributes.
+     *
+     * @param name
+     *            The name of this component.
+     * @param triggerECD
+     *            The description of the triggering event channel that causes
+     *            the copy to be performed.
+     * @param inputECD
+     *            The description of the input channel to be copied.
+     * @param outputECD
+     *            The description of the output channel into which the input
+     *            channels state is to be copied.
+     */
+    public TriggeredEventChannelCopy(
+            String name, StatelessTriggerECD triggerECD, ObjectECD inputECD, ObjectECD outputECD) {
+        super("TriggeredEventChannelCopy[" + name + "]", triggerECD, new ObjectECD[] {inputECD}, new ObjectECD[] {
+            outputECD
+        });
+        if (outputECD.getConstraint().isCompatible(inputECD.getConstraint()) == false) {
+            throw new IllegalArgumentException(
+                    "outputECD.getConstraint().isCompatible(inputECD.getConstraint()) == false not allowed");
+        }
 
-		this.inputECD = inputECD;
-		this.outputECD = outputECD;
-	}
+        this.inputECD = inputECD;
+        this.outputECD = outputECD;
+    }
 
-	protected void convert() {
-		set(outputECD, get(inputECD));
-	}
+    protected void convert() {
+        set(outputECD, get(inputECD));
+    }
 }

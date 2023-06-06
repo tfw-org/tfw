@@ -17,50 +17,61 @@ import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.ila.ObjectIlaECD;
 
 public class JComboBoxBB extends JComboBox implements BranchBox {
-	private final Branch branch;
+    private final Branch branch;
 
-	public JComboBoxBB(String name, ObjectIlaECD listECD,
-			ObjectECD selectedItemECD, IntegerECD selectedIndexECD,
-			BooleanECD enabledECD) {
-		this(new Branch(name), listECD, selectedItemECD, selectedIndexECD,
-				enabledECD);
-	}
+    public JComboBoxBB(
+            String name,
+            ObjectIlaECD listECD,
+            ObjectECD selectedItemECD,
+            IntegerECD selectedIndexECD,
+            BooleanECD enabledECD) {
+        this(new Branch(name), listECD, selectedItemECD, selectedIndexECD, enabledECD);
+    }
 
-	public JComboBoxBB(Branch branch, ObjectIlaECD listECD,
-			ObjectECD selectedItemECD, IntegerECD selectedIndexECD,
-			BooleanECD enabledECD) {
-		this(branch, listECD, selectedItemECD, selectedIndexECD, enabledECD,
-				new Initiator[0]);
-	}
+    public JComboBoxBB(
+            Branch branch,
+            ObjectIlaECD listECD,
+            ObjectECD selectedItemECD,
+            IntegerECD selectedIndexECD,
+            BooleanECD enabledECD) {
+        this(branch, listECD, selectedItemECD, selectedIndexECD, enabledECD, new Initiator[0]);
+    }
 
-	public JComboBoxBB(Branch branch, ObjectIlaECD listECD,
-			ObjectECD selectedItemECD, IntegerECD selectedIndexECD,
-			BooleanECD enabledECD, Initiator[] initiators) {
+    public JComboBoxBB(
+            Branch branch,
+            ObjectIlaECD listECD,
+            ObjectECD selectedItemECD,
+            IntegerECD selectedIndexECD,
+            BooleanECD enabledECD,
+            Initiator[] initiators) {
 
-		this.branch = branch;
+        this.branch = branch;
 
-		SelectionInitiator selectionInitiator = new SelectionInitiator(
-				"JComboBoxBB", selectedItemECD, selectedIndexECD, this);
+        SelectionInitiator selectionInitiator =
+                new SelectionInitiator("JComboBoxBB", selectedItemECD, selectedIndexECD, this);
 
-		addActionListener(selectionInitiator);
-		branch.add(selectionInitiator);
+        addActionListener(selectionInitiator);
+        branch.add(selectionInitiator);
 
-		List<Initiator> list = new ArrayList<Initiator>(Arrays.asList(initiators));
-		list.add(selectionInitiator);
-		initiators = list.toArray(new Initiator[list.size()]);
-		SelectionAndListCommit selectionAndListCommit = new SelectionAndListCommit("JComboBoxBB",
-				listECD, selectedItemECD, selectedIndexECD, initiators,
-				new ActionListener[] { selectionInitiator }, this);
+        List<Initiator> list = new ArrayList<Initiator>(Arrays.asList(initiators));
+        list.add(selectionInitiator);
+        initiators = list.toArray(new Initiator[list.size()]);
+        SelectionAndListCommit selectionAndListCommit = new SelectionAndListCommit(
+                "JComboBoxBB",
+                listECD,
+                selectedItemECD,
+                selectedIndexECD,
+                initiators,
+                new ActionListener[] {selectionInitiator},
+                this);
 
-		if (enabledECD != null) {
-			branch
-					.add(new EnabledCommit("JComboBoxBB", enabledECD, this,
-							null));
-		}
-		branch.add(selectionAndListCommit);
-	}
+        if (enabledECD != null) {
+            branch.add(new EnabledCommit("JComboBoxBB", enabledECD, this, null));
+        }
+        branch.add(selectionAndListCommit);
+    }
 
-	public final Branch getBranch() {
-		return (branch);
-	}
+    public final Branch getBranch() {
+        return (branch);
+    }
 }

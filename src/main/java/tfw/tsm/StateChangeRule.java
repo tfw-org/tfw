@@ -7,11 +7,10 @@ package tfw.tsm;
  * change rule can be set when an event channel is terminated at the root or branch
  * level. See {@link RootFactory} and {@link BranchFactory}.
  */
-public interface StateChangeRule
-{
+public interface StateChangeRule {
     /**
      * Returns true if the new state represents a change from the current state
-     * 
+     *
      * @param currentState
      *            the current state of the event channel. A <code>null</code>
      *            value is allowed as the initial state.

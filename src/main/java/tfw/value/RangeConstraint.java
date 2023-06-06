@@ -2,13 +2,11 @@ package tfw.value;
 
 import tfw.check.Argument;
 
-
 /**
  * A value constraint which constrains the value to a range based on the
  * <code>java.lang.Comparable</code> interface.
  */
-public class RangeConstraint extends ClassValueConstraint
-{
+public class RangeConstraint extends ClassValueConstraint {
     private final Comparable min;
     private final Comparable max;
     private final boolean minInclusive;
@@ -25,25 +23,24 @@ public class RangeConstraint extends ClassValueConstraint
      * @param maxInclusive if true <code>max</code> is a valid value,
      * otherwise it is not valid.
      */
-    public RangeConstraint(Class<? extends Comparable> valueType, Comparable min, Comparable max,
-        boolean minInclusive, boolean maxInclusive)
-    {
+    public RangeConstraint(
+            Class<? extends Comparable> valueType,
+            Comparable min,
+            Comparable max,
+            boolean minInclusive,
+            boolean maxInclusive) {
         super(valueType);
         Argument.assertNotNull(min, "min");
         Argument.assertNotNull(max, "max");
 
         int compare = min.compareTo(max);
 
-        if (compare > 0)
-        {
+        if (compare > 0) {
             throw new IllegalArgumentException("min > max not allowed!");
         }
 
-        if ((compare == 0) && (minInclusive == false) &&
-                (maxInclusive == false))
-        {
-            throw new IllegalArgumentException(
-                "Empty range, min == max and neither are inclusive");
+        if ((compare == 0) && (minInclusive == false) && (maxInclusive == false)) {
+            throw new IllegalArgumentException("Empty range, min == max and neither are inclusive");
         }
 
         this.max = max;
@@ -52,20 +49,18 @@ public class RangeConstraint extends ClassValueConstraint
         this.maxInclusive = maxInclusive;
     }
 
-	/**
-	 * Returns {@link #VALID} if the value complies with the constraint,
-	 * otherwise it returns a string indicating why the value does not comply.
-	 *
-	 * @param value The value to be evaluated.
-	 * @return {@link #VALID} if the value complies with the constraint,
-	 * otherwise it returns a string indicating why the value does not comply.
-	 */
-    public String getValueCompliance(Object value)
-    {
+    /**
+     * Returns {@link #VALID} if the value complies with the constraint,
+     * otherwise it returns a string indicating why the value does not comply.
+     *
+     * @param value The value to be evaluated.
+     * @return {@link #VALID} if the value complies with the constraint,
+     * otherwise it returns a string indicating why the value does not comply.
+     */
+    public String getValueCompliance(Object value) {
         String str = super.getValueCompliance(value);
 
-        if (str != VALID)
-        {
+        if (str != VALID) {
             return str;
         }
 
@@ -75,12 +70,10 @@ public class RangeConstraint extends ClassValueConstraint
         int minCompare = this.min.compareTo(value);
 
         // if value is less than min or equal to min and min is not valid...
-        if ((minCompare > 0) || ((minCompare == 0) && !minInclusive))
-        {
+        if ((minCompare > 0) || ((minCompare == 0) && !minInclusive)) {
             sb.append("must be greater than ");
 
-            if (minInclusive)
-            {
+            if (minInclusive) {
                 sb.append("or equal to ");
             }
 
@@ -92,12 +85,10 @@ public class RangeConstraint extends ClassValueConstraint
         int maxCompare = this.max.compareTo(value);
 
         // if value is greater than max or equal to max and max is not valid...
-        if ((maxCompare < 0) || ((maxCompare == 0) && !maxInclusive))
-        {
+        if ((maxCompare < 0) || ((maxCompare == 0) && !maxInclusive)) {
             sb.append("must be less than ");
 
-            if (maxInclusive)
-            {
+            if (maxInclusive) {
                 sb.append("or equal to ");
             }
 
@@ -118,10 +109,8 @@ public class RangeConstraint extends ClassValueConstraint
      * @return true if every value which meets the specified constraint
      * also meets this constraint, otherwise returns false.
      */
-    public boolean isCompatible(ValueConstraint constraint)
-    {
-        if (constraint == this)
-        {
+    public boolean isCompatible(ValueConstraint constraint) {
+        if (constraint == this) {
             // if we use a factory to create constraints
             // so that we done have object explosion, this
             // check will work for most cases and be
@@ -130,14 +119,12 @@ public class RangeConstraint extends ClassValueConstraint
         }
 
         // check constraint type...
-        if (!(constraint instanceof RangeConstraint))
-        {
+        if (!(constraint instanceof RangeConstraint)) {
             return false;
         }
 
         // check value type...
-        if (!super.isCompatible(constraint))
-        {
+        if (!super.isCompatible(constraint)) {
             return false;
         }
 
@@ -146,17 +133,14 @@ public class RangeConstraint extends ClassValueConstraint
         int minCompare = this.min.compareTo(rc.min);
 
         // if this min is greater than rc min...
-        if (minCompare > 0)
-        {
+        if (minCompare > 0) {
             return false;
         }
 
         // if mins are equal...
-        if (minCompare == 0)
-        {
+        if (minCompare == 0) {
             // if this min is not inclusive && rc min is inclusive...
-            if (!this.minInclusive && rc.minInclusive)
-            {
+            if (!this.minInclusive && rc.minInclusive) {
                 return false;
             }
         }
@@ -164,17 +148,14 @@ public class RangeConstraint extends ClassValueConstraint
         int maxCompare = this.max.compareTo(rc.max);
 
         // if rc.max > this.max...
-        if (maxCompare < 0)
-        {
+        if (maxCompare < 0) {
             return false;
         }
 
         // if maxs are equal...
-        if (maxCompare == 0)
-        {
+        if (maxCompare == 0) {
             // if this max is not inclusive && rc max is inclusive...
-            if (!this.maxInclusive && rc.maxInclusive)
-            {
+            if (!this.maxInclusive && rc.maxInclusive) {
                 return false;
             }
         }
@@ -186,8 +167,7 @@ public class RangeConstraint extends ClassValueConstraint
      * Returns a string representation of the constraint.
      * @return a string representation of the constraint.
      */
-    public String toString()
-    {
+    public String toString() {
         StringBuffer sb = new StringBuffer();
         sb.append("RangeConstraint[type = ").append(valueType.getName());
         sb.append(", min = ").append(min);

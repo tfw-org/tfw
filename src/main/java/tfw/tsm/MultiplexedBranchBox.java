@@ -1,6 +1,5 @@
 package tfw.tsm;
 
-public interface MultiplexedBranchBox
-{
-	public MultiplexedBranch getMultiplexedBranch();
+public interface MultiplexedBranchBox {
+    public MultiplexedBranch getMultiplexedBranch();
 }

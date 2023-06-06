@@ -9,52 +9,40 @@ import tfw.immutable.ImmutableProxy;
  *
  * @immutables.types=all
  */
-public final class BooleanIlaFill
-{
-    private BooleanIlaFill()
-    {
+public final class BooleanIlaFill {
+    private BooleanIlaFill() {
         // non-instantiable class
     }
 
-    public static BooleanIla create(boolean value, long length)
-    {
+    public static BooleanIla create(boolean value, long length) {
         Argument.assertNotLessThan(length, 0, "length");
 
         return new MyBooleanIla(value, length);
     }
 
-    private static class MyBooleanIla extends AbstractBooleanIla
-        implements ImmutableProxy
-    {
+    private static class MyBooleanIla extends AbstractBooleanIla implements ImmutableProxy {
         private final boolean value;
 
-        MyBooleanIla(boolean value, long length)
-        {
+        MyBooleanIla(boolean value, long length) {
             super(length);
             this.value = value;
         }
 
-        protected void toArrayImpl(boolean[] array, int offset,
-                                   int stride, long start, int length)
-        {
+        protected void toArrayImpl(boolean[] array, int offset, int stride, long start, int length) {
             final int startPlusLength = (int) (start + length);
-            for(int startInt = (int) start;
-                startInt != startPlusLength;
-                ++startInt, offset += stride)
-            {
+            for (int startInt = (int) start; startInt != startPlusLength; ++startInt, offset += stride) {
                 array[offset] = value;
             }
         }
-                
-        public Map<String, Object> getParameters()
-        {
+
+        public Map<String, Object> getParameters() {
             HashMap<String, Object> map = new HashMap<String, Object>();
-                        
+
             map.put("name", "BooleanIlaFill");
             map.put("length", new Long(length()));
             map.put("value", new Boolean(value));
 
-            return(map);
+            return (map);
         }
     }
 }

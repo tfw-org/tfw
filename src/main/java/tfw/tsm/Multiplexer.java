@@ -9,8 +9,7 @@ import tfw.tsm.MultiplexerStrategy.MultiStateAccessor;
 import tfw.tsm.ecd.EventChannelDescription;
 import tfw.tsm.ecd.ObjectECD;
 
-public class Multiplexer implements EventChannel
-{
+public class Multiplexer implements EventChannel {
     private final MultiplexerStrategy multiStrategy;
 
     /** The branch associated with this terminator. */
@@ -30,20 +29,22 @@ public class Multiplexer implements EventChannel
 
     /** The set of demultiplexing event channels. */
     private final Map<Object, DemultiplexedEventChannel> demultiplexedEventChannels =
-    	new HashMap<Object, DemultiplexedEventChannel>();
+            new HashMap<Object, DemultiplexedEventChannel>();
 
     /**
      * Creates a multiplexer with the specified value and multi-value event
      * channels.
-     * 
+     *
      * @param multiplexerBranchName
      * @param valueECD
      * @param multiValueECD
      */
-    Multiplexer(String multiplexerBranchName, ObjectECD valueECD,
-            ObjectECD multiValueECD, StateChangeRule stateChangeRule,
-            MultiplexerStrategy multiStrategy)
-    {
+    Multiplexer(
+            String multiplexerBranchName,
+            ObjectECD valueECD,
+            ObjectECD multiValueECD,
+            StateChangeRule stateChangeRule,
+            MultiplexerStrategy multiStrategy) {
         Argument.assertNotNull(valueECD, "valueECD");
         Argument.assertNotNull(multiValueECD, "multiValueECD");
         Argument.assertNotNull(multiStrategy, "multiStrategy");
@@ -51,63 +52,47 @@ public class Multiplexer implements EventChannel
         this.valueECD = valueECD;
         this.stateChangeRule = stateChangeRule;
         this.multiSink = new MultiSink(multiValueECD);
-        this.processorMultiSource = new MultiSource("Multiplexer Source["
-                + multiplexerBranchName + "]", multiValueECD);
+        this.processorMultiSource = new MultiSource("Multiplexer Source[" + multiplexerBranchName + "]", multiValueECD);
         this.multiStrategy = multiStrategy;
     }
 
-    public class MultiSink extends Sink
-    {
-        public MultiSink(ObjectECD ecd)
-        {
+    public class MultiSink extends Sink {
+        public MultiSink(ObjectECD ecd) {
             super("MultiplexSink[" + ecd.getEventChannelName() + "]", ecd, true);
         }
 
         /**
          * @see co2.ui.fw.Sink#stateChange()
          */
-        void stateChange()
-        {
-            if (processorMultiSource.isStateSource())
-            {
+        void stateChange() {
+            if (processorMultiSource.isStateSource()) {
                 return;
             }
 
-            MultiStateAccessor stateAccessor = multiStrategy
-                    .toMultiStateAccessor(getState());
-            
-            for (DemultiplexedEventChannel dm :
-            	Multiplexer.this.demultiplexedEventChannels.values())
-            {
+            MultiStateAccessor stateAccessor = multiStrategy.toMultiStateAccessor(getState());
+
+            for (DemultiplexedEventChannel dm : Multiplexer.this.demultiplexedEventChannels.values()) {
                 Object state = stateAccessor.getState(dm.demultiplexSlotId);
-                if (state != null && 
-                	stateChangeRule.isChange(dm.getPreviousCycleState(), state))
-                {
+                if (state != null && stateChangeRule.isChange(dm.getPreviousCycleState(), state)) {
                     dm.setDeMultiState(state);
                 }
             }
         }
-        
-        public Iterator<DemultiplexedEventChannel> getDemultiplexedEventChannels()
-        {
-        	return(demultiplexedEventChannels.values().iterator());
+
+        public Iterator<DemultiplexedEventChannel> getDemultiplexedEventChannels() {
+            return (demultiplexedEventChannels.values().iterator());
         }
     }
 
-    class MultiSource extends ProcessorSource
-    {
-        ArrayList<DemultiplexedEventChannel> pendingStateChanges =
-        	new ArrayList<DemultiplexedEventChannel>();
+    class MultiSource extends ProcessorSource {
+        ArrayList<DemultiplexedEventChannel> pendingStateChanges = new ArrayList<DemultiplexedEventChannel>();
 
-        MultiSource(String name, EventChannelDescription ecd)
-        {
+        MultiSource(String name, EventChannelDescription ecd) {
             super(name, ecd);
         }
 
-        void setState(DemultiplexedEventChannel deMultiplexer)
-        {
-            if (!pendingStateChanges.contains(deMultiplexer))
-            {
+        void setState(DemultiplexedEventChannel deMultiplexer) {
+            if (!pendingStateChanges.contains(deMultiplexer)) {
                 pendingStateChanges.add(deMultiplexer);
             }
             fire();
@@ -116,88 +101,72 @@ public class Multiplexer implements EventChannel
         private int keyValueArraySize = 0;
         private Object[] keys = new Object[keyValueArraySize];
         private Object[] values = new Object[keyValueArraySize];
-        Object fire()
-        {
-            if (pendingStateChanges.size() == 0)
-            {
-                throw new IllegalStateException(
-                        "No pending state changes to fire.");
+
+        Object fire() {
+            if (pendingStateChanges.size() == 0) {
+                throw new IllegalStateException("No pending state changes to fire.");
             }
 
             keyValueArraySize = pendingStateChanges.size();
-            if (keys.length < keyValueArraySize)
-            {
-            	keys = new Object[keyValueArraySize];
-            	values = new Object[keyValueArraySize];
+            if (keys.length < keyValueArraySize) {
+                keys = new Object[keyValueArraySize];
+                values = new Object[keyValueArraySize];
             }
-            
-            for (int i=0 ; i < keyValueArraySize ; i++)
-            {
-            	DemultiplexedEventChannel dec = pendingStateChanges.get(i);
-            	
-            	keys[i] = dec.demultiplexSlotId;
-            	values[i] = dec.getState();
+
+            for (int i = 0; i < keyValueArraySize; i++) {
+                DemultiplexedEventChannel dec = pendingStateChanges.get(i);
+
+                keys[i] = dec.demultiplexSlotId;
+                values[i] = dec.getState();
             }
             pendingStateChanges.clear();
-            
+
             Object multiState = null;
-            
-            try
-            {
+
+            try {
                 multiState = Multiplexer.this.multiStrategy.addToMultiState(
-                    eventChannel.getState(), keys, values, keyValueArraySize);
-            }
-            catch (Exception e)
-            {
-            	throw new RuntimeException("ECD="+ecd.getEventChannelName(), e);
+                        eventChannel.getState(), keys, values, keyValueArraySize);
+            } catch (Exception e) {
+                throw new RuntimeException("ECD=" + ecd.getEventChannelName(), e);
             }
 
             eventChannel.setState(this, multiState, null);
-            
+
             getTreeComponent().getTransactionManager().addChangedEventChannel(eventChannel);
-            
+
             return multiState;
         }
     }
 
-    private EventChannel getDemultiplexedEventChannel(Object slotId)
-    {
-        if (slotId == null)
-        {
+    private EventChannel getDemultiplexedEventChannel(Object slotId) {
+        if (slotId == null) {
             throw new IllegalArgumentException("slotId == null not allowed");
         }
 
-        if (!demultiplexedEventChannels.containsKey(slotId))
-        {
+        if (!demultiplexedEventChannels.containsKey(slotId)) {
             Object currentSlotState = null;
             /*
              * TODO: If the multiSink is not connected, initial state is not
              * handled properly.
              */
-            if (this.multiSink.isConnected())
-            {
+            if (this.multiSink.isConnected()) {
                 Object multiState = getState();
-                MultiStateAccessor msa = this.multiStrategy
-                        .toMultiStateAccessor(multiState);
+                MultiStateAccessor msa = this.multiStrategy.toMultiStateAccessor(multiState);
                 currentSlotState = msa.getState(slotId);
             }
-            final Object defaultSlotState = this.multiStrategy
-                    .getDefaultSlotState();
+            final Object defaultSlotState = this.multiStrategy.getDefaultSlotState();
             Object initialSlotState = currentSlotState;
-            if (initialSlotState == null)
-            {
+            if (initialSlotState == null) {
                 initialSlotState = defaultSlotState;
             }
 
-            DemultiplexedEventChannel dm = new DemultiplexedEventChannel(this,
-                    slotId, initialSlotState, stateChangeRule);
+            DemultiplexedEventChannel dm =
+                    new DemultiplexedEventChannel(this, slotId, initialSlotState, stateChangeRule);
             /*
              * if the initial slot state is non-null, make sure the state gets
              * added to the multiplexed state.
              */
-            if (this.multiSink.isConnected() && (currentSlotState == null)
-                    && (defaultSlotState != null))
-            {
+            if (this.multiSink.isConnected() && (currentSlotState == null) && (defaultSlotState != null)) {
                 this.processorMultiSource.setState(dm);
             }
 
@@ -208,44 +177,37 @@ public class Multiplexer implements EventChannel
         return (demultiplexedEventChannels.get(slotId));
     }
 
-    TreeComponent getTreeComponent()
-    {
+    TreeComponent getTreeComponent() {
         return this.component;
     }
 
-    void remove(DemultiplexedEventChannel deMultiplexer)
-    {
-        if (demultiplexedEventChannels.remove(deMultiplexer.demultiplexSlotId) == null)
-        {
-            throw new IllegalStateException(
-                    "Demultiplexer not found attempting to remove demultiplexer for "
-                            + valueECD.getEventChannelName() + "["
-                            + deMultiplexer.demultiplexSlotId + "]");
+    void remove(DemultiplexedEventChannel deMultiplexer) {
+        if (demultiplexedEventChannels.remove(deMultiplexer.demultiplexSlotId) == null) {
+            throw new IllegalStateException("Demultiplexer not found attempting to remove demultiplexer for "
+                    + valueECD.getEventChannelName() + "["
+                    + deMultiplexer.demultiplexSlotId + "]");
         }
     }
 
     /**
      * @see tfw.tsm.EventChannel#add(tfw.tsm.Port)
      */
-    public void add(Port port)
-    {
+    public void add(Port port) {
         // Search for the multiplexed component...
         Object slotId = component.getSlotId(port.getTreeComponent());
         TreeComponent tc = port.getTreeComponent().getParent();
-        while ((slotId == null) && (tc != null))
-        {
+        while ((slotId == null) && (tc != null)) {
             slotId = component.getSlotId(tc);
             tc = tc.getParent();
         }
 
         // if we didn't find a multiplexed component...
-        if (slotId == null)
-        {
+        if (slotId == null) {
             throw new IllegalArgumentException("The specified port, '"
                     + port.ecd.getEventChannelName()
-                    + "', is not from a multiplexed component.\n"+
-                    " p.tc="+port.getTreeComponent()+
-                    " p.fqn="+port.getFullyQualifiedName());
+                    + "', is not from a multiplexed component.\n" + " p.tc="
+                    + port.getTreeComponent() + " p.fqn="
+                    + port.getFullyQualifiedName());
         }
 
         getDemultiplexedEventChannel(slotId).add(port);
@@ -254,100 +216,81 @@ public class Multiplexer implements EventChannel
     /**
      * @see tfw.tsm.EventChannel#addDeferredStateChange(tfw.tsm.ProcessorSource)
      */
-    public void addDeferredStateChange(ProcessorSource source)
-    {
-        throw new UnsupportedOperationException(
-                "Multiplexer does not participate directly in transactions.");
+    public void addDeferredStateChange(ProcessorSource source) {
+        throw new UnsupportedOperationException("Multiplexer does not participate directly in transactions.");
     }
 
     /**
      * @see tfw.tsm.EventChannel#fire()
      */
-    public Object fire()
-    {
-        throw new UnsupportedOperationException(
-                "Multiplexer does not participate directly in transactions.");
+    public Object fire() {
+        throw new UnsupportedOperationException("Multiplexer does not participate directly in transactions.");
     }
 
     /**
      * @see tfw.tsm.EventChannel#getParent()
      */
-    public TreeComponent getParent()
-    {
+    public TreeComponent getParent() {
         return this.component;
     }
 
     /**
      * @see tfw.tsm.EventChannel#getCurrentStateSource()
      */
-    public Source getCurrentStateSource()
-    {
-        throw new UnsupportedOperationException(
-                "Multiplexer does not participate directly in transactions.");
+    public Source getCurrentStateSource() {
+        throw new UnsupportedOperationException("Multiplexer does not participate directly in transactions.");
     }
 
     /**
      * @see tfw.tsm.EventChannel#getECD()
      */
-    public EventChannelDescription getECD()
-    {
+    public EventChannelDescription getECD() {
         return valueECD;
     }
 
     /**
      * @see tfw.tsm.EventChannel#getPreviousCycleState()
      */
-    public Object getPreviousCycleState()
-    {
-        throw new UnsupportedOperationException(
-                "Multiplexer does not participate directly in transactions.");
+    public Object getPreviousCycleState() {
+        throw new UnsupportedOperationException("Multiplexer does not participate directly in transactions.");
     }
 
     /**
      * @see tfw.tsm.EventChannel#getPreviousTransactionState()
      */
-    public Object getPreviousTransactionState()
-    {
-        throw new UnsupportedOperationException(
-                "Multiplexer does not participate directly in transactions.");
+    public Object getPreviousTransactionState() {
+        throw new UnsupportedOperationException("Multiplexer does not participate directly in transactions.");
     }
 
-    public boolean isStateChanged()
-    {
+    public boolean isStateChanged() {
         return false;
     }
 
     /**
      * @see tfw.tsm.EventChannel#getState()
      */
-    public Object getState()
-    {
+    public Object getState() {
         return this.multiSink.eventChannel.getState();
     }
 
     /**
      * @see tfw.tsm.EventChannel#isFireOnConnect()
      */
-    public boolean isFireOnConnect()
-    {
-        throw new UnsupportedOperationException(
-                "Multiplexer does not participate directly in transactions.");
+    public boolean isFireOnConnect() {
+        throw new UnsupportedOperationException("Multiplexer does not participate directly in transactions.");
     }
 
     /**
      * @see tfw.tsm.EventChannel#isRollbackParticipant()
      */
-    public boolean isRollbackParticipant()
-    {
-        throw new UnsupportedOperationException(
-                "Multiplexer does not participate directly in transactions.");
+    public boolean isRollbackParticipant() {
+        throw new UnsupportedOperationException("Multiplexer does not participate directly in transactions.");
     }
 
     /**
      * @see tfw.tsm.EventChannel#remove(tfw.tsm.Port)
      */
-    public void remove(Port port)
-    {
+    public void remove(Port port) {
         port.eventChannel.remove(port);
     }
 
@@ -355,18 +298,14 @@ public class Multiplexer implements EventChannel
      * @see tfw.tsm.EventChannel#setState(tfw.tsm.Source, java.lang.Object,
      *      tfw.tsm.EventChannel)
      */
-    public void setState(Source source, Object state,
-            EventChannel forwardingEventChannel)
-    {
-        throw new UnsupportedOperationException(
-                "Multiplexer does not participate directly in transactions.");
+    public void setState(Source source, Object state, EventChannel forwardingEventChannel) {
+        throw new UnsupportedOperationException("Multiplexer does not participate directly in transactions.");
     }
 
     /**
      * @see tfw.tsm.EventChannel#setTreeComponent(tfw.tsm.TreeComponent)
      */
-    public void setTreeComponent(TreeComponent component)
-    {
+    public void setTreeComponent(TreeComponent component) {
         this.component = (MultiplexedBranch) component;
         this.multiSink.setTreeComponent(component);
         this.processorMultiSource.setTreeComponent(component);
@@ -375,18 +314,14 @@ public class Multiplexer implements EventChannel
     /**
      * @see tfw.tsm.EventChannel#synchronizeCycleState()
      */
-    public void synchronizeCycleState()
-    {
-        throw new UnsupportedOperationException(
-                "Multiplexer does not participate directly in transactions.");
+    public void synchronizeCycleState() {
+        throw new UnsupportedOperationException("Multiplexer does not participate directly in transactions.");
     }
 
     /**
      * @see tfw.tsm.EventChannel#synchronizeTransactionState()
      */
-    public void synchronizeTransactionState()
-    {
-        throw new UnsupportedOperationException(
-                "Multiplexer does not participate directly in transactions.");
+    public void synchronizeTransactionState() {
+        throw new UnsupportedOperationException("Multiplexer does not participate directly in transactions.");
     }
 }

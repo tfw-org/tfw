@@ -7,8 +7,7 @@ import tfw.value.ValueConstraint;
  * Describes an event channel. For specialized event channel descriptions
  * extends {@link ObjectECD}.
  */
-public abstract class EventChannelDescription
-{
+public abstract class EventChannelDescription {
     /** The name of the event channel. */
     private final String eventChannelName;
 
@@ -23,21 +22,19 @@ public abstract class EventChannelDescription
 
     /**
      * Creates an event channel description with the specified attributes.
-     * 
+     *
      * @param eventChannelName
      *            the name of the event channel.
      * @param constraint
      *            the value constraint for the event channel.
      */
-    EventChannelDescription(String eventChannelName,
-            ValueConstraint constraint)
-    {
+    EventChannelDescription(String eventChannelName, ValueConstraint constraint) {
         this(eventChannelName, constraint, true, true);
     }
 
     /**
      * Creates an event channel description with the specified attributes.
-     * 
+     *
      * @param eventChannelName
      *            the name of the event channel.
      * @param constraint
@@ -52,10 +49,8 @@ public abstract class EventChannelDescription
      *            flag indicating whether the event channel participates in
      *            transaction rollbacks.
      */
-    EventChannelDescription(String eventChannelName,
-            ValueConstraint constraint,
-            boolean fireOnConnect, boolean rollbackParticipant)
-    {
+    EventChannelDescription(
+            String eventChannelName, ValueConstraint constraint, boolean fireOnConnect, boolean rollbackParticipant) {
         Argument.assertNotNull(eventChannelName, "eventChannelName");
         Argument.assertNotNull(constraint, "constraint");
         // CheckArgument.checkNull(codec, "codec");
@@ -65,74 +60,65 @@ public abstract class EventChannelDescription
         this.fireOnConnect = fireOnConnect;
         this.rollbackParticipant = rollbackParticipant;
 
-        if (this.eventChannelName.length() == 0)
-        {
-            throw new IllegalArgumentException(
-                    "eventChannelName.trim().length() == 0 not allowed!");
+        if (this.eventChannelName.length() == 0) {
+            throw new IllegalArgumentException("eventChannelName.trim().length() == 0 not allowed!");
         }
     }
 
     /**
      * Returns the event channel name.
-     * 
+     *
      * @return the event channel name.
      */
-    public final String getEventChannelName()
-    {
+    public final String getEventChannelName() {
         return eventChannelName;
     }
 
     /**
      * Returns the value constraint.
-     * 
+     *
      * @return the value constraint.
      */
-    public final ValueConstraint getConstraint()
-    {
+    public final ValueConstraint getConstraint() {
         return constraint;
     }
 
     /**
      * Returns true if the event channel fires on connection, false otherwise.
-     * 
+     *
      * @return true if the event channel fires on connection, false otherwise.
      */
-    public boolean isFireOnConnect()
-    {
+    public boolean isFireOnConnect() {
         return fireOnConnect;
     }
 
     /**
      * Returns true if the event channel participates in rollbacks, false
      * otherwise.
-     * 
+     *
      * @return true if the event channel participates in rollbacks, false
      *         otherwise.
      */
-    public boolean isRollBackParticipant()
-    {
+    public boolean isRollBackParticipant() {
         return rollbackParticipant;
     }
 
     /**
      * Returns a hash value for this ecd.
      */
-    public int hashCode()
-    {
+    public int hashCode() {
         return this.eventChannelName.hashCode();
     }
 
     /**
      * Checks for equality between the specified object and this ecd.
-     * 
+     *
      * @param object
      *            The object to be tested.
      * @return true if the object is equivalent otherwise returns false.
      */
-    public boolean equals(Object object)
-    {
-        if (!(object instanceof EventChannelDescription))
-        {
+    public boolean equals(Object object) {
+        if (!(object instanceof EventChannelDescription)) {
             return false;
         }
 
@@ -147,9 +133,7 @@ public abstract class EventChannelDescription
     /**
      * Returns a string representation of the event channel description.
      */
-    public String toString()
-    {
-        return super.toString() + "[eventChannelName = "
-                + this.eventChannelName + "]";
+    public String toString() {
+        return super.toString() + "[eventChannelName = " + this.eventChannelName + "]";
     }
 }
