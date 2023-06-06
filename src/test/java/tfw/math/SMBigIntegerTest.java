@@ -1,11 +1,12 @@
 package tfw.math;
 
-import junit.framework.TestCase;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class SMBigIntegerTest extends TestCase {
+import org.junit.jupiter.api.Test;
+
+class SMBigIntegerTest {
 	@Test
-	public void testSMBigIntegerValue() {
+	void testSMBigIntegerValue() {
 		final SMBigInteger smBigInteger = new SMBigInteger();
 		
 		smBigInteger.setValue(Long.MIN_VALUE);
