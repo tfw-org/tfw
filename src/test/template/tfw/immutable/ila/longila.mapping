@@ -3,6 +3,7 @@
 %%PACKAGE%% = tfw.immutable.ila.longila
 %%RANDOM_VALUE%% = random.nextLong()
 %%RANDOM_INCLUDE%%=import java.util.Random;\n
+%%RANDOM_INIT_0%%=final Random random = new Random(0);\n
 %%RANDOM_INIT%%=final Random random = new Random(0);\n\ \ \ \ \ \ \ \ 
 %%DEFAULT_VALUE%%=0L
 %%ASSERT_EQUALS_DELTA%% =

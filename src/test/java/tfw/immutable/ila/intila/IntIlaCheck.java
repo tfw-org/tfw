@@ -11,7 +11,8 @@ public final class IntIlaCheck {
         // non-instantiable class
     }
 
-    public static void checkAll(IntIla target, IntIla actual, int addlOffsetLength, int maxAbsStride, int epsilon)
+    public static void checkAll(
+            final IntIla target, final IntIla actual, int addlOffsetLength, int maxAbsStride, int epsilon)
             throws Exception {
         checkZeroArgImmutability(actual);
         checkTwoArgImmutability(actual, epsilon);
@@ -142,7 +143,8 @@ public final class IntIlaCheck {
     }
 
     public static void checkCorrectness(
-            IntIla target, IntIla actual, int addlOffsetLength, int maxAbsStride, int epsilon) throws Exception {
+            final IntIla target, final IntIla actual, int addlOffsetLength, int maxAbsStride, int epsilon)
+            throws Exception {
         if (addlOffsetLength < 0) throw new Exception("addlOffsetLength < 0 not allowed");
         if (maxAbsStride < 1) throw new Exception("maxAbsStride < 1 not allowed");
         if (target.length() != actual.length()) throw new Exception("target.length() != actual.length()");

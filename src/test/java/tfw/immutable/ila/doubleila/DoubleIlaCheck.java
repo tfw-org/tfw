@@ -12,7 +12,7 @@ public final class DoubleIlaCheck {
     }
 
     public static void checkAll(
-            DoubleIla target, DoubleIla actual, int addlOffsetLength, int maxAbsStride, double epsilon)
+            final DoubleIla target, final DoubleIla actual, int addlOffsetLength, int maxAbsStride, double epsilon)
             throws Exception {
         checkZeroArgImmutability(actual);
         checkTwoArgImmutability(actual, epsilon);
@@ -52,11 +52,10 @@ public final class DoubleIlaCheck {
         }
 
         for (int ii = 0; ii < firstLength; ++ii) {
-            if ((firstArray[ii] != thirdArray[ii]) && (Double.isNaN(firstArray[ii]) && !Double.isNaN(thirdArray[ii]))) {
+            if (firstArray[ii] != thirdArray[ii])
                 throw new Exception("firstArray[" + ii + "] ("
                         + firstArray[ii] + ") != thirdArray["
                         + ii + "] (" + thirdArray[ii] + ")");
-            }
         }
     }
 
@@ -144,7 +143,7 @@ public final class DoubleIlaCheck {
     }
 
     public static void checkCorrectness(
-            DoubleIla target, DoubleIla actual, int addlOffsetLength, int maxAbsStride, double epsilon)
+            final DoubleIla target, final DoubleIla actual, int addlOffsetLength, int maxAbsStride, double epsilon)
             throws Exception {
         if (addlOffsetLength < 0) throw new Exception("addlOffsetLength < 0 not allowed");
         if (maxAbsStride < 1) throw new Exception("maxAbsStride < 1 not allowed");

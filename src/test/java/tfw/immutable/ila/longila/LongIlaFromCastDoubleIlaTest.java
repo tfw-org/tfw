@@ -1,7 +1,7 @@
 package tfw.immutable.ila.longila;
 
 import java.util.Random;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 import tfw.immutable.ila.doubleila.DoubleIla;
 import tfw.immutable.ila.doubleila.DoubleIlaFromArray;
@@ -10,8 +10,9 @@ import tfw.immutable.ila.doubleila.DoubleIlaFromArray;
  *
  * @immutables.types=numericnotdouble
  */
-public class LongIlaFromCastDoubleIlaTest extends TestCase {
-    public void testAll() throws Exception {
+class LongIlaFromCastDoubleIlaTest {
+    @Test
+    void testAll() throws Exception {
         final Random random = new Random(0);
         final int length = IlaTestDimensions.defaultIlaLength();
         final double[] array = new double[length];

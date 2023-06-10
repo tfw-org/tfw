@@ -1,15 +1,16 @@
 package tfw.immutable.ila.longila;
 
 import java.util.Random;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 
 /**
  *
  * @immutables.types=all
  */
-public class LongIlaFillTest extends TestCase {
-    public void testAll() throws Exception {
+class LongIlaFillTest {
+    @Test
+    void testAll() throws Exception {
         final Random random = new Random(0);
         final long value = random.nextLong();
         final int length = IlaTestDimensions.defaultIlaLength();

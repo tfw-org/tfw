@@ -1,15 +1,16 @@
 package tfw.immutable.ila.longila;
 
 import java.util.Random;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 
 /**
  *
  * @immutables.types=all
  */
-public class LongIlaFromArrayTest extends TestCase {
-    public void testImmutabilityCheck() throws Exception {
+class LongIlaFromArrayTest {
+    @Test
+    void testImmutabilityCheck() throws Exception {
         final int ilaLength = IlaTestDimensions.defaultIlaLength();
         final Random random = new Random(0);
         final long[] creation = new long[ilaLength];
@@ -22,6 +23,7 @@ public class LongIlaFromArrayTest extends TestCase {
         LongIlaCheck.checkWithoutCorrectness(ila, offsetLength, epsilon);
     }
 
+    @Test
     public void testValueCorrectness() throws Exception {
         final int ilaLength = IlaTestDimensions.defaultIlaLength();
         final int addlOffsetLength = IlaTestDimensions.defaultOffsetLength();

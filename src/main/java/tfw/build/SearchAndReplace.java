@@ -96,7 +96,8 @@ public final class SearchAndReplace {
                             p.getName(p.getNameCount() - 1)
                                     .toString()
                                     .replace("template", "java")
-                                    .replace("__", properties.getProperty("%%NAME%%")));
+                                    .replace("__", properties.getProperty("%%NAME%%"))
+                                    .replaceAll("\\.\\..+\\.", "."));
 
                     LOGGER.debug("  outputPath = {}", outputPath);
 

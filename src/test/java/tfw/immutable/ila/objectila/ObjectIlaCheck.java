@@ -57,9 +57,9 @@ public final class ObjectIlaCheck {
 
     // also performs zero-two equivalence
     public static void checkTwoArgImmutability(ObjectIla ila, Object epsilon) throws Exception {
-        if (epsilon != Object.class)
+        if (epsilon != Object.class) {
             throw new IllegalArgumentException("epsilon != " + (Object.class) + " not allowed");
-        else {
+        } else {
             final int ilaLength = ila.length() <= Integer.MAX_VALUE ? (int) ila.length() : Integer.MAX_VALUE;
             final Object[] baseline = ila.toArray(0, ilaLength);
             if (baseline.length != ilaLength) throw new Exception("baseline.length != ilaLength");
@@ -82,9 +82,9 @@ public final class ObjectIlaCheck {
     }
 
     public static void checkTwoFourEquivalence(ObjectIla ila, Object epsilon) throws Exception {
-        if (epsilon != Object.class)
+        if (epsilon != Object.class) {
             throw new IllegalArgumentException("epsilon != " + (Object.class) + " not allowed");
-        else {
+        } else {
             final int ilaLength = ila.length() <= Integer.MAX_VALUE ? (int) ila.length() : Integer.MAX_VALUE;
             final Object[] four = new Object[ilaLength];
             for (int length = 1; length <= ilaLength; ++length) {
@@ -106,11 +106,10 @@ public final class ObjectIlaCheck {
     }
 
     public static void checkFourFiveEquivalence(ObjectIla ila, int offsetLength, Object epsilon) throws Exception {
-        if (epsilon != Object.class)
+        if (epsilon != Object.class) {
             throw new IllegalArgumentException("epsilon != " + (Object.class) + " not allowed");
-        else {
+        } else {
             if (offsetLength < 0) throw new Exception("offsetLength < 0 not allowed");
-
             final int ilaLength = ila.length() + offsetLength <= Integer.MAX_VALUE
                     ? (int) ila.length()
                     : Integer.MAX_VALUE - offsetLength;
@@ -144,13 +143,12 @@ public final class ObjectIlaCheck {
     public static void checkCorrectness(
             ObjectIla target, ObjectIla actual, int addlOffsetLength, int maxAbsStride, Object epsilon)
             throws Exception {
-        if (epsilon != Object.class)
+        if (epsilon != Object.class) {
             throw new IllegalArgumentException("epsilon != " + (Object.class) + " not allowed");
-        else {
+        } else {
             if (addlOffsetLength < 0) throw new Exception("addlOffsetLength < 0 not allowed");
             if (maxAbsStride < 1) throw new Exception("maxAbsStride < 1 not allowed");
             if (target.length() != actual.length()) throw new Exception("target.length() != actual.length()");
-
             final int ilaLength = target.length() + addlOffsetLength <= Integer.MAX_VALUE
                     ? (int) target.length()
                     : Integer.MAX_VALUE - addlOffsetLength;

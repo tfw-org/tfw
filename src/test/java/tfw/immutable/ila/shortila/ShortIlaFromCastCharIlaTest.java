@@ -1,7 +1,7 @@
 package tfw.immutable.ila.shortila;
 
 import java.util.Random;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 import tfw.immutable.ila.charila.CharIla;
 import tfw.immutable.ila.charila.CharIlaFromArray;
@@ -10,8 +10,9 @@ import tfw.immutable.ila.charila.CharIlaFromArray;
  *
  * @immutables.types=numericnotchar
  */
-public class ShortIlaFromCastCharIlaTest extends TestCase {
-    public void testAll() throws Exception {
+class ShortIlaFromCastCharIlaTest {
+    @Test
+    void testAll() throws Exception {
         final Random random = new Random(0);
         final int length = IlaTestDimensions.defaultIlaLength();
         final char[] array = new char[length];

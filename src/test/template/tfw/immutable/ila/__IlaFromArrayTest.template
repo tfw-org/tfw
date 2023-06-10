@@ -1,15 +1,16 @@
 // booleanila,byteila,charila,doubleila,floatila,intila,longila,objectila,shortila
 package %%PACKAGE%%;
 
-%%RANDOM_INCLUDE%%import junit.framework.TestCase;
+%%RANDOM_INCLUDE%%import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 
 /**
  *
  * @immutables.types=all
  */
-public class %%NAME%%IlaFromArrayTest extends TestCase {
-    public void testImmutabilityCheck() throws Exception {
+class %%NAME%%IlaFromArrayTest {
+    @Test
+    void testImmutabilityCheck() throws Exception {
         final int ilaLength = IlaTestDimensions.defaultIlaLength();
         %%RANDOM_INIT%%final %%TYPE%%[] creation = new %%TYPE%%[ilaLength];
         for (int ii = 0; ii < creation.length; ++ii) {
@@ -21,6 +22,7 @@ public class %%NAME%%IlaFromArrayTest extends TestCase {
         %%NAME%%IlaCheck.checkWithoutCorrectness(ila, offsetLength, epsilon);
     }
 
+    @Test
     public void testValueCorrectness() throws Exception {
         final int ilaLength = IlaTestDimensions.defaultIlaLength();
         final int addlOffsetLength = IlaTestDimensions.defaultOffsetLength();

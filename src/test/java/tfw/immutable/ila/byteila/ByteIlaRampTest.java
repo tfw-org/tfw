@@ -1,15 +1,16 @@
 package tfw.immutable.ila.byteila;
 
 import java.util.Random;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 
 /**
  *
  * @immutables.types=numeric
  */
-public class ByteIlaRampTest extends TestCase {
-    public void testAll() throws Exception {
+class ByteIlaRampTest {
+    @Test
+    void testAll() throws Exception {
         final Random random = new Random(0);
         final byte startValue = (byte) random.nextInt();
         final byte increment = (byte) random.nextInt();

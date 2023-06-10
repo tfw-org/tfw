@@ -1,14 +1,15 @@
 package tfw.immutable.ila.objectila;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 
 /**
  *
  * @immutables.types=all
  */
-public class ObjectIlaSegmentTest extends TestCase {
-    public void testAll() throws Exception {
+class ObjectIlaSegmentTest {
+    @Test
+    void testAll() throws Exception {
         final int length = IlaTestDimensions.defaultIlaLength();
         final Object[] master = new Object[length];
         for (int ii = 0; ii < master.length; ++ii) {
