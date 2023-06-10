@@ -1,14 +1,16 @@
 package tfw.immutable.ila.charila;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
-import junit.framework.Assert;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.byteila.ByteIla;
 import tfw.immutable.ila.byteila.ByteIlaFromArray;
 
-public class CharIlaFromUtf8ByteIlaTest extends TestCase {
-    public void testCharIlaFromUTF8ByteIla() throws Exception {
+class CharIlaFromUtf8ByteIlaTest {
+    @Test
+    void testCharIlaFromUTF8ByteIla() throws Exception {
         // Create all unicode characters, valid and invalid.
         final int unicodeSpace = 1 << 21;
         final char[] characters = new char[unicodeSpace];
@@ -34,6 +36,6 @@ public class CharIlaFromUtf8ByteIlaTest extends TestCase {
         charIlaFromUtf8ByteIla.toArray(charactersFromCharIla, 0, 0, charIlaLength);
 
         // Compare the two arrays.
-        Assert.assertTrue(Arrays.equals(charactersFromString, charactersFromCharIla));
+        assertTrue(Arrays.equals(charactersFromString, charactersFromCharIla));
     }
 }

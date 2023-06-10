@@ -1,12 +1,15 @@
 package tfw.immutable.ila.byteila;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.fail;
+
+import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 import tfw.immutable.ila.longila.LongIla;
 import tfw.immutable.ila.longila.LongIlaFromArray;
 
-public class ByteIlaFromLongIlaTest extends TestCase {
-    public void testByteIlaFromLongIla() throws Exception {
+class ByteIlaFromLongIlaTest {
+    @Test
+    void testByteIlaFromLongIla() throws Exception {
         byte[] byteArray = new byte[] {
             (byte) 0x00, (byte) 0x01, (byte) 0x02, (byte) 0x03,
             (byte) 0x04, (byte) 0x05, (byte) 0x06, (byte) 0x07,

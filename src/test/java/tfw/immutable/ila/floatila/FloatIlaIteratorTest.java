@@ -1,11 +1,15 @@
 package tfw.immutable.ila.floatila;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import java.util.Random;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 import tfw.immutable.DataInvalidException;
 
-public class FloatIlaIteratorTest extends TestCase {
-    public void testFloatIlaFill() throws DataInvalidException {
+class FloatIlaIteratorTest {
+    @Test
+    void testFloatIlaFill() throws DataInvalidException {
         final Random random = new Random();
         final int LENGTH = 29;
         float[] array = new float[LENGTH];
@@ -22,7 +26,7 @@ public class FloatIlaIteratorTest extends TestCase {
             if (i == array.length) {
                 fail("Iterator did not stop correctly");
             }
-            assertEquals("element " + i + " not equal!", ii.next(), array[i], 0f);
+            assertEquals(ii.next(), array[i], 0f, "element " + i + " not equal!");
         }
 
         if (i != array.length) {

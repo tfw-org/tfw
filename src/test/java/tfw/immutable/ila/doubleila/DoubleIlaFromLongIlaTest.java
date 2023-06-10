@@ -1,9 +1,10 @@
 package tfw.immutable.ila.doubleila;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
-public class DoubleIlaFromLongIlaTest extends TestCase {
-    public void testDoubleIlaFromLongIla() throws Exception {
+class DoubleIlaFromLongIlaTest {
+    @Test
+    void testDoubleIlaFromLongIla() throws Exception {
         /*
         		final int LENGTH = 64;
         		final long SKIP = Long.MAX_VALUE / LENGTH * 2;
