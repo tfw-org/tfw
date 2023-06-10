@@ -1,15 +1,16 @@
 package tfw.immutable.ila.intila;
 
 import java.util.Random;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 
 /**
  *
  * @immutables.types=all
  */
-public class IntIlaConcatenateTest extends TestCase {
-    public void testAll() throws Exception {
+class IntIlaConcatenateTest {
+    @Test
+    void testAll() throws Exception {
         final Random random = new Random(0);
         final int leftLength = IlaTestDimensions.defaultIlaLength();
         final int rightLength = 1 + random.nextInt(leftLength);

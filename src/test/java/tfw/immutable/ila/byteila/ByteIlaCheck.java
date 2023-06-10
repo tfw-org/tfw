@@ -11,7 +11,8 @@ public final class ByteIlaCheck {
         // non-instantiable class
     }
 
-    public static void checkAll(ByteIla target, ByteIla actual, int addlOffsetLength, int maxAbsStride, byte epsilon)
+    public static void checkAll(
+            final ByteIla target, final ByteIla actual, int addlOffsetLength, int maxAbsStride, byte epsilon)
             throws Exception {
         checkZeroArgImmutability(actual);
         checkTwoArgImmutability(actual, epsilon);
@@ -142,7 +143,8 @@ public final class ByteIlaCheck {
     }
 
     public static void checkCorrectness(
-            ByteIla target, ByteIla actual, int addlOffsetLength, int maxAbsStride, byte epsilon) throws Exception {
+            final ByteIla target, final ByteIla actual, int addlOffsetLength, int maxAbsStride, byte epsilon)
+            throws Exception {
         if (addlOffsetLength < 0) throw new Exception("addlOffsetLength < 0 not allowed");
         if (maxAbsStride < 1) throw new Exception("maxAbsStride < 1 not allowed");
         if (target.length() != actual.length()) throw new Exception("target.length() != actual.length()");

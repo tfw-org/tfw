@@ -1,7 +1,7 @@
 // byteila,charila,doubleila,intila,longila,shortila
 package %%PACKAGE%%;
 
-%%RANDOM_INCLUDE%%import junit.framework.TestCase;
+%%RANDOM_INCLUDE%%import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 import tfw.immutable.ila.floatila.FloatIla;
 import tfw.immutable.ila.floatila.FloatIlaFromArray;
@@ -10,8 +10,9 @@ import tfw.immutable.ila.floatila.FloatIlaFromArray;
  *
  * @immutables.types=numericnotfloat
  */
-public class %%NAME%%IlaFromCastFloatIlaTest extends TestCase {
-    public void testAll() throws Exception {
+class %%NAME%%IlaFromCastFloatIlaTest {
+    @Test
+    void testAll() throws Exception {
         %%RANDOM_INIT%%final int length = IlaTestDimensions.defaultIlaLength();
         final float[] array = new float[length];
         final %%TYPE%%[] target = new %%TYPE%%[length];

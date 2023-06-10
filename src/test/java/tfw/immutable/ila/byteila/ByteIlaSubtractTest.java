@@ -1,15 +1,16 @@
 package tfw.immutable.ila.byteila;
 
 import java.util.Random;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 
 /**
  *
  * @immutables.types=numeric
  */
-public class ByteIlaSubtractTest extends TestCase {
-    public void testAll() throws Exception {
+class ByteIlaSubtractTest {
+    @Test
+    void testAll() throws Exception {
         final Random random = new Random(0);
         final int length = IlaTestDimensions.defaultIlaLength();
         final byte[] leftArray = new byte[length];

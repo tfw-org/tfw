@@ -1,15 +1,16 @@
 package tfw.immutable.ila.intila;
 
 import java.util.Random;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 
 /**
  *
  * @immutables.types=all
  */
-public class IntIlaInterleaveTest extends TestCase {
-    public void testAll() throws Exception {
+class IntIlaInterleaveTest {
+    @Test
+    void testAll() throws Exception {
         final Random random = new Random(0);
         final int length = IlaTestDimensions.defaultIlaLength();
         for (int jj = 2; jj < 6; ++jj) {

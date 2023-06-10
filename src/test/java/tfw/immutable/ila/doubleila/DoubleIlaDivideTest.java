@@ -1,15 +1,16 @@
 package tfw.immutable.ila.doubleila;
 
 import java.util.Random;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 
 /**
  *
  * @immutables.types=numeric
  */
-public class DoubleIlaDivideTest extends TestCase {
-    public void testAll() throws Exception {
+class DoubleIlaDivideTest {
+    @Test
+    void testAll() throws Exception {
         final Random random = new Random(0);
         final int length = IlaTestDimensions.defaultIlaLength();
         final double[] leftArray = new double[length];

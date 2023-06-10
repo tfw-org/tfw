@@ -1,15 +1,16 @@
 package tfw.immutable.ila.byteila;
 
 import java.util.Random;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 
 /**
  *
  * @immutables.types=all
  */
-public class ByteIlaSegmentTest extends TestCase {
-    public void testAll() throws Exception {
+class ByteIlaSegmentTest {
+    @Test
+    void testAll() throws Exception {
         final Random random = new Random(0);
         final int length = IlaTestDimensions.defaultIlaLength();
         final byte[] master = new byte[length];

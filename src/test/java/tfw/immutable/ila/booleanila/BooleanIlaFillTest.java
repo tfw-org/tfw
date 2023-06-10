@@ -1,15 +1,16 @@
 package tfw.immutable.ila.booleanila;
 
 import java.util.Random;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 
 /**
  *
  * @immutables.types=all
  */
-public class BooleanIlaFillTest extends TestCase {
-    public void testAll() throws Exception {
+class BooleanIlaFillTest {
+    @Test
+    void testAll() throws Exception {
         final Random random = new Random(0);
         final boolean value = random.nextBoolean();
         final int length = IlaTestDimensions.defaultIlaLength();

@@ -1,7 +1,7 @@
 package tfw.immutable.ila.shortila;
 
 import java.util.Random;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 import tfw.immutable.ila.floatila.FloatIla;
 import tfw.immutable.ila.floatila.FloatIlaFromArray;
@@ -10,8 +10,9 @@ import tfw.immutable.ila.floatila.FloatIlaFromArray;
  *
  * @immutables.types=numericnotfloat
  */
-public class ShortIlaFromCastFloatIlaTest extends TestCase {
-    public void testAll() throws Exception {
+class ShortIlaFromCastFloatIlaTest {
+    @Test
+    void testAll() throws Exception {
         final Random random = new Random(0);
         final int length = IlaTestDimensions.defaultIlaLength();
         final float[] array = new float[length];

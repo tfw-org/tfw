@@ -46,7 +46,6 @@ public final class BooleanIlaCheck {
         if (thirdLength != fourthLength) throw new Exception("thirdLength != fourthLength");
 
         final Random random = new Random(0);
-
         for (int ii = 0; ii < firstLength; ++ii) {
             secondArray[ii] = random.nextBoolean();
         }
@@ -61,8 +60,9 @@ public final class BooleanIlaCheck {
 
     // also performs zero-two equivalence
     public static void checkTwoArgImmutability(BooleanIla ila, boolean epsilon) throws Exception {
-        if (epsilon != false) throw new IllegalArgumentException("epsilon != " + (false) + " not allowed");
-        else {
+        if (epsilon != false) {
+            throw new IllegalArgumentException("epsilon != " + (false) + " not allowed");
+        } else {
             final int ilaLength = ila.length() <= Integer.MAX_VALUE ? (int) ila.length() : Integer.MAX_VALUE;
             final boolean[] baseline = ila.toArray(0, ilaLength);
             if (baseline.length != ilaLength) throw new Exception("baseline.length != ilaLength");
@@ -85,8 +85,9 @@ public final class BooleanIlaCheck {
     }
 
     public static void checkTwoFourEquivalence(BooleanIla ila, boolean epsilon) throws Exception {
-        if (epsilon != false) throw new IllegalArgumentException("epsilon != " + (false) + " not allowed");
-        else {
+        if (epsilon != false) {
+            throw new IllegalArgumentException("epsilon != " + (false) + " not allowed");
+        } else {
             final int ilaLength = ila.length() <= Integer.MAX_VALUE ? (int) ila.length() : Integer.MAX_VALUE;
             final boolean[] four = new boolean[ilaLength];
             for (int length = 1; length <= ilaLength; ++length) {
@@ -108,8 +109,9 @@ public final class BooleanIlaCheck {
     }
 
     public static void checkFourFiveEquivalence(BooleanIla ila, int offsetLength, boolean epsilon) throws Exception {
-        if (epsilon != false) throw new IllegalArgumentException("epsilon != " + (false) + " not allowed");
-        else {
+        if (epsilon != false) {
+            throw new IllegalArgumentException("epsilon != " + (false) + " not allowed");
+        } else {
             if (offsetLength < 0) throw new Exception("offsetLength < 0 not allowed");
             final Random random = new Random(0);
             final int ilaLength = ila.length() + offsetLength <= Integer.MAX_VALUE
@@ -145,8 +147,9 @@ public final class BooleanIlaCheck {
     public static void checkCorrectness(
             BooleanIla target, BooleanIla actual, int addlOffsetLength, int maxAbsStride, boolean epsilon)
             throws Exception {
-        if (epsilon != false) throw new IllegalArgumentException("epsilon != " + (false) + " not allowed");
-        else {
+        if (epsilon != false) {
+            throw new IllegalArgumentException("epsilon != " + (false) + " not allowed");
+        } else {
             if (addlOffsetLength < 0) throw new Exception("addlOffsetLength < 0 not allowed");
             if (maxAbsStride < 1) throw new Exception("maxAbsStride < 1 not allowed");
             if (target.length() != actual.length()) throw new Exception("target.length() != actual.length()");

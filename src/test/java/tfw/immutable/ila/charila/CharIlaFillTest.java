@@ -1,15 +1,16 @@
 package tfw.immutable.ila.charila;
 
 import java.util.Random;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 
 /**
  *
  * @immutables.types=all
  */
-public class CharIlaFillTest extends TestCase {
-    public void testAll() throws Exception {
+class CharIlaFillTest {
+    @Test
+    void testAll() throws Exception {
         final Random random = new Random(0);
         final char value = (char) random.nextInt();
         final int length = IlaTestDimensions.defaultIlaLength();

@@ -1,15 +1,16 @@
 // doubleila,floatila
 package %%PACKAGE%%;
 
-%%RANDOM_INCLUDE%%import junit.framework.TestCase;
+%%RANDOM_INCLUDE%%import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 
 /**
  *
  * @immutables.types=floating
  */
-public class %%NAME%%IlaInvertTest extends TestCase {
-    public void testAll() throws Exception {
+class %%NAME%%IlaInvertTest {
+    @Test
+    void testAll() throws Exception {
         %%RANDOM_INIT%%final int length = IlaTestDimensions.defaultIlaLength();
         final %%TYPE%%[] array = new %%TYPE%%[length];
         final %%TYPE%%[] target = new %%TYPE%%[length];

@@ -3,6 +3,7 @@
 %%PACKAGE%% = tfw.immutable.ila.floatila
 %%RANDOM_VALUE%% = random.nextFloat()
 %%RANDOM_INCLUDE%%=import java.util.Random;\n
+%%RANDOM_INIT_0%%=final Random random = new Random(0);\n
 %%RANDOM_INIT%%=final Random random = new Random(0);\n\ \ \ \ \ \ \ \ 
 %%DEFAULT_VALUE%%=0.0f
 %%ASSERT_EQUALS_DELTA%% = , 0f

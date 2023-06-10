@@ -1,15 +1,16 @@
 package tfw.immutable.ila.intila;
 
 import java.util.Random;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 
 /**
  *
  * @immutables.types=numeric
  */
-public class IntIlaRampTest extends TestCase {
-    public void testAll() throws Exception {
+class IntIlaRampTest {
+    @Test
+    void testAll() throws Exception {
         final Random random = new Random(0);
         final int startValue = random.nextInt();
         final int increment = random.nextInt();

@@ -1,14 +1,15 @@
 package tfw.immutable.ila.objectila;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 
 /**
  *
  * @immutables.types=all
  */
-public class ObjectIlaFromArrayTest extends TestCase {
-    public void testImmutabilityCheck() throws Exception {
+class ObjectIlaFromArrayTest {
+    @Test
+    void testImmutabilityCheck() throws Exception {
         final int ilaLength = IlaTestDimensions.defaultIlaLength();
         final Object[] creation = new Object[ilaLength];
         for (int ii = 0; ii < creation.length; ++ii) {
@@ -20,6 +21,7 @@ public class ObjectIlaFromArrayTest extends TestCase {
         ObjectIlaCheck.checkWithoutCorrectness(ila, offsetLength, epsilon);
     }
 
+    @Test
     public void testValueCorrectness() throws Exception {
         final int ilaLength = IlaTestDimensions.defaultIlaLength();
         final int addlOffsetLength = IlaTestDimensions.defaultOffsetLength();

@@ -1,14 +1,15 @@
 package tfw.immutable.ila.objectila;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 
 /**
  *
  * @immutables.types=all
  */
-public class ObjectIlaMutateTest extends TestCase {
-    public void testAll() throws Exception {
+class ObjectIlaMutateTest {
+    @Test
+    void testAll() throws Exception {
         final int length = IlaTestDimensions.defaultIlaLength();
         final Object[] array = new Object[length];
         final Object[] target = new Object[length];
