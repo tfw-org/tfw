@@ -1,10 +1,14 @@
 package tfw.immutable.ila.stringila;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+
+import org.junit.jupiter.api.Test;
 import tfw.immutable.DataInvalidException;
 
-public class StringIlaIteratorTest extends TestCase {
-    public void testStringIlaFill() throws DataInvalidException {
+class StringIlaIteratorTest {
+    @Test
+    void testStringIlaFill() throws DataInvalidException {
         final int LENGTH = 29;
         String[] array = new String[LENGTH];
 
@@ -20,7 +24,7 @@ public class StringIlaIteratorTest extends TestCase {
             if (i == array.length) {
                 fail("Iterator did not stop correctly");
             }
-            assertEquals("element " + i + " not equal!", ii.next(), array[i]);
+            assertEquals(ii.next(), array[i], "element " + i + " not equal!");
         }
 
         if (i != array.length) {

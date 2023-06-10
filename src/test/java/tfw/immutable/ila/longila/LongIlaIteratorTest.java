@@ -1,11 +1,15 @@
 package tfw.immutable.ila.longila;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import java.util.Random;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 import tfw.immutable.DataInvalidException;
 
-public class LongIlaIteratorTest extends TestCase {
-    public void testLongIlaFill() throws DataInvalidException {
+class LongIlaIteratorTest {
+    @Test
+    void testLongIlaFill() throws DataInvalidException {
         final Random random = new Random();
         final int LENGTH = 29;
         long[] array = new long[LENGTH];
@@ -22,7 +26,7 @@ public class LongIlaIteratorTest extends TestCase {
             if (i == array.length) {
                 fail("Iterator did not stop correctly");
             }
-            assertEquals("element " + i + " not equal!", ii.next(), array[i]);
+            assertEquals(ii.next(), array[i], "element " + i + " not equal!");
         }
 
         if (i != array.length) {

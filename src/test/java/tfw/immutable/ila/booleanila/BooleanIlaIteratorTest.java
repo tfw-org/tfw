@@ -1,11 +1,15 @@
 package tfw.immutable.ila.booleanila;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import java.util.Random;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 import tfw.immutable.DataInvalidException;
 
-public class BooleanIlaIteratorTest extends TestCase {
-    public void testBooleanIlaFill() throws DataInvalidException {
+class BooleanIlaIteratorTest {
+    @Test
+    void testBooleanIlaFill() throws DataInvalidException {
         final Random random = new Random();
         final int LENGTH = 29;
         boolean[] array = new boolean[LENGTH];
@@ -22,7 +26,7 @@ public class BooleanIlaIteratorTest extends TestCase {
             if (i == array.length) {
                 fail("Iterator did not stop correctly");
             }
-            assertEquals("element " + i + " not equal!", ii.next(), array[i]);
+            assertEquals(ii.next(), array[i], "element " + i + " not equal!");
         }
 
         if (i != array.length) {
