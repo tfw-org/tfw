@@ -1,13 +1,17 @@
 package tfw.tsm;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
+import org.junit.jupiter.api.Test;
 import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.StringECD;
 
 /**
  *
  */
-public class InfiniteLoopTest extends TestCase {
+class InfiniteLoopTest {
     private static int count = 0;
     private static final StringECD porta = new StringECD("a");
     private static final StringECD portb = new StringECD("b");
@@ -63,7 +67,8 @@ public class InfiniteLoopTest extends TestCase {
         }
     };
 
-    public void testInfiniteLoop() throws Exception {
+    @Test
+    void testInfiniteLoop() throws Exception {
         RootFactory rf = new RootFactory();
         BasicTransactionQueue queue = new BasicTransactionQueue();
         rf.addEventChannel(porta, null, AlwaysChangeRule.RULE, null);
@@ -79,8 +84,8 @@ public class InfiniteLoopTest extends TestCase {
         root.add(commit);
         initiator.set(porta, "kick off value");
         // queue.waitTilEmpty();
-        assertFalse("commit was called", isCommit);
-        assertFalse("debugCommit was called", isDebugCommit);
+        assertFalse(isCommit, "commit was called");
+        assertFalse(isDebugCommit, "debugCommit was called");
 
         String newTransaction = "generating new transaction";
 
@@ -95,7 +100,7 @@ public class InfiniteLoopTest extends TestCase {
         // sleep long enough...
         Thread.sleep(50);
 
-        assertNull("initiator broke into the infinite transaction.", cvalue);
+        assertNull(cvalue, "initiator broke into the infinite transaction.");
 
         // terminate the infinite loop transaction...
         loop = false;
@@ -103,6 +108,6 @@ public class InfiniteLoopTest extends TestCase {
         // Give the follow on transaction a chance to
         // to execute...
         queue.waitTilEmpty();
-        assertEquals("intiator did cause value to set after loop was broken", newTransaction, cvalue);
+        assertEquals(newTransaction, cvalue, "intiator did cause value to set after loop was broken");
     }
 }

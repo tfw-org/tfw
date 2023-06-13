@@ -1,15 +1,15 @@
 package tfw.immutable.ila.stringila;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 
 /**
  *
  * @immutables.types=all
  */
-public class StringIlaRemoveTest extends TestCase {
-    public void testAll() throws Exception {
-
+class StringIlaRemoveTest {
+    @Test
+    void testAll() throws Exception {
         final int length = IlaTestDimensions.defaultIlaLength();
         final String[] array = new String[length];
         final String[] target = new String[length - 1];

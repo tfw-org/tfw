@@ -1,12 +1,16 @@
 package tfw.tsm;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+
+import org.junit.jupiter.api.Test;
 import tfw.tsm.ecd.StringECD;
 
-public class GetPreviousStateTest extends TestCase {
+class GetPreviousStateTest {
     StringECD channel = new StringECD("channel");
 
-    public void testIsStateChanged() {
+    @Test
+    void testIsStateChanged() {
         final String initialState = "initialState";
         final String stateChangeOne = "StateOne";
         final String stateChangeTwo = "StateTwo";
@@ -26,24 +30,24 @@ public class GetPreviousStateTest extends TestCase {
         root.add(converter);
         root.add(commit);
         queue.waitTilEmpty();
-        assertEquals("getPreviousCycleState() failed inital value = " + converter.value, initialState, converter.value);
+        assertEquals(initialState, converter.value, "getPreviousCycleState() failed inital value = " + converter.value);
         assertEquals(
-                "getPreviousTransactionState() failed initial value = " + commit.value, initialState, commit.value);
+                initialState, commit.value, "getPreviousTransactionState() failed initial value = " + commit.value);
 
         Initiator initiator = new Initiator("initiator", channel);
         root.add(initiator);
         initiator.set(channel, stateChangeOne);
         queue.waitTilEmpty();
-        assertEquals("getPreviousCycleState() failed inital value = " + converter.value, initialState, converter.value);
+        assertEquals(initialState, converter.value, "getPreviousCycleState() failed inital value = " + converter.value);
         assertEquals(
-                "getPreviousTransactionState() failed initial value = " + commit.value, initialState, commit.value);
+                initialState, commit.value, "getPreviousTransactionState() failed initial value = " + commit.value);
 
         initiator.set(channel, stateChangeTwo);
         queue.waitTilEmpty();
         assertEquals(
-                "getPreviousCycleState() failed inital value = " + converter.value, stateChangeOne, converter.value);
+                stateChangeOne, converter.value, "getPreviousCycleState() failed inital value = " + converter.value);
         assertEquals(
-                "getPreviousTransactionState() failed initial value = " + commit.value, stateChangeOne, commit.value);
+                stateChangeOne, commit.value, "getPreviousTransactionState() failed initial value = " + commit.value);
     }
 
     private class TestConverter extends Converter {

@@ -1,13 +1,18 @@
 package tfw.tsm;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
+import org.junit.jupiter.api.Test;
 import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.StringECD;
 
 /**
  *
  */
-public class CommitTest extends TestCase {
+class CommitTest {
     private final ObjectECD portA = new StringECD("A");
     private final ObjectECD portB = new StringECD("B");
     private final ObjectECD portC = new StringECD("C");
@@ -64,7 +69,8 @@ public class CommitTest extends TestCase {
         }
     }
 
-    public void testTriggerBehavior() throws Exception {
+    @Test
+    void testTriggerBehavior() throws Exception {
         RootFactory rf = new RootFactory();
         rf.addEventChannel(portA, "avalue");
         rf.addEventChannel(portB, "bvalue");
@@ -81,20 +87,20 @@ public class CommitTest extends TestCase {
         mycommit.clear();
         initC.set(portC, "cvalue");
         queue.waitTilEmpty();
-        assertFalse("commit() was called on non-trigger sink!", mycommit.commitFired);
-        assertFalse("debugCommit() was called on non-trigger sink!", mycommit.debugCommitFired);
+        assertFalse(mycommit.commitFired, "commit() was called on non-trigger sink!");
+        assertFalse(mycommit.debugCommitFired, "debugCommit() was called on non-trigger sink!");
 
         initA.set(portA, "avalue");
         queue.waitTilEmpty();
-        assertFalse("commit() was called on an initiator sink!", mycommit.commitFired);
-        assertFalse("debugCommit()  was called on an initiator sink!", mycommit.debugCommitFired);
+        assertFalse(mycommit.commitFired, "commit() was called on an initiator sink!");
+        assertFalse(mycommit.debugCommitFired, "debugCommit()  was called on an initiator sink!");
 
         mycommit.clear();
         branch.add(new SetAOnA("SetAOnA", portA));
         initA.set(portA, "avalue");
         queue.waitTilEmpty();
-        assertTrue("commit() was not called!", mycommit.commitFired);
-        assertEquals("portA value wrong!", "true", mycommit.portAState);
+        assertTrue(mycommit.commitFired, "commit() was not called!");
+        assertEquals("true", mycommit.portAState, "portA value wrong!");
 
         mycommit.clear();
         branch.add(new SetAOnC("SetAOnC", portC, portA));
@@ -102,8 +108,8 @@ public class CommitTest extends TestCase {
         // Visualize.print(branch);
         initC.set(portC, "anything");
         queue.waitTilEmpty();
-        assertTrue("commit() was not called!", mycommit.commitFired);
-        assertEquals("portA value wrong!", "false", mycommit.portAState);
+        assertTrue(mycommit.commitFired, "commit() was not called!");
+        assertEquals("false", mycommit.portAState, "portA value wrong!");
     }
 
     private class SetAOnA extends Converter {

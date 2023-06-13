@@ -1,13 +1,13 @@
 package tfw.tsm;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import static org.junit.jupiter.api.Assertions.fail;
+
+import org.junit.jupiter.api.Test;
 import tfw.tsm.ecd.CharacterECD;
 import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.StringECD;
 
-public class SynchronizerTest extends TestCase {
+class SynchronizerTest {
     private ObjectECD source = new StringECD("source");
     private ObjectECD sink = new StringECD("sink");
     private ObjectECD a1Port = new CharacterECD("a1");
@@ -146,14 +146,6 @@ public class SynchronizerTest extends TestCase {
 
     private BasicTransactionQueue queue = new BasicTransactionQueue();
 
-    public SynchronizerTest(String test) {
-        super(test);
-    }
-
-    public SynchronizerTest() {
-        super();
-    }
-
     public Root initializeRoot(TransactionExceptionHandler handler) {
         RootFactory rf = new RootFactory();
 
@@ -177,7 +169,8 @@ public class SynchronizerTest extends TestCase {
         return root;
     }
 
-    public void testConstruction() {
+    @Test
+    void testConstruction() {
         try {
             new TestTwoWay(null, aChans, bChans, sinks, sources);
             fail("Constructor accepted null name");
@@ -424,16 +417,6 @@ public class SynchronizerTest extends TestCase {
     //                    }
     //            }
     //    */
-    public static Test suite() {
-        //    	TestSuite suite = new TestSuite();
-        //    	suite.addTest(new SynchronizerTest("testAtoBtoAError"));
-        //    	return suite;
-        return new TestSuite(SynchronizerTest.class);
-    }
-
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
 
     private class TestTwoWay extends Synchronizer {
         public TestTwoWay(String name, ObjectECD[] aChans, ObjectECD[] bChans, ObjectECD[] sinks, ObjectECD[] sources) {

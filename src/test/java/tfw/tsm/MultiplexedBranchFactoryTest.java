@@ -1,6 +1,9 @@
 package tfw.tsm;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
+
+import org.junit.jupiter.api.Test;
 import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.StringECD;
 import tfw.tsm.ecd.ila.ObjectIlaECD;
@@ -10,11 +13,12 @@ import tfw.tsm.ecd.ila.ObjectIlaECD;
 /**
  *
  */
-public class MultiplexedBranchFactoryTest extends TestCase {
+class MultiplexedBranchFactoryTest {
     private ObjectECD valueECD = new StringECD("value");
     private ObjectIlaECD multiValueECD = new ObjectIlaECD("multiValue");
 
-    public void testAddMultiplexer() {
+    @Test
+    void testAddMultiplexer() {
         MultiplexedBranchFactory mbf = new MultiplexedBranchFactory();
 
         try {
@@ -44,7 +48,8 @@ public class MultiplexedBranchFactoryTest extends TestCase {
         }
     }
 
-    public void testCreate() {
+    @Test
+    void testCreate() {
         MultiplexedBranchFactory mbf = new MultiplexedBranchFactory();
 
         try {
@@ -88,6 +93,6 @@ public class MultiplexedBranchFactoryTest extends TestCase {
         }
 
         MultiplexedBranch branch = mbf.create("test");
-        assertNotNull("create() returned null", branch);
+        assertNotNull(branch, "create() returned null");
     }
 }

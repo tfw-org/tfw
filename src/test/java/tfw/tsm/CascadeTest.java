@@ -1,13 +1,13 @@
 package tfw.tsm;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.lang.reflect.InvocationTargetException;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import org.junit.jupiter.api.Test;
 import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.StringECD;
 
-public class CascadeTest extends TestCase {
+class CascadeTest {
     private int value = 0;
     private int convertABValue = -1;
     private int convertBCValue = -1;
@@ -59,9 +59,8 @@ public class CascadeTest extends TestCase {
         }
     };
 
-    public void setUp() {}
-
-    public void testConverter() throws InterruptedException, InvocationTargetException {
+    @Test
+    void testConverter() throws InterruptedException, InvocationTargetException {
         RootFactory rf = new RootFactory();
         rf.addEventChannel(portA);
         rf.addEventChannel(portB);
@@ -80,19 +79,11 @@ public class CascadeTest extends TestCase {
         // Visualize.print(branch);
         initiator.set(portA, "Hello");
         queue.waitTilEmpty();
-        assertEquals("validateA", 0, validateAValue);
-        assertEquals("convertAB", 1, convertABValue);
-        assertEquals("validateB", 2, validateBValue);
-        assertEquals("convertBC", 3, convertBCValue);
-        assertEquals("validateC", 4, validateCValue);
-        assertEquals("commit", 5, commitValue);
-    }
-
-    public static Test suite() {
-        return new TestSuite(CascadeTest.class);
-    }
-
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(suite());
+        assertEquals(0, validateAValue, "validateA");
+        assertEquals(1, convertABValue, "convertAB");
+        assertEquals(2, validateBValue, "validateB");
+        assertEquals(3, convertBCValue, "convertBC");
+        assertEquals(4, validateCValue, "validateC");
+        assertEquals(5, commitValue, "commit");
     }
 }

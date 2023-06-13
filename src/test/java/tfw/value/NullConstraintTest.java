@@ -1,12 +1,17 @@
 package tfw.value;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
+import org.junit.jupiter.api.Test;
 
 /**
  *
  */
-public class NullConstraintTest extends TestCase {
-    public void testIsCompatable() {
+class NullConstraintTest {
+    @Test
+    void testIsCompatable() {
         NullConstraint nc = NullConstraint.INSTANCE;
 
         try {
@@ -16,11 +21,12 @@ public class NullConstraintTest extends TestCase {
             // System.out.println(expected);
         }
 
-        assertTrue("isCompatible() rejected itself", nc.isCompatible(nc));
-        assertFalse("isCompatible() accepted an IntegerConstaint", nc.isCompatible(new IntegerConstraint(0, 1)));
+        assertTrue(nc.isCompatible(nc), "isCompatible() rejected itself");
+        assertFalse(nc.isCompatible(new IntegerConstraint(0, 1)), "isCompatible() accepted an IntegerConstaint");
     }
 
-    public void testgetValueCompliance() {
+    @Test
+    void testgetValueCompliance() {
         NullConstraint nc = NullConstraint.INSTANCE;
 
         try {

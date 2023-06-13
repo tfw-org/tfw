@@ -1,18 +1,23 @@
 package tfw.tsm;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
+import org.junit.jupiter.api.Test;
 
 /**
  *
  */
-public class DifferentObjectRuleTest extends TestCase {
-    public void testIsChange() {
+class DifferentObjectRuleTest {
+    @Test
+    void testIsChange() {
         StateChangeRule rule = DifferentObjectRule.RULE;
         Object currentState = new Object();
         Object newState = new Object();
-        assertTrue("Different state", rule.isChange(currentState, newState));
-        assertFalse("Same state", rule.isChange(currentState, currentState));
-        assertTrue("Null currentState", rule.isChange(null, newState));
+        assertTrue(rule.isChange(currentState, newState), "Different state");
+        assertFalse(rule.isChange(currentState, currentState), "Same state");
+        assertTrue(rule.isChange(null, newState), "Null currentState");
         try {
             rule.isChange(currentState, null);
             fail("isChange() accepted null new state");

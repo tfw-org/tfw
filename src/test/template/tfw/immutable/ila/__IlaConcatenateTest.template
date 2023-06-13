@@ -1,4 +1,4 @@
-// booleanila,byteila,charila,doubleila,floatila,intila,longila,objectila,shortila
+// booleanila,byteila,charila,doubleila,floatila,intila,longila,objectila,shortila,stringila
 package %%PACKAGE%%;
 
 import java.util.Random;

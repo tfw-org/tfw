@@ -1,6 +1,8 @@
 package tfw.component;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import org.junit.jupiter.api.Test;
 import tfw.tsm.BasicTransactionQueue;
 import tfw.tsm.Initiator;
 import tfw.tsm.Root;
@@ -8,12 +10,13 @@ import tfw.tsm.RootFactory;
 import tfw.tsm.TriggeredCommit;
 import tfw.tsm.ecd.StatelessTriggerECD;
 
-public class TriggerRelayTest extends TestCase {
+class TriggerRelayTest {
     private final StatelessTriggerECD triggerToRelayECD = new StatelessTriggerECD("triggerToRelay");
 
     private final StatelessTriggerECD relayedTriggerECD = new StatelessTriggerECD("relayedTrigger");
 
-    public void testTriggerRelay() {
+    @Test
+    void testTriggerRelay() {
         RootFactory rf = new RootFactory();
         rf.addEventChannel(triggerToRelayECD);
         rf.addEventChannel(relayedTriggerECD);
@@ -26,7 +29,7 @@ public class TriggerRelayTest extends TestCase {
         root.add(new TriggerRelay("relay", triggerToRelayECD, relayedTriggerECD));
         initiator.trigger(triggerToRelayECD);
         queue.waitTilEmpty();
-        assertTrue("Trigger not relayed!", commit.executed);
+        assertTrue(commit.executed, "Trigger not relayed!");
     }
 
     private class MyCommit extends TriggeredCommit {

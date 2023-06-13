@@ -1,14 +1,14 @@
 package tfw.tsm;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import org.junit.jupiter.api.Test;
 import tfw.tsm.ecd.EventChannelDescription;
 import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.StatelessTriggerECD;
 import tfw.tsm.ecd.StringECD;
 
-public class TriggeredConverterTest extends TestCase {
+class TriggeredConverterTest {
     private final String answer = "Hello World";
     private String triggerA = null;
     private String triggerB = null;
@@ -35,7 +35,8 @@ public class TriggeredConverterTest extends TestCase {
                 }
             };
 
-    public void testConverter() throws Exception {
+    @Test
+    void testConverter() throws Exception {
         RootFactory rf = new RootFactory();
         rf.addEventChannel(channel1);
         rf.addEventChannel(channel2);
@@ -49,39 +50,31 @@ public class TriggeredConverterTest extends TestCase {
 
         initiator.set(channel1, answer);
         queue.waitTilEmpty();
-        assertEquals("send a triggerA", null, triggerA);
-        assertEquals("send a triggerB", null, triggerB);
-        assertEquals("send a debugTriggerA", null, debugTriggerA);
-        assertEquals("send a debugTriggerB", null, debugTriggerB);
+        assertEquals(null, triggerA, "send a triggerA");
+        assertEquals(null, triggerB, "send a triggerB");
+        assertEquals(null, debugTriggerA, "send a debugTriggerA");
+        assertEquals(null, debugTriggerB, "send a debugTriggerB");
 
         initiator.trigger(trigger);
         queue.waitTilEmpty();
-        assertEquals("send a triggerA", null, triggerA);
-        assertEquals("send a triggerB", null, triggerB);
-        assertEquals("send a debugTriggerA", answer, debugTriggerA);
-        assertEquals("send a debugTriggerB", null, debugTriggerB);
+        assertEquals(null, triggerA, "send a triggerA");
+        assertEquals(null, triggerB, "send a triggerB");
+        assertEquals(answer, debugTriggerA, "send a debugTriggerA");
+        assertEquals(null, debugTriggerB, "send a debugTriggerB");
 
         debugTriggerA = null;
         initiator.set(channel2, answer);
         queue.waitTilEmpty();
-        assertEquals("send a triggerA", null, triggerA);
-        assertEquals("send a triggerB", null, triggerB);
-        assertEquals("send a debugTriggerA", null, debugTriggerA);
-        assertEquals("send a debugTriggerB", null, debugTriggerB);
+        assertEquals(null, triggerA, "send a triggerA");
+        assertEquals(null, triggerB, "send a triggerB");
+        assertEquals(null, debugTriggerA, "send a debugTriggerA");
+        assertEquals(null, debugTriggerB, "send a debugTriggerB");
 
         initiator.trigger(trigger);
         queue.waitTilEmpty();
-        assertEquals("send a triggerA", answer, triggerA);
-        assertEquals("send a triggerB", answer, triggerB);
-        assertEquals("send a debugTriggerA", null, debugTriggerA);
-        assertEquals("send a debugTriggerB", null, debugTriggerB);
-    }
-
-    public static Test suite() {
-        return new TestSuite(TriggeredConverterTest.class);
-    }
-
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(suite());
+        assertEquals(answer, triggerA, "send a triggerA");
+        assertEquals(answer, triggerB, "send a triggerB");
+        assertEquals(null, debugTriggerA, "send a debugTriggerA");
+        assertEquals(null, debugTriggerB, "send a debugTriggerB");
     }
 }

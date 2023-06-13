@@ -1,16 +1,16 @@
 package tfw.immutable.ila.stringila;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 
 /**
  *
  * @immutables.types=all
  */
-public class StringIlaFromArrayTest extends TestCase {
-    public void testImmutabilityCheck() throws Exception {
+class StringIlaFromArrayTest {
+    @Test
+    void testImmutabilityCheck() throws Exception {
         final int ilaLength = IlaTestDimensions.defaultIlaLength();
-
         final String[] creation = new String[ilaLength];
         for (int ii = 0; ii < creation.length; ++ii) {
             creation[ii] = new String();
@@ -21,11 +21,11 @@ public class StringIlaFromArrayTest extends TestCase {
         StringIlaCheck.checkWithoutCorrectness(ila, offsetLength, epsilon);
     }
 
+    @Test
     public void testValueCorrectness() throws Exception {
         final int ilaLength = IlaTestDimensions.defaultIlaLength();
         final int addlOffsetLength = IlaTestDimensions.defaultOffsetLength();
         final int maxAbsStride = IlaTestDimensions.defaultMaxStride();
-
         final String[] creation = new String[ilaLength];
         for (int ii = 0; ii < creation.length; ++ii) {
             creation[ii] = new String();

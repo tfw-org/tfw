@@ -1,6 +1,11 @@
 package tfw.tsm;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.fail;
+
+import org.junit.jupiter.api.Test;
 import tfw.tsm.ecd.EventChannelDescription;
 import tfw.tsm.ecd.IntegerECD;
 import tfw.tsm.ecd.ObjectECD;
@@ -12,8 +17,9 @@ import tfw.tsm.ecd.StringRollbackECD;
 /**
  *
  */
-public class ValidatorTest extends TestCase {
-    public void testConstruction() {
+class ValidatorTest {
+    @Test
+    void testConstruction() {
         ObjectECD[] sinks = new ObjectECD[] {new StringECD("Test")};
 
         try {
@@ -52,7 +58,8 @@ public class ValidatorTest extends TestCase {
 
     private final StringECD eventChannelBECD = new StringECD("ecB");
 
-    public void testValidator() {
+    @Test
+    void testValidator() {
         RootFactory rf = new RootFactory();
         rf.addEventChannel(eventChannelAECD);
         rf.addEventChannel(eventChannelBECD);
@@ -69,10 +76,10 @@ public class ValidatorTest extends TestCase {
         initiator.set(eventChannelAECD, valueA);
         queue.waitTilEmpty();
 
-        assertEquals("validateState() called with wrong channelA state", null, validator.channelA);
-        assertEquals("validateState() called with wrong channelB state", null, validator.channelB);
-        assertEquals("debugValdateState() called with wrong channelA state", valueA, validator.debugChannelA);
-        assertEquals("debugValdateState() called with wrong channelB state", null, validator.debugChannelB);
+        assertEquals(null, validator.channelA, "validateState() called with wrong channelA state");
+        assertEquals(null, validator.channelB, "validateState() called with wrong channelB state");
+        assertEquals(valueA, validator.debugChannelA, "debugValdateState() called with wrong channelA state");
+        assertEquals(null, validator.debugChannelB, "debugValdateState() called with wrong channelB state");
 
         validator.reset();
         valueA = "newValueA";
@@ -80,13 +87,14 @@ public class ValidatorTest extends TestCase {
         initiator.set(eventChannelBECD, valueB);
         initiator.set(eventChannelAECD, valueA);
         queue.waitTilEmpty();
-        assertEquals("validateState() called with wrong channelA state", valueA, validator.channelA);
-        assertEquals("validateState() called with wrong channelB state", valueB, validator.channelB);
-        assertEquals("debugValdateState() called with wrong channelA state", null, validator.debugChannelA);
-        assertEquals("debugValdateState() called with wrong channelB state", null, validator.debugChannelB);
+        assertEquals(valueA, validator.channelA, "validateState() called with wrong channelA state");
+        assertEquals(valueB, validator.channelB, "validateState() called with wrong channelB state");
+        assertEquals(null, validator.debugChannelA, "debugValdateState() called with wrong channelA state");
+        assertEquals(null, validator.debugChannelB, "debugValdateState() called with wrong channelB state");
     }
 
-    public void testTriggeredValidation() {
+    @Test
+    void testTriggeredValidation() {
         StatelessTriggerECD trigger = new StatelessTriggerECD("trigger");
         final IntegerECD minECD = new IntegerECD("min");
         final IntegerECD maxECD = new IntegerECD("max");
@@ -94,8 +102,8 @@ public class ValidatorTest extends TestCase {
         RootFactory rf = new RootFactory();
         rf.addEventChannel(trigger);
         rf.addEventChannel(error);
-        rf.addEventChannel(minECD, new Integer(0));
-        rf.addEventChannel(maxECD, new Integer(1));
+        rf.addEventChannel(minECD, 0);
+        rf.addEventChannel(maxECD, 1);
         BasicTransactionQueue queue = new BasicTransactionQueue();
         Root root = rf.create("Test", queue);
         Initiator initiator = new Initiator("Initiator", new EventChannelDescription[] {trigger, minECD, maxECD});
@@ -113,20 +121,20 @@ public class ValidatorTest extends TestCase {
         ErrorHandler errorHandler = new ErrorHandler(error);
         root.add(errorHandler);
         queue.waitTilEmpty();
-        assertNull("Initialization failed", errorHandler.errorMsg);
+        assertNull(errorHandler.errorMsg, "Initialization failed");
 
-        initiator.set(minECD, new Integer(3));
+        initiator.set(minECD, 3);
         queue.waitTilEmpty();
-        assertNull("Non triggered event cause validation", errorHandler.errorMsg);
+        assertNull(errorHandler.errorMsg, "Non triggered event cause validation");
 
         initiator.trigger(trigger);
         queue.waitTilEmpty();
-        assertNotNull("Trigger failed to cause validation", errorHandler.errorMsg);
+        assertNotNull(errorHandler.errorMsg, "Trigger failed to cause validation");
 
         errorHandler.errorMsg = null;
-        initiator.set(maxECD, new Integer(4));
+        initiator.set(maxECD, 4);
         queue.waitTilEmpty();
-        assertNull("Non triggered event cause validation", errorHandler.errorMsg);
+        assertNull(errorHandler.errorMsg, "Non triggered event cause validation");
     }
 
     private class ErrorHandler extends Commit {

@@ -1,19 +1,26 @@
 package tfw.value;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
+import org.junit.jupiter.api.Test;
 
 /**
  *
  *
  */
-public class ValueConstraintTest extends TestCase {
+class ValueConstraintTest {
     private final class MyConstraint extends ClassValueConstraint {
         public MyConstraint(Class valueType) {
             super(valueType);
         }
     }
 
-    public void testNullValueType() {
+    @Test
+    void testNullValueType() {
         try {
             new MyConstraint(null);
             fail("Constructor accepted null valueConstraint");
@@ -22,23 +29,26 @@ public class ValueConstraintTest extends TestCase {
         }
     }
 
-    public void testGetValueCompliance() {
+    @Test
+    void testGetValueCompliance() {
         ClassValueConstraint vc = ClassValueConstraint.getInstance(Integer.class);
-        String result = vc.getValueCompliance(new Integer(0));
-        assertEquals("Valid class type rejected!", ClassValueConstraint.VALID, result);
+        String result = vc.getValueCompliance(0);
+        assertEquals(ClassValueConstraint.VALID, result, "Valid class type rejected!");
         result = vc.getValueCompliance(null);
-        assertFalse("null accepted!", ClassValueConstraint.VALID.equals(result));
+        assertNotEquals(ClassValueConstraint.VALID, result, "null accepted!");
         result = vc.getValueCompliance(new Object());
-        assertFalse("accepted invalid type!", ClassValueConstraint.VALID.equals(result));
+        assertNotEquals(ClassValueConstraint.VALID, result, "accepted invalid type!");
     }
 
-    public void testIsValid() {
+    @Test
+    void testIsValid() {
         ClassValueConstraint vc = ClassValueConstraint.getInstance(Integer.class);
-        assertTrue("rejected valid value!", vc.isValid(new Integer(1)));
-        assertFalse("accepted an invalid value!", vc.isValid(new Object()));
+        assertTrue(vc.isValid(1), "rejected valid value!");
+        assertFalse(vc.isValid(new Object()), "accepted an invalid value!");
     }
 
-    public void testCheckValue() {
+    @Test
+    void testCheckValue() {
         ClassValueConstraint vc = ClassValueConstraint.getInstance(Integer.class);
 
         try {
@@ -49,7 +59,7 @@ public class ValueConstraintTest extends TestCase {
         }
 
         try {
-            vc.checkValue(new Integer(0));
+            vc.checkValue(0);
         } catch (ValueException unexpected) {
             fail("checkValue() threw exception on valid value");
         }

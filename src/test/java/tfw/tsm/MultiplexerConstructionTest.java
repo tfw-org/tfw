@@ -1,12 +1,14 @@
 package tfw.tsm;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.objectila.ObjectIlaFromArray;
 import tfw.tsm.ecd.StatelessTriggerECD;
 import tfw.tsm.ecd.StringECD;
 import tfw.tsm.ecd.ila.ObjectIlaECD;
 
-public class MultiplexerConstructionTest extends TestCase {
+class MultiplexerConstructionTest {
     private static final StringECD VALUE_ECD = new StringECD("value");
 
     private static final ObjectIlaECD MULTIVALUE_ECD = new ObjectIlaECD("multiValue");
@@ -17,7 +19,8 @@ public class MultiplexerConstructionTest extends TestCase {
 
     private final ValueCommit vc2 = new ValueCommit("vc2");
 
-    public void testDynamicConstruction() {
+    @Test
+    void testDynamicConstruction() {
         String value = "bob";
         MultiplexedBranchFactory mbf = new MultiplexedBranchFactory();
         mbf.addMultiplexer(VALUE_ECD, MULTIVALUE_ECD);
@@ -34,7 +37,8 @@ public class MultiplexerConstructionTest extends TestCase {
         queue.waitTilEmpty();
     }
 
-    public void testNameSpaceSeparation() {
+    @Test
+    void testNameSpaceSeparation() {
         String value0 = "bob";
         String value1 = "sally";
         MultiplexedBranchFactory mbf = new MultiplexedBranchFactory();

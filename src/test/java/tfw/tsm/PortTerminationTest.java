@@ -1,16 +1,19 @@
 package tfw.tsm;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+import org.junit.jupiter.api.Test;
 import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.StringECD;
 
 /**
  * Test to make sure rooted components are terminated.
  */
-public class PortTerminationTest extends TestCase {
+class PortTerminationTest {
     static Exception expected = null;
 
-    public void testUnTerminatedPort() {
+    @Test
+    void testUnTerminatedPort() {
         ObjectECD ecd = new StringECD("Test");
         RootFactory rf = new RootFactory();
         rf.setTransactionExceptionHandler(new TransactionExceptionHandler() {
@@ -42,7 +45,7 @@ public class PortTerminationTest extends TestCase {
             }
         }
 
-        assertNotNull("Root.add() accepted child with un-terminated ports!", expected);
+        assertNotNull(expected, "Root.add() accepted child with un-terminated ports!");
         // assertFalse("waitTilEmpty() failed", failed);
     }
 }

@@ -1,13 +1,17 @@
 package tfw.tsm;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+
+import org.junit.jupiter.api.Test;
 import tfw.tsm.ecd.StringECD;
 
 /**
  *
  */
-public class TreeStateTest extends TestCase {
-    public void testEquals() throws Exception {
+class TreeStateTest {
+    @Test
+    void testEquals() throws Exception {
         String name = "my tree";
         EventChannelState state = new EventChannelState(new StringECD("xyz"), "Hello");
         EventChannelState[] stateArray = new EventChannelState[] {};
@@ -15,19 +19,19 @@ public class TreeStateTest extends TestCase {
         TreeState[] children = new TreeState[] {child};
         TreeState ts1 = new TreeState(name, stateArray, children);
         TreeState ts2 = new TreeState(name, stateArray, children);
-        assertEquals("Equivalent tree state not equal", ts1, ts2);
-        assertEquals("Equivalent tree state has different hash code", ts1.hashCode(), ts2.hashCode());
+        assertEquals(ts1, ts2, "Equivalent tree state not equal");
+        assertEquals(ts1.hashCode(), ts2.hashCode(), "Equivalent tree state has different hash code");
 
-        assertFalse("null is equal", ts1.equals(null));
-        assertFalse("wrong type is equal", ts1.equals(new Object()));
+        assertNotEquals(ts1, null, "null is equal");
+        assertNotEquals(ts1, new Object(), "wrong type is equal");
 
         ts2 = new TreeState("different", stateArray, children);
-        assertFalse("different name equal", ts1.equals(ts2));
+        assertNotEquals(ts1, ts2, "different name equal");
 
         ts2 = new TreeState(name, new EventChannelState[] {state}, children);
-        assertFalse("different event channel state equal", ts1.equals(ts2));
+        assertNotEquals(ts1, ts2, "different event channel state equal");
 
         ts2 = new TreeState(name, stateArray, new TreeState[0]);
-        assertFalse("different children equal", ts1.equals(ts2));
+        assertNotEquals(ts1, ts2, "different children equal");
     }
 }

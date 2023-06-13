@@ -1,13 +1,14 @@
 package tfw.tsm;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import java.util.Map;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import org.junit.jupiter.api.Test;
 import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.StringECD;
 
-public class ConverterTest extends TestCase {
+class ConverterTest {
     private Map<ObjectECD, Object> state = null;
     private String convertA = null;
     private String convertB = null;
@@ -33,7 +34,8 @@ public class ConverterTest extends TestCase {
         }
     };
 
-    public void testConverter() {
+    @Test
+    void testConverter() {
         RootFactory rf = new RootFactory();
         rf.addEventChannel(porta);
         rf.addEventChannel(portb);
@@ -75,19 +77,20 @@ public class ConverterTest extends TestCase {
             String aState,
             String bState,
             String cState) {
-        assertEquals("convertA has wrong value", aValue, convertA);
-        assertEquals("convertB has wrong value", bValue, convertB);
-        assertEquals("debugConvertA has wrong value", aDebugValue, debugConvertA);
-        assertEquals("debugConvertB has wrong value", bDebugValue, debugConvertB);
-        assertEquals("state map has wrong value for porta", aState, state.get(porta));
-        assertEquals("state map has wrong value for portb", bState, state.get(portb));
-        assertEquals("state map has wrong value for portc", cState, state.get(portc));
+        assertEquals(aValue, convertA, "convertA has wrong value");
+        assertEquals(bValue, convertB, "convertB has wrong value");
+        assertEquals(aDebugValue, debugConvertA, "debugConvertA has wrong value");
+        assertEquals(bDebugValue, debugConvertB, "debugConvertB has wrong value");
+        assertEquals(aState, state.get(porta), "state map has wrong value for porta");
+        assertEquals(bState, state.get(portb), "state map has wrong value for portb");
+        assertEquals(cState, state.get(portc), "state map has wrong value for portc");
         convertA = null;
         convertB = null;
         debugConvertA = null;
         debugConvertB = null;
     }
 
+    @Test
     public void testConstructor() {
         try {
             new MyConverter(null, triggeringSinks, nonTriggeringSinks, sources);
@@ -134,14 +137,6 @@ public class ConverterTest extends TestCase {
         } catch (IllegalArgumentException expected) {
             // System.out.println(expected);
         }
-    }
-
-    public static Test suite() {
-        return new TestSuite(ConverterTest.class);
-    }
-
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(suite());
     }
 
     private class MyConverter extends Converter {
