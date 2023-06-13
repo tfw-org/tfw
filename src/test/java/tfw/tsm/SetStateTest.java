@@ -1,14 +1,17 @@
 package tfw.tsm;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+import org.junit.jupiter.api.Test;
 import tfw.tsm.ecd.StringECD;
 
-public class SetStateTest extends TestCase {
+class SetStateTest {
     /**
      * Verifies that an exception is thrown if the component attempts to set an
      * event channel twice in the same state change cyecle.
      */
-    public void testDoubleSet() {
+    @Test
+    void testDoubleSet() {
         RootFactory rf = new RootFactory();
         StringECD ecd = new StringECD("myECD");
         rf.addEventChannel(ecd);
@@ -22,7 +25,7 @@ public class SetStateTest extends TestCase {
         initiator.set(ecd, "hello");
         queue.waitTilEmpty();
 
-        assertNotNull("Double set failed to throw exception", exceptionHandler.exp);
+        assertNotNull(exceptionHandler.exp, "Double set failed to throw exception");
     }
 
     private class DoubleSetConverter extends Converter {

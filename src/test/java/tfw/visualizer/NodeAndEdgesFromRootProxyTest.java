@@ -1,7 +1,7 @@
 package tfw.visualizer;
 
 import java.util.Arrays;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 import tfw.immutable.ila.objectila.ObjectIla;
 import tfw.immutable.ila.objectila.ObjectIlaCheck;
@@ -37,8 +37,9 @@ import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.StatelessTriggerECD;
 import tfw.tsm.ecd.ila.ObjectIlaECD;
 
-public class NodeAndEdgesFromRootProxyTest extends TestCase {
-    public void testNodeAndEdgesFromRootProxy() throws Exception {
+class NodeAndEdgesFromRootProxyTest {
+    @Test
+    void testNodeAndEdgesFromRootProxy() throws Exception {
         BasicTransactionQueue basicTransactionQueue = new BasicTransactionQueue();
 
         StatelessTriggerECD triggerECD = new StatelessTriggerECD("trigger");

@@ -1,12 +1,17 @@
 package tfw.tsm;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
+import org.junit.jupiter.api.Test;
 
 /**
  *
  */
-public class BasicTransactionQueueTest extends TestCase {
-    public void testAdd() {
+class BasicTransactionQueueTest {
+    @Test
+    void testAdd() {
         BasicTransactionQueue queue = new BasicTransactionQueue();
 
         try {
@@ -40,17 +45,19 @@ public class BasicTransactionQueueTest extends TestCase {
         }
     }
 
-    public void testAddNWait() {
+    @Test
+    void testAddNWait() {
         BasicTransactionQueue queue = new BasicTransactionQueue();
         TestRunnable ts = new TestRunnable(500);
 
         queue.invokeLater(ts);
         queue.waitTilEmpty();
 
-        assertTrue("Not done after waitTilEmpty()", ts.done);
+        assertTrue(ts.done, "Not done after waitTilEmpty()");
     }
 
-    public void testInvokeAndWait() throws Exception {
+    @Test
+    void testInvokeAndWait() throws Exception {
         BasicTransactionQueue queue = new BasicTransactionQueue();
         try {
             queue.invokeAndWait(null);
@@ -63,12 +70,12 @@ public class BasicTransactionQueueTest extends TestCase {
         TestRunnable tr3 = new TestRunnable(5);
         queue.invokeLater(tr1);
         queue.invokeAndWait(tr2);
-        assertEquals("tr2.cnt", 2, tr2.cnt);
+        assertEquals(2, tr2.cnt, "tr2.cnt");
         queue.invokeLater(tr3);
         queue.waitTilEmpty();
 
-        assertEquals("tr1.cnt", 1, tr1.cnt);
-        assertEquals("tr2.cnt", 2, tr2.cnt);
-        assertEquals("tr3.cnt", 3, tr3.cnt);
+        assertEquals(1, tr1.cnt, "tr1.cnt");
+        assertEquals(2, tr2.cnt, "tr2.cnt");
+        assertEquals(3, tr3.cnt, "tr3.cnt");
     }
 }

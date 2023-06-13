@@ -1,8 +1,8 @@
 package tfw.visualizer;
 
 import java.util.Arrays;
-import junit.framework.TestCase;
 import org.junit.Ignore;
+import org.junit.jupiter.api.Test;
 import tfw.immutable.ilm.doubleilm.DoubleIlm;
 import tfw.tsm.BasicTransactionQueue;
 import tfw.tsm.Branch;
@@ -32,8 +32,9 @@ import tfw.visualizer.graph.GraphFromRootProxy;
 import tfw.visualizer.graph.GraphNodeClassFilter;
 
 @Ignore
-public class NormalXYDoubleIlmFromGraphTest extends TestCase {
-    public void testNormalXYDoubleIlmFromGraph() throws Exception {
+class NormalXYDoubleIlmFromGraphTest {
+    @Test
+    void testNormalXYDoubleIlmFromGraph() throws Exception {
         BasicTransactionQueue basicTransactionQueue = new BasicTransactionQueue();
 
         StatelessTriggerECD triggerECD = new StatelessTriggerECD("trigger");

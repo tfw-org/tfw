@@ -1,15 +1,18 @@
 package tfw.audio;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.Arrays;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 import tfw.audio.byteila.ALawByteIlaFromLinearShortIla;
 import tfw.audio.shortila.LinearShortIlaFromALawByteIla;
 import tfw.immutable.ila.byteila.ByteIla;
 import tfw.immutable.ila.shortila.ShortIla;
 import tfw.immutable.ila.shortila.ShortIlaFromArray;
 
-public class ALawTest extends TestCase {
-    public void testALaw() throws Exception {
+class ALawTest {
+    @Test
+    void testALaw() throws Exception {
         short[] linearArray = new short[65536];
 
         for (int i = 0; i < linearArray.length; i++) {

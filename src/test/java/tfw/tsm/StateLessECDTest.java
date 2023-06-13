@@ -1,15 +1,19 @@
 package tfw.tsm;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import java.util.Map;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.StatelessTriggerECD;
 
 /**
  *
  */
-public class StateLessECDTest extends TestCase {
-    public void testGetState() {
+class StateLessECDTest {
+    @Test
+    void testGetState() {
         RootFactory rf = new RootFactory();
         StatelessTriggerECD trigger = new StatelessTriggerECD("test");
         rf.addEventChannel(trigger);
@@ -22,9 +26,9 @@ public class StateLessECDTest extends TestCase {
         root.add(initiator);
         initiator.trigger(trigger);
         queue.waitTilEmpty();
-        assertNotNull("set() of a statelessECD didn't throw an exception", commit.setException);
-        assertNotNull("get() returned null state map", commit.map);
-        assertEquals("get() returned the wron number of values", 0, commit.map.size());
+        assertNotNull(commit.setException, "set() of a statelessECD didn't throw an exception");
+        assertNotNull(commit.map, "get() returned null state map");
+        assertEquals(0, commit.map.size(), "get() returned the wron number of values");
         // System.out.println(commit.setException);
     }
 

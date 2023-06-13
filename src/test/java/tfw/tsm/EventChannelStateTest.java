@@ -1,13 +1,18 @@
 package tfw.tsm;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+
+import org.junit.jupiter.api.Test;
 import tfw.tsm.ecd.StringECD;
 
 /**
  *
  */
-public class EventChannelStateTest extends TestCase {
-    public void testEventChannelState() throws Exception {
+class EventChannelStateTest {
+    @Test
+    void testEventChannelState() throws Exception {
         StringECD stringECD = new StringECD("myChannel");
         String value = "Hello World";
 
@@ -19,25 +24,26 @@ public class EventChannelStateTest extends TestCase {
         }
 
         EventChannelState state = new EventChannelState(stringECD, value);
-        assertEquals("returned wrong ecd", stringECD.getEventChannelName(), state.getEventChannelName());
-        assertEquals("returned wrong value", value, state.getState());
+        assertEquals(stringECD.getEventChannelName(), state.getEventChannelName(), "returned wrong ecd");
+        assertEquals(value, state.getState(), "returned wrong value");
     }
 
-    public void testEquals() throws Exception {
+    @Test
+    void testEquals() throws Exception {
         StringECD stringECD = new StringECD("myChannel");
         String value = "Hello World";
 
         EventChannelState state1 = new EventChannelState(stringECD, value);
         EventChannelState state2 = new EventChannelState(stringECD, value);
-        assertEquals("equivalent values not equal", state1, state2);
-        assertEquals("equivalent values different hashCodes", state1.hashCode(), state2.hashCode());
-        assertFalse("null is equal", state1.equals(null));
-        assertFalse("wrong type is equal", state1.equals(new Object()));
+        assertEquals(state1, state2, "equivalent values not equal");
+        assertEquals(state1.hashCode(), state2.hashCode(), "equivalent values different hashCodes");
+        assertNotEquals(state1, null, "null is equal");
+        assertNotEquals(state1, new Object(), "wrong type is equal");
 
         state2 = new EventChannelState(new StringECD("different"), value);
-        assertFalse("different ecd is equal", state1.equals(state2));
+        assertNotEquals(state1, state2, "different ecd is equal");
 
         state2 = new EventChannelState(stringECD, "different");
-        assertFalse("different ecd is equal", state1.equals(state2));
+        assertNotEquals(state1, state2, "different ecd is equal");
     }
 }

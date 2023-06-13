@@ -1,13 +1,14 @@
 package tfw.tsm;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
 /**
  *
  */
-public class DefaultStateQueueFactoryTest extends TestCase {
+class DefaultStateQueueFactoryTest {
     // The class has been made package private and is therefore not testable by this test class.
-    public void testCreate() {
+    @Test
+    void testCreate() {
         //		DefaultStateQueueFactory factory = new DefaultStateQueueFactory();
         //		StateQueue  queue = factory.create();
         //		assertNotNull("Factory returned null", queue);

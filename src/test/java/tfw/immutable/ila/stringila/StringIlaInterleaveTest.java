@@ -1,15 +1,15 @@
 package tfw.immutable.ila.stringila;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 
 /**
  *
  * @immutables.types=all
  */
-public class StringIlaInterleaveTest extends TestCase {
-    public void testAll() throws Exception {
-
+class StringIlaInterleaveTest {
+    @Test
+    void testAll() throws Exception {
         final int length = IlaTestDimensions.defaultIlaLength();
         for (int jj = 2; jj < 6; ++jj) {
             final String[][] target = new String[jj][length];

@@ -1,14 +1,11 @@
-/*
- * Created on Dec 12, 2005
- */
 package tfw.tsm;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 // import tfw.component.ObjectStringSynchronizer;
 import tfw.immutable.ila.objectila.ObjectIla;
 import tfw.tsm.ecd.ila.ObjectIlaECD;
 
-public class MultiplexerSynchronizerTest extends TestCase {
+class MultiplexerSynchronizerTest {
 
     private class MultiCommit extends Commit {
 
@@ -26,7 +23,8 @@ public class MultiplexerSynchronizerTest extends TestCase {
         }
     }
 
-    public void testMultiplexedSynchronizer() throws Exception {
+    @Test
+    void testMultiplexedSynchronizer() throws Exception {
         /*
                 StringECD stringECD = new StringECD("string");
                 IntegerECD integerECD = new IntegerECD("integer");

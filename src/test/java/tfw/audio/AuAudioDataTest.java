@@ -1,7 +1,9 @@
 package tfw.audio;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.Arrays;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 import tfw.audio.au.Au;
 import tfw.audio.au.AuAudioDataFromNormalizedDoubleIla;
 import tfw.audio.au.NormalizedDoubleIlaFromAuAudioData;
@@ -9,8 +11,9 @@ import tfw.immutable.ila.byteila.ByteIla;
 import tfw.immutable.ila.byteila.ByteIlaFromArray;
 import tfw.immutable.ila.doubleila.DoubleIla;
 
-public class AuAudioDataTest extends TestCase {
-    public void testMuLawAuAudioData() throws Exception {
+class AuAudioDataTest {
+    @Test
+    void testMuLawAuAudioData() throws Exception {
         byte[] origByteArray = new byte[256];
         byte[] finalByteArray = new byte[256];
 

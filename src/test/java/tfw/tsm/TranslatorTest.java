@@ -1,14 +1,16 @@
 package tfw.tsm;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import java.lang.reflect.InvocationTargetException;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import org.junit.jupiter.api.Test;
 import tfw.tsm.ecd.IntegerECD;
 import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.StringECD;
 
-public class TranslatorTest extends TestCase {
+class TranslatorTest {
     private final String answer = "Hello World";
 
     private String result = null;
@@ -27,7 +29,8 @@ public class TranslatorTest extends TestCase {
         }
     };
 
-    public void testTranslation() throws InterruptedException, InvocationTargetException {
+    @Test
+    void testTranslation() throws InterruptedException, InvocationTargetException {
         RootFactory rf = new RootFactory();
         rf.addEventChannel(portB, null, AlwaysChangeRule.RULE, null);
 
@@ -55,18 +58,18 @@ public class TranslatorTest extends TestCase {
         // Visualize.print(topBranch);
         initiator.set(portA, answer);
         queue.waitTilEmpty();
-        assertEquals("initial connections", answer, result);
+        assertEquals(answer, result, "initial connections");
 
         String newAnswer = "Good bye world";
         initiator.set(portA, newAnswer);
         queue.waitTilEmpty();
-        assertEquals("initial connections", newAnswer, result);
+        assertEquals(newAnswer, result, "initial connections");
 
         middleBranch1.remove(commit);
         result = null;
         initiator.set(portA, answer);
         queue.waitTilEmpty();
-        assertEquals("disconnect sink", null, result);
+        assertEquals(null, result, "disconnect sink");
 
         result = null;
         middleBranch1.add(commit);
@@ -75,7 +78,7 @@ public class TranslatorTest extends TestCase {
 
         // No need to send...should fire on connect.
         // initiator.set("a", answer);
-        assertEquals("fire on sink reconnect", answer, result);
+        assertEquals(answer, result, "fire on sink reconnect");
 
         middleBranch2.remove(initiator);
         queue.waitTilEmpty();
@@ -85,7 +88,7 @@ public class TranslatorTest extends TestCase {
         initiator.set(portA, answer);
         queue.waitTilEmpty();
 
-        assertEquals("source removal", null, result);
+        assertEquals(null, result, "source removal");
 
         //        result = null;
         //        handler.exception = null;
@@ -123,15 +126,7 @@ public class TranslatorTest extends TestCase {
             message = handler.exception.getMessage();
         }
 
-        assertNull("Exception - " + message, handler.exception);
-    }
-
-    public static Test suite() {
-        return new TestSuite(TranslatorTest.class);
-    }
-
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(suite());
+        assertNull(handler.exception, "Exception - " + message);
     }
 
     private class MyExceptionHandler implements TransactionExceptionHandler {

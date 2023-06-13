@@ -1,14 +1,17 @@
 package tfw.tsm;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import org.junit.jupiter.api.Test;
 
 /**
  *
  */
-public class RootTest extends TestCase {
-    public void testIsRooted() {
+class RootTest {
+    @Test
+    void testIsRooted() {
         RootFactory rootFactory = new RootFactory();
         Root root = rootFactory.create("test", new BasicTransactionQueue());
-        assertTrue("isRooted() returned false", root.isRooted());
+        assertTrue(root.isRooted(), "isRooted() returned false");
     }
 }

@@ -1,6 +1,8 @@
 package tfw.tsm;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.fail;
+
+import org.junit.jupiter.api.Test;
 import tfw.tsm.ecd.IntegerECD;
 import tfw.tsm.ecd.StatelessTriggerECD;
 import tfw.tsm.ecd.StringECD;
@@ -9,8 +11,9 @@ import tfw.value.ValueException;
 /**
  *
  */
-public class BranchFactoryTest extends TestCase {
-    public void testFactory() {
+class BranchFactoryTest {
+    @Test
+    void testFactory() {
         BranchFactory bf = new BranchFactory();
 
         try {

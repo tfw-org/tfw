@@ -1,14 +1,19 @@
 package tfw.tsm.ecd;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.fail;
+
+import org.junit.jupiter.api.Test;
 import tfw.value.ClassValueConstraint;
 import tfw.value.ValueConstraint;
 
 /**
  *
  */
-public class EventChannelDescriptionTest extends TestCase {
-    public void testConstruction() {
+class EventChannelDescriptionTest {
+    @Test
+    void testConstruction() {
         try {
             new TestECD(null, ClassValueConstraint.STRING);
             fail("constructor accepted null name");
@@ -37,17 +42,18 @@ public class EventChannelDescriptionTest extends TestCase {
         }
     }
 
-    public void testEquals() {
+    @Test
+    void testEquals() {
         TestECD ecd1 = new TestECD("A", ClassValueConstraint.STRING);
         TestECD ecd2 = new TestECD("A", ClassValueConstraint.STRING);
-        assertEquals("Equivalent instances not equal", ecd1, ecd2);
-        assertFalse("equal to null.", ecd1.equals(null));
+        assertEquals(ecd1, ecd2, "Equivalent instances not equal");
+        assertFalse(ecd1.equals(null), "equal to null.");
 
         ecd2 = new TestECD("different", ClassValueConstraint.STRING);
-        assertFalse("different names equal", ecd1.equals(ecd2));
+        assertFalse(ecd1.equals(ecd2), "different names equal");
 
         ecd2 = new TestECD("A", ClassValueConstraint.BOOLEAN);
-        assertFalse("different constraints equal", ecd1.equals(ecd2));
+        assertFalse(ecd1.equals(ecd2), "different constraints equal");
 
         //		ecd2 = new TestECD("A", ClassValueConstraint.STRING);
         //		assertFalse("different codecs equal",ecd1.equals(ecd2));

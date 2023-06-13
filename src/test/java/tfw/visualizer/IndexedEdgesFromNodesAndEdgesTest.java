@@ -1,6 +1,6 @@
 package tfw.visualizer;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 import tfw.immutable.ila.longila.LongIla;
 import tfw.immutable.ila.longila.LongIlaCheck;
@@ -8,8 +8,9 @@ import tfw.immutable.ila.longila.LongIlaFromArray;
 import tfw.immutable.ila.objectila.ObjectIla;
 import tfw.immutable.ila.objectila.ObjectIlaFromArray;
 
-public class IndexedEdgesFromNodesAndEdgesTest extends TestCase {
-    public void testIndexedEdgesFromNodesAndEdges() throws Exception {
+class IndexedEdgesFromNodesAndEdgesTest {
+    @Test
+    void testIndexedEdgesFromNodesAndEdges() throws Exception {
         Object[] nodesArray = new Object[] {new Object(), new Object(), new Object(), new Object(), new Object()};
         Object[] edgesArray = new Object[] {
             nodesArray[0],
