@@ -45,3 +45,4 @@ public final class LongIlmFromArray {
         }
     }
 }
+// AUTO GENERATED FROM TEMPLATE

@@ -1,12 +1,16 @@
 package tfw.immutable.ilm.doubleilm;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.Arrays;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.doubleila.DoubleIla;
 import tfw.immutable.ila.doubleila.DoubleIlaRamp;
 
-public class TakeSkipDoubleIlmTest extends TestCase {
-    public void testTakeSkipDoubleIlm() throws Exception {
+class TakeSkipDoubleIlmTest {
+    @Test
+    void testTakeSkipDoubleIlm() throws Exception {
         DoubleIla doubleIla = DoubleIlaRamp.create(-10.0, 1.0, 20);
         double[] doubleArray = doubleIla.toArray();
 

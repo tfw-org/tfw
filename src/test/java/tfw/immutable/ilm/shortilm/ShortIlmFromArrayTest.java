@@ -1,13 +1,24 @@
 package tfw.immutable.ilm.shortilm;
 
-import java.util.Arrays;
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class ShortIlmFromArrayTest extends TestCase {
-    public void testBooleanIlmFromArray() throws Exception {
-        short[] array = new short[] {1, 2, 3, 4, 5, 6};
-        ShortIlm shortIlm = ShortIlmFromArray.create(array, 3);
+import java.util.Arrays;
+import java.util.Random;
+import org.junit.jupiter.api.Test;
+
+class ShortIlmFromArrayTest {
+    @Test
+    void testShortIlmFromArray() throws Exception {
+        final Random random = new Random(0);
+        short[] array = new short[6];
+
+        for (int i = 0; i < array.length; i++) {
+            array[i] = (short) random.nextInt();
+        }
+
+        ShortIlm shortIlm = ShortIlmFromArray.create(array, array.length / 2);
 
         assertTrue(Arrays.equals(array, shortIlm.toArray()));
     }
 }
+// AUTO GENERATED FROM TEMPLATE

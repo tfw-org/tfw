@@ -1,8 +1,7 @@
 %%TYPE%% = double
 %%NAME%% = Double
-%%PACKAGE%% = double
+%%PACKAGE%% = tfw.immutable.ilm.doubleilm
 %%RANDOM_VALUE%% = random.nextDouble()
 %%ASSERT_EQUALS_DELTA%% = , 0
-%%DEFAULT_VALUE%% = 0.0
 %%CREATE_IMMUTABLE_START%% = new Double(
 %%CREATE_IMMUTABLE_END%% = )

@@ -45,3 +45,4 @@ public final class BooleanIlmFromArray {
         }
     }
 }
+// AUTO GENERATED FROM TEMPLATE

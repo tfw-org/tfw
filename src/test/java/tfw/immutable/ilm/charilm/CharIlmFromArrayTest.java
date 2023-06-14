@@ -1,13 +1,24 @@
 package tfw.immutable.ilm.charilm;
 
-import java.util.Arrays;
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class CharIlmFromArrayTest extends TestCase {
-    public void testBooleanIlmFromArray() throws Exception {
-        char[] array = new char[] {1, 2, 3, 4, 5, 6};
-        CharIlm charIlm = CharIlmFromArray.create(array, 3);
+import java.util.Arrays;
+import java.util.Random;
+import org.junit.jupiter.api.Test;
+
+class CharIlmFromArrayTest {
+    @Test
+    void testCharIlmFromArray() throws Exception {
+        final Random random = new Random(0);
+        char[] array = new char[6];
+
+        for (int i = 0; i < array.length; i++) {
+            array[i] = (char) random.nextInt();
+        }
+
+        CharIlm charIlm = CharIlmFromArray.create(array, array.length / 2);
 
         assertTrue(Arrays.equals(array, charIlm.toArray()));
     }
 }
+// AUTO GENERATED FROM TEMPLATE

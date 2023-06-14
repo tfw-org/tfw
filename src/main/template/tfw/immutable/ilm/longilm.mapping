@@ -1,8 +1,7 @@
 %%TYPE%% = long
 %%NAME%% = Long
-%%PACKAGE%% = long
+%%PACKAGE%% = tfw.immutable.ilm.longilm
 %%RANDOM_VALUE%% = random.nextLong()
 %%ASSERT_EQUALS_DELTA%% =
-%%DEFAULT_VALUE%% = 0L
 %%CREATE_IMMUTABLE_START%% = new Long(
 %%CREATE_IMMUTABLE_END%% = )

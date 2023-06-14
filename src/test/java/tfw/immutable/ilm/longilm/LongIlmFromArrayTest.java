@@ -1,13 +1,24 @@
 package tfw.immutable.ilm.longilm;
 
-import java.util.Arrays;
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class LongIlmFromArrayTest extends TestCase {
-    public void testBooleanIlmFromArray() throws Exception {
-        long[] array = new long[] {1, 2, 3, 4, 5, 6};
-        LongIlm longIlm = LongIlmFromArray.create(array, 3);
+import java.util.Arrays;
+import java.util.Random;
+import org.junit.jupiter.api.Test;
+
+class LongIlmFromArrayTest {
+    @Test
+    void testLongIlmFromArray() throws Exception {
+        final Random random = new Random(0);
+        long[] array = new long[6];
+
+        for (int i = 0; i < array.length; i++) {
+            array[i] = random.nextLong();
+        }
+
+        LongIlm longIlm = LongIlmFromArray.create(array, array.length / 2);
 
         assertTrue(Arrays.equals(array, longIlm.toArray()));
     }
 }
+// AUTO GENERATED FROM TEMPLATE

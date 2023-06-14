@@ -64,3 +64,4 @@ public abstract class AbstractStringIlm extends AbstractIlm implements StringIlm
         toArrayImpl(array, offset, rowStride, colStride, rowStart, columnStart, rowCount, colCount);
     }
 }
+// AUTO GENERATED FROM TEMPLATE

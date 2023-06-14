@@ -64,3 +64,4 @@ public abstract class AbstractByteIlm extends AbstractIlm implements ByteIlm {
         toArrayImpl(array, offset, rowStride, colStride, rowStart, columnStart, rowCount, colCount);
     }
 }
+// AUTO GENERATED FROM TEMPLATE

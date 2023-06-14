@@ -1,0 +1,15 @@
+%%TYPE%% = boolean
+%%NAME%% = Boolean
+%%PACKAGE%% = tfw.immutable.ilm.booleanilm
+%%RANDOM_VALUE%% = random.nextBoolean()
+%%RANDOM_INCLUDE%%=import java.util.Random;\n
+%%RANDOM_INCLUDE_2%%=import java.util.Random;\n\n
+%%RANDOM_INIT_0%%=final Random random = new Random(0);\n
+%%RANDOM_INIT%%=final Random random = new Random(0);\n\ \ \ \ \ \ \ \ 
+%%RANDOM_INIT_12%%=final Random random = new Random(0);\n\ \ \ \ \ \ \ \ \ \ \ \ 
+%%DEFAULT_VALUE%%=false
+%%ASSERT_EQUALS_DELTA%% =
+%%CREATE_IMMUTABLE_START%% = new Boolean(
+%%CREATE_IMMUTABLE_END%% = )
+%%IS_EQUALS_START%% = \ ==\ 
+%%IS_EQUALS_END%% = 
