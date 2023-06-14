@@ -1,13 +1,22 @@
 package tfw.immutable.ilm.objectilm;
 
-import java.util.Arrays;
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class ObjectIlmFromArrayTest extends TestCase {
-    public void testBooleanIlmFromArray() throws Exception {
-        Object[] array = new Object[] {1, 2, 3, 4, 5, 6};
-        ObjectIlm ObjectIlm = ObjectIlmFromArray.create(array, 3);
+import java.util.Arrays;
+import org.junit.jupiter.api.Test;
+
+class ObjectIlmFromArrayTest {
+    @Test
+    void testObjectIlmFromArray() throws Exception {
+        Object[] array = new Object[6];
+
+        for (int i = 0; i < array.length; i++) {
+            array[i] = new Object();
+        }
+
+        ObjectIlm ObjectIlm = ObjectIlmFromArray.create(array, array.length / 2);
 
         assertTrue(Arrays.equals(array, ObjectIlm.toArray()));
     }
 }
+// AUTO GENERATED FROM TEMPLATE

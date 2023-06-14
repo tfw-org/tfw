@@ -45,3 +45,4 @@ public final class CharIlmFromArray {
         }
     }
 }
+// AUTO GENERATED FROM TEMPLATE

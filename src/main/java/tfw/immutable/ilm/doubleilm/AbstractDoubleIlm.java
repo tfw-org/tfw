@@ -2,9 +2,7 @@ package tfw.immutable.ilm.doubleilm;
 
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
-import tfw.immutable.ImmutableProxy;
 import tfw.immutable.ilm.AbstractIlm;
-import tfw.immutable.ilm.ImmutableLongMatrix;
 
 public abstract class AbstractDoubleIlm extends AbstractIlm implements DoubleIlm {
     protected abstract void toArrayImpl(
@@ -20,14 +18,6 @@ public abstract class AbstractDoubleIlm extends AbstractIlm implements DoubleIlm
 
     protected AbstractDoubleIlm(long width, long height) {
         super(width, height);
-    }
-
-    public static Object getImmutableInfo(ImmutableLongMatrix ilm) {
-        if (ilm instanceof ImmutableProxy) {
-            return (((ImmutableProxy) ilm).getParameters());
-        } else {
-            return (ilm.toString());
-        }
     }
 
     public final double[] toArray() throws DataInvalidException {
@@ -74,3 +64,4 @@ public abstract class AbstractDoubleIlm extends AbstractIlm implements DoubleIlm
         toArrayImpl(array, offset, rowStride, colStride, rowStart, columnStart, rowCount, colCount);
     }
 }
+// AUTO GENERATED FROM TEMPLATE

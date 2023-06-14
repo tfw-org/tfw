@@ -1,8 +1,7 @@
 %%TYPE%% = char
 %%NAME%% = Char
-%%PACKAGE%% = char
+%%PACKAGE%% = tfw.immutable.ilm.charilm
 %%RANDOM_VALUE%% = (char)random.nextInt()
 %%ASSERT_EQUALS_DELTA%% =
-%%DEFAULT_VALUE%% = (char)0
 %%CREATE_IMMUTABLE_START%% = new Character(
 %%CREATE_IMMUTABLE_END%% = )

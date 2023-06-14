@@ -1,12 +1,15 @@
 package tfw.immutable.ilm.doubleilm;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.Arrays;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.doubleila.DoubleIla;
 import tfw.immutable.ila.doubleila.DoubleIlaFromArray;
 
-public class ReplicateDoubleIlmTest extends TestCase {
-    public void testReplicateDoubleIlm() throws Exception {
+class ReplicateDoubleIlmTest {
+    @Test
+    void testReplicateDoubleIlm() throws Exception {
         DoubleIla doubleIla = DoubleIlaFromArray.create(new double[] {0.0, 1.0, 2.0, 3.0, 4.0});
 
         DoubleIlm replicate = ReplicateDoubleIlm.create(doubleIla, 5);

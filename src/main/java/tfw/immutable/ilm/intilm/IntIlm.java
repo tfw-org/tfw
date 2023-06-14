@@ -22,3 +22,4 @@ public interface IntIlm extends ImmutableLongMatrix {
             int colCount)
             throws DataInvalidException;
 }
+// AUTO GENERATED FROM TEMPLATE

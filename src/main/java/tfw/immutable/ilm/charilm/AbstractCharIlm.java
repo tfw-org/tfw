@@ -64,3 +64,4 @@ public abstract class AbstractCharIlm extends AbstractIlm implements CharIlm {
         toArrayImpl(array, offset, rowStride, colStride, rowStart, columnStart, rowCount, colCount);
     }
 }
+// AUTO GENERATED FROM TEMPLATE

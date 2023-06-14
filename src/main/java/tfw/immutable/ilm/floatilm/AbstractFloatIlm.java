@@ -64,3 +64,4 @@ public abstract class AbstractFloatIlm extends AbstractIlm implements FloatIlm {
         toArrayImpl(array, offset, rowStride, colStride, rowStart, columnStart, rowCount, colCount);
     }
 }
+// AUTO GENERATED FROM TEMPLATE

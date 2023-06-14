@@ -1,0 +1,48 @@
+// booleanilm,byteilm,charilm,doubleilm,floatilm,intilm,longilm,objectilm,shortilm,stringilm
+package %%PACKAGE%%;
+
+import tfw.check.Argument;
+
+public final class %%NAME%%IlmFromArray {
+    private %%NAME%%IlmFromArray() {}
+
+    public static %%NAME%%Ilm create(%%TYPE%%[] array, int width) {
+        Argument.assertNotNull(array, "array");
+        Argument.assertNotLessThan(width, 0, "width");
+
+        if (width != 0) {
+            Argument.assertEquals(array.length % width, 0, "array.length % width", "0");
+        }
+
+        return new My%%NAME%%Ilm(array, width);
+    }
+
+    private static class My%%NAME%%Ilm extends Abstract%%NAME%%Ilm {
+        private final %%TYPE%%[] array;
+
+        My%%NAME%%Ilm(%%TYPE%%[] array, int width) {
+            super(width, width == 0 ? 0 : array.length / width);
+
+            this.array = array;
+        }
+
+        protected void toArrayImpl(
+                %%TYPE%%[] array,
+                int offset,
+                int rowStride,
+                int colStride,
+                long rowStart,
+                long colStart,
+                int rowCount,
+                int colCount) {
+            int intWidth = (int) width();
+
+            for (int i = 0; i < rowCount; i++) {
+                for (int j = 0; j < colCount; j++) {
+                    array[offset + (i * rowStride) + (j * colStride)] =
+                            this.array[(i + (int) rowStart) * intWidth + (j + (int) colStart)];
+                }
+            }
+        }
+    }
+}

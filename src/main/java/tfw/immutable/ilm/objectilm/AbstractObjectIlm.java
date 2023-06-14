@@ -64,3 +64,4 @@ public abstract class AbstractObjectIlm extends AbstractIlm implements ObjectIlm
         toArrayImpl(array, offset, rowStride, colStride, rowStart, columnStart, rowCount, colCount);
     }
 }
+// AUTO GENERATED FROM TEMPLATE

@@ -1,8 +1,7 @@
 %%TYPE%% = int
 %%NAME%% = Int
-%%PACKAGE%% = int
+%%PACKAGE%% = tfw.immutable.ilm.intilm
 %%RANDOM_VALUE%% = random.nextInt()
 %%ASSERT_EQUALS_DELTA%% =
-%%DEFAULT_VALUE%% = 0
 %%CREATE_IMMUTABLE_START%% = new Integer(
 %%CREATE_IMMUTABLE_END%% = )

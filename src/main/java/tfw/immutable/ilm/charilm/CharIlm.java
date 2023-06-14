@@ -22,3 +22,4 @@ public interface CharIlm extends ImmutableLongMatrix {
             int colCount)
             throws DataInvalidException;
 }
+// AUTO GENERATED FROM TEMPLATE

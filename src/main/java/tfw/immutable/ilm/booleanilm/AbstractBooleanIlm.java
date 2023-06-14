@@ -64,3 +64,4 @@ public abstract class AbstractBooleanIlm extends AbstractIlm implements BooleanI
         toArrayImpl(array, offset, rowStride, colStride, rowStart, columnStart, rowCount, colCount);
     }
 }
+// AUTO GENERATED FROM TEMPLATE

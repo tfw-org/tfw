@@ -1,8 +1,7 @@
 %%TYPE%% = Object
 %%NAME%% = Object
-%%PACKAGE%% = object
+%%PACKAGE%% = tfw.immutable.ilm.objectilm
 %%RANDOM_VALUE%% = new Object()
 %%ASSERT_EQUALS_DELTA%% =
-%%DEFAULT_VALUE%% = Object.class
 %%CREATE_IMMUTABLE_START%% =
 %%CREATE_IMMUTABLE_END%% =

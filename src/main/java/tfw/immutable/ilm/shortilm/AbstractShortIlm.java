@@ -64,3 +64,4 @@ public abstract class AbstractShortIlm extends AbstractIlm implements ShortIlm {
         toArrayImpl(array, offset, rowStride, colStride, rowStart, columnStart, rowCount, colCount);
     }
 }
+// AUTO GENERATED FROM TEMPLATE

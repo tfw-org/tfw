@@ -1,7 +1,7 @@
 package tfw.visualizer;
 
 import java.util.Arrays;
-import org.junit.Ignore;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import tfw.immutable.ilm.doubleilm.DoubleIlm;
 import tfw.tsm.BasicTransactionQueue;
@@ -31,9 +31,9 @@ import tfw.visualizer.graph.GraphFromArrays;
 import tfw.visualizer.graph.GraphFromRootProxy;
 import tfw.visualizer.graph.GraphNodeClassFilter;
 
-@Ignore
 class NormalXYDoubleIlmFromGraphTest {
     @Test
+    @Disabled
     void testNormalXYDoubleIlmFromGraph() throws Exception {
         BasicTransactionQueue basicTransactionQueue = new BasicTransactionQueue();
 

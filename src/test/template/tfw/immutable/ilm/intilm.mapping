@@ -1,0 +1,11 @@
+%%TYPE%% = int
+%%NAME%% = Int
+%%PACKAGE%% = tfw.immutable.ilm.intilm
+%%RANDOM_VALUE%% = random.nextInt()
+%%RANDOM_INCLUDE%%=import java.util.Random;\n
+%%RANDOM_INIT_0%%=final Random random = new Random(0);\n
+%%RANDOM_INIT%%=final Random random = new Random(0);\n\ \ \ \ \ \ \ \ 
+%%DEFAULT_VALUE%%=0
+%%ASSERT_EQUALS_DELTA%% =
+%%CREATE_IMMUTABLE_START%% = new Integer(
+%%CREATE_IMMUTABLE_END%% = )
