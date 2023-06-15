@@ -23,7 +23,7 @@ class ByteIlaScalarAddTest {
         ByteIla ila = ByteIlaFromArray.create(array);
         ByteIla targetIla = ByteIlaFromArray.create(target);
         ByteIla actualIla = ByteIlaScalarAdd.create(ila, scalar);
-        final byte epsilon = (byte) 0.0;
+        final byte epsilon = (byte) 0;
         ByteIlaCheck.checkAll(
                 targetIla,
                 actualIla,

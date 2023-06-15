@@ -18,12 +18,12 @@ class DoubleIlaScalarAddTest {
         final double[] target = new double[length];
         for (int ii = 0; ii < array.length; ++ii) {
             array[ii] = random.nextDouble();
-            target[ii] = (double) (array[ii] + scalar);
+            target[ii] = (array[ii] + scalar);
         }
         DoubleIla ila = DoubleIlaFromArray.create(array);
         DoubleIla targetIla = DoubleIlaFromArray.create(target);
         DoubleIla actualIla = DoubleIlaScalarAdd.create(ila, scalar);
-        final double epsilon = (double) 0.0;
+        final double epsilon = 0.0;
         DoubleIlaCheck.checkAll(
                 targetIla,
                 actualIla,

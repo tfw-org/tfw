@@ -17,12 +17,12 @@ class DoubleIlaRoundTest {
         final double[] target = new double[length];
         for (int ii = 0; ii < array.length; ++ii) {
             array[ii] = random.nextDouble();
-            target[ii] = (double) StrictMath.rint(array[ii]);
+            target[ii] = StrictMath.rint(array[ii]);
         }
         DoubleIla ila = DoubleIlaFromArray.create(array);
         DoubleIla targetIla = DoubleIlaFromArray.create(target);
         DoubleIla actualIla = DoubleIlaRound.create(ila);
-        final double epsilon = (double) 0.0;
+        final double epsilon = 0.0;
         DoubleIlaCheck.checkAll(
                 targetIla,
                 actualIla,

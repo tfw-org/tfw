@@ -34,7 +34,7 @@ class IntIlaBoundTest {
         IntIla ila = IntIlaFromArray.create(array);
         IntIla targetIla = IntIlaFromArray.create(target);
         IntIla actualIla = IntIlaBound.create(ila, minimum, maximum);
-        final int epsilon = (int) 0.0;
+        final int epsilon = 0;
         IntIlaCheck.checkAll(
                 targetIla,
                 actualIla,

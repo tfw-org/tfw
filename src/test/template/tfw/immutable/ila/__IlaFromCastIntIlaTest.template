@@ -23,7 +23,7 @@ class %%NAME%%IlaFromCastIntIlaTest {
         IntIla ila = IntIlaFromArray.create(array);
         %%NAME%%Ila targetIla = %%NAME%%IlaFromArray.create(target);
         %%NAME%%Ila actualIla = %%NAME%%IlaFromCastIntIla.create(ila);
-        final %%TYPE%% epsilon = (%%TYPE%%) 0.0;
+        final %%TYPE%% epsilon = %%DEFAULT_VALUE%%;
         %%NAME%%IlaCheck.checkAll(
                 targetIla,
                 actualIla,

@@ -22,7 +22,7 @@ class FloatIlaRoundTest {
         FloatIla ila = FloatIlaFromArray.create(array);
         FloatIla targetIla = FloatIlaFromArray.create(target);
         FloatIla actualIla = FloatIlaRound.create(ila);
-        final float epsilon = (float) 0.0;
+        final float epsilon = 0.0f;
         FloatIlaCheck.checkAll(
                 targetIla,
                 actualIla,

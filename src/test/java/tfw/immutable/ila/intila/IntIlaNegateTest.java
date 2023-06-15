@@ -17,12 +17,12 @@ class IntIlaNegateTest {
         final int[] target = new int[length];
         for (int ii = 0; ii < array.length; ++ii) {
             array[ii] = random.nextInt();
-            target[ii] = (int) -array[ii];
+            target[ii] = -array[ii];
         }
         IntIla ila = IntIlaFromArray.create(array);
         IntIla targetIla = IntIlaFromArray.create(target);
         IntIla actualIla = IntIlaNegate.create(ila);
-        final int epsilon = (int) 0.0;
+        final int epsilon = 0;
         IntIlaCheck.checkAll(
                 targetIla,
                 actualIla,

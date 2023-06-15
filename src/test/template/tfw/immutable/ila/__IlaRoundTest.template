@@ -16,12 +16,12 @@ class %%NAME%%IlaRoundTest {
         final %%TYPE%%[] target = new %%TYPE%%[length];
         for (int ii = 0; ii < array.length; ++ii) {
             array[ii] = %%RANDOM_VALUE%%;
-            target[ii] = (%%TYPE%%) StrictMath.rint(array[ii]);
+            target[ii] =%%CAST_FROM_DOUBLE%% StrictMath.rint(array[ii]);
         }
         %%NAME%%Ila ila = %%NAME%%IlaFromArray.create(array);
         %%NAME%%Ila targetIla = %%NAME%%IlaFromArray.create(target);
         %%NAME%%Ila actualIla = %%NAME%%IlaRound.create(ila);
-        final %%TYPE%% epsilon = (%%TYPE%%) 0.0;
+        final %%TYPE%% epsilon = %%DEFAULT_VALUE%%;
         %%NAME%%IlaCheck.checkAll(
                 targetIla,
                 actualIla,

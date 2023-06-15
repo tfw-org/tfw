@@ -25,7 +25,7 @@ class ShortIlaMultiplyTest {
         ShortIla rightIla = ShortIlaFromArray.create(rightArray);
         ShortIla targetIla = ShortIlaFromArray.create(array);
         ShortIla actualIla = ShortIlaMultiply.create(leftIla, rightIla);
-        final short epsilon = (short) 0.0;
+        final short epsilon = (short) 0;
         ShortIlaCheck.checkAll(
                 targetIla,
                 actualIla,

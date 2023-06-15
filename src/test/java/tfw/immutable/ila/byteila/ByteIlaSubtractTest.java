@@ -25,7 +25,7 @@ class ByteIlaSubtractTest {
         ByteIla rightIla = ByteIlaFromArray.create(rightArray);
         ByteIla targetIla = ByteIlaFromArray.create(array);
         ByteIla actualIla = ByteIlaSubtract.create(leftIla, rightIla);
-        final byte epsilon = (byte) 0.0;
+        final byte epsilon = (byte) 0;
         ByteIlaCheck.checkAll(
                 targetIla,
                 actualIla,

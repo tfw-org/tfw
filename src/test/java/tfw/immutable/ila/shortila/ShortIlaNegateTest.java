@@ -22,7 +22,7 @@ class ShortIlaNegateTest {
         ShortIla ila = ShortIlaFromArray.create(array);
         ShortIla targetIla = ShortIlaFromArray.create(target);
         ShortIla actualIla = ShortIlaNegate.create(ila);
-        final short epsilon = (short) 0.0;
+        final short epsilon = (short) 0;
         ShortIlaCheck.checkAll(
                 targetIla,
                 actualIla,

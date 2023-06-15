@@ -12,4 +12,4 @@
 %%CREATE_IMMUTABLE_START%% = new Boolean(
 %%CREATE_IMMUTABLE_END%% = )
 %%IS_EQUALS_START%% = \ ==\ 
-%%IS_EQUALS_END%% = 
+%%IS_EQUALS_END%% =

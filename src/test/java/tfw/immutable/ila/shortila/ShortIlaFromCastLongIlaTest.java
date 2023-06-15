@@ -24,7 +24,7 @@ class ShortIlaFromCastLongIlaTest {
         LongIla ila = LongIlaFromArray.create(array);
         ShortIla targetIla = ShortIlaFromArray.create(target);
         ShortIla actualIla = ShortIlaFromCastLongIla.create(ila);
-        final short epsilon = (short) 0.0;
+        final short epsilon = (short) 0;
         ShortIlaCheck.checkAll(
                 targetIla,
                 actualIla,

@@ -34,7 +34,7 @@ class ByteIlaBoundTest {
         ByteIla ila = ByteIlaFromArray.create(array);
         ByteIla targetIla = ByteIlaFromArray.create(target);
         ByteIla actualIla = ByteIlaBound.create(ila, minimum, maximum);
-        final byte epsilon = (byte) 0.0;
+        final byte epsilon = (byte) 0;
         ByteIlaCheck.checkAll(
                 targetIla,
                 actualIla,

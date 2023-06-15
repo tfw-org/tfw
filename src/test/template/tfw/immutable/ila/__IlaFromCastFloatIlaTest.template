@@ -23,7 +23,7 @@ class %%NAME%%IlaFromCastFloatIlaTest {
         FloatIla ila = FloatIlaFromArray.create(array);
         %%NAME%%Ila targetIla = %%NAME%%IlaFromArray.create(target);
         %%NAME%%Ila actualIla = %%NAME%%IlaFromCastFloatIla.create(ila);
-        final %%TYPE%% epsilon = (%%TYPE%%) 0.0;
+        final %%TYPE%% epsilon = %%DEFAULT_VALUE%%;
         %%NAME%%IlaCheck.checkAll(
                 targetIla,
                 actualIla,

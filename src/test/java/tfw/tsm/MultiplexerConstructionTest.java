@@ -30,7 +30,7 @@ class MultiplexerConstructionTest {
         BasicTransactionQueue queue = new BasicTransactionQueue();
         RootFactory rf = new RootFactory();
         rf.addEventChannel(MULTIVALUE_ECD, ObjectIlaFromArray.create(new String[] {value}));
-        rf.addEventChannel(this.TRIGGER_ECD);
+        rf.addEventChannel(TRIGGER_ECD);
         Root root = rf.create("Test", queue);
 
         root.add(multiBranch);
