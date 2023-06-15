@@ -1,8 +1,6 @@
 package tfw.tsm;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -10,9 +8,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
-import java.util.logging.Handler;
 import java.util.logging.Level;
-import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 import tfw.check.Argument;
 
@@ -83,7 +79,8 @@ public final class TransactionMgr {
 
     private TransactionExceptionHandler exceptionHandler = new TransactionExceptionHandler() {
         public void handle(Exception exception) {
-            exception.printStackTrace();
+            logger.log(Level.INFO, "Unexpected Exception!", exception);
+
             throw new RuntimeException(
                     "An unhandled exception occured while processing a transaction: " + exception.getMessage(),
                     exception);
@@ -93,27 +90,6 @@ public final class TransactionMgr {
     private LocationFormatter locationFormatter = null;
 
     private static final Logger logger = Logger.getLogger(TransactionMgr.class.getName());
-    private static final Handler handler = new Handler() {
-        Date date = new Date();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd-HH:mm:ss ");
-
-        @Override
-        public void close() throws SecurityException {}
-
-        @Override
-        public void flush() {}
-
-        @Override
-        public void publish(LogRecord lr) {
-            date.setTime(lr.getMillis());
-            System.err.println(simpleDateFormat.format(date) + lr.getMessage());
-        }
-    };
-
-    static {
-        logger.setUseParentHandlers(false);
-        logger.addHandler(handler);
-    }
 
     /**
      * Constructs a transaction manager

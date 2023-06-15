@@ -3,6 +3,7 @@ package tfw.state;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import org.slf4j.LoggerFactory;
 import tfw.check.Argument;
 
 public class StateMachine {
@@ -68,8 +69,9 @@ public class StateMachine {
                     for (int j = 0; j < t.actions.size(); j++) {
                         try {
                             t.actions.get(j).act(event);
-                        } catch (Throwable throwable) {
-                            throwable.printStackTrace();
+                        } catch (Exception exception) {
+                            LoggerFactory.getLogger(StateMachine.class)
+                                    .error("Exception thrown while executing action!", exception);
                         }
                     }
 

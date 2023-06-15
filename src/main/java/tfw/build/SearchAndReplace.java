@@ -8,8 +8,6 @@ import java.nio.file.Paths;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Properties;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.slf4j.Logger;
@@ -17,9 +15,6 @@ import org.slf4j.LoggerFactory;
 
 public final class SearchAndReplace {
     private static final Logger LOGGER;
-    private static final String REGEX = "\\s*//\\s*([\\w+\\,?]+)";
-    private static final Pattern PATTERN = Pattern.compile(REGEX);
-    private static final Matcher MATCHER = PATTERN.matcher("");
 
     static {
         System.setProperty("java.util.logging.SimpleFormatter.format", "[%1$tF %1$tT] [%4$-7s] %5$s %n");
@@ -53,12 +48,16 @@ public final class SearchAndReplace {
                 LOGGER.info("  mapping = {}", mappingTemplate[0]);
                 LOGGER.debug("  template.l = \n{}", mappingTemplate[1].length());
 
-                MATCHER.reset(mappingTemplate[0]);
+                final int commentIndex = mappingTemplate[0].indexOf("//");
 
-                final boolean mappingFound = MATCHER.find();
-                final String mapping = MATCHER.group(1);
+                if (commentIndex != 0) {
+                    LOGGER.error("Mapping comment not at beginning of first line!");
 
-                LOGGER.debug("  mappingFound = {}", mappingFound);
+                    System.exit(-1);
+                }
+
+                final String mapping = mappingTemplate[0].substring(2).trim();
+
                 LOGGER.debug("  mapping = {}", mapping);
 
                 final String[] mappings = mapping.split(",");
