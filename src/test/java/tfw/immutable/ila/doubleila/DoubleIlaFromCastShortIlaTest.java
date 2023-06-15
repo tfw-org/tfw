@@ -24,7 +24,7 @@ class DoubleIlaFromCastShortIlaTest {
         ShortIla ila = ShortIlaFromArray.create(array);
         DoubleIla targetIla = DoubleIlaFromArray.create(target);
         DoubleIla actualIla = DoubleIlaFromCastShortIla.create(ila);
-        final double epsilon = (double) 0.0;
+        final double epsilon = 0.0;
         DoubleIlaCheck.checkAll(
                 targetIla,
                 actualIla,

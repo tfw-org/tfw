@@ -61,8 +61,8 @@ public final class DoubleIlaCheck {
 
     // also performs zero-two equivalence
     public static void checkTwoArgImmutability(DoubleIla ila, double epsilon) throws Exception {
-        final double eps = epsilon < 0.0 ? (double) -epsilon : epsilon;
-        final double neps = (double) -eps;
+        final double eps = epsilon < 0.0 ? -epsilon : epsilon;
+        final double neps = -eps;
         final int ilaLength = ila.length() <= Integer.MAX_VALUE ? (int) ila.length() : Integer.MAX_VALUE;
         final double[] baseline = ila.toArray(0, ilaLength);
         if (baseline.length != ilaLength) throw new Exception("baseline.length != ilaLength");
@@ -71,7 +71,7 @@ public final class DoubleIlaCheck {
                 final double[] subset = ila.toArray(start, length);
                 if (subset.length != length) throw new Exception("subset.length != length");
                 for (int ii = 0; ii < subset.length; ++ii) {
-                    double delta = (double) (baseline[ii + (int) start] - subset[ii]);
+                    double delta = (baseline[ii + (int) start] - subset[ii]);
                     if (!(neps <= delta && delta <= eps))
                         throw new Exception("subset[" + ii + "] ("
                                 + subset[ii] + ") !~ baseline["
@@ -85,8 +85,8 @@ public final class DoubleIlaCheck {
     }
 
     public static void checkTwoFourEquivalence(DoubleIla ila, double epsilon) throws Exception {
-        final double eps = epsilon < 0.0 ? (double) -epsilon : epsilon;
-        final double neps = (double) -eps;
+        final double eps = epsilon < 0.0 ? -epsilon : epsilon;
+        final double neps = -eps;
         final int ilaLength = ila.length() <= Integer.MAX_VALUE ? (int) ila.length() : Integer.MAX_VALUE;
         final double[] four = new double[ilaLength];
         for (int length = 1; length <= ilaLength; ++length) {
@@ -94,7 +94,7 @@ public final class DoubleIlaCheck {
                 final double[] two = ila.toArray(start, length);
                 ila.toArray(four, 0, start, length);
                 for (int ii = 0; ii < length; ++ii) {
-                    double delta = (double) (four[ii] - two[ii]);
+                    double delta = (four[ii] - two[ii]);
                     if (!(neps <= delta && delta <= eps))
                         throw new Exception("four[" + ii + "] ("
                                 + four[ii] + ") !~ two["
@@ -109,8 +109,8 @@ public final class DoubleIlaCheck {
 
     public static void checkFourFiveEquivalence(DoubleIla ila, int offsetLength, double epsilon) throws Exception {
         if (offsetLength < 0) throw new Exception("offsetLength < 0 not allowed");
-        final double eps = epsilon < 0.0 ? (double) -epsilon : epsilon;
-        final double neps = (double) -eps;
+        final double eps = epsilon < 0.0 ? -epsilon : epsilon;
+        final double neps = -eps;
         final Random random = new Random(0);
         final int ilaLength = ila.length() + offsetLength <= Integer.MAX_VALUE
                 ? (int) ila.length()
@@ -126,7 +126,7 @@ public final class DoubleIlaCheck {
                     ila.toArray(four, offset, start, length);
                     ila.toArray(five, offset, 1, start, length);
                     for (int ii = 0; ii < length; ++ii) {
-                        double delta = (double) (four[ii] - five[ii]);
+                        double delta = (four[ii] - five[ii]);
                         if (!(neps <= delta && delta <= eps))
                             throw new Exception("four[" + ii + "] ("
                                     + four[ii] + ") !~ five["
@@ -148,8 +148,8 @@ public final class DoubleIlaCheck {
         if (addlOffsetLength < 0) throw new Exception("addlOffsetLength < 0 not allowed");
         if (maxAbsStride < 1) throw new Exception("maxAbsStride < 1 not allowed");
         if (target.length() != actual.length()) throw new Exception("target.length() != actual.length()");
-        final double eps = epsilon < 0.0 ? (double) -epsilon : epsilon;
-        final double neps = (double) -eps;
+        final double eps = epsilon < 0.0 ? -epsilon : epsilon;
+        final double neps = -eps;
         final Random random = new Random(0);
         final int ilaLength = target.length() + addlOffsetLength <= Integer.MAX_VALUE
                 ? (int) target.length()
@@ -171,7 +171,7 @@ public final class DoubleIlaCheck {
                             target.toArray(targetBase, offset, stride, start, length);
                             actual.toArray(actualBase, offset, stride, start, length);
                             for (int ii = 0; ii < arraySize; ++ii) {
-                                double delta = (double) (actualBase[ii] - targetBase[ii]);
+                                double delta = (actualBase[ii] - targetBase[ii]);
                                 if (!(neps <= delta && delta <= eps))
                                     throw new Exception("actual[" + ii
                                             + "] ("

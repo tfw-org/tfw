@@ -34,7 +34,7 @@ class LongIlaBoundTest {
         LongIla ila = LongIlaFromArray.create(array);
         LongIla targetIla = LongIlaFromArray.create(target);
         LongIla actualIla = LongIlaBound.create(ila, minimum, maximum);
-        final long epsilon = (long) 0.0;
+        final long epsilon = 0L;
         LongIlaCheck.checkAll(
                 targetIla,
                 actualIla,

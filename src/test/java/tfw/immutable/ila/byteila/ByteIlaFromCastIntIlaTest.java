@@ -24,7 +24,7 @@ class ByteIlaFromCastIntIlaTest {
         IntIla ila = IntIlaFromArray.create(array);
         ByteIla targetIla = ByteIlaFromArray.create(target);
         ByteIla actualIla = ByteIlaFromCastIntIla.create(ila);
-        final byte epsilon = (byte) 0.0;
+        final byte epsilon = (byte) 0;
         ByteIlaCheck.checkAll(
                 targetIla,
                 actualIla,

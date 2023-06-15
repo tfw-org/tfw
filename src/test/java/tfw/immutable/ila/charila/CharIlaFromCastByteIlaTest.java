@@ -24,7 +24,7 @@ class CharIlaFromCastByteIlaTest {
         ByteIla ila = ByteIlaFromArray.create(array);
         CharIla targetIla = CharIlaFromArray.create(target);
         CharIla actualIla = CharIlaFromCastByteIla.create(ila);
-        final char epsilon = (char) 0.0;
+        final char epsilon = (char) 0;
         CharIlaCheck.checkAll(
                 targetIla,
                 actualIla,

@@ -18,12 +18,12 @@ class IntIlaScalarMultiplyTest {
         final int[] target = new int[length];
         for (int ii = 0; ii < array.length; ++ii) {
             array[ii] = random.nextInt();
-            target[ii] = (int) (array[ii] * scalar);
+            target[ii] = (array[ii] * scalar);
         }
         IntIla ila = IntIlaFromArray.create(array);
         IntIla targetIla = IntIlaFromArray.create(target);
         IntIla actualIla = IntIlaScalarMultiply.create(ila, scalar);
-        final int epsilon = (int) 0.0;
+        final int epsilon = 0;
         IntIlaCheck.checkAll(
                 targetIla,
                 actualIla,

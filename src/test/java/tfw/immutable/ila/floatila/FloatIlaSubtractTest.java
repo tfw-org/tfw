@@ -19,13 +19,13 @@ class FloatIlaSubtractTest {
         for (int ii = 0; ii < leftArray.length; ++ii) {
             leftArray[ii] = random.nextFloat();
             rightArray[ii] = random.nextFloat();
-            array[ii] = (float) (leftArray[ii] - rightArray[ii]);
+            array[ii] = (leftArray[ii] - rightArray[ii]);
         }
         FloatIla leftIla = FloatIlaFromArray.create(leftArray);
         FloatIla rightIla = FloatIlaFromArray.create(rightArray);
         FloatIla targetIla = FloatIlaFromArray.create(array);
         FloatIla actualIla = FloatIlaSubtract.create(leftIla, rightIla);
-        final float epsilon = (float) 0.0;
+        final float epsilon = 0.0f;
         FloatIlaCheck.checkAll(
                 targetIla,
                 actualIla,

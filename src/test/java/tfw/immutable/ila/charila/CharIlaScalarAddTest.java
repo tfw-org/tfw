@@ -23,7 +23,7 @@ class CharIlaScalarAddTest {
         CharIla ila = CharIlaFromArray.create(array);
         CharIla targetIla = CharIlaFromArray.create(target);
         CharIla actualIla = CharIlaScalarAdd.create(ila, scalar);
-        final char epsilon = (char) 0.0;
+        final char epsilon = (char) 0;
         CharIlaCheck.checkAll(
                 targetIla,
                 actualIla,

@@ -18,12 +18,12 @@ class LongIlaScalarAddTest {
         final long[] target = new long[length];
         for (int ii = 0; ii < array.length; ++ii) {
             array[ii] = random.nextLong();
-            target[ii] = (long) (array[ii] + scalar);
+            target[ii] = (array[ii] + scalar);
         }
         LongIla ila = LongIlaFromArray.create(array);
         LongIla targetIla = LongIlaFromArray.create(target);
         LongIla actualIla = LongIlaScalarAdd.create(ila, scalar);
-        final long epsilon = (long) 0.0;
+        final long epsilon = 0L;
         LongIlaCheck.checkAll(
                 targetIla,
                 actualIla,

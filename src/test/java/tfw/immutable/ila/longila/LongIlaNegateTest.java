@@ -17,12 +17,12 @@ class LongIlaNegateTest {
         final long[] target = new long[length];
         for (int ii = 0; ii < array.length; ++ii) {
             array[ii] = random.nextLong();
-            target[ii] = (long) -array[ii];
+            target[ii] = -array[ii];
         }
         LongIla ila = LongIlaFromArray.create(array);
         LongIla targetIla = LongIlaFromArray.create(target);
         LongIla actualIla = LongIlaNegate.create(ila);
-        final long epsilon = (long) 0.0;
+        final long epsilon = 0L;
         LongIlaCheck.checkAll(
                 targetIla,
                 actualIla,

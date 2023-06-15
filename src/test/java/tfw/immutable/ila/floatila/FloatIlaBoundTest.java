@@ -34,7 +34,7 @@ class FloatIlaBoundTest {
         FloatIla ila = FloatIlaFromArray.create(array);
         FloatIla targetIla = FloatIlaFromArray.create(target);
         FloatIla actualIla = FloatIlaBound.create(ila, minimum, maximum);
-        final float epsilon = (float) 0.0;
+        final float epsilon = 0.0f;
         FloatIlaCheck.checkAll(
                 targetIla,
                 actualIla,

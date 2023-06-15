@@ -17,12 +17,12 @@ class %%NAME%%IlaScalarMultiplyTest {
         final %%TYPE%%[] target = new %%TYPE%%[length];
         for (int ii = 0; ii < array.length; ++ii) {
             array[ii] = %%RANDOM_VALUE%%;
-            target[ii] = (%%TYPE%%) (array[ii] * scalar);
+            target[ii] =%%CAST_FROM_INT%% (array[ii] * scalar);
         }
         %%NAME%%Ila ila = %%NAME%%IlaFromArray.create(array);
         %%NAME%%Ila targetIla = %%NAME%%IlaFromArray.create(target);
         %%NAME%%Ila actualIla = %%NAME%%IlaScalarMultiply.create(ila, scalar);
-        final %%TYPE%% epsilon = (%%TYPE%%) 0.0;
+        final %%TYPE%% epsilon = %%DEFAULT_VALUE%%;
         %%NAME%%IlaCheck.checkAll(
                 targetIla,
                 actualIla,

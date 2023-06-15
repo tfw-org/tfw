@@ -24,7 +24,7 @@ class CharIlaFromCastLongIlaTest {
         LongIla ila = LongIlaFromArray.create(array);
         CharIla targetIla = CharIlaFromArray.create(target);
         CharIla actualIla = CharIlaFromCastLongIla.create(ila);
-        final char epsilon = (char) 0.0;
+        final char epsilon = (char) 0;
         CharIlaCheck.checkAll(
                 targetIla,
                 actualIla,

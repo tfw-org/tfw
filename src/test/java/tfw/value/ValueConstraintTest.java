@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test;
  */
 class ValueConstraintTest {
     private final class MyConstraint extends ClassValueConstraint {
-        public MyConstraint(Class valueType) {
+        public MyConstraint(Class<?> valueType) {
             super(valueType);
         }
     }

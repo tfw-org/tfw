@@ -33,7 +33,7 @@ class %%NAME%%IlaBoundTest {
         %%NAME%%Ila ila = %%NAME%%IlaFromArray.create(array);
         %%NAME%%Ila targetIla = %%NAME%%IlaFromArray.create(target);
         %%NAME%%Ila actualIla = %%NAME%%IlaBound.create(ila, minimum, maximum);
-        final %%TYPE%% epsilon = (%%TYPE%%) 0.0;
+        final %%TYPE%% epsilon = %%DEFAULT_VALUE%%;
         %%NAME%%IlaCheck.checkAll(
                 targetIla,
                 actualIla,

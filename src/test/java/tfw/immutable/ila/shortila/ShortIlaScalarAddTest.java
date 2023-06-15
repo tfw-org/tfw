@@ -23,7 +23,7 @@ class ShortIlaScalarAddTest {
         ShortIla ila = ShortIlaFromArray.create(array);
         ShortIla targetIla = ShortIlaFromArray.create(target);
         ShortIla actualIla = ShortIlaScalarAdd.create(ila, scalar);
-        final short epsilon = (short) 0.0;
+        final short epsilon = (short) 0;
         ShortIlaCheck.checkAll(
                 targetIla,
                 actualIla,

@@ -18,12 +18,12 @@ class FloatIlaScalarMultiplyTest {
         final float[] target = new float[length];
         for (int ii = 0; ii < array.length; ++ii) {
             array[ii] = random.nextFloat();
-            target[ii] = (float) (array[ii] * scalar);
+            target[ii] = (array[ii] * scalar);
         }
         FloatIla ila = FloatIlaFromArray.create(array);
         FloatIla targetIla = FloatIlaFromArray.create(target);
         FloatIla actualIla = FloatIlaScalarMultiply.create(ila, scalar);
-        final float epsilon = (float) 0.0;
+        final float epsilon = 0.0f;
         FloatIlaCheck.checkAll(
                 targetIla,
                 actualIla,

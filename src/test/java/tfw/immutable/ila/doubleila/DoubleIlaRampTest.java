@@ -22,7 +22,7 @@ class DoubleIlaRampTest {
         }
         DoubleIla targetIla = DoubleIlaFromArray.create(array);
         DoubleIla actualIla = DoubleIlaRamp.create(startValue, increment, length);
-        final double epsilon = (double) 0.000001;
+        final double epsilon = 0.000001;
         DoubleIlaCheck.checkAll(
                 targetIla,
                 actualIla,

@@ -24,7 +24,7 @@ class ShortIlaFromCastFloatIlaTest {
         FloatIla ila = FloatIlaFromArray.create(array);
         ShortIla targetIla = ShortIlaFromArray.create(target);
         ShortIla actualIla = ShortIlaFromCastFloatIla.create(ila);
-        final short epsilon = (short) 0.0;
+        final short epsilon = (short) 0;
         ShortIlaCheck.checkAll(
                 targetIla,
                 actualIla,

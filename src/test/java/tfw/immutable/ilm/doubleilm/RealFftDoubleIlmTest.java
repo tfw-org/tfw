@@ -18,7 +18,7 @@ class RealFftDoubleIlmTest {
         DoubleIlm outputIlm = RealFftDoubleIlm.create(inputIlm, (int) inputIlm.width());
         double[] output = outputIlm.toArray();
 
-        double[] checkReal = (double[]) input.clone();
+        double[] checkReal = input.clone();
         double[] checkImag = new double[checkReal.length];
         PoskanzerFft fft = new PoskanzerFft(5);
         fft.doFft(checkReal, checkImag, false);

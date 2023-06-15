@@ -24,7 +24,7 @@ class FloatIlaFromCastLongIlaTest {
         LongIla ila = LongIlaFromArray.create(array);
         FloatIla targetIla = FloatIlaFromArray.create(target);
         FloatIla actualIla = FloatIlaFromCastLongIla.create(ila);
-        final float epsilon = (float) 0.0;
+        final float epsilon = 0.0f;
         FloatIlaCheck.checkAll(
                 targetIla,
                 actualIla,

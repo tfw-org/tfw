@@ -24,7 +24,7 @@ class IntIlaFromCastShortIlaTest {
         ShortIla ila = ShortIlaFromArray.create(array);
         IntIla targetIla = IntIlaFromArray.create(target);
         IntIla actualIla = IntIlaFromCastShortIla.create(ila);
-        final int epsilon = (int) 0.0;
+        final int epsilon = 0;
         IntIlaCheck.checkAll(
                 targetIla,
                 actualIla,

@@ -17,12 +17,12 @@ class FloatIlaNegateTest {
         final float[] target = new float[length];
         for (int ii = 0; ii < array.length; ++ii) {
             array[ii] = random.nextFloat();
-            target[ii] = (float) -array[ii];
+            target[ii] = -array[ii];
         }
         FloatIla ila = FloatIlaFromArray.create(array);
         FloatIla targetIla = FloatIlaFromArray.create(target);
         FloatIla actualIla = FloatIlaNegate.create(ila);
-        final float epsilon = (float) 0.0;
+        final float epsilon = 0.0f;
         FloatIlaCheck.checkAll(
                 targetIla,
                 actualIla,

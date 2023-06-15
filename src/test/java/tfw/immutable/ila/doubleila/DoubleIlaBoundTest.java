@@ -34,7 +34,7 @@ class DoubleIlaBoundTest {
         DoubleIla ila = DoubleIlaFromArray.create(array);
         DoubleIla targetIla = DoubleIlaFromArray.create(target);
         DoubleIla actualIla = DoubleIlaBound.create(ila, minimum, maximum);
-        final double epsilon = (double) 0.0;
+        final double epsilon = 0.0;
         DoubleIlaCheck.checkAll(
                 targetIla,
                 actualIla,

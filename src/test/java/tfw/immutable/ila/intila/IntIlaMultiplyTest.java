@@ -19,13 +19,13 @@ class IntIlaMultiplyTest {
         for (int ii = 0; ii < leftArray.length; ++ii) {
             leftArray[ii] = random.nextInt();
             rightArray[ii] = random.nextInt();
-            array[ii] = (int) (leftArray[ii] * rightArray[ii]);
+            array[ii] = (leftArray[ii] * rightArray[ii]);
         }
         IntIla leftIla = IntIlaFromArray.create(leftArray);
         IntIla rightIla = IntIlaFromArray.create(rightArray);
         IntIla targetIla = IntIlaFromArray.create(array);
         IntIla actualIla = IntIlaMultiply.create(leftIla, rightIla);
-        final int epsilon = (int) 0.0;
+        final int epsilon = 0;
         IntIlaCheck.checkAll(
                 targetIla,
                 actualIla,

@@ -18,13 +18,13 @@ class %%NAME%%IlaSubtractTest {
         for (int ii = 0; ii < leftArray.length; ++ii) {
             leftArray[ii] = %%RANDOM_VALUE%%;
             rightArray[ii] = %%RANDOM_VALUE%%;
-            array[ii] = (%%TYPE%%) (leftArray[ii] - rightArray[ii]);
+            array[ii] =%%CAST_FROM_INT%% (leftArray[ii] - rightArray[ii]);
         }
         %%NAME%%Ila leftIla = %%NAME%%IlaFromArray.create(leftArray);
         %%NAME%%Ila rightIla = %%NAME%%IlaFromArray.create(rightArray);
         %%NAME%%Ila targetIla = %%NAME%%IlaFromArray.create(array);
         %%NAME%%Ila actualIla = %%NAME%%IlaSubtract.create(leftIla, rightIla);
-        final %%TYPE%% epsilon = (%%TYPE%%) 0.0;
+        final %%TYPE%% epsilon = %%DEFAULT_VALUE%%;
         %%NAME%%IlaCheck.checkAll(
                 targetIla,
                 actualIla,

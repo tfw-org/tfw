@@ -3,7 +3,7 @@ package tfw.visualizer;
 import java.util.Comparator;
 import tfw.tsm.Proxy;
 
-public class ProxyNameComparator implements Comparator {
+public class ProxyNameComparator implements Comparator<Object> {
     public static final ProxyNameComparator INSTANCE = new ProxyNameComparator();
 
     public int compare(Object obj1, Object obj2) {
