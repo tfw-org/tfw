@@ -15,8 +15,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import org.slf4j.LoggerFactory;
 import tfw.awt.ecd.ColorModelECD;
-// import tfw.immutable.ilm.byteilm.ByteIlmFill;
 import tfw.swing.ByteInterleavedImagePanel;
 import tfw.tsm.AWTTransactionQueue;
 import tfw.tsm.EventChannelStateBuffer;
@@ -115,7 +115,7 @@ public class ByteInterleavedImagePanelDemo {
 
                     initiator.set(ecsb.toArray());
                 } catch (NumberFormatException nfe) {
-                    nfe.printStackTrace();
+                    LoggerFactory.getLogger(this.getClass()).error("Couldn't parse number!", nfe);
                 }
             }
         };
