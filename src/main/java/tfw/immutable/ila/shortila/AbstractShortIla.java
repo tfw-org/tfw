@@ -1,9 +1,7 @@
 package tfw.immutable.ila.shortila;
 
 import tfw.immutable.DataInvalidException;
-import tfw.immutable.ImmutableProxy;
 import tfw.immutable.ila.AbstractIla;
-import tfw.immutable.ila.ImmutableLongArray;
 
 /**
  *
@@ -15,14 +13,6 @@ public abstract class AbstractShortIla extends AbstractIla implements ShortIla {
 
     protected AbstractShortIla(long length) {
         super(length);
-    }
-
-    public static Object getImmutableInfo(ImmutableLongArray ila) {
-        if (ila instanceof ImmutableProxy) {
-            return (((ImmutableProxy) ila).getParameters());
-        } else {
-            return (ila.toString());
-        }
     }
 
     public final short[] toArray() throws DataInvalidException {

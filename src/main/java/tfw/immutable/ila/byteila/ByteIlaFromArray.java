@@ -1,9 +1,6 @@
 package tfw.immutable.ila.byteila;
 
-import java.util.HashMap;
-import java.util.Map;
 import tfw.check.Argument;
-import tfw.immutable.ImmutableProxy;
 
 /**
  *
@@ -24,7 +21,7 @@ public final class ByteIlaFromArray {
         return new MyByteIla(array, cloneArray);
     }
 
-    private static class MyByteIla extends AbstractByteIla implements ImmutableProxy {
+    private static class MyByteIla extends AbstractByteIla {
         private final byte[] array;
 
         MyByteIla(byte[] array, boolean cloneArray) {
@@ -42,15 +39,6 @@ public final class ByteIlaFromArray {
             for (int startInt = (int) start; startInt != startPlusLength; ++startInt, offset += stride) {
                 array[offset] = this.array[startInt];
             }
-        }
-
-        public Map<String, Object> getParameters() {
-            HashMap<String, Object> map = new HashMap<String, Object>();
-
-            map.put("name", "ByteIlaFromArray");
-            map.put("length", new Long(length()));
-
-            return (map);
         }
     }
 }

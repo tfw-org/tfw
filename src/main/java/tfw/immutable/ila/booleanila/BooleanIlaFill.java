@@ -1,9 +1,6 @@
 package tfw.immutable.ila.booleanila;
 
-import java.util.HashMap;
-import java.util.Map;
 import tfw.check.Argument;
-import tfw.immutable.ImmutableProxy;
 
 /**
  *
@@ -20,7 +17,7 @@ public final class BooleanIlaFill {
         return new MyBooleanIla(value, length);
     }
 
-    private static class MyBooleanIla extends AbstractBooleanIla implements ImmutableProxy {
+    private static class MyBooleanIla extends AbstractBooleanIla {
         private final boolean value;
 
         MyBooleanIla(boolean value, long length) {
@@ -33,16 +30,6 @@ public final class BooleanIlaFill {
             for (int startInt = (int) start; startInt != startPlusLength; ++startInt, offset += stride) {
                 array[offset] = value;
             }
-        }
-
-        public Map<String, Object> getParameters() {
-            HashMap<String, Object> map = new HashMap<String, Object>();
-
-            map.put("name", "BooleanIlaFill");
-            map.put("length", new Long(length()));
-            map.put("value", new Boolean(value));
-
-            return (map);
         }
     }
 }

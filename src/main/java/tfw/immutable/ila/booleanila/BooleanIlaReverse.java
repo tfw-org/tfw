@@ -1,10 +1,7 @@
 package tfw.immutable.ila.booleanila;
 
-import java.util.HashMap;
-import java.util.Map;
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
-import tfw.immutable.ImmutableProxy;
 
 /**
  *
@@ -21,7 +18,7 @@ public final class BooleanIlaReverse {
         return new MyBooleanIla(ila);
     }
 
-    private static class MyBooleanIla extends AbstractBooleanIla implements ImmutableProxy {
+    private static class MyBooleanIla extends AbstractBooleanIla {
         private final BooleanIla ila;
 
         MyBooleanIla(BooleanIla ila) {
@@ -32,16 +29,6 @@ public final class BooleanIlaReverse {
         protected void toArrayImpl(boolean[] array, int offset, int stride, long start, int length)
                 throws DataInvalidException {
             ila.toArray(array, offset + (length - 1) * stride, -stride, length() - (start + length), length);
-        }
-
-        public Map<String, Object> getParameters() {
-            HashMap<String, Object> map = new HashMap<String, Object>();
-
-            map.put("name", "BooleanIlaReverse");
-            map.put("length", new Long(length()));
-            map.put("ila", getImmutableInfo(ila));
-
-            return (map);
         }
     }
 }

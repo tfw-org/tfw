@@ -1,10 +1,7 @@
 package tfw.immutable.ila.intila;
 
-import java.util.HashMap;
-import java.util.Map;
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
-import tfw.immutable.ImmutableProxy;
 
 /**
  *
@@ -28,7 +25,7 @@ public final class IntIlaAdd {
         return new MyIntIla(leftIla, rightIla, bufferSize);
     }
 
-    private static class MyIntIla extends AbstractIntIla implements ImmutableProxy {
+    private static class MyIntIla extends AbstractIntIla {
         private final IntIla leftIla;
         private final IntIla rightIla;
         private final int bufferSize;
@@ -49,18 +46,6 @@ public final class IntIlaAdd {
             for (int ii = offset; length > 0; ii += stride, --length) {
                 array[ii] = (int) (li.next() + ri.next());
             }
-        }
-
-        public Map<String, Object> getParameters() {
-            HashMap<String, Object> map = new HashMap<String, Object>();
-
-            map.put("name", "IntIlaAdd");
-            map.put("leftIla", getImmutableInfo(leftIla));
-            map.put("rightIla", getImmutableInfo(rightIla));
-            map.put("bufferSize", new Integer(bufferSize));
-            map.put("length", new Long(length()));
-
-            return (map);
         }
     }
 }

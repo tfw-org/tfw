@@ -1,10 +1,7 @@
 package tfw.audio.byteila;
 
-import java.util.HashMap;
-import java.util.Map;
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
-import tfw.immutable.ImmutableProxy;
 import tfw.immutable.ila.byteila.AbstractByteIla;
 import tfw.immutable.ila.byteila.ByteIla;
 import tfw.immutable.ila.shortila.ShortIla;
@@ -23,7 +20,7 @@ public final class MuLawByteIlaFromLinearShortIla {
         return new MyByteIla(shortIla);
     }
 
-    private static class MyByteIla extends AbstractByteIla implements ImmutableProxy {
+    private static class MyByteIla extends AbstractByteIla {
         private ShortIla shortIla;
 
         MyByteIla(ShortIla shortIla) {
@@ -83,16 +80,6 @@ public final class MuLawByteIlaFromLinearShortIla {
                     array[i] = (byte) (uval ^ mask);
                 }
             }
-        }
-
-        public Map getParameters() {
-            HashMap map = new HashMap();
-
-            map.put("name", "MuLawByteIlaFromLinearShortIla");
-            map.put("shortIla", getImmutableInfo(shortIla));
-            map.put("length", new Long(length()));
-
-            return (map);
         }
     }
 }

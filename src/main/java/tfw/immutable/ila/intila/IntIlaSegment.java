@@ -1,10 +1,7 @@
 package tfw.immutable.ila.intila;
 
-import java.util.HashMap;
-import java.util.Map;
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
-import tfw.immutable.ImmutableProxy;
 
 /**
  *
@@ -28,7 +25,7 @@ public final class IntIlaSegment {
         return new MyIntIla(ila, start, length);
     }
 
-    private static class MyIntIla extends AbstractIntIla implements ImmutableProxy {
+    private static class MyIntIla extends AbstractIntIla {
         private final IntIla ila;
         private final long start;
 
@@ -41,17 +38,6 @@ public final class IntIlaSegment {
         protected void toArrayImpl(int[] array, int offset, int stride, long start, int length)
                 throws DataInvalidException {
             ila.toArray(array, offset, stride, this.start + start, length);
-        }
-
-        public Map<String, Object> getParameters() {
-            HashMap<String, Object> map = new HashMap<String, Object>();
-
-            map.put("name", "IntIlaSegment");
-            map.put("length", new Long(length()));
-            map.put("start", new Long(start));
-            map.put("ila", getImmutableInfo(ila));
-
-            return (map);
         }
     }
 }

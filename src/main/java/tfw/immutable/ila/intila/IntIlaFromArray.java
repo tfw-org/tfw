@@ -1,9 +1,6 @@
 package tfw.immutable.ila.intila;
 
-import java.util.HashMap;
-import java.util.Map;
 import tfw.check.Argument;
-import tfw.immutable.ImmutableProxy;
 
 /**
  *
@@ -24,7 +21,7 @@ public final class IntIlaFromArray {
         return new MyIntIla(array, cloneArray);
     }
 
-    private static class MyIntIla extends AbstractIntIla implements ImmutableProxy {
+    private static class MyIntIla extends AbstractIntIla {
         private final int[] array;
 
         MyIntIla(int[] array, boolean cloneArray) {
@@ -42,15 +39,6 @@ public final class IntIlaFromArray {
             for (int startInt = (int) start; startInt != startPlusLength; ++startInt, offset += stride) {
                 array[offset] = this.array[startInt];
             }
-        }
-
-        public Map<String, Object> getParameters() {
-            HashMap<String, Object> map = new HashMap<String, Object>();
-
-            map.put("name", "IntIlaFromArray");
-            map.put("length", new Long(length()));
-
-            return (map);
         }
     }
 }

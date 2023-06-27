@@ -1,9 +1,6 @@
 package tfw.immutable.ila.shortila;
 
-import java.util.HashMap;
-import java.util.Map;
 import tfw.check.Argument;
-import tfw.immutable.ImmutableProxy;
 
 /**
  *
@@ -20,7 +17,7 @@ public final class ShortIlaRamp {
         return new MyShortIla(startValue, increment, length);
     }
 
-    private static class MyShortIla extends AbstractShortIla implements ImmutableProxy {
+    private static class MyShortIla extends AbstractShortIla {
         private final short startValue;
         private final short increment;
 
@@ -47,17 +44,6 @@ public final class ShortIlaRamp {
                     ++startInt, offset += stride, value += increment) {
                 array[offset] = value;
             }
-        }
-
-        public Map<String, Object> getParameters() {
-            HashMap<String, Object> map = new HashMap<String, Object>();
-
-            map.put("name", "ShortIlaRamp");
-            map.put("length", new Long(length()));
-            map.put("startValue", new Short(startValue));
-            map.put("increment", new Short(increment));
-
-            return (map);
         }
     }
 }

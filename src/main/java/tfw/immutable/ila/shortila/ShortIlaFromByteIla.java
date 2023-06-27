@@ -1,10 +1,7 @@
 package tfw.immutable.ila.shortila;
 
-import java.util.HashMap;
-import java.util.Map;
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
-import tfw.immutable.ImmutableProxy;
 import tfw.immutable.ila.byteila.ByteIla;
 import tfw.immutable.ila.byteila.ByteIlaIterator;
 import tfw.immutable.ila.byteila.ByteIlaSegment;
@@ -18,7 +15,7 @@ public final class ShortIlaFromByteIla {
         return new MyShortIla(byteIla);
     }
 
-    private static class MyShortIla extends AbstractShortIla implements ImmutableProxy {
+    private static class MyShortIla extends AbstractShortIla {
         private ByteIla byteIla;
 
         MyShortIla(ByteIla byteIla) {
@@ -34,16 +31,6 @@ public final class ShortIlaFromByteIla {
             for (int i = 0; i < length; i++) {
                 array[offset + (i * stride)] = (short) (((bii.next() & 0xFF) << 8) | ((bii.next() & 0xFF)));
             }
-        }
-
-        public Map<String, Object> getParameters() {
-            HashMap<String, Object> map = new HashMap<String, Object>();
-
-            map.put("name", "ShortIlaFromByteIla");
-            map.put("byteIla", getImmutableInfo(byteIla));
-            map.put("length", new Long(length()));
-
-            return (map);
         }
     }
 }

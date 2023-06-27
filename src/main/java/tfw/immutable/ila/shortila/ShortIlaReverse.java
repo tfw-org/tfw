@@ -1,10 +1,7 @@
 package tfw.immutable.ila.shortila;
 
-import java.util.HashMap;
-import java.util.Map;
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
-import tfw.immutable.ImmutableProxy;
 
 /**
  *
@@ -21,7 +18,7 @@ public final class ShortIlaReverse {
         return new MyShortIla(ila);
     }
 
-    private static class MyShortIla extends AbstractShortIla implements ImmutableProxy {
+    private static class MyShortIla extends AbstractShortIla {
         private final ShortIla ila;
 
         MyShortIla(ShortIla ila) {
@@ -32,16 +29,6 @@ public final class ShortIlaReverse {
         protected void toArrayImpl(short[] array, int offset, int stride, long start, int length)
                 throws DataInvalidException {
             ila.toArray(array, offset + (length - 1) * stride, -stride, length() - (start + length), length);
-        }
-
-        public Map<String, Object> getParameters() {
-            HashMap<String, Object> map = new HashMap<String, Object>();
-
-            map.put("name", "ShortIlaReverse");
-            map.put("length", new Long(length()));
-            map.put("ila", getImmutableInfo(ila));
-
-            return (map);
         }
     }
 }

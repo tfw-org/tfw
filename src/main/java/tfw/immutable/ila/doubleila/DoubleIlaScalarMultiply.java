@@ -1,10 +1,7 @@
 package tfw.immutable.ila.doubleila;
 
-import java.util.HashMap;
-import java.util.Map;
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
-import tfw.immutable.ImmutableProxy;
 
 /**
  *
@@ -21,7 +18,7 @@ public final class DoubleIlaScalarMultiply {
         return new MyDoubleIla(ila, scalar);
     }
 
-    private static class MyDoubleIla extends AbstractDoubleIla implements ImmutableProxy {
+    private static class MyDoubleIla extends AbstractDoubleIla {
         private final DoubleIla ila;
         private final double scalar;
 
@@ -39,17 +36,6 @@ public final class DoubleIlaScalarMultiply {
             for (int ii = offset; length > 0; ii += stride, --length) {
                 array[ii] *= scalar;
             }
-        }
-
-        public Map<String, Object> getParameters() {
-            HashMap<String, Object> map = new HashMap<String, Object>();
-
-            map.put("name", "DoubleIlaScalarMultiply");
-            map.put("ila", getImmutableInfo(ila));
-            map.put("scalar", new Double(scalar));
-            map.put("length", new Long(length()));
-
-            return (map);
         }
     }
 }

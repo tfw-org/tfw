@@ -1,9 +1,6 @@
 package tfw.immutable.ila.objectila;
 
-import java.util.HashMap;
-import java.util.Map;
 import tfw.check.Argument;
-import tfw.immutable.ImmutableProxy;
 
 /**
  *
@@ -24,7 +21,7 @@ public final class ObjectIlaFromArray {
         return new MyObjectIla(array, cloneArray);
     }
 
-    private static class MyObjectIla extends AbstractObjectIla implements ImmutableProxy {
+    private static class MyObjectIla extends AbstractObjectIla {
         private final Object[] array;
 
         MyObjectIla(Object[] array, boolean cloneArray) {
@@ -42,15 +39,6 @@ public final class ObjectIlaFromArray {
             for (int startInt = (int) start; startInt != startPlusLength; ++startInt, offset += stride) {
                 array[offset] = this.array[startInt];
             }
-        }
-
-        public Map<String, Object> getParameters() {
-            HashMap<String, Object> map = new HashMap<String, Object>();
-
-            map.put("name", "ObjectIlaFromArray");
-            map.put("length", new Long(length()));
-
-            return (map);
         }
     }
 }

@@ -1,9 +1,6 @@
 package tfw.immutable.ila.floatila;
 
-import java.util.HashMap;
-import java.util.Map;
 import tfw.check.Argument;
-import tfw.immutable.ImmutableProxy;
 
 /**
  *
@@ -24,7 +21,7 @@ public final class FloatIlaFromArray {
         return new MyFloatIla(array, cloneArray);
     }
 
-    private static class MyFloatIla extends AbstractFloatIla implements ImmutableProxy {
+    private static class MyFloatIla extends AbstractFloatIla {
         private final float[] array;
 
         MyFloatIla(float[] array, boolean cloneArray) {
@@ -42,15 +39,6 @@ public final class FloatIlaFromArray {
             for (int startInt = (int) start; startInt != startPlusLength; ++startInt, offset += stride) {
                 array[offset] = this.array[startInt];
             }
-        }
-
-        public Map<String, Object> getParameters() {
-            HashMap<String, Object> map = new HashMap<String, Object>();
-
-            map.put("name", "FloatIlaFromArray");
-            map.put("length", new Long(length()));
-
-            return (map);
         }
     }
 }

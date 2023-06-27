@@ -1,9 +1,6 @@
 package tfw.immutable.ila.byteila;
 
-import java.util.HashMap;
-import java.util.Map;
 import tfw.check.Argument;
-import tfw.immutable.ImmutableProxy;
 
 /**
  *
@@ -20,7 +17,7 @@ public final class ByteIlaRamp {
         return new MyByteIla(startValue, increment, length);
     }
 
-    private static class MyByteIla extends AbstractByteIla implements ImmutableProxy {
+    private static class MyByteIla extends AbstractByteIla {
         private final byte startValue;
         private final byte increment;
 
@@ -47,17 +44,6 @@ public final class ByteIlaRamp {
                     ++startInt, offset += stride, value += increment) {
                 array[offset] = value;
             }
-        }
-
-        public Map<String, Object> getParameters() {
-            HashMap<String, Object> map = new HashMap<String, Object>();
-
-            map.put("name", "ByteIlaRamp");
-            map.put("length", new Long(length()));
-            map.put("startValue", new Byte(startValue));
-            map.put("increment", new Byte(increment));
-
-            return (map);
         }
     }
 }

@@ -1,10 +1,7 @@
 package tfw.immutable.ila.shortila;
 
-import java.util.HashMap;
-import java.util.Map;
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
-import tfw.immutable.ImmutableProxy;
 
 /**
  *
@@ -28,7 +25,7 @@ public final class ShortIlaMultiply {
         return new MyShortIla(leftIla, rightIla, bufferSize);
     }
 
-    private static class MyShortIla extends AbstractShortIla implements ImmutableProxy {
+    private static class MyShortIla extends AbstractShortIla {
         private final ShortIla leftIla;
         private final ShortIla rightIla;
         private final int bufferSize;
@@ -49,18 +46,6 @@ public final class ShortIlaMultiply {
             for (int ii = offset; length > 0; ii += stride, --length) {
                 array[ii] = (short) (li.next() * ri.next());
             }
-        }
-
-        public Map<String, Object> getParameters() {
-            HashMap<String, Object> map = new HashMap<String, Object>();
-
-            map.put("name", "ShortIlaMultiply");
-            map.put("leftIla", getImmutableInfo(leftIla));
-            map.put("rightIla", getImmutableInfo(rightIla));
-            map.put("bufferSize", new Integer(bufferSize));
-            map.put("length", new Long(length()));
-
-            return (map);
         }
     }
 }

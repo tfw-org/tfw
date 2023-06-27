@@ -1,10 +1,7 @@
 package tfw.immutable.ila.doubleila;
 
-import java.util.HashMap;
-import java.util.Map;
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
-import tfw.immutable.ImmutableProxy;
 import tfw.immutable.ila.AbstractIlaCheck;
 import tfw.immutable.ila.ImmutableLongArray;
 
@@ -28,7 +25,7 @@ public final class DoubleIlaFiltered {
         return new MyDoubleIla(ila, filter);
     }
 
-    private static class MyDoubleIla implements DoubleIla, ImmutableLongArray, ImmutableProxy {
+    private static class MyDoubleIla implements DoubleIla, ImmutableLongArray {
         private final DoubleIla ila;
         private final DoubleFilter filter;
 
@@ -105,17 +102,6 @@ public final class DoubleIlaFiltered {
                     length = 0;
                 }
             }
-        }
-
-        public Map<String, Object> getParameters() {
-            calculateLength();
-
-            HashMap<String, Object> map = new HashMap<String, Object>();
-
-            map.put("name", "DoubleIlaFromArray");
-            map.put("length", new Long(length()));
-
-            return (map);
         }
     }
 }

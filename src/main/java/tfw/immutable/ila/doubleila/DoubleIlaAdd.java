@@ -1,10 +1,7 @@
 package tfw.immutable.ila.doubleila;
 
-import java.util.HashMap;
-import java.util.Map;
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
-import tfw.immutable.ImmutableProxy;
 
 /**
  *
@@ -28,7 +25,7 @@ public final class DoubleIlaAdd {
         return new MyDoubleIla(leftIla, rightIla, bufferSize);
     }
 
-    private static class MyDoubleIla extends AbstractDoubleIla implements ImmutableProxy {
+    private static class MyDoubleIla extends AbstractDoubleIla {
         private final DoubleIla leftIla;
         private final DoubleIla rightIla;
         private final int bufferSize;
@@ -49,18 +46,6 @@ public final class DoubleIlaAdd {
             for (int ii = offset; length > 0; ii += stride, --length) {
                 array[ii] = (double) (li.next() + ri.next());
             }
-        }
-
-        public Map<String, Object> getParameters() {
-            HashMap<String, Object> map = new HashMap<String, Object>();
-
-            map.put("name", "DoubleIlaAdd");
-            map.put("leftIla", getImmutableInfo(leftIla));
-            map.put("rightIla", getImmutableInfo(rightIla));
-            map.put("bufferSize", new Integer(bufferSize));
-            map.put("length", new Long(length()));
-
-            return (map);
         }
     }
 }

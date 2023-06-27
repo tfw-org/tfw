@@ -1,10 +1,7 @@
 // byteila,charila,doubleila,floatila,intila,longila,shortila
 package %%PACKAGE%%;
 
-import java.util.HashMap;
-import java.util.Map;
 import tfw.check.Argument;
-import tfw.immutable.ImmutableProxy;
 
 /**
  *
@@ -21,7 +18,7 @@ public final class %%NAME%%IlaRamp {
         return new My%%NAME%%Ila(startValue, increment, length);
     }
 
-    private static class My%%NAME%%Ila extends Abstract%%NAME%%Ila implements ImmutableProxy {
+    private static class My%%NAME%%Ila extends Abstract%%NAME%%Ila {
         private final %%TYPE%% startValue;
         private final %%TYPE%% increment;
 
@@ -48,17 +45,6 @@ public final class %%NAME%%IlaRamp {
                     ++startInt, offset += stride, value += increment) {
                 array[offset] = value;
             }
-        }
-
-        public Map<String, Object> getParameters() {
-            HashMap<String, Object> map = new HashMap<String, Object>();
-
-            map.put("name", "%%NAME%%IlaRamp");
-            map.put("length", new Long(length()));
-            map.put("startValue", %%CREATE_IMMUTABLE_START%%startValue%%CREATE_IMMUTABLE_END%%);
-            map.put("increment", %%CREATE_IMMUTABLE_START%%increment%%CREATE_IMMUTABLE_END%%);
-
-            return (map);
         }
     }
 }

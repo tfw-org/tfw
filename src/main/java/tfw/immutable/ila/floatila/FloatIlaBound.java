@@ -1,10 +1,7 @@
 package tfw.immutable.ila.floatila;
 
-import java.util.HashMap;
-import java.util.Map;
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
-import tfw.immutable.ImmutableProxy;
 
 /**
  *
@@ -22,7 +19,7 @@ public final class FloatIlaBound {
         return new MyFloatIla(ila, minimum, maximum);
     }
 
-    private static class MyFloatIla extends AbstractFloatIla implements ImmutableProxy {
+    private static class MyFloatIla extends AbstractFloatIla {
         private final FloatIla ila;
         private final float minimum;
         private final float maximum;
@@ -47,18 +44,6 @@ public final class FloatIlaBound {
                     array[ii] = maximum;
                 }
             }
-        }
-
-        public Map<String, Object> getParameters() {
-            HashMap<String, Object> map = new HashMap<String, Object>();
-
-            map.put("name", "FloatIlaBound");
-            map.put("ila", getImmutableInfo(ila));
-            map.put("minimum", new Float(minimum));
-            map.put("maximum", new Float(maximum));
-            map.put("length", new Long(length()));
-
-            return (map);
         }
     }
 }

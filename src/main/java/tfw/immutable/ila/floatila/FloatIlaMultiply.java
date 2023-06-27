@@ -1,10 +1,7 @@
 package tfw.immutable.ila.floatila;
 
-import java.util.HashMap;
-import java.util.Map;
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
-import tfw.immutable.ImmutableProxy;
 
 /**
  *
@@ -28,7 +25,7 @@ public final class FloatIlaMultiply {
         return new MyFloatIla(leftIla, rightIla, bufferSize);
     }
 
-    private static class MyFloatIla extends AbstractFloatIla implements ImmutableProxy {
+    private static class MyFloatIla extends AbstractFloatIla {
         private final FloatIla leftIla;
         private final FloatIla rightIla;
         private final int bufferSize;
@@ -49,18 +46,6 @@ public final class FloatIlaMultiply {
             for (int ii = offset; length > 0; ii += stride, --length) {
                 array[ii] = (float) (li.next() * ri.next());
             }
-        }
-
-        public Map<String, Object> getParameters() {
-            HashMap<String, Object> map = new HashMap<String, Object>();
-
-            map.put("name", "FloatIlaMultiply");
-            map.put("leftIla", getImmutableInfo(leftIla));
-            map.put("rightIla", getImmutableInfo(rightIla));
-            map.put("bufferSize", new Integer(bufferSize));
-            map.put("length", new Long(length()));
-
-            return (map);
         }
     }
 }

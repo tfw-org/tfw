@@ -1,11 +1,8 @@
 // byteila,charila,doubleila,floatila,intila,longila,shortila
 package %%PACKAGE%%;
 
-import java.util.HashMap;
-import java.util.Map;
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
-import tfw.immutable.ImmutableProxy;
 
 /**
  *
@@ -22,7 +19,7 @@ public final class %%NAME%%IlaScalarAdd {
         return new My%%NAME%%Ila(ila, scalar);
     }
 
-    private static class My%%NAME%%Ila extends Abstract%%NAME%%Ila implements ImmutableProxy {
+    private static class My%%NAME%%Ila extends Abstract%%NAME%%Ila {
         private final %%NAME%%Ila ila;
         private final %%TYPE%% scalar;
 
@@ -40,17 +37,6 @@ public final class %%NAME%%IlaScalarAdd {
             for (int ii = offset; length > 0; ii += stride, --length) {
                 array[ii] += scalar;
             }
-        }
-
-        public Map<String, Object> getParameters() {
-            HashMap<String, Object> map = new HashMap<String, Object>();
-
-            map.put("name", "%%NAME%%IlaScalarAdd");
-            map.put("ila", getImmutableInfo(ila));
-            map.put("scalar", %%CREATE_IMMUTABLE_START%%scalar%%CREATE_IMMUTABLE_END%%);
-            map.put("length", new Long(length()));
-
-            return (map);
         }
     }
 }

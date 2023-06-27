@@ -1,10 +1,7 @@
 package tfw.immutable.ila.floatila;
 
-import java.util.HashMap;
-import java.util.Map;
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
-import tfw.immutable.ImmutableProxy;
 
 /**
  *
@@ -23,7 +20,7 @@ public final class FloatIlaRemove {
         return new MyFloatIla(ila, index);
     }
 
-    private static class MyFloatIla extends AbstractFloatIla implements ImmutableProxy {
+    private static class MyFloatIla extends AbstractFloatIla {
         private final FloatIla ila;
         private final long index;
 
@@ -46,17 +43,6 @@ public final class FloatIlaRemove {
                 ila.toArray(array, offset, stride, start, indexMinusStart);
                 ila.toArray(array, offset + indexMinusStart * stride, stride, index + 1, length - indexMinusStart);
             }
-        }
-
-        public Map<String, Object> getParameters() {
-            HashMap<String, Object> map = new HashMap<String, Object>();
-
-            map.put("name", "FloatIlaRemove");
-            map.put("length", new Long(length()));
-            map.put("ila", getImmutableInfo(ila));
-            map.put("index", new Long(index));
-
-            return (map);
         }
     }
 }

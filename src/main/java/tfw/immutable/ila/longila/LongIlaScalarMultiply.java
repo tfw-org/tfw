@@ -1,10 +1,7 @@
 package tfw.immutable.ila.longila;
 
-import java.util.HashMap;
-import java.util.Map;
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
-import tfw.immutable.ImmutableProxy;
 
 /**
  *
@@ -21,7 +18,7 @@ public final class LongIlaScalarMultiply {
         return new MyLongIla(ila, scalar);
     }
 
-    private static class MyLongIla extends AbstractLongIla implements ImmutableProxy {
+    private static class MyLongIla extends AbstractLongIla {
         private final LongIla ila;
         private final long scalar;
 
@@ -39,17 +36,6 @@ public final class LongIlaScalarMultiply {
             for (int ii = offset; length > 0; ii += stride, --length) {
                 array[ii] *= scalar;
             }
-        }
-
-        public Map<String, Object> getParameters() {
-            HashMap<String, Object> map = new HashMap<String, Object>();
-
-            map.put("name", "LongIlaScalarMultiply");
-            map.put("ila", getImmutableInfo(ila));
-            map.put("scalar", new Long(scalar));
-            map.put("length", new Long(length()));
-
-            return (map);
         }
     }
 }

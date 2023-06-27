@@ -1,10 +1,7 @@
 package tfw.immutable.ila.charila;
 
-import java.util.HashMap;
-import java.util.Map;
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
-import tfw.immutable.ImmutableProxy;
 import tfw.immutable.ila.floatila.FloatIla;
 import tfw.immutable.ila.floatila.FloatIlaIterator;
 import tfw.immutable.ila.floatila.FloatIlaSegment;
@@ -29,7 +26,7 @@ public final class CharIlaFromCastFloatIla {
         return new MyCharIla(floatIla, bufferSize);
     }
 
-    private static class MyCharIla extends AbstractCharIla implements ImmutableProxy {
+    private static class MyCharIla extends AbstractCharIla {
         private final FloatIla floatIla;
         private final int bufferSize;
 
@@ -47,16 +44,6 @@ public final class CharIlaFromCastFloatIla {
             for (int ii = offset; length > 0; ii += stride, --length) {
                 array[ii] = (char) fi.next();
             }
-        }
-
-        public Map<String, Object> getParameters() {
-            HashMap<String, Object> map = new HashMap<String, Object>();
-
-            map.put("name", "CharIlaFromCastFloatIla");
-            map.put("floatIla", getImmutableInfo(floatIla));
-            map.put("length", new Long(length()));
-
-            return (map);
         }
     }
 }

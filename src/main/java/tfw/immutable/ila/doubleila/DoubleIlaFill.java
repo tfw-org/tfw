@@ -1,9 +1,6 @@
 package tfw.immutable.ila.doubleila;
 
-import java.util.HashMap;
-import java.util.Map;
 import tfw.check.Argument;
-import tfw.immutable.ImmutableProxy;
 
 /**
  *
@@ -20,7 +17,7 @@ public final class DoubleIlaFill {
         return new MyDoubleIla(value, length);
     }
 
-    private static class MyDoubleIla extends AbstractDoubleIla implements ImmutableProxy {
+    private static class MyDoubleIla extends AbstractDoubleIla {
         private final double value;
 
         MyDoubleIla(double value, long length) {
@@ -33,16 +30,6 @@ public final class DoubleIlaFill {
             for (int startInt = (int) start; startInt != startPlusLength; ++startInt, offset += stride) {
                 array[offset] = value;
             }
-        }
-
-        public Map<String, Object> getParameters() {
-            HashMap<String, Object> map = new HashMap<String, Object>();
-
-            map.put("name", "DoubleIlaFill");
-            map.put("length", new Long(length()));
-            map.put("value", new Double(value));
-
-            return (map);
         }
     }
 }

@@ -1,10 +1,7 @@
 package tfw.immutable.ila.charila;
 
-import java.util.HashMap;
-import java.util.Map;
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
-import tfw.immutable.ImmutableProxy;
 import tfw.immutable.ila.AbstractIlaCheck;
 import tfw.immutable.ila.ImmutableLongArray;
 
@@ -28,7 +25,7 @@ public final class CharIlaFiltered {
         return new MyCharIla(ila, filter);
     }
 
-    private static class MyCharIla implements CharIla, ImmutableLongArray, ImmutableProxy {
+    private static class MyCharIla implements CharIla, ImmutableLongArray {
         private final CharIla ila;
         private final CharFilter filter;
 
@@ -105,17 +102,6 @@ public final class CharIlaFiltered {
                     length = 0;
                 }
             }
-        }
-
-        public Map<String, Object> getParameters() {
-            calculateLength();
-
-            HashMap<String, Object> map = new HashMap<String, Object>();
-
-            map.put("name", "CharIlaFromArray");
-            map.put("length", new Long(length()));
-
-            return (map);
         }
     }
 }

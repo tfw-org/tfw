@@ -1,10 +1,7 @@
 package tfw.immutable.ila.intila;
 
-import java.util.HashMap;
-import java.util.Map;
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
-import tfw.immutable.ImmutableProxy;
 import tfw.immutable.ila.AbstractIlaCheck;
 import tfw.immutable.ila.ImmutableLongArray;
 
@@ -28,7 +25,7 @@ public final class IntIlaFiltered {
         return new MyIntIla(ila, filter);
     }
 
-    private static class MyIntIla implements IntIla, ImmutableLongArray, ImmutableProxy {
+    private static class MyIntIla implements IntIla, ImmutableLongArray {
         private final IntIla ila;
         private final IntFilter filter;
 
@@ -105,17 +102,6 @@ public final class IntIlaFiltered {
                     length = 0;
                 }
             }
-        }
-
-        public Map<String, Object> getParameters() {
-            calculateLength();
-
-            HashMap<String, Object> map = new HashMap<String, Object>();
-
-            map.put("name", "IntIlaFromArray");
-            map.put("length", new Long(length()));
-
-            return (map);
         }
     }
 }

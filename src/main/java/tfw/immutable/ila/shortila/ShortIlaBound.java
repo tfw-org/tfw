@@ -1,10 +1,7 @@
 package tfw.immutable.ila.shortila;
 
-import java.util.HashMap;
-import java.util.Map;
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
-import tfw.immutable.ImmutableProxy;
 
 /**
  *
@@ -22,7 +19,7 @@ public final class ShortIlaBound {
         return new MyShortIla(ila, minimum, maximum);
     }
 
-    private static class MyShortIla extends AbstractShortIla implements ImmutableProxy {
+    private static class MyShortIla extends AbstractShortIla {
         private final ShortIla ila;
         private final short minimum;
         private final short maximum;
@@ -47,18 +44,6 @@ public final class ShortIlaBound {
                     array[ii] = maximum;
                 }
             }
-        }
-
-        public Map<String, Object> getParameters() {
-            HashMap<String, Object> map = new HashMap<String, Object>();
-
-            map.put("name", "ShortIlaBound");
-            map.put("ila", getImmutableInfo(ila));
-            map.put("minimum", new Short(minimum));
-            map.put("maximum", new Short(maximum));
-            map.put("length", new Long(length()));
-
-            return (map);
         }
     }
 }

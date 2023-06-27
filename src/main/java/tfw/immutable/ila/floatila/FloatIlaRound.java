@@ -1,10 +1,7 @@
 package tfw.immutable.ila.floatila;
 
-import java.util.HashMap;
-import java.util.Map;
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
-import tfw.immutable.ImmutableProxy;
 
 /**
  *
@@ -21,7 +18,7 @@ public final class FloatIlaRound {
         return new MyFloatIla(ila);
     }
 
-    private static class MyFloatIla extends AbstractFloatIla implements ImmutableProxy {
+    private static class MyFloatIla extends AbstractFloatIla {
         private final FloatIla ila;
 
         MyFloatIla(FloatIla ila) {
@@ -37,16 +34,6 @@ public final class FloatIlaRound {
             for (int ii = offset; length > 0; ii += stride, --length) {
                 array[ii] = (float) StrictMath.rint(array[ii]);
             }
-        }
-
-        public Map<String, Object> getParameters() {
-            HashMap<String, Object> map = new HashMap<String, Object>();
-
-            map.put("name", "FloatIlaRound");
-            map.put("ila", getImmutableInfo(ila));
-            map.put("length", new Long(length()));
-
-            return (map);
         }
     }
 }

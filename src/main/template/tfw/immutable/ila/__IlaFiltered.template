@@ -1,11 +1,8 @@
 // booleanila,byteila,charila,doubleila,floatila,intila,longila,objectila,shortila
 package %%PACKAGE%%;
 
-import java.util.HashMap;
-import java.util.Map;
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
-import tfw.immutable.ImmutableProxy;
 import tfw.immutable.ila.AbstractIlaCheck;
 import tfw.immutable.ila.ImmutableLongArray;
 
@@ -29,7 +26,7 @@ public final class %%NAME%%IlaFiltered {
         return new My%%NAME%%Ila(ila, filter);
     }
 
-    private static class My%%NAME%%Ila implements %%NAME%%Ila, ImmutableLongArray, ImmutableProxy {
+    private static class My%%NAME%%Ila implements %%NAME%%Ila, ImmutableLongArray {
         private final %%NAME%%Ila ila;
         private final %%NAME%%Filter filter;
 
@@ -106,17 +103,6 @@ public final class %%NAME%%IlaFiltered {
                     length = 0;
                 }
             }
-        }
-
-        public Map<String, Object> getParameters() {
-            calculateLength();
-
-            HashMap<String, Object> map = new HashMap<String, Object>();
-
-            map.put("name", "%%NAME%%IlaFromArray");
-            map.put("length", new Long(length()));
-
-            return (map);
         }
     }
 }

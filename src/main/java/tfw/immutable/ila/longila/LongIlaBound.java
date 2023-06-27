@@ -1,10 +1,7 @@
 package tfw.immutable.ila.longila;
 
-import java.util.HashMap;
-import java.util.Map;
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
-import tfw.immutable.ImmutableProxy;
 
 /**
  *
@@ -22,7 +19,7 @@ public final class LongIlaBound {
         return new MyLongIla(ila, minimum, maximum);
     }
 
-    private static class MyLongIla extends AbstractLongIla implements ImmutableProxy {
+    private static class MyLongIla extends AbstractLongIla {
         private final LongIla ila;
         private final long minimum;
         private final long maximum;
@@ -47,18 +44,6 @@ public final class LongIlaBound {
                     array[ii] = maximum;
                 }
             }
-        }
-
-        public Map<String, Object> getParameters() {
-            HashMap<String, Object> map = new HashMap<String, Object>();
-
-            map.put("name", "LongIlaBound");
-            map.put("ila", getImmutableInfo(ila));
-            map.put("minimum", new Long(minimum));
-            map.put("maximum", new Long(maximum));
-            map.put("length", new Long(length()));
-
-            return (map);
         }
     }
 }
