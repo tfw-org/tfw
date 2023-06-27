@@ -1,9 +1,6 @@
 package tfw.immutable.ila.byteila;
 
-import java.util.HashMap;
-import java.util.Map;
 import tfw.immutable.DataInvalidException;
-import tfw.immutable.ImmutableProxy;
 
 public class ByteIlaSwap {
     private ByteIlaSwap() {}
@@ -14,7 +11,7 @@ public class ByteIlaSwap {
         return new MyByteIla(byteIla, bytesToSwap);
     }
 
-    private static class MyByteIla extends AbstractByteIla implements ImmutableProxy {
+    private static class MyByteIla extends AbstractByteIla {
         private final ByteIla byteIla;
         private final int bytesToSwap;
 
@@ -49,17 +46,6 @@ public class ByteIlaSwap {
 
                 array[offset + (l * stride)] = bytes[bs];
             }
-        }
-
-        public Map<String, Object> getParameters() {
-            HashMap<String, Object> map = new HashMap<String, Object>();
-
-            map.put("name", "ByteIlaSwap");
-            map.put("byteIla", getImmutableInfo(byteIla));
-            map.put("bytesToSwap", new Integer(bytesToSwap));
-            map.put("length", new Long(length()));
-
-            return (map);
         }
     }
 }

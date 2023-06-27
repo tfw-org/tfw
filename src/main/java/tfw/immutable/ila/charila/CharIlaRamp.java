@@ -1,9 +1,6 @@
 package tfw.immutable.ila.charila;
 
-import java.util.HashMap;
-import java.util.Map;
 import tfw.check.Argument;
-import tfw.immutable.ImmutableProxy;
 
 /**
  *
@@ -20,7 +17,7 @@ public final class CharIlaRamp {
         return new MyCharIla(startValue, increment, length);
     }
 
-    private static class MyCharIla extends AbstractCharIla implements ImmutableProxy {
+    private static class MyCharIla extends AbstractCharIla {
         private final char startValue;
         private final char increment;
 
@@ -47,17 +44,6 @@ public final class CharIlaRamp {
                     ++startInt, offset += stride, value += increment) {
                 array[offset] = value;
             }
-        }
-
-        public Map<String, Object> getParameters() {
-            HashMap<String, Object> map = new HashMap<String, Object>();
-
-            map.put("name", "CharIlaRamp");
-            map.put("length", new Long(length()));
-            map.put("startValue", new Character(startValue));
-            map.put("increment", new Character(increment));
-
-            return (map);
         }
     }
 }

@@ -1,10 +1,7 @@
 // booleanila,byteila,charila,doubleila,floatila,intila,longila,objectila,shortila
 package %%PACKAGE%%;
 
-import java.util.HashMap;
-import java.util.Map;
 import tfw.check.Argument;
-import tfw.immutable.ImmutableProxy;
 
 /**
  *
@@ -25,7 +22,7 @@ public final class %%NAME%%IlaFromArray {
         return new My%%NAME%%Ila(array, cloneArray);
     }
 
-    private static class My%%NAME%%Ila extends Abstract%%NAME%%Ila implements ImmutableProxy {
+    private static class My%%NAME%%Ila extends Abstract%%NAME%%Ila {
         private final %%TYPE%%[] array;
 
         My%%NAME%%Ila(%%TYPE%%[] array, boolean cloneArray) {
@@ -43,15 +40,6 @@ public final class %%NAME%%IlaFromArray {
             for (int startInt = (int) start; startInt != startPlusLength; ++startInt, offset += stride) {
                 array[offset] = this.array[startInt];
             }
-        }
-
-        public Map<String, Object> getParameters() {
-            HashMap<String, Object> map = new HashMap<String, Object>();
-
-            map.put("name", "%%NAME%%IlaFromArray");
-            map.put("length", new Long(length()));
-
-            return (map);
         }
     }
 }

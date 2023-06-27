@@ -1,10 +1,7 @@
 package tfw.immutable.ila.byteila;
 
-import java.util.HashMap;
-import java.util.Map;
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
-import tfw.immutable.ImmutableProxy;
 
 /**
  *
@@ -22,7 +19,7 @@ public final class ByteIlaBound {
         return new MyByteIla(ila, minimum, maximum);
     }
 
-    private static class MyByteIla extends AbstractByteIla implements ImmutableProxy {
+    private static class MyByteIla extends AbstractByteIla {
         private final ByteIla ila;
         private final byte minimum;
         private final byte maximum;
@@ -47,18 +44,6 @@ public final class ByteIlaBound {
                     array[ii] = maximum;
                 }
             }
-        }
-
-        public Map<String, Object> getParameters() {
-            HashMap<String, Object> map = new HashMap<String, Object>();
-
-            map.put("name", "ByteIlaBound");
-            map.put("ila", getImmutableInfo(ila));
-            map.put("minimum", new Byte(minimum));
-            map.put("maximum", new Byte(maximum));
-            map.put("length", new Long(length()));
-
-            return (map);
         }
     }
 }

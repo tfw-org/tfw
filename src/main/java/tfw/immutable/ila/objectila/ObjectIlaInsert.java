@@ -1,10 +1,7 @@
 package tfw.immutable.ila.objectila;
 
-import java.util.HashMap;
-import java.util.Map;
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
-import tfw.immutable.ImmutableProxy;
 
 /**
  *
@@ -23,7 +20,7 @@ public final class ObjectIlaInsert {
         return new MyObjectIla(ila, index, value);
     }
 
-    private static class MyObjectIla extends AbstractObjectIla implements ImmutableProxy {
+    private static class MyObjectIla extends AbstractObjectIla {
         private final ObjectIla ila;
         private final long index;
         private final Object value;
@@ -58,18 +55,6 @@ public final class ObjectIlaInsert {
                             length - indexMinusStart - 1);
                 }
             }
-        }
-
-        public Map<String, Object> getParameters() {
-            HashMap<String, Object> map = new HashMap<String, Object>();
-
-            map.put("name", "ObjectIlaInsert");
-            map.put("length", new Long(length()));
-            map.put("ila", getImmutableInfo(ila));
-            map.put("index", new Long(index));
-            map.put("value", value);
-
-            return (map);
         }
     }
 }

@@ -2,12 +2,9 @@ package tfw.visualizer.graph;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 import tfw.check.Argument;
-import tfw.immutable.ImmutableProxy;
 import tfw.tsm.BranchProxy;
 import tfw.tsm.CommitProxy;
 import tfw.tsm.ConverterProxy;
@@ -31,7 +28,7 @@ public class GraphFromRootProxy {
         return (new MyGraph(rootProxy));
     }
 
-    private static class MyGraph implements Graph, ImmutableProxy {
+    private static class MyGraph implements Graph {
         private final RootProxy rootProxy;
 
         private Object[] nodes = null;
@@ -183,15 +180,6 @@ public class GraphFromRootProxy {
                 edgeFroms.add(sinkProxies[i].getEventChannelProxy());
                 edgeTos.add(proxy);
             }
-        }
-
-        public Map getParameters() {
-            HashMap map = new HashMap();
-
-            map.put("name", "GraphFromRootProxy");
-            map.put("rootProxy", rootProxy);
-
-            return (map);
         }
     }
 }

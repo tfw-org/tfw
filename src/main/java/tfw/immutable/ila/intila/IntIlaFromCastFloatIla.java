@@ -1,10 +1,7 @@
 package tfw.immutable.ila.intila;
 
-import java.util.HashMap;
-import java.util.Map;
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
-import tfw.immutable.ImmutableProxy;
 import tfw.immutable.ila.floatila.FloatIla;
 import tfw.immutable.ila.floatila.FloatIlaIterator;
 import tfw.immutable.ila.floatila.FloatIlaSegment;
@@ -29,7 +26,7 @@ public final class IntIlaFromCastFloatIla {
         return new MyIntIla(floatIla, bufferSize);
     }
 
-    private static class MyIntIla extends AbstractIntIla implements ImmutableProxy {
+    private static class MyIntIla extends AbstractIntIla {
         private final FloatIla floatIla;
         private final int bufferSize;
 
@@ -47,16 +44,6 @@ public final class IntIlaFromCastFloatIla {
             for (int ii = offset; length > 0; ii += stride, --length) {
                 array[ii] = (int) fi.next();
             }
-        }
-
-        public Map<String, Object> getParameters() {
-            HashMap<String, Object> map = new HashMap<String, Object>();
-
-            map.put("name", "IntIlaFromCastFloatIla");
-            map.put("floatIla", getImmutableInfo(floatIla));
-            map.put("length", new Long(length()));
-
-            return (map);
         }
     }
 }

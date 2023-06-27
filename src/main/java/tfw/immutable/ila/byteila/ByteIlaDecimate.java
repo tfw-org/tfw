@@ -1,10 +1,7 @@
 package tfw.immutable.ila.byteila;
 
-import java.util.HashMap;
-import java.util.Map;
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
-import tfw.immutable.ImmutableProxy;
 
 /**
  *
@@ -27,7 +24,7 @@ public final class ByteIlaDecimate {
         return new MyByteIla(ila, factor, bufferSize);
     }
 
-    private static class MyByteIla extends AbstractByteIla implements ImmutableProxy {
+    private static class MyByteIla extends AbstractByteIla {
         private final ByteIla ila;
         private final long factor;
         private final int bufferSize;
@@ -50,17 +47,6 @@ public final class ByteIlaDecimate {
                 array[ii] = (byte) fi.next();
                 fi.skip(factor - 1);
             }
-        }
-
-        public Map<String, Object> getParameters() {
-            HashMap<String, Object> map = new HashMap<String, Object>();
-
-            map.put("name", "ByteIlaDecimate");
-            map.put("ila", getImmutableInfo(ila));
-            map.put("length", new Long(length()));
-            map.put("factor", new Long(factor));
-
-            return (map);
         }
     }
 }

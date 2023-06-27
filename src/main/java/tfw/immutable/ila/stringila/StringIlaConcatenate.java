@@ -1,10 +1,7 @@
 package tfw.immutable.ila.stringila;
 
-import java.util.HashMap;
-import java.util.Map;
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
-import tfw.immutable.ImmutableProxy;
 
 /**
  *
@@ -32,7 +29,7 @@ public final class StringIlaConcatenate {
         return new MyStringIla(leftIla, rightIla);
     }
 
-    private static class MyStringIla extends AbstractStringIla implements ImmutableProxy {
+    private static class MyStringIla extends AbstractStringIla {
         private final StringIla leftIla;
         private final StringIla rightIla;
         private final long leftIlaLength;
@@ -55,17 +52,6 @@ public final class StringIlaConcatenate {
                 leftIla.toArray(array, offset, stride, start, leftAmount);
                 rightIla.toArray(array, offset + leftAmount * stride, stride, 0, length - leftAmount);
             }
-        }
-
-        public Map<String, Object> getParameters() {
-            HashMap<String, Object> map = new HashMap<String, Object>();
-
-            map.put("name", "StringIlaConcatenate");
-            map.put("length", new Long(length()));
-            map.put("leftIla", getImmutableInfo(leftIla));
-            map.put("rightIla", getImmutableInfo(rightIla));
-
-            return (map);
         }
     }
 }

@@ -1,10 +1,7 @@
 package tfw.immutable.ila.charila;
 
-import java.util.HashMap;
-import java.util.Map;
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
-import tfw.immutable.ImmutableProxy;
 
 /**
  *
@@ -22,7 +19,7 @@ public final class CharIlaBound {
         return new MyCharIla(ila, minimum, maximum);
     }
 
-    private static class MyCharIla extends AbstractCharIla implements ImmutableProxy {
+    private static class MyCharIla extends AbstractCharIla {
         private final CharIla ila;
         private final char minimum;
         private final char maximum;
@@ -47,18 +44,6 @@ public final class CharIlaBound {
                     array[ii] = maximum;
                 }
             }
-        }
-
-        public Map<String, Object> getParameters() {
-            HashMap<String, Object> map = new HashMap<String, Object>();
-
-            map.put("name", "CharIlaBound");
-            map.put("ila", getImmutableInfo(ila));
-            map.put("minimum", new Character(minimum));
-            map.put("maximum", new Character(maximum));
-            map.put("length", new Long(length()));
-
-            return (map);
         }
     }
 }

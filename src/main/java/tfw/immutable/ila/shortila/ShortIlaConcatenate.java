@@ -1,10 +1,7 @@
 package tfw.immutable.ila.shortila;
 
-import java.util.HashMap;
-import java.util.Map;
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
-import tfw.immutable.ImmutableProxy;
 
 /**
  *
@@ -32,7 +29,7 @@ public final class ShortIlaConcatenate {
         return new MyShortIla(leftIla, rightIla);
     }
 
-    private static class MyShortIla extends AbstractShortIla implements ImmutableProxy {
+    private static class MyShortIla extends AbstractShortIla {
         private final ShortIla leftIla;
         private final ShortIla rightIla;
         private final long leftIlaLength;
@@ -55,17 +52,6 @@ public final class ShortIlaConcatenate {
                 leftIla.toArray(array, offset, stride, start, leftAmount);
                 rightIla.toArray(array, offset + leftAmount * stride, stride, 0, length - leftAmount);
             }
-        }
-
-        public Map<String, Object> getParameters() {
-            HashMap<String, Object> map = new HashMap<String, Object>();
-
-            map.put("name", "ShortIlaConcatenate");
-            map.put("length", new Long(length()));
-            map.put("leftIla", getImmutableInfo(leftIla));
-            map.put("rightIla", getImmutableInfo(rightIla));
-
-            return (map);
         }
     }
 }

@@ -1,10 +1,7 @@
 package tfw.immutable.ila.booleanila;
 
-import java.util.HashMap;
-import java.util.Map;
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
-import tfw.immutable.ImmutableProxy;
 import tfw.immutable.ila.AbstractIlaCheck;
 import tfw.immutable.ila.ImmutableLongArray;
 
@@ -28,7 +25,7 @@ public final class BooleanIlaFiltered {
         return new MyBooleanIla(ila, filter);
     }
 
-    private static class MyBooleanIla implements BooleanIla, ImmutableLongArray, ImmutableProxy {
+    private static class MyBooleanIla implements BooleanIla, ImmutableLongArray {
         private final BooleanIla ila;
         private final BooleanFilter filter;
 
@@ -105,17 +102,6 @@ public final class BooleanIlaFiltered {
                     length = 0;
                 }
             }
-        }
-
-        public Map<String, Object> getParameters() {
-            calculateLength();
-
-            HashMap<String, Object> map = new HashMap<String, Object>();
-
-            map.put("name", "BooleanIlaFromArray");
-            map.put("length", new Long(length()));
-
-            return (map);
         }
     }
 }

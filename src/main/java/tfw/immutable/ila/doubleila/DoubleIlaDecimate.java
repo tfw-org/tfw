@@ -1,10 +1,7 @@
 package tfw.immutable.ila.doubleila;
 
-import java.util.HashMap;
-import java.util.Map;
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
-import tfw.immutable.ImmutableProxy;
 
 /**
  *
@@ -27,7 +24,7 @@ public final class DoubleIlaDecimate {
         return new MyDoubleIla(ila, factor, bufferSize);
     }
 
-    private static class MyDoubleIla extends AbstractDoubleIla implements ImmutableProxy {
+    private static class MyDoubleIla extends AbstractDoubleIla {
         private final DoubleIla ila;
         private final long factor;
         private final int bufferSize;
@@ -50,17 +47,6 @@ public final class DoubleIlaDecimate {
                 array[ii] = (double) fi.next();
                 fi.skip(factor - 1);
             }
-        }
-
-        public Map<String, Object> getParameters() {
-            HashMap<String, Object> map = new HashMap<String, Object>();
-
-            map.put("name", "DoubleIlaDecimate");
-            map.put("ila", getImmutableInfo(ila));
-            map.put("length", new Long(length()));
-            map.put("factor", new Long(factor));
-
-            return (map);
         }
     }
 }

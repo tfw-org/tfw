@@ -1,10 +1,7 @@
 package tfw.immutable.ila.booleanila;
 
-import java.util.HashMap;
-import java.util.Map;
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
-import tfw.immutable.ImmutableProxy;
 
 /**
  *
@@ -23,7 +20,7 @@ public final class BooleanIlaInsert {
         return new MyBooleanIla(ila, index, value);
     }
 
-    private static class MyBooleanIla extends AbstractBooleanIla implements ImmutableProxy {
+    private static class MyBooleanIla extends AbstractBooleanIla {
         private final BooleanIla ila;
         private final long index;
         private final boolean value;
@@ -58,18 +55,6 @@ public final class BooleanIlaInsert {
                             length - indexMinusStart - 1);
                 }
             }
-        }
-
-        public Map<String, Object> getParameters() {
-            HashMap<String, Object> map = new HashMap<String, Object>();
-
-            map.put("name", "BooleanIlaInsert");
-            map.put("length", new Long(length()));
-            map.put("ila", getImmutableInfo(ila));
-            map.put("index", new Long(index));
-            map.put("value", new Boolean(value));
-
-            return (map);
         }
     }
 }

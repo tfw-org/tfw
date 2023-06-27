@@ -1,10 +1,7 @@
 package tfw.visualizer;
 
 import java.awt.FontMetrics;
-import java.util.HashMap;
-import java.util.Map;
 import tfw.immutable.DataInvalidException;
-import tfw.immutable.ImmutableProxy;
 import tfw.immutable.ilm.doubleilm.DoubleIlm;
 import tfw.immutable.ilm.intilm.IntIlm;
 import tfw.tsm.Proxy;
@@ -24,7 +21,7 @@ public final class PixelNodeBoundsFromNormalizedXYs {
         return (new MyIntIlm(graph, normalizedXYs, graphXOffset, graphYOffset, graphWidth, graphHeight, fontMetrics));
     }
 
-    private static class MyIntIlm implements IntIlm, ImmutableProxy {
+    private static class MyIntIlm implements IntIlm {
         private final Graph graph;
         private final DoubleIlm normalizedXYs;
         private final int graphXOffset;
@@ -100,23 +97,6 @@ public final class PixelNodeBoundsFromNormalizedXYs {
         public void toArray(int[] array, int offset, long rowStart, long columnStart, int rowCount, int colCount)
                 throws DataInvalidException {
             throw new DataInvalidException("Method not implemented!");
-        }
-
-        public Map getParameters() {
-            HashMap map = new HashMap();
-
-            map.put("name", "PixelNodeBoundsFromNormalizedXYs");
-            map.put("width", new Long(width()));
-            map.put("height", new Long(height()));
-            map.put("graph", graph);
-            map.put("normalizedXYs", normalizedXYs);
-            map.put("graphXOffset", new Integer(graphXOffset));
-            map.put("graphYOffset", new Integer(graphYOffset));
-            map.put("graphWidth", new Integer(graphWidth));
-            map.put("graphHeight", new Integer(graphHeight));
-            map.put("fontMetrics", fontMetrics);
-
-            return (map);
         }
 
         @Override

@@ -1,10 +1,7 @@
 package tfw.immutable.ila.stringila;
 
-import java.util.HashMap;
-import java.util.Map;
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
-import tfw.immutable.ImmutableProxy;
 
 /**
  *
@@ -28,7 +25,7 @@ public final class StringIlaInterleave {
         return new MyStringIla(ilas);
     }
 
-    private static class MyStringIla extends AbstractStringIla implements ImmutableProxy {
+    private static class MyStringIla extends AbstractStringIla {
         private final StringIla[] ilas;
 
         private final int ilasLength;
@@ -66,18 +63,6 @@ public final class StringIlaInterleave {
                     ++ilaStart;
                 }
             }
-        }
-
-        public Map<String, Object> getParameters() {
-            HashMap<String, Object> map = new HashMap<String, Object>();
-
-            map.put("name", "StringIlaInterleave");
-            map.put("length", new Long(length()));
-            for (int ii = 0; ii < ilas.length; ++ii) {
-                map.put("ilas[" + ii + "]", getImmutableInfo(ilas[ii]));
-            }
-
-            return (map);
         }
     }
 }

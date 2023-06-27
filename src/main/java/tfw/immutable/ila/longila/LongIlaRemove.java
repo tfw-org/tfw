@@ -1,10 +1,7 @@
 package tfw.immutable.ila.longila;
 
-import java.util.HashMap;
-import java.util.Map;
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
-import tfw.immutable.ImmutableProxy;
 
 /**
  *
@@ -23,7 +20,7 @@ public final class LongIlaRemove {
         return new MyLongIla(ila, index);
     }
 
-    private static class MyLongIla extends AbstractLongIla implements ImmutableProxy {
+    private static class MyLongIla extends AbstractLongIla {
         private final LongIla ila;
         private final long index;
 
@@ -46,17 +43,6 @@ public final class LongIlaRemove {
                 ila.toArray(array, offset, stride, start, indexMinusStart);
                 ila.toArray(array, offset + indexMinusStart * stride, stride, index + 1, length - indexMinusStart);
             }
-        }
-
-        public Map<String, Object> getParameters() {
-            HashMap<String, Object> map = new HashMap<String, Object>();
-
-            map.put("name", "LongIlaRemove");
-            map.put("length", new Long(length()));
-            map.put("ila", getImmutableInfo(ila));
-            map.put("index", new Long(index));
-
-            return (map);
         }
     }
 }

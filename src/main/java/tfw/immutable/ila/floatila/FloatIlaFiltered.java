@@ -1,10 +1,7 @@
 package tfw.immutable.ila.floatila;
 
-import java.util.HashMap;
-import java.util.Map;
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
-import tfw.immutable.ImmutableProxy;
 import tfw.immutable.ila.AbstractIlaCheck;
 import tfw.immutable.ila.ImmutableLongArray;
 
@@ -28,7 +25,7 @@ public final class FloatIlaFiltered {
         return new MyFloatIla(ila, filter);
     }
 
-    private static class MyFloatIla implements FloatIla, ImmutableLongArray, ImmutableProxy {
+    private static class MyFloatIla implements FloatIla, ImmutableLongArray {
         private final FloatIla ila;
         private final FloatFilter filter;
 
@@ -105,17 +102,6 @@ public final class FloatIlaFiltered {
                     length = 0;
                 }
             }
-        }
-
-        public Map<String, Object> getParameters() {
-            calculateLength();
-
-            HashMap<String, Object> map = new HashMap<String, Object>();
-
-            map.put("name", "FloatIlaFromArray");
-            map.put("length", new Long(length()));
-
-            return (map);
         }
     }
 }

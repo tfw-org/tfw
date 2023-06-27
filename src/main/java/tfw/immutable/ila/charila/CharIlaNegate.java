@@ -1,10 +1,7 @@
 package tfw.immutable.ila.charila;
 
-import java.util.HashMap;
-import java.util.Map;
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
-import tfw.immutable.ImmutableProxy;
 
 /**
  *
@@ -21,7 +18,7 @@ public final class CharIlaNegate {
         return new MyCharIla(ila);
     }
 
-    private static class MyCharIla extends AbstractCharIla implements ImmutableProxy {
+    private static class MyCharIla extends AbstractCharIla {
         private final CharIla ila;
 
         MyCharIla(CharIla ila) {
@@ -37,16 +34,6 @@ public final class CharIlaNegate {
             for (int ii = offset; length > 0; ii += stride, --length) {
                 array[ii] = (char) -array[ii];
             }
-        }
-
-        public Map<String, Object> getParameters() {
-            HashMap<String, Object> map = new HashMap<String, Object>();
-
-            map.put("name", "CharIlaNegate");
-            map.put("ila", getImmutableInfo(ila));
-            map.put("length", new Long(length()));
-
-            return (map);
         }
     }
 }

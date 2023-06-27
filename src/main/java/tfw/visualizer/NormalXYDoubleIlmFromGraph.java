@@ -2,12 +2,9 @@ package tfw.visualizer;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
-import tfw.immutable.ImmutableProxy;
 import tfw.immutable.ilm.doubleilm.DoubleIlm;
 import tfw.visualizer.graph.Graph;
 
@@ -20,7 +17,7 @@ public class NormalXYDoubleIlmFromGraph {
         return (new MyDoubleIlm(graph));
     }
 
-    private static class MyDoubleIlm implements DoubleIlm, ImmutableProxy {
+    private static class MyDoubleIlm implements DoubleIlm {
         private final Graph graph;
 
         public MyDoubleIlm(Graph graph) {
@@ -225,17 +222,6 @@ public class NormalXYDoubleIlmFromGraph {
         public void toArray(double[] array, int rowOffset, long rowStart, long columnStart, int width, int height)
                 throws DataInvalidException {
             throw new DataInvalidException("Method not implemented");
-        }
-
-        public Map getParameters() {
-            HashMap map = new HashMap();
-
-            map.put("name", "NormalXYDoubleIlmFromGraph");
-            map.put("graph", graph);
-            map.put("width", new Long(width()));
-            map.put("height", new Long(height()));
-
-            return (map);
         }
 
         @Override

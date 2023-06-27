@@ -1,9 +1,7 @@
 package tfw.immutable.ila.byteila;
 
 import tfw.immutable.DataInvalidException;
-import tfw.immutable.ImmutableProxy;
 import tfw.immutable.ila.AbstractIla;
-import tfw.immutable.ila.ImmutableLongArray;
 
 /**
  *
@@ -15,14 +13,6 @@ public abstract class AbstractByteIla extends AbstractIla implements ByteIla {
 
     protected AbstractByteIla(long length) {
         super(length);
-    }
-
-    public static Object getImmutableInfo(ImmutableLongArray ila) {
-        if (ila instanceof ImmutableProxy) {
-            return (((ImmutableProxy) ila).getParameters());
-        } else {
-            return (ila.toString());
-        }
     }
 
     public final byte[] toArray() throws DataInvalidException {

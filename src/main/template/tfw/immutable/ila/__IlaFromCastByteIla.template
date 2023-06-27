@@ -1,11 +1,8 @@
 // charila,doubleila,floatila,intila,longila,shortila
 package %%PACKAGE%%;
 
-import java.util.HashMap;
-import java.util.Map;
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
-import tfw.immutable.ImmutableProxy;
 import tfw.immutable.ila.byteila.ByteIla;
 import tfw.immutable.ila.byteila.ByteIlaIterator;
 import tfw.immutable.ila.byteila.ByteIlaSegment;
@@ -30,7 +27,7 @@ public final class %%NAME%%IlaFromCastByteIla {
         return new My%%NAME%%Ila(byteIla, bufferSize);
     }
 
-    private static class My%%NAME%%Ila extends Abstract%%NAME%%Ila implements ImmutableProxy {
+    private static class My%%NAME%%Ila extends Abstract%%NAME%%Ila {
         private final ByteIla byteIla;
         private final int bufferSize;
 
@@ -48,16 +45,6 @@ public final class %%NAME%%IlaFromCastByteIla {
             for (int ii = offset; length > 0; ii += stride, --length) {
                 array[ii] = (%%TYPE%%) fi.next();
             }
-        }
-
-        public Map<String, Object> getParameters() {
-            HashMap<String, Object> map = new HashMap<String, Object>();
-
-            map.put("name", "%%NAME%%IlaFromCastByteIla");
-            map.put("byteIla", getImmutableInfo(byteIla));
-            map.put("length", new Long(length()));
-
-            return (map);
         }
     }
 }

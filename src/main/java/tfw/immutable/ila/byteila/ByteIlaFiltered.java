@@ -1,10 +1,7 @@
 package tfw.immutable.ila.byteila;
 
-import java.util.HashMap;
-import java.util.Map;
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
-import tfw.immutable.ImmutableProxy;
 import tfw.immutable.ila.AbstractIlaCheck;
 import tfw.immutable.ila.ImmutableLongArray;
 
@@ -28,7 +25,7 @@ public final class ByteIlaFiltered {
         return new MyByteIla(ila, filter);
     }
 
-    private static class MyByteIla implements ByteIla, ImmutableLongArray, ImmutableProxy {
+    private static class MyByteIla implements ByteIla, ImmutableLongArray {
         private final ByteIla ila;
         private final ByteFilter filter;
 
@@ -105,17 +102,6 @@ public final class ByteIlaFiltered {
                     length = 0;
                 }
             }
-        }
-
-        public Map<String, Object> getParameters() {
-            calculateLength();
-
-            HashMap<String, Object> map = new HashMap<String, Object>();
-
-            map.put("name", "ByteIlaFromArray");
-            map.put("length", new Long(length()));
-
-            return (map);
         }
     }
 }

@@ -1,10 +1,7 @@
 package tfw.immutable.ila.doubleila;
 
-import java.util.HashMap;
-import java.util.Map;
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
-import tfw.immutable.ImmutableProxy;
 
 /**
  *
@@ -22,7 +19,7 @@ public final class DoubleIlaBound {
         return new MyDoubleIla(ila, minimum, maximum);
     }
 
-    private static class MyDoubleIla extends AbstractDoubleIla implements ImmutableProxy {
+    private static class MyDoubleIla extends AbstractDoubleIla {
         private final DoubleIla ila;
         private final double minimum;
         private final double maximum;
@@ -47,18 +44,6 @@ public final class DoubleIlaBound {
                     array[ii] = maximum;
                 }
             }
-        }
-
-        public Map<String, Object> getParameters() {
-            HashMap<String, Object> map = new HashMap<String, Object>();
-
-            map.put("name", "DoubleIlaBound");
-            map.put("ila", getImmutableInfo(ila));
-            map.put("minimum", new Double(minimum));
-            map.put("maximum", new Double(maximum));
-            map.put("length", new Long(length()));
-
-            return (map);
         }
     }
 }

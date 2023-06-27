@@ -1,10 +1,7 @@
 package tfw.immutable.ila.byteila;
 
-import java.util.HashMap;
-import java.util.Map;
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
-import tfw.immutable.ImmutableProxy;
 
 /**
  *
@@ -21,7 +18,7 @@ public final class ByteIlaScalarMultiply {
         return new MyByteIla(ila, scalar);
     }
 
-    private static class MyByteIla extends AbstractByteIla implements ImmutableProxy {
+    private static class MyByteIla extends AbstractByteIla {
         private final ByteIla ila;
         private final byte scalar;
 
@@ -39,17 +36,6 @@ public final class ByteIlaScalarMultiply {
             for (int ii = offset; length > 0; ii += stride, --length) {
                 array[ii] *= scalar;
             }
-        }
-
-        public Map<String, Object> getParameters() {
-            HashMap<String, Object> map = new HashMap<String, Object>();
-
-            map.put("name", "ByteIlaScalarMultiply");
-            map.put("ila", getImmutableInfo(ila));
-            map.put("scalar", new Byte(scalar));
-            map.put("length", new Long(length()));
-
-            return (map);
         }
     }
 }

@@ -1,10 +1,7 @@
 package tfw.immutable.ila.longila;
 
-import java.util.HashMap;
-import java.util.Map;
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
-import tfw.immutable.ImmutableProxy;
 import tfw.immutable.ila.intila.IntIla;
 import tfw.immutable.ila.intila.IntIlaIterator;
 import tfw.immutable.ila.intila.IntIlaSegment;
@@ -29,7 +26,7 @@ public final class LongIlaFromCastIntIla {
         return new MyLongIla(intIla, bufferSize);
     }
 
-    private static class MyLongIla extends AbstractLongIla implements ImmutableProxy {
+    private static class MyLongIla extends AbstractLongIla {
         private final IntIla intIla;
         private final int bufferSize;
 
@@ -47,16 +44,6 @@ public final class LongIlaFromCastIntIla {
             for (int ii = offset; length > 0; ii += stride, --length) {
                 array[ii] = (long) fi.next();
             }
-        }
-
-        public Map<String, Object> getParameters() {
-            HashMap<String, Object> map = new HashMap<String, Object>();
-
-            map.put("name", "LongIlaFromCastIntIla");
-            map.put("intIla", getImmutableInfo(intIla));
-            map.put("length", new Long(length()));
-
-            return (map);
         }
     }
 }

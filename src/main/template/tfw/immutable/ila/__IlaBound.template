@@ -1,11 +1,8 @@
 // byteila,charila,doubleila,floatila,intila,longila,shortila
 package %%PACKAGE%%;
 
-import java.util.HashMap;
-import java.util.Map;
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
-import tfw.immutable.ImmutableProxy;
 
 /**
  *
@@ -23,7 +20,7 @@ public final class %%NAME%%IlaBound {
         return new My%%NAME%%Ila(ila, minimum, maximum);
     }
 
-    private static class My%%NAME%%Ila extends Abstract%%NAME%%Ila implements ImmutableProxy {
+    private static class My%%NAME%%Ila extends Abstract%%NAME%%Ila {
         private final %%NAME%%Ila ila;
         private final %%TYPE%% minimum;
         private final %%TYPE%% maximum;
@@ -48,18 +45,6 @@ public final class %%NAME%%IlaBound {
                     array[ii] = maximum;
                 }
             }
-        }
-
-        public Map<String, Object> getParameters() {
-            HashMap<String, Object> map = new HashMap<String, Object>();
-
-            map.put("name", "%%NAME%%IlaBound");
-            map.put("ila", getImmutableInfo(ila));
-            map.put("minimum", %%CREATE_IMMUTABLE_START%%minimum%%CREATE_IMMUTABLE_END%%);
-            map.put("maximum", %%CREATE_IMMUTABLE_START%%maximum%%CREATE_IMMUTABLE_END%%);
-            map.put("length", new Long(length()));
-
-            return (map);
         }
     }
 }

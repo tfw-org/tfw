@@ -1,9 +1,6 @@
 package tfw.immutable.ila.intila;
 
-import java.util.HashMap;
-import java.util.Map;
 import tfw.check.Argument;
-import tfw.immutable.ImmutableProxy;
 
 /**
  *
@@ -20,7 +17,7 @@ public final class IntIlaRamp {
         return new MyIntIla(startValue, increment, length);
     }
 
-    private static class MyIntIla extends AbstractIntIla implements ImmutableProxy {
+    private static class MyIntIla extends AbstractIntIla {
         private final int startValue;
         private final int increment;
 
@@ -47,17 +44,6 @@ public final class IntIlaRamp {
                     ++startInt, offset += stride, value += increment) {
                 array[offset] = value;
             }
-        }
-
-        public Map<String, Object> getParameters() {
-            HashMap<String, Object> map = new HashMap<String, Object>();
-
-            map.put("name", "IntIlaRamp");
-            map.put("length", new Long(length()));
-            map.put("startValue", new Integer(startValue));
-            map.put("increment", new Integer(increment));
-
-            return (map);
         }
     }
 }

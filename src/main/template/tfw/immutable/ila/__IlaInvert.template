@@ -1,11 +1,8 @@
 // doubleila,floatila
 package %%PACKAGE%%;
 
-import java.util.HashMap;
-import java.util.Map;
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
-import tfw.immutable.ImmutableProxy;
 
 /**
  *
@@ -22,7 +19,7 @@ public final class %%NAME%%IlaInvert {
         return new My%%NAME%%Ila(ila);
     }
 
-    private static class My%%NAME%%Ila extends Abstract%%NAME%%Ila implements ImmutableProxy {
+    private static class My%%NAME%%Ila extends Abstract%%NAME%%Ila {
         private final %%NAME%%Ila ila;
 
         My%%NAME%%Ila(%%NAME%%Ila ila) {
@@ -38,16 +35,6 @@ public final class %%NAME%%IlaInvert {
             for (int ii = offset; length > 0; ii += stride, --length) {
                 array[ii] = (%%TYPE%%) 1 / array[ii];
             }
-        }
-
-        public Map<String, Object> getParameters() {
-            HashMap<String, Object> map = new HashMap<String, Object>();
-
-            map.put("name", "%%NAME%%IlaInvert");
-            map.put("ila", getImmutableInfo(ila));
-            map.put("length", new Long(length()));
-
-            return (map);
         }
     }
 }
