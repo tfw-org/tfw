@@ -7,6 +7,7 @@ import java.util.TreeSet;
 import tfw.immutable.DataInvalidException;
 import tfw.immutable.ila.doubleila.DoubleIlaFromArray;
 import tfw.immutable.ila.longila.LongIla;
+import tfw.immutable.ila.longila.LongIlaUtil;
 import tfw.immutable.ila.objectila.ObjectIla;
 import tfw.immutable.ila.objectila.ObjectIlaFromArray;
 import tfw.tsm.Converter;
@@ -45,9 +46,17 @@ public class SimpleTreeLayoutConverter extends Converter {
         Object[] nodeClusterTos = null;
 
         try {
-            nodeClusters = ((ObjectIla) get(nodeClustersECD)).toArray();
-            nodeClusterFroms = ((ObjectIla) get(nodeClusterFromsECD)).toArray();
-            nodeClusterTos = ((ObjectIla) get(nodeClusterTosECD)).toArray();
+            final ObjectIla nodeClustersIla = (ObjectIla) get(nodeClustersECD);
+            final ObjectIla nodeClusterFromsIla = (ObjectIla) get(nodeClusterFromsECD);
+            final ObjectIla nodeClusterTosIla = (ObjectIla) get(nodeClusterTosECD);
+
+            nodeClusters = new Object[(int) nodeClustersIla.length()];
+            nodeClusterFroms = new Object[(int) nodeClusterFromsIla.length()];
+            nodeClusterTos = new Object[(int) nodeClusterTosIla.length()];
+
+            nodeClustersIla.toArray(nodeClusters, 0, 0, nodeClusters.length);
+            nodeClusterFromsIla.toArray(nodeClusterFroms, 0, 0, nodeClusterFroms.length);
+            nodeClusterTosIla.toArray(nodeClusterTos, 0, 0, nodeClusterTos.length);
         } catch (DataInvalidException e) {
             return;
         }
@@ -61,9 +70,9 @@ public class SimpleTreeLayoutConverter extends Converter {
             long[] nodeFroms = null;
 
             try {
-                nodes = ((LongIla) nodeClusters[i]).toArray();
-                nodeTos = ((LongIla) nodeClusterTos[i]).toArray();
-                nodeFroms = ((LongIla) nodeClusterFroms[i]).toArray();
+                nodes = LongIlaUtil.toArray((LongIla) nodeClusters[i]);
+                nodeTos = LongIlaUtil.toArray((LongIla) nodeClusterTos[i]);
+                nodeFroms = LongIlaUtil.toArray((LongIla) nodeClusterFroms[i]);
             } catch (DataInvalidException e) {
                 return;
             }

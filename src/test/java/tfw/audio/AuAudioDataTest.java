@@ -9,6 +9,7 @@ import tfw.audio.au.AuAudioDataFromNormalizedDoubleIla;
 import tfw.audio.au.NormalizedDoubleIlaFromAuAudioData;
 import tfw.immutable.ila.byteila.ByteIla;
 import tfw.immutable.ila.byteila.ByteIlaFromArray;
+import tfw.immutable.ila.byteila.ByteIlaUtil;
 import tfw.immutable.ila.doubleila.DoubleIla;
 
 class AuAudioDataTest {
@@ -29,7 +30,7 @@ class AuAudioDataTest {
                 NormalizedDoubleIlaFromAuAudioData.create(origByteIla, Au.SUN_MAGIC_NUMBER, Au.ISDN_U_LAW_8_BIT);
         ByteIla byteIla = AuAudioDataFromNormalizedDoubleIla.create(doubleIla, Au.ISDN_U_LAW_8_BIT);
 
-        byte[] b = byteIla.toArray();
+        byte[] b = ByteIlaUtil.toArray(byteIla);
 
         assertTrue(Arrays.equals(finalByteArray, b));
     }
@@ -51,7 +52,7 @@ class AuAudioDataTest {
 
         ByteIla byteIla = AuAudioDataFromNormalizedDoubleIla.create(doubleIla, Au.LINEAR_8_BIT);
 
-        byte[] b = byteIla.toArray();
+        byte[] b = ByteIlaUtil.toArray(byteIla);
 
         assertTrue(Arrays.equals(finalByteArray, b));
     }
@@ -69,7 +70,7 @@ class AuAudioDataTest {
                 NormalizedDoubleIlaFromAuAudioData.create(origByteIla, Au.SUN_MAGIC_NUMBER, Au.ISDN_A_LAW_8_BIT);
         ByteIla byteIla = AuAudioDataFromNormalizedDoubleIla.create(doubleIla, Au.ISDN_A_LAW_8_BIT);
 
-        byte[] b = byteIla.toArray();
+        byte[] b = ByteIlaUtil.toArray(byteIla);
 
         assertTrue(Arrays.equals(origByteArray, b));
     }

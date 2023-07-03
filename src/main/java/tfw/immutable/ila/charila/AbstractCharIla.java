@@ -15,21 +15,6 @@ public abstract class AbstractCharIla extends AbstractIla implements CharIla {
         super(length);
     }
 
-    public final char[] toArray() throws DataInvalidException {
-        if (length() > (long) Integer.MAX_VALUE)
-            throw new ArrayIndexOutOfBoundsException("Ila too large for native array");
-
-        return toArray((long) 0, (int) length());
-    }
-
-    public final char[] toArray(long start, int length) throws DataInvalidException {
-        char[] result = new char[length];
-
-        toArray(result, 0, start, length);
-
-        return result;
-    }
-
     public final void toArray(char[] array, int offset, long start, int length) throws DataInvalidException {
         toArray(array, offset, 1, start, length);
     }

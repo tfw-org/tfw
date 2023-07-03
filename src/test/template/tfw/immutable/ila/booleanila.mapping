@@ -1,3 +1,4 @@
+%%UTIL%% = BooleanIlaUtilCheck.checkAll(actual, epsilon);\n\ \ \ \ \ \ \ \ 
 %%TYPE%% = boolean
 %%NAME%% = Boolean
 %%PACKAGE%% = tfw.immutable.ila.booleanila

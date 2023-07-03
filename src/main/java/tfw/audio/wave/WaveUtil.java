@@ -7,6 +7,7 @@ import tfw.immutable.DataInvalidException;
 import tfw.immutable.ila.byteila.ByteIla;
 import tfw.immutable.ila.byteila.ByteIlaSegment;
 import tfw.immutable.ila.byteila.ByteIlaSwap;
+import tfw.immutable.ila.byteila.ByteIlaUtil;
 
 public final class WaveUtil {
     private WaveUtil() {}
@@ -15,7 +16,7 @@ public final class WaveUtil {
         if (swap) {
             byteIla = ByteIlaSwap.create(byteIla, 4);
         }
-        byte[] b = ByteIlaSegment.create(byteIla, offset, 4).toArray();
+        byte[] b = ByteIlaUtil.toArray(ByteIlaSegment.create(byteIla, offset, 4));
         ByteArrayInputStream bais = new ByteArrayInputStream(b);
         DataInputStream dis = new DataInputStream(bais);
 
@@ -28,7 +29,7 @@ public final class WaveUtil {
 
     public static int intFromUnsignedTwoBytes(ByteIla byteIla, long offset) throws DataInvalidException {
         byteIla = ByteIlaSwap.create(byteIla, 2);
-        byte[] b = ByteIlaSegment.create(byteIla, offset, 2).toArray();
+        byte[] b = ByteIlaUtil.toArray(ByteIlaSegment.create(byteIla, offset, 2));
         ByteArrayInputStream bais = new ByteArrayInputStream(b);
         DataInputStream dis = new DataInputStream(bais);
 

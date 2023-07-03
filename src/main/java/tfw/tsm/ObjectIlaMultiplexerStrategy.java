@@ -27,7 +27,9 @@ public class ObjectIlaMultiplexerStrategy implements MultiplexerStrategy {
 
         MyMultiStateAccessor(ObjectIla ila) {
             try {
-                this.objs = ila.toArray();
+                this.objs = new Object[(int) ila.length()];
+
+                ila.toArray(objs, 0, 0, objs.length);
             } catch (DataInvalidException e) {
                 throw new RuntimeException("Exception occurred accessing multiplexed state:" + e.getMessage(), e);
             }
@@ -54,7 +56,10 @@ public class ObjectIlaMultiplexerStrategy implements MultiplexerStrategy {
             array = new Object[0];
         } else {
             try {
-                array = ((ObjectIla) originalMultiState).toArray();
+                ObjectIla objectIla = (ObjectIla) originalMultiState;
+                array = new Object[(int) objectIla.length()];
+
+                objectIla.toArray(array, 0, 0, array.length);
             } catch (DataInvalidException e) {
                 throw new RuntimeException("Exception occurred accessing multiplexed state:" + e.getMessage(), e);
             }

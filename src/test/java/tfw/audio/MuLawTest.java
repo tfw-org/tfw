@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import tfw.audio.byteila.MuLawByteIlaFromLinearShortIla;
 import tfw.audio.shortila.LinearShortIlaFromMuLawByteIla;
 import tfw.immutable.ila.byteila.ByteIla;
+import tfw.immutable.ila.byteila.ByteIlaUtil;
 import tfw.immutable.ila.shortila.ShortIla;
 import tfw.immutable.ila.shortila.ShortIlaFromArray;
 
@@ -27,8 +28,8 @@ class MuLawTest {
 
         ByteIla secondMuLawIla = MuLawByteIlaFromLinearShortIla.create(secondLinearIla);
 
-        byte[] firstMuLawArray = firstMuLawIla.toArray();
-        byte[] secondMuLawArray = secondMuLawIla.toArray();
+        byte[] firstMuLawArray = ByteIlaUtil.toArray(firstMuLawIla);
+        byte[] secondMuLawArray = ByteIlaUtil.toArray(secondMuLawIla);
 
         assertTrue(Arrays.equals(firstMuLawArray, secondMuLawArray));
     }

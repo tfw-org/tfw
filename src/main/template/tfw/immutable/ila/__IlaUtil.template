@@ -1,0 +1,21 @@
+// booleanila,byteila,charila,doubleila,floatila,intila,longila,shortila
+package %%PACKAGE%%;
+
+import tfw.immutable.DataInvalidException;
+
+public final class %%NAME%%IlaUtil {
+    private %%NAME%%IlaUtil() {}
+
+    public static final %%TYPE%%[] toArray(final %%NAME%%Ila %%TYPE%%Ila) throws DataInvalidException {
+        return toArray(%%TYPE%%Ila, 0, (int) Math.min(%%TYPE%%Ila.length(), Integer.MAX_VALUE));
+    }
+
+    public static final %%TYPE%%[] toArray(final %%NAME%%Ila %%TYPE%%Ila, final long start, final int length)
+            throws DataInvalidException {
+        %%TYPE%%[] result = new %%TYPE%%[length];
+
+        %%TYPE%%Ila.toArray(result, 0, start, length);
+
+        return result;
+    }
+}

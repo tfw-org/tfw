@@ -7,12 +7,13 @@ import java.util.Arrays;
 import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.doubleila.DoubleIla;
 import tfw.immutable.ila.doubleila.DoubleIlaRamp;
+import tfw.immutable.ila.doubleila.DoubleIlaUtil;
 
 class TakeSkipDoubleIlmTest {
     @Test
     void testTakeSkipDoubleIlm() throws Exception {
         DoubleIla doubleIla = DoubleIlaRamp.create(-10.0, 1.0, 20);
-        double[] doubleArray = doubleIla.toArray();
+        double[] doubleArray = DoubleIlaUtil.toArray(doubleIla);
 
         DoubleIlm takeSkip1 = TakeSkipDoubleIlm.create(doubleIla, 10, 10);
         double[] takeSkip1Array = takeSkip1.toArray();

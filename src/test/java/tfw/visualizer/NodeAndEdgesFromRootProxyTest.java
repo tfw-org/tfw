@@ -129,7 +129,9 @@ class NodeAndEdgesFromRootProxyTest {
             new ValidatorProxy(validator)
         };
         Object[] nodesObjectIlaArray =
-                nodeAndEdgesFromRootProxy.getNodesObjectIla().toArray();
+                new Object[(int) nodeAndEdgesFromRootProxy.getNodesObjectIla().length()];
+
+        nodeAndEdgesFromRootProxy.getNodesObjectIla().toArray(nodesObjectIlaArray, 0, 0, nodesObjectIlaArray.length);
 
         Arrays.sort(nodesArray, ProxyNameComparator.INSTANCE);
         Arrays.sort(nodesObjectIlaArray, ProxyNameComparator.INSTANCE);
