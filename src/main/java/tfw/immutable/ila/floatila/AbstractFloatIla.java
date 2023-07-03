@@ -15,21 +15,6 @@ public abstract class AbstractFloatIla extends AbstractIla implements FloatIla {
         super(length);
     }
 
-    public final float[] toArray() throws DataInvalidException {
-        if (length() > (long) Integer.MAX_VALUE)
-            throw new ArrayIndexOutOfBoundsException("Ila too large for native array");
-
-        return toArray((long) 0, (int) length());
-    }
-
-    public final float[] toArray(long start, int length) throws DataInvalidException {
-        float[] result = new float[length];
-
-        toArray(result, 0, start, length);
-
-        return result;
-    }
-
     public final void toArray(float[] array, int offset, long start, int length) throws DataInvalidException {
         toArray(array, offset, 1, start, length);
     }

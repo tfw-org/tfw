@@ -16,21 +16,6 @@ public abstract class Abstract%%NAME%%Ila extends AbstractIla implements %%NAME%
         super(length);
     }
 
-    public final %%TYPE%%[] toArray() throws DataInvalidException {
-        if (length() > (long) Integer.MAX_VALUE)
-            throw new ArrayIndexOutOfBoundsException("Ila too large for native array");
-
-        return toArray((long) 0, (int) length());
-    }
-
-    public final %%TYPE%%[] toArray(long start, int length) throws DataInvalidException {
-        %%TYPE%%[] result = new %%TYPE%%[length];
-
-        toArray(result, 0, start, length);
-
-        return result;
-    }
-
     public final void toArray(%%TYPE%%[] array, int offset, long start, int length) throws DataInvalidException {
         toArray(array, offset, 1, start, length);
     }

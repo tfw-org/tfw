@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import tfw.audio.au.Au;
 import tfw.immutable.ila.byteila.ByteIla;
 import tfw.immutable.ila.byteila.ByteIlaFromArray;
+import tfw.immutable.ila.byteila.ByteIlaUtil;
 
 class AuTest {
     @Test
@@ -23,7 +24,7 @@ class AuTest {
 
         Au au2 = new Au(au1.encoding, au1.sampleRate, au1.numberOfChannels, au1.annotation, au1.audioData);
 
-        byte[] auBytes2 = au2.auByteData.toArray();
+        byte[] auBytes2 = ByteIlaUtil.toArray(au2.auByteData);
 
         assertTrue(Arrays.equals(auBytes1, auBytes2), "auBytes1 != auBytes2");
     }

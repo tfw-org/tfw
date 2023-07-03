@@ -15,21 +15,6 @@ public abstract class AbstractIntIla extends AbstractIla implements IntIla {
         super(length);
     }
 
-    public final int[] toArray() throws DataInvalidException {
-        if (length() > (long) Integer.MAX_VALUE)
-            throw new ArrayIndexOutOfBoundsException("Ila too large for native array");
-
-        return toArray((long) 0, (int) length());
-    }
-
-    public final int[] toArray(long start, int length) throws DataInvalidException {
-        int[] result = new int[length];
-
-        toArray(result, 0, start, length);
-
-        return result;
-    }
-
     public final void toArray(int[] array, int offset, long start, int length) throws DataInvalidException {
         toArray(array, offset, 1, start, length);
     }

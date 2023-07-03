@@ -13,97 +13,12 @@ public final class %%NAME%%IlaCheck {
     public static void checkAll(
             %%NAME%%Ila target, %%NAME%%Ila actual, int addlOffsetLength, int maxAbsStride, %%TYPE%% epsilon)
             throws Exception {
-        checkZeroArgImmutability(actual);
-        checkTwoArgImmutability(actual, epsilon);
-        checkTwoFourEquivalence(actual, epsilon);
-        checkFourFiveEquivalence(actual, addlOffsetLength, epsilon);
+        %%UTIL%%checkFourFiveEquivalence(actual, addlOffsetLength, epsilon);
         checkCorrectness(target, actual, addlOffsetLength, maxAbsStride, epsilon);
     }
 
-    public static void checkWithoutCorrectness(%%NAME%%Ila ila, int offsetLength, %%TYPE%% epsilon) throws Exception {
-        checkZeroArgImmutability(ila);
-        checkTwoArgImmutability(ila, epsilon);
-        checkTwoFourEquivalence(ila, epsilon);
-        checkFourFiveEquivalence(ila, offsetLength, epsilon);
-    }
-
-    public static void checkZeroArgImmutability(%%NAME%%Ila ila) throws Exception {
-        final long firstLength = ila.length();
-        final %%TYPE%%[] firstArray = ila.toArray();
-        final long secondLength = ila.length();
-        final %%TYPE%%[] secondArray = ila.toArray();
-        final long thirdLength = ila.length();
-        final %%TYPE%%[] thirdArray = ila.toArray();
-        final long fourthLength = ila.length();
-
-        if (firstArray.length != firstLength) throw new Exception("firstArray.length != firstLength");
-        if (secondArray.length != secondLength) throw new Exception("secondArray.length != secondLength");
-        if (thirdArray.length != thirdLength) throw new Exception("thirdArray.length != thirdLength");
-
-        if (firstLength != secondLength) throw new Exception("firstLength != secondLength");
-        if (secondLength != thirdLength) throw new Exception("secondLength != thirdLength");
-        if (thirdLength != fourthLength) throw new Exception("thirdLength != fourthLength");
-
-        %%RANDOM_INIT%%for (int ii = 0; ii < firstLength; ++ii) {
-            secondArray[ii] = %%RANDOM_VALUE%%;
-        }
-
-        for (int ii = 0; ii < firstLength; ++ii) {
-            if (firstArray[ii] != thirdArray[ii])
-                throw new Exception("firstArray[" + ii + "] ("
-                        + firstArray[ii] + ") != thirdArray["
-                        + ii + "] (" + thirdArray[ii] + ")");
-        }
-    }
-
-    // also performs zero-two equivalence
-    public static void checkTwoArgImmutability(%%NAME%%Ila ila, %%TYPE%% epsilon) throws Exception {
-        if (epsilon != %%DEFAULT_VALUE%%) {
-            throw new IllegalArgumentException("epsilon != " + (%%DEFAULT_VALUE%%) + " not allowed");
-        } else {
-            final int ilaLength = ila.length() <= Integer.MAX_VALUE ? (int) ila.length() : Integer.MAX_VALUE;
-            final %%TYPE%%[] baseline = ila.toArray(0, ilaLength);
-            if (baseline.length != ilaLength) throw new Exception("baseline.length != ilaLength");
-            for (int length = 1; length <= ilaLength; ++length) {
-                for (long start = 0; start < ilaLength - length + 1; ++start) {
-                    final %%TYPE%%[] subset = ila.toArray(start, length);
-                    if (subset.length != length) throw new Exception("subset.length != length");
-                    for (int ii = 0; ii < subset.length; ++ii) {
-                        if (!(baseline[ii + (int) start]%%IS_EQUALS_START%%subset[ii]%%IS_EQUALS_END%%))
-                            throw new Exception("subset[" + ii + "] ("
-                                    + subset[ii] + ") !~ baseline["
-                                    + (ii + start) + "] ("
-                                    + baseline[ii + (int) start]
-                                    + ") {length=" + length
-                                    + ",start=" + start + "}");
-                    }
-                }
-            }
-        }
-    }
-
-    public static void checkTwoFourEquivalence(%%NAME%%Ila ila, %%TYPE%% epsilon) throws Exception {
-        if (epsilon != %%DEFAULT_VALUE%%) {
-            throw new IllegalArgumentException("epsilon != " + (%%DEFAULT_VALUE%%) + " not allowed");
-        } else {
-            final int ilaLength = ila.length() <= Integer.MAX_VALUE ? (int) ila.length() : Integer.MAX_VALUE;
-            final %%TYPE%%[] four = new %%TYPE%%[ilaLength];
-            for (int length = 1; length <= ilaLength; ++length) {
-                for (long start = 0; start < ilaLength - length + 1; ++start) {
-                    final %%TYPE%%[] two = ila.toArray(start, length);
-                    ila.toArray(four, 0, start, length);
-                    for (int ii = 0; ii < length; ++ii) {
-                        if (!(four[ii]%%IS_EQUALS_START%%two[ii]%%IS_EQUALS_END%%))
-                            throw new Exception("four[" + ii + "] ("
-                                    + four[ii] + ") !~ two["
-                                    + ii + "] ("
-                                    + two[ii]
-                                    + ") {length=" + length
-                                    + ",start=" + start + "}");
-                    }
-                }
-            }
-        }
+    public static void checkWithoutCorrectness(%%NAME%%Ila actual, int offsetLength, %%TYPE%% epsilon) throws Exception {
+        %%UTIL%%checkFourFiveEquivalence(actual, offsetLength, epsilon);
     }
 
     public static void checkFourFiveEquivalence(%%NAME%%Ila ila, int offsetLength, %%TYPE%% epsilon) throws Exception {

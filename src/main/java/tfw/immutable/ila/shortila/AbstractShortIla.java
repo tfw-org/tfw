@@ -15,21 +15,6 @@ public abstract class AbstractShortIla extends AbstractIla implements ShortIla {
         super(length);
     }
 
-    public final short[] toArray() throws DataInvalidException {
-        if (length() > (long) Integer.MAX_VALUE)
-            throw new ArrayIndexOutOfBoundsException("Ila too large for native array");
-
-        return toArray((long) 0, (int) length());
-    }
-
-    public final short[] toArray(long start, int length) throws DataInvalidException {
-        short[] result = new short[length];
-
-        toArray(result, 0, start, length);
-
-        return result;
-    }
-
     public final void toArray(short[] array, int offset, long start, int length) throws DataInvalidException {
         toArray(array, offset, 1, start, length);
     }

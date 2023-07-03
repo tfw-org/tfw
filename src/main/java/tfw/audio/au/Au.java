@@ -7,6 +7,7 @@ import tfw.immutable.ila.byteila.ByteIla;
 import tfw.immutable.ila.byteila.ByteIlaConcatenate;
 import tfw.immutable.ila.byteila.ByteIlaFromArray;
 import tfw.immutable.ila.byteila.ByteIlaSegment;
+import tfw.immutable.ila.byteila.ByteIlaUtil;
 
 /**
  * The Au class represents a valid AU formatted set of bytes along with
@@ -122,7 +123,7 @@ public final class Au {
 
         auByteData = byteIla;
 
-        magicNumber = unsignedIntFromBytes(byteIla.toArray(0, 4), 0, SUN_MAGIC_NUMBER);
+        magicNumber = unsignedIntFromBytes(ByteIlaUtil.toArray(byteIla, 0, 4), 0, SUN_MAGIC_NUMBER);
 
         if (magicNumber != SUN_MAGIC_NUMBER
                 && magicNumber != DEC_MAGIC_NUMBER
@@ -131,7 +132,7 @@ public final class Au {
             throw new IOException("Unrecognized AU Magic Number!");
         }
 
-        byte[] header = byteIla.toArray(4, 20);
+        byte[] header = ByteIlaUtil.toArray(byteIla, 4, 20);
 
         offset = unsignedIntFromBytes(header, 0, magicNumber);
 

@@ -12,97 +12,12 @@ public final class ObjectIlaCheck {
     public static void checkAll(
             ObjectIla target, ObjectIla actual, int addlOffsetLength, int maxAbsStride, Object epsilon)
             throws Exception {
-        checkZeroArgImmutability(actual);
-        checkTwoArgImmutability(actual, epsilon);
-        checkTwoFourEquivalence(actual, epsilon);
         checkFourFiveEquivalence(actual, addlOffsetLength, epsilon);
         checkCorrectness(target, actual, addlOffsetLength, maxAbsStride, epsilon);
     }
 
-    public static void checkWithoutCorrectness(ObjectIla ila, int offsetLength, Object epsilon) throws Exception {
-        checkZeroArgImmutability(ila);
-        checkTwoArgImmutability(ila, epsilon);
-        checkTwoFourEquivalence(ila, epsilon);
-        checkFourFiveEquivalence(ila, offsetLength, epsilon);
-    }
-
-    public static void checkZeroArgImmutability(ObjectIla ila) throws Exception {
-        final long firstLength = ila.length();
-        final Object[] firstArray = ila.toArray();
-        final long secondLength = ila.length();
-        final Object[] secondArray = ila.toArray();
-        final long thirdLength = ila.length();
-        final Object[] thirdArray = ila.toArray();
-        final long fourthLength = ila.length();
-
-        if (firstArray.length != firstLength) throw new Exception("firstArray.length != firstLength");
-        if (secondArray.length != secondLength) throw new Exception("secondArray.length != secondLength");
-        if (thirdArray.length != thirdLength) throw new Exception("thirdArray.length != thirdLength");
-
-        if (firstLength != secondLength) throw new Exception("firstLength != secondLength");
-        if (secondLength != thirdLength) throw new Exception("secondLength != thirdLength");
-        if (thirdLength != fourthLength) throw new Exception("thirdLength != fourthLength");
-
-        for (int ii = 0; ii < firstLength; ++ii) {
-            secondArray[ii] = new Object();
-        }
-
-        for (int ii = 0; ii < firstLength; ++ii) {
-            if (firstArray[ii] != thirdArray[ii])
-                throw new Exception("firstArray[" + ii + "] ("
-                        + firstArray[ii] + ") != thirdArray["
-                        + ii + "] (" + thirdArray[ii] + ")");
-        }
-    }
-
-    // also performs zero-two equivalence
-    public static void checkTwoArgImmutability(ObjectIla ila, Object epsilon) throws Exception {
-        if (epsilon != Object.class) {
-            throw new IllegalArgumentException("epsilon != " + (Object.class) + " not allowed");
-        } else {
-            final int ilaLength = ila.length() <= Integer.MAX_VALUE ? (int) ila.length() : Integer.MAX_VALUE;
-            final Object[] baseline = ila.toArray(0, ilaLength);
-            if (baseline.length != ilaLength) throw new Exception("baseline.length != ilaLength");
-            for (int length = 1; length <= ilaLength; ++length) {
-                for (long start = 0; start < ilaLength - length + 1; ++start) {
-                    final Object[] subset = ila.toArray(start, length);
-                    if (subset.length != length) throw new Exception("subset.length != length");
-                    for (int ii = 0; ii < subset.length; ++ii) {
-                        if (!(baseline[ii + (int) start].equals(subset[ii])))
-                            throw new Exception("subset[" + ii + "] ("
-                                    + subset[ii] + ") !~ baseline["
-                                    + (ii + start) + "] ("
-                                    + baseline[ii + (int) start]
-                                    + ") {length=" + length
-                                    + ",start=" + start + "}");
-                    }
-                }
-            }
-        }
-    }
-
-    public static void checkTwoFourEquivalence(ObjectIla ila, Object epsilon) throws Exception {
-        if (epsilon != Object.class) {
-            throw new IllegalArgumentException("epsilon != " + (Object.class) + " not allowed");
-        } else {
-            final int ilaLength = ila.length() <= Integer.MAX_VALUE ? (int) ila.length() : Integer.MAX_VALUE;
-            final Object[] four = new Object[ilaLength];
-            for (int length = 1; length <= ilaLength; ++length) {
-                for (long start = 0; start < ilaLength - length + 1; ++start) {
-                    final Object[] two = ila.toArray(start, length);
-                    ila.toArray(four, 0, start, length);
-                    for (int ii = 0; ii < length; ++ii) {
-                        if (!(four[ii].equals(two[ii])))
-                            throw new Exception("four[" + ii + "] ("
-                                    + four[ii] + ") !~ two["
-                                    + ii + "] ("
-                                    + two[ii]
-                                    + ") {length=" + length
-                                    + ",start=" + start + "}");
-                    }
-                }
-            }
-        }
+    public static void checkWithoutCorrectness(ObjectIla actual, int offsetLength, Object epsilon) throws Exception {
+        checkFourFiveEquivalence(actual, offsetLength, epsilon);
     }
 
     public static void checkFourFiveEquivalence(ObjectIla ila, int offsetLength, Object epsilon) throws Exception {

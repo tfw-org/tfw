@@ -5,6 +5,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.JList;
 import tfw.immutable.DataInvalidException;
 import tfw.immutable.ila.intila.IntIla;
+import tfw.immutable.ila.intila.IntIlaUtil;
 import tfw.immutable.ila.objectila.ObjectIla;
 import tfw.tsm.Commit;
 import tfw.tsm.Initiator;
@@ -40,7 +41,10 @@ public class SelectionAndListCommit extends Commit {
     protected void commit() {
         if (isStateChanged(listECD)) {
             try {
-                final Object[] elements = ((ObjectIla) get(listECD)).toArray();
+                final ObjectIla elementsIla = (ObjectIla) get(listECD);
+                final Object[] elements = new Object[(int) elementsIla.length()];
+
+                elementsIla.toArray(elements, 0, 0, elements.length);
 
                 EventQueue.invokeLater(new Runnable() {
                     public void run() {
@@ -56,7 +60,10 @@ public class SelectionAndListCommit extends Commit {
         }
         if (selectedItemsECD != null) {
             try {
-                final Object[] selectedItems = ((ObjectIla) get(selectedItemsECD)).toArray();
+                final ObjectIla selectedItemsIla = (ObjectIla) get(selectedItemsECD);
+                final Object[] selectedItems = new Object[(int) selectedItemsIla.length()];
+
+                selectedItemsIla.toArray(selectedItems, 0, 0, selectedItems.length);
 
                 EventQueue.invokeLater(new Runnable() {
                     public void run() {
@@ -73,7 +80,7 @@ public class SelectionAndListCommit extends Commit {
         }
         if (selectedIndexesECD != null) {
             try {
-                final int[] selectedIndex = ((IntIla) get(selectedIndexesECD)).toArray();
+                final int[] selectedIndex = IntIlaUtil.toArray((IntIla) get(selectedIndexesECD));
 
                 EventQueue.invokeLater(new Runnable() {
                     public void run() {

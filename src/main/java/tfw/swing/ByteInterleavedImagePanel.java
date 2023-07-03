@@ -9,6 +9,7 @@ import java.awt.image.WritableRaster;
 import tfw.awt.ecd.ColorModelECD;
 import tfw.immutable.DataInvalidException;
 import tfw.immutable.ila.byteila.ByteIla;
+import tfw.immutable.ila.byteila.ByteIlaUtil;
 import tfw.immutable.ilm.byteilm.ByteIlm;
 import tfw.tsm.Branch;
 import tfw.tsm.Commit;
@@ -56,7 +57,7 @@ public class ByteInterleavedImagePanel extends JPanelBB {
             DataBufferByte dbb = null;
 
             try {
-                dbb = new DataBufferByte(byteIla.toArray(), (int) byteIla.length());
+                dbb = new DataBufferByte(ByteIlaUtil.toArray(byteIla), (int) byteIla.length());
             } catch (DataInvalidException die) {
                 return;
             }

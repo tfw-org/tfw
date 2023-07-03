@@ -2,6 +2,7 @@ package tfw.visualizer;
 
 import tfw.immutable.DataInvalidException;
 import tfw.immutable.ila.booleanila.BooleanIla;
+import tfw.immutable.ila.booleanila.BooleanIlaUtil;
 import tfw.tsm.Converter;
 import tfw.tsm.ecd.BooleanECD;
 import tfw.tsm.ecd.IntegerECD;
@@ -60,7 +61,7 @@ public class MoveSelectionConverter extends Converter {
             int[] rights = null;
 
             try {
-                selectedNodes = ((BooleanIla) get(selectedNodesECD)).toArray();
+                selectedNodes = BooleanIlaUtil.toArray((BooleanIla) get(selectedNodesECD));
                 //				tlbr = ((IntIlm)get(pixelNodeTLBRECD)).toArray();
 
                 tops = tlbr[0];

@@ -3,6 +3,7 @@ package tfw.visualizer.graph;
 import java.util.HashSet;
 import tfw.immutable.DataInvalidException;
 import tfw.immutable.ila.booleanila.BooleanIla;
+import tfw.immutable.ila.booleanila.BooleanIlaUtil;
 
 public class GraphSelectionFilter {
     private GraphSelectionFilter() {}
@@ -42,7 +43,7 @@ public class GraphSelectionFilter {
             Object[] allNodes = new Object[(int) graph.nodesLength()];
             Object[] allFroms = new Object[(int) graph.edgesLength()];
             Object[] allTos = new Object[(int) graph.edgesLength()];
-            boolean[] selectedNodesArray = selectedNodes.toArray();
+            boolean[] selectedNodesArray = BooleanIlaUtil.toArray(selectedNodes);
 
             graph.toArray(allNodes, 0, 0, (int) graph.nodesLength(), allFroms, allTos, 0, 0, (int) graph.edgesLength());
 

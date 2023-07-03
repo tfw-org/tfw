@@ -14,97 +14,14 @@ public final class FloatIlaCheck {
     public static void checkAll(
             final FloatIla target, final FloatIla actual, int addlOffsetLength, int maxAbsStride, float epsilon)
             throws Exception {
-        checkZeroArgImmutability(actual);
-        checkTwoArgImmutability(actual, epsilon);
-        checkTwoFourEquivalence(actual, epsilon);
+        FloatIlaUtilCheck.checkAll(actual, epsilon);
         checkFourFiveEquivalence(actual, addlOffsetLength, epsilon);
         checkCorrectness(target, actual, addlOffsetLength, maxAbsStride, epsilon);
     }
 
     public static void checkWithoutCorrectness(FloatIla ila, int offsetLength, float epsilon) throws Exception {
-        checkZeroArgImmutability(ila);
-        checkTwoArgImmutability(ila, epsilon);
-        checkTwoFourEquivalence(ila, epsilon);
+        FloatIlaUtilCheck.checkAll(ila, epsilon);
         checkFourFiveEquivalence(ila, offsetLength, epsilon);
-    }
-
-    public static void checkZeroArgImmutability(FloatIla ila) throws Exception {
-        final long firstLength = ila.length();
-        final float[] firstArray = ila.toArray();
-        final long secondLength = ila.length();
-        final float[] secondArray = ila.toArray();
-        final long thirdLength = ila.length();
-        final float[] thirdArray = ila.toArray();
-        final long fourthLength = ila.length();
-
-        if (firstArray.length != firstLength) throw new Exception("firstArray.length != firstLength");
-        if (secondArray.length != secondLength) throw new Exception("secondArray.length != secondLength");
-        if (thirdArray.length != thirdLength) throw new Exception("thirdArray.length != thirdLength");
-
-        if (firstLength != secondLength) throw new Exception("firstLength != secondLength");
-        if (secondLength != thirdLength) throw new Exception("secondLength != thirdLength");
-        if (thirdLength != fourthLength) throw new Exception("thirdLength != fourthLength");
-
-        final Random random = new Random(0);
-
-        for (int ii = 0; ii < firstLength; ++ii) {
-            secondArray[ii] = random.nextFloat();
-        }
-
-        for (int ii = 0; ii < firstLength; ++ii) {
-            if (firstArray[ii] != thirdArray[ii])
-                throw new Exception("firstArray[" + ii + "] ("
-                        + firstArray[ii] + ") != thirdArray["
-                        + ii + "] (" + thirdArray[ii] + ")");
-        }
-    }
-
-    // also performs zero-two equivalence
-    public static void checkTwoArgImmutability(FloatIla ila, float epsilon) throws Exception {
-        final float eps = epsilon < 0.0 ? -epsilon : epsilon;
-        final float neps = -eps;
-        final int ilaLength = ila.length() <= Integer.MAX_VALUE ? (int) ila.length() : Integer.MAX_VALUE;
-        final float[] baseline = ila.toArray(0, ilaLength);
-        if (baseline.length != ilaLength) throw new Exception("baseline.length != ilaLength");
-        for (int length = 1; length <= ilaLength; ++length) {
-            for (long start = 0; start < ilaLength - length + 1; ++start) {
-                final float[] subset = ila.toArray(start, length);
-                if (subset.length != length) throw new Exception("subset.length != length");
-                for (int ii = 0; ii < subset.length; ++ii) {
-                    float delta = (baseline[ii + (int) start] - subset[ii]);
-                    if (!(neps <= delta && delta <= eps))
-                        throw new Exception("subset[" + ii + "] ("
-                                + subset[ii] + ") !~ baseline["
-                                + (ii + start) + "] ("
-                                + baseline[ii + (int) start]
-                                + ") {length=" + length
-                                + ",start=" + start + "}");
-                }
-            }
-        }
-    }
-
-    public static void checkTwoFourEquivalence(FloatIla ila, float epsilon) throws Exception {
-        final float eps = epsilon < 0.0 ? -epsilon : epsilon;
-        final float neps = -eps;
-        final int ilaLength = ila.length() <= Integer.MAX_VALUE ? (int) ila.length() : Integer.MAX_VALUE;
-        final float[] four = new float[ilaLength];
-        for (int length = 1; length <= ilaLength; ++length) {
-            for (long start = 0; start < ilaLength - length + 1; ++start) {
-                final float[] two = ila.toArray(start, length);
-                ila.toArray(four, 0, start, length);
-                for (int ii = 0; ii < length; ++ii) {
-                    float delta = (four[ii] - two[ii]);
-                    if (!(neps <= delta && delta <= eps))
-                        throw new Exception("four[" + ii + "] ("
-                                + four[ii] + ") !~ two["
-                                + ii + "] ("
-                                + two[ii]
-                                + ") {length=" + length
-                                + ",start=" + start + "}");
-                }
-            }
-        }
     }
 
     public static void checkFourFiveEquivalence(FloatIla ila, int offsetLength, float epsilon) throws Exception {

@@ -8,6 +8,7 @@ import tfw.awt.graphic.SetColorGraphic;
 import tfw.awt.graphic.SetStrokeGraphic;
 import tfw.immutable.DataInvalidException;
 import tfw.immutable.ila.booleanila.BooleanIla;
+import tfw.immutable.ila.booleanila.BooleanIlaUtil;
 import tfw.immutable.ilm.intilm.IntIlm;
 import tfw.tsm.Converter;
 import tfw.tsm.ecd.ObjectECD;
@@ -39,7 +40,7 @@ public class SelectionToGraphicConverter extends Converter {
         Graphic graphic = SetStrokeGraphic.create(SetColorGraphic.create(null, Color.red), new BasicStroke(3.0f));
 
         try {
-            selectedNodes = ((BooleanIla) get(selectedNodesECD)).toArray();
+            selectedNodes = BooleanIlaUtil.toArray((BooleanIla) get(selectedNodesECD));
 
             IntIlm intIlm = (IntIlm) get(pixelNodeTLBRECD);
             tlbr = intIlm.toArray();

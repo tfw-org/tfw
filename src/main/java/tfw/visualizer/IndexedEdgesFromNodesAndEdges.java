@@ -22,36 +22,24 @@ public class IndexedEdgesFromNodesAndEdges {
             return (edges.length());
         }
 
-        public long[] toArray() throws DataInvalidException {
-            Object[] nodeArray = nodes.toArray();
-            Object[] edgeArray = edges.toArray();
-            long[] indexArray = new long[edgeArray.length];
-
-            createIndexArray(nodeArray, edgeArray, indexArray, 0, 1);
-
-            return (indexArray);
-        }
-
-        public long[] toArray(long start, int length) throws DataInvalidException {
-            Object[] nodeArray = nodes.toArray();
-            Object[] edgeArray = edges.toArray(start, length);
-            long[] indexArray = new long[edgeArray.length];
-
-            createIndexArray(nodeArray, edgeArray, indexArray, 0, 1);
-
-            return (indexArray);
-        }
-
+        @Override
         public void toArray(long[] array, int offset, long start, int length) throws DataInvalidException {
-            Object[] nodeArray = nodes.toArray();
-            Object[] edgeArray = edges.toArray(start, length);
+            final Object[] nodeArray = new Object[(int) nodes.length()];
+            final Object[] edgeArray = new Object[length];
+
+            nodes.toArray(nodeArray, 0, 0, nodeArray.length);
+            edges.toArray(edgeArray, 0, start, edgeArray.length);
 
             createIndexArray(nodeArray, edgeArray, array, offset, 1);
         }
 
+        @Override
         public void toArray(long[] array, int offset, int stride, long start, int length) throws DataInvalidException {
-            Object[] nodeArray = nodes.toArray();
-            Object[] edgeArray = edges.toArray(start, length);
+            final Object[] nodeArray = new Object[(int) nodes.length()];
+            final Object[] edgeArray = new Object[length];
+
+            nodes.toArray(nodeArray, 0, 0, nodeArray.length);
+            edges.toArray(edgeArray, 0, start, edgeArray.length);
 
             createIndexArray(nodeArray, edgeArray, array, offset, stride);
         }
