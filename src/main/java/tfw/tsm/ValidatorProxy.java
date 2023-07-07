@@ -16,7 +16,7 @@ public final class ValidatorProxy implements Proxy {
     }
 
     public SinkProxy[] getSinkProxies() {
-        Object[] sinks = (Object[]) validator.sinks.values().toArray();
+        Object[] sinks = validator.sinks.values().toArray();
         SinkProxy[] sp = new SinkProxy[sinks.length];
 
         for (int i = 0; i < sinks.length; i++) {

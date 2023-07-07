@@ -44,7 +44,7 @@ public final class StringIlaDecimate {
                     new StringIlaIterator(StringIlaSegment.create(ila, segmentStart, segmentLength), bufferSize);
 
             for (int ii = offset; length > 0; ii += stride, --length) {
-                array[ii] = (String) fi.next();
+                array[ii] = fi.next();
                 fi.skip(factor - 1);
             }
         }

@@ -28,7 +28,7 @@ public final class ObjectIlaFromArray {
             super(array.length);
 
             if (cloneArray) {
-                this.array = (Object[]) array.clone();
+                this.array = array.clone();
             } else {
                 this.array = array;
             }

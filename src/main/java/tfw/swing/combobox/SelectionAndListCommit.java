@@ -20,7 +20,7 @@ public class SelectionAndListCommit extends Commit {
     private final ObjectECD selectedItemECD;
     private final IntegerECD selectedIndexECD;
     private final ActionListener[] actionListeners;
-    private final JComboBox comboBox;
+    private final JComboBox<Object> comboBox;
 
     public SelectionAndListCommit(
             String name,
@@ -29,7 +29,7 @@ public class SelectionAndListCommit extends Commit {
             IntegerECD selectedIndexECD,
             Initiator[] initiators,
             ActionListener[] actionListeners,
-            JComboBox comboBox) {
+            JComboBox<Object> comboBox) {
         super(
                 "SelectionAndListCommit[" + name + "]",
                 toArray(listECD, selectedItemECD, selectedIndexECD),
@@ -73,7 +73,7 @@ public class SelectionAndListCommit extends Commit {
 
             EventQueue.invokeLater(new Runnable() {
                 public void run() {
-                    ComboBoxModel cbm = comboBox.getModel();
+                    ComboBoxModel<Object> cbm = comboBox.getModel();
                     if (cbm.getSize() == list.length) {
                         boolean equal = true;
                         for (int i = 0; i < list.length; i++) {
@@ -93,7 +93,7 @@ public class SelectionAndListCommit extends Commit {
                         }
                     }
 
-                    DefaultComboBoxModel model = new DefaultComboBoxModel(list);
+                    DefaultComboBoxModel<Object> model = new DefaultComboBoxModel<>(list);
                     if (model.getIndexOf(comboBox.getSelectedItem()) > 0) {
                         model.setSelectedItem(comboBox.getSelectedItem());
                     }

@@ -22,6 +22,8 @@ import tfw.tsm.ecd.StringRollbackECD;
 import tfw.value.ValueException;
 
 public class TextFieldDemo extends JPanelBB {
+    private static final long serialVersionUID = 1L;
+
     // Define the event channel name space.
     private static final StringECD RED_STRING = new StringECD("redString");
 

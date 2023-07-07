@@ -44,7 +44,7 @@ public final class IntIlaDecimate {
             final IntIlaIterator fi = new IntIlaIterator(segment, bufferSize);
 
             for (int ii = offset; length > 0; ii += stride, --length) {
-                array[ii] = (int) fi.next();
+                array[ii] = fi.next();
                 fi.skip(factor - 1);
             }
         }

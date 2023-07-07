@@ -46,7 +46,7 @@ public class TreeState implements Serializable {
             this.state = new EventChannelState[0];
         } else {
             Argument.assertElementNotNull(state, "state");
-            this.state = (EventChannelState[]) state.clone();
+            this.state = state.clone();
         }
     }
 
@@ -65,7 +65,7 @@ public class TreeState implements Serializable {
      * @return the child tree state for this tree state.
      */
     public TreeState[] getChildren() {
-        return (TreeState[]) children.clone();
+        return children.clone();
     }
 
     /**
@@ -76,7 +76,7 @@ public class TreeState implements Serializable {
      *         channel is not found in this tree state.
      */
     public EventChannelState[] getState() {
-        return (EventChannelState[]) state.clone();
+        return state.clone();
     }
 
     /**

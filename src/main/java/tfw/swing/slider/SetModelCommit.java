@@ -35,7 +35,7 @@ public class SetModelCommit extends Commit {
         this.extentECD = extentECD;
         this.minimumECD = minimumECD;
         this.maximumECD = maximumECD;
-        this.initiators = (Initiator[]) initiators.clone();
+        this.initiators = initiators.clone();
         this.slider = slider;
     }
 

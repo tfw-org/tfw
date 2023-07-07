@@ -22,7 +22,7 @@ public final class RootProxy implements Proxy {
         Iterator<EventChannel> iterator = root.eventChannels.values().iterator();
 
         for (int i = 0; iterator.hasNext(); i++) {
-            eventChannelProxies[i] = new EventChannelProxy((EventChannel) iterator.next());
+            eventChannelProxies[i] = new EventChannelProxy(iterator.next());
         }
 
         return (eventChannelProxies);

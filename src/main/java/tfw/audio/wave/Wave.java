@@ -14,7 +14,7 @@ public final class Wave {
         Argument.assertNotNull(byteIla, "byteIla");
         waveByteData = byteIla;
 
-        ArrayList chunkList = new ArrayList();
+        ArrayList<WaveChunk> chunkList = new ArrayList<>();
         WaveRiffChunk waveRiffChunk = null;
 
         try {
@@ -49,7 +49,7 @@ public final class Wave {
             dataLeft = ByteIlaSegment.create(dataLeft, waveUnknownChunk.unknownChunkData.length());
         }
 
-        waveChunks = (WaveChunk[]) chunkList.toArray(new WaveChunk[chunkList.size()]);
+        waveChunks = chunkList.toArray(new WaveChunk[chunkList.size()]);
     }
 
     public Wave(WaveChunk[] waveChunks) {

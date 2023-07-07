@@ -33,7 +33,7 @@ public final class %%NAME%%IlaRound {
             ila.toArray(array, offset, stride, start, length);
 
             for (int ii = offset; length > 0; ii += stride, --length) {
-                array[ii] = (%%TYPE%%) StrictMath.rint(array[ii]);
+                array[ii] =%%CAST_FROM_DOUBLE%% StrictMath.rint(array[ii]);
             }
         }
     }

@@ -9,6 +9,7 @@ import tfw.tsm.ecd.BooleanECD;
 import tfw.tsm.ecd.StatelessTriggerECD;
 
 public class JMenuItemBB extends JMenuItem implements BranchBox {
+    private static final long serialVersionUID = 1L;
     private final Branch branch;
 
     public JMenuItemBB(String name, StatelessTriggerECD triggerECD, BooleanECD enabledECD) {

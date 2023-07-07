@@ -28,7 +28,7 @@ public final class LongIlaFromArray {
             super(array.length);
 
             if (cloneArray) {
-                this.array = (long[]) array.clone();
+                this.array = array.clone();
             } else {
                 this.array = array;
             }

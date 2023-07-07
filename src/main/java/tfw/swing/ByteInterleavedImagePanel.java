@@ -18,6 +18,7 @@ import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.ilm.ByteIlmECD;
 
 public class ByteInterleavedImagePanel extends JPanelBB {
+    private static final long serialVersionUID = 1L;
     private int x = 0;
     private int y = 0;
     private BufferedImage image = new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB);

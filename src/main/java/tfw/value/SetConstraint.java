@@ -14,7 +14,7 @@ import tfw.check.Argument;
  */
 public class SetConstraint extends ValueConstraint {
 
-    private final Set validValues;
+    private final Set<Object> validValues;
 
     /**
      * Creates a contraint with the specified set of valid values.
@@ -27,7 +27,7 @@ public class SetConstraint extends ValueConstraint {
         Argument.assertNotEmpty(validValues, "validValues");
         Argument.assertElementNotNull(validValues, "validValues");
 
-        this.validValues = Collections.unmodifiableSet(new HashSet(Arrays.asList(validValues)));
+        this.validValues = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(validValues)));
     }
 
     /**

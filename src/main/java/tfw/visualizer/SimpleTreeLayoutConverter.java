@@ -77,71 +77,70 @@ public class SimpleTreeLayoutConverter extends Converter {
                 return;
             }
 
-            TreeSet currentNodes = new TreeSet();
+            TreeSet<Long> currentNodes = new TreeSet<>();
             for (int j = 0; j < nodes.length; j++) {
-                currentNodes.add(new Long(nodes[i]));
+                currentNodes.add(nodes[i]);
             }
 
             for (int j = 0; j < nodeTos.length; j++) {
-                currentNodes.remove(new Long(nodeTos[j]));
+                currentNodes.remove(nodeTos[j]);
             }
 
-            if (currentNodes.size() == 0) {
-                currentNodes.add(new Long(nodes[0]));
+            if (currentNodes.isEmpty()) {
+                currentNodes.add(nodes[0]);
             }
 
-            TreeMap nodeYs = new TreeMap();
-            TreeMap nodeXs = new TreeMap();
-            TreeSet nextNodes = new TreeSet();
-            HashSet previousNodes = new HashSet();
+            TreeMap<Object, Long> nodeYs = new TreeMap<>();
+            TreeMap<Object, Double> nodeXs = new TreeMap<>();
+            TreeSet<Long> nextNodes = new TreeSet<>();
+            HashSet<Long> previousNodes = new HashSet<>();
             long currentLevel = 1;
 
-            Iterator iterator = currentNodes.iterator();
+            Iterator<Long> iterator = currentNodes.iterator();
             for (int j = 0; iterator.hasNext(); j++) {
                 Object key = iterator.next();
 
-                nodeXs.put(key, new Double((double) j / (double) currentNodes.size()));
-                nodeYs.put(key, new Long(0));
+                nodeXs.put(key, (double) j / (double) currentNodes.size());
+                nodeYs.put(key, 0L);
             }
 
             do {
                 for (int j = 0; j < nodeFroms.length; j++) {
-                    Long fromNode = new Long(nodeFroms[j]);
-                    Long toNode = new Long(nodeTos[j]);
+                    Long fromNode = nodeFroms[j];
+                    Long toNode = nodeTos[j];
 
                     if (currentNodes.contains(fromNode) && !previousNodes.contains(toNode)) {
                         nextNodes.add(toNode);
-                        nodeYs.put(toNode, new Long(currentLevel));
+                        nodeYs.put(toNode, currentLevel);
                     }
                 }
 
                 iterator = currentNodes.iterator();
                 for (int j = 1; iterator.hasNext(); j++) {
-                    nodeXs.put(iterator.next(), new Double((double) j / (double) (currentNodes.size() + 1)));
+                    nodeXs.put(iterator.next(), (double) j / (double) (currentNodes.size() + 1));
                 }
 
                 previousNodes.addAll(currentNodes);
                 currentNodes = nextNodes;
-                nextNodes = new TreeSet();
+                nextNodes = new TreeSet<>();
                 currentLevel++;
-            } while (currentNodes.size() != 0);
+            } while (!currentNodes.isEmpty());
 
-            iterator = nodeYs.keySet().iterator();
-            for (; iterator.hasNext(); ) {
-                Object key = iterator.next();
-                double value = ((Long) nodeYs.get(key)).longValue() + 1;
+            for (Iterator<Object> keyIterator = nodeYs.keySet().iterator(); keyIterator.hasNext(); ) {
+                Object key = keyIterator.next();
+                double value = nodeYs.get(key) + 1.0;
 
-                nodeYs.put(key, new Double(value / (double) (currentLevel)));
+                nodeYs.put(key, (long) (value / currentLevel));
             }
 
             double[] nodeXsArray = new double[nodes.length];
             double[] nodeYsArray = new double[nodes.length];
 
             for (int j = 0; j < nodes.length; j++) {
-                Long key = new Long(nodes[j]);
+                Long key = nodes[j];
 
-                nodeXsArray[j] = ((Double) nodeXs.get(key)).doubleValue();
-                nodeYsArray[j] = ((Double) nodeYs.get(key)).doubleValue();
+                nodeXsArray[j] = nodeXs.get(key);
+                nodeYsArray[j] = nodeYs.get(key);
             }
 
             nodeClusterXs[i] = DoubleIlaFromArray.create(nodeXsArray);

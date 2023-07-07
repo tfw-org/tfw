@@ -7,6 +7,7 @@ import tfw.tsm.BranchBox;
 import tfw.tsm.ecd.StringECD;
 
 public class JLabelBB extends JLabel implements BranchBox {
+    private static final long serialVersionUID = 1L;
     private final Branch branch;
 
     public JLabelBB(String name, StringECD textECD) {

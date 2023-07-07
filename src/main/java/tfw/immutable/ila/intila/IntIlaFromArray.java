@@ -28,7 +28,7 @@ public final class IntIlaFromArray {
             super(array.length);
 
             if (cloneArray) {
-                this.array = (int[]) array.clone();
+                this.array = array.clone();
             } else {
                 this.array = array;
             }

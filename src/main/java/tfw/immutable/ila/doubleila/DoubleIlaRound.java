@@ -32,7 +32,7 @@ public final class DoubleIlaRound {
             ila.toArray(array, offset, stride, start, length);
 
             for (int ii = offset; length > 0; ii += stride, --length) {
-                array[ii] = (double) StrictMath.rint(array[ii]);
+                array[ii] = StrictMath.rint(array[ii]);
             }
         }
     }

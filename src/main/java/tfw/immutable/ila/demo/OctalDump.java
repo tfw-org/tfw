@@ -89,6 +89,7 @@ public class OctalDump {
                         LongIla longIla = LongIlaFromByteIla.create(byteIla);
                         DoubleIla doubleIla = DoubleIlaFromLongIla.create(longIla);
                         strings = StringObjectIlaFromDoubleIla.create(doubleIla);
+                        break;
                     }
                     default:
                         throw new IllegalArgumentException("size=" + size + " for 'f' not allowed!");

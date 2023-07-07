@@ -28,7 +28,7 @@ public final class StringIlaFromArray {
             super(array.length);
 
             if (cloneArray) {
-                this.array = (String[]) array.clone();
+                this.array = array.clone();
             } else {
                 this.array = array;
             }

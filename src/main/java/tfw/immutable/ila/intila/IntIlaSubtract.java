@@ -44,7 +44,7 @@ public final class IntIlaSubtract {
             IntIlaIterator ri = new IntIlaIterator(IntIlaSegment.create(rightIla, start, length), bufferSize);
 
             for (int ii = offset; li.hasNext(); ii += stride) {
-                array[ii] = (int) (li.next() - ri.next());
+                array[ii] = (li.next() - ri.next());
             }
         }
     }

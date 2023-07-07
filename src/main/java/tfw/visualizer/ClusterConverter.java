@@ -49,13 +49,12 @@ public class ClusterConverter extends Converter {
         }
 
         boolean[] edgeVisited = new boolean[nodeFroms.length];
-        TreeSet nodesInCluster = new TreeSet();
-        ArrayList edgeFromsInCluster = new ArrayList();
-        ArrayList edgeTosInCluster = new ArrayList();
-        int clusterNumber = 1;
-        ArrayList clusters = new ArrayList();
-        ArrayList edgeFroms = new ArrayList();
-        ArrayList edgeTos = new ArrayList();
+        TreeSet<Long> nodesInCluster = new TreeSet<>();
+        ArrayList<Long> edgeFromsInCluster = new ArrayList<>();
+        ArrayList<Long> edgeTosInCluster = new ArrayList<>();
+        ArrayList<LongIla> clusters = new ArrayList<>();
+        ArrayList<LongIla> edgeFroms = new ArrayList<>();
+        ArrayList<LongIla> edgeTos = new ArrayList<>();
 
         do {
             nodesInCluster.clear();
@@ -64,10 +63,10 @@ public class ClusterConverter extends Converter {
 
             for (int i = 0; i < edgeVisited.length; i++) {
                 if (!edgeVisited[i]) {
-                    Long nodeFrom = new Long(nodeFroms[i]);
-                    Long nodeTo = new Long(nodeTos[i]);
+                    Long nodeFrom = nodeFroms[i];
+                    Long nodeTo = nodeTos[i];
 
-                    if (nodesInCluster.size() == 0) {
+                    if (nodesInCluster.isEmpty()) {
                         nodesInCluster.add(nodeFrom);
                         nodesInCluster.add(nodeTo);
                         edgeFromsInCluster.add(nodeFrom);
@@ -87,13 +86,13 @@ public class ClusterConverter extends Converter {
                 }
             }
 
-            if (nodesInCluster.size() != 0) {
+            if (!nodesInCluster.isEmpty()) {
                 long[] edgeFromsArray = new long[edgeFromsInCluster.size()];
                 long[] edgeTosArray = new long[edgeTosInCluster.size()];
 
                 for (int i = 0; i < edgeFromsInCluster.size(); i++) {
-                    edgeFromsArray[i] = ((Long) edgeFromsInCluster.get(i)).longValue();
-                    edgeTosArray[i] = ((Long) edgeTosInCluster.get(i)).longValue();
+                    edgeFromsArray[i] = edgeFromsInCluster.get(i);
+                    edgeTosArray[i] = edgeTosInCluster.get(i);
                 }
 
                 edgeFroms.add(LongIlaFromArray.create(edgeFromsArray));
@@ -101,15 +100,13 @@ public class ClusterConverter extends Converter {
 
                 long[] nodesArray = new long[nodesInCluster.size()];
 
-                Iterator iterator = nodesInCluster.iterator();
+                Iterator<Long> iterator = nodesInCluster.iterator();
                 for (int i = 0; i < nodesInCluster.size(); i++) {
-                    nodesArray[i] = ((Long) iterator.next()).longValue();
+                    nodesArray[i] = iterator.next();
                 }
                 clusters.add(LongIlaFromArray.create(nodesArray));
-
-                clusterNumber++;
             }
-        } while (nodesInCluster.size() != 0);
+        } while (!nodesInCluster.isEmpty());
 
         set(nodeClustersECD, ObjectIlaFromArray.create(clusters.toArray()));
         set(nodeClusterFromsECD, ObjectIlaFromArray.create(edgeFroms.toArray()));

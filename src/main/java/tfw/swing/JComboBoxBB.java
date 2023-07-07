@@ -16,7 +16,8 @@ import tfw.tsm.ecd.IntegerECD;
 import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.ila.ObjectIlaECD;
 
-public class JComboBoxBB extends JComboBox implements BranchBox {
+public class JComboBoxBB extends JComboBox<Object> implements BranchBox {
+    private static final long serialVersionUID = 1L;
     private final Branch branch;
 
     public JComboBoxBB(
@@ -53,7 +54,7 @@ public class JComboBoxBB extends JComboBox implements BranchBox {
         addActionListener(selectionInitiator);
         branch.add(selectionInitiator);
 
-        List<Initiator> list = new ArrayList<Initiator>(Arrays.asList(initiators));
+        List<Initiator> list = new ArrayList<>(Arrays.asList(initiators));
         list.add(selectionInitiator);
         initiators = list.toArray(new Initiator[list.size()]);
         SelectionAndListCommit selectionAndListCommit = new SelectionAndListCommit(

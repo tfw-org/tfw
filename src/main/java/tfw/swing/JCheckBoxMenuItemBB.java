@@ -11,6 +11,7 @@ import tfw.tsm.Initiator;
 import tfw.tsm.ecd.BooleanECD;
 
 public class JCheckBoxMenuItemBB extends JCheckBoxMenuItem implements BranchBox {
+    private static final long serialVersionUID = 1L;
     private final Branch branch;
 
     public JCheckBoxMenuItemBB(String name, BooleanECD selectedECD, BooleanECD enabledECD) {

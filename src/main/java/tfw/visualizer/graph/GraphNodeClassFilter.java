@@ -6,7 +6,7 @@ import tfw.immutable.DataInvalidException;
 public class GraphNodeClassFilter {
     private GraphNodeClassFilter() {}
 
-    public static Graph create(Graph graph, Class classToRemove) {
+    public static Graph create(Graph graph, Class<?> classToRemove) {
         Argument.assertNotNull(graph, "graph");
         Argument.assertNotNull(classToRemove, "classToRemove");
 
@@ -15,9 +15,9 @@ public class GraphNodeClassFilter {
 
     private static class MyGraph implements Graph {
         private final Graph graph;
-        private final Class classToRemove;
+        private final Class<?> classToRemove;
 
-        public MyGraph(Graph graph, Class classToRemove) {
+        public MyGraph(Graph graph, Class<?> classToRemove) {
             this.graph = graph;
             this.classToRemove = classToRemove;
         }

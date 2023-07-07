@@ -42,7 +42,7 @@ abstract class BaseCommit extends EventHandler {
 
         if (initiators != null) {
             Argument.assertElementNotNull(initiators, "initiators");
-            this.initiators = (Initiator[]) initiators.clone();
+            this.initiators = initiators.clone();
         } else {
             this.initiators = new Initiator[0];
         }

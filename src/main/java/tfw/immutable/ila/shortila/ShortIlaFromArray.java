@@ -28,7 +28,7 @@ public final class ShortIlaFromArray {
             super(array.length);
 
             if (cloneArray) {
-                this.array = (short[]) array.clone();
+                this.array = array.clone();
             } else {
                 this.array = array;
             }

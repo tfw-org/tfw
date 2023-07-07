@@ -99,7 +99,7 @@ public class MultiplexedBranchFactory {
                     name, valueECDList.get(i), multiValueECDList.get(i), stateChangeRules.get(i), strategyList.get(i)));
         }
 
-        return (Multiplexer[]) list.toArray(new Multiplexer[list.size()]);
+        return list.toArray(new Multiplexer[list.size()]);
     }
 
     /**

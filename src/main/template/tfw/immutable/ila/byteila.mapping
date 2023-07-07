@@ -5,3 +5,5 @@
 %%ASSERT_EQUALS_DELTA%% =
 %%CREATE_IMMUTABLE_START%% = new Byte(
 %%CREATE_IMMUTABLE_END%% = )
+%%CAST_FROM_INT%% = \ (byte)
+%%CAST_FROM_LONG%% = \ (byte)

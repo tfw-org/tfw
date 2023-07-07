@@ -44,7 +44,7 @@ public final class LongIlaDecimate {
             final LongIlaIterator fi = new LongIlaIterator(segment, bufferSize);
 
             for (int ii = offset; length > 0; ii += stride, --length) {
-                array[ii] = (long) fi.next();
+                array[ii] = fi.next();
                 fi.skip(factor - 1);
             }
         }

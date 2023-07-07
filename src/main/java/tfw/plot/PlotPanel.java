@@ -20,6 +20,7 @@ import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.ila.ObjectIlaECD;
 
 public class PlotPanel extends JPanel implements BranchBox {
+    private static final long serialVersionUID = 1L;
     private static final GraphicECD GRAPHIC_ECD = new GraphicECD("graphic");
     private static final ObjectIlaECD MULTI_GRAPHIC_ECD = new ObjectIlaECD("multiGraphic");
 

@@ -44,7 +44,7 @@ public final class ShortIlaDecimate {
             final ShortIlaIterator fi = new ShortIlaIterator(segment, bufferSize);
 
             for (int ii = offset; length > 0; ii += stride, --length) {
-                array[ii] = (short) fi.next();
+                array[ii] = fi.next();
                 fi.skip(factor - 1);
             }
         }

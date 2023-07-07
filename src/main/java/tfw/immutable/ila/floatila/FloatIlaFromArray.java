@@ -28,7 +28,7 @@ public final class FloatIlaFromArray {
             super(array.length);
 
             if (cloneArray) {
-                this.array = (float[]) array.clone();
+                this.array = array.clone();
             } else {
                 this.array = array;
             }

@@ -44,7 +44,7 @@ public final class CharIlaDecimate {
             final CharIlaIterator fi = new CharIlaIterator(segment, bufferSize);
 
             for (int ii = offset; length > 0; ii += stride, --length) {
-                array[ii] = (char) fi.next();
+                array[ii] = fi.next();
                 fi.skip(factor - 1);
             }
         }

@@ -9,6 +9,7 @@ import tfw.tsm.BranchBox;
 import tfw.tsm.TreeComponent;
 
 public class JInternalFrameBB extends JInternalFrame implements BranchBox {
+    private static final long serialVersionUID = 1L;
     private final Branch branch;
 
     public JInternalFrameBB(String name) {

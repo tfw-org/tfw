@@ -28,7 +28,7 @@ public final class CharIlaFromArray {
             super(array.length);
 
             if (cloneArray) {
-                this.array = (char[]) array.clone();
+                this.array = array.clone();
             } else {
                 this.array = array;
             }

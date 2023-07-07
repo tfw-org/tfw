@@ -6,6 +6,7 @@ import tfw.tsm.Branch;
 import tfw.tsm.BranchBox;
 
 public class JPopupMenuBB extends JPopupMenu implements BranchBox {
+    private static final long serialVersionUID = 1L;
     private final Branch branch;
 
     public JPopupMenuBB(String name) {

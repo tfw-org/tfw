@@ -44,7 +44,7 @@ public final class LongIlaAdd {
             LongIlaIterator ri = new LongIlaIterator(LongIlaSegment.create(rightIla, start, length), bufferSize);
 
             for (int ii = offset; length > 0; ii += stride, --length) {
-                array[ii] = (long) (li.next() + ri.next());
+                array[ii] = (li.next() + ri.next());
             }
         }
     }

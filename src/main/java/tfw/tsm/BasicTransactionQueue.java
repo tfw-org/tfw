@@ -176,7 +176,7 @@ public final class BasicTransactionQueue implements TransactionQueue {
                         return;
                     }
 
-                    r = (Runnable) queue.remove(0);
+                    r = queue.remove(0);
                 }
 
                 try {
