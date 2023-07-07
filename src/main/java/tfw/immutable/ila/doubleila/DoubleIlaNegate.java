@@ -32,7 +32,7 @@ public final class DoubleIlaNegate {
             ila.toArray(array, offset, stride, start, length);
 
             for (int ii = offset; length > 0; ii += stride, --length) {
-                array[ii] = (double) -array[ii];
+                array[ii] = -array[ii];
             }
         }
     }

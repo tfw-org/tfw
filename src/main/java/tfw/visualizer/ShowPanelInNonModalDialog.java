@@ -17,7 +17,8 @@ public class ShowPanelInNonModalDialog extends Branch {
 
     private JDialogBB dialog = null;
 
-    public ShowPanelInNonModalDialog(StatelessTriggerECD triggerECD, Frame owner, String title, Class jPanelBBClass) {
+    public ShowPanelInNonModalDialog(
+            StatelessTriggerECD triggerECD, Frame owner, String title, Class<? extends JPanelBB> jPanelBBClass) {
         super("ShowPanelInNonModalDialog");
 
         add(new MyConverter(triggerECD, owner, title, jPanelBBClass));
@@ -45,9 +46,10 @@ public class ShowPanelInNonModalDialog extends Branch {
     private class MyConverter extends TriggeredConverter {
         private final Frame owner;
         private final String title;
-        private final Class jPanelBBClass;
+        private final Class<? extends JPanelBB> jPanelBBClass;
 
-        public MyConverter(StatelessTriggerECD triggerECD, Frame owner, String title, Class jPanelBBClass) {
+        public MyConverter(
+                StatelessTriggerECD triggerECD, Frame owner, String title, Class<? extends JPanelBB> jPanelBBClass) {
             super("ShowPanelInNonModalDialogConverter", triggerECD, null, null);
 
             this.owner = owner;
@@ -61,7 +63,7 @@ public class ShowPanelInNonModalDialog extends Branch {
                     if (dialog == null) {
                         JPanelBB contentPane;
                         try {
-                            contentPane = (JPanelBB) jPanelBBClass.newInstance();
+                            contentPane = jPanelBBClass.getDeclaredConstructor().newInstance();
                         } catch (Exception e) {
                             throw new RuntimeException("Cannot create JPanelBB class", e);
                         }

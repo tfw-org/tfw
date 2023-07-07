@@ -10,6 +10,7 @@ import tfw.swing.JPanelBB;
 import tfw.tsm.ecd.BooleanECD;
 
 public class VisualizerProperties extends JPanelBB {
+    private static final long serialVersionUID = 1L;
     public static final ColorECD BACKGROUND_COLOR_ECD = new ColorECD("backgroundColor");
     public static final BooleanECD BACKGROUND_COLOR_ENABLED_ECD = new BooleanECD("backgroundColorEnable");
     public static final ColorECD BRANCH_COLOR_ECD = new ColorECD("branchColor");

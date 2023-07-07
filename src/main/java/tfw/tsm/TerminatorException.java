@@ -6,6 +6,8 @@ package tfw.tsm;
  */
 class TerminatorException extends RuntimeException {
 
+    private static final long serialVersionUID = 1L;
+
     /**
      * Creates an exception with the specified message.
      * @param message the exception message

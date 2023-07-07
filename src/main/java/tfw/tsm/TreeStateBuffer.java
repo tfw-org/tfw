@@ -11,8 +11,8 @@ import tfw.value.ValueException;
  */
 public class TreeStateBuffer {
     private String name = null;
-    private Set<EventChannelState> stateMap = new HashSet<EventChannelState>();
-    private Set<TreeState> children = new HashSet<TreeState>();
+    private Set<EventChannelState> stateMap = new HashSet<>();
+    private Set<TreeState> children = new HashSet<>();
 
     /**
      * Set the name of the tree component.
@@ -55,7 +55,8 @@ public class TreeStateBuffer {
         }
 
         return new TreeState(
-                name, (EventChannelState[]) stateMap.toArray(new EventChannelState[stateMap.size()]), (TreeState[])
-                        children.toArray(new TreeState[children.size()]));
+                name,
+                stateMap.toArray(new EventChannelState[stateMap.size()]),
+                children.toArray(new TreeState[children.size()]));
     }
 }

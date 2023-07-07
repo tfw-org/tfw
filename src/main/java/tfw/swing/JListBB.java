@@ -10,7 +10,8 @@ import tfw.tsm.ecd.BooleanECD;
 import tfw.tsm.ecd.ila.IntIlaECD;
 import tfw.tsm.ecd.ila.ObjectIlaECD;
 
-public class JListBB extends JList implements BranchBox {
+public class JListBB extends JList<Object> implements BranchBox {
+    private static final long serialVersionUID = 1L;
     private final Branch branch;
 
     public JListBB(

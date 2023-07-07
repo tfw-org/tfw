@@ -13,9 +13,10 @@ import tfw.tsm.ecd.ila.ObjectIlaECD;
 public class SelectionInitiator extends Initiator implements ListSelectionListener {
     private final ObjectIlaECD selectedItemsECD;
     private final IntIlaECD selectedIndexesECD;
-    private final JList list;
+    private final JList<Object> list;
 
-    public SelectionInitiator(String name, ObjectIlaECD selectedItemsECD, IntIlaECD selectedIndexesECD, JList list) {
+    public SelectionInitiator(
+            String name, ObjectIlaECD selectedItemsECD, IntIlaECD selectedIndexesECD, JList<Object> list) {
         super("SelectionInitiator[" + name + "]", new ObjectECD[] {selectedItemsECD, selectedIndexesECD});
 
         this.selectedItemsECD = selectedItemsECD;
@@ -25,7 +26,9 @@ public class SelectionInitiator extends Initiator implements ListSelectionListen
 
     public void valueChanged(ListSelectionEvent e) {
         if (selectedItemsECD != null) {
-            set(selectedItemsECD, ObjectIlaFromArray.create(list.getSelectedValues()));
+            set(
+                    selectedItemsECD,
+                    ObjectIlaFromArray.create(list.getSelectedValuesList().toArray()));
         }
         if (selectedIndexesECD != null) {
             set(selectedIndexesECD, IntIlaFromArray.create(list.getSelectedIndices()));

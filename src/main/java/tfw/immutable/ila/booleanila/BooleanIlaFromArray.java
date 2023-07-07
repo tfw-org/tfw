@@ -28,7 +28,7 @@ public final class BooleanIlaFromArray {
             super(array.length);
 
             if (cloneArray) {
-                this.array = (boolean[]) array.clone();
+                this.array = array.clone();
             } else {
                 this.array = array;
             }

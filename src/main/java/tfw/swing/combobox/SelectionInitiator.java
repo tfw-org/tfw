@@ -13,9 +13,10 @@ public class SelectionInitiator extends Initiator implements ActionListener {
 
     private final IntegerECD selectedIndexECD;
 
-    private final JComboBox comboBox;
+    private final JComboBox<Object> comboBox;
 
-    public SelectionInitiator(String name, ObjectECD selectedItemECD, IntegerECD selectedIndexECD, JComboBox comboBox) {
+    public SelectionInitiator(
+            String name, ObjectECD selectedItemECD, IntegerECD selectedIndexECD, JComboBox<Object> comboBox) {
         super("SelectionInitiator[" + name + "]", checkECDs(selectedItemECD, selectedIndexECD));
 
         this.selectedItemECD = selectedItemECD;
@@ -24,17 +25,17 @@ public class SelectionInitiator extends Initiator implements ActionListener {
     }
 
     private static ObjectECD[] checkECDs(ObjectECD selectedItemECD, IntegerECD selectedIndexECD) {
-        ArrayList list = new ArrayList();
+        ArrayList<ObjectECD> list = new ArrayList<>();
         if (selectedItemECD != null) {
             list.add(selectedItemECD);
         }
         if (selectedIndexECD != null) {
             list.add(selectedIndexECD);
         }
-        if (list.size() == 0) {
+        if (list.isEmpty()) {
             throw new IllegalArgumentException("(selectedItemECD == null)&&(selectedIndexECD == null) not allowed");
         }
-        return (ObjectECD[]) list.toArray(new ObjectECD[list.size()]);
+        return list.toArray(new ObjectECD[list.size()]);
     }
 
     public void actionPerformed(ActionEvent e) {

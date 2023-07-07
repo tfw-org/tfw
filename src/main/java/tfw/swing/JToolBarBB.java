@@ -6,6 +6,7 @@ import tfw.tsm.Branch;
 import tfw.tsm.BranchBox;
 
 public class JToolBarBB extends JToolBar implements BranchBox {
+    private static final long serialVersionUID = 1L;
     private final Branch branch;
 
     public JToolBarBB(String name) {

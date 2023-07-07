@@ -44,7 +44,7 @@ public final class DoubleIlaDecimate {
             final DoubleIlaIterator fi = new DoubleIlaIterator(segment, bufferSize);
 
             for (int ii = offset; length > 0; ii += stride, --length) {
-                array[ii] = (double) fi.next();
+                array[ii] = fi.next();
                 fi.skip(factor - 1);
             }
         }

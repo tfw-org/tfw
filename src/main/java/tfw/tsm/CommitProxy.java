@@ -16,7 +16,7 @@ public final class CommitProxy implements Proxy {
     }
 
     public SinkProxy[] getSinkProxies() {
-        Object[] sinks = (Object[]) commit.sinks.values().toArray();
+        Object[] sinks = commit.sinks.values().toArray();
         SinkProxy[] sp = new SinkProxy[sinks.length];
 
         for (int i = 0; i < sinks.length; i++) {

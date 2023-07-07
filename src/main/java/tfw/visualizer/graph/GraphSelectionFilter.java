@@ -47,14 +47,14 @@ public class GraphSelectionFilter {
 
             graph.toArray(allNodes, 0, 0, (int) graph.nodesLength(), allFroms, allTos, 0, 0, (int) graph.edgesLength());
 
-            HashSet selectedNodeSet = new HashSet();
+            HashSet<Object> selectedNodeSet = new HashSet<>();
             for (int i = 0; i < selectedNodesArray.length; i++) {
                 if (selectedNodesArray[i]) {
                     selectedNodeSet.add(allNodes[i]);
                 }
             }
 
-            HashSet resultNodeSet = new HashSet(selectedNodeSet);
+            HashSet<Object> resultNodeSet = new HashSet<>(selectedNodeSet);
             for (int i = 0; i < allFroms.length; i++) {
                 if (selectedNodeSet.contains(allFroms[i])) {
                     resultNodeSet.add(allTos[i]);

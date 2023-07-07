@@ -416,7 +416,7 @@ public class TreeComponent {
      * @return the set of unterminated ports.
      */
     Set<Port> terminateLocally(Set<Port> connections) {
-        Port[] ports = (Port[]) connections.toArray(new Port[connections.size()]);
+        Port[] ports = connections.toArray(new Port[connections.size()]);
 
         for (int i = 0; i < ports.length; i++) {
             if (eventChannels.containsKey(ports[i].ecd.getEventChannelName())) {

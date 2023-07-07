@@ -15,9 +15,9 @@ public class GraphFromArrays {
         private final Object[] tos;
 
         public MyGraph(Object[] nodes, Object[] froms, Object[] tos) {
-            this.nodes = (Object[]) nodes.clone();
-            this.froms = (Object[]) froms.clone();
-            this.tos = (Object[]) tos.clone();
+            this.nodes = nodes.clone();
+            this.froms = froms.clone();
+            this.tos = tos.clone();
         }
 
         public long nodesLength() {

@@ -48,7 +48,7 @@ public class NormalXYDoubleIlmFromGraph {
             // for (int i=0 ; i < froms.length ; i++)
             // System.out.println("froms["+i+"]="+froms[i]+" tos["+i+"]="+tos[i]);
 
-            ArrayList rootNodes = new ArrayList(Arrays.asList(nodes));
+            ArrayList<Object> rootNodes = new ArrayList<>(Arrays.asList(nodes));
 
             // System.out.println("A: rN.s="+rootNodes.size());
             // Produce the set of root nodes.
@@ -78,15 +78,15 @@ public class NormalXYDoubleIlmFromGraph {
                 // node cluster number.
                 //	    		int depth = calculateXandYs(0, clusterNumber, new Object[] {rootNodes.remove(0)},
                 //	    			nodes, froms, tos, normalXs, normalYs, nodeClusterNumbers);
-                ArrayList levels = new ArrayList();
-                ArrayList rootMinusOneLevel = new ArrayList();
-                ArrayList rootLevel = new ArrayList();
+                ArrayList<ArrayList<Object>> levels = new ArrayList<>();
+                ArrayList<Object> rootMinusOneLevel = new ArrayList<>();
+                ArrayList<Object> rootLevel = new ArrayList<>();
 
                 rootLevel.add(rootNodes.remove(0));
                 levels.add(rootMinusOneLevel);
                 levels.add(rootLevel);
 
-                xxx(levels, new HashSet(Arrays.asList(nodes)), froms, tos);
+                xxx(levels, new HashSet<Object>(Arrays.asList(nodes)), froms, tos);
 
                 // System.out.println("Starting extra root node removal");
 
@@ -100,7 +100,7 @@ public class NormalXYDoubleIlmFromGraph {
                 levels.remove(0);
 
                 for (int i = 0; i < levels.size(); i++) {
-                    ArrayList level = (ArrayList) levels.get(i);
+                    ArrayList<Object> level = levels.get(i);
                     // System.out.println("level="+level);
 
                     for (int j = 0; j < level.size(); j++) {
@@ -145,10 +145,8 @@ public class NormalXYDoubleIlmFromGraph {
                 for (int i = 0; i < normalXs.length; i++) {
                     // System.out.println("normalYs["+i+"]="+normalYs[i]+" nCN["+i+"]="+nodeClusterNumbers[i]+"
                     // d="+dimension);
-                    normalXs[i] = (normalXs[i] / (double) dimension)
-                            + (double) (nodeClusterNumbers[i] % dimension) / (double) dimension;
-                    normalYs[i] = (normalYs[i] / (double) dimension)
-                            + (double) (nodeClusterNumbers[i] / dimension / (double) dimension);
+                    normalXs[i] = (normalXs[i] / dimension) + (nodeClusterNumbers[i] % dimension) / (double) dimension;
+                    normalYs[i] = (normalYs[i] / dimension) + (nodeClusterNumbers[i] / dimension / (double) dimension);
                 }
             }
 
@@ -156,11 +154,12 @@ public class NormalXYDoubleIlmFromGraph {
             return (new double[0]);
         }
 
-        private static void xxx(ArrayList levels, HashSet nodes, Object[] froms, Object[] tos) {
+        private static void xxx(
+                ArrayList<ArrayList<Object>> levels, HashSet<Object> nodes, Object[] froms, Object[] tos) {
             // System.out.println("Entering xxx");
-            ArrayList previousLevelNodes = (ArrayList) levels.get(levels.size() - 2);
-            ArrayList currentLevelNodes = (ArrayList) levels.get(levels.size() - 1);
-            ArrayList nextLevelNodes = new ArrayList();
+            ArrayList<Object> previousLevelNodes = levels.get(levels.size() - 2);
+            ArrayList<Object> currentLevelNodes = levels.get(levels.size() - 1);
+            ArrayList<Object> nextLevelNodes = new ArrayList<>();
 
             // System.out.println("pLN="+previousLevelNodes);
             // System.out.println("cLN="+currentLevelNodes);

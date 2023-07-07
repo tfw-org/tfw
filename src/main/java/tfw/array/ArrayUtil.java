@@ -9,7 +9,8 @@ import java.util.Set;
 /**
  * Utility for manipulating arrays.
  */
-public class ArrayUtil {
+public final class ArrayUtil {
+    private ArrayUtil() {}
     /**
      * Returns true if both arrays contain the same elements without regard
      * to order.
@@ -36,8 +37,8 @@ public class ArrayUtil {
             return false;
         }
 
-        Map array1Map = new HashMap();
-        Map array2Map = new HashMap();
+        Map<Object, Count> array1Map = new HashMap<>();
+        Map<Object, Count> array2Map = new HashMap<>();
 
         mapArray(array1, array1Map);
         mapArray(array2, array2Map);
@@ -46,19 +47,19 @@ public class ArrayUtil {
             return false;
         }
 
-        Set set = new HashSet(array1Map.keySet());
+        Set<Object> set = new HashSet<>(array1Map.keySet());
         set.addAll(array2Map.keySet());
 
         if (set.size() != array1Map.size()) {
             return false;
         }
 
-        Iterator itr = array1Map.keySet().iterator();
+        Iterator<Object> itr = array1Map.keySet().iterator();
 
         while (itr.hasNext()) {
             Object key = itr.next();
-            Count a1 = (Count) array1Map.get(key);
-            Count a2 = (Count) array2Map.get(key);
+            Count a1 = array1Map.get(key);
+            Count a2 = array2Map.get(key);
 
             if (a1.count != a2.count) {
                 return false;
@@ -68,9 +69,9 @@ public class ArrayUtil {
         return true;
     }
 
-    private static void mapArray(Object[] array, Map map) {
+    private static void mapArray(Object[] array, Map<Object, Count> map) {
         for (int i = 0; i < array.length; i++) {
-            Count c = (Count) map.get(array[i]);
+            Count c = map.get(array[i]);
 
             if (c == null) {
                 c = new Count();

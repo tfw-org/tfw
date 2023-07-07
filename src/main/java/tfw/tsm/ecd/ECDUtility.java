@@ -6,7 +6,8 @@ import java.util.Arrays;
 /**
  * Utilities for manipulating event channel descriptions.
  */
-public class ECDUtility {
+public final class ECDUtility {
+    private ECDUtility() {}
     /**
      * Creates a new array with the specified description added.
      *
@@ -24,10 +25,10 @@ public class ECDUtility {
             return new EventChannelDescription[] {eventChannelDescription};
         }
 
-        ArrayList list = new ArrayList(Arrays.asList(eventChannelDescriptions));
+        ArrayList<EventChannelDescription> list = new ArrayList<>(Arrays.asList(eventChannelDescriptions));
         list.add(eventChannelDescription);
 
-        return (EventChannelDescription[]) list.toArray(new EventChannelDescription[list.size()]);
+        return list.toArray(new EventChannelDescription[list.size()]);
     }
 
     /**
@@ -47,10 +48,10 @@ public class ECDUtility {
             return eventChannelDescriptions1;
         }
 
-        ArrayList list = new ArrayList(Arrays.asList(eventChannelDescriptions1));
+        ArrayList<EventChannelDescription> list = new ArrayList<>(Arrays.asList(eventChannelDescriptions1));
         list.addAll(Arrays.asList(eventChannelDescriptions2));
 
-        return (EventChannelDescription[]) list.toArray(new EventChannelDescription[list.size()]);
+        return list.toArray(new EventChannelDescription[list.size()]);
     }
 
     // TODO: javadoc

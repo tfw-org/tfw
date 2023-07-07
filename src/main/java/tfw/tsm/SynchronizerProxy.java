@@ -19,7 +19,7 @@ public final class SynchronizerProxy implements Proxy {
     }
 
     public SourceProxy[] getSourceProxies() {
-        Collection<Source> collection = new ArrayList<Source>(synchronizer.sources);
+        Collection<Source> collection = new ArrayList<>(synchronizer.sources);
         Iterator<Source> iterator = collection.iterator();
         SourceProxy[] sp = new SourceProxy[collection.size()];
 
@@ -31,7 +31,7 @@ public final class SynchronizerProxy implements Proxy {
     }
 
     public SinkProxy[] getSinkProxies() {
-        Object[] sinks = (Object[]) synchronizer.sinks.values().toArray();
+        Object[] sinks = synchronizer.sinks.values().toArray();
         SinkProxy[] sp = new SinkProxy[sinks.length];
 
         for (int i = 0; i < sinks.length; i++) {

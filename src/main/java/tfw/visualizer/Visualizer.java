@@ -36,6 +36,7 @@ import tfw.tsm.ecd.ilm.IntIlmECD;
 import tfw.visualizer.graph.GraphECD;
 
 public class Visualizer extends JFrameBB {
+    private static final long serialVersionUID = 1L;
     private static final BooleanECD BUTTON_ONE_ECD = new BooleanECD("buttonOne");
     private static final BooleanECD BUTTON_TWO_ECD = new BooleanECD("buttonTwo");
     private static final BooleanECD BUTTON_THREE_ECD = new BooleanECD("buttonThree");

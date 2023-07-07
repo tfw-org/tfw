@@ -15,6 +15,7 @@ import tfw.tsm.ecd.BooleanECD;
 import tfw.tsm.ecd.StringECD;
 
 public class JTextFieldBB extends JTextField implements BranchBox {
+    private static final long serialVersionUID = 1L;
     private final Branch branch;
 
     public JTextFieldBB(String name, StringECD textECD, BooleanECD enabledECD) {

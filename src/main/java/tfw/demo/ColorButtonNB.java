@@ -25,6 +25,7 @@ import tfw.tsm.ecd.BooleanECD;
 import tfw.tsm.ecd.ObjectECD;
 
 public class ColorButtonNB extends JButton implements BranchBox {
+    private static final long serialVersionUID = 1L;
     private final Branch branch;
     private Color color = null;
     private Color originalColor = null;
@@ -107,6 +108,7 @@ public class ColorButtonNB extends JButton implements BranchBox {
     }
 
     private static class GrayScalePanel extends AbstractColorChooserPanel {
+        private static final long serialVersionUID = 1L;
         static final Color[] grays = new Color[256];
 
         static {

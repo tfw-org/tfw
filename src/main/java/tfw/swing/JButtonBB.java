@@ -9,6 +9,7 @@ import tfw.tsm.ecd.BooleanECD;
 import tfw.tsm.ecd.StatelessTriggerECD;
 
 public class JButtonBB extends JButton implements BranchBox {
+    private static final long serialVersionUID = 1L;
     private final Branch branch;
 
     public JButtonBB(String name, BooleanECD enabledECD, StatelessTriggerECD triggerECD) {

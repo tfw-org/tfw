@@ -28,7 +28,7 @@ public final class ByteIlaFromArray {
             super(array.length);
 
             if (cloneArray) {
-                this.array = (byte[]) array.clone();
+                this.array = array.clone();
             } else {
                 this.array = array;
             }

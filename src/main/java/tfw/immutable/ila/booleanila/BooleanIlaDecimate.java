@@ -44,7 +44,7 @@ public final class BooleanIlaDecimate {
             final BooleanIlaIterator fi = new BooleanIlaIterator(segment, bufferSize);
 
             for (int ii = offset; length > 0; ii += stride, --length) {
-                array[ii] = (boolean) fi.next();
+                array[ii] = fi.next();
                 fi.skip(factor - 1);
             }
         }

@@ -31,7 +31,7 @@ public final class ConverterProxy implements Proxy {
     }
 
     public SinkProxy[] getSinkProxies() {
-        Object[] sinks = (Object[]) converter.sinks.values().toArray();
+        Object[] sinks = converter.sinks.values().toArray();
         SinkProxy[] sp = new SinkProxy[sinks.length];
 
         for (int i = 0; i < sinks.length; i++) {

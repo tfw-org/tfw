@@ -44,7 +44,7 @@ public final class FloatIlaDivide {
             FloatIlaIterator ri = new FloatIlaIterator(FloatIlaSegment.create(rightIla, start, length), bufferSize);
 
             for (int ii = offset; li.hasNext(); ii += stride) {
-                array[ii] = (float) (li.next() / ri.next());
+                array[ii] = (li.next() / ri.next());
             }
         }
     }

@@ -28,7 +28,7 @@ public final class DoubleIlaFromArray {
             super(array.length);
 
             if (cloneArray) {
-                this.array = (double[]) array.clone();
+                this.array = array.clone();
             } else {
                 this.array = array;
             }

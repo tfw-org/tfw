@@ -63,20 +63,19 @@ public final class NodeAndEdgesFromRootProxy {
             return;
         }
 
-        HashSet nodesList = new HashSet();
-        ArrayList edgeFromsList = new ArrayList();
-        ArrayList edgeTosList = new ArrayList();
+        HashSet<Object> nodesList = new HashSet<>();
+        ArrayList<Object> edgeFromsList = new ArrayList<>();
+        ArrayList<Object> edgeTosList = new ArrayList<>();
 
         addStructuralNode(nodesList, edgeFromsList, edgeTosList, rootProxy, null);
 
         nodes = nodesList.toArray();
-        ;
         edgeFroms = edgeFromsList.toArray();
         edgeTos = edgeTosList.toArray();
     }
 
     private static void addStructuralNode(
-            Set nodes, ArrayList edgeFroms, ArrayList edgeTos, Object proxy, Object parent) {
+            Set<Object> nodes, ArrayList<Object> edgeFroms, ArrayList<Object> edgeTos, Object proxy, Object parent) {
         nodes.add(proxy);
 
         if (parent != null) {
@@ -151,7 +150,7 @@ public final class NodeAndEdgesFromRootProxy {
     }
 
     private static void addSourceEdges(
-            SourceProxy[] sourceProxies, Object proxy, ArrayList edgeFroms, ArrayList edgeTos) {
+            SourceProxy[] sourceProxies, Object proxy, ArrayList<Object> edgeFroms, ArrayList<Object> edgeTos) {
         Arrays.sort(sourceProxies, ProxyNameComparator.INSTANCE);
 
         for (int i = 0; i < sourceProxies.length; i++) {
@@ -160,7 +159,8 @@ public final class NodeAndEdgesFromRootProxy {
         }
     }
 
-    private static void addSinkEdges(SinkProxy[] sinkProxies, Object proxy, ArrayList edgeFroms, ArrayList edgeTos) {
+    private static void addSinkEdges(
+            SinkProxy[] sinkProxies, Object proxy, ArrayList<Object> edgeFroms, ArrayList<Object> edgeTos) {
         Arrays.sort(sinkProxies, ProxyNameComparator.INSTANCE);
 
         for (int i = 0; i < sinkProxies.length; i++) {

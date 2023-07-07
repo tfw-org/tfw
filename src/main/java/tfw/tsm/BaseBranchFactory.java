@@ -27,7 +27,7 @@ public class BaseBranchFactory {
      * @return the current set of Event Channel terminators.
      */
     EventChannel[] getTerminators() {
-        return (EventChannel[]) terminators.values().toArray(new EventChannel[terminators.size()]);
+        return terminators.values().toArray(new EventChannel[terminators.size()]);
     }
 
     /**
@@ -156,7 +156,7 @@ public class BaseBranchFactory {
                     + "therefore can not be tagged.");
         }
 
-        Terminator t = (Terminator) this.terminators.get(ecd.getEventChannelName());
+        Terminator t = this.terminators.get(ecd.getEventChannelName());
         t.addExportStateTag(tag);
     }
 }

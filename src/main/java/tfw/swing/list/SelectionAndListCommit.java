@@ -17,7 +17,7 @@ public class SelectionAndListCommit extends Commit {
     private final ObjectIlaECD listECD;
     private final ObjectIlaECD selectedItemsECD;
     private final IntIlaECD selectedIndexesECD;
-    private final JList list;
+    private final JList<Object> list;
 
     public SelectionAndListCommit(
             String name,
@@ -25,7 +25,7 @@ public class SelectionAndListCommit extends Commit {
             ObjectIlaECD selectedItemsECD,
             IntIlaECD selectedIndexesECD,
             Initiator[] initiators,
-            JList list) {
+            JList<Object> list) {
         super(
                 "SelectionAndListCommit[" + name + "]",
                 new ObjectECD[] {listECD, selectedItemsECD, selectedIndexesECD},
@@ -48,7 +48,7 @@ public class SelectionAndListCommit extends Commit {
 
                 EventQueue.invokeLater(new Runnable() {
                     public void run() {
-                        DefaultListModel defaultListModel = new DefaultListModel();
+                        DefaultListModel<Object> defaultListModel = new DefaultListModel<>();
 
                         defaultListModel.copyInto(elements);
                         list.setModel(defaultListModel);

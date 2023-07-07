@@ -29,7 +29,7 @@ public final class %%NAME%%IlaFromArray {
             super(array.length);
 
             if (cloneArray) {
-                this.array = (%%TYPE%%[]) array.clone();
+                this.array = array.clone();
             } else {
                 this.array = array;
             }

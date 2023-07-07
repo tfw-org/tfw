@@ -10,6 +10,7 @@ import tfw.tsm.ecd.BooleanECD;
 import tfw.tsm.ecd.ila.ObjectIlaECD;
 
 public class VisualizerToolBar extends JPanelBB {
+    private static final long serialVersionUID = 1L;
     public static final BooleanECD MOVE_ENABLED_ECD = new BooleanECD("moveEnabled");
     public static final ObjectIlaECD MULTI_TOOL_SELECTED_ECD = new ObjectIlaECD("multiToolSelected");
     public static final BooleanECD SELECTION_ENABLED_ECD = new BooleanECD("selectionEnabled");

@@ -12,6 +12,8 @@ import tfw.tsm.ecd.StatelessTriggerECD;
 import tfw.tsm.ecd.StringECD;
 
 public class JTextFieldModifiableBB extends JTextFieldBB {
+    private static final long serialVersionUID = 1L;
+
     private final Color defaultDisabledBackground;
 
     private final Color defaultEnabledBackground;

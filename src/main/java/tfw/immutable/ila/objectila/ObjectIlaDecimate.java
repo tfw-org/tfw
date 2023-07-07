@@ -44,7 +44,7 @@ public final class ObjectIlaDecimate {
             final ObjectIlaIterator fi = new ObjectIlaIterator(segment, bufferSize);
 
             for (int ii = offset; length > 0; ii += stride, --length) {
-                array[ii] = (Object) fi.next();
+                array[ii] = fi.next();
                 fi.skip(factor - 1);
             }
         }
