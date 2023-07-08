@@ -166,6 +166,41 @@
                     <argLine>--illegal-access=permit</argLine>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-pmd-plugin</artifactId>
+                <version>3.21.0</version>
+                <configuration>
+                    <excludes>
+                        <exclude>tfw/math/BigDecimal.java</exclude>
+                        <exclude>tfw/math/BigInteger.java</exclude>
+                        <exclude>tfw/math/BitSieve.java</exclude>
+                        <exclude>tfw/math/DoubleConsts.java</exclude>
+                        <exclude>tfw/math/FloatConsts.java</exclude>
+                        <exclude>tfw/math/MathContext.java</exclude>
+                        <exclude>tfw/math/MutableBigInteger.java</exclude>
+                        <exclude>tfw/math/RoundingMode.java</exclude>
+                        <exclude>tfw/math/SignedMutableBigInteger.java</exclude>
+                    </excludes>
+                    <linkXRef>false</linkXRef>
+                    <failOnViolation>true</failOnViolation>
+                    <failurePriority>2</failurePriority>
+                    <maxAllowedViolations>5</maxAllowedViolations>
+                    <format>txt</format>
+                    <includeTests>true</includeTests>
+                    <minimumTokens>100</minimumTokens>
+                    <sourceEncoding>${project.build.sourceEncoding}</sourceEncoding>
+                    <targetJdk>${maven.compiler.target}</targetJdk>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                        <phase>verify</phase>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 
