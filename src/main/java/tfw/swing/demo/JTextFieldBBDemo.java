@@ -45,7 +45,7 @@ public class JTextFieldBBDemo {
         final JCheckBox cb = new JCheckBox("Enabled");
         cb.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                initiator.set(enabledECD, new Boolean(cb.isSelected()));
+                initiator.set(enabledECD, cb.isSelected());
             }
         });
 

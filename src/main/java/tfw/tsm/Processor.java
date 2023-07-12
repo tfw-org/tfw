@@ -44,7 +44,7 @@ public abstract class Processor extends RollbackHandler {
             throw new IllegalStateException(sinkEventChannel + " is not connected to an event channel");
         }
 
-        return (sink.eventChannel.getPreviousCycleState());
+        return sink.eventChannel.getPreviousCycleState();
     }
 
     /**

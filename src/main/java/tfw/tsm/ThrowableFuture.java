@@ -13,7 +13,7 @@ class ThrowableFuture implements Future<Object> {
     }
 
     public boolean cancel(boolean mayInterruptIfRunning) {
-        return (baseFuture.cancel(mayInterruptIfRunning));
+        return baseFuture.cancel(mayInterruptIfRunning);
     }
 
     public Object get() throws InterruptedException, ExecutionException {
@@ -23,7 +23,7 @@ class ThrowableFuture implements Future<Object> {
             throw new ExecutionException(result);
         }
 
-        return (null);
+        return null;
     }
 
     public Object get(long timeout, TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException {
@@ -33,14 +33,14 @@ class ThrowableFuture implements Future<Object> {
             throw new ExecutionException(result);
         }
 
-        return (null);
+        return null;
     }
 
     public boolean isCancelled() {
-        return (baseFuture.isCancelled());
+        return baseFuture.isCancelled();
     }
 
     public boolean isDone() {
-        return (baseFuture.isDone());
+        return baseFuture.isDone();
     }
 }

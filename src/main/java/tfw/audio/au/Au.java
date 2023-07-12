@@ -218,15 +218,15 @@ public final class Au {
 
     private static long unsignedIntFromBytes(byte[] bytes, int offset, long magicNumber) {
         if (magicNumber == SUN_MAGIC_NUMBER || magicNumber == DEC_MAGIC_NUMBER) {
-            return (((bytes[offset] & 0xFF) << 24)
+            return ((bytes[offset] & 0xFF) << 24)
                     | ((bytes[offset + 1] & 0xFF) << 16)
                     | ((bytes[offset + 2] & 0xFF) << 8)
-                    | ((bytes[offset + 3] & 0xFF)));
+                    | ((bytes[offset + 3] & 0xFF));
         } else {
-            return (((bytes[offset + 3] & 0xFF) << 24)
+            return ((bytes[offset + 3] & 0xFF) << 24)
                     | ((bytes[offset + 2] & 0xFF) << 16)
                     | ((bytes[offset + 1] & 0xFF) << 8)
-                    | ((bytes[offset] & 0xFF)));
+                    | ((bytes[offset] & 0xFF));
         }
     }
 

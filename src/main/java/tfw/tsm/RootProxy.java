@@ -14,7 +14,7 @@ public final class RootProxy implements Proxy {
     }
 
     public String getName() {
-        return (root.getName());
+        return root.getName();
     }
 
     public EventChannelProxy[] getEventChannelProxies() {
@@ -25,7 +25,7 @@ public final class RootProxy implements Proxy {
             eventChannelProxies[i] = new EventChannelProxy(iterator.next());
         }
 
-        return (eventChannelProxies);
+        return eventChannelProxies;
     }
 
     public Proxy[] getChildProxies() {
@@ -60,20 +60,20 @@ public final class RootProxy implements Proxy {
             }
         }
 
-        return (proxies);
+        return proxies;
     }
 
     public boolean equals(Object obj) {
         if (obj instanceof RootProxy) {
             RootProxy rp = (RootProxy) obj;
 
-            return (root.equals(rp.root));
+            return root.equals(rp.root);
         }
 
-        return (false);
+        return false;
     }
 
     public int hashCode() {
-        return (root.hashCode());
+        return root.hashCode();
     }
 }

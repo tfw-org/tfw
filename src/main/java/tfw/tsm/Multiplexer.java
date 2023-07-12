@@ -80,7 +80,7 @@ public class Multiplexer implements EventChannel {
         }
 
         public Iterator<DemultiplexedEventChannel> getDemultiplexedEventChannels() {
-            return (demultiplexedEventChannels.values().iterator());
+            return demultiplexedEventChannels.values().iterator();
         }
     }
 
@@ -166,7 +166,7 @@ public class Multiplexer implements EventChannel {
              * if the initial slot state is non-null, make sure the state gets
              * added to the multiplexed state.
              */
-            if (this.multiSink.isConnected() && (currentSlotState == null) && (defaultSlotState != null)) {
+            if (this.multiSink.isConnected() && currentSlotState == null && defaultSlotState != null) {
                 this.processorMultiSource.setState(dm);
             }
 
@@ -174,7 +174,7 @@ public class Multiplexer implements EventChannel {
             demultiplexedEventChannels.put(slotId, dm);
         }
 
-        return (demultiplexedEventChannels.get(slotId));
+        return demultiplexedEventChannels.get(slotId);
     }
 
     TreeComponent getTreeComponent() {
@@ -196,7 +196,7 @@ public class Multiplexer implements EventChannel {
         // Search for the multiplexed component...
         Object slotId = component.getSlotId(port.getTreeComponent());
         TreeComponent tc = port.getTreeComponent().getParent();
-        while ((slotId == null) && (tc != null)) {
+        while (slotId == null && tc != null) {
             slotId = component.getSlotId(tc);
             tc = tc.getParent();
         }

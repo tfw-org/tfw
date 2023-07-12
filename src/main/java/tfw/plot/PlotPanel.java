@@ -125,6 +125,6 @@ public class PlotPanel extends JPanel implements BranchBox {
     }
 
     public final Branch getBranch() {
-        return (branch);
+        return branch;
     }
 }

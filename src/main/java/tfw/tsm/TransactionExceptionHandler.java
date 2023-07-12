@@ -13,5 +13,5 @@ public interface TransactionExceptionHandler {
      * @param exception
      *            an uncaught exception thrown during a transaction.
      */
-    public void handle(Exception exception);
+    void handle(Exception exception);
 }

@@ -42,7 +42,7 @@ public class ZoomConverter extends TriggeredConverter {
             set(fontECD, font.deriveFont(newSize));
         }
 
-        set(graphWidthECD, new Integer((int) (graphWidth * scale)));
-        set(graphHeightECD, new Integer((int) (graphHeight * scale)));
+        set(graphWidthECD, (int) (graphWidth * scale));
+        set(graphHeightECD, (int) (graphHeight * scale));
     }
 }

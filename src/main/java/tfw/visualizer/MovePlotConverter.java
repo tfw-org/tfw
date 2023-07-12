@@ -54,8 +54,8 @@ public class MovePlotConverter extends Converter {
                 int xOffset = ((Integer) get(xOffsetECD)).intValue();
                 int yOffset = ((Integer) get(yOffsetECD)).intValue();
 
-                set(xOffsetECD, new Integer(xOffset + (x - previousX)));
-                set(yOffsetECD, new Integer(yOffset + (y - previousY)));
+                set(xOffsetECD, xOffset + (x - previousX));
+                set(yOffsetECD, yOffset + (y - previousY));
             }
         }
     }

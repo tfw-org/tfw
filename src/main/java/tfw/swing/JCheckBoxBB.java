@@ -38,6 +38,6 @@ public class JCheckBoxBB extends JCheckBox implements BranchBox {
     }
 
     public final Branch getBranch() {
-        return (branch);
+        return branch;
     }
 }

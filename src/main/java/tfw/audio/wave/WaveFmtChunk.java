@@ -42,10 +42,10 @@ public final class WaveFmtChunk extends WaveChunk {
         Argument.assertNotNull(byteIla, "byteIla");
         Argument.assertNotLessThan(byteIla.length(), 24, "byteIla.length()");
 
-        return (WaveUtil.intFromSignedFourBytes(byteIla, 0, false));
+        return WaveUtil.intFromSignedFourBytes(byteIla, 0, false);
     }
 
     private static int getChunkDataSize(ByteIla byteIla) throws DataInvalidException {
-        return (WaveUtil.intFromSignedFourBytes(byteIla, 4, true));
+        return WaveUtil.intFromSignedFourBytes(byteIla, 4, true);
     }
 }

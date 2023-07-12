@@ -7,7 +7,7 @@ public final class SetStrokeGraphic {
     private SetStrokeGraphic() {}
 
     public static Graphic create(Graphic graphic, Stroke stroke) {
-        return (new MyGraphic(graphic, stroke));
+        return new MyGraphic(graphic, stroke);
     }
 
     private static class MyGraphic implements Graphic {

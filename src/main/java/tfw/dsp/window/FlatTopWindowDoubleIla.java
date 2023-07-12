@@ -28,6 +28,6 @@ public final class FlatTopWindowDoubleIla {
                     + A4 * Math.cos(constant4 * i);
         }
 
-        return (DoubleIlaFromArray.create(window));
+        return DoubleIlaFromArray.create(window);
     }
 }

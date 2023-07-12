@@ -40,7 +40,7 @@ public class ObjectIlaMultiplexerStrategy implements MultiplexerStrategy {
          */
         public Object getState(Object key) {
             int index = ((Integer) key).intValue();
-            if ((index >= 0) && (index < this.objs.length)) {
+            if (index >= 0 && index < this.objs.length) {
                 return objs[index];
             }
             return null;

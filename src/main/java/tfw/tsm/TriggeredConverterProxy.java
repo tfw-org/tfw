@@ -15,7 +15,7 @@ public final class TriggeredConverterProxy implements Proxy {
     }
 
     public String getName() {
-        return (triggeredConverter.getName());
+        return triggeredConverter.getName();
     }
 
     public SourceProxy[] getSourceProxies() {
@@ -27,7 +27,7 @@ public final class TriggeredConverterProxy implements Proxy {
             Object o = iterator.next();
             sp[i] = new SourceProxy((Source) o);
         }
-        return (sp);
+        return sp;
     }
 
     public SinkProxy[] getSinkProxies() {
@@ -37,20 +37,20 @@ public final class TriggeredConverterProxy implements Proxy {
         for (int i = 0; i < sinks.length; i++) {
             sp[i] = new SinkProxy((Sink) sinks[i]);
         }
-        return (sp);
+        return sp;
     }
 
     public boolean equals(Object obj) {
         if (obj instanceof TriggeredConverterProxy) {
             TriggeredConverterProxy ip = (TriggeredConverterProxy) obj;
 
-            return (triggeredConverter.equals(ip.triggeredConverter));
+            return triggeredConverter.equals(ip.triggeredConverter);
         }
 
-        return (false);
+        return false;
     }
 
     public int hashCode() {
-        return (triggeredConverter.hashCode());
+        return triggeredConverter.hashCode();
     }
 }

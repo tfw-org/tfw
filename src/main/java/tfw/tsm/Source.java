@@ -13,7 +13,7 @@ public abstract class Source extends Port {
     abstract Object fire();
 
     boolean isStateSource() {
-        return (eventChannel.getCurrentStateSource() == this);
+        return eventChannel.getCurrentStateSource() == this;
     }
 
     public String toString() {

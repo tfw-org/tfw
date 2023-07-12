@@ -6,7 +6,7 @@ public final class DrawStringGraphic {
     private DrawStringGraphic() {}
 
     public static Graphic create(Graphic graphic, String string, int x, int y) {
-        return (new MyGraphic(graphic, string, x, y));
+        return new MyGraphic(graphic, string, x, y);
     }
 
     private static class MyGraphic implements Graphic {
@@ -32,7 +32,7 @@ public final class DrawStringGraphic {
     }
 
     public static Graphic create(Graphic graphic, String[] strings, int[] xs, int[] ys) {
-        return (new MyGraphic1(graphic, strings, xs, ys));
+        return new MyGraphic1(graphic, strings, xs, ys);
     }
 
     private static class MyGraphic1 implements Graphic {

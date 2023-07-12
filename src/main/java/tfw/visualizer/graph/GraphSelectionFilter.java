@@ -9,7 +9,7 @@ public class GraphSelectionFilter {
     private GraphSelectionFilter() {}
 
     public static Graph create(Graph graph, BooleanIla selectedNodes) {
-        return (new MyGraph(graph, selectedNodes));
+        return new MyGraph(graph, selectedNodes);
     }
 
     private static class MyGraph implements Graph {
@@ -22,11 +22,11 @@ public class GraphSelectionFilter {
         }
 
         public long nodesLength() {
-            return (graph.nodesLength());
+            return graph.nodesLength();
         }
 
         public long edgesLength() {
-            return (graph.edgesLength());
+            return graph.edgesLength();
         }
 
         public void toArray(

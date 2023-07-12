@@ -15,7 +15,7 @@ public final class SynchronizerProxy implements Proxy {
     }
 
     public String getName() {
-        return (synchronizer.getName());
+        return synchronizer.getName();
     }
 
     public SourceProxy[] getSourceProxies() {
@@ -27,7 +27,7 @@ public final class SynchronizerProxy implements Proxy {
             Object o = iterator.next();
             sp[i] = new SourceProxy((Source) o);
         }
-        return (sp);
+        return sp;
     }
 
     public SinkProxy[] getSinkProxies() {
@@ -37,20 +37,20 @@ public final class SynchronizerProxy implements Proxy {
         for (int i = 0; i < sinks.length; i++) {
             sp[i] = new SinkProxy((Sink) sinks[i]);
         }
-        return (sp);
+        return sp;
     }
 
     public boolean equals(Object obj) {
         if (obj instanceof SynchronizerProxy) {
             SynchronizerProxy ip = (SynchronizerProxy) obj;
 
-            return (synchronizer.equals(ip.synchronizer));
+            return synchronizer.equals(ip.synchronizer);
         }
 
-        return (false);
+        return false;
     }
 
     public int hashCode() {
-        return (synchronizer.hashCode());
+        return synchronizer.hashCode();
     }
 }

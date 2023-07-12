@@ -14,7 +14,7 @@ public final class BranchProxy implements Proxy {
     }
 
     public String getName() {
-        return (branch.getName());
+        return branch.getName();
     }
 
     public EventChannelProxy[] getEventChannelProxies() {
@@ -25,7 +25,7 @@ public final class BranchProxy implements Proxy {
             eventChannelProxies[i] = new EventChannelProxy((EventChannel) eventChannels[i]);
         }
 
-        return (eventChannelProxies);
+        return eventChannelProxies;
     }
 
     public Proxy[] getChildProxies() {
@@ -60,20 +60,20 @@ public final class BranchProxy implements Proxy {
             }
         }
 
-        return (proxies);
+        return proxies;
     }
 
     public Proxy getParentProxy() {
         TreeComponent branchParent = branch.immediateParent;
 
         if (branchParent == null) {
-            return (null);
+            return null;
         } else if (branchParent instanceof Root) {
-            return (new RootProxy((Root) branchParent));
+            return new RootProxy((Root) branchParent);
         } else if (branchParent instanceof MultiplexedBranch) {
-            return (new MultiplexedBranchProxy((MultiplexedBranch) branchParent));
+            return new MultiplexedBranchProxy((MultiplexedBranch) branchParent);
         } else if (branchParent instanceof Branch) {
-            return (new BranchProxy((Branch) branchParent));
+            return new BranchProxy((Branch) branchParent);
         }
 
         throw new IllegalStateException("Parent is not a branch/multiplexedBranch");
@@ -83,13 +83,13 @@ public final class BranchProxy implements Proxy {
         if (obj instanceof BranchProxy) {
             BranchProxy bp = (BranchProxy) obj;
 
-            return (branch.equals(bp.branch));
+            return branch.equals(bp.branch);
         }
 
-        return (false);
+        return false;
     }
 
     public int hashCode() {
-        return (branch.hashCode());
+        return branch.hashCode();
     }
 }

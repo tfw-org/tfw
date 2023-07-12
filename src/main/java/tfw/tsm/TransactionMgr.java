@@ -1,13 +1,9 @@
 package tfw.tsm;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import tfw.check.Argument;
@@ -45,16 +41,12 @@ public final class TransactionMgr {
 
     private long transactionId;
     private long currentlyExecutingTransactionId;
-    private final Lock transactionQueueLock = new ReentrantLock();
     private final Object lock = new Object();
 
     private boolean logging;
 
     private static final Object STATIC_LOCK = new Object();
     private static boolean traceLogging = false;
-
-    private final Map<Processor, Map<Processor, Boolean>> processorCache =
-            new HashMap<Processor, Map<Processor, Boolean>>();
 
     private final ArrayList<Source> stateChanges = new ArrayList<Source>();
 
@@ -148,7 +140,7 @@ public final class TransactionMgr {
      * @return the ID of the currently-executing transaction
      */
     long getCurrentlyExecutingTransactionId() {
-        return (currentlyExecutingTransactionId);
+        return currentlyExecutingTransactionId;
     }
 
     Logger getLogger() {
@@ -225,7 +217,7 @@ public final class TransactionMgr {
             executeEndOfCycleRunnables();
 
             cycleNumber++;
-        } while ((stateChanges.size() != 0) || (eventChannelFires.size() != 0) || (processors.size() != 0));
+        } while (stateChanges.size() != 0 || eventChannelFires.size() != 0 || processors.size() != 0);
 
         componentChange = null;
     }
@@ -764,7 +756,7 @@ public final class TransactionMgr {
     }
 
     boolean isComponentChangeTransactionExecuting() {
-        return (componentChange != null);
+        return componentChange != null;
     }
 
     private final HashSet<Runnable> endOfCycleRunnables = new HashSet<Runnable>();
@@ -807,7 +799,7 @@ public final class TransactionMgr {
             queue.lock();
             queue.invokeLater(runnable);
 
-            return (transactionId++);
+            return transactionId++;
         } finally {
             queue.unlock();
         }
@@ -987,7 +979,7 @@ public final class TransactionMgr {
         }
     }
 
-    public static interface LocationFormatter {
+    public interface LocationFormatter {
         void formatLocation(Logger logger, Throwable throwable);
     }
 }

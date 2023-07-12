@@ -56,6 +56,6 @@ public class JDialogBB extends JDialog implements BranchBox {
     }
 
     public final Branch getBranch() {
-        return (branch);
+        return branch;
     }
 }

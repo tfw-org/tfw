@@ -13,11 +13,11 @@ public final class EventChannelProxy implements Proxy {
     }
 
     public String getName() {
-        return (eventChannel.getECD().getEventChannelName());
+        return eventChannel.getECD().getEventChannelName();
     }
 
     public EventChannelDescription getEventChannelDescription() {
-        return (eventChannel.getECD());
+        return eventChannel.getECD();
     }
 
     public String getObject() {
@@ -29,13 +29,13 @@ public final class EventChannelProxy implements Proxy {
         if (obj instanceof EventChannelProxy) {
             EventChannelProxy tp = (EventChannelProxy) obj;
 
-            return (eventChannel.equals(tp.eventChannel));
+            return eventChannel.equals(tp.eventChannel);
         }
 
-        return (false);
+        return false;
     }
 
     public int hashCode() {
-        return (eventChannel.hashCode());
+        return eventChannel.hashCode();
     }
 }

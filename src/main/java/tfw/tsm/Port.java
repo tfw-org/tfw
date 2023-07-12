@@ -63,7 +63,7 @@ abstract class Port {
      *         channel, otherwise returns <tt>false</tt>.
      */
     boolean isConnected() {
-        return (eventChannel != null);
+        return eventChannel != null;
     }
 
     /**

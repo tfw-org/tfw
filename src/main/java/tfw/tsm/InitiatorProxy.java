@@ -15,7 +15,7 @@ public final class InitiatorProxy implements Proxy {
     }
 
     public String getName() {
-        return (initiator.getName());
+        return initiator.getName();
     }
 
     public SourceProxy[] getSourceProxies() {
@@ -27,20 +27,20 @@ public final class InitiatorProxy implements Proxy {
             Object o = iterator.next();
             sp[i] = new SourceProxy((Source) o);
         }
-        return (sp);
+        return sp;
     }
 
     public boolean equals(Object obj) {
         if (obj instanceof InitiatorProxy) {
             InitiatorProxy ip = (InitiatorProxy) obj;
 
-            return (initiator.equals(ip.initiator));
+            return initiator.equals(ip.initiator);
         }
 
-        return (false);
+        return false;
     }
 
     public int hashCode() {
-        return (initiator.hashCode());
+        return initiator.hashCode();
     }
 }

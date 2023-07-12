@@ -3,11 +3,11 @@ package tfw.visualizer.graph;
 import tfw.immutable.DataInvalidException;
 
 public interface Graph {
-    public long nodesLength();
+    long nodesLength();
 
-    public long edgesLength();
+    long edgesLength();
 
-    public void toArray(
+    void toArray(
             Object[] nodes,
             int nodesOffset,
             long nodesStart,

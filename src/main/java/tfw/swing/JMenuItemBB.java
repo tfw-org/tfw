@@ -30,6 +30,6 @@ public class JMenuItemBB extends JMenuItem implements BranchBox {
     }
 
     public final Branch getBranch() {
-        return (branch);
+        return branch;
     }
 }

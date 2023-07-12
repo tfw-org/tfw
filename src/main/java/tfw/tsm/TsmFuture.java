@@ -13,7 +13,7 @@ public class TsmFuture<T> implements Future<T> {
             wait();
         }
 
-        return (result);
+        return result;
     }
 
     public synchronized T get(long timeout, TimeUnit unit) throws InterruptedException, TimeoutException {
@@ -21,11 +21,11 @@ public class TsmFuture<T> implements Future<T> {
             wait(unit.toMillis(timeout));
         }
 
-        return (result);
+        return result;
     }
 
     public synchronized boolean isDone() {
-        return (done);
+        return done;
     }
 
     synchronized void setResultAndRelease(T result) {
@@ -40,10 +40,10 @@ public class TsmFuture<T> implements Future<T> {
     }
 
     public boolean cancel(boolean mayInterruptIfRunning) {
-        return (false);
+        return false;
     }
 
     public boolean isCancelled() {
-        return (false);
+        return false;
     }
 }

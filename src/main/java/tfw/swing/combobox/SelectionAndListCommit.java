@@ -50,7 +50,7 @@ public class SelectionAndListCommit extends Commit {
 
     private static ObjectECD[] toArray(ObjectIlaECD listECD, ObjectECD selectedItemECD, IntegerECD selectedIndexECD) {
         Argument.assertNotNull(listECD, "listECD");
-        if ((selectedItemECD == null) && (selectedIndexECD == null)) {
+        if (selectedItemECD == null && selectedIndexECD == null) {
             throw new IllegalStateException("(selectedItemECD == null) && (selectedIndexECD == null) not allowed");
         }
         ArrayList<ObjectECD> list = new ArrayList<ObjectECD>();

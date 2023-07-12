@@ -10,10 +10,10 @@ public class TransactionStateImpl implements TransactionState {
     }
 
     public TfwFuture<Throwable> getResultFuture() {
-        return (resultFuture);
+        return resultFuture;
     }
 
     public TfwFuture<Long> getTransactionIdFuture() {
-        return (transactionIdFuture);
+        return transactionIdFuture;
     }
 }

@@ -12,7 +12,7 @@ public final class TriggeredCommitProxy implements Proxy {
     }
 
     public String getName() {
-        return (triggeredCommit.getName());
+        return triggeredCommit.getName();
     }
 
     public SinkProxy[] getSinkProxies() {
@@ -22,20 +22,20 @@ public final class TriggeredCommitProxy implements Proxy {
         for (int i = 0; i < sinks.length; i++) {
             sp[i] = new SinkProxy((Sink) sinks[i]);
         }
-        return (sp);
+        return sp;
     }
 
     public boolean equals(Object obj) {
         if (obj instanceof TriggeredCommitProxy) {
             TriggeredCommitProxy ip = (TriggeredCommitProxy) obj;
 
-            return (triggeredCommit.equals(ip.triggeredCommit));
+            return triggeredCommit.equals(ip.triggeredCommit);
         }
 
-        return (false);
+        return false;
     }
 
     public int hashCode() {
-        return (triggeredCommit.hashCode());
+        return triggeredCommit.hashCode();
     }
 }

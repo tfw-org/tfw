@@ -8,5 +8,5 @@ public interface BranchBox {
      * Returns the branch associated with this box.
      * @return the branch associated with this box.
      */
-    public Branch getBranch();
+    Branch getBranch();
 }

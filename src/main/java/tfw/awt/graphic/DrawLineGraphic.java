@@ -6,7 +6,7 @@ public final class DrawLineGraphic {
     private DrawLineGraphic() {}
 
     public static Graphic create(Graphic graphic, int x1, int y1, int x2, int y2) {
-        return (new MyGraphic1(graphic, x1, y1, x2, y2));
+        return new MyGraphic1(graphic, x1, y1, x2, y2);
     }
 
     private static class MyGraphic1 implements Graphic {
@@ -34,7 +34,7 @@ public final class DrawLineGraphic {
     }
 
     public static Graphic create(Graphic graphic, int[] x1s, int[] y1s, int[] x2s, int[] y2s) {
-        return (new MyGraphic2(graphic, x1s, y1s, x2s, y2s));
+        return new MyGraphic2(graphic, x1s, y1s, x2s, y2s);
     }
 
     private static class MyGraphic2 implements Graphic {

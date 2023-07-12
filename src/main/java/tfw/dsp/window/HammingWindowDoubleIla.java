@@ -18,6 +18,6 @@ public final class HammingWindowDoubleIla {
             window[i] = A0 - A1 * Math.cos(constant * i);
         }
 
-        return (DoubleIlaFromArray.create(window));
+        return DoubleIlaFromArray.create(window);
     }
 }

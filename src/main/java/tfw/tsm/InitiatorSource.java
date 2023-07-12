@@ -65,8 +65,8 @@ class InitiatorSource extends Source {
              * transaction manager as is running the current transaction, then
              * set the state on the event channel.
              */
-            if ((component != null)
-                    && (component.isRooted())
+            if (component != null
+                    && component.isRooted()
                     && component.getTransactionManager().queue.isDispatchThread()) {
                 ecs.ec.setState(this, ecs.state, null);
                 return ecs.state;

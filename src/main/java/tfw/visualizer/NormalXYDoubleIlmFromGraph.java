@@ -14,7 +14,7 @@ public class NormalXYDoubleIlmFromGraph {
     public static DoubleIlm create(Graph graph) {
         Argument.assertNotNull(graph, "graph");
 
-        return (new MyDoubleIlm(graph));
+        return new MyDoubleIlm(graph);
     }
 
     private static class MyDoubleIlm implements DoubleIlm {
@@ -25,11 +25,11 @@ public class NormalXYDoubleIlmFromGraph {
         }
 
         public long width() {
-            return (graph.nodesLength());
+            return graph.nodesLength();
         }
 
         public long height() {
-            return (2);
+            return 2;
         }
 
         public double[] toArray() throws DataInvalidException {
@@ -68,7 +68,7 @@ public class NormalXYDoubleIlmFromGraph {
 
             int clusterNumber = 0;
             // System.out.println("rootNodes.size() = "+rootNodes.size());
-            for (; rootNodes.size() > 0; ) {
+            while (rootNodes.size() > 0) {
                 if (rootNodes.get(0) == null) {
                     rootNodes.remove(0);
                     continue;
@@ -145,13 +145,13 @@ public class NormalXYDoubleIlmFromGraph {
                 for (int i = 0; i < normalXs.length; i++) {
                     // System.out.println("normalYs["+i+"]="+normalYs[i]+" nCN["+i+"]="+nodeClusterNumbers[i]+"
                     // d="+dimension);
-                    normalXs[i] = (normalXs[i] / dimension) + (nodeClusterNumbers[i] % dimension) / (double) dimension;
-                    normalYs[i] = (normalYs[i] / dimension) + (nodeClusterNumbers[i] / dimension / (double) dimension);
+                    normalXs[i] = normalXs[i] / dimension + (nodeClusterNumbers[i] % dimension) / (double) dimension;
+                    normalYs[i] = normalYs[i] / dimension + nodeClusterNumbers[i] / dimension / (double) dimension;
                 }
             }
 
             // System.out.println("NormalXYDoubleIlmFromGraph:  ending");
-            return (new double[0]);
+            return new double[0];
         }
 
         private static void xxx(
@@ -215,7 +215,7 @@ public class NormalXYDoubleIlmFromGraph {
             //	    		System.arraycopy(array[i+(int)rowStart], (int)columnStart, returnArray[i], 0, width);
             //	    	}
 
-            return (new double[0]);
+            return new double[0];
         }
 
         public void toArray(double[] array, int rowOffset, long rowStart, long columnStart, int width, int height)

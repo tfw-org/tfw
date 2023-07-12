@@ -42,19 +42,17 @@ public class ComponentInitiator extends Initiator implements ComponentListener {
 
     public final void componentMoved(ComponentEvent e) {
         if (xECD == null) {
-            if (yECD == null) {
-                // Do Nothing...
-            } else {
-                set(yECD, new Integer(e.getComponent().getLocation().y));
+            if (yECD != null) {
+                set(yECD, e.getComponent().getLocation().y);
             }
         } else {
             if (yECD == null) {
-                set(xECD, new Integer(e.getComponent().getLocation().x));
+                set(xECD, e.getComponent().getLocation().x);
             } else {
                 EventChannelStateBuffer ecsb = new EventChannelStateBuffer();
 
-                ecsb.put(xECD, new Integer(e.getComponent().getLocation().x));
-                ecsb.put(yECD, new Integer(e.getComponent().getLocation().y));
+                ecsb.put(xECD, e.getComponent().getLocation().x);
+                ecsb.put(yECD, e.getComponent().getLocation().y);
 
                 set(ecsb.toArray());
             }
@@ -63,19 +61,17 @@ public class ComponentInitiator extends Initiator implements ComponentListener {
 
     public final void componentResized(ComponentEvent e) {
         if (widthECD == null) {
-            if (heightECD == null) {
-                // Do Nothing...
-            } else {
-                set(heightECD, new Integer(e.getComponent().getSize().height));
+            if (heightECD != null) {
+                set(heightECD, e.getComponent().getSize().height);
             }
         } else {
             if (heightECD == null) {
-                set(widthECD, new Integer(e.getComponent().getSize().width));
+                set(widthECD, e.getComponent().getSize().width);
             } else {
                 EventChannelStateBuffer ecsb = new EventChannelStateBuffer();
 
-                ecsb.put(widthECD, new Integer(e.getComponent().getSize().width));
-                ecsb.put(heightECD, new Integer(e.getComponent().getSize().height));
+                ecsb.put(widthECD, e.getComponent().getSize().width);
+                ecsb.put(heightECD, e.getComponent().getSize().height);
 
                 set(ecsb.toArray());
             }

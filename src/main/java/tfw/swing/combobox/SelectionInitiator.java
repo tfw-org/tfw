@@ -39,11 +39,11 @@ public class SelectionInitiator extends Initiator implements ActionListener {
     }
 
     public void actionPerformed(ActionEvent e) {
-        if ((selectedItemECD != null) && (comboBox.getSelectedItem() != null)) {
+        if (selectedItemECD != null && comboBox.getSelectedItem() != null) {
             set(selectedItemECD, comboBox.getSelectedItem());
         }
         if (selectedIndexECD != null) {
-            set(selectedIndexECD, new Integer(comboBox.getSelectedIndex()));
+            set(selectedIndexECD, comboBox.getSelectedIndex());
         }
     }
 }

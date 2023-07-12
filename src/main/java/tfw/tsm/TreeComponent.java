@@ -93,7 +93,7 @@ public class TreeComponent {
      * @return an unmodifiable map of the sinks, mapped by event channel name.
      */
     private Map<EventChannelDescription, Sink> initializeSinks(Sink[] sinks) {
-        if ((sinks != null) && (sinks.length > 0)) {
+        if (sinks != null && sinks.length > 0) {
             Map<EventChannelDescription, Sink> map = new HashMap<EventChannelDescription, Sink>(sinks.length);
 
             for (int i = 0; i < sinks.length; i++) {
@@ -105,9 +105,9 @@ public class TreeComponent {
                 }
             }
 
-            return (Collections.unmodifiableMap(map));
+            return Collections.unmodifiableMap(map);
         } else {
-            return (EMPTY_SINK_MAP);
+            return EMPTY_SINK_MAP;
         }
     }
 
@@ -121,7 +121,7 @@ public class TreeComponent {
     private List<Source> initializeSources(Source[] sources) {
         List<Source> list;
 
-        if ((sources != null) && (sources.length > 0)) {
+        if (sources != null && sources.length > 0) {
             list = new ArrayList<Source>(sources.length);
 
             for (int i = 0; i < sources.length; i++) {
@@ -135,9 +135,9 @@ public class TreeComponent {
                 list.add(sources[i]);
             }
 
-            return (Collections.unmodifiableList(list));
+            return Collections.unmodifiableList(list);
         } else {
-            return (EMPTY_SOURCE_LIST);
+            return EMPTY_SOURCE_LIST;
         }
     }
 
@@ -152,7 +152,7 @@ public class TreeComponent {
     private Map<String, EventChannel> initializeEventChannels(EventChannel[] eventChannels) {
         Map<String, EventChannel> map;
 
-        if ((eventChannels != null) && (eventChannels.length > 0)) {
+        if (eventChannels != null && eventChannels.length > 0) {
             Argument.assertElementNotNull(eventChannels, "eventChannels");
             map = new HashMap<String, EventChannel>(eventChannels.length);
 
@@ -257,11 +257,11 @@ public class TreeComponent {
             Source source = sources.get(i);
 
             if (source.ecd.getEventChannelName().equals(eventChannelName)) {
-                return (source);
+                return source;
             }
         }
 
-        return (null);
+        return null;
     }
 
     /**
@@ -273,7 +273,7 @@ public class TreeComponent {
      */
     final Sink getSink(EventChannelDescription eventChannelName) {
         // checkSink(eventChannelName);
-        return (sinks.get(eventChannelName));
+        return sinks.get(eventChannelName);
     }
 
     final void checkSink(EventChannelDescription eventChannelName) {
@@ -301,7 +301,7 @@ public class TreeComponent {
      *         channels are non-null, otherwise returns <code>false</code>.
      */
     final boolean isStateNonNull() {
-        return (isStateNonNull(sinksECDList));
+        return isStateNonNull(sinksECDList);
     }
 
     /**

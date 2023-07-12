@@ -7,7 +7,7 @@ public final class SetFontGraphic {
     private SetFontGraphic() {}
 
     public static Graphic create(Graphic graphic, Font font) {
-        return (new MyGraphic(graphic, font));
+        return new MyGraphic(graphic, font);
     }
 
     private static class MyGraphic implements Graphic {

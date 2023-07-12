@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.image.BufferedImage;
 import javax.swing.JFrame;
 import tfw.awt.ecd.ColorECD;
-import tfw.awt.ecd.GraphicECD;
 import tfw.awt.ecd.ImageECD;
 import tfw.awt.ecd.ImageObserverECD;
 import tfw.awt.event.ComponentInitiator;
@@ -24,7 +23,6 @@ public final class PlotPanelDemo {
 
         final ColorECD BACKGROUND_COLOR_ECD = new ColorECD("backgroundColor");
         final StatelessTriggerECD GENERATE_GRAPHIC_TRIGGER_ECD = new StatelessTriggerECD("generateGraphicTrigger");
-        final GraphicECD GRAPHIC_ECD = new GraphicECD("graphic");
         final IntegerECD HEIGHT_ECD = new IntegerECD("height");
         final ImageECD IMAGE_ECD = new ImageECD("image");
         final ImageObserverECD IMAGE_OBSERVER_ECD = new ImageObserverECD("imageObserver");
@@ -42,8 +40,8 @@ public final class PlotPanelDemo {
         rf2.addEventChannel(HEIGHT_ECD);
         rf2.addEventChannel(IMAGE_ECD, new BufferedImage(30, 30, BufferedImage.TYPE_INT_RGB));
         rf2.addEventChannel(IMAGE_OBSERVER_ECD, frame);
-        rf2.addEventChannel(IMAGE_X_ECD, new Integer(10));
-        rf2.addEventChannel(IMAGE_Y_ECD, new Integer(10));
+        rf2.addEventChannel(IMAGE_X_ECD, 10);
+        rf2.addEventChannel(IMAGE_Y_ECD, 10);
         rf2.addEventChannel(MULTI_GRAPHIC_ECD);
         rf2.addEventChannel(WIDTH_ECD);
         Root root2 = rf2.create("PlotPanelTest", new BasicTransactionQueue());

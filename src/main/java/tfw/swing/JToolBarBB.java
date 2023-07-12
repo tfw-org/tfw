@@ -19,12 +19,12 @@ public class JToolBarBB extends JToolBar implements BranchBox {
 
     public final Component addToBoth(Component comp) {
         branch.add((BranchBox) comp);
-        return (add(comp));
+        return add(comp);
     }
 
     public final Component addToBoth(Component comp, int index) {
         branch.add((BranchBox) comp);
-        return (add(comp, index));
+        return add(comp, index);
     }
 
     public final void addToBoth(Component comp, Object constraints) {
@@ -39,7 +39,7 @@ public class JToolBarBB extends JToolBar implements BranchBox {
 
     public final Component addToBoth(String name, Component comp) {
         branch.add((BranchBox) comp);
-        return (add(name, comp));
+        return add(name, comp);
     }
 
     public final void removeFromBoth(Component comp) {
@@ -58,6 +58,6 @@ public class JToolBarBB extends JToolBar implements BranchBox {
     }
 
     public Branch getBranch() {
-        return (branch);
+        return branch;
     }
 }

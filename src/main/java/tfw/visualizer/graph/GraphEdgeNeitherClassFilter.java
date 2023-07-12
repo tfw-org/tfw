@@ -10,7 +10,7 @@ public class GraphEdgeNeitherClassFilter {
         Argument.assertNotNull(graph, "graph");
         Argument.assertNotNull(classToRemove, "classToRemove");
 
-        return (new MyGraph(graph, classToRemove));
+        return new MyGraph(graph, classToRemove);
     }
 
     private static class MyGraph implements Graph {
@@ -23,11 +23,11 @@ public class GraphEdgeNeitherClassFilter {
         }
 
         public long nodesLength() {
-            return (graph.nodesLength());
+            return graph.nodesLength();
         }
 
         public long edgesLength() {
-            return (graph.edgesLength());
+            return graph.edgesLength();
         }
 
         public void toArray(
@@ -57,7 +57,8 @@ public class GraphEdgeNeitherClassFilter {
             for (int i = edgesOffset; i < edgesEnd; i++) {
                 if (edgeFroms[i] != null
                         && edgeTos[i] != null
-                        && (edgeFroms[i].getClass() != classToRemove && edgeTos[i].getClass() != classToRemove)) {
+                        && edgeFroms[i].getClass() != classToRemove
+                        && edgeTos[i].getClass() != classToRemove) {
                     edgeFroms[i] = null;
                     edgeTos[i] = null;
                 }

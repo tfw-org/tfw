@@ -100,9 +100,9 @@ public class Initiator extends Leaf {
 
             deferredStateChanges = null;
 
-            return (sns);
+            return sns;
         } else {
-            return (null);
+            return null;
         }
     }
 
@@ -142,15 +142,11 @@ public class Initiator extends Leaf {
                             new TransactionContainer(new SourceNState(sources, state), transactionState));
                 }
             } else {
-                final Root immediateRoot = localImmediateParent.immediateRoot;
-                final TransactionMgr transactionMgr = immediateRoot.getTransactionManager();
-                final TransactionQueue transactionQueue = transactionMgr.queue;
-
                 localImmediateParent.addStateChange(
                         new TransactionContainer(new SourceNState(sources, state), transactionState));
             }
 
-            return (transactionState);
+            return transactionState;
         } else {
             TransactionState transactionState = localImmediateRoot
                     .getTransactionManager()
@@ -165,7 +161,7 @@ public class Initiator extends Leaf {
                             transactionState,
                             TransactionMgr.isTraceLogging() ? new Throwable("StateChange") : null);
 
-            return (transactionState);
+            return transactionState;
         }
     }
 
@@ -182,7 +178,7 @@ public class Initiator extends Leaf {
      * @param state
      *            the new state for the event channel.
      */
-    private final TransactionState unifiedSet(EventChannelDescription sourceEventChannel, final Object state) {
+    private TransactionState unifiedSet(EventChannelDescription sourceEventChannel, final Object state) {
 
         Argument.assertNotNull(sourceEventChannel, "sourceEventChannel");
         // Trigger have null values...
@@ -199,7 +195,7 @@ public class Initiator extends Leaf {
         } catch (ValueException ve) {
             throw new IllegalArgumentException(ve.getMessage());
         }
-        return (newTransaction(new InitiatorSource[] {source}, new Object[] {state}));
+        return newTransaction(new InitiatorSource[] {source}, new Object[] {state});
     }
 
     /**
@@ -230,7 +226,7 @@ public class Initiator extends Leaf {
             stateObjects[i] = state[i].getState();
         }
 
-        return (newTransaction(sources, stateObjects));
+        return newTransaction(sources, stateObjects);
     }
 
     /**
@@ -246,7 +242,7 @@ public class Initiator extends Leaf {
     }
 
     public final TransactionState ftrigger(StatelessTriggerECD triggerEventChannel) {
-        return (unifiedSet(triggerEventChannel, null));
+        return unifiedSet(triggerEventChannel, null);
     }
 
     public final void set(ObjectECD objectECD, Object state) {
@@ -254,7 +250,7 @@ public class Initiator extends Leaf {
     }
 
     public final TransactionState fset(ObjectECD objectECD, Object state) {
-        return (unifiedSet(objectECD, state));
+        return unifiedSet(objectECD, state);
     }
 
     static class SourceNState {

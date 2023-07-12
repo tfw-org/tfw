@@ -9,7 +9,7 @@ public class CdlFuture<T> implements TfwFuture<T> {
             wait();
         }
 
-        return (result);
+        return result;
     }
 
     public synchronized T get(long timeoutMillis) throws Exception {
@@ -17,11 +17,11 @@ public class CdlFuture<T> implements TfwFuture<T> {
             wait(timeoutMillis);
         }
 
-        return (result);
+        return result;
     }
 
     public synchronized boolean isDone() {
-        return (done);
+        return done;
     }
 
     public synchronized void setResultAndRelease(T result) {
@@ -36,10 +36,10 @@ public class CdlFuture<T> implements TfwFuture<T> {
     }
 
     public boolean cancel(boolean mayInterruptIfRunning) {
-        return (false);
+        return false;
     }
 
     public boolean isCancelled() {
-        return (false);
+        return false;
     }
 }

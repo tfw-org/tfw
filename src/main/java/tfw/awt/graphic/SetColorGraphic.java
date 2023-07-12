@@ -7,7 +7,7 @@ public final class SetColorGraphic {
     private SetColorGraphic() {}
 
     public static Graphic create(Graphic graphic, Color color) {
-        return (new MyGraphic(graphic, color));
+        return new MyGraphic(graphic, color);
     }
 
     private static class MyGraphic implements Graphic {

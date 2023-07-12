@@ -54,8 +54,8 @@ public class ResizePlotConverter extends Converter {
                 int graphWidth = ((Integer) get(graphWidthECD)).intValue();
                 int graphHeight = ((Integer) get(graphHeightECD)).intValue();
 
-                set(graphWidthECD, new Integer(graphWidth + (x - previousX)));
-                set(graphHeightECD, new Integer(graphHeight + (y - previousY)));
+                set(graphWidthECD, graphWidth + (x - previousX));
+                set(graphHeightECD, graphHeight + (y - previousY));
             }
         }
     }

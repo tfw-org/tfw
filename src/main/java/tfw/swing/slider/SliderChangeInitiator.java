@@ -29,11 +29,11 @@ public class SliderChangeInitiator extends Initiator implements ChangeListener {
 
         if (slider.getValueIsAdjusting()) {
             if (valueAdjECD != null) {
-                ecsb.put(valueAdjECD, new Integer(slider.getValue()));
+                ecsb.put(valueAdjECD, slider.getValue());
             }
         } else {
             if (valueECD != null) {
-                ecsb.put(valueECD, new Integer(slider.getValue()));
+                ecsb.put(valueECD, slider.getValue());
             }
         }
 

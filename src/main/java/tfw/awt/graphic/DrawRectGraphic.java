@@ -7,7 +7,7 @@ public class DrawRectGraphic {
     private DrawRectGraphic() {}
 
     public static Graphic create(Graphic graphic, int x, int y, int width, int height) {
-        return (new MyGraphic(graphic, x, y, width, height));
+        return new MyGraphic(graphic, x, y, width, height);
     }
 
     private static class MyGraphic implements Graphic {
@@ -35,7 +35,7 @@ public class DrawRectGraphic {
     }
 
     public static Graphic create(Graphic graphic, int[] xs, int[] ys, int[] widths, int[] heights) {
-        return (new MyGraphicArray(graphic, xs, ys, widths, heights));
+        return new MyGraphicArray(graphic, xs, ys, widths, heights);
     }
 
     private static class MyGraphicArray implements Graphic {

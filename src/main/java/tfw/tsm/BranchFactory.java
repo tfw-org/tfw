@@ -115,7 +115,7 @@ public class BranchFactory extends BaseBranchFactory {
             StateChangeRule rule,
             String[] exportTags)
             throws ValueException {
-        if ((eventChannelDescription != null) && isTranslated(eventChannelDescription)) {
+        if (eventChannelDescription != null && isTranslated(eventChannelDescription)) {
             throw new IllegalStateException("Attemp to terminate an event channel, '"
                     + eventChannelDescription.getEventChannelName()
                     + "', which is already transalated.");

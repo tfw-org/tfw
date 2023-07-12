@@ -55,7 +55,7 @@ public final class MuLawByteIlaFromLinearShortIla {
                 if (pcm_val > CLIP) {
                     pcm_val = CLIP;
                 }
-                pcm_val += (BIAS >> 2);
+                pcm_val += BIAS >> 2;
 
                 /* Convert the scaled magnitude to segment number. */
                 int seg = 8;

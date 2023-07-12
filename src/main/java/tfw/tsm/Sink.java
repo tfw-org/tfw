@@ -27,9 +27,9 @@ public abstract class Sink extends Port {
     }
 
     public String toString() {
-        return ("dew.ui.frmwrk.Sink[name = " + getFullyQualifiedName() + ", eventChannelName = "
+        return "dew.ui.frmwrk.Sink[name = " + getFullyQualifiedName() + ", eventChannelName = "
                 + ecd.getEventChannelName()
-                + "]");
+                + "]";
     }
 
     /**
