@@ -18,6 +18,6 @@ public class ProxyNameComparator implements Comparator<Object> {
             result = proxy1.getName().compareTo(proxy2.getName());
         }
 
-        return (result);
+        return result;
     }
 }

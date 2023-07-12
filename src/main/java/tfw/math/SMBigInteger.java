@@ -127,7 +127,7 @@ public class SMBigInteger extends SignedMutableBigInteger {
                 }
                 break;
             case HALF_EVEN:
-                if ((buffer2.sign == 1) || (buffer2.sign == 0 && quotient.isOdd())) {
+                if (buffer2.sign == 1 || buffer2.sign == 0 && quotient.isOdd()) {
                     quotient.setValue(quotient.boundedLongValue() + quotient.sign);
                 }
                 break;

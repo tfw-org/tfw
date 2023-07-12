@@ -15,7 +15,7 @@ public final class ConverterProxy implements Proxy {
     }
 
     public String getName() {
-        return (converter.getName());
+        return converter.getName();
     }
 
     public SourceProxy[] getSourceProxies() {
@@ -27,7 +27,7 @@ public final class ConverterProxy implements Proxy {
             Object o = iterator.next();
             sp[i] = new SourceProxy((Source) o);
         }
-        return (sp);
+        return sp;
     }
 
     public SinkProxy[] getSinkProxies() {
@@ -37,20 +37,20 @@ public final class ConverterProxy implements Proxy {
         for (int i = 0; i < sinks.length; i++) {
             sp[i] = new SinkProxy((Sink) sinks[i]);
         }
-        return (sp);
+        return sp;
     }
 
     public boolean equals(Object obj) {
         if (obj instanceof ConverterProxy) {
             ConverterProxy ip = (ConverterProxy) obj;
 
-            return (converter.equals(ip.converter));
+            return converter.equals(ip.converter);
         }
 
-        return (false);
+        return false;
     }
 
     public int hashCode() {
-        return (converter.hashCode());
+        return converter.hashCode();
     }
 }

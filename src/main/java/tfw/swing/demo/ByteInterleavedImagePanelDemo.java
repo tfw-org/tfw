@@ -109,8 +109,8 @@ public class ByteInterleavedImagePanelDemo {
                     int h = Integer.parseInt(hTF.getText());
 
                     EventChannelStateBuffer ecsb = new EventChannelStateBuffer();
-                    ecsb.put(xECD, new Integer(xTF.getText()));
-                    ecsb.put(yECD, new Integer(yTF.getText()));
+                    ecsb.put(xECD, xTF.getText());
+                    ecsb.put(yECD, yTF.getText());
                     //					ecsb.put(ilmECD, ByteIlmFill.create((byte)1, w, h));
 
                     initiator.set(ecsb.toArray());

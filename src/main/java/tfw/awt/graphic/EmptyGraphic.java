@@ -6,7 +6,7 @@ public class EmptyGraphic {
     private EmptyGraphic() {}
 
     public static Graphic create() {
-        return (new MyGraphic());
+        return new MyGraphic();
     }
 
     private static class MyGraphic implements Graphic {

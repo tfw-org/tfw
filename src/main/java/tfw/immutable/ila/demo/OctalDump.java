@@ -112,7 +112,7 @@ public class OctalDump {
         public static ObjectIla create(ByteIla byteIla, char type) {
             if (byteIla == null) throw new IllegalArgumentException("byteIla == null not allowed!");
 
-            return (new MyObjectIla(byteIla, type));
+            return new MyObjectIla(byteIla, type);
         }
 
         private static class MyObjectIla extends AbstractObjectIla {
@@ -167,7 +167,7 @@ public class OctalDump {
                 sb.append("\n");
                 sb.append(byteIla.toString());
 
-                return (sb.toString());
+                return sb.toString();
             }
         }
     }
@@ -178,7 +178,7 @@ public class OctalDump {
         public static ObjectIla create(ShortIla shortIla, char type) {
             if (shortIla == null) throw new IllegalArgumentException("shortIla == null not allowed!");
 
-            return (new MyObjectIla(shortIla, type));
+            return new MyObjectIla(shortIla, type);
         }
 
         private static class MyObjectIla extends AbstractObjectIla {
@@ -233,7 +233,7 @@ public class OctalDump {
                 sb.append("\n");
                 sb.append(shortIla.toString());
 
-                return (sb.toString());
+                return sb.toString();
             }
         }
     }
@@ -244,7 +244,7 @@ public class OctalDump {
         public static ObjectIla create(IntIla intIla, char type) {
             if (intIla == null) throw new IllegalArgumentException("intIla == null not allowed!");
 
-            return (new MyObjectIla(intIla, type));
+            return new MyObjectIla(intIla, type);
         }
 
         private static class MyObjectIla extends AbstractObjectIla {
@@ -297,7 +297,7 @@ public class OctalDump {
                 sb.append("\n");
                 sb.append(intIla.toString());
 
-                return (sb.toString());
+                return sb.toString();
             }
         }
     }
@@ -308,7 +308,7 @@ public class OctalDump {
         public static ObjectIla create(LongIla longIla, char type) {
             if (longIla == null) throw new IllegalArgumentException("intIla == null not allowed!");
 
-            return (new MyObjectIla(longIla, type));
+            return new MyObjectIla(longIla, type);
         }
 
         private static class MyObjectIla extends AbstractObjectIla {
@@ -361,7 +361,7 @@ public class OctalDump {
                 sb.append("\n");
                 sb.append(longIla.toString());
 
-                return (sb.toString());
+                return sb.toString();
             }
         }
     }
@@ -372,7 +372,7 @@ public class OctalDump {
         public static ObjectIla create(FloatIla floatIla) {
             if (floatIla == null) throw new IllegalArgumentException("intIla == null not allowed!");
 
-            return (new MyObjectIla(floatIla));
+            return new MyObjectIla(floatIla);
         }
 
         private static class MyObjectIla extends AbstractObjectIla {
@@ -411,7 +411,7 @@ public class OctalDump {
                 sb.append("\n");
                 sb.append(floatIla.toString());
 
-                return (sb.toString());
+                return sb.toString();
             }
         }
     }
@@ -422,7 +422,7 @@ public class OctalDump {
         public static ObjectIla create(DoubleIla doubleIla) {
             if (doubleIla == null) throw new IllegalArgumentException("intIla == null not allowed!");
 
-            return (new MyObjectIla(doubleIla));
+            return new MyObjectIla(doubleIla);
         }
 
         private static class MyObjectIla extends AbstractObjectIla {
@@ -461,7 +461,7 @@ public class OctalDump {
                 sb.append("\n");
                 sb.append(doubleIla.toString());
 
-                return (sb.toString());
+                return sb.toString();
             }
         }
     }

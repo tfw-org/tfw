@@ -10,7 +10,7 @@ public class GraphNodeClassFilter {
         Argument.assertNotNull(graph, "graph");
         Argument.assertNotNull(classToRemove, "classToRemove");
 
-        return (new MyGraph(graph, classToRemove));
+        return new MyGraph(graph, classToRemove);
     }
 
     private static class MyGraph implements Graph {
@@ -23,11 +23,11 @@ public class GraphNodeClassFilter {
         }
 
         public long nodesLength() {
-            return (graph.nodesLength());
+            return graph.nodesLength();
         }
 
         public long edgesLength() {
-            return (graph.edgesLength());
+            return graph.edgesLength();
         }
 
         public void toArray(

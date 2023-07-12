@@ -57,8 +57,7 @@ public class BaseBranchFactory {
      */
     public void addEventChannel(EventChannelDescription eventChannelDescription, Object initialState)
             throws ValueException {
-        if ((eventChannelDescription instanceof StatelessTriggerECD)
-                || (eventChannelDescription instanceof RollbackECD)) {
+        if (eventChannelDescription instanceof StatelessTriggerECD || eventChannelDescription instanceof RollbackECD) {
             addEventChannel(eventChannelDescription, initialState, AlwaysChangeRule.RULE, null);
         } else {
             addEventChannel(eventChannelDescription, initialState, DotEqualsRule.RULE, null);
@@ -99,16 +98,15 @@ public class BaseBranchFactory {
         }
 
         // if the event channel is memory-less and non-null initial state...
-        if (!eventChannelDescription.isFireOnConnect() && (initialState != null)) {
+        if (!eventChannelDescription.isFireOnConnect() && initialState != null) {
             throw new IllegalArgumentException("Non-null 'initialState' is not permitted given"
                     + " eventChannelDescription.isFireOnConnect() == false");
         }
 
-        if ((eventChannelDescription instanceof StatelessTriggerECD)
-                || (eventChannelDescription instanceof RollbackECD)) {
+        if (eventChannelDescription instanceof StatelessTriggerECD || eventChannelDescription instanceof RollbackECD) {
             if (!(rule instanceof AlwaysChangeRule)) {
                 throw new IllegalArgumentException("(eventChannelDescription instanceof "
-                        + ((eventChannelDescription instanceof StatelessTriggerECD)
+                        + (eventChannelDescription instanceof StatelessTriggerECD
                                 ? "StatelessTriggerECD"
                                 : "RollbackECD")
                         + ") && !(rule instanceof AlwaysChangeRule) not allowed");

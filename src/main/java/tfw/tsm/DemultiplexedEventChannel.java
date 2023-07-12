@@ -80,7 +80,7 @@ public class DemultiplexedEventChannel extends Terminator {
     }
 
     public Multiplexer getMultiplexer() {
-        return (parent);
+        return parent;
     }
 
     /**
@@ -122,7 +122,7 @@ public class DemultiplexedEventChannel extends Terminator {
         }
 
         DemultiplexedEventChannel getDemultiplexedEventChannel() {
-            return (DemultiplexedEventChannel.this);
+            return DemultiplexedEventChannel.this;
         }
 
         Object fire() {

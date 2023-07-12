@@ -88,7 +88,7 @@ class Translator extends Terminator {
         super.setState(source, state, forwardingEventChannel);
 
         // if this translator is not responsible for the state change...
-        if ((source != parentRelaySource) && (source != childRelaySource)) {
+        if (source != parentRelaySource && source != childRelaySource) {
             // Propagate the state change up...
             try {
                 this.parentRelaySource.setState(state);

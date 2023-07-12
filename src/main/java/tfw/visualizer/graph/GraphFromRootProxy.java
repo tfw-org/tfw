@@ -25,7 +25,7 @@ public class GraphFromRootProxy {
     public static Graph create(RootProxy rootProxy) {
         Argument.assertNotNull(rootProxy, "rootProxy");
 
-        return (new MyGraph(rootProxy));
+        return new MyGraph(rootProxy);
     }
 
     private static class MyGraph implements Graph {
@@ -42,13 +42,13 @@ public class GraphFromRootProxy {
         public long nodesLength() {
             calculateArrays();
 
-            return (nodes.length);
+            return nodes.length;
         }
 
         public long edgesLength() {
             calculateArrays();
 
-            return (edgeFroms.length);
+            return edgeFroms.length;
         }
 
         public void toArray(
@@ -117,7 +117,7 @@ public class GraphFromRootProxy {
                 }
             } else if (proxy instanceof BranchProxy) {
                 BranchProxy branchProxy = (BranchProxy) proxy;
-                Object[] childProxies = (branchProxy).getChildProxies();
+                Object[] childProxies = branchProxy.getChildProxies();
                 EventChannelProxy[] eventChannelProxies = branchProxy.getEventChannelProxies();
 
                 Arrays.sort(childProxies, ProxyNameComparator.INSTANCE);

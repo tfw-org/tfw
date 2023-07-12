@@ -66,7 +66,7 @@ public class Terminator implements EventChannel, CommitRollbackListener {
         this.previousState = initialState;
         // TODO Make sure that rollback's on initialization cause an Error.
         this.rollbackState = initialState;
-        this.isStateChanged = (initialState != null);
+        this.isStateChanged = initialState != null;
 
         if (initialState != null) {
             ecd.getConstraint().checkValue(initialState);
@@ -199,7 +199,7 @@ public class Terminator implements EventChannel, CommitRollbackListener {
         }
         sink.setEventChannel(this);
 
-        if (ecd.isFireOnConnect() && (state != null)) {
+        if (ecd.isFireOnConnect() && state != null) {
             if (uninitializedSinks == null) {
                 uninitializedSinks = new ArrayList<Sink>();
             }
@@ -274,14 +274,14 @@ public class Terminator implements EventChannel, CommitRollbackListener {
             component.getTransactionManager().addCommitRollbackListener(this);
         }
 
-        if ((forwardingEventChannel == null)
-                && (this.state != this.previousState)
+        if (forwardingEventChannel == null
+                && this.state != this.previousState
                 && !(getECD() instanceof StatelessTriggerECD)
                 && !(source instanceof Multiplexer.MultiSource)
                 && !(source instanceof DemultiplexedEventChannel.DemultiSource)
                 && !(differentSlotChange(source, stateSource))) {
             String stateSourceName = "Unknown";
-            if ((stateSource != null) && (stateSource.getTreeComponent() != null)) {
+            if (stateSource != null && stateSource.getTreeComponent() != null) {
                 stateSourceName = stateSource.getTreeComponent().getName();
             }
             throw new IllegalStateException("Attempt to change the state of event channel '"

@@ -4,7 +4,7 @@ public class AddRemoveOperation {
     private final Operation operation;
     private final TreeComponent treeComponent;
 
-    public static enum Operation {
+    public enum Operation {
         ADD,
         REMOVE
     }
@@ -20,10 +20,10 @@ public class AddRemoveOperation {
     }
 
     public Operation getOperation() {
-        return (operation);
+        return operation;
     }
 
     public TreeComponent getTreeComponent() {
-        return (treeComponent);
+        return treeComponent;
     }
 }

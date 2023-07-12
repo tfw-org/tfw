@@ -34,8 +34,8 @@ public class FitToScreenConverter extends TriggeredConverter {
     }
 
     protected void convert() {
-        set(xECD, new Integer(0));
-        set(yECD, new Integer(0));
+        set(xECD, 0);
+        set(yECD, 0);
         set(graphWidthECD, get(widthECD));
         set(graphHeightECD, get(heightECD));
     }

@@ -22,5 +22,5 @@ public interface StateChangeRule {
      * @throws IllegalArgumentException
      *             if <code>newSate == null</code>.
      */
-    public boolean isChange(Object currentState, Object newState);
+    boolean isChange(Object currentState, Object newState);
 }

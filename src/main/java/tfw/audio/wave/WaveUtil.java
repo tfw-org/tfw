@@ -21,7 +21,7 @@ public final class WaveUtil {
         DataInputStream dis = new DataInputStream(bais);
 
         try {
-            return (dis.readInt());
+            return dis.readInt();
         } catch (IOException ioe) {
             throw new DataInvalidException("intFromSignedFourBytes", ioe);
         }
@@ -34,7 +34,7 @@ public final class WaveUtil {
         DataInputStream dis = new DataInputStream(bais);
 
         try {
-            return (dis.readUnsignedShort());
+            return dis.readUnsignedShort();
         } catch (IOException ioe) {
             throw new DataInvalidException("intFromUnsignedTwoBytes", ioe);
         }

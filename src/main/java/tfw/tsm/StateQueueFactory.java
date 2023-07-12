@@ -10,5 +10,5 @@ public interface StateQueueFactory {
      *
      * @return a new state queue.
      */
-    public StateQueue create();
+    StateQueue create();
 }

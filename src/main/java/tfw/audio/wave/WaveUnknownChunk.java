@@ -20,10 +20,10 @@ public final class WaveUnknownChunk extends WaveChunk {
         Argument.assertNotNull(byteIla, "byteIla");
         Argument.assertNotLessThan(byteIla.length(), 8, "byteIla.length()");
 
-        return (WaveUtil.intFromSignedFourBytes(byteIla, 0, false));
+        return WaveUtil.intFromSignedFourBytes(byteIla, 0, false);
     }
 
     private static long getChunkDataSize(ByteIla byteIla) throws DataInvalidException {
-        return (WaveUtil.intFromSignedFourBytes(byteIla, 4, true));
+        return WaveUtil.intFromSignedFourBytes(byteIla, 4, true);
     }
 }

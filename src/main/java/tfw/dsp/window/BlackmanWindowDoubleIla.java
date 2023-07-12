@@ -20,6 +20,6 @@ public final class BlackmanWindowDoubleIla {
             window[i] = A0 - A1 * Math.cos(constant1 * i) + A2 * Math.cos(constant2 * i);
         }
 
-        return (DoubleIlaFromArray.create(window));
+        return DoubleIlaFromArray.create(window);
     }
 }

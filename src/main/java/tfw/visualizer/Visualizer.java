@@ -376,8 +376,8 @@ public class Visualizer extends JFrameBB {
         rf.addEventChannel(FIT_TO_SCREEN_TRIGGER_ECD);
         rf.addEventChannel(FONT_ECD, new JPanel().getFont());
         rf.addEventChannel(GRAPH_ECD);
-        rf.addEventChannel(GRAPH_HEIGHT_ECD, new Integer(500));
-        rf.addEventChannel(GRAPH_WIDTH_ECD, new Integer(1500));
+        rf.addEventChannel(GRAPH_HEIGHT_ECD, 500);
+        rf.addEventChannel(GRAPH_WIDTH_ECD, 1500);
         rf.addEventChannel(HEIGHT_ECD);
         rf.addEventChannel(DECREASE_FONT_ENABLED_ECD);
         rf.addEventChannel(DECREASE_FONT_TRIGGER_ECD);
@@ -433,9 +433,9 @@ public class Visualizer extends JFrameBB {
         rf.addEventChannel(SHOW_VALIDATORS_ENABLED_ECD, Boolean.TRUE);
         rf.addEventChannel(SHOW_VALIDATORS_SELECTED_ECD, Boolean.TRUE);
         rf.addEventChannel(WIDTH_ECD);
-        rf.addEventChannel(X_OFFSET_ECD, new Integer(0));
+        rf.addEventChannel(X_OFFSET_ECD, 0);
         rf.addEventChannel(X_MOUSE_ECD);
-        rf.addEventChannel(Y_OFFSET_ECD, new Integer(0));
+        rf.addEventChannel(Y_OFFSET_ECD, 0);
         rf.addEventChannel(Y_MOUSE_ECD);
         rf.addEventChannel(ZOOM_IN_ENABLED_ECD, Boolean.TRUE);
         rf.addEventChannel(ZOOM_IN_TRIGGER_ECD);
@@ -469,7 +469,7 @@ public class Visualizer extends JFrameBB {
         rf.addEventChannel(VisualizerToolBar.MOVE_ENABLED_ECD, Boolean.TRUE);
         rf.addEventChannel(VisualizerToolBar.SELECTION_ENABLED_ECD, Boolean.TRUE);
 
-        return (rf.create(name, new BasicTransactionQueue()));
+        return rf.create(name, new BasicTransactionQueue());
     }
 
     public static void main(String[] args) {

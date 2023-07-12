@@ -30,6 +30,6 @@ public class JButtonBB extends JButton implements BranchBox {
     }
 
     public final Branch getBranch() {
-        return (branch);
+        return branch;
     }
 }

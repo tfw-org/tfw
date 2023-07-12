@@ -18,7 +18,7 @@ public final class PixelNodeBoundsFromNormalizedXYs {
             int graphWidth,
             int graphHeight,
             FontMetrics fontMetrics) {
-        return (new MyIntIlm(graph, normalizedXYs, graphXOffset, graphYOffset, graphWidth, graphHeight, fontMetrics));
+        return new MyIntIlm(graph, normalizedXYs, graphXOffset, graphYOffset, graphWidth, graphHeight, fontMetrics);
     }
 
     private static class MyIntIlm implements IntIlm {
@@ -48,11 +48,11 @@ public final class PixelNodeBoundsFromNormalizedXYs {
         }
 
         public long width() {
-            return (normalizedXYs.width());
+            return normalizedXYs.width();
         }
 
         public long height() {
-            return (4);
+            return 4;
         }
 
         public int[] toArray() throws DataInvalidException {

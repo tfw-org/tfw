@@ -46,6 +46,6 @@ public class JInternalFrameBB extends JInternalFrame implements BranchBox {
     }
 
     public final Branch getBranch() {
-        return (branch);
+        return branch;
     }
 }

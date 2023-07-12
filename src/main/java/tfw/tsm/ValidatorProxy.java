@@ -12,7 +12,7 @@ public final class ValidatorProxy implements Proxy {
     }
 
     public String getName() {
-        return (validator.getName());
+        return validator.getName();
     }
 
     public SinkProxy[] getSinkProxies() {
@@ -22,20 +22,20 @@ public final class ValidatorProxy implements Proxy {
         for (int i = 0; i < sinks.length; i++) {
             sp[i] = new SinkProxy((Sink) sinks[i]);
         }
-        return (sp);
+        return sp;
     }
 
     public boolean equals(Object obj) {
         if (obj instanceof ValidatorProxy) {
             ValidatorProxy ip = (ValidatorProxy) obj;
 
-            return (validator.equals(ip.validator));
+            return validator.equals(ip.validator);
         }
 
-        return (false);
+        return false;
     }
 
     public int hashCode() {
-        return (validator.hashCode());
+        return validator.hashCode();
     }
 }

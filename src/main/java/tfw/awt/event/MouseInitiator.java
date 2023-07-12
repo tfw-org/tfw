@@ -87,37 +87,37 @@ public class MouseInitiator extends Initiator implements MouseListener, MouseMot
         EventChannelStateBuffer ecsb = new EventChannelStateBuffer();
 
         if (xECD != null) {
-            ecsb.put(xECD, new Integer(e.getX()));
+            ecsb.put(xECD, e.getX());
         }
         if (yECD != null) {
-            ecsb.put(yECD, new Integer(e.getY()));
+            ecsb.put(yECD, e.getY());
         }
         if (button1PressedECD != null) {
             ecsb.put(
                     button1PressedECD,
-                    new Boolean(((e.getModifiersEx() & MouseEvent.BUTTON1_DOWN_MASK) == MouseEvent.BUTTON1_DOWN_MASK)));
+                    (e.getModifiersEx() & MouseEvent.BUTTON1_DOWN_MASK) == MouseEvent.BUTTON1_DOWN_MASK);
         }
         if (button2PressedECD != null) {
             ecsb.put(
                     button2PressedECD,
-                    new Boolean(((e.getModifiersEx() & MouseEvent.BUTTON2_DOWN_MASK) == MouseEvent.BUTTON2_DOWN_MASK)));
+                    (e.getModifiersEx() & MouseEvent.BUTTON2_DOWN_MASK) == MouseEvent.BUTTON2_DOWN_MASK);
         }
         if (button3PressedECD != null) {
             ecsb.put(
                     button3PressedECD,
-                    new Boolean(((e.getModifiersEx() & MouseEvent.BUTTON3_DOWN_MASK) == MouseEvent.BUTTON3_DOWN_MASK)));
+                    (e.getModifiersEx() & MouseEvent.BUTTON3_DOWN_MASK) == MouseEvent.BUTTON3_DOWN_MASK);
         }
         if (altPressedECD != null) {
-            ecsb.put(altPressedECD, new Boolean(e.isAltDown()));
+            ecsb.put(altPressedECD, e.isAltDown());
         }
         if (controlPressedECD != null) {
-            ecsb.put(controlPressedECD, new Boolean(e.isControlDown()));
+            ecsb.put(controlPressedECD, e.isControlDown());
         }
         if (shiftPressedECD != null) {
-            ecsb.put(shiftPressedECD, new Boolean(e.isShiftDown()));
+            ecsb.put(shiftPressedECD, e.isShiftDown());
         }
         if (clickCountECD != null) {
-            ecsb.put(clickCountECD, new Integer(e.getClickCount()));
+            ecsb.put(clickCountECD, e.getClickCount());
         }
 
         set(ecsb.toArray());

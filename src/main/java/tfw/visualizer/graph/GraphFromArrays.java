@@ -6,7 +6,7 @@ public class GraphFromArrays {
     private GraphFromArrays() {}
 
     public static Graph create(Object[] nodes, Object[] froms, Object[] tos) {
-        return (new MyGraph(nodes, froms, tos));
+        return new MyGraph(nodes, froms, tos);
     }
 
     private static class MyGraph implements Graph {
@@ -21,11 +21,11 @@ public class GraphFromArrays {
         }
 
         public long nodesLength() {
-            return (nodes.length);
+            return nodes.length;
         }
 
         public long edgesLength() {
-            return (froms.length);
+            return froms.length;
         }
 
         public void toArray(

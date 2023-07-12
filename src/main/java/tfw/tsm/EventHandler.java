@@ -36,8 +36,8 @@ abstract class EventHandler extends Leaf {
 
         int portCount = (sources == null) ? 0 : sources.length;
 
-        portCount += ((nonTriggeringSinks == null) ? 0 : nonTriggeringSinks.length);
-        portCount += ((triggeringSinks == null) ? 0 : triggeringSinks.length);
+        portCount += nonTriggeringSinks == null ? 0 : nonTriggeringSinks.length;
+        portCount += triggeringSinks == null ? 0 : triggeringSinks.length;
 
         if (portCount == 0) {
             throw new IllegalArgumentException("(nonTriggeringSinks.length + nonTriggeringSinks.length"
@@ -107,7 +107,7 @@ abstract class EventHandler extends Leaf {
     }
 
     protected final long getTransactionId() {
-        return (getTransactionManager().getCurrentlyExecutingTransactionId());
+        return getTransactionManager().getCurrentlyExecutingTransactionId();
     }
 
     /**
@@ -131,7 +131,7 @@ abstract class EventHandler extends Leaf {
             throw new IllegalStateException(sinkEventChannel + " is not connected to an event channel");
         }
 
-        return (sink.eventChannel.getPreviousTransactionState());
+        return sink.eventChannel.getPreviousTransactionState();
     }
 
     /**
@@ -159,7 +159,7 @@ abstract class EventHandler extends Leaf {
                     + "', is not connected to an event channel");
         }
 
-        return (sink.eventChannel.getState());
+        return sink.eventChannel.getState();
     }
 
     /**
@@ -252,11 +252,11 @@ abstract class EventHandler extends Leaf {
         void stateChange() {
             Source source = handler.getSource(ecd.getEventChannelName());
 
-            if ((source != null) && source.isStateSource()) {
+            if (source != null && source.isStateSource()) {
                 return;
             }
 
-            handler.stateChange(EventHandlerSink.this.eventChannel);
+            handler.stateChange(eventChannel);
         }
 
         void setHandler(EventHandler handler) {

@@ -64,6 +64,6 @@ public class JSliderBB extends JSlider implements BranchBox {
     }
 
     public final Branch getBranch() {
-        return (branch);
+        return branch;
     }
 }

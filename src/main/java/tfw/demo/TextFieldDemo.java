@@ -155,7 +155,7 @@ public class TextFieldDemo extends JPanelBB {
             throw new RuntimeException("Unexpected ValueException: " + e.getMessage());
         }
 
-        return (rf.create("TextFieldDemo", new AWTTransactionQueue()));
+        return rf.create("TextFieldDemo", new AWTTransactionQueue());
     }
 
     public static void main(String[] args) {

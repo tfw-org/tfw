@@ -38,7 +38,7 @@ public class Root extends Branch {
     }
 
     public boolean isLogging() {
-        return (transactionMgr.isLogging());
+        return transactionMgr.isLogging();
     }
 
     public void setLogging(boolean logging) {

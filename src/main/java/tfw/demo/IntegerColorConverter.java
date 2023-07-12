@@ -78,8 +78,8 @@ public class IntegerColorConverter extends Synchronizer {
     protected final void convertBToA() {
         //		System.out.println("IntegerColorConverter.convertBToA() = " + get());
         Color c = (Color) get(color);
-        set(redInteger, new Integer(c.getRed()));
-        set(greenInteger, new Integer(c.getGreen()));
-        set(blueInteger, new Integer(c.getBlue()));
+        set(redInteger, c.getRed());
+        set(greenInteger, c.getGreen());
+        set(blueInteger, c.getBlue());
     }
 }

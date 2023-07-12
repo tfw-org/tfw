@@ -20,10 +20,10 @@ public class JPopupMenuBB extends JPopupMenu implements BranchBox {
     public JMenuItem addToBoth(JMenuItem menuItem) {
         branch.add((BranchBox) menuItem);
 
-        return (add(menuItem));
+        return add(menuItem);
     }
 
     public final Branch getBranch() {
-        return (branch);
+        return branch;
     }
 }

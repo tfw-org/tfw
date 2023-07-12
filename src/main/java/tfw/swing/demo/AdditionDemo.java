@@ -156,10 +156,10 @@ public class AdditionDemo {
             String s = (String) get(textECD);
 
             if (s.length() == 0) {
-                set(integerECD, new Integer(-Integer.MIN_VALUE));
+                set(integerECD, Integer.MIN_VALUE);
             } else {
                 try {
-                    set(integerECD, new Integer(Integer.parseInt(s)));
+                    set(integerECD, Integer.parseInt(s));
                 } catch (NumberFormatException nfe) {
                     rollback(errorECD, "Bad Value for " + name + " (" + s + ")");
                 }
@@ -184,7 +184,7 @@ public class AdditionDemo {
             int v1 = ((Integer) get(valueOneECD)).intValue();
             int v2 = ((Integer) get(valueTwoECD)).intValue();
 
-            set(sumECD, new Integer(v1 + v2));
+            set(sumECD, v1 + v2);
         }
     }
 

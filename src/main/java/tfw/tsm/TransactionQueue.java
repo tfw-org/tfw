@@ -12,7 +12,7 @@ public interface TransactionQueue {
      * @param runnable
      *            the runnable to be added to the queue.
      */
-    public void invokeLater(Runnable runnable);
+    void invokeLater(Runnable runnable);
 
     /**
      * Adds a runnable to the queue and waits until the runnable executes before
@@ -24,18 +24,18 @@ public interface TransactionQueue {
      * @throws Error
      *             if called from the dispatch thread of the queue.
      */
-    public void invokeAndWait(Runnable runnable) throws Exception;
+    void invokeAndWait(Runnable runnable) throws Exception;
 
     /**
      * Returns true if the calling thread is the current transaction thread.
      *
      * @return true if the calling thread is the current transaction thread.
      */
-    public boolean isDispatchThread();
+    boolean isDispatchThread();
 
-    public void lock();
+    void lock();
 
-    public void unlock();
+    void unlock();
 
-    public TransactionState createTransactionState();
+    TransactionState createTransactionState();
 }

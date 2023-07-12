@@ -8,7 +8,7 @@ public final class DrawImageGraphic {
     private DrawImageGraphic() {}
 
     public static Graphic create(Graphic graphic, Image img, int x, int y, ImageObserver observer) {
-        return (new MyGraphic(graphic, img, x, y, observer));
+        return new MyGraphic(graphic, img, x, y, observer);
     }
 
     private static class MyGraphic implements Graphic {

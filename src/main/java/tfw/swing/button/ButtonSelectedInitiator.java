@@ -19,6 +19,6 @@ public class ButtonSelectedInitiator extends Initiator implements ItemListener {
     }
 
     public void itemStateChanged(ItemEvent e) {
-        set(selectedECD, new Boolean(abstractButton.isSelected()));
+        set(selectedECD, abstractButton.isSelected());
     }
 }

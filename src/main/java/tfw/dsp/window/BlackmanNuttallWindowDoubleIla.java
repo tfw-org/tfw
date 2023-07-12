@@ -22,6 +22,6 @@ public final class BlackmanNuttallWindowDoubleIla {
             window[i] = A0 - A1 * Math.cos(constant1 * i) + A2 * Math.cos(constant2 * i) - A3 * Math.cos(constant3 * i);
         }
 
-        return (DoubleIlaFromArray.create(window));
+        return DoubleIlaFromArray.create(window);
     }
 }

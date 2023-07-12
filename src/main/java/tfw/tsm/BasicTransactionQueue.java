@@ -45,7 +45,7 @@ public final class BasicTransactionQueue implements TransactionQueue {
      * @param runnable
      *            the runnable to add to the queue.
      */
-    public final synchronized void invokeLater(Runnable runnable) {
+    public synchronized void invokeLater(Runnable runnable) {
         Argument.assertNotNull(runnable, "runnable");
         queue.add(runnable);
         checkThread();
@@ -109,7 +109,7 @@ public final class BasicTransactionQueue implements TransactionQueue {
      * @return <code>true</code> if the queue is empty, otherwise returns
      *         <code>false</code>.
      */
-    public final synchronized boolean isEmpty() {
+    public synchronized boolean isEmpty() {
         return thread == null;
     }
 
@@ -120,12 +120,12 @@ public final class BasicTransactionQueue implements TransactionQueue {
      * @return <code>true</code> if the calling thread is the current
      *         transaction queue thread.
      */
-    public final synchronized boolean isDispatchThread() {
-        if ((thread != null) && (Thread.currentThread() == thread)) {
-            return (true);
+    public synchronized boolean isDispatchThread() {
+        if (thread != null && Thread.currentThread() == thread) {
+            return true;
         }
 
-        return (false);
+        return false;
     }
 
     /**
@@ -135,7 +135,7 @@ public final class BasicTransactionQueue implements TransactionQueue {
      *             if the current thread cannot modify the transaction queue
      *             thread
      */
-    public final synchronized void interrupt() {
+    public synchronized void interrupt() {
         if (thread != null) {
             thread.interrupt();
             thread = null;

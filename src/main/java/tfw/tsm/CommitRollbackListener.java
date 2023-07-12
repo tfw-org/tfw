@@ -1,9 +1,9 @@
 package tfw.tsm;
 
 interface CommitRollbackListener {
-    public void commit();
+    void commit();
 
-    public void rollback();
+    void rollback();
 
-    public String getName();
+    String getName();
 }

@@ -101,7 +101,7 @@ public final class NodeAndEdgesFromRootProxy {
             }
         } else if (proxy instanceof BranchProxy) {
             BranchProxy branchProxy = (BranchProxy) proxy;
-            Object[] childProxies = (branchProxy).getChildProxies();
+            Object[] childProxies = branchProxy.getChildProxies();
             EventChannelProxy[] eventChannelProxies = branchProxy.getEventChannelProxies();
 
             Arrays.sort(childProxies, ProxyNameComparator.INSTANCE);

@@ -143,7 +143,7 @@ public class ColorButtonNB extends JButton implements BranchBox {
         }
 
         public String getDisplayName() {
-            return ("Gray Scale");
+            return "Gray Scale";
         }
 
         public Icon getSmallDisplayIcon() {

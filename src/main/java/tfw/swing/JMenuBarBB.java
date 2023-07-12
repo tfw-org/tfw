@@ -20,10 +20,10 @@ public class JMenuBarBB extends JMenuBar implements BranchBox {
     public JMenu addToBoth(JMenu menu) {
         branch.add((BranchBox) menu);
 
-        return (add(menu));
+        return add(menu);
     }
 
     public final Branch getBranch() {
-        return (branch);
+        return branch;
     }
 }

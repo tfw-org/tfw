@@ -154,6 +154,6 @@ public class MultiplexedBranch extends BranchComponent {
     }
 
     Multiplexer[] getMultiplexers() {
-        return (multiplexers.clone());
+        return multiplexers.clone();
     }
 }

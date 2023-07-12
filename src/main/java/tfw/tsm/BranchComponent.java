@@ -97,7 +97,7 @@ public abstract class BranchComponent extends TreeComponent {
             }
         }
 
-        return (terminateLocally(unterminatedConnections));
+        return terminateLocally(unterminatedConnections);
     }
 
     private TreeComponent[] getChildComponents() {
@@ -105,7 +105,7 @@ public abstract class BranchComponent extends TreeComponent {
             return new TreeComponent[0];
         }
         synchronized (children) {
-            return (children.values().toArray(new TreeComponent[children.size()]));
+            return children.values().toArray(new TreeComponent[children.size()]);
         }
     }
 
@@ -191,7 +191,7 @@ public abstract class BranchComponent extends TreeComponent {
     }
 
     private static boolean isExport(EventChannel ec, String exportTag) {
-        if ((ec.getECD() instanceof StatelessTriggerECD) || !ec.getECD().isFireOnConnect() || (ec.getState() == null)) {
+        if (ec.getECD() instanceof StatelessTriggerECD || !ec.getECD().isFireOnConnect() || ec.getState() == null) {
             return false;
         }
 
@@ -258,7 +258,7 @@ public abstract class BranchComponent extends TreeComponent {
         TreeState[] childTreeState = state.getChildren();
 
         if (children == null) {
-            if ((childTreeState.length == 0) || skipMissingChildBranches) {
+            if (childTreeState.length == 0 || skipMissingChildBranches) {
                 return;
             }
             throw new IllegalArgumentException("'state' contains child tree state and this component has no children");
@@ -443,7 +443,7 @@ public abstract class BranchComponent extends TreeComponent {
         }
     }
 
-    private final synchronized void addChildAndDescendents(
+    private synchronized void addChildAndDescendents(
             final TreeComponent parent, final TreeComponent child, List<Object> allDeferredAddRemoveSets) {
         synchronized (child) {
             if (child.immediateRoot != null) {
@@ -542,7 +542,7 @@ public abstract class BranchComponent extends TreeComponent {
         }
     }
 
-    private final synchronized void removeChildAndDescendents(final TreeComponent parent, final TreeComponent child) {
+    private synchronized void removeChildAndDescendents(final TreeComponent parent, final TreeComponent child) {
         synchronized (child) {
             if (child instanceof BranchComponent) {
                 BranchComponent ptc = (BranchComponent) child;

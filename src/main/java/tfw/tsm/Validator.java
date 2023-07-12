@@ -93,7 +93,7 @@ public abstract class Validator extends RollbackHandler {
             throw new IllegalStateException(sinkEventChannel + " is not connected to an event channel");
         }
 
-        return (sink.eventChannel.getPreviousCycleState());
+        return sink.eventChannel.getPreviousCycleState();
     }
 
     final void stateChange(EventChannel eventChannel) {

@@ -21,6 +21,6 @@ public class JLabelBB extends JLabel implements BranchBox {
     }
 
     public final Branch getBranch() {
-        return (branch);
+        return branch;
     }
 }
