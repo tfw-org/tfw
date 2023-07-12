@@ -5,15 +5,15 @@ import tfw.immutable.DataInvalidException;
 public final class BooleanIlaUtil {
     private BooleanIlaUtil() {}
 
-    public static final boolean[] toArray(final BooleanIla booleanIla) throws DataInvalidException {
+    public static boolean[] toArray(final BooleanIla booleanIla) throws DataInvalidException {
         return toArray(booleanIla, 0, (int) Math.min(booleanIla.length(), Integer.MAX_VALUE));
     }
 
-    public static final boolean[] toArray(final BooleanIla booleanIla, final long start, final int length)
+    public static boolean[] toArray(final BooleanIla booleanIla, final long ilaStart, final int length)
             throws DataInvalidException {
         boolean[] result = new boolean[length];
 
-        booleanIla.toArray(result, 0, start, length);
+        booleanIla.toArray(result, 0, ilaStart, length);
 
         return result;
     }

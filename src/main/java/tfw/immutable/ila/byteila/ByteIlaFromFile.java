@@ -4,10 +4,14 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
 
 public final class ByteIlaFromFile {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ByteIlaFromFile.class);
+
     private ByteIlaFromFile() {}
 
     public static ByteIla create(File file) {
@@ -16,7 +20,7 @@ public final class ByteIlaFromFile {
         if (!file.exists()) throw new IllegalArgumentException("file does not exist!");
         if (!file.canRead()) throw new IllegalArgumentException("file cannot be read!");
 
-        return (new MyByteIla(file));
+        return new MyByteIla(file);
     }
 
     private static class MyByteIla extends AbstractByteIla {
@@ -72,6 +76,7 @@ public final class ByteIlaFromFile {
             try {
                 raf.close();
             } catch (IOException ioe) {
+                LOGGER.warn("Failed to close RandomAccessFile!", ioe);
             }
 
             raf = null;
@@ -105,5 +110,4 @@ public final class ByteIlaFromFile {
             resetTimer = true;
         }
     }
-    ;
 }

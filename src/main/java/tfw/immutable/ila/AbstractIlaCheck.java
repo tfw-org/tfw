@@ -3,8 +3,7 @@ package tfw.immutable.ila;
 import tfw.check.Argument;
 
 public final class AbstractIlaCheck {
-    public static final void boundsCheck(
-            long ilaLength, int arrayLength, int offset, int stride, long start, int length) {
+    public static void boundsCheck(long ilaLength, int arrayLength, int offset, int stride, long start, int length) {
         Argument.assertNotLessThan(arrayLength, 0, "array.length");
         Argument.assertNotLessThan(offset, 0, "offset");
         Argument.assertNotGreaterThanOrEquals(offset, arrayLength, "offset", "array.length");

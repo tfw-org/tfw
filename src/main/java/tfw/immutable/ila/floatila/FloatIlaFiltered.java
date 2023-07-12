@@ -14,8 +14,8 @@ public final class FloatIlaFiltered {
         // non-instantiable class
     }
 
-    public static interface FloatFilter {
-        public boolean matches(float value);
+    public interface FloatFilter {
+        boolean matches(float value);
     }
 
     public static FloatIla create(FloatIla ila, FloatFilter filter) {
@@ -93,7 +93,7 @@ public final class FloatIlaFiltered {
                 FloatIlaIterator oii = new FloatIlaIterator(ila);
 
                 try {
-                    for (int i = 0; oii.hasNext(); i++) {
+                    while (oii.hasNext()) {
                         if (filter.matches(oii.next())) {
                             length--;
                         }

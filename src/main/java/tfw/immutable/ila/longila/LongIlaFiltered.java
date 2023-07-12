@@ -14,8 +14,8 @@ public final class LongIlaFiltered {
         // non-instantiable class
     }
 
-    public static interface LongFilter {
-        public boolean matches(long value);
+    public interface LongFilter {
+        boolean matches(long value);
     }
 
     public static LongIla create(LongIla ila, LongFilter filter) {
@@ -93,7 +93,7 @@ public final class LongIlaFiltered {
                 LongIlaIterator oii = new LongIlaIterator(ila);
 
                 try {
-                    for (int i = 0; oii.hasNext(); i++) {
+                    while (oii.hasNext()) {
                         if (filter.matches(oii.next())) {
                             length--;
                         }

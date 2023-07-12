@@ -14,8 +14,8 @@ public final class BooleanIlaFiltered {
         // non-instantiable class
     }
 
-    public static interface BooleanFilter {
-        public boolean matches(boolean value);
+    public interface BooleanFilter {
+        boolean matches(boolean value);
     }
 
     public static BooleanIla create(BooleanIla ila, BooleanFilter filter) {
@@ -93,7 +93,7 @@ public final class BooleanIlaFiltered {
                 BooleanIlaIterator oii = new BooleanIlaIterator(ila);
 
                 try {
-                    for (int i = 0; oii.hasNext(); i++) {
+                    while (oii.hasNext()) {
                         if (filter.matches(oii.next())) {
                             length--;
                         }

@@ -38,7 +38,7 @@ public final class DoubleIlaRamp {
             // }
 
             // INCORRECT, BUT FAST
-            double value = (startValue + increment * start);
+            double value = startValue + increment * start;
             for (int startInt = (int) start;
                     startInt != startPlusLength;
                     ++startInt, offset += stride, value += increment) {

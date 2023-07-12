@@ -10,7 +10,7 @@ public class DoubleIlaClip {
         Argument.assertNotNull(doubleIla, "doubleIla");
         Argument.assertLessThan(min, max, "min", "max");
 
-        return (new MyDoubleIla(doubleIla, min, max));
+        return new MyDoubleIla(doubleIla, min, max);
     }
 
     private static class MyDoubleIla extends AbstractDoubleIla {
@@ -33,8 +33,8 @@ public class DoubleIlaClip {
             for (int i = 0; i < length; i++) {
                 double d = dii.next();
 
-                d = (d < min) ? min : d;
-                d = (d > max) ? max : d;
+                d = d < min ? min : d;
+                d = d > max ? max : d;
 
                 array[offset + (i * stride)] = d;
             }

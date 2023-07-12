@@ -14,8 +14,8 @@ public final class ObjectIlaFiltered {
         // non-instantiable class
     }
 
-    public static interface ObjectFilter {
-        public boolean matches(Object value);
+    public interface ObjectFilter {
+        boolean matches(Object value);
     }
 
     public static ObjectIla create(ObjectIla ila, ObjectFilter filter) {
@@ -93,7 +93,7 @@ public final class ObjectIlaFiltered {
                 ObjectIlaIterator oii = new ObjectIlaIterator(ila);
 
                 try {
-                    for (int i = 0; oii.hasNext(); i++) {
+                    while (oii.hasNext()) {
                         if (filter.matches(oii.next())) {
                             length--;
                         }

@@ -45,7 +45,7 @@ public final class %%NAME%%IlaDivide {
             %%NAME%%IlaIterator ri = new %%NAME%%IlaIterator(%%NAME%%IlaSegment.create(rightIla, start, length), bufferSize);
 
             for (int ii = offset; li.hasNext(); ii += stride) {
-                array[ii] =%%CAST_FROM_INT%% (li.next() / ri.next());
+                array[ii] = %%CAST_FROM_INT_PRE%%li.next() / ri.next()%%CAST_FROM_INT_POST%%;
             }
         }
     }

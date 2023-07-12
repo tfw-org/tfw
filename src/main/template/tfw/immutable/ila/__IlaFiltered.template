@@ -15,8 +15,8 @@ public final class %%NAME%%IlaFiltered {
         // non-instantiable class
     }
 
-    public static interface %%NAME%%Filter {
-        public boolean matches(%%TYPE%% value);
+    public interface %%NAME%%Filter {
+        boolean matches(%%TYPE%% value);
     }
 
     public static %%NAME%%Ila create(%%NAME%%Ila ila, %%NAME%%Filter filter) {
@@ -94,7 +94,7 @@ public final class %%NAME%%IlaFiltered {
                 %%NAME%%IlaIterator oii = new %%NAME%%IlaIterator(ila);
 
                 try {
-                    for (int i = 0; oii.hasNext(); i++) {
+                    while (oii.hasNext()) {
                         if (filter.matches(oii.next())) {
                             length--;
                         }

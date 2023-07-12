@@ -38,7 +38,7 @@ public final class FloatIlaRamp {
             // }
 
             // INCORRECT, BUT FAST
-            float value = (startValue + increment * start);
+            float value = startValue + increment * start;
             for (int startInt = (int) start;
                     startInt != startPlusLength;
                     ++startInt, offset += stride, value += increment) {

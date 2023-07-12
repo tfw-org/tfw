@@ -14,8 +14,8 @@ public final class ShortIlaFiltered {
         // non-instantiable class
     }
 
-    public static interface ShortFilter {
-        public boolean matches(short value);
+    public interface ShortFilter {
+        boolean matches(short value);
     }
 
     public static ShortIla create(ShortIla ila, ShortFilter filter) {
@@ -93,7 +93,7 @@ public final class ShortIlaFiltered {
                 ShortIlaIterator oii = new ShortIlaIterator(ila);
 
                 try {
-                    for (int i = 0; oii.hasNext(); i++) {
+                    while (oii.hasNext()) {
                         if (filter.matches(oii.next())) {
                             length--;
                         }

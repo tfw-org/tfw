@@ -20,7 +20,7 @@ public final class DoubleIlaSegment {
         Argument.assertNotNull(ila, "ila");
         Argument.assertNotLessThan(start, 0, "start");
         Argument.assertNotLessThan(length, 0, "length");
-        Argument.assertNotGreaterThan((start + length), ila.length(), "start + length", "ila.length()");
+        Argument.assertNotGreaterThan(start + length, ila.length(), "start + length", "ila.length()");
 
         return new MyDoubleIla(ila, start, length);
     }

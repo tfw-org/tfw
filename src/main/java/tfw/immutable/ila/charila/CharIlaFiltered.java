@@ -14,8 +14,8 @@ public final class CharIlaFiltered {
         // non-instantiable class
     }
 
-    public static interface CharFilter {
-        public boolean matches(char value);
+    public interface CharFilter {
+        boolean matches(char value);
     }
 
     public static CharIla create(CharIla ila, CharFilter filter) {
@@ -93,7 +93,7 @@ public final class CharIlaFiltered {
                 CharIlaIterator oii = new CharIlaIterator(ila);
 
                 try {
-                    for (int i = 0; oii.hasNext(); i++) {
+                    while (oii.hasNext()) {
                         if (filter.matches(oii.next())) {
                             length--;
                         }

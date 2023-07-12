@@ -20,7 +20,7 @@ public final class BooleanIlaSegment {
         Argument.assertNotNull(ila, "ila");
         Argument.assertNotLessThan(start, 0, "start");
         Argument.assertNotLessThan(length, 0, "length");
-        Argument.assertNotGreaterThan((start + length), ila.length(), "start + length", "ila.length()");
+        Argument.assertNotGreaterThan(start + length, ila.length(), "start + length", "ila.length()");
 
         return new MyBooleanIla(ila, start, length);
     }

@@ -14,8 +14,8 @@ public final class DoubleIlaFiltered {
         // non-instantiable class
     }
 
-    public static interface DoubleFilter {
-        public boolean matches(double value);
+    public interface DoubleFilter {
+        boolean matches(double value);
     }
 
     public static DoubleIla create(DoubleIla ila, DoubleFilter filter) {
@@ -93,7 +93,7 @@ public final class DoubleIlaFiltered {
                 DoubleIlaIterator oii = new DoubleIlaIterator(ila);
 
                 try {
-                    for (int i = 0; oii.hasNext(); i++) {
+                    while (oii.hasNext()) {
                         if (filter.matches(oii.next())) {
                             length--;
                         }

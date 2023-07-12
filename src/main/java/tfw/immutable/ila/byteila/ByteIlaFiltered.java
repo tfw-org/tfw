@@ -14,8 +14,8 @@ public final class ByteIlaFiltered {
         // non-instantiable class
     }
 
-    public static interface ByteFilter {
-        public boolean matches(byte value);
+    public interface ByteFilter {
+        boolean matches(byte value);
     }
 
     public static ByteIla create(ByteIla ila, ByteFilter filter) {
@@ -93,7 +93,7 @@ public final class ByteIlaFiltered {
                 ByteIlaIterator oii = new ByteIlaIterator(ila);
 
                 try {
-                    for (int i = 0; oii.hasNext(); i++) {
+                    while (oii.hasNext()) {
                         if (filter.matches(oii.next())) {
                             length--;
                         }

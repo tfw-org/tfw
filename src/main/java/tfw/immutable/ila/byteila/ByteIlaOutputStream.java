@@ -35,7 +35,7 @@ public class ByteIlaOutputStream extends OutputStream {
     public void writeByteIla(ByteIla byteIla, int bufferSize) throws IOException, DataInvalidException {
         checkClosed();
 
-        int bytesToWrite = (byteIla.length() > bufferSize) ? bufferSize : (int) byteIla.length();
+        int bytesToWrite = byteIla.length() > bufferSize ? bufferSize : (int) byteIla.length();
         byte[] b = new byte[bytesToWrite];
 
         for (long i = 0; bytesToWrite > 0; ) {
@@ -43,7 +43,7 @@ public class ByteIlaOutputStream extends OutputStream {
             write(b, 0, bytesToWrite);
             i += bytesToWrite;
 
-            bytesToWrite = ((byteIla.length() - i) > b.length) ? b.length : (int) (byteIla.length() - i);
+            bytesToWrite = (byteIla.length() - i) > b.length ? b.length : (int) (byteIla.length() - i);
         }
     }
 
@@ -61,7 +61,7 @@ public class ByteIlaOutputStream extends OutputStream {
         streamClosed = true;
     }
 
-    private final void checkClosed() {
+    private void checkClosed() {
         if (streamClosed) throw new IllegalStateException("Stream is closed!");
     }
 }
