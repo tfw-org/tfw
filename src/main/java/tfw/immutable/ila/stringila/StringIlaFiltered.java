@@ -14,8 +14,8 @@ public final class StringIlaFiltered {
         // non-instantiable class
     }
 
-    public static interface StringFilter {
-        public boolean matches(String value);
+    public interface StringFilter {
+        boolean matches(String value);
     }
 
     public static StringIla create(StringIla ila, StringFilter filter) {
@@ -93,7 +93,7 @@ public final class StringIlaFiltered {
                 StringIlaIterator oii = new StringIlaIterator(ila);
 
                 try {
-                    for (int i = 0; oii.hasNext(); i++) {
+                    while (oii.hasNext()) {
                         if (filter.matches(oii.next())) {
                             length--;
                         }

@@ -5,15 +5,15 @@ import tfw.immutable.DataInvalidException;
 public final class ByteIlaUtil {
     private ByteIlaUtil() {}
 
-    public static final byte[] toArray(final ByteIla byteIla) throws DataInvalidException {
+    public static byte[] toArray(final ByteIla byteIla) throws DataInvalidException {
         return toArray(byteIla, 0, (int) Math.min(byteIla.length(), Integer.MAX_VALUE));
     }
 
-    public static final byte[] toArray(final ByteIla byteIla, final long start, final int length)
+    public static byte[] toArray(final ByteIla byteIla, final long ilaStart, final int length)
             throws DataInvalidException {
         byte[] result = new byte[length];
 
-        byteIla.toArray(result, 0, start, length);
+        byteIla.toArray(result, 0, ilaStart, length);
 
         return result;
     }

@@ -38,7 +38,7 @@ public final class LongIlaRamp {
             // }
 
             // INCORRECT, BUT FAST
-            long value = (startValue + increment * start);
+            long value = startValue + increment * start;
             for (int startInt = (int) start;
                     startInt != startPlusLength;
                     ++startInt, offset += stride, value += increment) {

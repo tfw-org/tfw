@@ -5,15 +5,15 @@ import tfw.immutable.DataInvalidException;
 public final class IntIlaUtil {
     private IntIlaUtil() {}
 
-    public static final int[] toArray(final IntIla intIla) throws DataInvalidException {
+    public static int[] toArray(final IntIla intIla) throws DataInvalidException {
         return toArray(intIla, 0, (int) Math.min(intIla.length(), Integer.MAX_VALUE));
     }
 
-    public static final int[] toArray(final IntIla intIla, final long start, final int length)
+    public static int[] toArray(final IntIla intIla, final long ilaStart, final int length)
             throws DataInvalidException {
         int[] result = new int[length];
 
-        intIla.toArray(result, 0, start, length);
+        intIla.toArray(result, 0, ilaStart, length);
 
         return result;
     }

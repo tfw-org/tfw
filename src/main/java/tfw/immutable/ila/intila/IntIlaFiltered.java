@@ -14,8 +14,8 @@ public final class IntIlaFiltered {
         // non-instantiable class
     }
 
-    public static interface IntFilter {
-        public boolean matches(int value);
+    public interface IntFilter {
+        boolean matches(int value);
     }
 
     public static IntIla create(IntIla ila, IntFilter filter) {
@@ -93,7 +93,7 @@ public final class IntIlaFiltered {
                 IntIlaIterator oii = new IntIlaIterator(ila);
 
                 try {
-                    for (int i = 0; oii.hasNext(); i++) {
+                    while (oii.hasNext()) {
                         if (filter.matches(oii.next())) {
                             length--;
                         }

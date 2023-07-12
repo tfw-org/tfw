@@ -6,4 +6,8 @@
 %%CREATE_IMMUTABLE_START%% = new Character(
 %%CREATE_IMMUTABLE_END%% = )
 %%CAST_FROM_INT%% = \ (char)
+%%CAST_FROM_INT_PRE%% = (char)\ (
+%%CAST_FROM_INT_POST%% = )
 %%CAST_FROM_LONG%% = \ (char)
+%%CAST_FROM_LONG_PRE%% = (char)\ (
+%%CAST_FROM_LONG_POST%% = )

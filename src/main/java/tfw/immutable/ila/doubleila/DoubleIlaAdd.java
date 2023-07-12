@@ -44,7 +44,7 @@ public final class DoubleIlaAdd {
             DoubleIlaIterator ri = new DoubleIlaIterator(DoubleIlaSegment.create(rightIla, start, length), bufferSize);
 
             for (int ii = offset; length > 0; ii += stride, --length) {
-                array[ii] = (li.next() + ri.next());
+                array[ii] = li.next() + ri.next();
             }
         }
     }

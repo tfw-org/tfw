@@ -45,7 +45,7 @@ public final class %%NAME%%IlaMultiply {
             %%NAME%%IlaIterator ri = new %%NAME%%IlaIterator(%%NAME%%IlaSegment.create(rightIla, start, length), bufferSize);
 
             for (int ii = offset; length > 0; ii += stride, --length) {
-                array[ii] =%%CAST_FROM_INT%% (li.next() * ri.next());
+                array[ii] = %%CAST_FROM_INT_PRE%%li.next() * ri.next()%%CAST_FROM_INT_POST%%;
             }
         }
     }

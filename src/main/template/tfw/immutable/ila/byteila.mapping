@@ -6,4 +6,8 @@
 %%CREATE_IMMUTABLE_START%% = new Byte(
 %%CREATE_IMMUTABLE_END%% = )
 %%CAST_FROM_INT%% = \ (byte)
+%%CAST_FROM_INT_PRE%% = (byte)\ (
+%%CAST_FROM_INT_POST%% = )
 %%CAST_FROM_LONG%% = \ (byte)
+%%CAST_FROM_LONG_PRE%% = (byte)\ (
+%%CAST_FROM_LONG_POST%% = )

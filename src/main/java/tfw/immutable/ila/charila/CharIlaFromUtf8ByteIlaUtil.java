@@ -39,7 +39,7 @@ public final class CharIlaFromUtf8ByteIlaUtil {
     };
 
     public static int calculateByteBufferLength(final int byteBufferLength) {
-        return (byteBufferLength > 0) ? byteBufferLength : DEFAULT_BYTE_BUFFER_LENGTH;
+        return byteBufferLength > 0 ? byteBufferLength : DEFAULT_BYTE_BUFFER_LENGTH;
     }
 
     public static long calculateCharDelta(final int indexTableLength, final long utf8ByteIlaLength) {
@@ -87,7 +87,7 @@ public final class CharIlaFromUtf8ByteIlaUtil {
 
         for (long byteIndex = 0; byteIndex < utf8ByteIlaLength; ) {
             final long remainingBytes = utf8ByteIlaLength - byteIndex;
-            final int bytesToGet = (int) ((byteBuffer.length <= remainingBytes) ? byteBuffer.length : remainingBytes);
+            final int bytesToGet = (int) (byteBuffer.length <= remainingBytes ? byteBuffer.length : remainingBytes);
 
             utf8ByteIla.toArray(byteBuffer, 0, byteIndex, bytesToGet);
 
@@ -154,7 +154,7 @@ public final class CharIlaFromUtf8ByteIlaUtil {
 
         for (long byteIndex = startByteIndex; byteIndex < utf8ByteIlaLength; ) {
             final long remainingBytes = utf8ByteIlaLength - byteIndex;
-            final int bytesToGet = (int) ((byteBuffer.length <= remainingBytes) ? byteBuffer.length : remainingBytes);
+            final int bytesToGet = (int) (byteBuffer.length <= remainingBytes ? byteBuffer.length : remainingBytes);
 
             utf8ByteIla.toArray(byteBuffer, 0, byteIndex, bytesToGet);
 
