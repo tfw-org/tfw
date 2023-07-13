@@ -39,7 +39,7 @@ public final class IntIlmFromArray {
             for (int i = 0; i < rowCount; i++) {
                 for (int j = 0; j < colCount; j++) {
                     array[offset + (i * rowStride) + (j * colStride)] =
-                            this.array[(i + (int) rowStart) * intWidth + (j + (int) colStart)];
+                            this.array[(i + (int) rowStart) * intWidth + j + (int) colStart];
                 }
             }
         }

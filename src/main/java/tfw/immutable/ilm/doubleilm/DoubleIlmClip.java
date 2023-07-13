@@ -45,8 +45,8 @@ public class DoubleIlmClip {
                 for (int j = 0; j < colCount; j++) {
                     double d = buffer[j];
 
-                    d = (d < min) ? min : d;
-                    d = (d > max) ? max : d;
+                    d = d < min ? min : d;
+                    d = d > max ? max : d;
 
                     array[offset + (i * rowStride) + (j * colStride)] = d;
                 }

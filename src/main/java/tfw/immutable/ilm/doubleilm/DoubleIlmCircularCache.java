@@ -58,8 +58,8 @@ public class DoubleIlmCircularCache {
                     cacheStart = 0;
                     cacheEnd = doubleIlm.height();
 
-                    for (int i = 0, r = 0; i < rowCount; i++) {
-                        for (int j = 0; j < colCount; j++, r++) {
+                    for (int i = 0; i < rowCount; i++) {
+                        for (int j = 0; j < colCount; j++) {
                             array[offset + i * rowStride + j * colStride] =
                                     buffer[((i + rowStartOffset) % maxRows) * rStride + j * cStride];
                         }
@@ -98,8 +98,8 @@ public class DoubleIlmCircularCache {
                     }
                 }
 
-                for (int i = 0, r = 0; i < rowCount; i++) {
-                    for (int j = 0; j < colCount; j++, r++) {
+                for (int i = 0; i < rowCount; i++) {
+                    for (int j = 0; j < colCount; j++) {
                         array[offset + i * rowStride + j * colStride] =
                                 buffer[((i + rowStartOffset) % maxRows) * rStride + j * cStride];
                     }
@@ -114,8 +114,8 @@ public class DoubleIlmCircularCache {
             if (cacheStart <= rowStart && rowStart + rowCount <= cacheEnd) {
                 int rowStartOffset = (int) (rowStart % maxRows);
 
-                for (int i = 0, r = 0; i < rowCount; i++) {
-                    for (int j = 0; j < colCount; j++, r++) {
+                for (int i = 0; i < rowCount; i++) {
+                    for (int j = 0; j < colCount; j++) {
                         array[offset + i * rowStride + j * colStride] =
                                 buffer[((i + rowStartOffset) % maxRows) * rStride + j * cStride];
                     }
