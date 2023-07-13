@@ -5,14 +5,14 @@ import tfw.immutable.DataInvalidException;
 import tfw.immutable.ilm.ImmutableLongMatrix;
 
 public interface %%NAME%%Ilm extends ImmutableLongMatrix {
-    public %%TYPE%%[] toArray() throws DataInvalidException;
+    %%TYPE%%[] toArray() throws DataInvalidException;
 
-    public %%TYPE%%[] toArray(long rowStart, long columnStart, int rowCount, int colCount) throws DataInvalidException;
+    %%TYPE%%[] toArray(long rowStart, long columnStart, int rowCount, int colCount) throws DataInvalidException;
 
-    public void toArray(%%TYPE%%[] array, int offset, long rowStart, long columnStart, int rowCount, int colCount)
+    void toArray(%%TYPE%%[] array, int offset, long rowStart, long columnStart, int rowCount, int colCount)
             throws DataInvalidException;
 
-    public void toArray(
+    void toArray(
             %%TYPE%%[] array,
             int offset,
             int rowStride,

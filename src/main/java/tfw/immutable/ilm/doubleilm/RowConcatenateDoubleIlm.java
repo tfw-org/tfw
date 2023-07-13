@@ -6,9 +6,6 @@ import tfw.immutable.DataInvalidException;
 public class RowConcatenateDoubleIlm {
     private RowConcatenateDoubleIlm() {}
 
-    {
-    }
-
     public static DoubleIlm create(DoubleIlm leftIlm, DoubleIlm rightIlm) {
         Argument.assertNotNull(leftIlm, "leftIlm");
         Argument.assertNotNull(rightIlm, "rightIlm");

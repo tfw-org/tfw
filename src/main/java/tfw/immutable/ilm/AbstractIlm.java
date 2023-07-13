@@ -18,11 +18,11 @@ public abstract class AbstractIlm implements ImmutableLongMatrix {
     }
 
     public final long width() {
-        return (width);
+        return width;
     }
 
     public final long height() {
-        return (height);
+        return height;
     }
 
     protected final void boundsCheck(
