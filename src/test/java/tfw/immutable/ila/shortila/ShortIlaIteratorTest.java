@@ -19,7 +19,7 @@ class ShortIlaIteratorTest {
         }
 
         ShortIla ila = ShortIlaFromArray.create(array);
-        ShortIlaIterator ii = new ShortIlaIterator(ila);
+        ShortIlaIterator ii = new ShortIlaIterator(ila, new short[100]);
 
         int i = 0;
         for (; ii.hasNext(); i++) {

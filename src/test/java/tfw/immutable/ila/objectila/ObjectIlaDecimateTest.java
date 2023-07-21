@@ -15,15 +15,15 @@ class ObjectIlaDecimateTest {
         for (int ii = 0; ii < array.length; ++ii) {
             array[ii] = new Object();
         }
-        ObjectIla ila = ObjectIlaFromArray.create(array);
+        ObjectIla<Object> ila = ObjectIlaFromArray.create(array);
         for (int factor = 2; factor <= length; ++factor) {
             final int targetLength = (length + factor - 1) / factor;
             final Object[] target = new Object[targetLength];
             for (int ii = 0; ii < target.length; ++ii) {
                 target[ii] = array[ii * factor];
             }
-            ObjectIla targetIla = ObjectIlaFromArray.create(target);
-            ObjectIla actualIla = ObjectIlaDecimate.create(ila, factor);
+            ObjectIla<Object> targetIla = ObjectIlaFromArray.create(target);
+            ObjectIla<Object> actualIla = ObjectIlaDecimate.create(ila, factor, new Object[100]);
             final Object epsilon = Object.class;
             ObjectIlaCheck.checkAll(
                     targetIla,

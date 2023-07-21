@@ -23,7 +23,7 @@ class IntIlaFromCastFloatIlaTest {
         }
         FloatIla ila = FloatIlaFromArray.create(array);
         IntIla targetIla = IntIlaFromArray.create(target);
-        IntIla actualIla = IntIlaFromCastFloatIla.create(ila);
+        IntIla actualIla = IntIlaFromCastFloatIla.create(ila, 100);
         final int epsilon = 0;
         IntIlaCheck.checkAll(
                 targetIla,

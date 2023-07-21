@@ -19,7 +19,7 @@ class FloatIlaIteratorTest {
         }
 
         FloatIla ila = FloatIlaFromArray.create(array);
-        FloatIlaIterator ii = new FloatIlaIterator(ila);
+        FloatIlaIterator ii = new FloatIlaIterator(ila, new float[100]);
 
         int i = 0;
         for (; ii.hasNext(); i++) {

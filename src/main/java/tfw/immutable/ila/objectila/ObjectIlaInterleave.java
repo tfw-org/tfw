@@ -12,7 +12,7 @@ public final class ObjectIlaInterleave {
         // non-instantiable class
     }
 
-    public static ObjectIla create(ObjectIla[] ilas) {
+    public static <T> ObjectIla<T> create(ObjectIla<T>[] ilas) {
         Argument.assertNotNull(ilas, "ilas");
         Argument.assertNotLessThan(ilas.length, 1, "ilas.length");
         Argument.assertNotNull(ilas[0], "ilas[0]");
@@ -22,21 +22,21 @@ public final class ObjectIlaInterleave {
             Argument.assertEquals(ilas[ii].length(), firstLength, "ilas[0].length()", "ilas[" + ii + "].length()");
         }
 
-        return new MyObjectIla(ilas);
+        return new MyObjectIla<>(ilas);
     }
 
-    private static class MyObjectIla extends AbstractObjectIla {
-        private final ObjectIla[] ilas;
+    private static class MyObjectIla<T> extends AbstractObjectIla<T> {
+        private final ObjectIla<T>[] ilas;
 
         private final int ilasLength;
 
-        MyObjectIla(ObjectIla[] ilas) {
+        MyObjectIla(ObjectIla<T>[] ilas) {
             super(ilas[0].length() * ilas.length);
             this.ilas = ilas;
             this.ilasLength = ilas.length;
         }
 
-        protected void toArrayImpl(Object[] array, int offset, int stride, long start, int length)
+        protected void toArrayImpl(T[] array, int offset, int stride, long start, int length)
                 throws DataInvalidException {
             int currentIla = (int) (start % ilasLength);
             long ilaStart = start / ilasLength;

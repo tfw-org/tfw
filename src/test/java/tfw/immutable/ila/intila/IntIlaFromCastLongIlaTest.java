@@ -23,7 +23,7 @@ class IntIlaFromCastLongIlaTest {
         }
         LongIla ila = LongIlaFromArray.create(array);
         IntIla targetIla = IntIlaFromArray.create(target);
-        IntIla actualIla = IntIlaFromCastLongIla.create(ila);
+        IntIla actualIla = IntIlaFromCastLongIla.create(ila, 100);
         final int epsilon = 0;
         IntIlaCheck.checkAll(
                 targetIla,

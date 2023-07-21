@@ -19,7 +19,7 @@ class CharIlaIteratorTest {
         }
 
         CharIla ila = CharIlaFromArray.create(array);
-        CharIlaIterator ii = new CharIlaIterator(ila);
+        CharIlaIterator ii = new CharIlaIterator(ila, new char[100]);
 
         int i = 0;
         for (; ii.hasNext(); i++) {

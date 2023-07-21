@@ -34,12 +34,12 @@ class ByteIlaFromIntIlaTest {
         IntIla intIla = IntIlaFromArray.create(intArray);
 
         try {
-            ByteIlaFromIntIla.create(null);
+            ByteIlaFromIntIla.create(null, 100);
             fail("ilm == null not checked for!");
         } catch (IllegalArgumentException iae) {
         }
 
-        ByteIla actualIla = ByteIlaFromIntIla.create(intIla);
+        ByteIla actualIla = ByteIlaFromIntIla.create(intIla, 100);
         final byte epsilon = (byte) 0;
         ByteIlaCheck.checkAll(
                 targetIla,

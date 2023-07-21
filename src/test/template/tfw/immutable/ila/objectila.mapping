@@ -14,3 +14,6 @@
 %%CREATE_IMMUTABLE_END%% =
 %%IS_EQUALS_START%% = .equals(
 %%IS_EQUALS_END%% = )
+%%TEMPLATE%% = <Object>
+%%SUPPRESS%% = \n\ \ \ \ @SuppressWarnings("unchecked")
+%%FULL_CAST%% = (ObjectIla<Object>[])\ 

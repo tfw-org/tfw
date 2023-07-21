@@ -11,3 +11,7 @@
 %%CAST_FROM_LONG%% = \ (short)
 %%CAST_FROM_LONG_PRE%% = (short)\ (
 %%CAST_FROM_LONG_POST%% = )
+%%DIAMOND%% = 
+%%TEMPLATE%% =
+%%TEMPLATE_SPACE%% =
+%%TYPE_OR_TEMPLATE%% = short

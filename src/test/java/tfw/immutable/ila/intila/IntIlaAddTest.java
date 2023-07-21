@@ -24,7 +24,7 @@ class IntIlaAddTest {
         IntIla leftIla = IntIlaFromArray.create(leftArray);
         IntIla rightIla = IntIlaFromArray.create(rightArray);
         IntIla targetIla = IntIlaFromArray.create(array);
-        IntIla actualIla = IntIlaAdd.create(leftIla, rightIla);
+        IntIla actualIla = IntIlaAdd.create(leftIla, rightIla, 100);
         final int epsilon = 0;
         IntIlaCheck.checkAll(
                 targetIla,

@@ -15,10 +15,6 @@ public final class CharIlaFromCastFloatIla {
         // non-instantiable class
     }
 
-    public static CharIla create(FloatIla floatIla) {
-        return create(floatIla, FloatIlaIterator.DEFAULT_BUFFER_SIZE);
-    }
-
     public static CharIla create(FloatIla floatIla, int bufferSize) {
         Argument.assertNotNull(floatIla, "floatIla");
         Argument.assertNotLessThan(bufferSize, 1, "bufferSize");
@@ -39,7 +35,8 @@ public final class CharIlaFromCastFloatIla {
 
         protected void toArrayImpl(char[] array, int offset, int stride, long start, int length)
                 throws DataInvalidException {
-            FloatIlaIterator fi = new FloatIlaIterator(FloatIlaSegment.create(floatIla, start, length), bufferSize);
+            FloatIlaIterator fi =
+                    new FloatIlaIterator(FloatIlaSegment.create(floatIla, start, length), new float[bufferSize]);
 
             for (int ii = offset; length > 0; ii += stride, --length) {
                 array[ii] = (char) fi.next();

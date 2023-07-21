@@ -15,10 +15,6 @@ public final class ShortIlaFromCastCharIla {
         // non-instantiable class
     }
 
-    public static ShortIla create(CharIla charIla) {
-        return create(charIla, CharIlaIterator.DEFAULT_BUFFER_SIZE);
-    }
-
     public static ShortIla create(CharIla charIla, int bufferSize) {
         Argument.assertNotNull(charIla, "charIla");
         Argument.assertNotLessThan(bufferSize, 1, "bufferSize");
@@ -39,7 +35,8 @@ public final class ShortIlaFromCastCharIla {
 
         protected void toArrayImpl(short[] array, int offset, int stride, long start, int length)
                 throws DataInvalidException {
-            CharIlaIterator fi = new CharIlaIterator(CharIlaSegment.create(charIla, start, length), bufferSize);
+            CharIlaIterator fi =
+                    new CharIlaIterator(CharIlaSegment.create(charIla, start, length), new char[bufferSize]);
 
             for (int ii = offset; length > 0; ii += stride, --length) {
                 array[ii] = (short) fi.next();

@@ -25,7 +25,7 @@ class CharIlaDecimateTest {
                 target[ii] = array[ii * factor];
             }
             CharIla targetIla = CharIlaFromArray.create(target);
-            CharIla actualIla = CharIlaDecimate.create(ila, factor);
+            CharIla actualIla = CharIlaDecimate.create(ila, factor, new char[100]);
             final char epsilon = (char) 0;
             CharIlaCheck.checkAll(
                     targetIla,

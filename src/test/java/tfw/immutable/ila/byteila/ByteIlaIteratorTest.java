@@ -19,7 +19,7 @@ class ByteIlaIteratorTest {
         }
 
         ByteIla ila = ByteIlaFromArray.create(array);
-        ByteIlaIterator ii = new ByteIlaIterator(ila);
+        ByteIlaIterator ii = new ByteIlaIterator(ila, new byte[100]);
 
         int i = 0;
         for (; ii.hasNext(); i++) {

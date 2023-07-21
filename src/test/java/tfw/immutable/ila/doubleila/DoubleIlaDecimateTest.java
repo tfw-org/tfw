@@ -25,7 +25,7 @@ class DoubleIlaDecimateTest {
                 target[ii] = array[ii * factor];
             }
             DoubleIla targetIla = DoubleIlaFromArray.create(target);
-            DoubleIla actualIla = DoubleIlaDecimate.create(ila, factor);
+            DoubleIla actualIla = DoubleIlaDecimate.create(ila, factor, new double[100]);
             final double epsilon = 0.0;
             DoubleIlaCheck.checkAll(
                     targetIla,

@@ -23,7 +23,7 @@ class ByteIlaFromCastShortIlaTest {
         }
         ShortIla ila = ShortIlaFromArray.create(array);
         ByteIla targetIla = ByteIlaFromArray.create(target);
-        ByteIla actualIla = ByteIlaFromCastShortIla.create(ila);
+        ByteIla actualIla = ByteIlaFromCastShortIla.create(ila, 100);
         final byte epsilon = (byte) 0;
         ByteIlaCheck.checkAll(
                 targetIla,

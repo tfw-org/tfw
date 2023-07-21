@@ -3,7 +3,6 @@ package tfw.immutable.ila.doubleila;
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
 import tfw.immutable.ila.AbstractIlaCheck;
-import tfw.immutable.ila.ImmutableLongArray;
 
 /**
  *
@@ -18,47 +17,31 @@ public final class DoubleIlaFiltered {
         boolean matches(double value);
     }
 
-    public static DoubleIla create(DoubleIla ila, DoubleFilter filter) {
+    public static DoubleIla create(DoubleIla ila, DoubleFilter filter, double[] buffer) {
         Argument.assertNotNull(ila, "ila");
         Argument.assertNotNull(filter, "filter");
+        Argument.assertNotNull(buffer, "buffer");
 
-        return new MyDoubleIla(ila, filter);
+        return new MyDoubleIla(ila, filter, buffer);
     }
 
-    private static class MyDoubleIla implements DoubleIla, ImmutableLongArray {
+    private static class MyDoubleIla implements DoubleIla {
         private final DoubleIla ila;
         private final DoubleFilter filter;
+        private final double[] buffer;
 
         private long length = -1;
 
-        private MyDoubleIla(DoubleIla ila, DoubleFilter filter) {
+        private MyDoubleIla(DoubleIla ila, DoubleFilter filter, double[] buffer) {
             this.ila = ila;
             this.filter = filter;
+            this.buffer = buffer;
         }
 
         public final long length() {
             calculateLength();
 
             return length;
-        }
-
-        public final double[] toArray() throws DataInvalidException {
-            calculateLength();
-
-            if (length() > (long) Integer.MAX_VALUE)
-                throw new ArrayIndexOutOfBoundsException("Ila too large for native array");
-
-            return toArray((long) 0, (int) length());
-        }
-
-        public final double[] toArray(long start, int length) throws DataInvalidException {
-            calculateLength();
-
-            double[] result = new double[length];
-
-            toArray(result, 0, start, length);
-
-            return result;
         }
 
         public final void toArray(double[] array, int offset, long start, int length) throws DataInvalidException {
@@ -75,7 +58,7 @@ public final class DoubleIlaFiltered {
 
             AbstractIlaCheck.boundsCheck(this.length, array.length, offset, stride, start, length);
 
-            DoubleIlaIterator oii = new DoubleIlaIterator(DoubleIlaSegment.create(ila, start));
+            DoubleIlaIterator oii = new DoubleIlaIterator(DoubleIlaSegment.create(ila, start), buffer.clone());
 
             // left off here
             for (int i = offset; oii.hasNext(); i += stride) {
@@ -90,7 +73,7 @@ public final class DoubleIlaFiltered {
         private void calculateLength() {
             if (length < 0) {
                 length = ila.length();
-                DoubleIlaIterator oii = new DoubleIlaIterator(ila);
+                DoubleIlaIterator oii = new DoubleIlaIterator(ila, buffer.clone());
 
                 try {
                     while (oii.hasNext()) {

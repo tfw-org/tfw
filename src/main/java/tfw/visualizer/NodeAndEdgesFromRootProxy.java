@@ -20,11 +20,11 @@ import tfw.tsm.TriggeredConverterProxy;
 import tfw.tsm.ValidatorProxy;
 
 public final class NodeAndEdgesFromRootProxy {
-    private ObjectIla nodesObjectIla = null;
-    private ObjectIla edgeFromsObjectIla = null;
-    private ObjectIla edgeTosObjectIla = null;
+    private ObjectIla<Object> nodesObjectIla = null;
+    private ObjectIla<Object> edgeFromsObjectIla = null;
+    private ObjectIla<Object> edgeTosObjectIla = null;
 
-    public ObjectIla getNodesObjectIla() {
+    public ObjectIla<Object> getNodesObjectIla() {
         if (nodesObjectIla == null) {
             calculateArrays();
             nodesObjectIla = ObjectIlaFromArray.create(nodes, false);
@@ -32,7 +32,7 @@ public final class NodeAndEdgesFromRootProxy {
         return nodesObjectIla;
     }
 
-    public ObjectIla getEdgeFromsObjectIla() {
+    public ObjectIla<Object> getEdgeFromsObjectIla() {
         if (edgeFromsObjectIla == null) {
             calculateArrays();
             edgeFromsObjectIla = ObjectIlaFromArray.create(edgeFroms, false);
@@ -40,7 +40,7 @@ public final class NodeAndEdgesFromRootProxy {
         return edgeFromsObjectIla;
     }
 
-    public ObjectIla getEdgeTosObjectIla() {
+    public ObjectIla<Object> getEdgeTosObjectIla() {
         if (edgeTosObjectIla == null) {
             calculateArrays();
             edgeTosObjectIla = ObjectIlaFromArray.create(edgeTos, false);

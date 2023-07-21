@@ -12,10 +12,6 @@ public final class ShortIlaDivide {
         // non-instantiable class
     }
 
-    public static ShortIla create(ShortIla leftIla, ShortIla rightIla) {
-        return create(leftIla, rightIla, ShortIlaIterator.DEFAULT_BUFFER_SIZE);
-    }
-
     public static ShortIla create(ShortIla leftIla, ShortIla rightIla, int bufferSize) {
         Argument.assertNotNull(leftIla, "leftIla");
         Argument.assertNotNull(rightIla, "rightIla");
@@ -38,10 +34,12 @@ public final class ShortIlaDivide {
             this.bufferSize = bufferSize;
         }
 
-        protected void toArrayImpl(short[] array, int offset, int stride, long start, int length)
+        protected void toArrayImpl(short[] array, int offset, int stride, long ilaStart, int length)
                 throws DataInvalidException {
-            ShortIlaIterator li = new ShortIlaIterator(ShortIlaSegment.create(leftIla, start, length), bufferSize);
-            ShortIlaIterator ri = new ShortIlaIterator(ShortIlaSegment.create(rightIla, start, length), bufferSize);
+            ShortIlaIterator li =
+                    new ShortIlaIterator(ShortIlaSegment.create(leftIla, ilaStart, length), new short[bufferSize]);
+            ShortIlaIterator ri =
+                    new ShortIlaIterator(ShortIlaSegment.create(rightIla, ilaStart, length), new short[bufferSize]);
 
             for (int ii = offset; li.hasNext(); ii += stride) {
                 array[ii] = (short) (li.next() / ri.next());

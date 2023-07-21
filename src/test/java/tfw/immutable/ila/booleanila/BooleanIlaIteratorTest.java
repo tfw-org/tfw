@@ -19,7 +19,7 @@ class BooleanIlaIteratorTest {
         }
 
         BooleanIla ila = BooleanIlaFromArray.create(array);
-        BooleanIlaIterator ii = new BooleanIlaIterator(ila);
+        BooleanIlaIterator ii = new BooleanIlaIterator(ila, new boolean[100]);
 
         int i = 0;
         for (; ii.hasNext(); i++) {

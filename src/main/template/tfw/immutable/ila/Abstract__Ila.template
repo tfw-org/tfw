@@ -8,25 +8,29 @@ import tfw.immutable.ila.AbstractIla;
  *
  * @immutables.types=all
  */
-public abstract class Abstract%%NAME%%Ila extends AbstractIla implements %%NAME%%Ila {
-    protected abstract void toArrayImpl(%%TYPE%%[] array, int offset, int stride, long start, int length)
+public abstract class Abstract%%NAME%%Ila%%TEMPLATE%% extends AbstractIla implements %%NAME%%Ila%%TEMPLATE%% {
+    protected abstract void toArrayImpl(%%TYPE_OR_TEMPLATE%%[] array, int offset, int stride, long start, int length)
             throws DataInvalidException;
 
-    protected Abstract%%NAME%%Ila(long length) {
+    protected Abstract%%NAME%%Ila(final long length) {
         super(length);
     }
 
-    public final void toArray(%%TYPE%%[] array, int offset, long start, int length) throws DataInvalidException {
+    @Override
+    public final void toArray(final %%TYPE_OR_TEMPLATE%%[] array, final int offset, final long start, final int length)
+            throws DataInvalidException {
         toArray(array, offset, 1, start, length);
     }
 
-    public final void toArray(final %%TYPE%%[] array, int offset, int stride, long start, int length)
+    @Override
+    public final void toArray(
+            final %%TYPE_OR_TEMPLATE%%[] array, final int offset, final int stride, final long ilaStart, final int length)
             throws DataInvalidException {
         if (length == 0) {
             return;
         }
 
-        boundsCheck(array.length, offset, stride, start, length);
-        toArrayImpl(array, offset, stride, start, length);
+        boundsCheck(array.length, offset, stride, ilaStart, length);
+        toArrayImpl(array, offset, stride, ilaStart, length);
     }
 }

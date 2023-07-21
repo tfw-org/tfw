@@ -23,7 +23,7 @@ class LongIlaFromCastFloatIlaTest {
         }
         FloatIla ila = FloatIlaFromArray.create(array);
         LongIla targetIla = LongIlaFromArray.create(target);
-        LongIla actualIla = LongIlaFromCastFloatIla.create(ila);
+        LongIla actualIla = LongIlaFromCastFloatIla.create(ila, 100);
         final long epsilon = 0L;
         LongIlaCheck.checkAll(
                 targetIla,

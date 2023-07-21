@@ -12,28 +12,25 @@ public final class DoubleIlaDecimate {
         // non-instantiable class
     }
 
-    public static DoubleIla create(DoubleIla ila, long factor) {
-        return create(ila, factor, DoubleIlaIterator.DEFAULT_BUFFER_SIZE);
-    }
-
-    public static DoubleIla create(DoubleIla ila, long factor, int bufferSize) {
+    public static DoubleIla create(DoubleIla ila, long factor, double[] buffer) {
         Argument.assertNotNull(ila, "ila");
+        Argument.assertNotNull(buffer, "buffer");
         Argument.assertNotLessThan(factor, 2, "factor");
-        Argument.assertNotLessThan(bufferSize, 1, "bufferSize");
+        Argument.assertNotLessThan(buffer.length, 1, "buffer.length");
 
-        return new MyDoubleIla(ila, factor, bufferSize);
+        return new MyDoubleIla(ila, factor, buffer);
     }
 
     private static class MyDoubleIla extends AbstractDoubleIla {
         private final DoubleIla ila;
         private final long factor;
-        private final int bufferSize;
+        private final double[] buffer;
 
-        MyDoubleIla(DoubleIla ila, long factor, int bufferSize) {
+        MyDoubleIla(DoubleIla ila, long factor, double[] buffer) {
             super((ila.length() + factor - 1) / factor);
             this.ila = ila;
             this.factor = factor;
-            this.bufferSize = bufferSize;
+            this.buffer = buffer;
         }
 
         protected void toArrayImpl(double[] array, int offset, int stride, long start, int length)
@@ -41,7 +38,7 @@ public final class DoubleIlaDecimate {
             final long segmentStart = start * factor;
             final long segmentLength = StrictMath.min(ila.length() - segmentStart, length * factor - 1);
             final DoubleIla segment = DoubleIlaSegment.create(ila, segmentStart, segmentLength);
-            final DoubleIlaIterator fi = new DoubleIlaIterator(segment, bufferSize);
+            final DoubleIlaIterator fi = new DoubleIlaIterator(segment, buffer.clone());
 
             for (int ii = offset; length > 0; ii += stride, --length) {
                 array[ii] = fi.next();

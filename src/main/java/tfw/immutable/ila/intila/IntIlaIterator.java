@@ -11,7 +11,6 @@ public final class IntIlaIterator {
     private final IntIla instance;
     private final long instanceLength;
     private long amountLeftToFetch;
-    private final int bufferSize;
     private int amountToFetch;
     private int[] buffer;
     private int bufferIndex;
@@ -20,20 +19,16 @@ public final class IntIlaIterator {
 
     public static final int DEFAULT_BUFFER_SIZE = 10000;
 
-    public IntIlaIterator(IntIla instance) {
-        this(instance, DEFAULT_BUFFER_SIZE);
-    }
-
-    public IntIlaIterator(IntIla instance, int bufferSize) {
+    public IntIlaIterator(IntIla instance, int[] buffer) {
         Argument.assertNotNull(instance, "instance");
-        Argument.assertNotLessThan(bufferSize, 1, "bufferSize");
+        Argument.assertNotNull(buffer, "buffer");
+        Argument.assertNotLessThan(buffer.length, 1, "buffer.length");
 
         this.instance = instance;
         this.instanceLength = instance.length();
-        this.bufferSize = bufferSize;
-        this.amountToFetch = bufferSize;
-        this.buffer = new int[bufferSize];
-        this.bufferIndex = bufferSize;
+        this.amountToFetch = buffer.length;
+        this.buffer = buffer;
+        this.bufferIndex = buffer.length;
         this.actualPosition = 0;
         this.fetchPosition = 0;
         this.amountLeftToFetch = instanceLength - actualPosition;
@@ -50,9 +45,9 @@ public final class IntIlaIterator {
      */
     public int next() throws DataInvalidException {
         // do we need to fetch into buffer?
-        if (bufferIndex == bufferSize) {
+        if (bufferIndex == buffer.length) {
             // how much do we fetch?
-            if (amountLeftToFetch < bufferSize) {
+            if (amountLeftToFetch < buffer.length) {
                 amountToFetch = (int) amountLeftToFetch;
             }
 
@@ -75,10 +70,10 @@ public final class IntIlaIterator {
         actualPosition += amount;
 
         // will we blow our cache?
-        if (newBufferIndex > bufferSize) {
+        if (newBufferIndex > buffer.length) {
             amountLeftToFetch = instanceLength - actualPosition;
             fetchPosition = actualPosition;
-            bufferIndex = bufferSize;
+            bufferIndex = buffer.length;
         } else {
             bufferIndex = (int) newBufferIndex;
         }

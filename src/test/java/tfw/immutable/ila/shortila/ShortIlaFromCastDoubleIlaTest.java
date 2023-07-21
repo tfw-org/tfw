@@ -23,7 +23,7 @@ class ShortIlaFromCastDoubleIlaTest {
         }
         DoubleIla ila = DoubleIlaFromArray.create(array);
         ShortIla targetIla = ShortIlaFromArray.create(target);
-        ShortIla actualIla = ShortIlaFromCastDoubleIla.create(ila);
+        ShortIla actualIla = ShortIlaFromCastDoubleIla.create(ila, 100);
         final short epsilon = (short) 0.0;
         ShortIlaCheck.checkAll(
                 targetIla,

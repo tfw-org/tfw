@@ -1,4 +1,4 @@
-// booleanila,byteila,charila,doubleila,floatila,intila,longila,objectila,shortila,stringila
+// booleanila,byteila,charila,doubleila,floatila,intila,longila,objectila,shortila
 package %%PACKAGE%%;
 
 %%RANDOM_INCLUDE%%import org.junit.jupiter.api.Test;
@@ -9,7 +9,7 @@ import tfw.immutable.ila.IlaTestDimensions;
  * @immutables.types=all
  */
 class %%NAME%%IlaInterleaveTest {
-    @Test
+    @Test%%SUPPRESS%%
     void testAll() throws Exception {
         %%RANDOM_INIT%%final int length = IlaTestDimensions.defaultIlaLength();
         for (int jj = 2; jj < 6; ++jj) {
@@ -18,12 +18,12 @@ class %%NAME%%IlaInterleaveTest {
             for (int ii = 0; ii < jj * length; ++ii) {
                 array[ii] = target[ii % jj][ii / jj] = %%RANDOM_VALUE%%;
             }
-            %%NAME%%Ila[] ilas = new %%NAME%%Ila[jj];
+            %%NAME%%Ila%%TEMPLATE%%[] ilas = %%FULL_CAST%%new %%NAME%%Ila[jj];
             for (int ii = 0; ii < jj; ++ii) {
                 ilas[ii] = %%NAME%%IlaFromArray.create(target[ii]);
             }
-            %%NAME%%Ila targetIla = %%NAME%%IlaFromArray.create(array);
-            %%NAME%%Ila actualIla = %%NAME%%IlaInterleave.create(ilas);
+            %%NAME%%Ila%%TEMPLATE%% targetIla = %%NAME%%IlaFromArray.create(array);
+            %%NAME%%Ila%%TEMPLATE%% actualIla = %%NAME%%IlaInterleave.create(ilas);
             final %%TYPE%% epsilon = %%DEFAULT_VALUE%%;
             %%NAME%%IlaCheck.checkAll(
                     targetIla,

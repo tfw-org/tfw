@@ -21,9 +21,9 @@ class ObjectIlaRemoveTest {
                     target[targetii++] = array[ii];
                 }
             }
-            ObjectIla origIla = ObjectIlaFromArray.create(array);
-            ObjectIla targetIla = ObjectIlaFromArray.create(target);
-            ObjectIla actualIla = ObjectIlaRemove.create(origIla, index);
+            ObjectIla<Object> origIla = ObjectIlaFromArray.create(array);
+            ObjectIla<Object> targetIla = ObjectIlaFromArray.create(target);
+            ObjectIla<Object> actualIla = ObjectIlaRemove.create(origIla, index);
             final Object epsilon = Object.class;
             ObjectIlaCheck.checkAll(
                     targetIla,

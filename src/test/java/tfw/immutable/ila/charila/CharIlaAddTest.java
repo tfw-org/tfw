@@ -24,7 +24,7 @@ class CharIlaAddTest {
         CharIla leftIla = CharIlaFromArray.create(leftArray);
         CharIla rightIla = CharIlaFromArray.create(rightArray);
         CharIla targetIla = CharIlaFromArray.create(array);
-        CharIla actualIla = CharIlaAdd.create(leftIla, rightIla);
+        CharIla actualIla = CharIlaAdd.create(leftIla, rightIla, 100);
         final char epsilon = (char) 0;
         CharIlaCheck.checkAll(
                 targetIla,

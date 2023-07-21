@@ -136,8 +136,8 @@ class NodeAndEdgesFromRootProxyTest {
         Arrays.sort(nodesArray, ProxyNameComparator.INSTANCE);
         Arrays.sort(nodesObjectIlaArray, ProxyNameComparator.INSTANCE);
 
-        ObjectIla targetIla = ObjectIlaFromArray.create(nodesArray);
-        ObjectIla actualIla = ObjectIlaFromArray.create(nodesObjectIlaArray);
+        ObjectIla<Object> targetIla = ObjectIlaFromArray.create(nodesArray);
+        ObjectIla<Object> actualIla = ObjectIlaFromArray.create(nodesObjectIlaArray);
 
         final Object epsilon = Object.class;
         ObjectIlaCheck.checkAll(

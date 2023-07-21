@@ -24,7 +24,7 @@ class FloatIlaSubtractTest {
         FloatIla leftIla = FloatIlaFromArray.create(leftArray);
         FloatIla rightIla = FloatIlaFromArray.create(rightArray);
         FloatIla targetIla = FloatIlaFromArray.create(array);
-        FloatIla actualIla = FloatIlaSubtract.create(leftIla, rightIla);
+        FloatIla actualIla = FloatIlaSubtract.create(leftIla, rightIla, 100);
         final float epsilon = 0.0f;
         FloatIlaCheck.checkAll(
                 targetIla,

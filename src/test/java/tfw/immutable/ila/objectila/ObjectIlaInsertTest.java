@@ -23,9 +23,9 @@ class ObjectIlaInsertTest {
                 }
                 target[ii + skipit] = array[ii] = new Object();
             }
-            ObjectIla origIla = ObjectIlaFromArray.create(array);
-            ObjectIla targetIla = ObjectIlaFromArray.create(target);
-            ObjectIla actualIla = ObjectIlaInsert.create(origIla, index, value);
+            ObjectIla<Object> origIla = ObjectIlaFromArray.create(array);
+            ObjectIla<Object> targetIla = ObjectIlaFromArray.create(target);
+            ObjectIla<Object> actualIla = ObjectIlaInsert.create(origIla, index, value);
             final Object epsilon = Object.class;
             ObjectIlaCheck.checkAll(
                     targetIla,

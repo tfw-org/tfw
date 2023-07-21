@@ -40,15 +40,16 @@ public class SimpleTreeLayoutConverter extends Converter {
         this.nodeClusterYsECD = nodeClusterYsECD;
     }
 
+    @SuppressWarnings("unchecked")
     protected void convert() {
         Object[] nodeClusters = null;
         Object[] nodeClusterFroms = null;
         Object[] nodeClusterTos = null;
 
         try {
-            final ObjectIla nodeClustersIla = (ObjectIla) get(nodeClustersECD);
-            final ObjectIla nodeClusterFromsIla = (ObjectIla) get(nodeClusterFromsECD);
-            final ObjectIla nodeClusterTosIla = (ObjectIla) get(nodeClusterTosECD);
+            final ObjectIla<Object> nodeClustersIla = (ObjectIla<Object>) get(nodeClustersECD);
+            final ObjectIla<Object> nodeClusterFromsIla = (ObjectIla<Object>) get(nodeClusterFromsECD);
+            final ObjectIla<Object> nodeClusterTosIla = (ObjectIla<Object>) get(nodeClusterTosECD);
 
             nodeClusters = new Object[(int) nodeClustersIla.length()];
             nodeClusterFroms = new Object[(int) nodeClusterFromsIla.length()];

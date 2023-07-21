@@ -24,7 +24,7 @@ class DoubleIlaMultiplyTest {
         DoubleIla leftIla = DoubleIlaFromArray.create(leftArray);
         DoubleIla rightIla = DoubleIlaFromArray.create(rightArray);
         DoubleIla targetIla = DoubleIlaFromArray.create(array);
-        DoubleIla actualIla = DoubleIlaMultiply.create(leftIla, rightIla);
+        DoubleIla actualIla = DoubleIlaMultiply.create(leftIla, rightIla, 100);
         final double epsilon = 0.0;
         DoubleIlaCheck.checkAll(
                 targetIla,

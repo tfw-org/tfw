@@ -3,7 +3,6 @@ package tfw.immutable.ila.longila;
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
 import tfw.immutable.ila.AbstractIlaCheck;
-import tfw.immutable.ila.ImmutableLongArray;
 
 /**
  *
@@ -18,47 +17,31 @@ public final class LongIlaFiltered {
         boolean matches(long value);
     }
 
-    public static LongIla create(LongIla ila, LongFilter filter) {
+    public static LongIla create(LongIla ila, LongFilter filter, long[] buffer) {
         Argument.assertNotNull(ila, "ila");
         Argument.assertNotNull(filter, "filter");
+        Argument.assertNotNull(buffer, "buffer");
 
-        return new MyLongIla(ila, filter);
+        return new MyLongIla(ila, filter, buffer);
     }
 
-    private static class MyLongIla implements LongIla, ImmutableLongArray {
+    private static class MyLongIla implements LongIla {
         private final LongIla ila;
         private final LongFilter filter;
+        private final long[] buffer;
 
         private long length = -1;
 
-        private MyLongIla(LongIla ila, LongFilter filter) {
+        private MyLongIla(LongIla ila, LongFilter filter, long[] buffer) {
             this.ila = ila;
             this.filter = filter;
+            this.buffer = buffer;
         }
 
         public final long length() {
             calculateLength();
 
             return length;
-        }
-
-        public final long[] toArray() throws DataInvalidException {
-            calculateLength();
-
-            if (length() > (long) Integer.MAX_VALUE)
-                throw new ArrayIndexOutOfBoundsException("Ila too large for native array");
-
-            return toArray((long) 0, (int) length());
-        }
-
-        public final long[] toArray(long start, int length) throws DataInvalidException {
-            calculateLength();
-
-            long[] result = new long[length];
-
-            toArray(result, 0, start, length);
-
-            return result;
         }
 
         public final void toArray(long[] array, int offset, long start, int length) throws DataInvalidException {
@@ -75,7 +58,7 @@ public final class LongIlaFiltered {
 
             AbstractIlaCheck.boundsCheck(this.length, array.length, offset, stride, start, length);
 
-            LongIlaIterator oii = new LongIlaIterator(LongIlaSegment.create(ila, start));
+            LongIlaIterator oii = new LongIlaIterator(LongIlaSegment.create(ila, start), buffer.clone());
 
             // left off here
             for (int i = offset; oii.hasNext(); i += stride) {
@@ -90,7 +73,7 @@ public final class LongIlaFiltered {
         private void calculateLength() {
             if (length < 0) {
                 length = ila.length();
-                LongIlaIterator oii = new LongIlaIterator(ila);
+                LongIlaIterator oii = new LongIlaIterator(ila, buffer.clone());
 
                 try {
                     while (oii.hasNext()) {

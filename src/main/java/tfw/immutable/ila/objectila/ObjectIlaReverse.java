@@ -12,21 +12,21 @@ public final class ObjectIlaReverse {
         // non-instantiable class
     }
 
-    public static ObjectIla create(ObjectIla ila) {
+    public static <T> ObjectIla<T> create(ObjectIla<T> ila) {
         Argument.assertNotNull(ila, "ila");
 
-        return new MyObjectIla(ila);
+        return new MyObjectIla<>(ila);
     }
 
-    private static class MyObjectIla extends AbstractObjectIla {
-        private final ObjectIla ila;
+    private static class MyObjectIla<T> extends AbstractObjectIla<T> {
+        private final ObjectIla<T> ila;
 
-        MyObjectIla(ObjectIla ila) {
+        MyObjectIla(ObjectIla<T> ila) {
             super(ila.length());
             this.ila = ila;
         }
 
-        protected void toArrayImpl(Object[] array, int offset, int stride, long start, int length)
+        protected void toArrayImpl(T[] array, int offset, int stride, long start, int length)
                 throws DataInvalidException {
             ila.toArray(array, offset + (length - 1) * stride, -stride, length() - (start + length), length);
         }

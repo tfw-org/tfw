@@ -15,7 +15,7 @@ class ObjectIlaFromArrayTest {
         for (int ii = 0; ii < creation.length; ++ii) {
             creation[ii] = new Object();
         }
-        final ObjectIla ila = ObjectIlaFromArray.create(creation);
+        final ObjectIla<Object> ila = ObjectIlaFromArray.create(creation);
         final int offsetLength = IlaTestDimensions.defaultOffsetLength();
         final Object epsilon = Object.class;
         ObjectIlaCheck.checkWithoutCorrectness(ila, offsetLength, epsilon);
@@ -30,7 +30,7 @@ class ObjectIlaFromArrayTest {
         for (int ii = 0; ii < creation.length; ++ii) {
             creation[ii] = new Object();
         }
-        final ObjectIla ila = ObjectIlaFromArray.create(creation);
+        final ObjectIla<Object> ila = ObjectIlaFromArray.create(creation);
 
         for (int stride = -maxAbsStride; stride <= maxAbsStride; ++stride) {
             if (stride != 0) {

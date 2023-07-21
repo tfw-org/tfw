@@ -11,17 +11,19 @@ public final class %%NAME%%IlaCheck {
     }
 
     public static void checkAll(
-            %%NAME%%Ila target, %%NAME%%Ila actual, int addlOffsetLength, int maxAbsStride, %%TYPE%% epsilon)
+            %%NAME%%Ila%%TEMPLATE%% target, %%NAME%%Ila%%TEMPLATE%% actual, int addlOffsetLength, int maxAbsStride, %%TYPE%% epsilon)
             throws Exception {
         %%UTIL%%checkFourFiveEquivalence(actual, addlOffsetLength, epsilon);
         checkCorrectness(target, actual, addlOffsetLength, maxAbsStride, epsilon);
     }
 
-    public static void checkWithoutCorrectness(%%NAME%%Ila actual, int offsetLength, %%TYPE%% epsilon) throws Exception {
+    public static void checkWithoutCorrectness(final %%NAME%%Ila%%TEMPLATE%% actual, final int offsetLength, %%TYPE%% epsilon)
+            throws Exception {
         %%UTIL%%checkFourFiveEquivalence(actual, offsetLength, epsilon);
     }
 
-    public static void checkFourFiveEquivalence(%%NAME%%Ila ila, int offsetLength, %%TYPE%% epsilon) throws Exception {
+    public static void checkFourFiveEquivalence(final %%NAME%%Ila%%TEMPLATE%% ila, final int offsetLength, %%TYPE%% epsilon)
+            throws Exception {
         if (epsilon != %%DEFAULT_VALUE%%) {
             throw new IllegalArgumentException("epsilon != " + (%%DEFAULT_VALUE%%) + " not allowed");
         } else {
@@ -57,7 +59,7 @@ public final class %%NAME%%IlaCheck {
     }
 
     public static void checkCorrectness(
-            %%NAME%%Ila target, %%NAME%%Ila actual, int addlOffsetLength, int maxAbsStride, %%TYPE%% epsilon)
+            %%NAME%%Ila%%TEMPLATE%% target, %%NAME%%Ila%%TEMPLATE%% actual, int addlOffsetLength, int maxAbsStride, %%TYPE%% epsilon)
             throws Exception {
         if (epsilon != %%DEFAULT_VALUE%%) {
             throw new IllegalArgumentException("epsilon != " + (%%DEFAULT_VALUE%%) + " not allowed");

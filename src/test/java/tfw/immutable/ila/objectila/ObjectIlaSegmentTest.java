@@ -15,8 +15,8 @@ class ObjectIlaSegmentTest {
         for (int ii = 0; ii < master.length; ++ii) {
             master[ii] = new Object();
         }
-        ObjectIla masterIla = ObjectIlaFromArray.create(master);
-        ObjectIla checkIla = ObjectIlaSegment.create(masterIla, 0, masterIla.length());
+        ObjectIla<Object> masterIla = ObjectIlaFromArray.create(master);
+        ObjectIla<Object> checkIla = ObjectIlaSegment.create(masterIla, 0, masterIla.length());
         final int offsetLength = IlaTestDimensions.defaultOffsetLength();
         final int maxStride = IlaTestDimensions.defaultMaxStride();
         final Object epsilon = Object.class;
@@ -27,8 +27,8 @@ class ObjectIlaSegmentTest {
                 for (int ii = 0; ii < array.length; ++ii) {
                     array[ii] = master[ii + (int) start];
                 }
-                ObjectIla targetIla = ObjectIlaFromArray.create(array);
-                ObjectIla actualIla = ObjectIlaSegment.create(masterIla, start, len);
+                ObjectIla<Object> targetIla = ObjectIlaFromArray.create(array);
+                ObjectIla<Object> actualIla = ObjectIlaSegment.create(masterIla, start, len);
                 ObjectIlaCheck.checkCorrectness(targetIla, actualIla, offsetLength, maxStride, epsilon);
             }
         }

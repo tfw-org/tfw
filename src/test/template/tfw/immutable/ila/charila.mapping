@@ -11,3 +11,6 @@
 %%CREATE_IMMUTABLE_END%% = )
 %%CAST_FROM_INT%% = \ (char)
 %%CAST_FROM_DOUBLE%% = \ (char)
+%%TEMPLATE%% = 
+%%SUPPRESS%% =
+%%FULL_CAST%% =

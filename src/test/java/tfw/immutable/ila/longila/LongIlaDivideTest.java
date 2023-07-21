@@ -24,7 +24,7 @@ class LongIlaDivideTest {
         LongIla leftIla = LongIlaFromArray.create(leftArray);
         LongIla rightIla = LongIlaFromArray.create(rightArray);
         LongIla targetIla = LongIlaFromArray.create(array);
-        LongIla actualIla = LongIlaDivide.create(leftIla, rightIla);
+        LongIla actualIla = LongIlaDivide.create(leftIla, rightIla, 100);
         final long epsilon = 0L;
         LongIlaCheck.checkAll(
                 targetIla,

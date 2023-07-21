@@ -13,7 +13,7 @@ public class WaveDemo {
     public static void main(String[] args) throws Exception {
         File file = new File(args[0]);
         ByteIla byteIla = ByteIlaFromFile.create(file);
-        Wave waveFromByteIla = new Wave(byteIla);
+        Wave waveFromByteIla = new Wave(byteIla, 1024);
 
         Object[] chunks = waveFromByteIla.getChunks();
 

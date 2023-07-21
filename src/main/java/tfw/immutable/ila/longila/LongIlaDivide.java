@@ -12,10 +12,6 @@ public final class LongIlaDivide {
         // non-instantiable class
     }
 
-    public static LongIla create(LongIla leftIla, LongIla rightIla) {
-        return create(leftIla, rightIla, LongIlaIterator.DEFAULT_BUFFER_SIZE);
-    }
-
     public static LongIla create(LongIla leftIla, LongIla rightIla, int bufferSize) {
         Argument.assertNotNull(leftIla, "leftIla");
         Argument.assertNotNull(rightIla, "rightIla");
@@ -38,10 +34,12 @@ public final class LongIlaDivide {
             this.bufferSize = bufferSize;
         }
 
-        protected void toArrayImpl(long[] array, int offset, int stride, long start, int length)
+        protected void toArrayImpl(long[] array, int offset, int stride, long ilaStart, int length)
                 throws DataInvalidException {
-            LongIlaIterator li = new LongIlaIterator(LongIlaSegment.create(leftIla, start, length), bufferSize);
-            LongIlaIterator ri = new LongIlaIterator(LongIlaSegment.create(rightIla, start, length), bufferSize);
+            LongIlaIterator li =
+                    new LongIlaIterator(LongIlaSegment.create(leftIla, ilaStart, length), new long[bufferSize]);
+            LongIlaIterator ri =
+                    new LongIlaIterator(LongIlaSegment.create(rightIla, ilaStart, length), new long[bufferSize]);
 
             for (int ii = offset; li.hasNext(); ii += stride) {
                 array[ii] = li.next() / ri.next();

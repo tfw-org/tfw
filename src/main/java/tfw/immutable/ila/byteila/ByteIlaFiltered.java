@@ -3,7 +3,6 @@ package tfw.immutable.ila.byteila;
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
 import tfw.immutable.ila.AbstractIlaCheck;
-import tfw.immutable.ila.ImmutableLongArray;
 
 /**
  *
@@ -18,47 +17,31 @@ public final class ByteIlaFiltered {
         boolean matches(byte value);
     }
 
-    public static ByteIla create(ByteIla ila, ByteFilter filter) {
+    public static ByteIla create(ByteIla ila, ByteFilter filter, byte[] buffer) {
         Argument.assertNotNull(ila, "ila");
         Argument.assertNotNull(filter, "filter");
+        Argument.assertNotNull(buffer, "buffer");
 
-        return new MyByteIla(ila, filter);
+        return new MyByteIla(ila, filter, buffer);
     }
 
-    private static class MyByteIla implements ByteIla, ImmutableLongArray {
+    private static class MyByteIla implements ByteIla {
         private final ByteIla ila;
         private final ByteFilter filter;
+        private final byte[] buffer;
 
         private long length = -1;
 
-        private MyByteIla(ByteIla ila, ByteFilter filter) {
+        private MyByteIla(ByteIla ila, ByteFilter filter, byte[] buffer) {
             this.ila = ila;
             this.filter = filter;
+            this.buffer = buffer;
         }
 
         public final long length() {
             calculateLength();
 
             return length;
-        }
-
-        public final byte[] toArray() throws DataInvalidException {
-            calculateLength();
-
-            if (length() > (long) Integer.MAX_VALUE)
-                throw new ArrayIndexOutOfBoundsException("Ila too large for native array");
-
-            return toArray((long) 0, (int) length());
-        }
-
-        public final byte[] toArray(long start, int length) throws DataInvalidException {
-            calculateLength();
-
-            byte[] result = new byte[length];
-
-            toArray(result, 0, start, length);
-
-            return result;
         }
 
         public final void toArray(byte[] array, int offset, long start, int length) throws DataInvalidException {
@@ -75,7 +58,7 @@ public final class ByteIlaFiltered {
 
             AbstractIlaCheck.boundsCheck(this.length, array.length, offset, stride, start, length);
 
-            ByteIlaIterator oii = new ByteIlaIterator(ByteIlaSegment.create(ila, start));
+            ByteIlaIterator oii = new ByteIlaIterator(ByteIlaSegment.create(ila, start), buffer.clone());
 
             // left off here
             for (int i = offset; oii.hasNext(); i += stride) {
@@ -90,7 +73,7 @@ public final class ByteIlaFiltered {
         private void calculateLength() {
             if (length < 0) {
                 length = ila.length();
-                ByteIlaIterator oii = new ByteIlaIterator(ila);
+                ByteIlaIterator oii = new ByteIlaIterator(ila, buffer.clone());
 
                 try {
                     while (oii.hasNext()) {

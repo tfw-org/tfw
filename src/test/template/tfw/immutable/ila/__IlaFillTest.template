@@ -1,4 +1,4 @@
-// booleanila,byteila,charila,doubleila,floatila,intila,longila,objectila,shortila,stringila
+// booleanila,byteila,charila,doubleila,floatila,intila,longila,objectila,shortila
 package %%PACKAGE%%;
 
 %%RANDOM_INCLUDE%%import org.junit.jupiter.api.Test;
@@ -17,8 +17,8 @@ class %%NAME%%IlaFillTest {
         for (int ii = 0; ii < array.length; ++ii) {
             array[ii] = value;
         }
-        %%NAME%%Ila targetIla = %%NAME%%IlaFromArray.create(array);
-        %%NAME%%Ila actualIla = %%NAME%%IlaFill.create(value, length);
+        %%NAME%%Ila%%TEMPLATE%% targetIla = %%NAME%%IlaFromArray.create(array);
+        %%NAME%%Ila%%TEMPLATE%% actualIla = %%NAME%%IlaFill.create(value, length);
         final %%TYPE%% epsilon = %%DEFAULT_VALUE%%;
         %%NAME%%IlaCheck.checkAll(
                 targetIla,

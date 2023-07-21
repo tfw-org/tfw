@@ -9,6 +9,7 @@ import tfw.immutable.ila.IlaTestDimensions;
  */
 class ObjectIlaInterleaveTest {
     @Test
+    @SuppressWarnings("unchecked")
     void testAll() throws Exception {
         final int length = IlaTestDimensions.defaultIlaLength();
         for (int jj = 2; jj < 6; ++jj) {
@@ -17,12 +18,12 @@ class ObjectIlaInterleaveTest {
             for (int ii = 0; ii < jj * length; ++ii) {
                 array[ii] = target[ii % jj][ii / jj] = new Object();
             }
-            ObjectIla[] ilas = new ObjectIla[jj];
+            ObjectIla<Object>[] ilas = (ObjectIla<Object>[]) new ObjectIla[jj];
             for (int ii = 0; ii < jj; ++ii) {
                 ilas[ii] = ObjectIlaFromArray.create(target[ii]);
             }
-            ObjectIla targetIla = ObjectIlaFromArray.create(array);
-            ObjectIla actualIla = ObjectIlaInterleave.create(ilas);
+            ObjectIla<Object> targetIla = ObjectIlaFromArray.create(array);
+            ObjectIla<Object> actualIla = ObjectIlaInterleave.create(ilas);
             final Object epsilon = Object.class;
             ObjectIlaCheck.checkAll(
                     targetIla,

@@ -19,12 +19,14 @@ public final class BooleanIlaCheck {
         checkCorrectness(target, actual, addlOffsetLength, maxAbsStride, epsilon);
     }
 
-    public static void checkWithoutCorrectness(BooleanIla actual, int offsetLength, boolean epsilon) throws Exception {
+    public static void checkWithoutCorrectness(final BooleanIla actual, final int offsetLength, boolean epsilon)
+            throws Exception {
         BooleanIlaUtilCheck.checkAll(actual, epsilon);
         checkFourFiveEquivalence(actual, offsetLength, epsilon);
     }
 
-    public static void checkFourFiveEquivalence(BooleanIla ila, int offsetLength, boolean epsilon) throws Exception {
+    public static void checkFourFiveEquivalence(final BooleanIla ila, final int offsetLength, boolean epsilon)
+            throws Exception {
         if (epsilon != false) {
             throw new IllegalArgumentException("epsilon != " + (false) + " not allowed");
         } else {

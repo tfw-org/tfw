@@ -3,7 +3,6 @@ package tfw.immutable.ila.charila;
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
 import tfw.immutable.ila.AbstractIlaCheck;
-import tfw.immutable.ila.ImmutableLongArray;
 
 /**
  *
@@ -18,47 +17,31 @@ public final class CharIlaFiltered {
         boolean matches(char value);
     }
 
-    public static CharIla create(CharIla ila, CharFilter filter) {
+    public static CharIla create(CharIla ila, CharFilter filter, char[] buffer) {
         Argument.assertNotNull(ila, "ila");
         Argument.assertNotNull(filter, "filter");
+        Argument.assertNotNull(buffer, "buffer");
 
-        return new MyCharIla(ila, filter);
+        return new MyCharIla(ila, filter, buffer);
     }
 
-    private static class MyCharIla implements CharIla, ImmutableLongArray {
+    private static class MyCharIla implements CharIla {
         private final CharIla ila;
         private final CharFilter filter;
+        private final char[] buffer;
 
         private long length = -1;
 
-        private MyCharIla(CharIla ila, CharFilter filter) {
+        private MyCharIla(CharIla ila, CharFilter filter, char[] buffer) {
             this.ila = ila;
             this.filter = filter;
+            this.buffer = buffer;
         }
 
         public final long length() {
             calculateLength();
 
             return length;
-        }
-
-        public final char[] toArray() throws DataInvalidException {
-            calculateLength();
-
-            if (length() > (long) Integer.MAX_VALUE)
-                throw new ArrayIndexOutOfBoundsException("Ila too large for native array");
-
-            return toArray((long) 0, (int) length());
-        }
-
-        public final char[] toArray(long start, int length) throws DataInvalidException {
-            calculateLength();
-
-            char[] result = new char[length];
-
-            toArray(result, 0, start, length);
-
-            return result;
         }
 
         public final void toArray(char[] array, int offset, long start, int length) throws DataInvalidException {
@@ -75,7 +58,7 @@ public final class CharIlaFiltered {
 
             AbstractIlaCheck.boundsCheck(this.length, array.length, offset, stride, start, length);
 
-            CharIlaIterator oii = new CharIlaIterator(CharIlaSegment.create(ila, start));
+            CharIlaIterator oii = new CharIlaIterator(CharIlaSegment.create(ila, start), buffer.clone());
 
             // left off here
             for (int i = offset; oii.hasNext(); i += stride) {
@@ -90,7 +73,7 @@ public final class CharIlaFiltered {
         private void calculateLength() {
             if (length < 0) {
                 length = ila.length();
-                CharIlaIterator oii = new CharIlaIterator(ila);
+                CharIlaIterator oii = new CharIlaIterator(ila, buffer.clone());
 
                 try {
                     while (oii.hasNext()) {

@@ -9,25 +9,28 @@ import tfw.immutable.ila.intila.IntIlaSegment;
 public final class ByteIlaFromIntIla {
     private ByteIlaFromIntIla() {}
 
-    public static ByteIla create(IntIla intIla) {
+    public static ByteIla create(final IntIla intIla, final int bufferSize) {
         Argument.assertNotNull(intIla, "intIla");
+        Argument.assertNotLessThan(bufferSize, 1, "bufferSize");
 
-        return new MyByteIla(intIla);
+        return new MyByteIla(intIla, bufferSize);
     }
 
     private static class MyByteIla extends AbstractByteIla {
-        private IntIla intIla;
+        private final IntIla intIla;
+        private final int bufferSize;
 
-        MyByteIla(IntIla intIla) {
+        MyByteIla(final IntIla intIla, final int bufferSize) {
             super(intIla.length() * 4);
 
             this.intIla = intIla;
+            this.bufferSize = bufferSize;
         }
 
         protected void toArrayImpl(byte[] array, int offset, int stride, long start, int length)
                 throws DataInvalidException {
-            IntIlaIterator iii =
-                    new IntIlaIterator(IntIlaSegment.create(intIla, start / 4, intIla.length() - start / 4));
+            IntIlaIterator iii = new IntIlaIterator(
+                    IntIlaSegment.create(intIla, start / 4, intIla.length() - start / 4), new int[bufferSize]);
             int col = (int) (start % 4);
 
             for (int totalElements = 0; totalElements < length; ) {

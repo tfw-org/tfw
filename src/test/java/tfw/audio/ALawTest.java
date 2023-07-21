@@ -22,11 +22,11 @@ class ALawTest {
 
         ShortIla firstLinearIla = ShortIlaFromArray.create(linearArray);
 
-        ByteIla firstALawIla = ALawByteIlaFromLinearShortIla.create(firstLinearIla);
+        ByteIla firstALawIla = ALawByteIlaFromLinearShortIla.create(firstLinearIla, 1024);
 
-        ShortIla secondLinearIla = LinearShortIlaFromALawByteIla.create(firstALawIla);
+        ShortIla secondLinearIla = LinearShortIlaFromALawByteIla.create(firstALawIla, 1024);
 
-        ByteIla secondALawIla = ALawByteIlaFromLinearShortIla.create(secondLinearIla);
+        ByteIla secondALawIla = ALawByteIlaFromLinearShortIla.create(secondLinearIla, 1024);
 
         byte[] firstALawArray = ByteIlaUtil.toArray(firstALawIla);
         byte[] secondALawArray = ByteIlaUtil.toArray(secondALawIla);

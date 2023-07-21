@@ -3,7 +3,6 @@ package tfw.immutable.ila.floatila;
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
 import tfw.immutable.ila.AbstractIlaCheck;
-import tfw.immutable.ila.ImmutableLongArray;
 
 /**
  *
@@ -18,47 +17,31 @@ public final class FloatIlaFiltered {
         boolean matches(float value);
     }
 
-    public static FloatIla create(FloatIla ila, FloatFilter filter) {
+    public static FloatIla create(FloatIla ila, FloatFilter filter, float[] buffer) {
         Argument.assertNotNull(ila, "ila");
         Argument.assertNotNull(filter, "filter");
+        Argument.assertNotNull(buffer, "buffer");
 
-        return new MyFloatIla(ila, filter);
+        return new MyFloatIla(ila, filter, buffer);
     }
 
-    private static class MyFloatIla implements FloatIla, ImmutableLongArray {
+    private static class MyFloatIla implements FloatIla {
         private final FloatIla ila;
         private final FloatFilter filter;
+        private final float[] buffer;
 
         private long length = -1;
 
-        private MyFloatIla(FloatIla ila, FloatFilter filter) {
+        private MyFloatIla(FloatIla ila, FloatFilter filter, float[] buffer) {
             this.ila = ila;
             this.filter = filter;
+            this.buffer = buffer;
         }
 
         public final long length() {
             calculateLength();
 
             return length;
-        }
-
-        public final float[] toArray() throws DataInvalidException {
-            calculateLength();
-
-            if (length() > (long) Integer.MAX_VALUE)
-                throw new ArrayIndexOutOfBoundsException("Ila too large for native array");
-
-            return toArray((long) 0, (int) length());
-        }
-
-        public final float[] toArray(long start, int length) throws DataInvalidException {
-            calculateLength();
-
-            float[] result = new float[length];
-
-            toArray(result, 0, start, length);
-
-            return result;
         }
 
         public final void toArray(float[] array, int offset, long start, int length) throws DataInvalidException {
@@ -75,7 +58,7 @@ public final class FloatIlaFiltered {
 
             AbstractIlaCheck.boundsCheck(this.length, array.length, offset, stride, start, length);
 
-            FloatIlaIterator oii = new FloatIlaIterator(FloatIlaSegment.create(ila, start));
+            FloatIlaIterator oii = new FloatIlaIterator(FloatIlaSegment.create(ila, start), buffer.clone());
 
             // left off here
             for (int i = offset; oii.hasNext(); i += stride) {
@@ -90,7 +73,7 @@ public final class FloatIlaFiltered {
         private void calculateLength() {
             if (length < 0) {
                 length = ila.length();
-                FloatIlaIterator oii = new FloatIlaIterator(ila);
+                FloatIlaIterator oii = new FloatIlaIterator(ila, buffer.clone());
 
                 try {
                     while (oii.hasNext()) {

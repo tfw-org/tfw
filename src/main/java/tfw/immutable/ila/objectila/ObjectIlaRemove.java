@@ -12,25 +12,25 @@ public final class ObjectIlaRemove {
         // non-instantiable class
     }
 
-    public static ObjectIla create(ObjectIla ila, long index) {
+    public static <T> ObjectIla<T> create(ObjectIla<T> ila, long index) {
         Argument.assertNotNull(ila, "ila");
         Argument.assertNotLessThan(index, 0, "index");
         Argument.assertLessThan(index, ila.length(), "index", "ila.length()");
 
-        return new MyObjectIla(ila, index);
+        return new MyObjectIla<>(ila, index);
     }
 
-    private static class MyObjectIla extends AbstractObjectIla {
-        private final ObjectIla ila;
+    private static class MyObjectIla<T> extends AbstractObjectIla<T> {
+        private final ObjectIla<T> ila;
         private final long index;
 
-        MyObjectIla(ObjectIla ila, long index) {
+        MyObjectIla(ObjectIla<T> ila, long index) {
             super(ila.length() - 1);
             this.ila = ila;
             this.index = index;
         }
 
-        protected void toArrayImpl(Object[] array, int offset, int stride, long start, int length)
+        protected void toArrayImpl(T[] array, int offset, int stride, long start, int length)
                 throws DataInvalidException {
             final long startPlusLength = start + length;
 

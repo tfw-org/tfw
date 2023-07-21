@@ -1,4 +1,4 @@
-// booleanila,byteila,charila,doubleila,floatila,intila,longila,objectila,shortila,stringila
+// booleanila,byteila,charila,doubleila,floatila,intila,longila,objectila,shortila
 package %%PACKAGE%%;
 
 %%RANDOM_INCLUDE%%import org.junit.jupiter.api.Test;
@@ -16,8 +16,8 @@ class %%NAME%%IlaSegmentTest {
         for (int ii = 0; ii < master.length; ++ii) {
             master[ii] = %%RANDOM_VALUE%%;
         }
-        %%NAME%%Ila masterIla = %%NAME%%IlaFromArray.create(master);
-        %%NAME%%Ila checkIla = %%NAME%%IlaSegment.create(masterIla, 0, masterIla.length());
+        %%NAME%%Ila%%TEMPLATE%% masterIla = %%NAME%%IlaFromArray.create(master);
+        %%NAME%%Ila%%TEMPLATE%% checkIla = %%NAME%%IlaSegment.create(masterIla, 0, masterIla.length());
         final int offsetLength = IlaTestDimensions.defaultOffsetLength();
         final int maxStride = IlaTestDimensions.defaultMaxStride();
         final %%TYPE%% epsilon = %%DEFAULT_VALUE%%;
@@ -28,8 +28,8 @@ class %%NAME%%IlaSegmentTest {
                 for (int ii = 0; ii < array.length; ++ii) {
                     array[ii] = master[ii + (int) start];
                 }
-                %%NAME%%Ila targetIla = %%NAME%%IlaFromArray.create(array);
-                %%NAME%%Ila actualIla = %%NAME%%IlaSegment.create(masterIla, start, len);
+                %%NAME%%Ila%%TEMPLATE%% targetIla = %%NAME%%IlaFromArray.create(array);
+                %%NAME%%Ila%%TEMPLATE%% actualIla = %%NAME%%IlaSegment.create(masterIla, start, len);
                 %%NAME%%IlaCheck.checkCorrectness(targetIla, actualIla, offsetLength, maxStride, epsilon);
             }
         }

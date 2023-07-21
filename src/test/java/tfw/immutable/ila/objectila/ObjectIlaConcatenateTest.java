@@ -23,10 +23,10 @@ class ObjectIlaConcatenateTest {
         for (int ii = 0; ii < rightArray.length; ++ii) {
             array[ii + leftLength] = rightArray[ii] = new Object();
         }
-        ObjectIla leftIla = ObjectIlaFromArray.create(leftArray);
-        ObjectIla rightIla = ObjectIlaFromArray.create(rightArray);
-        ObjectIla targetIla = ObjectIlaFromArray.create(array);
-        ObjectIla actualIla = ObjectIlaConcatenate.create(leftIla, rightIla);
+        ObjectIla<Object> leftIla = ObjectIlaFromArray.create(leftArray);
+        ObjectIla<Object> rightIla = ObjectIlaFromArray.create(rightArray);
+        ObjectIla<Object> targetIla = ObjectIlaFromArray.create(array);
+        ObjectIla<Object> actualIla = ObjectIlaConcatenate.create(leftIla, rightIla);
         final Object epsilon = Object.class;
         ObjectIlaCheck.checkAll(
                 targetIla,
