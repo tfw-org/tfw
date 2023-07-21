@@ -1,4 +1,4 @@
-// booleanila,byteila,charila,doubleila,floatila,intila,longila,objectila,shortila,stringila
+// booleanila,byteila,charila,doubleila,floatila,intila,longila,objectila,shortila
 package %%PACKAGE%%;
 
 %%RANDOM_INCLUDE%%import org.junit.jupiter.api.Test;
@@ -16,15 +16,15 @@ class %%NAME%%IlaDecimateTest {
         for (int ii = 0; ii < array.length; ++ii) {
             array[ii] = %%RANDOM_VALUE%%;
         }
-        %%NAME%%Ila ila = %%NAME%%IlaFromArray.create(array);
+        %%NAME%%Ila%%TEMPLATE%% ila = %%NAME%%IlaFromArray.create(array);
         for (int factor = 2; factor <= length; ++factor) {
             final int targetLength = (length + factor - 1) / factor;
             final %%TYPE%%[] target = new %%TYPE%%[targetLength];
             for (int ii = 0; ii < target.length; ++ii) {
                 target[ii] = array[ii * factor];
             }
-            %%NAME%%Ila targetIla = %%NAME%%IlaFromArray.create(target);
-            %%NAME%%Ila actualIla = %%NAME%%IlaDecimate.create(ila, factor);
+            %%NAME%%Ila%%TEMPLATE%% targetIla = %%NAME%%IlaFromArray.create(target);
+            %%NAME%%Ila%%TEMPLATE%% actualIla = %%NAME%%IlaDecimate.create(ila, factor, new %%TYPE%%[100]);
             final %%TYPE%% epsilon = %%DEFAULT_VALUE%%;
             %%NAME%%IlaCheck.checkAll(
                     targetIla,

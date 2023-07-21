@@ -12,28 +12,25 @@ public final class FloatIlaDecimate {
         // non-instantiable class
     }
 
-    public static FloatIla create(FloatIla ila, long factor) {
-        return create(ila, factor, FloatIlaIterator.DEFAULT_BUFFER_SIZE);
-    }
-
-    public static FloatIla create(FloatIla ila, long factor, int bufferSize) {
+    public static FloatIla create(FloatIla ila, long factor, float[] buffer) {
         Argument.assertNotNull(ila, "ila");
+        Argument.assertNotNull(buffer, "buffer");
         Argument.assertNotLessThan(factor, 2, "factor");
-        Argument.assertNotLessThan(bufferSize, 1, "bufferSize");
+        Argument.assertNotLessThan(buffer.length, 1, "buffer.length");
 
-        return new MyFloatIla(ila, factor, bufferSize);
+        return new MyFloatIla(ila, factor, buffer);
     }
 
     private static class MyFloatIla extends AbstractFloatIla {
         private final FloatIla ila;
         private final long factor;
-        private final int bufferSize;
+        private final float[] buffer;
 
-        MyFloatIla(FloatIla ila, long factor, int bufferSize) {
+        MyFloatIla(FloatIla ila, long factor, float[] buffer) {
             super((ila.length() + factor - 1) / factor);
             this.ila = ila;
             this.factor = factor;
-            this.bufferSize = bufferSize;
+            this.buffer = buffer;
         }
 
         protected void toArrayImpl(float[] array, int offset, int stride, long start, int length)
@@ -41,7 +38,7 @@ public final class FloatIlaDecimate {
             final long segmentStart = start * factor;
             final long segmentLength = StrictMath.min(ila.length() - segmentStart, length * factor - 1);
             final FloatIla segment = FloatIlaSegment.create(ila, segmentStart, segmentLength);
-            final FloatIlaIterator fi = new FloatIlaIterator(segment, bufferSize);
+            final FloatIlaIterator fi = new FloatIlaIterator(segment, buffer.clone());
 
             for (int ii = offset; length > 0; ii += stride, --length) {
                 array[ii] = fi.next();

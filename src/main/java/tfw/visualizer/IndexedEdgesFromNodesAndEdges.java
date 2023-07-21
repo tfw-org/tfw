@@ -5,15 +5,15 @@ import tfw.immutable.ila.longila.LongIla;
 import tfw.immutable.ila.objectila.ObjectIla;
 
 public class IndexedEdgesFromNodesAndEdges {
-    public static LongIla create(ObjectIla nodes, ObjectIla edges) {
+    public static LongIla create(ObjectIla<Object> nodes, ObjectIla<Object> edges) {
         return new MyLongIla(nodes, edges);
     }
 
     private static class MyLongIla implements LongIla {
-        private final ObjectIla nodes;
-        private final ObjectIla edges;
+        private final ObjectIla<Object> nodes;
+        private final ObjectIla<Object> edges;
 
-        public MyLongIla(ObjectIla nodes, ObjectIla edges) {
+        public MyLongIla(ObjectIla<Object> nodes, ObjectIla<Object> edges) {
             this.nodes = nodes;
             this.edges = edges;
         }

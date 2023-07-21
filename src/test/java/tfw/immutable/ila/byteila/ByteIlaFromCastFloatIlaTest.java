@@ -23,7 +23,7 @@ class ByteIlaFromCastFloatIlaTest {
         }
         FloatIla ila = FloatIlaFromArray.create(array);
         ByteIla targetIla = ByteIlaFromArray.create(target);
-        ByteIla actualIla = ByteIlaFromCastFloatIla.create(ila);
+        ByteIla actualIla = ByteIlaFromCastFloatIla.create(ila, 100);
         final byte epsilon = (byte) 0;
         ByteIlaCheck.checkAll(
                 targetIla,

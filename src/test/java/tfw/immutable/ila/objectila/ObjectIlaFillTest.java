@@ -16,8 +16,8 @@ class ObjectIlaFillTest {
         for (int ii = 0; ii < array.length; ++ii) {
             array[ii] = value;
         }
-        ObjectIla targetIla = ObjectIlaFromArray.create(array);
-        ObjectIla actualIla = ObjectIlaFill.create(value, length);
+        ObjectIla<Object> targetIla = ObjectIlaFromArray.create(array);
+        ObjectIla<Object> actualIla = ObjectIlaFill.create(value, length);
         final Object epsilon = Object.class;
         ObjectIlaCheck.checkAll(
                 targetIla,

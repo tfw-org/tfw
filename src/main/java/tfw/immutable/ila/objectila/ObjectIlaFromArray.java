@@ -11,20 +11,20 @@ public final class ObjectIlaFromArray {
         // non-instantiable class
     }
 
-    public static ObjectIla create(Object[] array) {
+    public static <T> ObjectIla<T> create(T[] array) {
         return create(array, true);
     }
 
-    public static ObjectIla create(Object[] array, boolean cloneArray) {
+    public static <T> ObjectIla<T> create(T[] array, boolean cloneArray) {
         Argument.assertNotNull(array, "array");
 
-        return new MyObjectIla(array, cloneArray);
+        return new MyObjectIla<>(array, cloneArray);
     }
 
-    private static class MyObjectIla extends AbstractObjectIla {
-        private final Object[] array;
+    private static class MyObjectIla<T> extends AbstractObjectIla<T> {
+        private final T[] array;
 
-        MyObjectIla(Object[] array, boolean cloneArray) {
+        MyObjectIla(T[] array, boolean cloneArray) {
             super(array.length);
 
             if (cloneArray) {
@@ -34,7 +34,7 @@ public final class ObjectIlaFromArray {
             }
         }
 
-        protected void toArrayImpl(Object[] array, int offset, int stride, long start, int length) {
+        protected void toArrayImpl(T[] array, int offset, int stride, long start, int length) {
             final int startPlusLength = (int) (start + length);
             for (int startInt = (int) start; startInt != startPlusLength; ++startInt, offset += stride) {
                 array[offset] = this.array[startInt];

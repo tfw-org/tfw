@@ -9,10 +9,10 @@ public final class WaveRiffChunk extends WaveChunk {
     public final int riffType;
     public final ByteIla riffChunkData;
 
-    public WaveRiffChunk(ByteIla byteIla) throws DataInvalidException {
-        super(validateAndGetChunkID(byteIla), getChunkDataSize(byteIla));
+    public WaveRiffChunk(final ByteIla byteIla, final int bufferSize) throws DataInvalidException {
+        super(validateAndGetChunkID(byteIla, bufferSize), getChunkDataSize(byteIla, bufferSize));
 
-        riffType = WaveUtil.intFromSignedFourBytes(byteIla, 8, false);
+        riffType = WaveUtil.intFromSignedFourBytes(byteIla, 8, false, bufferSize);
         riffChunkData = ByteIlaSegment.create(byteIla, 0, 12);
 
         Argument.assertEquals(chunkID, 0x52494646, "chunkID", "RIFF (0x52494646)");
@@ -20,14 +20,14 @@ public final class WaveRiffChunk extends WaveChunk {
         Argument.assertEquals(riffType, 0x57415645, "riffType", "WAVE (0x57415645)");
     }
 
-    private static int validateAndGetChunkID(ByteIla byteIla) throws DataInvalidException {
+    private static int validateAndGetChunkID(final ByteIla byteIla, final int bufferSize) throws DataInvalidException {
         Argument.assertNotNull(byteIla, "byteIla");
         Argument.assertNotLessThan(byteIla.length(), 12, "byteIla.length()");
 
-        return WaveUtil.intFromSignedFourBytes(byteIla, 0, false);
+        return WaveUtil.intFromSignedFourBytes(byteIla, 0, false, bufferSize);
     }
 
-    private static long getChunkDataSize(ByteIla byteIla) throws DataInvalidException {
-        return WaveUtil.intFromSignedFourBytes(byteIla, 4, true);
+    private static long getChunkDataSize(final ByteIla byteIla, final int bufferSize) throws DataInvalidException {
+        return WaveUtil.intFromSignedFourBytes(byteIla, 4, true, bufferSize);
     }
 }

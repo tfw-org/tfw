@@ -12,21 +12,21 @@ public final class %%NAME%%IlaFill {
         // non-instantiable class
     }
 
-    public static %%NAME%%Ila create(%%TYPE%% value, long length) {
+    public static %%TEMPLATE_SPACE%%%%NAME%%Ila%%TEMPLATE%% create(%%TYPE_OR_TEMPLATE%% value, long length) {
         Argument.assertNotLessThan(length, 0, "length");
 
-        return new My%%NAME%%Ila(value, length);
+        return new My%%NAME%%Ila%%DIAMOND%%(value, length);
     }
 
-    private static class My%%NAME%%Ila extends Abstract%%NAME%%Ila {
-        private final %%TYPE%% value;
+    private static class My%%NAME%%Ila%%TEMPLATE%% extends Abstract%%NAME%%Ila%%TEMPLATE%% {
+        private final %%TYPE_OR_TEMPLATE%% value;
 
-        My%%NAME%%Ila(%%TYPE%% value, long length) {
+        My%%NAME%%Ila(%%TYPE_OR_TEMPLATE%% value, long length) {
             super(length);
             this.value = value;
         }
 
-        protected void toArrayImpl(%%TYPE%%[] array, int offset, int stride, long start, int length) {
+        protected void toArrayImpl(%%TYPE_OR_TEMPLATE%%[] array, int offset, int stride, long start, int length) {
             final int startPlusLength = (int) (start + length);
             for (int startInt = (int) start; startInt != startPlusLength; ++startInt, offset += stride) {
                 array[offset] = value;

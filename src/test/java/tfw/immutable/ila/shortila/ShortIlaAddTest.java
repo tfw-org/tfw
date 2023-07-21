@@ -24,7 +24,7 @@ class ShortIlaAddTest {
         ShortIla leftIla = ShortIlaFromArray.create(leftArray);
         ShortIla rightIla = ShortIlaFromArray.create(rightArray);
         ShortIla targetIla = ShortIlaFromArray.create(array);
-        ShortIla actualIla = ShortIlaAdd.create(leftIla, rightIla);
+        ShortIla actualIla = ShortIlaAdd.create(leftIla, rightIla, 100);
         final short epsilon = (short) 0;
         ShortIlaCheck.checkAll(
                 targetIla,

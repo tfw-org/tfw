@@ -8,8 +8,10 @@ import tfw.immutable.ila.ImmutableLongArray;
  *
  * @immutables.types=all
  */
-public interface %%NAME%%Ila extends ImmutableLongArray {
-    void toArray(%%TYPE%%[] array, int offset, long start, int length) throws DataInvalidException;
+public interface %%NAME%%Ila%%TEMPLATE%% extends ImmutableLongArray {
+    void toArray(final %%TYPE_OR_TEMPLATE%%[] array, final int arrayOffset, final long ilaStart, final int length)
+            throws DataInvalidException;
 
-    void toArray(%%TYPE%%[] array, int offset, int stride, long start, int length) throws DataInvalidException;
+    void toArray(final %%TYPE_OR_TEMPLATE%%[] array, final int offset, final int stride, final long start, final int length)
+            throws DataInvalidException;
 }

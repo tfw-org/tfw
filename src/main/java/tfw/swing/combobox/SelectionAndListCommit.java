@@ -53,7 +53,7 @@ public class SelectionAndListCommit extends Commit {
         if (selectedItemECD == null && selectedIndexECD == null) {
             throw new IllegalStateException("(selectedItemECD == null) && (selectedIndexECD == null) not allowed");
         }
-        ArrayList<ObjectECD> list = new ArrayList<ObjectECD>();
+        ArrayList<ObjectECD> list = new ArrayList<>();
         list.add(listECD);
         if (selectedItemECD != null) {
             list.add(selectedItemECD);
@@ -64,9 +64,10 @@ public class SelectionAndListCommit extends Commit {
         return list.toArray(new ObjectECD[list.size()]);
     }
 
+    @SuppressWarnings("unchecked")
     protected void commit() {
         try {
-            final ObjectIla listIla = (ObjectIla) get(listECD);
+            final ObjectIla<Object> listIla = (ObjectIla<Object>) get(listECD);
             final Object[] list = new Object[(int) listIla.length()];
 
             listIla.toArray(list, 0, 0, list.length);

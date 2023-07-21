@@ -27,7 +27,7 @@ public class PlotPanel extends JPanel implements BranchBox {
     private final Branch branch;
     private final MultiplexedBranch multiplexedBranch;
 
-    private ObjectIla multiGraphic = null;
+    private ObjectIla<Object> multiGraphic = null;
 
     public PlotPanel(String name) {
         this(new Branch("PlotPanel[" + name + "]"));
@@ -54,9 +54,10 @@ public class PlotPanel extends JPanel implements BranchBox {
             this.plotPanel = plotPanel;
         }
 
+        @SuppressWarnings("unchecked")
         protected void commit() {
             synchronized (plotPanel) {
-                multiGraphic = (ObjectIla) get(MULTI_GRAPHIC_ECD);
+                multiGraphic = (ObjectIla<Object>) get(MULTI_GRAPHIC_ECD);
                 plotPanel.repaint();
             }
         }

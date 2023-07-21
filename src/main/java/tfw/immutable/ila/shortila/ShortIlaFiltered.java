@@ -3,7 +3,6 @@ package tfw.immutable.ila.shortila;
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
 import tfw.immutable.ila.AbstractIlaCheck;
-import tfw.immutable.ila.ImmutableLongArray;
 
 /**
  *
@@ -18,47 +17,31 @@ public final class ShortIlaFiltered {
         boolean matches(short value);
     }
 
-    public static ShortIla create(ShortIla ila, ShortFilter filter) {
+    public static ShortIla create(ShortIla ila, ShortFilter filter, short[] buffer) {
         Argument.assertNotNull(ila, "ila");
         Argument.assertNotNull(filter, "filter");
+        Argument.assertNotNull(buffer, "buffer");
 
-        return new MyShortIla(ila, filter);
+        return new MyShortIla(ila, filter, buffer);
     }
 
-    private static class MyShortIla implements ShortIla, ImmutableLongArray {
+    private static class MyShortIla implements ShortIla {
         private final ShortIla ila;
         private final ShortFilter filter;
+        private final short[] buffer;
 
         private long length = -1;
 
-        private MyShortIla(ShortIla ila, ShortFilter filter) {
+        private MyShortIla(ShortIla ila, ShortFilter filter, short[] buffer) {
             this.ila = ila;
             this.filter = filter;
+            this.buffer = buffer;
         }
 
         public final long length() {
             calculateLength();
 
             return length;
-        }
-
-        public final short[] toArray() throws DataInvalidException {
-            calculateLength();
-
-            if (length() > (long) Integer.MAX_VALUE)
-                throw new ArrayIndexOutOfBoundsException("Ila too large for native array");
-
-            return toArray((long) 0, (int) length());
-        }
-
-        public final short[] toArray(long start, int length) throws DataInvalidException {
-            calculateLength();
-
-            short[] result = new short[length];
-
-            toArray(result, 0, start, length);
-
-            return result;
         }
 
         public final void toArray(short[] array, int offset, long start, int length) throws DataInvalidException {
@@ -75,7 +58,7 @@ public final class ShortIlaFiltered {
 
             AbstractIlaCheck.boundsCheck(this.length, array.length, offset, stride, start, length);
 
-            ShortIlaIterator oii = new ShortIlaIterator(ShortIlaSegment.create(ila, start));
+            ShortIlaIterator oii = new ShortIlaIterator(ShortIlaSegment.create(ila, start), buffer.clone());
 
             // left off here
             for (int i = offset; oii.hasNext(); i += stride) {
@@ -90,7 +73,7 @@ public final class ShortIlaFiltered {
         private void calculateLength() {
             if (length < 0) {
                 length = ila.length();
-                ShortIlaIterator oii = new ShortIlaIterator(ila);
+                ShortIlaIterator oii = new ShortIlaIterator(ila, buffer.clone());
 
                 try {
                     while (oii.hasNext()) {

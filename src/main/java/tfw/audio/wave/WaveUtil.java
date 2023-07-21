@@ -12,11 +12,11 @@ import tfw.immutable.ila.byteila.ByteIlaUtil;
 public final class WaveUtil {
     private WaveUtil() {}
 
-    public static int intFromSignedFourBytes(ByteIla byteIla, long offset, boolean swap) throws DataInvalidException {
-        if (swap) {
-            byteIla = ByteIlaSwap.create(byteIla, 4);
-        }
-        byte[] b = ByteIlaUtil.toArray(ByteIlaSegment.create(byteIla, offset, 4));
+    public static int intFromSignedFourBytes(
+            final ByteIla byteIla, final long offset, final boolean swap, final int bufferSize)
+            throws DataInvalidException {
+        final ByteIla swapByteIla = swap ? ByteIlaSwap.create(byteIla, 4, bufferSize) : byteIla;
+        byte[] b = ByteIlaUtil.toArray(ByteIlaSegment.create(swapByteIla, offset, 4));
         ByteArrayInputStream bais = new ByteArrayInputStream(b);
         DataInputStream dis = new DataInputStream(bais);
 
@@ -27,9 +27,10 @@ public final class WaveUtil {
         }
     }
 
-    public static int intFromUnsignedTwoBytes(ByteIla byteIla, long offset) throws DataInvalidException {
-        byteIla = ByteIlaSwap.create(byteIla, 2);
-        byte[] b = ByteIlaUtil.toArray(ByteIlaSegment.create(byteIla, offset, 2));
+    public static int intFromUnsignedTwoBytes(final ByteIla byteIla, final long offset, final int bufferSize)
+            throws DataInvalidException {
+        final ByteIla swapByteIla = ByteIlaSwap.create(byteIla, 2, bufferSize);
+        byte[] b = ByteIlaUtil.toArray(ByteIlaSegment.create(swapByteIla, offset, 2));
         ByteArrayInputStream bais = new ByteArrayInputStream(b);
         DataInputStream dis = new DataInputStream(bais);
 

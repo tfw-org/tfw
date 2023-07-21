@@ -19,9 +19,9 @@ class ObjectIlaMutateTest {
             }
             final Object value = new Object();
             target[index] = value;
-            ObjectIla origIla = ObjectIlaFromArray.create(array);
-            ObjectIla targetIla = ObjectIlaFromArray.create(target);
-            ObjectIla actualIla = ObjectIlaMutate.create(origIla, index, value);
+            ObjectIla<Object> origIla = ObjectIlaFromArray.create(array);
+            ObjectIla<Object> targetIla = ObjectIlaFromArray.create(target);
+            ObjectIla<Object> actualIla = ObjectIlaMutate.create(origIla, index, value);
             final Object epsilon = Object.class;
             ObjectIlaCheck.checkAll(
                     targetIla,

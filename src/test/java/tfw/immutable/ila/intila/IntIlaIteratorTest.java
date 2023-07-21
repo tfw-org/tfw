@@ -19,7 +19,7 @@ class IntIlaIteratorTest {
         }
 
         IntIla ila = IntIlaFromArray.create(array);
-        IntIlaIterator ii = new IntIlaIterator(ila);
+        IntIlaIterator ii = new IntIlaIterator(ila, new int[100]);
 
         int i = 0;
         for (; ii.hasNext(); i++) {

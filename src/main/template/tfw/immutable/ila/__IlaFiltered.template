@@ -4,37 +4,39 @@ package %%PACKAGE%%;
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
 import tfw.immutable.ila.AbstractIlaCheck;
-import tfw.immutable.ila.ImmutableLongArray;
 
 /**
  *
  * @immutables.types=all
  */
-public final class %%NAME%%IlaFiltered {
+public final class %%NAME%%IlaFiltered%%TEMPLATE%% {
     private %%NAME%%IlaFiltered() {
         // non-instantiable class
     }
 
-    public interface %%NAME%%Filter {
-        boolean matches(%%TYPE%% value);
+    public interface %%NAME%%Filter%%TEMPLATE%% {
+        boolean matches(%%TYPE_OR_TEMPLATE%% value);
     }
 
-    public static %%NAME%%Ila create(%%NAME%%Ila ila, %%NAME%%Filter filter) {
+    public static %%TEMPLATE_SPACE%%%%NAME%%Ila%%TEMPLATE%% create(%%NAME%%Ila%%TEMPLATE%% ila, %%NAME%%Filter%%TEMPLATE%% filter, %%TYPE_OR_TEMPLATE%%[] buffer) {
         Argument.assertNotNull(ila, "ila");
         Argument.assertNotNull(filter, "filter");
+        Argument.assertNotNull(buffer, "buffer");
 
-        return new My%%NAME%%Ila(ila, filter);
+        return new My%%NAME%%Ila%%DIAMOND%%(ila, filter, buffer);
     }
 
-    private static class My%%NAME%%Ila implements %%NAME%%Ila, ImmutableLongArray {
-        private final %%NAME%%Ila ila;
-        private final %%NAME%%Filter filter;
+    private static class My%%NAME%%Ila%%TEMPLATE%% implements %%NAME%%Ila%%TEMPLATE%% {
+        private final %%NAME%%Ila%%TEMPLATE%% ila;
+        private final %%NAME%%Filter%%TEMPLATE%% filter;
+        private final %%TYPE_OR_TEMPLATE%%[] buffer;
 
         private long length = -1;
 
-        private My%%NAME%%Ila(%%NAME%%Ila ila, %%NAME%%Filter filter) {
+        private My%%NAME%%Ila(%%NAME%%Ila%%TEMPLATE%% ila, %%NAME%%Filter%%TEMPLATE%% filter, %%TYPE_OR_TEMPLATE%%[] buffer) {
             this.ila = ila;
             this.filter = filter;
+            this.buffer = buffer;
         }
 
         public final long length() {
@@ -43,30 +45,11 @@ public final class %%NAME%%IlaFiltered {
             return length;
         }
 
-        public final %%TYPE%%[] toArray() throws DataInvalidException {
-            calculateLength();
-
-            if (length() > (long) Integer.MAX_VALUE)
-                throw new ArrayIndexOutOfBoundsException("Ila too large for native array");
-
-            return toArray((long) 0, (int) length());
-        }
-
-        public final %%TYPE%%[] toArray(long start, int length) throws DataInvalidException {
-            calculateLength();
-
-            %%TYPE%%[] result = new %%TYPE%%[length];
-
-            toArray(result, 0, start, length);
-
-            return result;
-        }
-
-        public final void toArray(%%TYPE%%[] array, int offset, long start, int length) throws DataInvalidException {
+        public final void toArray(%%TYPE_OR_TEMPLATE%%[] array, int offset, long start, int length) throws DataInvalidException {
             toArray(array, offset, 1, start, length);
         }
 
-        public final void toArray(%%TYPE%%[] array, int offset, int stride, long start, int length)
+        public final void toArray(%%TYPE_OR_TEMPLATE%%[] array, int offset, int stride, long start, int length)
                 throws DataInvalidException {
             calculateLength();
 
@@ -76,11 +59,11 @@ public final class %%NAME%%IlaFiltered {
 
             AbstractIlaCheck.boundsCheck(this.length, array.length, offset, stride, start, length);
 
-            %%NAME%%IlaIterator oii = new %%NAME%%IlaIterator(%%NAME%%IlaSegment.create(ila, start));
+            %%NAME%%IlaIterator%%TEMPLATE%% oii = new %%NAME%%IlaIterator%%DIAMOND%%(%%NAME%%IlaSegment.create(ila, start), buffer.clone());
 
             // left off here
             for (int i = offset; oii.hasNext(); i += stride) {
-                %%TYPE%% node = oii.next();
+                %%TYPE_OR_TEMPLATE%% node = oii.next();
 
                 if (!filter.matches(node)) {
                     array[i] = node;
@@ -91,7 +74,7 @@ public final class %%NAME%%IlaFiltered {
         private void calculateLength() {
             if (length < 0) {
                 length = ila.length();
-                %%NAME%%IlaIterator oii = new %%NAME%%IlaIterator(ila);
+                %%NAME%%IlaIterator%%TEMPLATE%% oii = new %%NAME%%IlaIterator%%DIAMOND%%(ila, buffer.clone());
 
                 try {
                     while (oii.hasNext()) {

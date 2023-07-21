@@ -30,7 +30,7 @@ public class AuDemo {
         System.out.println("data.length = " + auFileFormat.audioData.length());
 
         DoubleIla normalizedData = NormalizedDoubleIlaFromAuAudioData.create(
-                auFileFormat.audioData, auFileFormat.magicNumber, auFileFormat.encoding);
+                auFileFormat.audioData, auFileFormat.magicNumber, auFileFormat.encoding, 1000);
 
         System.out.println("normalizedData = " + normalizedData);
 

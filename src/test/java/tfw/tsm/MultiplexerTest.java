@@ -74,7 +74,7 @@ class MultiplexerTest {
 
         String[] strings = new String[] {"zero", "one"};
 
-        ObjectIla obj = ObjectIlaFromArray.create(strings);
+        ObjectIla<Object> obj = ObjectIlaFromArray.create(strings);
         multiInitiator.set(multiValueECD, obj);
         queue.waitTilEmpty();
 
@@ -169,7 +169,7 @@ class MultiplexerTest {
         String v1_0 = "Value1.0";
         String v1_1 = "Value1.1";
 
-        ObjectIla vmmo = createMultiMultiValue(v0_0, v0_1, v1_0, v1_1);
+        ObjectIla<Object> vmmo = createMultiMultiValue(v0_0, v0_1, v1_0, v1_1);
         // TODO add multiMultiInitiator and multiMultiCommit...
 
         RootFactory rf = new RootFactory();
@@ -271,18 +271,19 @@ class MultiplexerTest {
         assertEquals(slot0, vcMb1S0.value, "branch1Slot0");
     }
 
-    private ObjectIla createMultiMultiValue(String v0_0, String v0_1, String v1_0, String v1_1) {
+    private ObjectIla<Object> createMultiMultiValue(String v0_0, String v0_1, String v1_0, String v1_1) {
         String[] vm0 = new String[] {v0_0, v0_1};
         String[] vm1 = new String[] {v1_0, v1_1};
 
-        ObjectIla vmo0 = ObjectIlaFromArray.create(vm0);
-        ObjectIla vmo1 = ObjectIlaFromArray.create(vm1);
+        ObjectIla<Object> vmo0 = ObjectIlaFromArray.create(vm0);
+        ObjectIla<Object> vmo1 = ObjectIlaFromArray.create(vm1);
 
-        ObjectIla vmmo = ObjectIlaFromArray.create(new ObjectIla[] {vmo0, vmo1});
+        ObjectIla<Object> vmmo = ObjectIlaFromArray.create(new Object[] {vmo0, vmo1});
         return vmmo;
     }
 
-    private void checkState(ObjectIla mmAnswer, ObjectIla mmResult, String v0_0, String v0_1, String v1_0, String v1_1)
+    private void checkState(
+            ObjectIla<Object> mmAnswer, ObjectIla<Object> mmResult, String v0_0, String v0_1, String v1_0, String v1_1)
             throws Exception {
         Object[][] mma = toArray(mmAnswer);
         assertEquals(mma[0][0], v0_0, "[0][0]");
@@ -297,14 +298,15 @@ class MultiplexerTest {
         assertEquals(mma[1][1], mmr[1][1], "[1][1]");
     }
 
-    private Object[][] toArray(ObjectIla objs) throws Exception {
+    @SuppressWarnings("unchecked")
+    private Object[][] toArray(ObjectIla<Object> objs) throws Exception {
         Object[][] mmArray = new Object[2][];
 
         Object[] mma = new Object[(int) objs.length()];
         objs.toArray(mma, 0, 0, mma.length);
 
-        final ObjectIla mma0Ila = (ObjectIla) mma[0];
-        final ObjectIla mma1Ila = (ObjectIla) mma[1];
+        final ObjectIla<Object> mma0Ila = (ObjectIla<Object>) mma[0];
+        final ObjectIla<Object> mma1Ila = (ObjectIla<Object>) mma[1];
 
         mmArray[0] = new Object[(int) mma0Ila.length()];
         mmArray[1] = new Object[(int) mma1Ila.length()];
@@ -352,7 +354,7 @@ class MultiplexerTest {
     }
 
     private class MultiValueCommit extends Commit {
-        public ObjectIla value;
+        public ObjectIla<Object> value;
 
         public final ObjectECD valueECD;
 
@@ -361,8 +363,9 @@ class MultiplexerTest {
             this.valueECD = valueECD;
         }
 
+        @SuppressWarnings("unchecked")
         public void commit() {
-            value = (ObjectIla) get(valueECD);
+            value = (ObjectIla<Object>) get(valueECD);
         }
     }
 }

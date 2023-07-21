@@ -1,4 +1,4 @@
-// booleanila,byteila,charila,doubleila,floatila,intila,longila,objectila,shortila,stringila
+// booleanila,byteila,charila,doubleila,floatila,intila,longila,objectila,shortila
 package %%PACKAGE%%;
 
 %%RANDOM_INCLUDE%%import org.junit.jupiter.api.Test;
@@ -22,9 +22,9 @@ class %%NAME%%IlaRemoveTest {
                     target[targetii++] = array[ii];
                 }
             }
-            %%NAME%%Ila origIla = %%NAME%%IlaFromArray.create(array);
-            %%NAME%%Ila targetIla = %%NAME%%IlaFromArray.create(target);
-            %%NAME%%Ila actualIla = %%NAME%%IlaRemove.create(origIla, index);
+            %%NAME%%Ila%%TEMPLATE%% origIla = %%NAME%%IlaFromArray.create(array);
+            %%NAME%%Ila%%TEMPLATE%% targetIla = %%NAME%%IlaFromArray.create(target);
+            %%NAME%%Ila%%TEMPLATE%% actualIla = %%NAME%%IlaRemove.create(origIla, index);
             final %%TYPE%% epsilon = %%DEFAULT_VALUE%%;
             %%NAME%%IlaCheck.checkAll(
                     targetIla,

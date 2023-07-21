@@ -23,7 +23,7 @@ class DoubleIlaFromCastCharIlaTest {
         }
         CharIla ila = CharIlaFromArray.create(array);
         DoubleIla targetIla = DoubleIlaFromArray.create(target);
-        DoubleIla actualIla = DoubleIlaFromCastCharIla.create(ila);
+        DoubleIla actualIla = DoubleIlaFromCastCharIla.create(ila, 100);
         final double epsilon = 0.0;
         DoubleIlaCheck.checkAll(
                 targetIla,

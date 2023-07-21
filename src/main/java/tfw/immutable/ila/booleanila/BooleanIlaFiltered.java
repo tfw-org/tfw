@@ -3,7 +3,6 @@ package tfw.immutable.ila.booleanila;
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
 import tfw.immutable.ila.AbstractIlaCheck;
-import tfw.immutable.ila.ImmutableLongArray;
 
 /**
  *
@@ -18,47 +17,31 @@ public final class BooleanIlaFiltered {
         boolean matches(boolean value);
     }
 
-    public static BooleanIla create(BooleanIla ila, BooleanFilter filter) {
+    public static BooleanIla create(BooleanIla ila, BooleanFilter filter, boolean[] buffer) {
         Argument.assertNotNull(ila, "ila");
         Argument.assertNotNull(filter, "filter");
+        Argument.assertNotNull(buffer, "buffer");
 
-        return new MyBooleanIla(ila, filter);
+        return new MyBooleanIla(ila, filter, buffer);
     }
 
-    private static class MyBooleanIla implements BooleanIla, ImmutableLongArray {
+    private static class MyBooleanIla implements BooleanIla {
         private final BooleanIla ila;
         private final BooleanFilter filter;
+        private final boolean[] buffer;
 
         private long length = -1;
 
-        private MyBooleanIla(BooleanIla ila, BooleanFilter filter) {
+        private MyBooleanIla(BooleanIla ila, BooleanFilter filter, boolean[] buffer) {
             this.ila = ila;
             this.filter = filter;
+            this.buffer = buffer;
         }
 
         public final long length() {
             calculateLength();
 
             return length;
-        }
-
-        public final boolean[] toArray() throws DataInvalidException {
-            calculateLength();
-
-            if (length() > (long) Integer.MAX_VALUE)
-                throw new ArrayIndexOutOfBoundsException("Ila too large for native array");
-
-            return toArray((long) 0, (int) length());
-        }
-
-        public final boolean[] toArray(long start, int length) throws DataInvalidException {
-            calculateLength();
-
-            boolean[] result = new boolean[length];
-
-            toArray(result, 0, start, length);
-
-            return result;
         }
 
         public final void toArray(boolean[] array, int offset, long start, int length) throws DataInvalidException {
@@ -75,7 +58,7 @@ public final class BooleanIlaFiltered {
 
             AbstractIlaCheck.boundsCheck(this.length, array.length, offset, stride, start, length);
 
-            BooleanIlaIterator oii = new BooleanIlaIterator(BooleanIlaSegment.create(ila, start));
+            BooleanIlaIterator oii = new BooleanIlaIterator(BooleanIlaSegment.create(ila, start), buffer.clone());
 
             // left off here
             for (int i = offset; oii.hasNext(); i += stride) {
@@ -90,7 +73,7 @@ public final class BooleanIlaFiltered {
         private void calculateLength() {
             if (length < 0) {
                 length = ila.length();
-                BooleanIlaIterator oii = new BooleanIlaIterator(ila);
+                BooleanIlaIterator oii = new BooleanIlaIterator(ila, buffer.clone());
 
                 try {
                     while (oii.hasNext()) {

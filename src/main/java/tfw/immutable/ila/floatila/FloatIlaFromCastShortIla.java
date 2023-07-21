@@ -15,10 +15,6 @@ public final class FloatIlaFromCastShortIla {
         // non-instantiable class
     }
 
-    public static FloatIla create(ShortIla shortIla) {
-        return create(shortIla, ShortIlaIterator.DEFAULT_BUFFER_SIZE);
-    }
-
     public static FloatIla create(ShortIla shortIla, int bufferSize) {
         Argument.assertNotNull(shortIla, "shortIla");
         Argument.assertNotLessThan(bufferSize, 1, "bufferSize");
@@ -39,7 +35,8 @@ public final class FloatIlaFromCastShortIla {
 
         protected void toArrayImpl(float[] array, int offset, int stride, long start, int length)
                 throws DataInvalidException {
-            ShortIlaIterator fi = new ShortIlaIterator(ShortIlaSegment.create(shortIla, start, length), bufferSize);
+            ShortIlaIterator fi =
+                    new ShortIlaIterator(ShortIlaSegment.create(shortIla, start, length), new short[bufferSize]);
 
             for (int ii = offset; length > 0; ii += stride, --length) {
                 array[ii] = (float) fi.next();

@@ -22,11 +22,11 @@ class MuLawTest {
 
         ShortIla firstLinearIla = ShortIlaFromArray.create(linearArray);
 
-        ByteIla firstMuLawIla = MuLawByteIlaFromLinearShortIla.create(firstLinearIla);
+        ByteIla firstMuLawIla = MuLawByteIlaFromLinearShortIla.create(firstLinearIla, 1024);
 
-        ShortIla secondLinearIla = LinearShortIlaFromMuLawByteIla.create(firstMuLawIla);
+        ShortIla secondLinearIla = LinearShortIlaFromMuLawByteIla.create(firstMuLawIla, 1024);
 
-        ByteIla secondMuLawIla = MuLawByteIlaFromLinearShortIla.create(secondLinearIla);
+        ByteIla secondMuLawIla = MuLawByteIlaFromLinearShortIla.create(secondLinearIla, 1024);
 
         byte[] firstMuLawArray = ByteIlaUtil.toArray(firstMuLawIla);
         byte[] secondMuLawArray = ByteIlaUtil.toArray(secondMuLawIla);

@@ -1,4 +1,4 @@
-// booleanila,byteila,charila,doubleila,floatila,intila,longila,objectila,shortila,stringila
+// booleanila,byteila,charila,doubleila,floatila,intila,longila,objectila,shortila
 package %%PACKAGE%%;
 
 %%RANDOM_INCLUDE%%import org.junit.jupiter.api.Test;
@@ -16,7 +16,7 @@ class %%NAME%%IlaFromArrayTest {
         for (int ii = 0; ii < creation.length; ++ii) {
             creation[ii] = %%RANDOM_VALUE%%;
         }
-        final %%NAME%%Ila ila = %%NAME%%IlaFromArray.create(creation);
+        final %%NAME%%Ila%%TEMPLATE%% ila = %%NAME%%IlaFromArray.create(creation);
         final int offsetLength = IlaTestDimensions.defaultOffsetLength();
         final %%TYPE%% epsilon = %%DEFAULT_VALUE%%;
         %%NAME%%IlaCheck.checkWithoutCorrectness(ila, offsetLength, epsilon);
@@ -31,7 +31,7 @@ class %%NAME%%IlaFromArrayTest {
         for (int ii = 0; ii < creation.length; ++ii) {
             creation[ii] = %%RANDOM_VALUE%%;
         }
-        final %%NAME%%Ila ila = %%NAME%%IlaFromArray.create(creation);
+        final %%NAME%%Ila%%TEMPLATE%% ila = %%NAME%%IlaFromArray.create(creation);
 
         for (int stride = -maxAbsStride; stride <= maxAbsStride; ++stride) {
             if (stride != 0) {

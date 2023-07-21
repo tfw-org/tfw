@@ -24,7 +24,7 @@ class ByteIlaAddTest {
         ByteIla leftIla = ByteIlaFromArray.create(leftArray);
         ByteIla rightIla = ByteIlaFromArray.create(rightArray);
         ByteIla targetIla = ByteIlaFromArray.create(array);
-        ByteIla actualIla = ByteIlaAdd.create(leftIla, rightIla);
+        ByteIla actualIla = ByteIlaAdd.create(leftIla, rightIla, 100);
         final byte epsilon = (byte) 0;
         ByteIlaCheck.checkAll(
                 targetIla,

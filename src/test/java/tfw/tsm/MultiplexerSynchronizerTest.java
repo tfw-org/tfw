@@ -9,7 +9,7 @@ class MultiplexerSynchronizerTest {
 
     private class MultiCommit extends Commit {
 
-        ObjectIla objectIla = null;
+        ObjectIla<Object> objectIla = null;
 
         private final ObjectIlaECD objectIlaECD;
 
@@ -18,8 +18,9 @@ class MultiplexerSynchronizerTest {
             this.objectIlaECD = objectIlaECD;
         }
 
+        @SuppressWarnings("unchecked")
         protected void commit() {
-            this.objectIla = (ObjectIla) get(this.objectIlaECD);
+            this.objectIla = (ObjectIla<Object>) get(this.objectIlaECD);
         }
     }
 

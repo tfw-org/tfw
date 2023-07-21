@@ -10,7 +10,7 @@ public final class Wave {
     private final WaveChunk[] waveChunks;
     public final ByteIla waveByteData;
 
-    public Wave(ByteIla byteIla) throws DataInvalidException {
+    public Wave(final ByteIla byteIla, final int bufferSize) throws DataInvalidException {
         Argument.assertNotNull(byteIla, "byteIla");
         waveByteData = byteIla;
 
@@ -18,7 +18,7 @@ public final class Wave {
         WaveRiffChunk waveRiffChunk = null;
 
         try {
-            waveRiffChunk = new WaveRiffChunk(byteIla);
+            waveRiffChunk = new WaveRiffChunk(byteIla, bufferSize);
         } catch (DataInvalidException die) {
             throw new IllegalArgumentException("Not a WAVE File!");
         }
@@ -29,7 +29,7 @@ public final class Wave {
 
         while (dataLeft.length() != 0) {
             try {
-                WaveFmtChunk waveFmtChunk = new WaveFmtChunk(dataLeft);
+                WaveFmtChunk waveFmtChunk = new WaveFmtChunk(dataLeft, bufferSize);
                 chunkList.add(waveFmtChunk);
                 dataLeft = ByteIlaSegment.create(dataLeft, waveFmtChunk.chunkData.length());
                 continue;
@@ -37,14 +37,14 @@ public final class Wave {
             }
 
             try {
-                WaveDataChunk waveDataChunk = new WaveDataChunk(dataLeft);
+                WaveDataChunk waveDataChunk = new WaveDataChunk(dataLeft, bufferSize);
                 chunkList.add(waveDataChunk);
                 dataLeft = ByteIlaSegment.create(dataLeft, 8 + waveDataChunk.chunkDataSize);
                 continue;
             } catch (IllegalArgumentException iae) {
             }
 
-            WaveUnknownChunk waveUnknownChunk = new WaveUnknownChunk(dataLeft);
+            WaveUnknownChunk waveUnknownChunk = new WaveUnknownChunk(dataLeft, bufferSize);
             chunkList.add(waveUnknownChunk);
             dataLeft = ByteIlaSegment.create(dataLeft, waveUnknownChunk.unknownChunkData.length());
         }

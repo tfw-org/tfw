@@ -12,28 +12,25 @@ public final class IntIlaDecimate {
         // non-instantiable class
     }
 
-    public static IntIla create(IntIla ila, long factor) {
-        return create(ila, factor, IntIlaIterator.DEFAULT_BUFFER_SIZE);
-    }
-
-    public static IntIla create(IntIla ila, long factor, int bufferSize) {
+    public static IntIla create(IntIla ila, long factor, int[] buffer) {
         Argument.assertNotNull(ila, "ila");
+        Argument.assertNotNull(buffer, "buffer");
         Argument.assertNotLessThan(factor, 2, "factor");
-        Argument.assertNotLessThan(bufferSize, 1, "bufferSize");
+        Argument.assertNotLessThan(buffer.length, 1, "buffer.length");
 
-        return new MyIntIla(ila, factor, bufferSize);
+        return new MyIntIla(ila, factor, buffer);
     }
 
     private static class MyIntIla extends AbstractIntIla {
         private final IntIla ila;
         private final long factor;
-        private final int bufferSize;
+        private final int[] buffer;
 
-        MyIntIla(IntIla ila, long factor, int bufferSize) {
+        MyIntIla(IntIla ila, long factor, int[] buffer) {
             super((ila.length() + factor - 1) / factor);
             this.ila = ila;
             this.factor = factor;
-            this.bufferSize = bufferSize;
+            this.buffer = buffer;
         }
 
         protected void toArrayImpl(int[] array, int offset, int stride, long start, int length)
@@ -41,7 +38,7 @@ public final class IntIlaDecimate {
             final long segmentStart = start * factor;
             final long segmentLength = StrictMath.min(ila.length() - segmentStart, length * factor - 1);
             final IntIla segment = IntIlaSegment.create(ila, segmentStart, segmentLength);
-            final IntIlaIterator fi = new IntIlaIterator(segment, bufferSize);
+            final IntIlaIterator fi = new IntIlaIterator(segment, buffer.clone());
 
             for (int ii = offset; length > 0; ii += stride, --length) {
                 array[ii] = fi.next();

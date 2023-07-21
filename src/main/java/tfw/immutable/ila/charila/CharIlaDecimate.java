@@ -12,28 +12,25 @@ public final class CharIlaDecimate {
         // non-instantiable class
     }
 
-    public static CharIla create(CharIla ila, long factor) {
-        return create(ila, factor, CharIlaIterator.DEFAULT_BUFFER_SIZE);
-    }
-
-    public static CharIla create(CharIla ila, long factor, int bufferSize) {
+    public static CharIla create(CharIla ila, long factor, char[] buffer) {
         Argument.assertNotNull(ila, "ila");
+        Argument.assertNotNull(buffer, "buffer");
         Argument.assertNotLessThan(factor, 2, "factor");
-        Argument.assertNotLessThan(bufferSize, 1, "bufferSize");
+        Argument.assertNotLessThan(buffer.length, 1, "buffer.length");
 
-        return new MyCharIla(ila, factor, bufferSize);
+        return new MyCharIla(ila, factor, buffer);
     }
 
     private static class MyCharIla extends AbstractCharIla {
         private final CharIla ila;
         private final long factor;
-        private final int bufferSize;
+        private final char[] buffer;
 
-        MyCharIla(CharIla ila, long factor, int bufferSize) {
+        MyCharIla(CharIla ila, long factor, char[] buffer) {
             super((ila.length() + factor - 1) / factor);
             this.ila = ila;
             this.factor = factor;
-            this.bufferSize = bufferSize;
+            this.buffer = buffer;
         }
 
         protected void toArrayImpl(char[] array, int offset, int stride, long start, int length)
@@ -41,7 +38,7 @@ public final class CharIlaDecimate {
             final long segmentStart = start * factor;
             final long segmentLength = StrictMath.min(ila.length() - segmentStart, length * factor - 1);
             final CharIla segment = CharIlaSegment.create(ila, segmentStart, segmentLength);
-            final CharIlaIterator fi = new CharIlaIterator(segment, bufferSize);
+            final CharIlaIterator fi = new CharIlaIterator(segment, buffer.clone());
 
             for (int ii = offset; length > 0; ii += stride, --length) {
                 array[ii] = fi.next();

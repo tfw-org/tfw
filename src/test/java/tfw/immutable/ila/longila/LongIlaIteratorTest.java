@@ -19,7 +19,7 @@ class LongIlaIteratorTest {
         }
 
         LongIla ila = LongIlaFromArray.create(array);
-        LongIlaIterator ii = new LongIlaIterator(ila);
+        LongIlaIterator ii = new LongIlaIterator(ila, new long[100]);
 
         int i = 0;
         for (; ii.hasNext(); i++) {

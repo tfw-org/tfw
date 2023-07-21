@@ -12,10 +12,6 @@ public final class FloatIlaAdd {
         // non-instantiable class
     }
 
-    public static FloatIla create(FloatIla leftIla, FloatIla rightIla) {
-        return create(leftIla, rightIla, FloatIlaIterator.DEFAULT_BUFFER_SIZE);
-    }
-
     public static FloatIla create(FloatIla leftIla, FloatIla rightIla, int bufferSize) {
         Argument.assertNotNull(leftIla, "leftIla");
         Argument.assertNotNull(rightIla, "rightIla");
@@ -38,10 +34,12 @@ public final class FloatIlaAdd {
             this.bufferSize = bufferSize;
         }
 
-        protected void toArrayImpl(float[] array, int offset, int stride, long start, int length)
+        protected void toArrayImpl(float[] array, int offset, int stride, long ilaStart, int length)
                 throws DataInvalidException {
-            FloatIlaIterator li = new FloatIlaIterator(FloatIlaSegment.create(leftIla, start, length), bufferSize);
-            FloatIlaIterator ri = new FloatIlaIterator(FloatIlaSegment.create(rightIla, start, length), bufferSize);
+            FloatIlaIterator li =
+                    new FloatIlaIterator(FloatIlaSegment.create(leftIla, ilaStart, length), new float[bufferSize]);
+            FloatIlaIterator ri =
+                    new FloatIlaIterator(FloatIlaSegment.create(rightIla, ilaStart, length), new float[bufferSize]);
 
             for (int ii = offset; length > 0; ii += stride, --length) {
                 array[ii] = li.next() + ri.next();

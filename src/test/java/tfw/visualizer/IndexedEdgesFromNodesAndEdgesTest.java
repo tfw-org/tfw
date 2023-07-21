@@ -24,8 +24,8 @@ class IndexedEdgesFromNodesAndEdgesTest {
             nodesArray[0]
         };
 
-        ObjectIla nodes = ObjectIlaFromArray.create(nodesArray);
-        ObjectIla edges = ObjectIlaFromArray.create(edgesArray);
+        ObjectIla<Object> nodes = ObjectIlaFromArray.create(nodesArray);
+        ObjectIla<Object> edges = ObjectIlaFromArray.create(edgesArray);
 
         long[] indexes = new long[] {0, 1, 2, 3, 4, 3, 2, 1, 0};
 

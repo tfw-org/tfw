@@ -15,10 +15,6 @@ public final class FloatIlaFromCastDoubleIla {
         // non-instantiable class
     }
 
-    public static FloatIla create(DoubleIla doubleIla) {
-        return create(doubleIla, DoubleIlaIterator.DEFAULT_BUFFER_SIZE);
-    }
-
     public static FloatIla create(DoubleIla doubleIla, int bufferSize) {
         Argument.assertNotNull(doubleIla, "doubleIla");
         Argument.assertNotLessThan(bufferSize, 1, "bufferSize");
@@ -39,7 +35,8 @@ public final class FloatIlaFromCastDoubleIla {
 
         protected void toArrayImpl(float[] array, int offset, int stride, long start, int length)
                 throws DataInvalidException {
-            DoubleIlaIterator fi = new DoubleIlaIterator(DoubleIlaSegment.create(doubleIla, start, length), bufferSize);
+            DoubleIlaIterator fi =
+                    new DoubleIlaIterator(DoubleIlaSegment.create(doubleIla, start, length), new double[bufferSize]);
 
             for (int ii = offset; length > 0; ii += stride, --length) {
                 array[ii] = (float) fi.next();

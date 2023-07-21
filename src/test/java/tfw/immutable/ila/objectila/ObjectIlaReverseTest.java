@@ -19,9 +19,9 @@ class ObjectIlaReverseTest {
         for (int ii = 0; ii < reversed.length; ++ii) {
             reversed[ii] = array[length - 1 - ii];
         }
-        ObjectIla origIla = ObjectIlaFromArray.create(array);
-        ObjectIla targetIla = ObjectIlaFromArray.create(reversed);
-        ObjectIla actualIla = ObjectIlaReverse.create(origIla);
+        ObjectIla<Object> origIla = ObjectIlaFromArray.create(array);
+        ObjectIla<Object> targetIla = ObjectIlaFromArray.create(reversed);
+        ObjectIla<Object> actualIla = ObjectIlaReverse.create(origIla);
         final Object epsilon = Object.class;
         ObjectIlaCheck.checkAll(
                 targetIla,

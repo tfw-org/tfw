@@ -38,10 +38,11 @@ public class SelectionAndListCommit extends Commit {
         this.list = list;
     }
 
+    @SuppressWarnings("unchecked")
     protected void commit() {
         if (isStateChanged(listECD)) {
             try {
-                final ObjectIla elementsIla = (ObjectIla) get(listECD);
+                final ObjectIla<Object> elementsIla = (ObjectIla<Object>) get(listECD);
                 final Object[] elements = new Object[(int) elementsIla.length()];
 
                 elementsIla.toArray(elements, 0, 0, elements.length);
@@ -60,7 +61,7 @@ public class SelectionAndListCommit extends Commit {
         }
         if (selectedItemsECD != null) {
             try {
-                final ObjectIla selectedItemsIla = (ObjectIla) get(selectedItemsECD);
+                final ObjectIla<Object> selectedItemsIla = (ObjectIla<Object>) get(selectedItemsECD);
                 final Object[] selectedItems = new Object[(int) selectedItemsIla.length()];
 
                 selectedItemsIla.toArray(selectedItems, 0, 0, selectedItems.length);

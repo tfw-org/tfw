@@ -1,6 +1,7 @@
 package tfw.immutable.ila.demo;
 
 import java.io.File;
+import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
 import tfw.immutable.ila.byteila.ByteIla;
 import tfw.immutable.ila.byteila.ByteIlaFromFile;
@@ -32,6 +33,8 @@ import tfw.immutable.ila.shortila.ShortIlaIterator;
 import tfw.immutable.ila.shortila.ShortIlaSegment;
 
 public class OctalDump {
+    public static final int BUFFER_SIZE = 1000;
+
     public static void main(String[] args) throws DataInvalidException {
         if (args.length != 3 || args[1].length() != 2) {
             System.err.println("Usage: OctalDump <-t type> <file>");
@@ -40,7 +43,7 @@ public class OctalDump {
         }
 
         ByteIla bytes = ByteIlaFromFile.create(new File(args[2]));
-        ObjectIla strings = null;
+        ObjectIla<String> strings = null;
         char type = args[1].charAt(0);
         char size = args[1].charAt(1);
 
@@ -50,25 +53,25 @@ public class OctalDump {
             case 'x':
                 switch (size) {
                     case '1': {
-                        strings = StringObjectIlaFromByteIla.create(bytes, type);
+                        strings = StringObjectIlaFromByteIla.create(bytes, type, BUFFER_SIZE);
                         break;
                     }
                     case '2': {
-                        ByteIla byteIla = ByteIlaSwap.create(bytes, 2);
-                        ShortIla shortIla = ShortIlaFromByteIla.create(byteIla);
-                        strings = StringObjectIlaFromShortIla.create(shortIla, type);
+                        ByteIla byteIla = ByteIlaSwap.create(bytes, 2, BUFFER_SIZE);
+                        ShortIla shortIla = ShortIlaFromByteIla.create(byteIla, BUFFER_SIZE);
+                        strings = StringObjectIlaFromShortIla.create(shortIla, type, BUFFER_SIZE);
                         break;
                     }
                     case '4': {
-                        ByteIla byteIla = ByteIlaSwap.create(bytes, 4);
-                        IntIla intIla = IntIlaFromByteIla.create(byteIla);
-                        strings = StringObjectIlaFromIntIla.create(intIla, type);
+                        ByteIla byteIla = ByteIlaSwap.create(bytes, 4, BUFFER_SIZE);
+                        IntIla intIla = IntIlaFromByteIla.create(byteIla, BUFFER_SIZE);
+                        strings = StringObjectIlaFromIntIla.create(intIla, type, BUFFER_SIZE);
                         break;
                     }
                     case '8': {
-                        ByteIla byteIla = ByteIlaSwap.create(bytes, 8);
-                        LongIla longIla = LongIlaFromByteIla.create(byteIla);
-                        strings = StringObjectIlaFromLongIla.create(longIla, type);
+                        ByteIla byteIla = ByteIlaSwap.create(bytes, 8, BUFFER_SIZE);
+                        LongIla longIla = LongIlaFromByteIla.create(byteIla, BUFFER_SIZE);
+                        strings = StringObjectIlaFromLongIla.create(longIla, type, BUFFER_SIZE);
                         break;
                     }
                     default:
@@ -78,17 +81,17 @@ public class OctalDump {
             case 'f':
                 switch (size) {
                     case '4': {
-                        ByteIla byteIla = ByteIlaSwap.create(bytes, 4);
-                        IntIla intIla = IntIlaFromByteIla.create(byteIla);
-                        FloatIla floatIla = FloatIlaFromIntIla.create(intIla);
-                        strings = StringObjectIlaFromFloatIla.create(floatIla);
+                        ByteIla byteIla = ByteIlaSwap.create(bytes, 4, BUFFER_SIZE);
+                        IntIla intIla = IntIlaFromByteIla.create(byteIla, BUFFER_SIZE);
+                        FloatIla floatIla = FloatIlaFromIntIla.create(intIla, BUFFER_SIZE);
+                        strings = StringObjectIlaFromFloatIla.create(floatIla, BUFFER_SIZE);
                         break;
                     }
                     case '8': {
-                        ByteIla byteIla = ByteIlaSwap.create(bytes, 8);
-                        LongIla longIla = LongIlaFromByteIla.create(byteIla);
-                        DoubleIla doubleIla = DoubleIlaFromLongIla.create(longIla);
-                        strings = StringObjectIlaFromDoubleIla.create(doubleIla);
+                        ByteIla byteIla = ByteIlaSwap.create(bytes, 8, BUFFER_SIZE);
+                        LongIla longIla = LongIlaFromByteIla.create(byteIla, BUFFER_SIZE);
+                        DoubleIla doubleIla = DoubleIlaFromLongIla.create(longIla, BUFFER_SIZE);
+                        strings = StringObjectIlaFromDoubleIla.create(doubleIla, BUFFER_SIZE);
                         break;
                     }
                     default:
@@ -99,8 +102,9 @@ public class OctalDump {
                 throw new IllegalArgumentException("type=" + type + " not allowed!");
         }
 
-        for (ObjectIlaIterator oii = new ObjectIlaIterator(strings); oii.hasNext(); ) {
-            System.out.println((String) oii.next());
+        for (ObjectIlaIterator<String> oii = new ObjectIlaIterator<>(strings, new String[BUFFER_SIZE]);
+                oii.hasNext(); ) {
+            System.out.println(oii.next());
         }
 
         System.out.println("strings = \n" + strings);
@@ -109,27 +113,30 @@ public class OctalDump {
     private static class StringObjectIlaFromByteIla {
         private StringObjectIlaFromByteIla() {}
 
-        public static ObjectIla create(ByteIla byteIla, char type) {
-            if (byteIla == null) throw new IllegalArgumentException("byteIla == null not allowed!");
+        public static ObjectIla<String> create(final ByteIla byteIla, final char type, final int bufferSize) {
+            Argument.assertNotNull(byteIla, "byteIla");
+            Argument.assertNotLessThan(bufferSize, 1, "bufferSize");
 
-            return new MyObjectIla(byteIla, type);
+            return new MyObjectIla(byteIla, type, bufferSize);
         }
 
-        private static class MyObjectIla extends AbstractObjectIla {
+        private static class MyObjectIla extends AbstractObjectIla<String> {
             private final ByteIla byteIla;
             private final char type;
+            private final int bufferSize;
 
-            MyObjectIla(ByteIla byteIla, char type) {
+            MyObjectIla(final ByteIla byteIla, final char type, final int bufferSize) {
                 super(byteIla.length() / 16 + (byteIla.length() % 16 == 0 ? 0 : 1));
 
                 this.byteIla = byteIla;
                 this.type = type;
+                this.bufferSize = bufferSize;
             }
 
-            protected void toArrayImpl(Object[] array, int offset, int stride, long start, int length)
+            protected void toArrayImpl(String[] array, int offset, int stride, long start, int length)
                     throws DataInvalidException {
-                ByteIlaIterator bii =
-                        new ByteIlaIterator(ByteIlaSegment.create(byteIla, start, byteIla.length() - start));
+                ByteIlaIterator bii = new ByteIlaIterator(
+                        ByteIlaSegment.create(byteIla, start, byteIla.length() - start), new byte[bufferSize]);
 
                 for (int i = 0; i < length; i++) {
                     StringBuffer sb = new StringBuffer();
@@ -156,46 +163,37 @@ public class OctalDump {
                     array[offset + (i * stride)] = sb.toString();
                 }
             }
-
-            public String toString() {
-                StringBuffer sb = new StringBuffer();
-
-                sb.append("StringObjectIlaFromByteIla: length=");
-                sb.append(length());
-                sb.append(" type=");
-                sb.append(type);
-                sb.append("\n");
-                sb.append(byteIla.toString());
-
-                return sb.toString();
-            }
         }
     }
 
     private static class StringObjectIlaFromShortIla {
         private StringObjectIlaFromShortIla() {}
 
-        public static ObjectIla create(ShortIla shortIla, char type) {
-            if (shortIla == null) throw new IllegalArgumentException("shortIla == null not allowed!");
+        public static ObjectIla<String> create(final ShortIla shortIla, final char type, final int bufferSize) {
+            Argument.assertNotNull(shortIla, "shortIla");
+            Argument.assertNotLessThan(bufferSize, 1, "bufferSize");
 
-            return new MyObjectIla(shortIla, type);
+            return new MyObjectIla(shortIla, type, bufferSize);
         }
 
-        private static class MyObjectIla extends AbstractObjectIla {
+        private static class MyObjectIla extends AbstractObjectIla<String> {
             private final ShortIla shortIla;
             private final char type;
+            private final int bufferSize;
 
-            MyObjectIla(ShortIla shortIla, char type) {
+            MyObjectIla(final ShortIla shortIla, final char type, final int bufferSize) {
                 super(shortIla.length() / 8 + (shortIla.length() % 8 == 0 ? 0 : 1));
 
                 this.shortIla = shortIla;
                 this.type = type;
+                this.bufferSize = bufferSize;
             }
 
-            protected void toArrayImpl(Object[] array, int offset, int stride, long start, int length)
+            protected void toArrayImpl(String[] array, int offset, int stride, long start, int length)
                     throws DataInvalidException {
                 ShortIlaIterator sii = new ShortIlaIterator(
-                        ShortIlaSegment.create(shortIla, start * 2, shortIla.length() - start * 2));
+                        ShortIlaSegment.create(shortIla, start * 2, shortIla.length() - start * 2),
+                        new short[bufferSize]);
 
                 for (int i = 0; i < length; i++) {
                     StringBuffer sb = new StringBuffer();
@@ -222,46 +220,36 @@ public class OctalDump {
                     array[offset + (i * stride)] = sb.toString();
                 }
             }
-
-            public String toString() {
-                StringBuffer sb = new StringBuffer();
-
-                sb.append("StringObjectIlaFromShortIla: length=");
-                sb.append(length());
-                sb.append(" type=");
-                sb.append(type);
-                sb.append("\n");
-                sb.append(shortIla.toString());
-
-                return sb.toString();
-            }
         }
     }
 
     private static class StringObjectIlaFromIntIla {
         private StringObjectIlaFromIntIla() {}
 
-        public static ObjectIla create(IntIla intIla, char type) {
-            if (intIla == null) throw new IllegalArgumentException("intIla == null not allowed!");
+        public static ObjectIla<String> create(final IntIla intIla, final char type, final int bufferSize) {
+            Argument.assertNotNull(intIla, "intIla");
+            Argument.assertNotLessThan(bufferSize, 1, "bufferSize");
 
-            return new MyObjectIla(intIla, type);
+            return new MyObjectIla(intIla, type, bufferSize);
         }
 
-        private static class MyObjectIla extends AbstractObjectIla {
+        private static class MyObjectIla extends AbstractObjectIla<String> {
             private final IntIla intIla;
             private final char type;
+            private final int bufferSize;
 
-            MyObjectIla(IntIla intIla, char type) {
+            MyObjectIla(final IntIla intIla, final char type, final int bufferSize) {
                 super(intIla.length() / 4 + (intIla.length() % 4 == 0 ? 0 : 1));
 
                 this.intIla = intIla;
                 this.type = type;
+                this.bufferSize = bufferSize;
             }
 
-            protected void toArrayImpl(Object[] array, int offset, int stride, long start, int length)
+            protected void toArrayImpl(String[] array, int offset, int stride, long start, int length)
                     throws DataInvalidException {
-                IntIlaIterator iii =
-                        new IntIlaIterator(IntIlaSegment.create(intIla, start * 4, intIla.length() - start * 4));
+                IntIlaIterator iii = new IntIlaIterator(
+                        IntIlaSegment.create(intIla, start * 4, intIla.length() - start * 4), new int[bufferSize]);
 
                 for (int i = 0; i < length; i++) {
                     StringBuffer sb = new StringBuffer();
@@ -286,46 +274,36 @@ public class OctalDump {
                     array[offset + (i * stride)] = sb.toString();
                 }
             }
-
-            public String toString() {
-                StringBuffer sb = new StringBuffer();
-
-                sb.append("StringObjectIlaFromIntIla: length=");
-                sb.append(length());
-                sb.append(" type=");
-                sb.append(type);
-                sb.append("\n");
-                sb.append(intIla.toString());
-
-                return sb.toString();
-            }
         }
     }
 
     private static class StringObjectIlaFromLongIla {
         private StringObjectIlaFromLongIla() {}
 
-        public static ObjectIla create(LongIla longIla, char type) {
-            if (longIla == null) throw new IllegalArgumentException("intIla == null not allowed!");
+        public static ObjectIla<String> create(final LongIla longIla, final char type, final int bufferSize) {
+            Argument.assertNotNull(longIla, "longIla");
+            Argument.assertNotLessThan(bufferSize, 1, "bufferSize");
 
-            return new MyObjectIla(longIla, type);
+            return new MyObjectIla(longIla, type, bufferSize);
         }
 
-        private static class MyObjectIla extends AbstractObjectIla {
+        private static class MyObjectIla extends AbstractObjectIla<String> {
             private final LongIla longIla;
             private final char type;
+            private final int bufferSize;
 
-            MyObjectIla(LongIla longIla, char type) {
+            MyObjectIla(final LongIla longIla, final char type, final int bufferSize) {
                 super(longIla.length() / 2 + (longIla.length() % 2 == 0 ? 0 : 1));
 
                 this.longIla = longIla;
                 this.type = type;
+                this.bufferSize = bufferSize;
             }
 
-            protected void toArrayImpl(Object[] array, int offset, int stride, long start, int length)
+            protected void toArrayImpl(String[] array, int offset, int stride, long start, int length)
                     throws DataInvalidException {
-                LongIlaIterator lii =
-                        new LongIlaIterator(LongIlaSegment.create(longIla, start * 8, longIla.length() - start * 8));
+                LongIlaIterator lii = new LongIlaIterator(
+                        LongIlaSegment.create(longIla, start * 8, longIla.length() - start * 8), new long[bufferSize]);
 
                 for (int i = 0; i < length; i++) {
                     StringBuffer sb = new StringBuffer();
@@ -350,44 +328,35 @@ public class OctalDump {
                     array[offset + (i * stride)] = sb.toString();
                 }
             }
-
-            public String toString() {
-                StringBuffer sb = new StringBuffer();
-
-                sb.append("StringObjectIlaFromLongIla: length=");
-                sb.append(length());
-                sb.append(" type=");
-                sb.append(type);
-                sb.append("\n");
-                sb.append(longIla.toString());
-
-                return sb.toString();
-            }
         }
     }
 
     private static class StringObjectIlaFromFloatIla {
         private StringObjectIlaFromFloatIla() {}
 
-        public static ObjectIla create(FloatIla floatIla) {
-            if (floatIla == null) throw new IllegalArgumentException("intIla == null not allowed!");
+        public static ObjectIla<String> create(final FloatIla floatIla, final int bufferSize) {
+            Argument.assertNotNull(floatIla, "floatIla");
+            Argument.assertNotLessThan(bufferSize, 1, "bufferSize");
 
-            return new MyObjectIla(floatIla);
+            return new MyObjectIla(floatIla, bufferSize);
         }
 
-        private static class MyObjectIla extends AbstractObjectIla {
+        private static class MyObjectIla extends AbstractObjectIla<String> {
             private final FloatIla floatIla;
+            private final int bufferSize;
 
-            MyObjectIla(FloatIla floatIla) {
+            MyObjectIla(final FloatIla floatIla, final int bufferSize) {
                 super(floatIla.length() / 4 + (floatIla.length() % 4 == 0 ? 0 : 1));
 
                 this.floatIla = floatIla;
+                this.bufferSize = bufferSize;
             }
 
-            protected void toArrayImpl(Object[] array, int offset, int stride, long start, int length)
+            protected void toArrayImpl(String[] array, int offset, int stride, long start, int length)
                     throws DataInvalidException {
                 FloatIlaIterator fii = new FloatIlaIterator(
-                        FloatIlaSegment.create(floatIla, start * 4, floatIla.length() - start * 4));
+                        FloatIlaSegment.create(floatIla, start * 4, floatIla.length() - start * 4),
+                        new float[bufferSize]);
 
                 for (int i = 0; i < length; i++) {
                     StringBuffer sb = new StringBuffer();
@@ -402,42 +371,35 @@ public class OctalDump {
                     array[offset + (i * stride)] = sb.toString();
                 }
             }
-
-            public String toString() {
-                StringBuffer sb = new StringBuffer();
-
-                sb.append("StringObjectIlaFromFloatIla: length=");
-                sb.append(length());
-                sb.append("\n");
-                sb.append(floatIla.toString());
-
-                return sb.toString();
-            }
         }
     }
 
     private static class StringObjectIlaFromDoubleIla {
         private StringObjectIlaFromDoubleIla() {}
 
-        public static ObjectIla create(DoubleIla doubleIla) {
-            if (doubleIla == null) throw new IllegalArgumentException("intIla == null not allowed!");
+        public static ObjectIla<String> create(final DoubleIla doubleIla, final int bufferSize) {
+            Argument.assertNotNull(doubleIla, "doubleIla");
+            Argument.assertNotLessThan(bufferSize, 1, "bufferSize");
 
-            return new MyObjectIla(doubleIla);
+            return new MyObjectIla(doubleIla, bufferSize);
         }
 
-        private static class MyObjectIla extends AbstractObjectIla {
+        private static class MyObjectIla extends AbstractObjectIla<String> {
             private final DoubleIla doubleIla;
+            private final int bufferSize;
 
-            MyObjectIla(DoubleIla doubleIla) {
+            MyObjectIla(final DoubleIla doubleIla, final int bufferSize) {
                 super(doubleIla.length() / 2 + (doubleIla.length() % 2 == 0 ? 0 : 1));
 
                 this.doubleIla = doubleIla;
+                this.bufferSize = bufferSize;
             }
 
-            protected void toArrayImpl(Object[] array, int offset, int stride, long start, int length)
+            protected void toArrayImpl(String[] array, int offset, int stride, long start, int length)
                     throws DataInvalidException {
                 DoubleIlaIterator dii = new DoubleIlaIterator(
-                        DoubleIlaSegment.create(doubleIla, start * 4, doubleIla.length() - start * 4));
+                        DoubleIlaSegment.create(doubleIla, start * 4, doubleIla.length() - start * 4),
+                        new double[bufferSize]);
 
                 for (int i = 0; i < length; i++) {
                     StringBuffer sb = new StringBuffer();
@@ -451,17 +413,6 @@ public class OctalDump {
 
                     array[offset + (i * stride)] = sb.toString();
                 }
-            }
-
-            public String toString() {
-                StringBuffer sb = new StringBuffer();
-
-                sb.append("StringObjectIlaFromDoubleIla: length=");
-                sb.append(length());
-                sb.append("\n");
-                sb.append(doubleIla.toString());
-
-                return sb.toString();
             }
         }
     }

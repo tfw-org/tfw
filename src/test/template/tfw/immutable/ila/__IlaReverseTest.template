@@ -1,4 +1,4 @@
-// booleanila,byteila,charila,doubleila,floatila,intila,longila,objectila,shortila,stringila
+// booleanila,byteila,charila,doubleila,floatila,intila,longila,objectila,shortila
 package %%PACKAGE%%;
 
 %%RANDOM_INCLUDE%%import org.junit.jupiter.api.Test;
@@ -20,9 +20,9 @@ class %%NAME%%IlaReverseTest {
         for (int ii = 0; ii < reversed.length; ++ii) {
             reversed[ii] = array[length - 1 - ii];
         }
-        %%NAME%%Ila origIla = %%NAME%%IlaFromArray.create(array);
-        %%NAME%%Ila targetIla = %%NAME%%IlaFromArray.create(reversed);
-        %%NAME%%Ila actualIla = %%NAME%%IlaReverse.create(origIla);
+        %%NAME%%Ila%%TEMPLATE%% origIla = %%NAME%%IlaFromArray.create(array);
+        %%NAME%%Ila%%TEMPLATE%% targetIla = %%NAME%%IlaFromArray.create(reversed);
+        %%NAME%%Ila%%TEMPLATE%% actualIla = %%NAME%%IlaReverse.create(origIla);
         final %%TYPE%% epsilon = %%DEFAULT_VALUE%%;
         %%NAME%%IlaCheck.checkAll(
                 targetIla,

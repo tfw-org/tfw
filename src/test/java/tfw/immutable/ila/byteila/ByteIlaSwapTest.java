@@ -71,12 +71,12 @@ class ByteIlaSwapTest {
         ByteIla swap8Ila = ByteIlaFromArray.create(swap8Array);
 
         try {
-            ByteIlaSwap.create(null, 2);
+            ByteIlaSwap.create(null, 2, 100);
             fail("ila == null not checked for!");
         } catch (IllegalArgumentException iae) {
         }
 
-        ByteIla actualIla = ByteIlaSwap.create(byteIla, 2);
+        ByteIla actualIla = ByteIlaSwap.create(byteIla, 2, 100);
         final byte epsilon = (byte) 0;
         ByteIlaCheck.checkAll(
                 swap2Ila,
@@ -85,7 +85,7 @@ class ByteIlaSwapTest {
                 IlaTestDimensions.defaultMaxStride(),
                 epsilon);
 
-        actualIla = ByteIlaSwap.create(byteIla, 4);
+        actualIla = ByteIlaSwap.create(byteIla, 4, 100);
         ByteIlaCheck.checkAll(
                 swap4Ila,
                 actualIla,
@@ -93,7 +93,7 @@ class ByteIlaSwapTest {
                 IlaTestDimensions.defaultMaxStride(),
                 epsilon);
 
-        actualIla = ByteIlaSwap.create(byteIla, 8);
+        actualIla = ByteIlaSwap.create(byteIla, 8, 100);
         ByteIlaCheck.checkAll(
                 swap8Ila,
                 actualIla,

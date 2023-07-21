@@ -22,7 +22,7 @@ class %%NAME%%IlaFromCastByteIlaTest {
         }
         ByteIla ila = ByteIlaFromArray.create(array);
         %%NAME%%Ila targetIla = %%NAME%%IlaFromArray.create(target);
-        %%NAME%%Ila actualIla = %%NAME%%IlaFromCastByteIla.create(ila);
+        %%NAME%%Ila actualIla = %%NAME%%IlaFromCastByteIla.create(ila, 100);
         final %%TYPE%% epsilon = %%DEFAULT_VALUE%%;
         %%NAME%%IlaCheck.checkAll(
                 targetIla,

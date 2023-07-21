@@ -25,7 +25,7 @@ class IntIlaDecimateTest {
                 target[ii] = array[ii * factor];
             }
             IntIla targetIla = IntIlaFromArray.create(target);
-            IntIla actualIla = IntIlaDecimate.create(ila, factor);
+            IntIla actualIla = IntIlaDecimate.create(ila, factor, new int[100]);
             final int epsilon = 0;
             IntIlaCheck.checkAll(
                     targetIla,

@@ -12,10 +12,6 @@ public final class DoubleIlaAdd {
         // non-instantiable class
     }
 
-    public static DoubleIla create(DoubleIla leftIla, DoubleIla rightIla) {
-        return create(leftIla, rightIla, DoubleIlaIterator.DEFAULT_BUFFER_SIZE);
-    }
-
     public static DoubleIla create(DoubleIla leftIla, DoubleIla rightIla, int bufferSize) {
         Argument.assertNotNull(leftIla, "leftIla");
         Argument.assertNotNull(rightIla, "rightIla");
@@ -38,10 +34,12 @@ public final class DoubleIlaAdd {
             this.bufferSize = bufferSize;
         }
 
-        protected void toArrayImpl(double[] array, int offset, int stride, long start, int length)
+        protected void toArrayImpl(double[] array, int offset, int stride, long ilaStart, int length)
                 throws DataInvalidException {
-            DoubleIlaIterator li = new DoubleIlaIterator(DoubleIlaSegment.create(leftIla, start, length), bufferSize);
-            DoubleIlaIterator ri = new DoubleIlaIterator(DoubleIlaSegment.create(rightIla, start, length), bufferSize);
+            DoubleIlaIterator li =
+                    new DoubleIlaIterator(DoubleIlaSegment.create(leftIla, ilaStart, length), new double[bufferSize]);
+            DoubleIlaIterator ri =
+                    new DoubleIlaIterator(DoubleIlaSegment.create(rightIla, ilaStart, length), new double[bufferSize]);
 
             for (int ii = offset; length > 0; ii += stride, --length) {
                 array[ii] = li.next() + ri.next();

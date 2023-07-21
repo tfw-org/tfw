@@ -9,24 +9,28 @@ import tfw.immutable.ila.byteila.ByteIlaSegment;
 public final class LongIlaFromByteIla {
     private LongIlaFromByteIla() {}
 
-    public static LongIla create(ByteIla byteIla) {
+    public static LongIla create(final ByteIla byteIla, final int bufferSize) {
         Argument.assertNotNull(byteIla, "byteIla");
+        Argument.assertNotLessThan(bufferSize, 1, "bufferSize");
 
-        return new MyLongIla(byteIla);
+        return new MyLongIla(byteIla, bufferSize);
     }
 
     private static class MyLongIla extends AbstractLongIla {
-        private ByteIla byteIla;
+        private final ByteIla byteIla;
+        private final int bufferSize;
 
-        MyLongIla(ByteIla byteIla) {
+        MyLongIla(final ByteIla byteIla, final int bufferSize) {
             super(byteIla.length() / 8);
 
             this.byteIla = byteIla;
+            this.bufferSize = bufferSize;
         }
 
         protected void toArrayImpl(long[] array, int offset, int stride, long start, int length)
                 throws DataInvalidException {
-            ByteIlaIterator bii = new ByteIlaIterator(ByteIlaSegment.create(byteIla, 8 * start, 8 * length));
+            ByteIlaIterator bii =
+                    new ByteIlaIterator(ByteIlaSegment.create(byteIla, 8 * start, 8 * length), new byte[bufferSize]);
 
             for (int i = 0; i < length; i++) {
                 array[offset + (i * stride)] = (((long) bii.next() & 0xFF) << 56)

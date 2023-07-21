@@ -10,17 +10,19 @@ public final class ObjectIlaCheck {
     }
 
     public static void checkAll(
-            ObjectIla target, ObjectIla actual, int addlOffsetLength, int maxAbsStride, Object epsilon)
+            ObjectIla<Object> target, ObjectIla<Object> actual, int addlOffsetLength, int maxAbsStride, Object epsilon)
             throws Exception {
         checkFourFiveEquivalence(actual, addlOffsetLength, epsilon);
         checkCorrectness(target, actual, addlOffsetLength, maxAbsStride, epsilon);
     }
 
-    public static void checkWithoutCorrectness(ObjectIla actual, int offsetLength, Object epsilon) throws Exception {
+    public static void checkWithoutCorrectness(final ObjectIla<Object> actual, final int offsetLength, Object epsilon)
+            throws Exception {
         checkFourFiveEquivalence(actual, offsetLength, epsilon);
     }
 
-    public static void checkFourFiveEquivalence(ObjectIla ila, int offsetLength, Object epsilon) throws Exception {
+    public static void checkFourFiveEquivalence(final ObjectIla<Object> ila, final int offsetLength, Object epsilon)
+            throws Exception {
         if (epsilon != Object.class) {
             throw new IllegalArgumentException("epsilon != " + (Object.class) + " not allowed");
         } else {
@@ -56,7 +58,7 @@ public final class ObjectIlaCheck {
     }
 
     public static void checkCorrectness(
-            ObjectIla target, ObjectIla actual, int addlOffsetLength, int maxAbsStride, Object epsilon)
+            ObjectIla<Object> target, ObjectIla<Object> actual, int addlOffsetLength, int maxAbsStride, Object epsilon)
             throws Exception {
         if (epsilon != Object.class) {
             throw new IllegalArgumentException("epsilon != " + (Object.class) + " not allowed");

@@ -1,4 +1,4 @@
-// booleanila,byteila,charila,doubleila,floatila,intila,longila,objectila,shortila,stringila
+// booleanila,byteila,charila,doubleila,floatila,intila,longila,objectila,shortila
 package %%PACKAGE%%;
 
 import java.util.Random;
@@ -24,10 +24,10 @@ class %%NAME%%IlaConcatenateTest {
         for (int ii = 0; ii < rightArray.length; ++ii) {
             array[ii + leftLength] = rightArray[ii] = %%RANDOM_VALUE%%;
         }
-        %%NAME%%Ila leftIla = %%NAME%%IlaFromArray.create(leftArray);
-        %%NAME%%Ila rightIla = %%NAME%%IlaFromArray.create(rightArray);
-        %%NAME%%Ila targetIla = %%NAME%%IlaFromArray.create(array);
-        %%NAME%%Ila actualIla = %%NAME%%IlaConcatenate.create(leftIla, rightIla);
+        %%NAME%%Ila%%TEMPLATE%% leftIla = %%NAME%%IlaFromArray.create(leftArray);
+        %%NAME%%Ila%%TEMPLATE%% rightIla = %%NAME%%IlaFromArray.create(rightArray);
+        %%NAME%%Ila%%TEMPLATE%% targetIla = %%NAME%%IlaFromArray.create(array);
+        %%NAME%%Ila%%TEMPLATE%% actualIla = %%NAME%%IlaConcatenate.create(leftIla, rightIla);
         final %%TYPE%% epsilon = %%DEFAULT_VALUE%%;
         %%NAME%%IlaCheck.checkAll(
                 targetIla,

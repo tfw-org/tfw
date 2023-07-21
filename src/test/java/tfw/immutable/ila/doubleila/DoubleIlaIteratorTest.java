@@ -19,7 +19,7 @@ class DoubleIlaIteratorTest {
         }
 
         DoubleIla ila = DoubleIlaFromArray.create(array);
-        DoubleIlaIterator ii = new DoubleIlaIterator(ila);
+        DoubleIlaIterator ii = new DoubleIlaIterator(ila, new double[100]);
 
         int i = 0;
         for (; ii.hasNext(); i++) {

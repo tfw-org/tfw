@@ -25,7 +25,7 @@ class LongIlaDecimateTest {
                 target[ii] = array[ii * factor];
             }
             LongIla targetIla = LongIlaFromArray.create(target);
-            LongIla actualIla = LongIlaDecimate.create(ila, factor);
+            LongIla actualIla = LongIlaDecimate.create(ila, factor, new long[100]);
             final long epsilon = 0L;
             LongIlaCheck.checkAll(
                     targetIla,

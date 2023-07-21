@@ -12,10 +12,6 @@ public final class CharIlaAdd {
         // non-instantiable class
     }
 
-    public static CharIla create(CharIla leftIla, CharIla rightIla) {
-        return create(leftIla, rightIla, CharIlaIterator.DEFAULT_BUFFER_SIZE);
-    }
-
     public static CharIla create(CharIla leftIla, CharIla rightIla, int bufferSize) {
         Argument.assertNotNull(leftIla, "leftIla");
         Argument.assertNotNull(rightIla, "rightIla");
@@ -38,10 +34,12 @@ public final class CharIlaAdd {
             this.bufferSize = bufferSize;
         }
 
-        protected void toArrayImpl(char[] array, int offset, int stride, long start, int length)
+        protected void toArrayImpl(char[] array, int offset, int stride, long ilaStart, int length)
                 throws DataInvalidException {
-            CharIlaIterator li = new CharIlaIterator(CharIlaSegment.create(leftIla, start, length), bufferSize);
-            CharIlaIterator ri = new CharIlaIterator(CharIlaSegment.create(rightIla, start, length), bufferSize);
+            CharIlaIterator li =
+                    new CharIlaIterator(CharIlaSegment.create(leftIla, ilaStart, length), new char[bufferSize]);
+            CharIlaIterator ri =
+                    new CharIlaIterator(CharIlaSegment.create(rightIla, ilaStart, length), new char[bufferSize]);
 
             for (int ii = offset; length > 0; ii += stride, --length) {
                 array[ii] = (char) (li.next() + ri.next());

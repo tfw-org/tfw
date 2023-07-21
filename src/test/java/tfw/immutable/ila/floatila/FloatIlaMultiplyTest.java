@@ -24,7 +24,7 @@ class FloatIlaMultiplyTest {
         FloatIla leftIla = FloatIlaFromArray.create(leftArray);
         FloatIla rightIla = FloatIlaFromArray.create(rightArray);
         FloatIla targetIla = FloatIlaFromArray.create(array);
-        FloatIla actualIla = FloatIlaMultiply.create(leftIla, rightIla);
+        FloatIla actualIla = FloatIlaMultiply.create(leftIla, rightIla, 100);
         final float epsilon = 0.0f;
         FloatIlaCheck.checkAll(
                 targetIla,

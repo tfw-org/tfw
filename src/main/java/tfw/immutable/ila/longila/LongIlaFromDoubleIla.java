@@ -9,24 +9,28 @@ import tfw.immutable.ila.doubleila.DoubleIlaSegment;
 public final class LongIlaFromDoubleIla {
     private LongIlaFromDoubleIla() {}
 
-    public static LongIla create(DoubleIla doubleIla) {
+    public static LongIla create(final DoubleIla doubleIla, final int bufferSize) {
         Argument.assertNotNull(doubleIla, "doubleIla");
+        Argument.assertNotLessThan(bufferSize, 1, "bufferSize");
 
-        return new MyLongIla(doubleIla);
+        return new MyLongIla(doubleIla, bufferSize);
     }
 
     private static class MyLongIla extends AbstractLongIla {
-        private DoubleIla doubleIla;
+        private final DoubleIla doubleIla;
+        private final int bufferSize;
 
-        MyLongIla(DoubleIla doubleIla) {
+        MyLongIla(final DoubleIla doubleIla, final int bufferSize) {
             super(doubleIla.length());
 
             this.doubleIla = doubleIla;
+            this.bufferSize = bufferSize;
         }
 
         protected void toArrayImpl(long[] array, int offset, int stride, long start, int length)
                 throws DataInvalidException {
-            DoubleIlaIterator dii = new DoubleIlaIterator(DoubleIlaSegment.create(doubleIla, start, length));
+            DoubleIlaIterator dii =
+                    new DoubleIlaIterator(DoubleIlaSegment.create(doubleIla, start, length), new double[bufferSize]);
 
             for (int i = 0; i < length; i++) {
                 array[offset + (i * stride)] = Double.doubleToRawLongBits(dii.next());

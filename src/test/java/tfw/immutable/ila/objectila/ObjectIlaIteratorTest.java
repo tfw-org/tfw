@@ -16,8 +16,8 @@ class ObjectIlaIteratorTest {
             array[i] = new Object();
         }
 
-        ObjectIla ila = ObjectIlaFromArray.create(array);
-        ObjectIlaIterator ii = new ObjectIlaIterator(ila);
+        ObjectIla<Object> ila = ObjectIlaFromArray.create(array);
+        ObjectIlaIterator<Object> ii = new ObjectIlaIterator<>(ila, new Object[100]);
 
         int i = 0;
         for (; ii.hasNext(); i++) {

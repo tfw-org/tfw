@@ -24,7 +24,7 @@ class DoubleIlaSubtractTest {
         DoubleIla leftIla = DoubleIlaFromArray.create(leftArray);
         DoubleIla rightIla = DoubleIlaFromArray.create(rightArray);
         DoubleIla targetIla = DoubleIlaFromArray.create(array);
-        DoubleIla actualIla = DoubleIlaSubtract.create(leftIla, rightIla);
+        DoubleIla actualIla = DoubleIlaSubtract.create(leftIla, rightIla, 100);
         final double epsilon = 0.0;
         DoubleIlaCheck.checkAll(
                 targetIla,

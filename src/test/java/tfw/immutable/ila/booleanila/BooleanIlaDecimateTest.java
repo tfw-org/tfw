@@ -25,7 +25,7 @@ class BooleanIlaDecimateTest {
                 target[ii] = array[ii * factor];
             }
             BooleanIla targetIla = BooleanIlaFromArray.create(target);
-            BooleanIla actualIla = BooleanIlaDecimate.create(ila, factor);
+            BooleanIla actualIla = BooleanIlaDecimate.create(ila, factor, new boolean[100]);
             final boolean epsilon = false;
             BooleanIlaCheck.checkAll(
                     targetIla,

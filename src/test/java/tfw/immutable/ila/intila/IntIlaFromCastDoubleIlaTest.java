@@ -23,7 +23,7 @@ class IntIlaFromCastDoubleIlaTest {
         }
         DoubleIla ila = DoubleIlaFromArray.create(array);
         IntIla targetIla = IntIlaFromArray.create(target);
-        IntIla actualIla = IntIlaFromCastDoubleIla.create(ila);
+        IntIla actualIla = IntIlaFromCastDoubleIla.create(ila, 100);
         final int epsilon = (int) 0.0;
         IntIlaCheck.checkAll(
                 targetIla,

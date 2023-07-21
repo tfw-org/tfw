@@ -12,7 +12,7 @@ public final class ObjectIlaConcatenate {
         // non-instantiable class
     }
 
-    public static ObjectIla create(ObjectIla leftIla, ObjectIla rightIla) {
+    public static <T> ObjectIla<T> create(ObjectIla<T> leftIla, ObjectIla<T> rightIla) {
         Argument.assertNotNull(leftIla, "leftIla");
         Argument.assertNotNull(rightIla, "rightIla");
 
@@ -26,22 +26,22 @@ public final class ObjectIlaConcatenate {
         if(rightIla.length() == 0)
             return leftIla;
         */
-        return new MyObjectIla(leftIla, rightIla);
+        return new MyObjectIla<>(leftIla, rightIla);
     }
 
-    private static class MyObjectIla extends AbstractObjectIla {
-        private final ObjectIla leftIla;
-        private final ObjectIla rightIla;
+    private static class MyObjectIla<T> extends AbstractObjectIla<T> {
+        private final ObjectIla<T> leftIla;
+        private final ObjectIla<T> rightIla;
         private final long leftIlaLength;
 
-        MyObjectIla(ObjectIla leftIla, ObjectIla rightIla) {
+        MyObjectIla(ObjectIla<T> leftIla, ObjectIla<T> rightIla) {
             super(leftIla.length() + rightIla.length());
             this.leftIla = leftIla;
             this.rightIla = rightIla;
             this.leftIlaLength = leftIla.length();
         }
 
-        protected void toArrayImpl(Object[] array, int offset, int stride, long start, int length)
+        protected void toArrayImpl(T[] array, int offset, int stride, long start, int length)
                 throws DataInvalidException {
             if (start + length <= leftIlaLength) {
                 leftIla.toArray(array, offset, stride, start, length);

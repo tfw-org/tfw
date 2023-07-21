@@ -25,7 +25,7 @@ class ShortIlaDecimateTest {
                 target[ii] = array[ii * factor];
             }
             ShortIla targetIla = ShortIlaFromArray.create(target);
-            ShortIla actualIla = ShortIlaDecimate.create(ila, factor);
+            ShortIla actualIla = ShortIlaDecimate.create(ila, factor, new short[100]);
             final short epsilon = (short) 0;
             ShortIlaCheck.checkAll(
                     targetIla,

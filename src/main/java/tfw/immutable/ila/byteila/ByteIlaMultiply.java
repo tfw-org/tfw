@@ -12,10 +12,6 @@ public final class ByteIlaMultiply {
         // non-instantiable class
     }
 
-    public static ByteIla create(ByteIla leftIla, ByteIla rightIla) {
-        return create(leftIla, rightIla, ByteIlaIterator.DEFAULT_BUFFER_SIZE);
-    }
-
     public static ByteIla create(ByteIla leftIla, ByteIla rightIla, int bufferSize) {
         Argument.assertNotNull(leftIla, "leftIla");
         Argument.assertNotNull(rightIla, "rightIla");
@@ -38,10 +34,12 @@ public final class ByteIlaMultiply {
             this.bufferSize = bufferSize;
         }
 
-        protected void toArrayImpl(byte[] array, int offset, int stride, long start, int length)
+        protected void toArrayImpl(byte[] array, int offset, int stride, long ilaStart, int length)
                 throws DataInvalidException {
-            ByteIlaIterator li = new ByteIlaIterator(ByteIlaSegment.create(leftIla, start, length), bufferSize);
-            ByteIlaIterator ri = new ByteIlaIterator(ByteIlaSegment.create(rightIla, start, length), bufferSize);
+            ByteIlaIterator li =
+                    new ByteIlaIterator(ByteIlaSegment.create(leftIla, ilaStart, length), new byte[bufferSize]);
+            ByteIlaIterator ri =
+                    new ByteIlaIterator(ByteIlaSegment.create(rightIla, ilaStart, length), new byte[bufferSize]);
 
             for (int ii = offset; length > 0; ii += stride, --length) {
                 array[ii] = (byte) (li.next() * ri.next());

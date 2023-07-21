@@ -16,24 +16,28 @@ public final class LinearShortIlaFromALawByteIla {
 
     private LinearShortIlaFromALawByteIla() {}
 
-    public static ShortIla create(ByteIla byteIla) {
+    public static ShortIla create(final ByteIla byteIla, final int bufferSize) {
         Argument.assertNotNull(byteIla, "byteIla");
+        Argument.assertNotLessThan(bufferSize, 1, "bufferSize");
 
-        return new MyShortIla(byteIla);
+        return new MyShortIla(byteIla, bufferSize);
     }
 
     private static class MyShortIla extends AbstractShortIla {
-        private ByteIla byteIla;
+        private final ByteIla byteIla;
+        private final int bufferSize;
 
-        MyShortIla(ByteIla byteIla) {
+        MyShortIla(final ByteIla byteIla, final int bufferSize) {
             super(byteIla.length());
 
             this.byteIla = byteIla;
+            this.bufferSize = bufferSize;
         }
 
         protected void toArrayImpl(short[] array, int offset, int stride, long start, int length)
                 throws DataInvalidException {
-            ByteIlaIterator bi = new ByteIlaIterator(ByteIlaSegment.create(byteIla, start, length));
+            ByteIlaIterator bi =
+                    new ByteIlaIterator(ByteIlaSegment.create(byteIla, start, length), new byte[bufferSize]);
 
             for (int i = offset; bi.hasNext(); i += stride) {
                 /*

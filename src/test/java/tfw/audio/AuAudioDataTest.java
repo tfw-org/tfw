@@ -27,8 +27,8 @@ class AuAudioDataTest {
         ByteIla origByteIla = ByteIlaFromArray.create(origByteArray);
 
         DoubleIla doubleIla =
-                NormalizedDoubleIlaFromAuAudioData.create(origByteIla, Au.SUN_MAGIC_NUMBER, Au.ISDN_U_LAW_8_BIT);
-        ByteIla byteIla = AuAudioDataFromNormalizedDoubleIla.create(doubleIla, Au.ISDN_U_LAW_8_BIT);
+                NormalizedDoubleIlaFromAuAudioData.create(origByteIla, Au.SUN_MAGIC_NUMBER, Au.ISDN_U_LAW_8_BIT, 1024);
+        ByteIla byteIla = AuAudioDataFromNormalizedDoubleIla.create(doubleIla, Au.ISDN_U_LAW_8_BIT, 1024);
 
         byte[] b = ByteIlaUtil.toArray(byteIla);
 
@@ -48,9 +48,9 @@ class AuAudioDataTest {
         ByteIla origByteIla = ByteIlaFromArray.create(origByteArray);
 
         DoubleIla doubleIla =
-                NormalizedDoubleIlaFromAuAudioData.create(origByteIla, Au.SUN_MAGIC_NUMBER, Au.LINEAR_8_BIT);
+                NormalizedDoubleIlaFromAuAudioData.create(origByteIla, Au.SUN_MAGIC_NUMBER, Au.LINEAR_8_BIT, 1024);
 
-        ByteIla byteIla = AuAudioDataFromNormalizedDoubleIla.create(doubleIla, Au.LINEAR_8_BIT);
+        ByteIla byteIla = AuAudioDataFromNormalizedDoubleIla.create(doubleIla, Au.LINEAR_8_BIT, 1024);
 
         byte[] b = ByteIlaUtil.toArray(byteIla);
 
@@ -67,8 +67,8 @@ class AuAudioDataTest {
         ByteIla origByteIla = ByteIlaFromArray.create(origByteArray);
 
         DoubleIla doubleIla =
-                NormalizedDoubleIlaFromAuAudioData.create(origByteIla, Au.SUN_MAGIC_NUMBER, Au.ISDN_A_LAW_8_BIT);
-        ByteIla byteIla = AuAudioDataFromNormalizedDoubleIla.create(doubleIla, Au.ISDN_A_LAW_8_BIT);
+                NormalizedDoubleIlaFromAuAudioData.create(origByteIla, Au.SUN_MAGIC_NUMBER, Au.ISDN_A_LAW_8_BIT, 1024);
+        ByteIla byteIla = AuAudioDataFromNormalizedDoubleIla.create(doubleIla, Au.ISDN_A_LAW_8_BIT, 1024);
 
         byte[] b = ByteIlaUtil.toArray(byteIla);
 

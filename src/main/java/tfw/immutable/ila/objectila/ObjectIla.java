@@ -7,9 +7,11 @@ import tfw.immutable.ila.ImmutableLongArray;
  *
  * @immutables.types=all
  */
-public interface ObjectIla extends ImmutableLongArray {
-    void toArray(Object[] array, int offset, long start, int length) throws DataInvalidException;
+public interface ObjectIla<T> extends ImmutableLongArray {
+    void toArray(final T[] array, final int arrayOffset, final long ilaStart, final int length)
+            throws DataInvalidException;
 
-    void toArray(Object[] array, int offset, int stride, long start, int length) throws DataInvalidException;
+    void toArray(final T[] array, final int offset, final int stride, final long start, final int length)
+            throws DataInvalidException;
 }
 // AUTO GENERATED FROM TEMPLATE

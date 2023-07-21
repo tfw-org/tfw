@@ -25,7 +25,7 @@ class FloatIlaDecimateTest {
                 target[ii] = array[ii * factor];
             }
             FloatIla targetIla = FloatIlaFromArray.create(target);
-            FloatIla actualIla = FloatIlaDecimate.create(ila, factor);
+            FloatIla actualIla = FloatIlaDecimate.create(ila, factor, new float[100]);
             final float epsilon = 0.0f;
             FloatIlaCheck.checkAll(
                     targetIla,

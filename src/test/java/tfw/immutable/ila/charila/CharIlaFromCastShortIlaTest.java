@@ -23,7 +23,7 @@ class CharIlaFromCastShortIlaTest {
         }
         ShortIla ila = ShortIlaFromArray.create(array);
         CharIla targetIla = CharIlaFromArray.create(target);
-        CharIla actualIla = CharIlaFromCastShortIla.create(ila);
+        CharIla actualIla = CharIlaFromCastShortIla.create(ila, 100);
         final char epsilon = (char) 0;
         CharIlaCheck.checkAll(
                 targetIla,
