@@ -3,10 +3,6 @@ package tfw.immutable.ila.intila;
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
 
-/**
- *
- * @immutables.types=numeric
- */
 public final class IntIlaAdd {
     private IntIlaAdd() {
         // non-instantiable class

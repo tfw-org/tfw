@@ -3,10 +3,6 @@ package tfw.immutable.ila.shortila;
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
 
-/**
- *
- * @immutables.types=numeric
- */
 public final class ShortIlaBound {
     private ShortIlaBound() {
         // non-instantiable class

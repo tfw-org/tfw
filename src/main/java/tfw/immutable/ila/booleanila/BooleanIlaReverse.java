@@ -3,10 +3,6 @@ package tfw.immutable.ila.booleanila;
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
 
-/**
- *
- * @immutables.types=all
- */
 public final class BooleanIlaReverse {
     private BooleanIlaReverse() {
         // non-instantiable class

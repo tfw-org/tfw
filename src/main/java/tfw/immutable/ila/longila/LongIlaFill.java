@@ -2,10 +2,6 @@ package tfw.immutable.ila.longila;
 
 import tfw.check.Argument;
 
-/**
- *
- * @immutables.types=all
- */
 public final class LongIlaFill {
     private LongIlaFill() {
         // non-instantiable class

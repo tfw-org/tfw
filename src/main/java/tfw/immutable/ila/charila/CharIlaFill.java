@@ -2,10 +2,6 @@ package tfw.immutable.ila.charila;
 
 import tfw.check.Argument;
 
-/**
- *
- * @immutables.types=all
- */
 public final class CharIlaFill {
     private CharIlaFill() {
         // non-instantiable class

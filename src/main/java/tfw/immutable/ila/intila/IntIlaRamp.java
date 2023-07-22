@@ -2,10 +2,6 @@ package tfw.immutable.ila.intila;
 
 import tfw.check.Argument;
 
-/**
- *
- * @immutables.types=numeric
- */
 public final class IntIlaRamp {
     private IntIlaRamp() {
         // non-instantiable class

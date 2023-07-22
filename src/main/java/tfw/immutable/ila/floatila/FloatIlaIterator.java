@@ -3,10 +3,6 @@ package tfw.immutable.ila.floatila;
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
 
-/**
- *
- * @immutables.types=all
- */
 public final class FloatIlaIterator {
     private final FloatIla instance;
     private final long instanceLength;

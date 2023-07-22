@@ -2,10 +2,6 @@ package tfw.immutable.ila.byteila;
 
 import tfw.check.Argument;
 
-/**
- *
- * @immutables.types=all
- */
 public final class ByteIlaFill {
     private ByteIlaFill() {
         // non-instantiable class

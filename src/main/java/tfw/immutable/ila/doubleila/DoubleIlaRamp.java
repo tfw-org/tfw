@@ -2,10 +2,6 @@ package tfw.immutable.ila.doubleila;
 
 import tfw.check.Argument;
 
-/**
- *
- * @immutables.types=numeric
- */
 public final class DoubleIlaRamp {
     private DoubleIlaRamp() {
         // non-instantiable class

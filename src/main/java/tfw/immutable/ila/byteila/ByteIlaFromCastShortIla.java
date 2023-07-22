@@ -6,10 +6,6 @@ import tfw.immutable.ila.shortila.ShortIla;
 import tfw.immutable.ila.shortila.ShortIlaIterator;
 import tfw.immutable.ila.shortila.ShortIlaSegment;
 
-/**
- *
- * @immutables.types=numericnotshort
- */
 public final class ByteIlaFromCastShortIla {
     private ByteIlaFromCastShortIla() {
         // non-instantiable class

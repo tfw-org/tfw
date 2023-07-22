@@ -7,10 +7,6 @@ import tfw.immutable.ila.floatila.FloatIla;
 import tfw.immutable.ila.floatila.FloatIlaIterator;
 import tfw.immutable.ila.floatila.FloatIlaSegment;
 
-/**
- *
- * @immutables.types=numericnotfloat
- */
 public final class %%NAME%%IlaFromCastFloatIla {
     private %%NAME%%IlaFromCastFloatIla() {
         // non-instantiable class

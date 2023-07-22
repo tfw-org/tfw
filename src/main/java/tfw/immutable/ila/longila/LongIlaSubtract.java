@@ -3,10 +3,6 @@ package tfw.immutable.ila.longila;
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
 
-/**
- *
- * @immutables.types=numeric
- */
 public final class LongIlaSubtract {
     private LongIlaSubtract() {
         // non-instantiable class

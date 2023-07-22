@@ -3,10 +3,6 @@ package tfw.immutable.ila.booleanila;
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
 
-/**
- *
- * @immutables.types=all
- */
 public final class BooleanIlaIterator {
     private final BooleanIla instance;
     private final long instanceLength;

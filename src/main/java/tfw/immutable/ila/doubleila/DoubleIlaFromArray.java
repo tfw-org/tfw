@@ -2,10 +2,6 @@ package tfw.immutable.ila.doubleila;
 
 import tfw.check.Argument;
 
-/**
- *
- * @immutables.types=all
- */
 public final class DoubleIlaFromArray {
     private DoubleIlaFromArray() {
         // non-instantiable class

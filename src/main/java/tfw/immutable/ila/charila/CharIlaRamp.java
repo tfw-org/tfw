@@ -2,10 +2,6 @@ package tfw.immutable.ila.charila;
 
 import tfw.check.Argument;
 
-/**
- *
- * @immutables.types=numeric
- */
 public final class CharIlaRamp {
     private CharIlaRamp() {
         // non-instantiable class

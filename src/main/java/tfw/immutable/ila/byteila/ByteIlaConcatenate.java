@@ -3,10 +3,6 @@ package tfw.immutable.ila.byteila;
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
 
-/**
- *
- * @immutables.types=all
- */
 public final class ByteIlaConcatenate {
     private ByteIlaConcatenate() {
         // non-instantiable class

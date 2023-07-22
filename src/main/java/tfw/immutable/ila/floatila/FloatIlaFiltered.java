@@ -4,10 +4,6 @@ import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
 import tfw.immutable.ila.AbstractIlaCheck;
 
-/**
- *
- * @immutables.types=all
- */
 public final class FloatIlaFiltered {
     private FloatIlaFiltered() {
         // non-instantiable class

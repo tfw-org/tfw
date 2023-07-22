@@ -3,10 +3,6 @@ package tfw.immutable.ila.objectila;
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
 
-/**
- *
- * @immutables.types=all
- */
 public final class ObjectIlaIterator<T> {
     private final ObjectIla<T> instance;
     private final long instanceLength;

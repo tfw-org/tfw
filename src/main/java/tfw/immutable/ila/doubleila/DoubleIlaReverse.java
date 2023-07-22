@@ -3,10 +3,6 @@ package tfw.immutable.ila.doubleila;
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
 
-/**
- *
- * @immutables.types=all
- */
 public final class DoubleIlaReverse {
     private DoubleIlaReverse() {
         // non-instantiable class

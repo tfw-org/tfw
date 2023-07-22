@@ -4,10 +4,6 @@ package %%PACKAGE%%;
 import tfw.immutable.DataInvalidException;
 import tfw.immutable.ila.ImmutableLongArray;
 
-/**
- *
- * @immutables.types=all
- */
 public interface %%NAME%%Ila%%TEMPLATE%% extends ImmutableLongArray {
     void toArray(final %%TYPE_OR_TEMPLATE%%[] array, final int arrayOffset, final long ilaStart, final int length)
             throws DataInvalidException;

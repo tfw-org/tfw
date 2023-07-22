@@ -2,10 +2,6 @@ package tfw.immutable.ila.objectila;
 
 import tfw.check.Argument;
 
-/**
- *
- * @immutables.types=all
- */
 public final class ObjectIlaFromArray {
     private ObjectIlaFromArray() {
         // non-instantiable class

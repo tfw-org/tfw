@@ -3,10 +3,6 @@ package tfw.immutable.ila.floatila;
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
 
-/**
- *
- * @immutables.types=numeric
- */
 public final class FloatIlaBound {
     private FloatIlaBound() {
         // non-instantiable class

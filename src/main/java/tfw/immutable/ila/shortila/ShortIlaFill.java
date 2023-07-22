@@ -2,10 +2,6 @@ package tfw.immutable.ila.shortila;
 
 import tfw.check.Argument;
 
-/**
- *
- * @immutables.types=all
- */
 public final class ShortIlaFill {
     private ShortIlaFill() {
         // non-instantiable class

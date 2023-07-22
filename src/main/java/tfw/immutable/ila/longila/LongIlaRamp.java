@@ -2,10 +2,6 @@ package tfw.immutable.ila.longila;
 
 import tfw.check.Argument;
 
-/**
- *
- * @immutables.types=numeric
- */
 public final class LongIlaRamp {
     private LongIlaRamp() {
         // non-instantiable class

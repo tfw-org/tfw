@@ -3,10 +3,6 @@ package tfw.immutable.ila.byteila;
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
 
-/**
- *
- * @immutables.types=all
- */
 public final class ByteIlaReverse {
     private ByteIlaReverse() {
         // non-instantiable class

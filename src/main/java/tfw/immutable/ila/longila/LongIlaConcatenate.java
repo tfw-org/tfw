@@ -3,10 +3,6 @@ package tfw.immutable.ila.longila;
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
 
-/**
- *
- * @immutables.types=all
- */
 public final class LongIlaConcatenate {
     private LongIlaConcatenate() {
         // non-instantiable class

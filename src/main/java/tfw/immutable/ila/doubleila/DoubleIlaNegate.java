@@ -3,10 +3,6 @@ package tfw.immutable.ila.doubleila;
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
 
-/**
- *
- * @immutables.types=numeric
- */
 public final class DoubleIlaNegate {
     private DoubleIlaNegate() {
         // non-instantiable class

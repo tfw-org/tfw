@@ -3,10 +3,6 @@ package tfw.immutable.ila.objectila;
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
 
-/**
- *
- * @immutables.types=all
- */
 public final class ObjectIlaRemove {
     private ObjectIlaRemove() {
         // non-instantiable class

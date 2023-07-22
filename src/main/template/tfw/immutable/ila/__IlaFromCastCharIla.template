@@ -7,10 +7,6 @@ import tfw.immutable.ila.charila.CharIla;
 import tfw.immutable.ila.charila.CharIlaIterator;
 import tfw.immutable.ila.charila.CharIlaSegment;
 
-/**
- *
- * @immutables.types=numericnotchar
- */
 public final class %%NAME%%IlaFromCastCharIla {
     private %%NAME%%IlaFromCastCharIla() {
         // non-instantiable class

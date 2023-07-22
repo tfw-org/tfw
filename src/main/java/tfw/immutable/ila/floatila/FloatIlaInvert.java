@@ -3,10 +3,6 @@ package tfw.immutable.ila.floatila;
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
 
-/**
- *
- * @immutables.types=floating
- */
 public final class FloatIlaInvert {
     private FloatIlaInvert() {
         // non-instantiable class

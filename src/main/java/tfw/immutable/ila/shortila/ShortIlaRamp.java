@@ -2,10 +2,6 @@ package tfw.immutable.ila.shortila;
 
 import tfw.check.Argument;
 
-/**
- *
- * @immutables.types=numeric
- */
 public final class ShortIlaRamp {
     private ShortIlaRamp() {
         // non-instantiable class

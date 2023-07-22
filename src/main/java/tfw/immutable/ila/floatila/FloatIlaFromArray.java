@@ -2,10 +2,6 @@ package tfw.immutable.ila.floatila;
 
 import tfw.check.Argument;
 
-/**
- *
- * @immutables.types=all
- */
 public final class FloatIlaFromArray {
     private FloatIlaFromArray() {
         // non-instantiable class

@@ -2,10 +2,6 @@ package tfw.immutable.ila.booleanila;
 
 import tfw.check.Argument;
 
-/**
- *
- * @immutables.types=all
- */
 public final class BooleanIlaFromArray {
     private BooleanIlaFromArray() {
         // non-instantiable class

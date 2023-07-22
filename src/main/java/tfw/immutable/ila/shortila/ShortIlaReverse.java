@@ -3,10 +3,6 @@ package tfw.immutable.ila.shortila;
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
 
-/**
- *
- * @immutables.types=all
- */
 public final class ShortIlaReverse {
     private ShortIlaReverse() {
         // non-instantiable class

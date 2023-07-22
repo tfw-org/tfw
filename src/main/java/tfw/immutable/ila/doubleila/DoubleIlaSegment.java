@@ -3,10 +3,6 @@ package tfw.immutable.ila.doubleila;
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
 
-/**
- *
- * @immutables.types=all
- */
 public final class DoubleIlaSegment {
     private DoubleIlaSegment() {
         // non-instantiable class

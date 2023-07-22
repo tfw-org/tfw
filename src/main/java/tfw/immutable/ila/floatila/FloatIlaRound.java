@@ -3,10 +3,6 @@ package tfw.immutable.ila.floatila;
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
 
-/**
- *
- * @immutables.types=floating
- */
 public final class FloatIlaRound {
     private FloatIlaRound() {
         // non-instantiable class

@@ -4,10 +4,6 @@ package %%PACKAGE%%;
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
 
-/**
- *
- * @immutables.types=floating
- */
 public final class %%NAME%%IlaInvert {
     private %%NAME%%IlaInvert() {
         // non-instantiable class

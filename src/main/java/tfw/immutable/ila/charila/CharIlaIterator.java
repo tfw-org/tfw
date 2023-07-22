@@ -3,10 +3,6 @@ package tfw.immutable.ila.charila;
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
 
-/**
- *
- * @immutables.types=all
- */
 public final class CharIlaIterator {
     private final CharIla instance;
     private final long instanceLength;
