@@ -4,10 +4,6 @@ package %%PACKAGE%%;
 %%RANDOM_INCLUDE%%import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 
-/**
- *
- * @immutables.types=all
- */
 class %%NAME%%IlaFillTest {
     @Test
     void testAll() throws Exception {

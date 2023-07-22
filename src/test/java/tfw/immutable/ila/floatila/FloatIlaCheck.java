@@ -2,10 +2,6 @@ package tfw.immutable.ila.floatila;
 
 import java.util.Random;
 
-/**
- *
- * @immutables.types=numeric
- */
 public final class FloatIlaCheck {
     private FloatIlaCheck() {
         // non-instantiable class

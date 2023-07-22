@@ -4,10 +4,6 @@ import java.util.Random;
 import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 
-/**
- *
- * @immutables.types=numeric
- */
 class FloatIlaAddTest {
     @Test
     void testAll() throws Exception {

@@ -6,10 +6,6 @@ import tfw.immutable.ila.IlaTestDimensions;
 import tfw.immutable.ila.intila.IntIla;
 import tfw.immutable.ila.intila.IntIlaFromArray;
 
-/**
- *
- * @immutables.types=numericnotint
- */
 class CharIlaFromCastIntIlaTest {
     @Test
     void testAll() throws Exception {

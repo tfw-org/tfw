@@ -6,10 +6,6 @@ import tfw.immutable.ila.IlaTestDimensions;
 import tfw.immutable.ila.shortila.ShortIla;
 import tfw.immutable.ila.shortila.ShortIlaFromArray;
 
-/**
- *
- * @immutables.types=numericnotshort
- */
 class IntIlaFromCastShortIlaTest {
     @Test
     void testAll() throws Exception {

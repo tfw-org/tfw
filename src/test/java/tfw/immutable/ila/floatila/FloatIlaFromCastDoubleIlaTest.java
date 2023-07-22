@@ -6,10 +6,6 @@ import tfw.immutable.ila.IlaTestDimensions;
 import tfw.immutable.ila.doubleila.DoubleIla;
 import tfw.immutable.ila.doubleila.DoubleIlaFromArray;
 
-/**
- *
- * @immutables.types=numericnotdouble
- */
 class FloatIlaFromCastDoubleIlaTest {
     @Test
     void testAll() throws Exception {

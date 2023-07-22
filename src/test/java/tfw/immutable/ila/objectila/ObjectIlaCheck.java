@@ -1,9 +1,5 @@
 package tfw.immutable.ila.objectila;
 
-/**
- *
- * @immutables.types=nonnumeric
- */
 public final class ObjectIlaCheck {
     private ObjectIlaCheck() {
         // non-instantiable class

@@ -2,10 +2,6 @@ package tfw.immutable.ila.booleanila;
 
 import java.util.Random;
 
-/**
- *
- * @immutables.types=nonnumeric
- */
 public final class BooleanIlaUtilCheck {
     private BooleanIlaUtilCheck() {
         // non-instantiable class

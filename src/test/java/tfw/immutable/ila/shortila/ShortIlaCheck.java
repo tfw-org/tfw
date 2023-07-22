@@ -2,10 +2,6 @@ package tfw.immutable.ila.shortila;
 
 import java.util.Random;
 
-/**
- *
- * @immutables.types=numeric
- */
 public final class ShortIlaCheck {
     private ShortIlaCheck() {
         // non-instantiable class

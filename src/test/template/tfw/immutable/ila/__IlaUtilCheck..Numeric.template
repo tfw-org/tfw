@@ -2,10 +2,6 @@
 package %%PACKAGE%%;
 
 %%RANDOM_INCLUDE%%
-/**
- *
- * @immutables.types=numeric
- */
 public final class %%NAME%%IlaUtilCheck {
     private %%NAME%%IlaUtilCheck() {
         // non-instantiable class

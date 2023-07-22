@@ -2,10 +2,6 @@ package tfw.immutable.ila.intila;
 
 import java.util.Random;
 
-/**
- *
- * @immutables.types=numeric
- */
 public final class IntIlaUtilCheck {
     private IntIlaUtilCheck() {
         // non-instantiable class

@@ -2,10 +2,6 @@ package tfw.immutable.ila.charila;
 
 import java.util.Random;
 
-/**
- *
- * @immutables.types=numeric
- */
 public final class CharIlaUtilCheck {
     private CharIlaUtilCheck() {
         // non-instantiable class
