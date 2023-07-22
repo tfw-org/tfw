@@ -6,10 +6,6 @@ import tfw.immutable.ila.byteila.ByteIla;
 import tfw.immutable.ila.byteila.ByteIlaIterator;
 import tfw.immutable.ila.byteila.ByteIlaSegment;
 
-/**
- *
- * @immutables.types=numericnotbyte
- */
 public final class LongIlaFromCastByteIla {
     private LongIlaFromCastByteIla() {
         // non-instantiable class

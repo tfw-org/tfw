@@ -3,10 +3,6 @@ package tfw.immutable.ila.shortila;
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
 
-/**
- *
- * @immutables.types=numeric
- */
 public final class ShortIlaScalarMultiply {
     private ShortIlaScalarMultiply() {
         // non-instantiable class

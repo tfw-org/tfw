@@ -3,10 +3,6 @@ package tfw.immutable.ila.charila;
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
 
-/**
- *
- * @immutables.types=numeric
- */
 public final class CharIlaNegate {
     private CharIlaNegate() {
         // non-instantiable class

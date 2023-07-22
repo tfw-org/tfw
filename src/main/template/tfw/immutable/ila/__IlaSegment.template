@@ -4,10 +4,6 @@ package %%PACKAGE%%;
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
 
-/**
- *
- * @immutables.types=all
- */
 public final class %%NAME%%IlaSegment {
     private %%NAME%%IlaSegment() {
         // non-instantiable class

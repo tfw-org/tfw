@@ -3,10 +3,6 @@ package tfw.immutable.ila.objectila;
 import tfw.immutable.DataInvalidException;
 import tfw.immutable.ila.ImmutableLongArray;
 
-/**
- *
- * @immutables.types=all
- */
 public interface ObjectIla<T> extends ImmutableLongArray {
     void toArray(final T[] array, final int arrayOffset, final long ilaStart, final int length)
             throws DataInvalidException;

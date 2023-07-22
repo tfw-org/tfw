@@ -6,10 +6,6 @@ import tfw.immutable.ila.doubleila.DoubleIla;
 import tfw.immutable.ila.doubleila.DoubleIlaIterator;
 import tfw.immutable.ila.doubleila.DoubleIlaSegment;
 
-/**
- *
- * @immutables.types=numericnotdouble
- */
 public final class IntIlaFromCastDoubleIla {
     private IntIlaFromCastDoubleIla() {
         // non-instantiable class

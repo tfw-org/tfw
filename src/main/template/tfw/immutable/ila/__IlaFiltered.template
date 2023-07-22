@@ -5,10 +5,6 @@ import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
 import tfw.immutable.ila.AbstractIlaCheck;
 
-/**
- *
- * @immutables.types=all
- */
 public final class %%NAME%%IlaFiltered%%TEMPLATE%% {
     private %%NAME%%IlaFiltered() {
         // non-instantiable class

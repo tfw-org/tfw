@@ -3,10 +3,6 @@ package %%PACKAGE%%;
 
 import tfw.check.Argument;
 
-/**
- *
- * @immutables.types=numeric
- */
 public final class %%NAME%%IlaRamp {
     private %%NAME%%IlaRamp() {
         // non-instantiable class

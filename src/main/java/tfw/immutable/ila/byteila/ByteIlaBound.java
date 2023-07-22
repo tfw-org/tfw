@@ -3,10 +3,6 @@ package tfw.immutable.ila.byteila;
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
 
-/**
- *
- * @immutables.types=numeric
- */
 public final class ByteIlaBound {
     private ByteIlaBound() {
         // non-instantiable class

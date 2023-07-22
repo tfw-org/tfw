@@ -7,10 +7,6 @@ import tfw.immutable.ila.longila.LongIla;
 import tfw.immutable.ila.longila.LongIlaIterator;
 import tfw.immutable.ila.longila.LongIlaSegment;
 
-/**
- *
- * @immutables.types=numericnotlong
- */
 public final class %%NAME%%IlaFromCastLongIla {
     private %%NAME%%IlaFromCastLongIla() {
         // non-instantiable class

@@ -3,10 +3,6 @@ package tfw.immutable.ila.booleanila;
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
 
-/**
- *
- * @immutables.types=all
- */
 public final class BooleanIlaConcatenate {
     private BooleanIlaConcatenate() {
         // non-instantiable class

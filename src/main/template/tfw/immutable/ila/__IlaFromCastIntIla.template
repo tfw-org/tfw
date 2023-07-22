@@ -7,10 +7,6 @@ import tfw.immutable.ila.intila.IntIla;
 import tfw.immutable.ila.intila.IntIlaIterator;
 import tfw.immutable.ila.intila.IntIlaSegment;
 
-/**
- *
- * @immutables.types=numericnotint
- */
 public final class %%NAME%%IlaFromCastIntIla {
     private %%NAME%%IlaFromCastIntIla() {
         // non-instantiable class

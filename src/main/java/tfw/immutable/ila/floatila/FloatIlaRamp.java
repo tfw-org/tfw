@@ -2,10 +2,6 @@ package tfw.immutable.ila.floatila;
 
 import tfw.check.Argument;
 
-/**
- *
- * @immutables.types=numeric
- */
 public final class FloatIlaRamp {
     private FloatIlaRamp() {
         // non-instantiable class

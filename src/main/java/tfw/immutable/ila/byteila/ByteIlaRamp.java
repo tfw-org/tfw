@@ -2,10 +2,6 @@ package tfw.immutable.ila.byteila;
 
 import tfw.check.Argument;
 
-/**
- *
- * @immutables.types=numeric
- */
 public final class ByteIlaRamp {
     private ByteIlaRamp() {
         // non-instantiable class
