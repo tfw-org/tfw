@@ -1,11 +1,7 @@
 // booleanila
 package %%PACKAGE%%;
 
-%%RANDOM_INCLUDE_2%%/**
- *
- * @immutables.types=nonnumeric
- */
-public final class %%NAME%%IlaUtilCheck {
+%%RANDOM_INCLUDE_2%%public final class %%NAME%%IlaUtilCheck {
     private %%NAME%%IlaUtilCheck() {
         // non-instantiable class
     }

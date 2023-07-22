@@ -2,10 +2,6 @@ package tfw.immutable.ila.byteila;
 
 import java.util.Random;
 
-/**
- *
- * @immutables.types=numeric
- */
 public final class ByteIlaUtilCheck {
     private ByteIlaUtilCheck() {
         // non-instantiable class

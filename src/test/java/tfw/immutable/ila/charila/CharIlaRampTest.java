@@ -4,10 +4,6 @@ import java.util.Random;
 import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 
-/**
- *
- * @immutables.types=numeric
- */
 class CharIlaRampTest {
     @Test
     void testAll() throws Exception {

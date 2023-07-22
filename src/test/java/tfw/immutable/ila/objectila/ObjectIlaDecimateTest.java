@@ -3,10 +3,6 @@ package tfw.immutable.ila.objectila;
 import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 
-/**
- *
- * @immutables.types=all
- */
 class ObjectIlaDecimateTest {
     @Test
     void testAll() throws Exception {

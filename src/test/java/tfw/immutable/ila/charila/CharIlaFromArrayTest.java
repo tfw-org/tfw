@@ -4,10 +4,6 @@ import java.util.Random;
 import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 
-/**
- *
- * @immutables.types=all
- */
 class CharIlaFromArrayTest {
     @Test
     void testImmutabilityCheck() throws Exception {

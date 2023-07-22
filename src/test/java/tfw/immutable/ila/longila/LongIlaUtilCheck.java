@@ -2,10 +2,6 @@ package tfw.immutable.ila.longila;
 
 import java.util.Random;
 
-/**
- *
- * @immutables.types=numeric
- */
 public final class LongIlaUtilCheck {
     private LongIlaUtilCheck() {
         // non-instantiable class

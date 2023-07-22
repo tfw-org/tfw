@@ -6,10 +6,6 @@ import tfw.immutable.ila.IlaTestDimensions;
 import tfw.immutable.ila.longila.LongIla;
 import tfw.immutable.ila.longila.LongIlaFromArray;
 
-/**
- *
- * @immutables.types=numericnotlong
- */
 class FloatIlaFromCastLongIlaTest {
     @Test
     void testAll() throws Exception {
