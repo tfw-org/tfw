@@ -19,7 +19,7 @@ class ByteIlaReverseTest {
         }
         ByteIla origIla = ByteIlaFromArray.create(array);
         ByteIla targetIla = ByteIlaFromArray.create(reversed);
-        ByteIla actualIla = ByteIlaReverse.create(origIla);
+        ByteIla actualIla = ByteIlaReverse.create(origIla, new byte[1000]);
         final byte epsilon = (byte) 0;
         ByteIlaCheck.checkAll(
                 targetIla,

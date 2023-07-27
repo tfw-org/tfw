@@ -29,14 +29,13 @@ public final class FloatIlaDecimate {
             this.buffer = buffer;
         }
 
-        protected void toArrayImpl(float[] array, int offset, int stride, long start, int length)
-                throws DataInvalidException {
+        protected void toArrayImpl(float[] array, int offset, long start, int length) throws DataInvalidException {
             final long segmentStart = start * factor;
             final long segmentLength = StrictMath.min(ila.length() - segmentStart, length * factor - 1);
             final FloatIla segment = FloatIlaSegment.create(ila, segmentStart, segmentLength);
             final FloatIlaIterator fi = new FloatIlaIterator(segment, buffer.clone());
 
-            for (int ii = offset; length > 0; ii += stride, --length) {
+            for (int ii = offset; length > 0; ii++, --length) {
                 array[ii] = fi.next();
                 fi.skip(factor - 1);
             }

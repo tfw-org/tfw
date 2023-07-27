@@ -20,7 +20,7 @@ class ByteIlaInterleaveTest {
                 ilas[ii] = ByteIlaFromArray.create(target[ii]);
             }
             ByteIla targetIla = ByteIlaFromArray.create(array);
-            ByteIla actualIla = ByteIlaInterleave.create(ilas);
+            ByteIla actualIla = ByteIlaInterleave.create(ilas, new byte[1000]);
             final byte epsilon = (byte) 0;
             ByteIlaCheck.checkAll(
                     targetIla,

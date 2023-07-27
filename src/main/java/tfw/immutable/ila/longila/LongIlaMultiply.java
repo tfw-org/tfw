@@ -30,14 +30,13 @@ public final class LongIlaMultiply {
             this.bufferSize = bufferSize;
         }
 
-        protected void toArrayImpl(long[] array, int offset, int stride, long ilaStart, int length)
-                throws DataInvalidException {
+        protected void toArrayImpl(long[] array, int offset, long ilaStart, int length) throws DataInvalidException {
             LongIlaIterator li =
                     new LongIlaIterator(LongIlaSegment.create(leftIla, ilaStart, length), new long[bufferSize]);
             LongIlaIterator ri =
                     new LongIlaIterator(LongIlaSegment.create(rightIla, ilaStart, length), new long[bufferSize]);
 
-            for (int ii = offset; length > 0; ii += stride, --length) {
+            for (int ii = offset; length > 0; ii++, --length) {
                 array[ii] = li.next() * ri.next();
             }
         }

@@ -91,26 +91,5 @@ public final class CharIlaFromUtf8ByteIla {
             nextCharIndex = start + length;
             nextByteIndex = byteIndex;
         }
-
-        public final char[] toArray() throws DataInvalidException {
-            if (length() > (long) Integer.MAX_VALUE)
-                throw new ArrayIndexOutOfBoundsException("Ila too large for native array");
-
-            return toArray((long) 0, (int) length());
-        }
-
-        public final char[] toArray(long start, int length) throws DataInvalidException {
-            char[] result = new char[length];
-
-            toArray(result, 0, start, length);
-
-            return result;
-        }
-
-        @Override
-        public void toArray(char[] array, int offset, int stride, long start, int length) throws DataInvalidException {
-            // TODO Auto-generated method stub
-
-        }
     }
 }

@@ -30,6 +30,7 @@ class DoubleIlaFromArrayTest {
             creation[ii] = random.nextDouble();
         }
         final DoubleIla ila = DoubleIlaFromArray.create(creation);
+        final StridedDoubleIla stridedIla = new StridedDoubleIla(ila, new double[1000]);
 
         for (int stride = -maxAbsStride; stride <= maxAbsStride; ++stride) {
             if (stride != 0) {
@@ -47,7 +48,7 @@ class DoubleIlaFromArrayTest {
                             for (int ii = (int) start, index = offset; ii < start + length; ++ii, index += stride) {
                                 arrayBase[index] = creation[ii];
                             }
-                            ila.toArray(ilaBase, offset, stride, start, length);
+                            stridedIla.toArray(ilaBase, offset, stride, start, length);
                             for (int ii = 0; ii < arrayBase.length; ++ii) {
                                 if (arrayBase[ii] != ilaBase[ii])
                                     throw new Exception("actual[" + ii + "] ("

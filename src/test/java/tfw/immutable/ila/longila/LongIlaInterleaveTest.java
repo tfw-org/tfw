@@ -20,7 +20,7 @@ class LongIlaInterleaveTest {
                 ilas[ii] = LongIlaFromArray.create(target[ii]);
             }
             LongIla targetIla = LongIlaFromArray.create(array);
-            LongIla actualIla = LongIlaInterleave.create(ilas);
+            LongIla actualIla = LongIlaInterleave.create(ilas, new long[1000]);
             final long epsilon = 0L;
             LongIlaCheck.checkAll(
                     targetIla,

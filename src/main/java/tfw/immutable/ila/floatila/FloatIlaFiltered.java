@@ -41,23 +41,18 @@ public final class FloatIlaFiltered {
         }
 
         public final void toArray(float[] array, int offset, long start, int length) throws DataInvalidException {
-            toArray(array, offset, 1, start, length);
-        }
-
-        public final void toArray(float[] array, int offset, int stride, long start, int length)
-                throws DataInvalidException {
             calculateLength();
 
             if (length == 0) {
                 return;
             }
 
-            AbstractIlaCheck.boundsCheck(this.length, array.length, offset, stride, start, length);
+            AbstractIlaCheck.boundsCheck(this.length, array.length, offset, start, length);
 
             FloatIlaIterator oii = new FloatIlaIterator(FloatIlaSegment.create(ila, start), buffer.clone());
 
             // left off here
-            for (int i = offset; oii.hasNext(); i += stride) {
+            for (int i = offset; oii.hasNext(); i++) {
                 float node = oii.next();
 
                 if (!filter.matches(node)) {

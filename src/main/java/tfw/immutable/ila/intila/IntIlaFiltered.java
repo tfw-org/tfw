@@ -41,23 +41,18 @@ public final class IntIlaFiltered {
         }
 
         public final void toArray(int[] array, int offset, long start, int length) throws DataInvalidException {
-            toArray(array, offset, 1, start, length);
-        }
-
-        public final void toArray(int[] array, int offset, int stride, long start, int length)
-                throws DataInvalidException {
             calculateLength();
 
             if (length == 0) {
                 return;
             }
 
-            AbstractIlaCheck.boundsCheck(this.length, array.length, offset, stride, start, length);
+            AbstractIlaCheck.boundsCheck(this.length, array.length, offset, start, length);
 
             IntIlaIterator oii = new IntIlaIterator(IntIlaSegment.create(ila, start), buffer.clone());
 
             // left off here
-            for (int i = offset; oii.hasNext(); i += stride) {
+            for (int i = offset; oii.hasNext(); i++) {
                 int node = oii.next();
 
                 if (!filter.matches(node)) {

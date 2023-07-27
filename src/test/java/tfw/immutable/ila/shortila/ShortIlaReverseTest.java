@@ -19,7 +19,7 @@ class ShortIlaReverseTest {
         }
         ShortIla origIla = ShortIlaFromArray.create(array);
         ShortIla targetIla = ShortIlaFromArray.create(reversed);
-        ShortIla actualIla = ShortIlaReverse.create(origIla);
+        ShortIla actualIla = ShortIlaReverse.create(origIla, new short[1000]);
         final short epsilon = (short) 0;
         ShortIlaCheck.checkAll(
                 targetIla,

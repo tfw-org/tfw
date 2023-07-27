@@ -29,14 +29,13 @@ public final class LongIlaDecimate {
             this.buffer = buffer;
         }
 
-        protected void toArrayImpl(long[] array, int offset, int stride, long start, int length)
-                throws DataInvalidException {
+        protected void toArrayImpl(long[] array, int offset, long start, int length) throws DataInvalidException {
             final long segmentStart = start * factor;
             final long segmentLength = StrictMath.min(ila.length() - segmentStart, length * factor - 1);
             final LongIla segment = LongIlaSegment.create(ila, segmentStart, segmentLength);
             final LongIlaIterator fi = new LongIlaIterator(segment, buffer.clone());
 
-            for (int ii = offset; length > 0; ii += stride, --length) {
+            for (int ii = offset; length > 0; ii++, --length) {
                 array[ii] = fi.next();
                 fi.skip(factor - 1);
             }

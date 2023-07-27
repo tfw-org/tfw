@@ -23,7 +23,7 @@ public final class ByteIlaRamp {
             this.increment = increment;
         }
 
-        protected void toArrayImpl(byte[] array, int offset, int stride, long start, int length) {
+        protected void toArrayImpl(byte[] array, int offset, long start, int length) {
             final int startPlusLength = (int) (start + length);
 
             // CORRECT, BUT WAY TOO SLOW
@@ -35,9 +35,7 @@ public final class ByteIlaRamp {
 
             // INCORRECT, BUT FAST
             byte value = (byte) (startValue + increment * start);
-            for (int startInt = (int) start;
-                    startInt != startPlusLength;
-                    ++startInt, offset += stride, value += increment) {
+            for (int startInt = (int) start; startInt != startPlusLength; ++startInt, offset++, value += increment) {
                 array[offset] = value;
             }
         }

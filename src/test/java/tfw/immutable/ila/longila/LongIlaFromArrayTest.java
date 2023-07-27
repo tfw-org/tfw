@@ -30,6 +30,7 @@ class LongIlaFromArrayTest {
             creation[ii] = random.nextLong();
         }
         final LongIla ila = LongIlaFromArray.create(creation);
+        final StridedLongIla stridedIla = new StridedLongIla(ila, new long[1000]);
 
         for (int stride = -maxAbsStride; stride <= maxAbsStride; ++stride) {
             if (stride != 0) {
@@ -47,7 +48,7 @@ class LongIlaFromArrayTest {
                             for (int ii = (int) start, index = offset; ii < start + length; ++ii, index += stride) {
                                 arrayBase[index] = creation[ii];
                             }
-                            ila.toArray(ilaBase, offset, stride, start, length);
+                            stridedIla.toArray(ilaBase, offset, stride, start, length);
                             for (int ii = 0; ii < arrayBase.length; ++ii) {
                                 if (arrayBase[ii] != ilaBase[ii])
                                     throw new Exception("actual[" + ii + "] ("

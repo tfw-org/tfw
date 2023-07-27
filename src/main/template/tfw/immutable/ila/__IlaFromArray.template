@@ -9,33 +9,22 @@ public final class %%NAME%%IlaFromArray {
     }
 
     public static %%TEMPLATE_SPACE%%%%NAME%%Ila%%TEMPLATE%% create(%%TYPE_OR_TEMPLATE%%[] array) {
-        return create(array, true);
-    }
-
-    public static %%TEMPLATE_SPACE%%%%NAME%%Ila%%TEMPLATE%% create(%%TYPE_OR_TEMPLATE%%[] array, boolean cloneArray) {
         Argument.assertNotNull(array, "array");
 
-        return new My%%NAME%%Ila%%DIAMOND%%(array, cloneArray);
+        return new My%%NAME%%Ila%%DIAMOND%%(array);
     }
 
     private static class My%%NAME%%Ila%%TEMPLATE%% extends Abstract%%NAME%%Ila%%TEMPLATE%% {
         private final %%TYPE_OR_TEMPLATE%%[] array;
 
-        My%%NAME%%Ila(%%TYPE_OR_TEMPLATE%%[] array, boolean cloneArray) {
+        My%%NAME%%Ila(%%TYPE_OR_TEMPLATE%%[] array) {
             super(array.length);
 
-            if (cloneArray) {
-                this.array = array.clone();
-            } else {
-                this.array = array;
-            }
+            this.array = array;
         }
 
-        protected void toArrayImpl(%%TYPE_OR_TEMPLATE%%[] array, int offset, int stride, long start, int length) {
-            final int startPlusLength = (int) (start + length);
-            for (int startInt = (int) start; startInt != startPlusLength; ++startInt, offset += stride) {
-                array[offset] = this.array[startInt];
-            }
+        protected void toArrayImpl(%%TYPE_OR_TEMPLATE%%[] array, int offset, long start, int length) {
+            System.arraycopy(this.array, (int) start, array, offset, length);
         }
     }
 }

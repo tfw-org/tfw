@@ -19,7 +19,7 @@ class ObjectIlaInterleaveTest {
                 ilas[ii] = ObjectIlaFromArray.create(target[ii]);
             }
             ObjectIla<Object> targetIla = ObjectIlaFromArray.create(array);
-            ObjectIla<Object> actualIla = ObjectIlaInterleave.create(ilas);
+            ObjectIla<Object> actualIla = ObjectIlaInterleave.create(ilas, new Object[1000]);
             final Object epsilon = Object.class;
             ObjectIlaCheck.checkAll(
                     targetIla,

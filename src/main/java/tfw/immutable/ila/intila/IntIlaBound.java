@@ -28,11 +28,10 @@ public final class IntIlaBound {
             this.maximum = maximum;
         }
 
-        protected void toArrayImpl(int[] array, int offset, int stride, long start, int length)
-                throws DataInvalidException {
-            ila.toArray(array, offset, stride, start, length);
+        protected void toArrayImpl(int[] array, int offset, long start, int length) throws DataInvalidException {
+            ila.toArray(array, offset, start, length);
 
-            for (int ii = offset; length > 0; ii += stride, --length) {
+            for (int ii = offset; length > 0; ii++, --length) {
                 int tmp = array[ii];
                 if (tmp < minimum) {
                     array[ii] = minimum;

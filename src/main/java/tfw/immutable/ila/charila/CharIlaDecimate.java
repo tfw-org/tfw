@@ -29,14 +29,13 @@ public final class CharIlaDecimate {
             this.buffer = buffer;
         }
 
-        protected void toArrayImpl(char[] array, int offset, int stride, long start, int length)
-                throws DataInvalidException {
+        protected void toArrayImpl(char[] array, int offset, long start, int length) throws DataInvalidException {
             final long segmentStart = start * factor;
             final long segmentLength = StrictMath.min(ila.length() - segmentStart, length * factor - 1);
             final CharIla segment = CharIlaSegment.create(ila, segmentStart, segmentLength);
             final CharIlaIterator fi = new CharIlaIterator(segment, buffer.clone());
 
-            for (int ii = offset; length > 0; ii += stride, --length) {
+            for (int ii = offset; length > 0; ii++, --length) {
                 array[ii] = fi.next();
                 fi.skip(factor - 1);
             }

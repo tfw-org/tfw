@@ -20,7 +20,7 @@ class FloatIlaInterleaveTest {
                 ilas[ii] = FloatIlaFromArray.create(target[ii]);
             }
             FloatIla targetIla = FloatIlaFromArray.create(array);
-            FloatIla actualIla = FloatIlaInterleave.create(ilas);
+            FloatIla actualIla = FloatIlaInterleave.create(ilas, new float[1000]);
             final float epsilon = 0.0f;
             FloatIlaCheck.checkAll(
                     targetIla,

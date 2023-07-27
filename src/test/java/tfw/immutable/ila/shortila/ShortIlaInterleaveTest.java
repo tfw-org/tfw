@@ -20,7 +20,7 @@ class ShortIlaInterleaveTest {
                 ilas[ii] = ShortIlaFromArray.create(target[ii]);
             }
             ShortIla targetIla = ShortIlaFromArray.create(array);
-            ShortIla actualIla = ShortIlaInterleave.create(ilas);
+            ShortIla actualIla = ShortIlaInterleave.create(ilas, new short[1000]);
             final short epsilon = (short) 0;
             ShortIlaCheck.checkAll(
                     targetIla,

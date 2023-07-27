@@ -8,35 +8,40 @@ public final class ObjectIlaInterleave {
         // non-instantiable class
     }
 
-    public static <T> ObjectIla<T> create(ObjectIla<T>[] ilas) {
+    public static <T> ObjectIla<T> create(ObjectIla<T>[] ilas, final T[] buffer) {
         Argument.assertNotNull(ilas, "ilas");
         Argument.assertNotLessThan(ilas.length, 1, "ilas.length");
         Argument.assertNotNull(ilas[0], "ilas[0]");
+        Argument.assertNotNull(buffer, "buffer");
+
         final long firstLength = ilas[0].length();
         for (int ii = 1; ii < ilas.length; ++ii) {
             Argument.assertNotNull(ilas[ii], "ilas[" + ii + "]");
             Argument.assertEquals(ilas[ii].length(), firstLength, "ilas[0].length()", "ilas[" + ii + "].length()");
         }
 
-        return new MyObjectIla<>(ilas);
+        return new MyObjectIla<>(ilas, buffer);
     }
 
     private static class MyObjectIla<T> extends AbstractObjectIla<T> {
-        private final ObjectIla<T>[] ilas;
-
+        private final StridedObjectIla<T>[] stridedObjectIlas;
         private final int ilasLength;
 
-        MyObjectIla(ObjectIla<T>[] ilas) {
+        MyObjectIla(ObjectIla<T>[] ilas, final T[] buffer) {
             super(ilas[0].length() * ilas.length);
-            this.ilas = ilas;
-            this.ilasLength = ilas.length;
+
+            stridedObjectIlas = new StridedObjectIla[ilas.length];
+            ilasLength = ilas.length;
+
+            for (int i = 0; i < ilas.length; i++) {
+                stridedObjectIlas[i] = new StridedObjectIla<>(ilas[i], buffer.clone());
+            }
         }
 
-        protected void toArrayImpl(T[] array, int offset, int stride, long start, int length)
-                throws DataInvalidException {
+        protected void toArrayImpl(T[] array, int offset, long start, int length) throws DataInvalidException {
             int currentIla = (int) (start % ilasLength);
             long ilaStart = start / ilasLength;
-            final int ilaStride = stride * ilasLength;
+            final int ilaStride = ilasLength;
             int ilaLength = (length + ilasLength - 1) / ilasLength;
             int lengthIndex = length % ilasLength;
             if (lengthIndex == 0) {
@@ -50,9 +55,9 @@ public final class ObjectIlaInterleave {
                     --ilaLength;
                 }
                 if (ilaLength > 0) {
-                    ilas[currentIla].toArray(array, offset, ilaStride, ilaStart, ilaLength);
+                    stridedObjectIlas[currentIla].toArray(array, offset, ilaStride, ilaStart, ilaLength);
                 }
-                offset += stride;
+                offset++;
                 ++currentIla;
                 if (currentIla == ilasLength) {
                     currentIla = 0;

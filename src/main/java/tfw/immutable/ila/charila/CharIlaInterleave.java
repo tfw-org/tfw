@@ -8,35 +8,40 @@ public final class CharIlaInterleave {
         // non-instantiable class
     }
 
-    public static CharIla create(CharIla[] ilas) {
+    public static CharIla create(CharIla[] ilas, final char[] buffer) {
         Argument.assertNotNull(ilas, "ilas");
         Argument.assertNotLessThan(ilas.length, 1, "ilas.length");
         Argument.assertNotNull(ilas[0], "ilas[0]");
+        Argument.assertNotNull(buffer, "buffer");
+
         final long firstLength = ilas[0].length();
         for (int ii = 1; ii < ilas.length; ++ii) {
             Argument.assertNotNull(ilas[ii], "ilas[" + ii + "]");
             Argument.assertEquals(ilas[ii].length(), firstLength, "ilas[0].length()", "ilas[" + ii + "].length()");
         }
 
-        return new MyCharIla(ilas);
+        return new MyCharIla(ilas, buffer);
     }
 
     private static class MyCharIla extends AbstractCharIla {
-        private final CharIla[] ilas;
-
+        private final StridedCharIla[] stridedCharIlas;
         private final int ilasLength;
 
-        MyCharIla(CharIla[] ilas) {
+        MyCharIla(CharIla[] ilas, final char[] buffer) {
             super(ilas[0].length() * ilas.length);
-            this.ilas = ilas;
-            this.ilasLength = ilas.length;
+
+            stridedCharIlas = new StridedCharIla[ilas.length];
+            ilasLength = ilas.length;
+
+            for (int i = 0; i < ilas.length; i++) {
+                stridedCharIlas[i] = new StridedCharIla(ilas[i], buffer.clone());
+            }
         }
 
-        protected void toArrayImpl(char[] array, int offset, int stride, long start, int length)
-                throws DataInvalidException {
+        protected void toArrayImpl(char[] array, int offset, long start, int length) throws DataInvalidException {
             int currentIla = (int) (start % ilasLength);
             long ilaStart = start / ilasLength;
-            final int ilaStride = stride * ilasLength;
+            final int ilaStride = ilasLength;
             int ilaLength = (length + ilasLength - 1) / ilasLength;
             int lengthIndex = length % ilasLength;
             if (lengthIndex == 0) {
@@ -50,9 +55,9 @@ public final class CharIlaInterleave {
                     --ilaLength;
                 }
                 if (ilaLength > 0) {
-                    ilas[currentIla].toArray(array, offset, ilaStride, ilaStart, ilaLength);
+                    stridedCharIlas[currentIla].toArray(array, offset, ilaStride, ilaStart, ilaLength);
                 }
-                offset += stride;
+                offset++;
                 ++currentIla;
                 if (currentIla == ilasLength) {
                     currentIla = 0;

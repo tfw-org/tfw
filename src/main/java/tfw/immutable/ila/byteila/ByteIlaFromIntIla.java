@@ -27,8 +27,7 @@ public final class ByteIlaFromIntIla {
             this.bufferSize = bufferSize;
         }
 
-        protected void toArrayImpl(byte[] array, int offset, int stride, long start, int length)
-                throws DataInvalidException {
+        protected void toArrayImpl(byte[] array, int offset, long start, int length) throws DataInvalidException {
             IntIlaIterator iii = new IntIlaIterator(
                     IntIlaSegment.create(intIla, start / 4, intIla.length() - start / 4), new int[bufferSize]);
             int col = (int) (start % 4);
@@ -37,7 +36,7 @@ public final class ByteIlaFromIntIla {
                 int value = iii.next();
 
                 for (int c = col; c < 4 && totalElements < length; c++) {
-                    array[offset + (totalElements++ * stride)] = (byte) ((value >>> (24 - (8 * c))) & 0xFF);
+                    array[offset + totalElements++] = (byte) ((value >>> (24 - (8 * c))) & 0xFF);
                 }
 
                 col = 0;

@@ -8,35 +8,40 @@ public final class FloatIlaInterleave {
         // non-instantiable class
     }
 
-    public static FloatIla create(FloatIla[] ilas) {
+    public static FloatIla create(FloatIla[] ilas, final float[] buffer) {
         Argument.assertNotNull(ilas, "ilas");
         Argument.assertNotLessThan(ilas.length, 1, "ilas.length");
         Argument.assertNotNull(ilas[0], "ilas[0]");
+        Argument.assertNotNull(buffer, "buffer");
+
         final long firstLength = ilas[0].length();
         for (int ii = 1; ii < ilas.length; ++ii) {
             Argument.assertNotNull(ilas[ii], "ilas[" + ii + "]");
             Argument.assertEquals(ilas[ii].length(), firstLength, "ilas[0].length()", "ilas[" + ii + "].length()");
         }
 
-        return new MyFloatIla(ilas);
+        return new MyFloatIla(ilas, buffer);
     }
 
     private static class MyFloatIla extends AbstractFloatIla {
-        private final FloatIla[] ilas;
-
+        private final StridedFloatIla[] stridedFloatIlas;
         private final int ilasLength;
 
-        MyFloatIla(FloatIla[] ilas) {
+        MyFloatIla(FloatIla[] ilas, final float[] buffer) {
             super(ilas[0].length() * ilas.length);
-            this.ilas = ilas;
-            this.ilasLength = ilas.length;
+
+            stridedFloatIlas = new StridedFloatIla[ilas.length];
+            ilasLength = ilas.length;
+
+            for (int i = 0; i < ilas.length; i++) {
+                stridedFloatIlas[i] = new StridedFloatIla(ilas[i], buffer.clone());
+            }
         }
 
-        protected void toArrayImpl(float[] array, int offset, int stride, long start, int length)
-                throws DataInvalidException {
+        protected void toArrayImpl(float[] array, int offset, long start, int length) throws DataInvalidException {
             int currentIla = (int) (start % ilasLength);
             long ilaStart = start / ilasLength;
-            final int ilaStride = stride * ilasLength;
+            final int ilaStride = ilasLength;
             int ilaLength = (length + ilasLength - 1) / ilasLength;
             int lengthIndex = length % ilasLength;
             if (lengthIndex == 0) {
@@ -50,9 +55,9 @@ public final class FloatIlaInterleave {
                     --ilaLength;
                 }
                 if (ilaLength > 0) {
-                    ilas[currentIla].toArray(array, offset, ilaStride, ilaStart, ilaLength);
+                    stridedFloatIlas[currentIla].toArray(array, offset, ilaStride, ilaStart, ilaLength);
                 }
-                offset += stride;
+                offset++;
                 ++currentIla;
                 if (currentIla == ilasLength) {
                     currentIla = 0;

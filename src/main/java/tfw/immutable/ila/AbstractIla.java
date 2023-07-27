@@ -15,7 +15,7 @@ public abstract class AbstractIla implements ImmutableLongArray {
         return length;
     }
 
-    protected final void boundsCheck(int arrayLength, int offset, int stride, long start, int length) {
-        AbstractIlaCheck.boundsCheck(this.length, arrayLength, offset, stride, start, length);
+    protected final void boundsCheck(int arrayLength, int offset, long start, int length) {
+        AbstractIlaCheck.boundsCheck(this.length, arrayLength, offset, start, length);
     }
 }

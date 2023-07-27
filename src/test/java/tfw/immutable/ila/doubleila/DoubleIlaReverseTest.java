@@ -19,7 +19,7 @@ class DoubleIlaReverseTest {
         }
         DoubleIla origIla = DoubleIlaFromArray.create(array);
         DoubleIla targetIla = DoubleIlaFromArray.create(reversed);
-        DoubleIla actualIla = DoubleIlaReverse.create(origIla);
+        DoubleIla actualIla = DoubleIlaReverse.create(origIla, new double[1000]);
         final double epsilon = 0.0;
         DoubleIlaCheck.checkAll(
                 targetIla,

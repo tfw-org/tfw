@@ -29,12 +29,11 @@ public final class DoubleIlaFromCastFloatIla {
             this.bufferSize = bufferSize;
         }
 
-        protected void toArrayImpl(double[] array, int offset, int stride, long start, int length)
-                throws DataInvalidException {
+        protected void toArrayImpl(double[] array, int offset, long start, int length) throws DataInvalidException {
             FloatIlaIterator fi =
                     new FloatIlaIterator(FloatIlaSegment.create(floatIla, start, length), new float[bufferSize]);
 
-            for (int ii = offset; length > 0; ii += stride, --length) {
+            for (int ii = offset; length > 0; ii++, --length) {
                 array[ii] = (double) fi.next();
             }
         }

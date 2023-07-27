@@ -29,12 +29,11 @@ public final class ByteIlaFromCastLongIla {
             this.bufferSize = bufferSize;
         }
 
-        protected void toArrayImpl(byte[] array, int offset, int stride, long start, int length)
-                throws DataInvalidException {
+        protected void toArrayImpl(byte[] array, int offset, long start, int length) throws DataInvalidException {
             LongIlaIterator fi =
                     new LongIlaIterator(LongIlaSegment.create(longIla, start, length), new long[bufferSize]);
 
-            for (int ii = offset; length > 0; ii += stride, --length) {
+            for (int ii = offset; length > 0; ii++, --length) {
                 array[ii] = (byte) fi.next();
             }
         }

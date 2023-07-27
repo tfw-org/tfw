@@ -26,18 +26,17 @@ public final class ShortIlaRemove {
             this.index = index;
         }
 
-        protected void toArrayImpl(short[] array, int offset, int stride, long start, int length)
-                throws DataInvalidException {
+        protected void toArrayImpl(short[] array, int offset, long start, int length) throws DataInvalidException {
             final long startPlusLength = start + length;
 
             if (index <= start) {
-                ila.toArray(array, offset, stride, start + 1, length);
+                ila.toArray(array, offset, start + 1, length);
             } else if (index >= startPlusLength) {
-                ila.toArray(array, offset, stride, start, length);
+                ila.toArray(array, offset, start, length);
             } else {
                 final int indexMinusStart = (int) (index - start);
-                ila.toArray(array, offset, stride, start, indexMinusStart);
-                ila.toArray(array, offset + indexMinusStart * stride, stride, index + 1, length - indexMinusStart);
+                ila.toArray(array, offset, start, indexMinusStart);
+                ila.toArray(array, offset + indexMinusStart, index + 1, length - indexMinusStart);
             }
         }
     }

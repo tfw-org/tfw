@@ -27,13 +27,12 @@ public final class IntIlaFromFloatIla {
             this.bufferSize = bufferSize;
         }
 
-        protected void toArrayImpl(int[] array, int offset, int stride, long start, int length)
-                throws DataInvalidException {
+        protected void toArrayImpl(int[] array, int offset, long start, int length) throws DataInvalidException {
             FloatIlaIterator fii =
                     new FloatIlaIterator(FloatIlaSegment.create(floatIla, start, length), new float[bufferSize]);
 
             for (int i = 0; i < length; i++) {
-                array[offset + (i * stride)] = Float.floatToRawIntBits(fii.next());
+                array[offset + i] = Float.floatToRawIntBits(fii.next());
             }
         }
     }

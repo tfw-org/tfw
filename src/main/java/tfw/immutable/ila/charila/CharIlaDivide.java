@@ -30,14 +30,13 @@ public final class CharIlaDivide {
             this.bufferSize = bufferSize;
         }
 
-        protected void toArrayImpl(char[] array, int offset, int stride, long ilaStart, int length)
-                throws DataInvalidException {
+        protected void toArrayImpl(char[] array, int offset, long ilaStart, int length) throws DataInvalidException {
             CharIlaIterator li =
                     new CharIlaIterator(CharIlaSegment.create(leftIla, ilaStart, length), new char[bufferSize]);
             CharIlaIterator ri =
                     new CharIlaIterator(CharIlaSegment.create(rightIla, ilaStart, length), new char[bufferSize]);
 
-            for (int ii = offset; li.hasNext(); ii += stride) {
+            for (int ii = offset; li.hasNext(); ii++) {
                 array[ii] = (char) (li.next() / ri.next());
             }
         }

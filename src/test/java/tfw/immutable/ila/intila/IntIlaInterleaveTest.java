@@ -20,7 +20,7 @@ class IntIlaInterleaveTest {
                 ilas[ii] = IntIlaFromArray.create(target[ii]);
             }
             IntIla targetIla = IntIlaFromArray.create(array);
-            IntIla actualIla = IntIlaInterleave.create(ilas);
+            IntIla actualIla = IntIlaInterleave.create(ilas, new int[1000]);
             final int epsilon = 0;
             IntIlaCheck.checkAll(
                     targetIla,

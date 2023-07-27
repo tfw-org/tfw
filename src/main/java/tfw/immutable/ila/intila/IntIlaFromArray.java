@@ -8,33 +8,22 @@ public final class IntIlaFromArray {
     }
 
     public static IntIla create(int[] array) {
-        return create(array, true);
-    }
-
-    public static IntIla create(int[] array, boolean cloneArray) {
         Argument.assertNotNull(array, "array");
 
-        return new MyIntIla(array, cloneArray);
+        return new MyIntIla(array);
     }
 
     private static class MyIntIla extends AbstractIntIla {
         private final int[] array;
 
-        MyIntIla(int[] array, boolean cloneArray) {
+        MyIntIla(int[] array) {
             super(array.length);
 
-            if (cloneArray) {
-                this.array = array.clone();
-            } else {
-                this.array = array;
-            }
+            this.array = array;
         }
 
-        protected void toArrayImpl(int[] array, int offset, int stride, long start, int length) {
-            final int startPlusLength = (int) (start + length);
-            for (int startInt = (int) start; startInt != startPlusLength; ++startInt, offset += stride) {
-                array[offset] = this.array[startInt];
-            }
+        protected void toArrayImpl(int[] array, int offset, long start, int length) {
+            System.arraycopy(this.array, (int) start, array, offset, length);
         }
     }
 }
