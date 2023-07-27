@@ -18,7 +18,7 @@ class FloatIlmFromArrayTest {
 
         FloatIlm floatIlm = FloatIlmFromArray.create(array, array.length / 2);
 
-        assertTrue(Arrays.equals(array, floatIlm.toArray()));
+        assertTrue(Arrays.equals(array, FloatIlmUtil.toArray(floatIlm)));
     }
 }
 // AUTO GENERATED FROM TEMPLATE

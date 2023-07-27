@@ -26,7 +26,7 @@ class RowConcatenateDoubleIlmTest {
             3.0, 4.0, 5.0, 6.0, 7.0, 13.0, 14.0, 15.0, 16.0, 17.0,
             4.0, 5.0, 6.0, 7.0, 8.0, 14.0, 15.0, 16.0, 17.0, 18.0
         };
-        double[] test1Array = concatenateIlm.toArray();
+        double[] test1Array = DoubleIlmUtil.toArray(concatenateIlm);
         assertTrue(Arrays.equals(test1Check, test1Array));
 
         double[] test2Check = new double[] {

@@ -10,6 +10,7 @@ import tfw.immutable.DataInvalidException;
 import tfw.immutable.ila.booleanila.BooleanIla;
 import tfw.immutable.ila.booleanila.BooleanIlaUtil;
 import tfw.immutable.ilm.intilm.IntIlm;
+import tfw.immutable.ilm.intilm.IntIlmUtil;
 import tfw.tsm.Converter;
 import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.ila.BooleanIlaECD;
@@ -43,7 +44,7 @@ public class SelectionToGraphicConverter extends Converter {
             selectedNodes = BooleanIlaUtil.toArray((BooleanIla) get(selectedNodesECD));
 
             IntIlm intIlm = (IntIlm) get(pixelNodeTLBRECD);
-            tlbr = intIlm.toArray();
+            tlbr = IntIlmUtil.toArray(intIlm);
             width = (int) intIlm.width();
         } catch (DataInvalidException die) {
             return;

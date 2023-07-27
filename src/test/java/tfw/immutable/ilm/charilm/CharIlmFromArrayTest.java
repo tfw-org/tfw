@@ -18,7 +18,7 @@ class CharIlmFromArrayTest {
 
         CharIlm charIlm = CharIlmFromArray.create(array, array.length / 2);
 
-        assertTrue(Arrays.equals(array, charIlm.toArray()));
+        assertTrue(Arrays.equals(array, CharIlmUtil.toArray(charIlm)));
     }
 }
 // AUTO GENERATED FROM TEMPLATE

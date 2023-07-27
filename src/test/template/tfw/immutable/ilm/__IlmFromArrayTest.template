@@ -17,6 +17,6 @@ class %%NAME%%IlmFromArrayTest {
 
         %%NAME%%Ilm %%TYPE%%Ilm = %%NAME%%IlmFromArray.create(array, array.length / 2);
 
-        assertTrue(Arrays.equals(array, %%TYPE%%Ilm.toArray()));
+        assertTrue(Arrays.equals(array, %%NAME%%IlmUtil.toArray(%%TYPE%%Ilm)));
     }
 }

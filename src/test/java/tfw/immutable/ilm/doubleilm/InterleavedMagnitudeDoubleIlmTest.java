@@ -15,7 +15,7 @@ class InterleavedMagnitudeDoubleIlmTest {
         DoubleIlm magnitude = InterleavedMagnitudeDoubleIlm.create(doubleIlm);
 
         double[] test1Check = new double[] {1.0, 13.0, 41.0, 5.0, 25.0, 61.0, 13.0, 41.0, 85.0, 25.0, 61.0, 113.0};
-        double[] test1Array = magnitude.toArray();
+        double[] test1Array = DoubleIlmUtil.toArray(magnitude);
         assertTrue(Arrays.equals(test1Check, test1Array));
 
         double[] test2Check = new double[] {41.0, 85.0, 0.0, 61.0, 113.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};

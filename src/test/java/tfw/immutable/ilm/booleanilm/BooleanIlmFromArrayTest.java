@@ -18,7 +18,7 @@ class BooleanIlmFromArrayTest {
 
         BooleanIlm booleanIlm = BooleanIlmFromArray.create(array, array.length / 2);
 
-        assertTrue(Arrays.equals(array, booleanIlm.toArray()));
+        assertTrue(Arrays.equals(array, BooleanIlmUtil.toArray(booleanIlm)));
     }
 }
 // AUTO GENERATED FROM TEMPLATE

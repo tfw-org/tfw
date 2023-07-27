@@ -4,10 +4,6 @@ import tfw.immutable.DataInvalidException;
 import tfw.immutable.ilm.ImmutableLongMatrix;
 
 public interface LongIlm extends ImmutableLongMatrix {
-    long[] toArray() throws DataInvalidException;
-
-    long[] toArray(long rowStart, long columnStart, int rowCount, int colCount) throws DataInvalidException;
-
     void toArray(long[] array, int offset, long rowStart, long columnStart, int rowCount, int colCount)
             throws DataInvalidException;
 

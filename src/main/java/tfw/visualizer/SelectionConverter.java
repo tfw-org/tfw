@@ -4,6 +4,7 @@ import tfw.immutable.DataInvalidException;
 import tfw.immutable.ila.booleanila.BooleanIla;
 import tfw.immutable.ila.booleanila.BooleanIlaFill;
 import tfw.immutable.ilm.intilm.IntIlm;
+import tfw.immutable.ilm.intilm.IntIlmUtil;
 import tfw.tsm.Converter;
 import tfw.tsm.ecd.BooleanECD;
 import tfw.tsm.ecd.IntegerECD;
@@ -64,7 +65,7 @@ public class SelectionConverter extends Converter {
             try {
                 IntIlm tlbrIlm = (IntIlm) get(pixelNodeTLBRECD);
 
-                tlbr = tlbrIlm.toArray();
+                tlbr = IntIlmUtil.toArray(tlbrIlm);
                 width = (int) tlbrIlm.width();
             } catch (DataInvalidException die) {
                 return;

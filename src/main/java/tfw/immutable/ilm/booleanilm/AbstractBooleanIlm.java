@@ -20,25 +20,6 @@ public abstract class AbstractBooleanIlm extends AbstractIlm implements BooleanI
         super(width, height);
     }
 
-    public final boolean[] toArray() throws DataInvalidException {
-        Argument.assertNotGreaterThan(width(), Integer.MAX_VALUE, "width()", "native array size");
-        Argument.assertNotGreaterThan(height(), Integer.MAX_VALUE, "height()", "native array size");
-
-        return toArray(0, 0, (int) height(), (int) width());
-    }
-
-    public final boolean[] toArray(long rowStart, long columnStart, int rowCount, int colCount)
-            throws DataInvalidException {
-        Argument.assertNotLessThan(rowCount, 0, "rowCount");
-        Argument.assertNotLessThan(colCount, 0, "colCount");
-
-        boolean[] result = new boolean[rowCount * colCount];
-
-        toArray(result, 0, rowStart, columnStart, rowCount, colCount);
-
-        return result;
-    }
-
     public final void toArray(boolean[] array, int offset, long rowStart, long colStart, int rowCount, int colCount)
             throws DataInvalidException {
         toArray(array, offset, colCount, 1, rowStart, colStart, rowCount, colCount);

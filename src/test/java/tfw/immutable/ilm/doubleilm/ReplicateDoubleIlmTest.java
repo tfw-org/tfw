@@ -20,7 +20,7 @@ class ReplicateDoubleIlmTest {
             0.0, 1.0, 2.0, 3.0, 4.0,
             0.0, 1.0, 2.0, 3.0, 4.0
         };
-        double[] test1 = replicate.toArray();
+        double[] test1 = DoubleIlmUtil.toArray(replicate);
         assertTrue(Arrays.equals(test1Check, test1));
 
         double[] test2Check = new double[] {
