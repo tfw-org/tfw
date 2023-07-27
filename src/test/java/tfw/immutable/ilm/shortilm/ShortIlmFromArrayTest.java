@@ -18,7 +18,7 @@ class ShortIlmFromArrayTest {
 
         ShortIlm shortIlm = ShortIlmFromArray.create(array, array.length / 2);
 
-        assertTrue(Arrays.equals(array, shortIlm.toArray()));
+        assertTrue(Arrays.equals(array, ShortIlmUtil.toArray(shortIlm)));
     }
 }
 // AUTO GENERATED FROM TEMPLATE

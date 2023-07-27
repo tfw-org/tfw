@@ -20,25 +20,6 @@ public abstract class AbstractShortIlm extends AbstractIlm implements ShortIlm {
         super(width, height);
     }
 
-    public final short[] toArray() throws DataInvalidException {
-        Argument.assertNotGreaterThan(width(), Integer.MAX_VALUE, "width()", "native array size");
-        Argument.assertNotGreaterThan(height(), Integer.MAX_VALUE, "height()", "native array size");
-
-        return toArray(0, 0, (int) height(), (int) width());
-    }
-
-    public final short[] toArray(long rowStart, long columnStart, int rowCount, int colCount)
-            throws DataInvalidException {
-        Argument.assertNotLessThan(rowCount, 0, "rowCount");
-        Argument.assertNotLessThan(colCount, 0, "colCount");
-
-        short[] result = new short[rowCount * colCount];
-
-        toArray(result, 0, rowStart, columnStart, rowCount, colCount);
-
-        return result;
-    }
-
     public final void toArray(short[] array, int offset, long rowStart, long colStart, int rowCount, int colCount)
             throws DataInvalidException {
         toArray(array, offset, colCount, 1, rowStart, colStart, rowCount, colCount);

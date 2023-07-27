@@ -16,7 +16,7 @@ class StringIlmFromArrayTest {
 
         StringIlm StringIlm = StringIlmFromArray.create(array, array.length / 2);
 
-        assertTrue(Arrays.equals(array, StringIlm.toArray()));
+        assertTrue(Arrays.equals(array, StringIlmUtil.toArray(StringIlm)));
     }
 }
 // AUTO GENERATED FROM TEMPLATE

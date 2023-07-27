@@ -16,7 +16,7 @@ class RealFftDoubleIlmTest {
         DoubleIla inputIla = DoubleIlaFromArray.create(input);
         DoubleIlm inputIlm = ReplicateDoubleIlm.create(inputIla, 1);
         DoubleIlm outputIlm = RealFftDoubleIlm.create(inputIlm, (int) inputIlm.width());
-        double[] output = outputIlm.toArray();
+        double[] output = DoubleIlmUtil.toArray(outputIlm);
 
         double[] checkReal = input.clone();
         double[] checkImag = new double[checkReal.length];

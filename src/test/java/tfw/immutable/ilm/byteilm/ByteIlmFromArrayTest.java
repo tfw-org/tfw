@@ -18,7 +18,7 @@ class ByteIlmFromArrayTest {
 
         ByteIlm byteIlm = ByteIlmFromArray.create(array, array.length / 2);
 
-        assertTrue(Arrays.equals(array, byteIlm.toArray()));
+        assertTrue(Arrays.equals(array, ByteIlmUtil.toArray(byteIlm)));
     }
 }
 // AUTO GENERATED FROM TEMPLATE

@@ -22,7 +22,7 @@ class MultiplyDoubleIlmTest {
             0.0, 8.0, 14.0, 18.0, 20.0, 8.0, 14.0, 18.0, 20.0, 20.0, 14.0, 18.0, 20.0, 20.0, 18.0, 18.0, 20.0, 20.0,
             18.0, 14.0, 20.0, 20.0, 18.0, 14.0, 8.0
         };
-        double[] test1Array = multiplyIlm.toArray();
+        double[] test1Array = DoubleIlmUtil.toArray(multiplyIlm);
         assertTrue(Arrays.equals(test1Check, test1Array));
 
         double[] test2Check = new double[] {

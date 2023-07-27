@@ -21,7 +21,7 @@ class SegmentDoubleIlmTest {
             4.0, 5.0, 6.0, 7.0, 8.0
         };
         DoubleIlm segment1 = SegmentDoubleIlm.create(doubleIlm, 0, 0, 5, 5);
-        double[] test1Array = segment1.toArray();
+        double[] test1Array = DoubleIlmUtil.toArray(segment1);
         assertTrue(Arrays.equals(test1Check, test1Array));
 
         double[] test2Check = new double[] {

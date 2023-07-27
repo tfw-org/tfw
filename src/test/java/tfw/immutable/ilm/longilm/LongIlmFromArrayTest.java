@@ -18,7 +18,7 @@ class LongIlmFromArrayTest {
 
         LongIlm longIlm = LongIlmFromArray.create(array, array.length / 2);
 
-        assertTrue(Arrays.equals(array, longIlm.toArray()));
+        assertTrue(Arrays.equals(array, LongIlmUtil.toArray(longIlm)));
     }
 }
 // AUTO GENERATED FROM TEMPLATE

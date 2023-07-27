@@ -18,7 +18,7 @@ class IntIlmFromArrayTest {
 
         IntIlm intIlm = IntIlmFromArray.create(array, array.length / 2);
 
-        assertTrue(Arrays.equals(array, intIlm.toArray()));
+        assertTrue(Arrays.equals(array, IntIlmUtil.toArray(intIlm)));
     }
 }
 // AUTO GENERATED FROM TEMPLATE

@@ -1,0 +1,29 @@
+// booleanilm,byteilm,charilm,doubleilm,floatilm,intilm,longilm,objectilm,shortilm,stringilm
+package %%PACKAGE%%;
+
+import tfw.check.Argument;
+import tfw.immutable.DataInvalidException;
+
+public final class %%NAME%%IlmUtil {
+    private %%NAME%%IlmUtil() {}
+
+    public static %%TYPE%%[] toArray(final %%NAME%%Ilm %%TYPE%%Ilm) throws DataInvalidException {
+        Argument.assertNotGreaterThan(%%TYPE%%Ilm.width(), Integer.MAX_VALUE, "width()", "native array size");
+        Argument.assertNotGreaterThan(%%TYPE%%Ilm.height(), Integer.MAX_VALUE, "height()", "native array size");
+
+        return toArray(%%TYPE%%Ilm, 0, 0, (int) %%TYPE%%Ilm.height(), (int) %%TYPE%%Ilm.width());
+    }
+
+    public static %%TYPE%%[] toArray(
+            final %%NAME%%Ilm %%TYPE%%Ilm, final long rowStart, final long columnStart, final int rowCount, int colCount)
+            throws DataInvalidException {
+        Argument.assertNotLessThan(rowCount, 0, "rowCount");
+        Argument.assertNotLessThan(colCount, 0, "colCount");
+
+        %%TYPE%%[] result = new %%TYPE%%[rowCount * colCount];
+
+        %%TYPE%%Ilm.toArray(result, 0, rowStart, columnStart, rowCount, colCount);
+
+        return result;
+    }
+}

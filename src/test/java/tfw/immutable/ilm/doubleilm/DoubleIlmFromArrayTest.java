@@ -18,7 +18,7 @@ class DoubleIlmFromArrayTest {
 
         DoubleIlm doubleIlm = DoubleIlmFromArray.create(array, array.length / 2);
 
-        assertTrue(Arrays.equals(array, doubleIlm.toArray()));
+        assertTrue(Arrays.equals(array, DoubleIlmUtil.toArray(doubleIlm)));
     }
 }
 // AUTO GENERATED FROM TEMPLATE
