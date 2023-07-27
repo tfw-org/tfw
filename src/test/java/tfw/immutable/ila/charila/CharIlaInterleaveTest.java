@@ -20,7 +20,7 @@ class CharIlaInterleaveTest {
                 ilas[ii] = CharIlaFromArray.create(target[ii]);
             }
             CharIla targetIla = CharIlaFromArray.create(array);
-            CharIla actualIla = CharIlaInterleave.create(ilas);
+            CharIla actualIla = CharIlaInterleave.create(ilas, new char[1000]);
             final char epsilon = (char) 0;
             CharIlaCheck.checkAll(
                     targetIla,

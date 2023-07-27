@@ -31,12 +31,11 @@ public final class ALawByteIlaFromLinearShortIla {
             this.bufferSize = bufferSize;
         }
 
-        protected void toArrayImpl(byte[] array, int offset, int stride, long start, int length)
-                throws DataInvalidException {
+        protected void toArrayImpl(byte[] array, int offset, long start, int length) throws DataInvalidException {
             ShortIlaIterator si =
                     new ShortIlaIterator(ShortIlaSegment.create(shortIla, start, length), new short[bufferSize]);
 
-            for (int i = offset; si.hasNext(); i += stride) {
+            for (int i = offset; si.hasNext(); i++) {
                 /*
                  * The following algorithm is from the file g711.c from
                  * Sun Microsystems which has no use restrictions.  It is

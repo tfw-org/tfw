@@ -77,6 +77,6 @@ public class ObjectIlaMultiplexerStrategy implements MultiplexerStrategy {
             array[index] = values[i];
         }
 
-        return ObjectIlaFromArray.create(array, false);
+        return ObjectIlaFromArray.create(array);
     }
 }

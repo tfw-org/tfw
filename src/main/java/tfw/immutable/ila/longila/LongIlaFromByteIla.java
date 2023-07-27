@@ -27,13 +27,12 @@ public final class LongIlaFromByteIla {
             this.bufferSize = bufferSize;
         }
 
-        protected void toArrayImpl(long[] array, int offset, int stride, long start, int length)
-                throws DataInvalidException {
+        protected void toArrayImpl(long[] array, int offset, long start, int length) throws DataInvalidException {
             ByteIlaIterator bii =
                     new ByteIlaIterator(ByteIlaSegment.create(byteIla, 8 * start, 8 * length), new byte[bufferSize]);
 
             for (int i = 0; i < length; i++) {
-                array[offset + (i * stride)] = (((long) bii.next() & 0xFF) << 56)
+                array[offset + i] = (((long) bii.next() & 0xFF) << 56)
                         | (((long) bii.next() & 0xFF) << 48)
                         | (((long) bii.next() & 0xFF) << 40)
                         | (((long) bii.next() & 0xFF) << 32)

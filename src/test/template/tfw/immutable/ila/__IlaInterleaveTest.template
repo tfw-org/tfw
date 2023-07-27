@@ -19,7 +19,7 @@ class %%NAME%%IlaInterleaveTest {
                 ilas[ii] = %%NAME%%IlaFromArray.create(target[ii]);
             }
             %%NAME%%Ila%%TEMPLATE%% targetIla = %%NAME%%IlaFromArray.create(array);
-            %%NAME%%Ila%%TEMPLATE%% actualIla = %%NAME%%IlaInterleave.create(ilas);
+            %%NAME%%Ila%%TEMPLATE%% actualIla = %%NAME%%IlaInterleave.create(ilas, new %%TYPE%%[1000]);
             final %%TYPE%% epsilon = %%DEFAULT_VALUE%%;
             %%NAME%%IlaCheck.checkAll(
                     targetIla,

@@ -29,12 +29,11 @@ public final class IntIlaFromCastCharIla {
             this.bufferSize = bufferSize;
         }
 
-        protected void toArrayImpl(int[] array, int offset, int stride, long start, int length)
-                throws DataInvalidException {
+        protected void toArrayImpl(int[] array, int offset, long start, int length) throws DataInvalidException {
             CharIlaIterator fi =
                     new CharIlaIterator(CharIlaSegment.create(charIla, start, length), new char[bufferSize]);
 
-            for (int ii = offset; length > 0; ii += stride, --length) {
+            for (int ii = offset; length > 0; ii++, --length) {
                 array[ii] = (int) fi.next();
             }
         }

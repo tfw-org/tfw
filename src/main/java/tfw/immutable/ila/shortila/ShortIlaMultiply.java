@@ -30,14 +30,13 @@ public final class ShortIlaMultiply {
             this.bufferSize = bufferSize;
         }
 
-        protected void toArrayImpl(short[] array, int offset, int stride, long ilaStart, int length)
-                throws DataInvalidException {
+        protected void toArrayImpl(short[] array, int offset, long ilaStart, int length) throws DataInvalidException {
             ShortIlaIterator li =
                     new ShortIlaIterator(ShortIlaSegment.create(leftIla, ilaStart, length), new short[bufferSize]);
             ShortIlaIterator ri =
                     new ShortIlaIterator(ShortIlaSegment.create(rightIla, ilaStart, length), new short[bufferSize]);
 
-            for (int ii = offset; length > 0; ii += stride, --length) {
+            for (int ii = offset; length > 0; ii++, --length) {
                 array[ii] = (short) (li.next() * ri.next());
             }
         }

@@ -37,16 +37,15 @@ public final class CharIlaConcatenate {
             this.leftIlaLength = leftIla.length();
         }
 
-        protected void toArrayImpl(char[] array, int offset, int stride, long start, int length)
-                throws DataInvalidException {
+        protected void toArrayImpl(char[] array, int offset, long start, int length) throws DataInvalidException {
             if (start + length <= leftIlaLength) {
-                leftIla.toArray(array, offset, stride, start, length);
+                leftIla.toArray(array, offset, start, length);
             } else if (start >= leftIlaLength) {
-                rightIla.toArray(array, offset, stride, start - leftIlaLength, length);
+                rightIla.toArray(array, offset, start - leftIlaLength, length);
             } else {
                 final int leftAmount = (int) (leftIlaLength - start);
-                leftIla.toArray(array, offset, stride, start, leftAmount);
-                rightIla.toArray(array, offset + leftAmount * stride, stride, 0, length - leftAmount);
+                leftIla.toArray(array, offset, start, leftAmount);
+                rightIla.toArray(array, offset + leftAmount, 0, length - leftAmount);
             }
         }
     }

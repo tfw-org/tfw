@@ -8,33 +8,22 @@ public final class FloatIlaFromArray {
     }
 
     public static FloatIla create(float[] array) {
-        return create(array, true);
-    }
-
-    public static FloatIla create(float[] array, boolean cloneArray) {
         Argument.assertNotNull(array, "array");
 
-        return new MyFloatIla(array, cloneArray);
+        return new MyFloatIla(array);
     }
 
     private static class MyFloatIla extends AbstractFloatIla {
         private final float[] array;
 
-        MyFloatIla(float[] array, boolean cloneArray) {
+        MyFloatIla(float[] array) {
             super(array.length);
 
-            if (cloneArray) {
-                this.array = array.clone();
-            } else {
-                this.array = array;
-            }
+            this.array = array;
         }
 
-        protected void toArrayImpl(float[] array, int offset, int stride, long start, int length) {
-            final int startPlusLength = (int) (start + length);
-            for (int startInt = (int) start; startInt != startPlusLength; ++startInt, offset += stride) {
-                array[offset] = this.array[startInt];
-            }
+        protected void toArrayImpl(float[] array, int offset, long start, int length) {
+            System.arraycopy(this.array, (int) start, array, offset, length);
         }
     }
 }

@@ -27,13 +27,12 @@ public final class DoubleIlaFromLongIla {
             this.bufferSize = bufferSize;
         }
 
-        protected void toArrayImpl(double[] array, int offset, int stride, long start, int length)
-                throws DataInvalidException {
+        protected void toArrayImpl(double[] array, int offset, long start, int length) throws DataInvalidException {
             LongIlaIterator lii =
                     new LongIlaIterator(LongIlaSegment.create(longIla, start, length), new long[bufferSize]);
 
             for (int i = 0; i < length; i++) {
-                array[offset + (i * stride)] = Double.longBitsToDouble(lii.next());
+                array[offset + i] = Double.longBitsToDouble(lii.next());
             }
         }
     }

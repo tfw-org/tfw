@@ -19,7 +19,7 @@ class FloatIlaReverseTest {
         }
         FloatIla origIla = FloatIlaFromArray.create(array);
         FloatIla targetIla = FloatIlaFromArray.create(reversed);
-        FloatIla actualIla = FloatIlaReverse.create(origIla);
+        FloatIla actualIla = FloatIlaReverse.create(origIla, new float[1000]);
         final float epsilon = 0.0f;
         FloatIlaCheck.checkAll(
                 targetIla,

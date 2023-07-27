@@ -133,8 +133,7 @@ public class OctalDump {
                 this.bufferSize = bufferSize;
             }
 
-            protected void toArrayImpl(String[] array, int offset, int stride, long start, int length)
-                    throws DataInvalidException {
+            protected void toArrayImpl(String[] array, int offset, long start, int length) throws DataInvalidException {
                 ByteIlaIterator bii = new ByteIlaIterator(
                         ByteIlaSegment.create(byteIla, start, byteIla.length() - start), new byte[bufferSize]);
 
@@ -160,7 +159,7 @@ public class OctalDump {
                     }
                     sb.append("\n");
 
-                    array[offset + (i * stride)] = sb.toString();
+                    array[offset + i] = sb.toString();
                 }
             }
         }
@@ -189,8 +188,7 @@ public class OctalDump {
                 this.bufferSize = bufferSize;
             }
 
-            protected void toArrayImpl(String[] array, int offset, int stride, long start, int length)
-                    throws DataInvalidException {
+            protected void toArrayImpl(String[] array, int offset, long start, int length) throws DataInvalidException {
                 ShortIlaIterator sii = new ShortIlaIterator(
                         ShortIlaSegment.create(shortIla, start * 2, shortIla.length() - start * 2),
                         new short[bufferSize]);
@@ -217,7 +215,7 @@ public class OctalDump {
                     }
                     sb.append("\n");
 
-                    array[offset + (i * stride)] = sb.toString();
+                    array[offset + i] = sb.toString();
                 }
             }
         }
@@ -246,8 +244,7 @@ public class OctalDump {
                 this.bufferSize = bufferSize;
             }
 
-            protected void toArrayImpl(String[] array, int offset, int stride, long start, int length)
-                    throws DataInvalidException {
+            protected void toArrayImpl(String[] array, int offset, long start, int length) throws DataInvalidException {
                 IntIlaIterator iii = new IntIlaIterator(
                         IntIlaSegment.create(intIla, start * 4, intIla.length() - start * 4), new int[bufferSize]);
 
@@ -271,7 +268,7 @@ public class OctalDump {
                     }
                     sb.append("\n");
 
-                    array[offset + (i * stride)] = sb.toString();
+                    array[offset + i] = sb.toString();
                 }
             }
         }
@@ -300,8 +297,7 @@ public class OctalDump {
                 this.bufferSize = bufferSize;
             }
 
-            protected void toArrayImpl(String[] array, int offset, int stride, long start, int length)
-                    throws DataInvalidException {
+            protected void toArrayImpl(String[] array, int offset, long start, int length) throws DataInvalidException {
                 LongIlaIterator lii = new LongIlaIterator(
                         LongIlaSegment.create(longIla, start * 8, longIla.length() - start * 8), new long[bufferSize]);
 
@@ -325,7 +321,7 @@ public class OctalDump {
                     }
                     sb.append("\n");
 
-                    array[offset + (i * stride)] = sb.toString();
+                    array[offset + i] = sb.toString();
                 }
             }
         }
@@ -352,8 +348,7 @@ public class OctalDump {
                 this.bufferSize = bufferSize;
             }
 
-            protected void toArrayImpl(String[] array, int offset, int stride, long start, int length)
-                    throws DataInvalidException {
+            protected void toArrayImpl(String[] array, int offset, long start, int length) throws DataInvalidException {
                 FloatIlaIterator fii = new FloatIlaIterator(
                         FloatIlaSegment.create(floatIla, start * 4, floatIla.length() - start * 4),
                         new float[bufferSize]);
@@ -368,7 +363,7 @@ public class OctalDump {
                     }
                     sb.append("\n");
 
-                    array[offset + (i * stride)] = sb.toString();
+                    array[offset + i] = sb.toString();
                 }
             }
         }
@@ -395,8 +390,7 @@ public class OctalDump {
                 this.bufferSize = bufferSize;
             }
 
-            protected void toArrayImpl(String[] array, int offset, int stride, long start, int length)
-                    throws DataInvalidException {
+            protected void toArrayImpl(String[] array, int offset, long start, int length) throws DataInvalidException {
                 DoubleIlaIterator dii = new DoubleIlaIterator(
                         DoubleIlaSegment.create(doubleIla, start * 4, doubleIla.length() - start * 4),
                         new double[bufferSize]);
@@ -411,7 +405,7 @@ public class OctalDump {
                     }
                     sb.append("\n");
 
-                    array[offset + (i * stride)] = sb.toString();
+                    array[offset + i] = sb.toString();
                 }
             }
         }

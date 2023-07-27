@@ -27,7 +27,7 @@ public final class NodeAndEdgesFromRootProxy {
     public ObjectIla<Object> getNodesObjectIla() {
         if (nodesObjectIla == null) {
             calculateArrays();
-            nodesObjectIla = ObjectIlaFromArray.create(nodes, false);
+            nodesObjectIla = ObjectIlaFromArray.create(nodes);
         }
         return nodesObjectIla;
     }
@@ -35,7 +35,7 @@ public final class NodeAndEdgesFromRootProxy {
     public ObjectIla<Object> getEdgeFromsObjectIla() {
         if (edgeFromsObjectIla == null) {
             calculateArrays();
-            edgeFromsObjectIla = ObjectIlaFromArray.create(edgeFroms, false);
+            edgeFromsObjectIla = ObjectIlaFromArray.create(edgeFroms);
         }
         return edgeFromsObjectIla;
     }
@@ -43,7 +43,7 @@ public final class NodeAndEdgesFromRootProxy {
     public ObjectIla<Object> getEdgeTosObjectIla() {
         if (edgeTosObjectIla == null) {
             calculateArrays();
-            edgeTosObjectIla = ObjectIlaFromArray.create(edgeTos, false);
+            edgeTosObjectIla = ObjectIlaFromArray.create(edgeTos);
         }
         return edgeTosObjectIla;
     }

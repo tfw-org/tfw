@@ -8,33 +8,22 @@ public final class BooleanIlaFromArray {
     }
 
     public static BooleanIla create(boolean[] array) {
-        return create(array, true);
-    }
-
-    public static BooleanIla create(boolean[] array, boolean cloneArray) {
         Argument.assertNotNull(array, "array");
 
-        return new MyBooleanIla(array, cloneArray);
+        return new MyBooleanIla(array);
     }
 
     private static class MyBooleanIla extends AbstractBooleanIla {
         private final boolean[] array;
 
-        MyBooleanIla(boolean[] array, boolean cloneArray) {
+        MyBooleanIla(boolean[] array) {
             super(array.length);
 
-            if (cloneArray) {
-                this.array = array.clone();
-            } else {
-                this.array = array;
-            }
+            this.array = array;
         }
 
-        protected void toArrayImpl(boolean[] array, int offset, int stride, long start, int length) {
-            final int startPlusLength = (int) (start + length);
-            for (int startInt = (int) start; startInt != startPlusLength; ++startInt, offset += stride) {
-                array[offset] = this.array[startInt];
-            }
+        protected void toArrayImpl(boolean[] array, int offset, long start, int length) {
+            System.arraycopy(this.array, (int) start, array, offset, length);
         }
     }
 }

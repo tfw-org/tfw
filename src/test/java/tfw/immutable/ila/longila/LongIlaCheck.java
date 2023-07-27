@@ -22,6 +22,8 @@ public final class LongIlaCheck {
 
     public static void checkFourFiveEquivalence(LongIla ila, int offsetLength, long epsilon) throws Exception {
         if (offsetLength < 0) throw new Exception("offsetLength < 0 not allowed");
+
+        final StridedLongIla stridedLongIla = new StridedLongIla(ila, new long[1000]);
         final long eps = epsilon < 0.0 ? -epsilon : epsilon;
         final long neps = -eps;
         final Random random = new Random(0);
@@ -37,7 +39,7 @@ public final class LongIlaCheck {
                         five[ii] = four[ii] = random.nextLong();
                     }
                     ila.toArray(four, offset, start, length);
-                    ila.toArray(five, offset, 1, start, length);
+                    stridedLongIla.toArray(five, offset, 1, start, length);
                     for (int ii = 0; ii < length; ++ii) {
                         long delta = (four[ii] - five[ii]);
                         if (!(neps <= delta && delta <= eps))
@@ -61,11 +63,14 @@ public final class LongIlaCheck {
         if (addlOffsetLength < 0) throw new Exception("addlOffsetLength < 0 not allowed");
         if (maxAbsStride < 1) throw new Exception("maxAbsStride < 1 not allowed");
         if (target.length() != actual.length()) throw new Exception("target.length() != actual.length()");
+
+        final StridedLongIla stridedTarget = new StridedLongIla(target, new long[1000]);
+        final StridedLongIla stridedActual = new StridedLongIla(target, new long[1000]);
         final long eps = epsilon < 0.0 ? -epsilon : epsilon;
         final long neps = -eps;
         final Random random = new Random(0);
-        final int ilaLength = target.length() + addlOffsetLength <= Integer.MAX_VALUE
-                ? (int) target.length()
+        final int ilaLength = stridedTarget.length() + addlOffsetLength <= Integer.MAX_VALUE
+                ? (int) stridedTarget.length()
                 : Integer.MAX_VALUE - addlOffsetLength;
         for (int stride = -maxAbsStride; stride <= maxAbsStride; ++stride) {
             if (stride != 0) {
@@ -81,8 +86,8 @@ public final class LongIlaCheck {
                             for (int ii = 0; ii < targetBase.length; ++ii) {
                                 targetBase[ii] = actualBase[ii] = random.nextLong();
                             }
-                            target.toArray(targetBase, offset, stride, start, length);
-                            actual.toArray(actualBase, offset, stride, start, length);
+                            stridedTarget.toArray(targetBase, offset, stride, start, length);
+                            stridedActual.toArray(actualBase, offset, stride, start, length);
                             for (int ii = 0; ii < arraySize; ++ii) {
                                 long delta = (actualBase[ii] - targetBase[ii]);
                                 if (!(neps <= delta && delta <= eps))

@@ -30,8 +30,7 @@ public class DoubleIlaClip {
             this.bufferSize = bufferSize;
         }
 
-        protected void toArrayImpl(double[] array, int offset, int stride, long start, int length)
-                throws DataInvalidException {
+        protected void toArrayImpl(double[] array, int offset, long start, int length) throws DataInvalidException {
             DoubleIlaIterator dii =
                     new DoubleIlaIterator(DoubleIlaSegment.create(doubleIla, start, length), new double[bufferSize]);
 
@@ -41,7 +40,7 @@ public class DoubleIlaClip {
                 d = d < min ? min : d;
                 d = d > max ? max : d;
 
-                array[offset + (i * stride)] = d;
+                array[offset + i] = d;
             }
         }
     }

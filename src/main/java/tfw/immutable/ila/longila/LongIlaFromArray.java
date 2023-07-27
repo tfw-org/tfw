@@ -8,33 +8,22 @@ public final class LongIlaFromArray {
     }
 
     public static LongIla create(long[] array) {
-        return create(array, true);
-    }
-
-    public static LongIla create(long[] array, boolean cloneArray) {
         Argument.assertNotNull(array, "array");
 
-        return new MyLongIla(array, cloneArray);
+        return new MyLongIla(array);
     }
 
     private static class MyLongIla extends AbstractLongIla {
         private final long[] array;
 
-        MyLongIla(long[] array, boolean cloneArray) {
+        MyLongIla(long[] array) {
             super(array.length);
 
-            if (cloneArray) {
-                this.array = array.clone();
-            } else {
-                this.array = array;
-            }
+            this.array = array;
         }
 
-        protected void toArrayImpl(long[] array, int offset, int stride, long start, int length) {
-            final int startPlusLength = (int) (start + length);
-            for (int startInt = (int) start; startInt != startPlusLength; ++startInt, offset += stride) {
-                array[offset] = this.array[startInt];
-            }
+        protected void toArrayImpl(long[] array, int offset, long start, int length) {
+            System.arraycopy(this.array, (int) start, array, offset, length);
         }
     }
 }

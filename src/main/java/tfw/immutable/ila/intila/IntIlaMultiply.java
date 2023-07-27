@@ -30,14 +30,13 @@ public final class IntIlaMultiply {
             this.bufferSize = bufferSize;
         }
 
-        protected void toArrayImpl(int[] array, int offset, int stride, long ilaStart, int length)
-                throws DataInvalidException {
+        protected void toArrayImpl(int[] array, int offset, long ilaStart, int length) throws DataInvalidException {
             IntIlaIterator li =
                     new IntIlaIterator(IntIlaSegment.create(leftIla, ilaStart, length), new int[bufferSize]);
             IntIlaIterator ri =
                     new IntIlaIterator(IntIlaSegment.create(rightIla, ilaStart, length), new int[bufferSize]);
 
-            for (int ii = offset; length > 0; ii += stride, --length) {
+            for (int ii = offset; length > 0; ii++, --length) {
                 array[ii] = li.next() * ri.next();
             }
         }

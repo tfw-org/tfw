@@ -23,6 +23,8 @@ public final class ObjectIlaCheck {
             throw new IllegalArgumentException("epsilon != " + (Object.class) + " not allowed");
         } else {
             if (offsetLength < 0) throw new Exception("offsetLength < 0 not allowed");
+
+            final StridedObjectIla<Object> stridedObjectIla = new StridedObjectIla<>(ila, new Object[1000]);
             final int ilaLength = ila.length() + offsetLength <= Integer.MAX_VALUE
                     ? (int) ila.length()
                     : Integer.MAX_VALUE - offsetLength;
@@ -35,7 +37,7 @@ public final class ObjectIlaCheck {
                             five[ii] = four[ii] = new Object();
                         }
                         ila.toArray(four, offset, start, length);
-                        ila.toArray(five, offset, 1, start, length);
+                        stridedObjectIla.toArray(five, offset, 1, start, length);
                         for (int ii = 0; ii < length; ++ii) {
                             if (!(four[ii].equals(five[ii])))
                                 throw new Exception("four[" + ii + "] ("
@@ -62,6 +64,9 @@ public final class ObjectIlaCheck {
             if (addlOffsetLength < 0) throw new Exception("addlOffsetLength < 0 not allowed");
             if (maxAbsStride < 1) throw new Exception("maxAbsStride < 1 not allowed");
             if (target.length() != actual.length()) throw new Exception("target.length() != actual.length()");
+
+            final StridedObjectIla<Object> stridedTarget = new StridedObjectIla<>(target, new Object[1000]);
+            final StridedObjectIla<Object> stridedActual = new StridedObjectIla<>(target, new Object[1000]);
             final int ilaLength = target.length() + addlOffsetLength <= Integer.MAX_VALUE
                     ? (int) target.length()
                     : Integer.MAX_VALUE - addlOffsetLength;
@@ -79,8 +84,8 @@ public final class ObjectIlaCheck {
                                 for (int ii = 0; ii < targetBase.length; ++ii) {
                                     targetBase[ii] = actualBase[ii] = new Object();
                                 }
-                                target.toArray(targetBase, offset, stride, start, length);
-                                actual.toArray(actualBase, offset, stride, start, length);
+                                stridedTarget.toArray(targetBase, offset, stride, start, length);
+                                stridedActual.toArray(actualBase, offset, stride, start, length);
                                 for (int ii = 0; ii < arraySize; ++ii) {
                                     if (!(actualBase[ii].equals(targetBase[ii])))
                                         throw new Exception("actual[" + ii

@@ -23,7 +23,7 @@ public final class ShortIlaRamp {
             this.increment = increment;
         }
 
-        protected void toArrayImpl(short[] array, int offset, int stride, long start, int length) {
+        protected void toArrayImpl(short[] array, int offset, long start, int length) {
             final int startPlusLength = (int) (start + length);
 
             // CORRECT, BUT WAY TOO SLOW
@@ -35,9 +35,7 @@ public final class ShortIlaRamp {
 
             // INCORRECT, BUT FAST
             short value = (short) (startValue + increment * start);
-            for (int startInt = (int) start;
-                    startInt != startPlusLength;
-                    ++startInt, offset += stride, value += increment) {
+            for (int startInt = (int) start; startInt != startPlusLength; ++startInt, offset++, value += increment) {
                 array[offset] = value;
             }
         }

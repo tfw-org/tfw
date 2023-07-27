@@ -19,7 +19,7 @@ class BooleanIlaReverseTest {
         }
         BooleanIla origIla = BooleanIlaFromArray.create(array);
         BooleanIla targetIla = BooleanIlaFromArray.create(reversed);
-        BooleanIla actualIla = BooleanIlaReverse.create(origIla);
+        BooleanIla actualIla = BooleanIlaReverse.create(origIla, new boolean[1000]);
         final boolean epsilon = false;
         BooleanIlaCheck.checkAll(
                 targetIla,

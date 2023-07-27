@@ -36,8 +36,7 @@ public final class ByteIlaFromFile {
         }
 
         @Override
-        protected void toArrayImpl(byte[] array, int offset, int stride, long start, int length)
-                throws DataInvalidException {
+        protected void toArrayImpl(byte[] array, int offset, long start, int length) throws DataInvalidException {
             if (raf == null) {
                 try {
                     raf = new RandomAccessFile(file, "r");
@@ -48,14 +47,7 @@ public final class ByteIlaFromFile {
 
             try {
                 raf.seek(start);
-                if (stride == 1) {
-                    raf.readFully(array, offset, length);
-                } else {
-                    final int end = offset + length;
-                    for (; offset < end; offset += stride) {
-                        raf.read(array, offset, 1);
-                    }
-                }
+                raf.readFully(array, offset, length);
             } catch (IOException ioe) {
                 return;
             }

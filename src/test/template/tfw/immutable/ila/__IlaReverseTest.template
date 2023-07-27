@@ -18,7 +18,7 @@ class %%NAME%%IlaReverseTest {
         }
         %%NAME%%Ila%%TEMPLATE%% origIla = %%NAME%%IlaFromArray.create(array);
         %%NAME%%Ila%%TEMPLATE%% targetIla = %%NAME%%IlaFromArray.create(reversed);
-        %%NAME%%Ila%%TEMPLATE%% actualIla = %%NAME%%IlaReverse.create(origIla);
+        %%NAME%%Ila%%TEMPLATE%% actualIla = %%NAME%%IlaReverse.create(origIla, new %%TYPE%%[1000]);
         final %%TYPE%% epsilon = %%DEFAULT_VALUE%%;
         %%NAME%%IlaCheck.checkAll(
                 targetIla,

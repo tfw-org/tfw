@@ -8,33 +8,22 @@ public final class CharIlaFromArray {
     }
 
     public static CharIla create(char[] array) {
-        return create(array, true);
-    }
-
-    public static CharIla create(char[] array, boolean cloneArray) {
         Argument.assertNotNull(array, "array");
 
-        return new MyCharIla(array, cloneArray);
+        return new MyCharIla(array);
     }
 
     private static class MyCharIla extends AbstractCharIla {
         private final char[] array;
 
-        MyCharIla(char[] array, boolean cloneArray) {
+        MyCharIla(char[] array) {
             super(array.length);
 
-            if (cloneArray) {
-                this.array = array.clone();
-            } else {
-                this.array = array;
-            }
+            this.array = array;
         }
 
-        protected void toArrayImpl(char[] array, int offset, int stride, long start, int length) {
-            final int startPlusLength = (int) (start + length);
-            for (int startInt = (int) start; startInt != startPlusLength; ++startInt, offset += stride) {
-                array[offset] = this.array[startInt];
-            }
+        protected void toArrayImpl(char[] array, int offset, long start, int length) {
+            System.arraycopy(this.array, (int) start, array, offset, length);
         }
     }
 }

@@ -8,33 +8,22 @@ public final class DoubleIlaFromArray {
     }
 
     public static DoubleIla create(double[] array) {
-        return create(array, true);
-    }
-
-    public static DoubleIla create(double[] array, boolean cloneArray) {
         Argument.assertNotNull(array, "array");
 
-        return new MyDoubleIla(array, cloneArray);
+        return new MyDoubleIla(array);
     }
 
     private static class MyDoubleIla extends AbstractDoubleIla {
         private final double[] array;
 
-        MyDoubleIla(double[] array, boolean cloneArray) {
+        MyDoubleIla(double[] array) {
             super(array.length);
 
-            if (cloneArray) {
-                this.array = array.clone();
-            } else {
-                this.array = array;
-            }
+            this.array = array;
         }
 
-        protected void toArrayImpl(double[] array, int offset, int stride, long start, int length) {
-            final int startPlusLength = (int) (start + length);
-            for (int startInt = (int) start; startInt != startPlusLength; ++startInt, offset += stride) {
-                array[offset] = this.array[startInt];
-            }
+        protected void toArrayImpl(double[] array, int offset, long start, int length) {
+            System.arraycopy(this.array, (int) start, array, offset, length);
         }
     }
 }

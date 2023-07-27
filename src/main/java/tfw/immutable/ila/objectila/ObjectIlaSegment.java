@@ -31,9 +31,8 @@ public final class ObjectIlaSegment {
             this.start = start;
         }
 
-        protected void toArrayImpl(T[] array, int offset, int stride, long start, int length)
-                throws DataInvalidException {
-            ila.toArray(array, offset, stride, this.start + start, length);
+        protected void toArrayImpl(T[] array, int offset, long start, int length) throws DataInvalidException {
+            ila.toArray(array, offset, this.start + start, length);
         }
     }
 }

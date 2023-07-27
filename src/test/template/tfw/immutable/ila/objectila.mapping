@@ -17,3 +17,4 @@
 %%TEMPLATE%% = <Object>
 %%SUPPRESS%% = \n\ \ \ \ @SuppressWarnings("unchecked")
 %%FULL_CAST%% = (ObjectIla<Object>[])\ 
+%%DIAMOND%% = <>

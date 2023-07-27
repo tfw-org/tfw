@@ -8,33 +8,22 @@ public final class ObjectIlaFromArray {
     }
 
     public static <T> ObjectIla<T> create(T[] array) {
-        return create(array, true);
-    }
-
-    public static <T> ObjectIla<T> create(T[] array, boolean cloneArray) {
         Argument.assertNotNull(array, "array");
 
-        return new MyObjectIla<>(array, cloneArray);
+        return new MyObjectIla<>(array);
     }
 
     private static class MyObjectIla<T> extends AbstractObjectIla<T> {
         private final T[] array;
 
-        MyObjectIla(T[] array, boolean cloneArray) {
+        MyObjectIla(T[] array) {
             super(array.length);
 
-            if (cloneArray) {
-                this.array = array.clone();
-            } else {
-                this.array = array;
-            }
+            this.array = array;
         }
 
-        protected void toArrayImpl(T[] array, int offset, int stride, long start, int length) {
-            final int startPlusLength = (int) (start + length);
-            for (int startInt = (int) start; startInt != startPlusLength; ++startInt, offset += stride) {
-                array[offset] = this.array[startInt];
-            }
+        protected void toArrayImpl(T[] array, int offset, long start, int length) {
+            System.arraycopy(this.array, (int) start, array, offset, length);
         }
     }
 }

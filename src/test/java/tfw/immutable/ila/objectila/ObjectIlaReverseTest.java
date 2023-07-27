@@ -17,7 +17,7 @@ class ObjectIlaReverseTest {
         }
         ObjectIla<Object> origIla = ObjectIlaFromArray.create(array);
         ObjectIla<Object> targetIla = ObjectIlaFromArray.create(reversed);
-        ObjectIla<Object> actualIla = ObjectIlaReverse.create(origIla);
+        ObjectIla<Object> actualIla = ObjectIlaReverse.create(origIla, new Object[1000]);
         final Object epsilon = Object.class;
         ObjectIlaCheck.checkAll(
                 targetIla,

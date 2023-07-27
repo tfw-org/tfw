@@ -21,9 +21,9 @@ public final class ObjectIlaFill {
             this.value = value;
         }
 
-        protected void toArrayImpl(T[] array, int offset, int stride, long start, int length) {
+        protected void toArrayImpl(T[] array, int offset, long start, int length) {
             final int startPlusLength = (int) (start + length);
-            for (int startInt = (int) start; startInt != startPlusLength; ++startInt, offset += stride) {
+            for (int startInt = (int) start; startInt != startPlusLength; ++startInt, offset++) {
                 array[offset] = value;
             }
         }

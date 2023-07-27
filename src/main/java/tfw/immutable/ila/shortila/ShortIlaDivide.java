@@ -30,14 +30,13 @@ public final class ShortIlaDivide {
             this.bufferSize = bufferSize;
         }
 
-        protected void toArrayImpl(short[] array, int offset, int stride, long ilaStart, int length)
-                throws DataInvalidException {
+        protected void toArrayImpl(short[] array, int offset, long ilaStart, int length) throws DataInvalidException {
             ShortIlaIterator li =
                     new ShortIlaIterator(ShortIlaSegment.create(leftIla, ilaStart, length), new short[bufferSize]);
             ShortIlaIterator ri =
                     new ShortIlaIterator(ShortIlaSegment.create(rightIla, ilaStart, length), new short[bufferSize]);
 
-            for (int ii = offset; li.hasNext(); ii += stride) {
+            for (int ii = offset; li.hasNext(); ii++) {
                 array[ii] = (short) (li.next() / ri.next());
             }
         }

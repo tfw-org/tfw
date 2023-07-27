@@ -27,6 +27,8 @@ public final class BooleanIlaCheck {
             throw new IllegalArgumentException("epsilon != " + (false) + " not allowed");
         } else {
             if (offsetLength < 0) throw new Exception("offsetLength < 0 not allowed");
+
+            final StridedBooleanIla stridedBooleanIla = new StridedBooleanIla(ila, new boolean[1000]);
             final Random random = new Random(0);
             final int ilaLength = ila.length() + offsetLength <= Integer.MAX_VALUE
                     ? (int) ila.length()
@@ -40,7 +42,7 @@ public final class BooleanIlaCheck {
                             five[ii] = four[ii] = random.nextBoolean();
                         }
                         ila.toArray(four, offset, start, length);
-                        ila.toArray(five, offset, 1, start, length);
+                        stridedBooleanIla.toArray(five, offset, 1, start, length);
                         for (int ii = 0; ii < length; ++ii) {
                             if (!(four[ii] == five[ii]))
                                 throw new Exception("four[" + ii + "] ("
@@ -67,6 +69,9 @@ public final class BooleanIlaCheck {
             if (addlOffsetLength < 0) throw new Exception("addlOffsetLength < 0 not allowed");
             if (maxAbsStride < 1) throw new Exception("maxAbsStride < 1 not allowed");
             if (target.length() != actual.length()) throw new Exception("target.length() != actual.length()");
+
+            final StridedBooleanIla stridedTarget = new StridedBooleanIla(target, new boolean[1000]);
+            final StridedBooleanIla stridedActual = new StridedBooleanIla(target, new boolean[1000]);
             final Random random = new Random(0);
             final int ilaLength = target.length() + addlOffsetLength <= Integer.MAX_VALUE
                     ? (int) target.length()
@@ -85,8 +90,8 @@ public final class BooleanIlaCheck {
                                 for (int ii = 0; ii < targetBase.length; ++ii) {
                                     targetBase[ii] = actualBase[ii] = random.nextBoolean();
                                 }
-                                target.toArray(targetBase, offset, stride, start, length);
-                                actual.toArray(actualBase, offset, stride, start, length);
+                                stridedTarget.toArray(targetBase, offset, stride, start, length);
+                                stridedActual.toArray(actualBase, offset, stride, start, length);
                                 for (int ii = 0; ii < arraySize; ++ii) {
                                     if (!(actualBase[ii] == targetBase[ii]))
                                         throw new Exception("actual[" + ii

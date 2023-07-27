@@ -28,25 +28,19 @@ public final class FloatIlaMutate {
             this.value = value;
         }
 
-        protected void toArrayImpl(float[] array, int offset, int stride, long start, int length)
-                throws DataInvalidException {
+        protected void toArrayImpl(float[] array, int offset, long start, int length) throws DataInvalidException {
             final long startPlusLength = start + length;
 
             if (index < start || index >= startPlusLength) {
-                ila.toArray(array, offset, stride, start, length);
+                ila.toArray(array, offset, start, length);
             } else {
                 final int indexMinusStart = (int) (index - start);
                 if (index > start) {
-                    ila.toArray(array, offset, stride, start, indexMinusStart);
+                    ila.toArray(array, offset, start, indexMinusStart);
                 }
-                array[offset + indexMinusStart * stride] = value;
+                array[offset + indexMinusStart] = value;
                 if (index <= startPlusLength) {
-                    ila.toArray(
-                            array,
-                            offset + (indexMinusStart + 1) * stride,
-                            stride,
-                            index + 1,
-                            length - indexMinusStart - 1);
+                    ila.toArray(array, offset + (indexMinusStart + 1), index + 1, length - indexMinusStart - 1);
                 }
             }
         }

@@ -24,6 +24,8 @@ package %%PACKAGE%%;
             throw new IllegalArgumentException("epsilon != " + (%%DEFAULT_VALUE%%) + " not allowed");
         } else {
             if (offsetLength < 0) throw new Exception("offsetLength < 0 not allowed");
+
+            final Strided%%NAME%%Ila%%TEMPLATE%% strided%%NAME%%Ila = new Strided%%NAME%%Ila%%DIAMOND%%(ila, new %%TYPE%%[1000]);
             %%RANDOM_INIT_12%%final int ilaLength = ila.length() + offsetLength <= Integer.MAX_VALUE
                     ? (int) ila.length()
                     : Integer.MAX_VALUE - offsetLength;
@@ -36,7 +38,7 @@ package %%PACKAGE%%;
                             five[ii] = four[ii] = %%RANDOM_VALUE%%;
                         }
                         ila.toArray(four, offset, start, length);
-                        ila.toArray(five, offset, 1, start, length);
+                        strided%%NAME%%Ila.toArray(five, offset, 1, start, length);
                         for (int ii = 0; ii < length; ++ii) {
                             if (!(four[ii]%%IS_EQUALS_START%%five[ii]%%IS_EQUALS_END%%))
                                 throw new Exception("four[" + ii + "] ("
@@ -63,6 +65,9 @@ package %%PACKAGE%%;
             if (addlOffsetLength < 0) throw new Exception("addlOffsetLength < 0 not allowed");
             if (maxAbsStride < 1) throw new Exception("maxAbsStride < 1 not allowed");
             if (target.length() != actual.length()) throw new Exception("target.length() != actual.length()");
+
+            final Strided%%NAME%%Ila%%TEMPLATE%% stridedTarget = new Strided%%NAME%%Ila%%DIAMOND%%(target, new %%TYPE%%[1000]);
+            final Strided%%NAME%%Ila%%TEMPLATE%% stridedActual = new Strided%%NAME%%Ila%%DIAMOND%%(target, new %%TYPE%%[1000]);
             %%RANDOM_INIT_12%%final int ilaLength = target.length() + addlOffsetLength <= Integer.MAX_VALUE
                     ? (int) target.length()
                     : Integer.MAX_VALUE - addlOffsetLength;
@@ -80,8 +85,8 @@ package %%PACKAGE%%;
                                 for (int ii = 0; ii < targetBase.length; ++ii) {
                                     targetBase[ii] = actualBase[ii] = %%RANDOM_VALUE%%;
                                 }
-                                target.toArray(targetBase, offset, stride, start, length);
-                                actual.toArray(actualBase, offset, stride, start, length);
+                                stridedTarget.toArray(targetBase, offset, stride, start, length);
+                                stridedActual.toArray(actualBase, offset, stride, start, length);
                                 for (int ii = 0; ii < arraySize; ++ii) {
                                     if (!(actualBase[ii]%%IS_EQUALS_START%%targetBase[ii]%%IS_EQUALS_END%%))
                                         throw new Exception("actual[" + ii

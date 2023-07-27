@@ -8,23 +8,28 @@ public final class IntIlaReverse {
         // non-instantiable class
     }
 
-    public static IntIla create(IntIla ila) {
+    public static IntIla create(IntIla ila, final int[] buffer) {
         Argument.assertNotNull(ila, "ila");
+        Argument.assertNotNull(buffer, "buffer");
 
-        return new MyIntIla(ila);
+        return new MyIntIla(ila, buffer);
     }
 
     private static class MyIntIla extends AbstractIntIla {
         private final IntIla ila;
+        private final int[] buffer;
 
-        MyIntIla(IntIla ila) {
+        MyIntIla(IntIla ila, final int[] buffer) {
             super(ila.length());
+
             this.ila = ila;
+            this.buffer = buffer;
         }
 
-        protected void toArrayImpl(int[] array, int offset, int stride, long start, int length)
-                throws DataInvalidException {
-            ila.toArray(array, offset + (length - 1) * stride, -stride, length() - (start + length), length);
+        protected void toArrayImpl(int[] array, int offset, long start, int length) throws DataInvalidException {
+            final StridedIntIla stridedIntIla = new StridedIntIla(ila, buffer.clone());
+
+            stridedIntIla.toArray(array, offset + (length - 1), -1, length() - (start + length), length);
         }
     }
 }

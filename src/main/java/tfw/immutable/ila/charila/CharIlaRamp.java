@@ -23,7 +23,7 @@ public final class CharIlaRamp {
             this.increment = increment;
         }
 
-        protected void toArrayImpl(char[] array, int offset, int stride, long start, int length) {
+        protected void toArrayImpl(char[] array, int offset, long start, int length) {
             final int startPlusLength = (int) (start + length);
 
             // CORRECT, BUT WAY TOO SLOW
@@ -35,9 +35,7 @@ public final class CharIlaRamp {
 
             // INCORRECT, BUT FAST
             char value = (char) (startValue + increment * start);
-            for (int startInt = (int) start;
-                    startInt != startPlusLength;
-                    ++startInt, offset += stride, value += increment) {
+            for (int startInt = (int) start; startInt != startPlusLength; ++startInt, offset++, value += increment) {
                 array[offset] = value;
             }
         }

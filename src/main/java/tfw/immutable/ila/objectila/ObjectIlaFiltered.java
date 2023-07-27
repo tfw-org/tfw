@@ -41,23 +41,18 @@ public final class ObjectIlaFiltered<T> {
         }
 
         public final void toArray(T[] array, int offset, long start, int length) throws DataInvalidException {
-            toArray(array, offset, 1, start, length);
-        }
-
-        public final void toArray(T[] array, int offset, int stride, long start, int length)
-                throws DataInvalidException {
             calculateLength();
 
             if (length == 0) {
                 return;
             }
 
-            AbstractIlaCheck.boundsCheck(this.length, array.length, offset, stride, start, length);
+            AbstractIlaCheck.boundsCheck(this.length, array.length, offset, start, length);
 
             ObjectIlaIterator<T> oii = new ObjectIlaIterator<>(ObjectIlaSegment.create(ila, start), buffer.clone());
 
             // left off here
-            for (int i = offset; oii.hasNext(); i += stride) {
+            for (int i = offset; oii.hasNext(); i++) {
                 T node = oii.next();
 
                 if (!filter.matches(node)) {

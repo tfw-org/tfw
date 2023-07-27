@@ -20,7 +20,7 @@ class BooleanIlaInterleaveTest {
                 ilas[ii] = BooleanIlaFromArray.create(target[ii]);
             }
             BooleanIla targetIla = BooleanIlaFromArray.create(array);
-            BooleanIla actualIla = BooleanIlaInterleave.create(ilas);
+            BooleanIla actualIla = BooleanIlaInterleave.create(ilas, new boolean[1000]);
             final boolean epsilon = false;
             BooleanIlaCheck.checkAll(
                     targetIla,

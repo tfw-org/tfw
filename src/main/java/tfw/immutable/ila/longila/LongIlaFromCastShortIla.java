@@ -29,12 +29,11 @@ public final class LongIlaFromCastShortIla {
             this.bufferSize = bufferSize;
         }
 
-        protected void toArrayImpl(long[] array, int offset, int stride, long start, int length)
-                throws DataInvalidException {
+        protected void toArrayImpl(long[] array, int offset, long start, int length) throws DataInvalidException {
             ShortIlaIterator fi =
                     new ShortIlaIterator(ShortIlaSegment.create(shortIla, start, length), new short[bufferSize]);
 
-            for (int ii = offset; length > 0; ii += stride, --length) {
+            for (int ii = offset; length > 0; ii++, --length) {
                 array[ii] = (long) fi.next();
             }
         }
