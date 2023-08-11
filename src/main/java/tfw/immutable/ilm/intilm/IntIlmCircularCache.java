@@ -19,8 +19,6 @@ public class IntIlmCircularCache {
         private int[] buffer = new int[0];
         private long cacheStart = 0;
         private long cacheEnd = 0;
-        private final int cStride = 1;
-        private final int rStride;
         private final int maxRows;
 
         public MyIntIlm(IntIlm intIlm, int numRows) {
@@ -30,19 +28,11 @@ public class IntIlmCircularCache {
             this.maxRows = numRows;
 
             cacheLength = (int) intIlm.width() * maxRows;
-            rStride = (int) intIlm.width();
         }
 
         @Override
         protected synchronized void toArrayImpl(
-                int[] array,
-                int offset,
-                int rowStride,
-                int colStride,
-                long rowStart,
-                long colStart,
-                int rowCount,
-                int colCount)
+                int[] array, int offset, long rowStart, long colStart, int rowCount, int colCount)
                 throws DataInvalidException {
             if (cacheStart == 0 && cacheEnd == 0 || rowStart > cacheEnd || rowStart + rowCount < cacheStart) {
                 if (buffer.length == 0) {
@@ -53,14 +43,13 @@ public class IntIlmCircularCache {
                 int rowsToGet = intIlm.height() > rowStart + maxRows ? maxRows : (int) (intIlm.height() - rowStart);
 
                 if (intIlm.height() <= maxRows) {
-                    intIlm.toArray(buffer, 0, rStride, cStride, 0, colStart, (int) intIlm.height(), colCount);
+                    intIlm.toArray(buffer, 0, 0, colStart, (int) intIlm.height(), colCount);
                     cacheStart = 0;
                     cacheEnd = intIlm.height();
 
                     for (int i = 0; i < rowCount; i++) {
                         for (int j = 0; j < colCount; j++) {
-                            array[offset + i * rowStride + j * colStride] =
-                                    buffer[((i + rowStartOffset) % maxRows) * rStride + j * cStride];
+                            array[offset + i * colCount + j] = buffer[((i + rowStartOffset) % maxRows) * colCount + j];
                         }
                     }
 
@@ -68,15 +57,7 @@ public class IntIlmCircularCache {
                 }
 
                 if (rowStart % maxRows == 0) {
-                    intIlm.toArray(
-                            buffer,
-                            rowStartOffset * rStride,
-                            rStride,
-                            cStride,
-                            rowStart,
-                            colStart,
-                            rowsToGet,
-                            colCount);
+                    intIlm.toArray(buffer, rowStartOffset * colCount, rowStart, colStart, rowsToGet, colCount);
                 } else {
                     int first = (int) (rowStart % maxRows);
                     int firstLength = maxRows - first;
@@ -85,21 +66,19 @@ public class IntIlmCircularCache {
                         firstLength = rowCount;
                     }
 
-                    intIlm.toArray(
-                            buffer, first * rStride, rStride, cStride, rowStart, colStart, firstLength, colCount);
+                    intIlm.toArray(buffer, first * colCount, rowStart, colStart, firstLength, colCount);
 
                     if (firstLength + first > rowCount) {
                         first = rowCount - firstLength;
                     }
                     if (first > 0) {
-                        intIlm.toArray(buffer, 0, rStride, cStride, rowStart + firstLength, colStart, first, colCount);
+                        intIlm.toArray(buffer, 0, rowStart + firstLength, colStart, first, colCount);
                     }
                 }
 
                 for (int i = 0; i < rowCount; i++) {
                     for (int j = 0; j < colCount; j++) {
-                        array[offset + i * rowStride + j * colStride] =
-                                buffer[((i + rowStartOffset) % maxRows) * rStride + j * cStride];
+                        array[offset + i * colCount + j] = buffer[((i + rowStartOffset) % maxRows) * colCount + j];
                     }
                 }
 
@@ -114,8 +93,7 @@ public class IntIlmCircularCache {
 
                 for (int i = 0; i < rowCount; i++) {
                     for (int j = 0; j < colCount; j++) {
-                        array[offset + i * rowStride + j * colStride] =
-                                buffer[((i + rowStartOffset) % maxRows) * rStride + j * cStride];
+                        array[offset + i * colCount + j] = buffer[((i + rowStartOffset) % maxRows) * colCount + j];
                     }
                 }
             }
@@ -129,35 +107,18 @@ public class IntIlmCircularCache {
                         cacheEnd + newRowCount < intIlm.height() ? newRowCount : (int) (intIlm.height() - cacheEnd);
 
                 if (newRowStartOffset + newRowCount <= maxRows) {
-                    intIlm.toArray(
-                            buffer,
-                            newRowStartOffset * rStride,
-                            rStride,
-                            cStride,
-                            cacheEnd,
-                            colStart,
-                            newRowCount,
-                            colCount);
+                    intIlm.toArray(buffer, newRowStartOffset * colCount, cacheEnd, colStart, newRowCount, colCount);
                 } else {
                     int countA = maxRows - newRowStartOffset;
                     int countB = newRowCount - countA;
 
-                    intIlm.toArray(
-                            buffer,
-                            newRowStartOffset * rStride,
-                            rStride,
-                            cStride,
-                            cacheEnd,
-                            colStart,
-                            countA,
-                            colCount);
-                    intIlm.toArray(buffer, 0, rStride, cStride, cacheEnd + countA, colStart, countB, colCount);
+                    intIlm.toArray(buffer, newRowStartOffset * colCount, cacheEnd, colStart, countA, colCount);
+                    intIlm.toArray(buffer, 0, cacheEnd + countA, colStart, countB, colCount);
                 }
 
                 for (int i = 0; i < rowCount; i++) {
                     for (int j = 0; j < colCount; j++) {
-                        array[offset + i * rowStride + j * colStride] =
-                                buffer[((i + rowStartOffset) % maxRows) * rStride + j * cStride];
+                        array[offset + i * colCount + j] = buffer[((i + rowStartOffset) % maxRows) * colCount + j];
                     }
                 }
 
@@ -175,9 +136,7 @@ public class IntIlmCircularCache {
                 if (rowStartOffset + newRowCount <= maxRows) {
                     intIlm.toArray(
                             buffer,
-                            rowStartOffset * rStride,
-                            rStride,
-                            cStride,
+                            rowStartOffset * colCount,
                             cacheStart - newRowCount,
                             colStart,
                             newRowCount,
@@ -187,10 +146,10 @@ public class IntIlmCircularCache {
                     int countA = maxRows - end;
                     int countB = newRowCount - countA;
 
-                    intIlm.toArray(buffer, end * rStride, rStride, cStride, rowStart, colStart, countA, colCount);
+                    intIlm.toArray(buffer, end * colCount, rowStart, colStart, countA, colCount);
 
                     if (countB > 0) {
-                        intIlm.toArray(buffer, 0, rStride, cStride, rowStart + countA, colStart, countB, colCount);
+                        intIlm.toArray(buffer, 0, rowStart + countA, colStart, countB, colCount);
                     } else {
                         System.out.println("maxRows = " + maxRows);
                         System.out.println("countA = " + countA);
@@ -202,8 +161,7 @@ public class IntIlmCircularCache {
 
                     for (int i = 0; i < rowCount; i++) {
                         for (int j = 0; j < colCount; j++) {
-                            array[offset + i * rowStride + j * colStride] =
-                                    buffer[((i + rowStartOffset) % maxRows) * rStride + j * cStride];
+                            array[offset + i * colCount + j] = buffer[((i + rowStartOffset) % maxRows) * colCount + j];
                         }
                     }
 

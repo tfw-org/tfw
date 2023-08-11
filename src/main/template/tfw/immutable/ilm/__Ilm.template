@@ -1,21 +1,10 @@
-// booleanilm,byteilm,charilm,doubleilm,floatilm,intilm,longilm,objectilm,shortilm,stringilm
+// booleanilm,byteilm,charilm,doubleilm,floatilm,intilm,longilm,objectilm,shortilm
 package %%PACKAGE%%;
 
 import tfw.immutable.DataInvalidException;
 import tfw.immutable.ilm.ImmutableLongMatrix;
 
-public interface %%NAME%%Ilm extends ImmutableLongMatrix {
-    void toArray(%%TYPE%%[] array, int offset, long rowStart, long columnStart, int rowCount, int colCount)
-            throws DataInvalidException;
-
-    void toArray(
-            %%TYPE%%[] array,
-            int offset,
-            int rowStride,
-            int colStride,
-            long rowStart,
-            long columnStart,
-            int rowCount,
-            int colCount)
+public interface %%NAME%%Ilm%%TEMPLATE%% extends ImmutableLongMatrix {
+    void toArray(%%TYPE_OR_TEMPLATE%%[] array, int offset, long rowStart, long columnStart, int rowCount, int colCount)
             throws DataInvalidException;
 }

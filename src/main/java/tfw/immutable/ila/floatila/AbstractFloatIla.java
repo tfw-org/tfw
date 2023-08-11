@@ -3,10 +3,6 @@ package tfw.immutable.ila.floatila;
 import tfw.immutable.DataInvalidException;
 import tfw.immutable.ila.AbstractIla;
 
-/**
- *
- * @immutables.types=all
- */
 public abstract class AbstractFloatIla extends AbstractIla implements FloatIla {
     protected abstract void toArrayImpl(final float[] array, int offset, long start, int length)
             throws DataInvalidException;

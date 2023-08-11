@@ -3,10 +3,6 @@ package tfw.immutable.ila.charila;
 import tfw.immutable.DataInvalidException;
 import tfw.immutable.ila.AbstractIla;
 
-/**
- *
- * @immutables.types=all
- */
 public abstract class AbstractCharIla extends AbstractIla implements CharIla {
     protected abstract void toArrayImpl(final char[] array, int offset, long start, int length)
             throws DataInvalidException;

@@ -1,4 +1,4 @@
-// booleanilm,byteilm,charilm,doubleilm,floatilm,intilm,longilm,objectilm,shortilm,stringilm
+// booleanilm,byteilm,charilm,doubleilm,floatilm,intilm,longilm,shortilm
 package %%PACKAGE%%;
 
 import tfw.check.Argument;

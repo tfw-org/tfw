@@ -3,10 +3,6 @@ package tfw.immutable.ila.objectila;
 import tfw.immutable.DataInvalidException;
 import tfw.immutable.ila.AbstractIla;
 
-/**
- *
- * @immutables.types=all
- */
 public abstract class AbstractObjectIla<T> extends AbstractIla implements ObjectIla<T> {
     protected abstract void toArrayImpl(final T[] array, int offset, long start, int length)
             throws DataInvalidException;

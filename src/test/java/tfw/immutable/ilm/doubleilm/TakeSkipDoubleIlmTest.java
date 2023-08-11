@@ -50,6 +50,7 @@ class TakeSkipDoubleIlmTest {
         assertEquals(takeSkip4.height(), 3);
 
         DoubleIlm takeSkip5 = TakeSkipDoubleIlm.create(doubleIla, 10, 5);
+        StridedDoubleIlm stridedTakeSkip5 = StridedDoubleIlmFromDoubleIlm.create(takeSkip5, new double[0]);
         double[] takeSkip5Array = new double[] {
             0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
             0.0, -9.0, 0.0, -8.0, 0.0, -7.0,
@@ -59,9 +60,9 @@ class TakeSkipDoubleIlmTest {
             0.0, 1.0, 0.0, 2.0, 0.0, 3.0
         };
         double[] takeSkip5Test = new double[36];
-        takeSkip5.toArray(takeSkip5Test, 7, 12, 2, 0, 1, 3, 3);
+        stridedTakeSkip5.toArray(takeSkip5Test, 7, 12, 2, 0, 1, 3, 3);
         assertTrue(Arrays.equals(takeSkip5Array, takeSkip5Test));
-        assertEquals(takeSkip5.width(), 10);
-        assertEquals(takeSkip5.height(), 3);
+        assertEquals(stridedTakeSkip5.width(), 10);
+        assertEquals(stridedTakeSkip5.height(), 3);
     }
 }

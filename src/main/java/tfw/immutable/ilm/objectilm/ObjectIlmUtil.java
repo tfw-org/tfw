@@ -1,29 +1,41 @@
 package tfw.immutable.ilm.objectilm;
 
+import java.util.Arrays;
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
 
 public final class ObjectIlmUtil {
     private ObjectIlmUtil() {}
 
-    public static Object[] toArray(final ObjectIlm ObjectIlm) throws DataInvalidException {
-        Argument.assertNotGreaterThan(ObjectIlm.width(), Integer.MAX_VALUE, "width()", "native array size");
-        Argument.assertNotGreaterThan(ObjectIlm.height(), Integer.MAX_VALUE, "height()", "native array size");
-
-        return toArray(ObjectIlm, 0, 0, (int) ObjectIlm.height(), (int) ObjectIlm.width());
+    public static <T> T[] toArray(final ObjectIlm<T> objectIlm, T[] array) throws DataInvalidException {
+        return toArray(objectIlm, 0, 0, (int) objectIlm.height(), (int) objectIlm.width(), array);
     }
 
-    public static Object[] toArray(
-            final ObjectIlm ObjectIlm, final long rowStart, final long columnStart, final int rowCount, int colCount)
+    public static <T> T[] toArray(
+            final ObjectIlm<T> objectIlm,
+            final long rowStart,
+            final long columnStart,
+            final int rowCount,
+            int colCount,
+            T[] array)
             throws DataInvalidException {
         Argument.assertNotLessThan(rowCount, 0, "rowCount");
         Argument.assertNotLessThan(colCount, 0, "colCount");
 
-        Object[] result = new Object[rowCount * colCount];
+        final int intArrayLength = (int) Math.min(rowCount * colCount, Integer.MAX_VALUE);
 
-        ObjectIlm.toArray(result, 0, rowStart, columnStart, rowCount, colCount);
+        if (array.length < intArrayLength) {
+            T[] copy = Arrays.copyOf(array, intArrayLength);
+            objectIlm.toArray(copy, 0, rowStart, columnStart, rowCount, colCount);
 
-        return result;
+            return copy;
+        } else {
+            objectIlm.toArray(array, 0, rowStart, columnStart, rowCount, colCount);
+            if (array.length > intArrayLength) {
+                array[intArrayLength] = null;
+            }
+
+            return array;
+        }
     }
 }
-// AUTO GENERATED FROM TEMPLATE

@@ -15,45 +15,30 @@ public class RowConcatenateDoubleIlm {
     }
 
     private static class MyDoubleIlm extends AbstractDoubleIlm {
-        private final DoubleIlm leftIlm;
-        private final DoubleIlm rightIlm;
+        private final StridedDoubleIlm stridedLeftIlm;
+        private final StridedDoubleIlm stridedRightIlm;
 
         public MyDoubleIlm(DoubleIlm leftIlm, DoubleIlm rightIlm) {
             super(leftIlm.width() + rightIlm.width(), leftIlm.height());
 
-            this.leftIlm = leftIlm;
-            this.rightIlm = rightIlm;
+            this.stridedLeftIlm = StridedDoubleIlmFromDoubleIlm.create(leftIlm, new double[0]);
+            this.stridedRightIlm = StridedDoubleIlmFromDoubleIlm.create(rightIlm, new double[0]);
         }
 
         @Override
-        protected void toArrayImpl(
-                double[] array,
-                int offset,
-                int rowStride,
-                int colStride,
-                long rowStart,
-                long colStart,
-                int rowCount,
-                int colCount)
+        protected void toArrayImpl(double[] array, int offset, long rowStart, long colStart, int rowCount, int colCount)
                 throws DataInvalidException {
-            if (colStart + colCount <= leftIlm.width()) {
-                leftIlm.toArray(array, offset, rowStride, colStride, rowStart, colStart, rowCount, colCount);
-            } else if (colStart >= leftIlm.width()) {
-                rightIlm.toArray(
-                        array, offset, rowStride, colStride, rowStart, colStart - leftIlm.width(), rowCount, colCount);
+            if (colStart + colCount <= stridedLeftIlm.width()) {
+                stridedLeftIlm.toArray(array, offset, colCount, 1, rowStart, colStart, rowCount, colCount);
+            } else if (colStart >= stridedLeftIlm.width()) {
+                stridedRightIlm.toArray(
+                        array, offset, colCount, 1, rowStart, colStart - stridedLeftIlm.width(), rowCount, colCount);
             } else {
-                int firstAmount = (int) (leftIlm.width() - colStart);
+                int firstAmount = (int) (stridedLeftIlm.width() - colStart);
 
-                leftIlm.toArray(array, offset, rowStride, colStride, rowStart, colStart, rowCount, firstAmount);
-                rightIlm.toArray(
-                        array,
-                        offset + firstAmount,
-                        rowStride,
-                        colStride,
-                        rowStart,
-                        0,
-                        rowCount,
-                        colCount - firstAmount);
+                stridedLeftIlm.toArray(array, offset, colCount, 1, rowStart, colStart, rowCount, firstAmount);
+                stridedRightIlm.toArray(
+                        array, offset + firstAmount, colCount, 1, rowStart, 0, rowCount, colCount - firstAmount);
             }
         }
     }
