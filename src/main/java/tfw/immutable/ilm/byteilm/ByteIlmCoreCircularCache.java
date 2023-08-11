@@ -28,17 +28,9 @@ public class ByteIlmCoreCircularCache {
         }
 
         @Override
-        protected void toArrayImpl(
-                byte[] array,
-                int offset,
-                int rowStride,
-                int colStride,
-                long rowStart,
-                long colStart,
-                int rowCount,
-                int colCount)
+        protected void toArrayImpl(byte[] array, int offset, long rowStart, long colStart, int rowCount, int colCount)
                 throws DataInvalidException {
-            core.toArrayImpl(array, offset, rowStride, colStride, rowStart, colStart, rowCount, colCount);
+            core.toArrayImpl(array, offset, rowStart, colStart, rowCount, colCount);
         }
     }
 
@@ -49,8 +41,6 @@ public class ByteIlmCoreCircularCache {
         private byte[] buffer = new byte[0];
         private long cacheStart = 0;
         private long cacheEnd = 0;
-        private final int cStride = 1;
-        private final int rStride;
         private final int maxRows;
 
         public Core(ByteIlm byteIlm, int numRows) {
@@ -58,7 +48,6 @@ public class ByteIlmCoreCircularCache {
             this.maxRows = numRows;
 
             cacheLength = (int) byteIlm.width() * maxRows;
-            rStride = (int) byteIlm.width();
         }
 
         public void setByteIlm(ByteIlm byteIlm) {
@@ -67,15 +56,7 @@ public class ByteIlmCoreCircularCache {
             }
         }
 
-        public void toArrayImpl(
-                byte[] array,
-                int offset,
-                int rowStride,
-                int colStride,
-                long rowStart,
-                long colStart,
-                int rowCount,
-                int colCount)
+        public void toArrayImpl(byte[] array, int offset, long rowStart, long colStart, int rowCount, int colCount)
                 throws DataInvalidException {
             synchronized (lock) {
                 if (buffer.length == 0) {
@@ -85,15 +66,7 @@ public class ByteIlmCoreCircularCache {
                     int rowStartOffset = (int) (rowStart % maxRows);
 
                     if (rowStart % maxRows == 0) {
-                        byteIlm.toArray(
-                                buffer,
-                                rowStartOffset * rStride,
-                                rStride,
-                                cStride,
-                                rowStart,
-                                colStart,
-                                rowCount,
-                                colCount);
+                        byteIlm.toArray(buffer, rowStartOffset * colCount, rowStart, colStart, rowCount, colCount);
                     } else {
                         int first = (int) (rowStart % maxRows);
                         int firstLength = maxRows - first;
@@ -102,22 +75,19 @@ public class ByteIlmCoreCircularCache {
                             firstLength = rowCount;
                         }
 
-                        byteIlm.toArray(
-                                buffer, first * rStride, rStride, cStride, rowStart, colStart, firstLength, colCount);
+                        byteIlm.toArray(buffer, first * colCount, rowStart, colStart, firstLength, colCount);
 
                         if (firstLength + first > rowCount) {
                             first = rowCount - firstLength;
                         }
                         if (first > 0) {
-                            byteIlm.toArray(
-                                    buffer, 0, rStride, cStride, rowStart + firstLength, colStart, first, colCount);
+                            byteIlm.toArray(buffer, 0, rowStart + firstLength, colStart, first, colCount);
                         }
                     }
 
                     for (int i = 0; i < rowCount; i++) {
                         for (int j = 0; j < colCount; j++) {
-                            array[offset + i * rowStride + j * colStride] =
-                                    buffer[((i + rowStartOffset) % maxRows) * rStride + j * cStride];
+                            array[offset + i * colCount + j] = buffer[((i + rowStartOffset) % maxRows) * colCount + j];
                         }
                     }
 
@@ -132,8 +102,7 @@ public class ByteIlmCoreCircularCache {
 
                     for (int i = 0; i < rowCount; i++) {
                         for (int j = 0; j < colCount; j++) {
-                            array[offset + i * rowStride + j * colStride] =
-                                    buffer[((i + rowStartOffset) % maxRows) * rStride + j * cStride];
+                            array[offset + i * colCount + j] = buffer[((i + rowStartOffset) % maxRows) * colCount + j];
                         }
                     }
                 }
@@ -149,34 +118,18 @@ public class ByteIlmCoreCircularCache {
 
                     if (newRowStartOffset + newRowCount <= maxRows) {
                         byteIlm.toArray(
-                                buffer,
-                                newRowStartOffset * rStride,
-                                rStride,
-                                cStride,
-                                cacheEnd,
-                                colStart,
-                                newRowCount,
-                                colCount);
+                                buffer, newRowStartOffset * colCount, cacheEnd, colStart, newRowCount, colCount);
                     } else {
                         int countA = maxRows - newRowStartOffset;
                         int countB = newRowCount - countA;
 
-                        byteIlm.toArray(
-                                buffer,
-                                newRowStartOffset * rStride,
-                                rStride,
-                                cStride,
-                                cacheEnd,
-                                colStart,
-                                countA,
-                                colCount);
-                        byteIlm.toArray(buffer, 0, rStride, cStride, cacheEnd + countA, colStart, countB, colCount);
+                        byteIlm.toArray(buffer, newRowStartOffset * colCount, cacheEnd, colStart, countA, colCount);
+                        byteIlm.toArray(buffer, 0, cacheEnd + countA, colStart, countB, colCount);
                     }
 
                     for (int i = 0; i < rowCount; i++) {
                         for (int j = 0; j < colCount; j++) {
-                            array[offset + i * rowStride + j * colStride] =
-                                    buffer[((i + rowStartOffset) % maxRows) * rStride + j * cStride];
+                            array[offset + i * colCount + j] = buffer[((i + rowStartOffset) % maxRows) * colCount + j];
                         }
                     }
 
@@ -194,9 +147,7 @@ public class ByteIlmCoreCircularCache {
                     if (rowStartOffset + newRowCount <= maxRows) {
                         byteIlm.toArray(
                                 buffer,
-                                rowStartOffset * rStride,
-                                rStride,
-                                cStride,
+                                rowStartOffset * colCount,
                                 cacheStart - newRowCount,
                                 colStart,
                                 newRowCount,
@@ -206,10 +157,10 @@ public class ByteIlmCoreCircularCache {
                         int countA = maxRows - end;
                         int countB = newRowCount - countA;
 
-                        byteIlm.toArray(buffer, end * rStride, rStride, cStride, rowStart, colStart, countA, colCount);
+                        byteIlm.toArray(buffer, end * colCount, rowStart, colStart, countA, colCount);
 
                         if (countB > 0) {
-                            byteIlm.toArray(buffer, 0, rStride, cStride, rowStart + countA, colStart, countB, colCount);
+                            byteIlm.toArray(buffer, 0, rowStart + countA, colStart, countB, colCount);
                         } else {
                             System.out.println("maxRows = " + maxRows);
                             System.out.println("countA = " + countA);
@@ -221,8 +172,8 @@ public class ByteIlmCoreCircularCache {
 
                         for (int i = 0; i < rowCount; i++) {
                             for (int j = 0; j < colCount; j++) {
-                                array[offset + i * rowStride + j * colStride] =
-                                        buffer[((i + rowStartOffset) % maxRows) * rStride + j * cStride];
+                                array[offset + i * colCount + j] =
+                                        buffer[((i + rowStartOffset) % maxRows) * colCount + j];
                             }
                         }
 

@@ -39,25 +39,9 @@ public class SegmentDoubleIlm {
         }
 
         @Override
-        protected void toArrayImpl(
-                double[] array,
-                int offset,
-                int rowStride,
-                int colStride,
-                long rowStart,
-                long colStart,
-                int rowCount,
-                int colCount)
+        protected void toArrayImpl(double[] array, int offset, long rowStart, long colStart, int rowCount, int colCount)
                 throws DataInvalidException {
-            doubleIlm.toArray(
-                    array,
-                    offset,
-                    rowStride,
-                    colStride,
-                    startingRow + rowStart,
-                    startingColumn + colStart,
-                    rowCount,
-                    colCount);
+            doubleIlm.toArray(array, offset, startingRow + rowStart, startingColumn + colStart, rowCount, colCount);
         }
     }
 }

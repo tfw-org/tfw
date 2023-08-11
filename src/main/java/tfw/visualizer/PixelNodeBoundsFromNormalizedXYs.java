@@ -94,21 +94,8 @@ public final class PixelNodeBoundsFromNormalizedXYs {
             throw new DataInvalidException("Method not implemented!");
         }
 
-        public void toArray(int[] array, int offset, long rowStart, long columnStart, int rowCount, int colCount)
-                throws DataInvalidException {
-            throw new DataInvalidException("Method not implemented!");
-        }
-
         @Override
-        public void toArray(
-                int[] array,
-                int offset,
-                int rowStride,
-                int colStride,
-                long rowStart,
-                long columnStart,
-                int rowCount,
-                int colCount)
+        public void toArray(int[] array, int offset, long rowStart, long columnStart, int rowCount, int colCount)
                 throws DataInvalidException {
             // TODO Auto-generated method stub
 

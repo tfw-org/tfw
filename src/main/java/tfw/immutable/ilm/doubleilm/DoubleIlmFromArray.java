@@ -26,19 +26,12 @@ public final class DoubleIlmFromArray {
         }
 
         protected void toArrayImpl(
-                double[] array,
-                int offset,
-                int rowStride,
-                int colStride,
-                long rowStart,
-                long colStart,
-                int rowCount,
-                int colCount) {
+                final double[] array, int offset, long rowStart, long colStart, int rowCount, int colCount) {
             int intWidth = (int) width();
 
             for (int i = 0; i < rowCount; i++) {
                 for (int j = 0; j < colCount; j++) {
-                    array[offset + (i * rowStride) + (j * colStride)] =
+                    array[offset + (i * colCount) + j] =
                             this.array[(i + (int) rowStart) * intWidth + j + (int) colStart];
                 }
             }

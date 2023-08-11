@@ -29,32 +29,10 @@ public class TakeSkipDoubleIlm {
         }
 
         @Override
-        protected void toArrayImpl(
-                double[] array,
-                int offset,
-                int rowStride,
-                int colStride,
-                long rowStart,
-                long colStart,
-                int rowCount,
-                int colCount)
+        protected void toArrayImpl(double[] array, int offset, long rowStart, long colStart, int rowCount, int colCount)
                 throws DataInvalidException {
-            if (colStride == 1) {
-                for (int i = 0; i < rowCount; i++) {
-                    doubleIla.toArray(array, offset + i * rowStride, (rowStart + i) * skip + colStart, colCount);
-                }
-            } else {
-                if (buffer.length < colCount) {
-                    buffer = new double[colCount];
-                }
-
-                for (int i = 0; i < rowCount; i++) {
-                    doubleIla.toArray(buffer, 0, (rowStart + i) * skip + colStart, colCount);
-
-                    for (int j = 0; j < colCount; j++) {
-                        array[offset + (i * rowStride) + (j * colStride)] = buffer[j];
-                    }
-                }
+            for (int i = 0; i < rowCount; i++) {
+                doubleIla.toArray(array, offset + i * colCount, (rowStart + i) * skip + colStart, colCount);
             }
         }
     }

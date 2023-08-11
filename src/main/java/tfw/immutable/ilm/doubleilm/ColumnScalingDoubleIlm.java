@@ -40,35 +40,21 @@ public class ColumnScalingDoubleIlm {
         }
 
         @Override
-        protected void toArrayImpl(
-                double[] array,
-                int offset,
-                int rowStride,
-                int colStride,
-                long rowStart,
-                long colStart,
-                int rowCount,
-                int colCount)
+        protected void toArrayImpl(double[] array, int offset, long rowStart, long colStart, int rowCount, int colCount)
                 throws DataInvalidException {
             long lastRowCopied = -1;
 
-            if (colStride == 1) {
-                for (int i = 0; i < rowCount; i++) {
-                    long rowToCopy = BigInteger.valueOf(rowStart + i)
-                            .multiply(inputElements)
-                            .divide(outputElements)
-                            .longValue();
+            for (int i = 0; i < rowCount; i++) {
+                long rowToCopy = BigInteger.valueOf(rowStart + i)
+                        .multiply(inputElements)
+                        .divide(outputElements)
+                        .longValue();
 
-                    if (rowToCopy == lastRowCopied) {
-                        System.arraycopy(
-                                array, offset + (rowStride * (i - 1)), array, offset + (rowStride * i), colCount);
-                    } else {
-                        doubleIlm.toArray(
-                                array, offset + (rowStride * i), colCount, colStride, rowToCopy, colStart, 1, colCount);
-                    }
+                if (rowToCopy == lastRowCopied) {
+                    System.arraycopy(array, offset + (colCount * (i - 1)), array, offset + (colCount * i), colCount);
+                } else {
+                    doubleIlm.toArray(array, offset + (colCount * i), rowToCopy, colStart, 1, colCount);
                 }
-            } else {
-                throw new UnsupportedOperationException("colStride != 1 not supported!");
             }
         }
     }
@@ -92,15 +78,7 @@ public class ColumnScalingDoubleIlm {
         }
 
         @Override
-        protected void toArrayImpl(
-                double[] array,
-                int offset,
-                int rowStride,
-                int colStride,
-                long rowStart,
-                long colStart,
-                int rowCount,
-                int colCount)
+        protected void toArrayImpl(double[] array, int offset, long rowStart, long colStart, int rowCount, int colCount)
                 throws DataInvalidException {
             // TODO Auto-generated method stub
 

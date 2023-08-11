@@ -25,24 +25,16 @@ public class ByteIlmFromCastIntIlm {
         }
 
         @Override
-        protected void toArrayImpl(
-                byte[] array,
-                int offset,
-                int rowStride,
-                int colStride,
-                long rowStart,
-                long colStart,
-                int rowCount,
-                int colCount)
+        protected void toArrayImpl(byte[] array, int offset, long rowStart, long colStart, int rowCount, int colCount)
                 throws DataInvalidException {
             if (buffer.length < intIlm.width()) {
                 buffer = new int[(int) intIlm.width()];
             }
             for (int i = 0; i < rowCount; i++) {
-                intIlm.toArray(buffer, 0, buffer.length, 1, rowStart + i, colStart, 1, colCount);
+                intIlm.toArray(buffer, 0, rowStart + i, colStart, 1, colCount);
 
                 for (int j = 0; j < colCount; j++) {
-                    array[offset + (i * rowStride) + (j * colStride)] = (byte) buffer[j];
+                    array[offset + (i * colCount) + j] = (byte) buffer[j];
                 }
             }
         }

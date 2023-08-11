@@ -3,10 +3,6 @@ package tfw.immutable.ila.doubleila;
 import tfw.immutable.DataInvalidException;
 import tfw.immutable.ila.AbstractIla;
 
-/**
- *
- * @immutables.types=all
- */
 public abstract class AbstractDoubleIla extends AbstractIla implements DoubleIla {
     protected abstract void toArrayImpl(final double[] array, int offset, long start, int length)
             throws DataInvalidException;

@@ -34,36 +34,16 @@ public class RealFftDoubleIlm {
         }
 
         @Override
-        protected void toArrayImpl(
-                double[] array,
-                int offset,
-                int rowStride,
-                int colStride,
-                long rowStart,
-                long colStart,
-                int rowCount,
-                int colCount)
+        protected void toArrayImpl(double[] array, int offset, long rowStart, long colStart, int rowCount, int colCount)
                 throws DataInvalidException {
             Argument.assertEquals(colStart, 0, "colStart", "0");
             Argument.assertEquals(colCount, fftSize, "colCount", "fftSize");
 
-            if (colStride == 1) {
-                for (int i = 0; i < rowCount; i++) {
-                    doubleIlm.toArray(buffer, 0, fftSize, 1, rowStart + i, 0, 1, dataWidth);
-                    Ooura1D.rdft(fftSize, 1, buffer, ip, w);
+            for (int i = 0; i < rowCount; i++) {
+                doubleIlm.toArray(buffer, 0, rowStart + i, 0, 1, dataWidth);
+                Ooura1D.rdft(fftSize, 1, buffer, ip, w);
 
-                    System.arraycopy(buffer, 0, array, offset + (rowStride * i), fftSize);
-                }
-            } else {
-                for (int i = 0; i < rowCount; i++) {
-                    doubleIlm.toArray(buffer, 0, fftSize, 1, rowStart + i, 0, 1, dataWidth);
-                    Ooura1D.rdft(fftSize, 1, buffer, ip, w);
-
-                    int rowOffset = offset + (rowStride * i);
-                    for (int j = 0; j < colCount; j++) {
-                        array[rowOffset + (colStride * j)] = buffer[j];
-                    }
-                }
+                System.arraycopy(buffer, 0, array, offset + (colCount * i), fftSize);
             }
         }
     }

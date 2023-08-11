@@ -1,0 +1,37 @@
+// booleanilm,byteilm,charilm,doubleilm,floatilm,intilm,longilm,objectilm,shortilm
+package %%PACKAGE%%;
+
+import tfw.immutable.DataInvalidException;
+import tfw.immutable.ilm.AbstractStridedIlm;
+
+public abstract class AbstractStrided%%NAME%%Ilm%%TEMPLATE%% extends AbstractStridedIlm implements Strided%%NAME%%Ilm%%TEMPLATE%% {
+    protected abstract void toArrayImpl(
+            %%TYPE_OR_TEMPLATE%%[] array,
+            int offset,
+            int rowStride,
+            int colStride,
+            long rowStart,
+            long colStart,
+            int rowCount,
+            int colCount)
+            throws DataInvalidException;
+
+    protected AbstractStrided%%NAME%%Ilm(final long width, final long height) {
+        super(width, height);
+    }
+
+    @Override
+    public final void toArray(
+            %%TYPE_OR_TEMPLATE%%[] array,
+            int offset,
+            int rowStride,
+            int colStride,
+            long rowStart,
+            long colStart,
+            int rowCount,
+            int colCount)
+            throws DataInvalidException {
+        boundsCheck(array.length, offset, rowStride, colStride, rowStart, colStart, rowCount, colCount);
+        toArrayImpl(array, offset, rowStride, colStride, rowStart, colStart, rowCount, colCount);
+    }
+}

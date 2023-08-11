@@ -25,24 +25,16 @@ public class InterleavedMagnitudeDoubleIlm {
         }
 
         @Override
-        protected void toArrayImpl(
-                double[] array,
-                int offset,
-                int rowStride,
-                int colStride,
-                long rowStart,
-                long colStart,
-                int rowCount,
-                int colCount)
+        protected void toArrayImpl(double[] array, int offset, long rowStart, long colStart, int rowCount, int colCount)
                 throws DataInvalidException {
             for (int i = 0; i < rowCount; i++) {
-                doubleIlm.toArray(buffer, 0, buffer.length, 1, rowStart + i, colStart * 2, 1, colCount * 2);
+                doubleIlm.toArray(buffer, 0, rowStart + i, colStart * 2, 1, colCount * 2);
 
                 for (int j = 0; j < colCount; j++) {
                     double real = buffer[j * 2];
                     double imag = buffer[j * 2 + 1];
 
-                    array[offset + (i * rowStride) + (j * colStride)] = real * real + imag * imag;
+                    array[offset + (i * colCount) + j] = real * real + imag * imag;
                 }
             }
         }

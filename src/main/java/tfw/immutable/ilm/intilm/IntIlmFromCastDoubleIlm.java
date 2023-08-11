@@ -25,24 +25,16 @@ public class IntIlmFromCastDoubleIlm {
         }
 
         @Override
-        protected void toArrayImpl(
-                int[] array,
-                int offset,
-                int rowStride,
-                int colStride,
-                long rowStart,
-                long colStart,
-                int rowCount,
-                int colCount)
+        protected void toArrayImpl(int[] array, int offset, long rowStart, long colStart, int rowCount, int colCount)
                 throws DataInvalidException {
             if (buffer.length < doubleIlm.width()) {
                 buffer = new double[(int) doubleIlm.width()];
             }
             for (int i = 0; i < rowCount; i++) {
-                doubleIlm.toArray(buffer, 0, buffer.length, 1, rowStart + i, colStart, 1, colCount);
+                doubleIlm.toArray(buffer, 0, rowStart + i, colStart, 1, colCount);
 
                 for (int j = 0; j < colCount; j++) {
-                    array[offset + (i * rowStride) + (j * colStride)] = (int) buffer[j];
+                    array[offset + (i * colCount) + j] = (int) buffer[j];
                 }
             }
         }

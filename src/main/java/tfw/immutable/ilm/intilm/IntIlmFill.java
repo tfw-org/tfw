@@ -23,19 +23,11 @@ public class IntIlmFill {
         }
 
         @Override
-        protected void toArrayImpl(
-                int[] array,
-                int offset,
-                int rowStride,
-                int colStride,
-                long rowStart,
-                long colStart,
-                int rowCount,
-                int colCount)
+        protected void toArrayImpl(int[] array, int offset, long rowStart, long colStart, int rowCount, int colCount)
                 throws DataInvalidException {
             for (int i = 0; i < rowCount; i++) {
                 for (int j = 0; j < colCount; j++) {
-                    array[offset + (i * rowStride) + (j * colStride)] = value;
+                    array[offset + (i * colCount) + j] = value;
                 }
             }
         }

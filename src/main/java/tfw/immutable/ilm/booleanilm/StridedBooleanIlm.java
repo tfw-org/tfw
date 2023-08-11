@@ -1,19 +1,16 @@
-package tfw.immutable.ilm.stringilm;
+package tfw.immutable.ilm.booleanilm;
 
 import tfw.immutable.DataInvalidException;
 import tfw.immutable.ilm.ImmutableLongMatrix;
 
-public interface StringIlm extends ImmutableLongMatrix {
-    void toArray(String[] array, int offset, long rowStart, long columnStart, int rowCount, int colCount)
-            throws DataInvalidException;
-
+public interface StridedBooleanIlm extends ImmutableLongMatrix {
     void toArray(
-            String[] array,
+            boolean[] array,
             int offset,
             int rowStride,
             int colStride,
             long rowStart,
-            long columnStart,
+            long colStart,
             int rowCount,
             int colCount)
             throws DataInvalidException;

@@ -3,10 +3,6 @@ package tfw.immutable.ila.booleanila;
 import tfw.immutable.DataInvalidException;
 import tfw.immutable.ila.AbstractIla;
 
-/**
- *
- * @immutables.types=all
- */
 public abstract class AbstractBooleanIla extends AbstractIla implements BooleanIla {
     protected abstract void toArrayImpl(final boolean[] array, int offset, long start, int length)
             throws DataInvalidException;

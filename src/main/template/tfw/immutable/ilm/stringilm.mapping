@@ -1,7 +1,0 @@
-%%TYPE%% = String
-%%NAME%% = String
-%%PACKAGE%% = tfw.immutable.ilm.stringilm
-%%RANDOM_VALUE%% = new String()
-%%ASSERT_EQUALS_DELTA%% =
-%%CREATE_IMMUTABLE_START%% =
-%%CREATE_IMMUTABLE_END%% =

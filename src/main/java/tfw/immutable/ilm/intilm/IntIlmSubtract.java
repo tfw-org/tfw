@@ -29,27 +29,19 @@ public class IntIlmSubtract {
         }
 
         @Override
-        protected void toArrayImpl(
-                int[] array,
-                int offset,
-                int rowStride,
-                int colStride,
-                long rowStart,
-                long colStart,
-                int rowCount,
-                int colCount)
+        protected void toArrayImpl(int[] array, int offset, long rowStart, long colStart, int rowCount, int colCount)
                 throws DataInvalidException {
             if (buffer.length < leftIlm.width()) {
                 buffer = new int[(int) leftIlm.width()];
             }
 
-            leftIlm.toArray(array, offset, rowStride, colStride, rowStart, colStart, rowCount, colCount);
+            leftIlm.toArray(array, offset, rowStart, colStart, rowCount, colCount);
 
             for (int i = 0; i < rowCount; i++) {
-                rightIlm.toArray(buffer, 0, buffer.length, 1, rowStart + i, colStart, 1, colCount);
+                rightIlm.toArray(buffer, 0, rowStart + i, colStart, 1, colCount);
 
                 for (int j = 0; j < colCount; j++) {
-                    array[offset + (i * rowStride) + (j * colStride)] -= buffer[j];
+                    array[offset + (i * colCount) + j] -= buffer[j];
                 }
             }
         }

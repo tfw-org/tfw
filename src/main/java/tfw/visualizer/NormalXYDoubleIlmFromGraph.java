@@ -218,21 +218,8 @@ public class NormalXYDoubleIlmFromGraph {
             return new double[0];
         }
 
-        public void toArray(double[] array, int rowOffset, long rowStart, long columnStart, int width, int height)
-                throws DataInvalidException {
-            throw new DataInvalidException("Method not implemented");
-        }
-
         @Override
-        public void toArray(
-                double[] array,
-                int offset,
-                int rowStride,
-                int colStride,
-                long rowStart,
-                long columnStart,
-                int rowCount,
-                int colCount)
+        public void toArray(double[] array, int offset, long rowStart, long columnStart, int rowCount, int colCount)
                 throws DataInvalidException {
             // TODO Auto-generated method stub
 

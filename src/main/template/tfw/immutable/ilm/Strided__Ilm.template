@@ -1,0 +1,18 @@
+// booleanilm,byteilm,charilm,doubleilm,floatilm,intilm,longilm,objectilm,shortilm
+package %%PACKAGE%%;
+
+import tfw.immutable.DataInvalidException;
+import tfw.immutable.ilm.ImmutableLongMatrix;
+
+public interface Strided%%NAME%%Ilm%%TEMPLATE%% extends ImmutableLongMatrix {
+    void toArray(
+            %%TYPE_OR_TEMPLATE%%[] array,
+            int offset,
+            int rowStride,
+            int colStride,
+            long rowStart,
+            long colStart,
+            int rowCount,
+            int colCount)
+            throws DataInvalidException;
+}

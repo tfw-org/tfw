@@ -14,9 +14,8 @@ class ObjectIlmFromArrayTest {
             array[i] = new Object();
         }
 
-        ObjectIlm ObjectIlm = ObjectIlmFromArray.create(array, array.length / 2);
+        ObjectIlm<Object> ObjectIlm = ObjectIlmFromArray.create(array, array.length / 2);
 
-        assertTrue(Arrays.equals(array, ObjectIlmUtil.toArray(ObjectIlm)));
+        assertTrue(Arrays.equals(array, ObjectIlmUtil.toArray(ObjectIlm, new Object[0])));
     }
 }
-// AUTO GENERATED FROM TEMPLATE
