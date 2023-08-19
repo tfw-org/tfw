@@ -6,7 +6,7 @@ import tfw.immutable.ilm.AbstractIlm;
 
 public abstract class AbstractBooleanIlm extends AbstractIlm implements BooleanIlm {
     protected abstract void toArrayImpl(
-            boolean[] array, int offset, long rowStart, long colStart, int rowCount, int colCount)
+            final boolean[] array, int offset, long rowStart, long colStart, int rowCount, int colCount)
             throws DataInvalidException;
 
     protected AbstractBooleanIlm(long width, long height) {

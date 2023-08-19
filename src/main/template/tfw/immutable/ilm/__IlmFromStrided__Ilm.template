@@ -1,0 +1,32 @@
+// booleanilm,byteilm,charilm,doubleilm,floatilm,intilm,longilm,objectilm,shortilm
+package %%PACKAGE%%;
+
+import tfw.check.Argument;
+import tfw.immutable.DataInvalidException;
+
+public final class %%NAME%%IlmFromStrided%%NAME%%Ilm%%TEMPLATE%% {
+    private %%NAME%%IlmFromStrided%%NAME%%Ilm() {}
+
+    public static %%TEMPLATE_SPACE%%%%NAME%%Ilm%%TEMPLATE%% create(final Strided%%NAME%%Ilm%%TEMPLATE%% stridedIlm) {
+        Argument.assertNotNull(stridedIlm, "stridedIlm");
+
+        return new My%%NAME%%Ilm%%DIAMOND%%(stridedIlm);
+    }
+
+    private static class My%%NAME%%Ilm%%TEMPLATE%% extends Abstract%%NAME%%Ilm%%TEMPLATE%% {
+        private final Strided%%NAME%%Ilm%%TEMPLATE%% stridedIlm;
+
+        public My%%NAME%%Ilm(final Strided%%NAME%%Ilm%%TEMPLATE%% stridedIlm) {
+            super(stridedIlm.width(), stridedIlm.height());
+
+            this.stridedIlm = stridedIlm;
+        }
+
+        @Override
+        protected void toArrayImpl(
+                final %%TYPE_OR_TEMPLATE%%[] array, int offset, long rowStart, long colStart, int rowCount, int colCount)
+                throws DataInvalidException {
+            stridedIlm.toArray(array, offset, colCount, 1, rowStart, colStart, rowCount, colCount);
+        }
+    }
+}

@@ -6,7 +6,7 @@ import tfw.immutable.ilm.AbstractIlm;
 
 public abstract class AbstractCharIlm extends AbstractIlm implements CharIlm {
     protected abstract void toArrayImpl(
-            char[] array, int offset, long rowStart, long colStart, int rowCount, int colCount)
+            final char[] array, int offset, long rowStart, long colStart, int rowCount, int colCount)
             throws DataInvalidException;
 
     protected AbstractCharIlm(long width, long height) {

@@ -5,7 +5,7 @@ import tfw.check.Argument;
 public final class ObjectIlmFromArray {
     private ObjectIlmFromArray() {}
 
-    public static <T> ObjectIlm<T> create(Object[] array, int width) {
+    public static <T> ObjectIlm<T> create(T[] array, int width) {
         Argument.assertNotNull(array, "array");
         Argument.assertNotLessThan(width, 0, "width");
 
@@ -17,16 +17,16 @@ public final class ObjectIlmFromArray {
     }
 
     private static class MyObjectIlm<T> extends AbstractObjectIlm<T> {
-        private final Object[] array;
+        private final T[] array;
 
-        MyObjectIlm(Object[] array, int width) {
+        MyObjectIlm(T[] array, int width) {
             super(width, width == 0 ? 0 : array.length / width);
 
             this.array = array;
         }
 
         protected void toArrayImpl(
-                final Object[] array, int offset, long rowStart, long colStart, int rowCount, int colCount) {
+                final T[] array, int offset, long rowStart, long colStart, int rowCount, int colCount) {
             int intWidth = (int) width();
 
             for (int i = 0; i < rowCount; i++) {
