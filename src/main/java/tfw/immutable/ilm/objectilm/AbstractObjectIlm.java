@@ -6,14 +6,14 @@ import tfw.immutable.ilm.AbstractIlm;
 
 public abstract class AbstractObjectIlm<T> extends AbstractIlm implements ObjectIlm<T> {
     protected abstract void toArrayImpl(
-            Object[] array, int offset, long rowStart, long colStart, int rowCount, int colCount)
+            final T[] array, int offset, long rowStart, long colStart, int rowCount, int colCount)
             throws DataInvalidException;
 
     protected AbstractObjectIlm(long width, long height) {
         super(width, height);
     }
 
-    public final void toArray(Object[] array, int offset, long rowStart, long colStart, int rowCount, int colCount)
+    public final void toArray(T[] array, int offset, long rowStart, long colStart, int rowCount, int colCount)
             throws DataInvalidException {
         Argument.assertNotNull(array, "array");
 

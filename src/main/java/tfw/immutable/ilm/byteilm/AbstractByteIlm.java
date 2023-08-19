@@ -6,7 +6,7 @@ import tfw.immutable.ilm.AbstractIlm;
 
 public abstract class AbstractByteIlm extends AbstractIlm implements ByteIlm {
     protected abstract void toArrayImpl(
-            byte[] array, int offset, long rowStart, long colStart, int rowCount, int colCount)
+            final byte[] array, int offset, long rowStart, long colStart, int rowCount, int colCount)
             throws DataInvalidException;
 
     protected AbstractByteIlm(long width, long height) {

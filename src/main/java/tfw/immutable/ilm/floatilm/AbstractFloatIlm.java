@@ -6,7 +6,7 @@ import tfw.immutable.ilm.AbstractIlm;
 
 public abstract class AbstractFloatIlm extends AbstractIlm implements FloatIlm {
     protected abstract void toArrayImpl(
-            float[] array, int offset, long rowStart, long colStart, int rowCount, int colCount)
+            final float[] array, int offset, long rowStart, long colStart, int rowCount, int colCount)
             throws DataInvalidException;
 
     protected AbstractFloatIlm(long width, long height) {
