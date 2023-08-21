@@ -1,7 +1,7 @@
 package tfw.immutable.ila.byteila;
 
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 import tfw.immutable.ila.doubleila.DoubleIla;
 import tfw.immutable.ila.doubleila.DoubleIlaIterator;
 import tfw.immutable.ila.doubleila.DoubleIlaSegment;
@@ -29,7 +29,7 @@ public final class ByteIlaFromCastDoubleIla {
             this.bufferSize = bufferSize;
         }
 
-        protected void toArrayImpl(byte[] array, int offset, long start, int length) throws DataInvalidException {
+        protected void toArrayImpl(byte[] array, int offset, long start, int length) throws IOException {
             DoubleIlaIterator fi =
                     new DoubleIlaIterator(DoubleIlaSegment.create(doubleIla, start, length), new double[bufferSize]);
 

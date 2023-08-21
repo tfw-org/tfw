@@ -1,7 +1,7 @@
 package tfw.immutable.ila.charila;
 
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 
 public final class CharIlaReverse {
     private CharIlaReverse() {
@@ -26,7 +26,7 @@ public final class CharIlaReverse {
             this.buffer = buffer;
         }
 
-        protected void toArrayImpl(char[] array, int offset, long start, int length) throws DataInvalidException {
+        protected void toArrayImpl(char[] array, int offset, long start, int length) throws IOException {
             final StridedCharIla stridedCharIla = new StridedCharIla(ila, buffer.clone());
 
             stridedCharIla.toArray(array, offset + (length - 1), -1, length() - (start + length), length);

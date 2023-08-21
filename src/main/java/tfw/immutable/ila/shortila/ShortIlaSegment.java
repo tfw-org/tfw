@@ -1,7 +1,7 @@
 package tfw.immutable.ila.shortila;
 
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 
 public final class ShortIlaSegment {
     private ShortIlaSegment() {
@@ -31,7 +31,7 @@ public final class ShortIlaSegment {
             this.start = start;
         }
 
-        protected void toArrayImpl(short[] array, int offset, long start, int length) throws DataInvalidException {
+        protected void toArrayImpl(short[] array, int offset, long start, int length) throws IOException {
             ila.toArray(array, offset, this.start + start, length);
         }
     }

@@ -1,5 +1,6 @@
 package tfw.visualizer;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -32,7 +33,7 @@ public class NormalXYDoubleIlmFromGraph {
             return 2;
         }
 
-        public double[] toArray() throws DataInvalidException {
+        public double[] toArray() throws IOException {
             // System.out.println("NormalXYDoubleIlmFromGraph:  starting");
             Object[] nodes = new Object[(int) graph.nodesLength()];
             Object[] froms = new Object[(int) graph.edgesLength()];
@@ -206,7 +207,7 @@ public class NormalXYDoubleIlmFromGraph {
             // System.out.println("Leaving xxx");
         }
 
-        public double[] toArray(long rowStart, long columnStart, int width, int height) throws DataInvalidException {
+        public double[] toArray(long rowStart, long columnStart, int width, int height) throws IOException {
             //	    	double[][] array = toArray();
             //	    	double[][] returnArray = new double[height][width];
             //

@@ -1,7 +1,7 @@
 package tfw.immutable.ila.booleanila;
 
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 
 public final class BooleanIlaReverse {
     private BooleanIlaReverse() {
@@ -26,7 +26,7 @@ public final class BooleanIlaReverse {
             this.buffer = buffer;
         }
 
-        protected void toArrayImpl(boolean[] array, int offset, long start, int length) throws DataInvalidException {
+        protected void toArrayImpl(boolean[] array, int offset, long start, int length) throws IOException {
             final StridedBooleanIla stridedBooleanIla = new StridedBooleanIla(ila, buffer.clone());
 
             stridedBooleanIla.toArray(array, offset + (length - 1), -1, length() - (start + length), length);

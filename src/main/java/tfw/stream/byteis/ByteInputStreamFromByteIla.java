@@ -1,5 +1,6 @@
 package tfw.stream.byteis;
 
+import java.io.IOException;
 import tfw.immutable.DataInvalidException;
 import tfw.immutable.ila.byteila.ByteIla;
 
@@ -44,7 +45,11 @@ public final class ByteInputStreamFromByteIla {
             }
 
             if (index < byteIla.length()) {
-                byteIla.toArray(buffer, 0, index++, 1);
+                try {
+                    byteIla.toArray(buffer, 0, index++, 1);
+                } catch (IOException e) {
+                    throw new DataInvalidException("Could not get data!", e);
+                }
 
                 array[offset] = buffer[0];
             } else {

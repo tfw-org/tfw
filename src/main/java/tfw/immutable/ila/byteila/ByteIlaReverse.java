@@ -1,7 +1,7 @@
 package tfw.immutable.ila.byteila;
 
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 
 public final class ByteIlaReverse {
     private ByteIlaReverse() {
@@ -26,7 +26,7 @@ public final class ByteIlaReverse {
             this.buffer = buffer;
         }
 
-        protected void toArrayImpl(byte[] array, int offset, long start, int length) throws DataInvalidException {
+        protected void toArrayImpl(byte[] array, int offset, long start, int length) throws IOException {
             final StridedByteIla stridedByteIla = new StridedByteIla(ila, buffer.clone());
 
             stridedByteIla.toArray(array, offset + (length - 1), -1, length() - (start + length), length);

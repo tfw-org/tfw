@@ -1,7 +1,7 @@
 package tfw.audio.shortila;
 
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 import tfw.immutable.ila.byteila.ByteIla;
 import tfw.immutable.ila.byteila.ByteIlaIterator;
 import tfw.immutable.ila.byteila.ByteIlaSegment;
@@ -34,7 +34,7 @@ public final class LinearShortIlaFromALawByteIla {
             this.bufferSize = bufferSize;
         }
 
-        protected void toArrayImpl(short[] array, int offset, long start, int length) throws DataInvalidException {
+        protected void toArrayImpl(short[] array, int offset, long start, int length) throws IOException {
             ByteIlaIterator bi =
                     new ByteIlaIterator(ByteIlaSegment.create(byteIla, start, length), new byte[bufferSize]);
 

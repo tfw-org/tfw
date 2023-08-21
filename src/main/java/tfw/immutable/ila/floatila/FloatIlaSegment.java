@@ -1,7 +1,7 @@
 package tfw.immutable.ila.floatila;
 
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 
 public final class FloatIlaSegment {
     private FloatIlaSegment() {
@@ -31,7 +31,7 @@ public final class FloatIlaSegment {
             this.start = start;
         }
 
-        protected void toArrayImpl(float[] array, int offset, long start, int length) throws DataInvalidException {
+        protected void toArrayImpl(float[] array, int offset, long start, int length) throws IOException {
             ila.toArray(array, offset, this.start + start, length);
         }
     }

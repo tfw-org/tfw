@@ -1,6 +1,6 @@
 package tfw.visualizer.graph;
 
-import tfw.immutable.DataInvalidException;
+import java.io.IOException;
 
 public interface Graph {
     long nodesLength();
@@ -17,5 +17,5 @@ public interface Graph {
             int edgesOffset,
             long edgesStart,
             int edgesLength)
-            throws DataInvalidException;
+            throws IOException;
 }

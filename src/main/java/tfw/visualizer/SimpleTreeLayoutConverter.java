@@ -1,10 +1,10 @@
 package tfw.visualizer;
 
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.TreeMap;
 import java.util.TreeSet;
-import tfw.immutable.DataInvalidException;
 import tfw.immutable.ila.doubleila.DoubleIlaFromArray;
 import tfw.immutable.ila.longila.LongIla;
 import tfw.immutable.ila.longila.LongIlaUtil;
@@ -58,7 +58,7 @@ public class SimpleTreeLayoutConverter extends Converter {
             nodeClustersIla.toArray(nodeClusters, 0, 0, nodeClusters.length);
             nodeClusterFromsIla.toArray(nodeClusterFroms, 0, 0, nodeClusterFroms.length);
             nodeClusterTosIla.toArray(nodeClusterTos, 0, 0, nodeClusterTos.length);
-        } catch (DataInvalidException e) {
+        } catch (IOException e) {
             return;
         }
 
@@ -74,7 +74,7 @@ public class SimpleTreeLayoutConverter extends Converter {
                 nodes = LongIlaUtil.toArray((LongIla) nodeClusters[i]);
                 nodeTos = LongIlaUtil.toArray((LongIla) nodeClusterTos[i]);
                 nodeFroms = LongIlaUtil.toArray((LongIla) nodeClusterFroms[i]);
-            } catch (DataInvalidException e) {
+            } catch (IOException e) {
                 return;
             }
 

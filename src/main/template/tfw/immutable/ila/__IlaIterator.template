@@ -1,8 +1,8 @@
 // booleanila,byteila,charila,doubleila,floatila,intila,longila,objectila,shortila
 package %%PACKAGE%%;
 
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 
 public final class %%NAME%%IlaIterator%%TEMPLATE%% {
     private final %%NAME%%Ila%%TEMPLATE%% instance;
@@ -40,7 +40,7 @@ public final class %%NAME%%IlaIterator%%TEMPLATE%% {
      * Either know the length of the %%NAME%%Ila, or use hasNext()
      * properly.
      */
-    public %%TYPE_OR_TEMPLATE%% next() throws DataInvalidException {
+    public %%TYPE_OR_TEMPLATE%% next() throws IOException {
         // do we need to fetch into buffer?
         if (bufferIndex == buffer.length) {
             // how much do we fetch?
@@ -62,7 +62,7 @@ public final class %%NAME%%IlaIterator%%TEMPLATE%% {
      * Either know the length of the %%NAME%%Ila, or use hasNext()
      * properly.
      */
-    public void skip(long amount) throws DataInvalidException {
+    public void skip(long amount) throws IOException {
         long newBufferIndex = bufferIndex + amount;
         actualPosition += amount;
 

@@ -1,9 +1,9 @@
 package tfw.visualizer;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.TreeSet;
-import tfw.immutable.DataInvalidException;
 import tfw.immutable.ila.longila.LongIla;
 import tfw.immutable.ila.longila.LongIlaFromArray;
 import tfw.immutable.ila.longila.LongIlaUtil;
@@ -44,7 +44,7 @@ public class ClusterConverter extends Converter {
         try {
             nodeFroms = LongIlaUtil.toArray((LongIla) get(nodeFromsECD));
             nodeTos = LongIlaUtil.toArray((LongIla) get(nodeTosECD));
-        } catch (DataInvalidException e) {
+        } catch (IOException e) {
             return;
         }
 

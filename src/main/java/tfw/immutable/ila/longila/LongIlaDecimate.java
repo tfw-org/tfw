@@ -1,7 +1,7 @@
 package tfw.immutable.ila.longila;
 
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 
 public final class LongIlaDecimate {
     private LongIlaDecimate() {
@@ -29,7 +29,7 @@ public final class LongIlaDecimate {
             this.buffer = buffer;
         }
 
-        protected void toArrayImpl(long[] array, int offset, long start, int length) throws DataInvalidException {
+        protected void toArrayImpl(long[] array, int offset, long start, int length) throws IOException {
             final long segmentStart = start * factor;
             final long segmentLength = StrictMath.min(ila.length() - segmentStart, length * factor - 1);
             final LongIla segment = LongIlaSegment.create(ila, segmentStart, segmentLength);

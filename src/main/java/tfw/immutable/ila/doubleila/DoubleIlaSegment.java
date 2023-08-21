@@ -1,7 +1,7 @@
 package tfw.immutable.ila.doubleila;
 
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 
 public final class DoubleIlaSegment {
     private DoubleIlaSegment() {
@@ -31,7 +31,7 @@ public final class DoubleIlaSegment {
             this.start = start;
         }
 
-        protected void toArrayImpl(double[] array, int offset, long start, int length) throws DataInvalidException {
+        protected void toArrayImpl(double[] array, int offset, long start, int length) throws IOException {
             ila.toArray(array, offset, this.start + start, length);
         }
     }

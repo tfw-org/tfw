@@ -1,7 +1,7 @@
 package tfw.visualizer.graph;
 
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 
 public class GraphEdgeNeitherClassFilter {
     private GraphEdgeNeitherClassFilter() {}
@@ -40,7 +40,7 @@ public class GraphEdgeNeitherClassFilter {
                 int edgesOffset,
                 long edgesStart,
                 int edgesLength)
-                throws DataInvalidException {
+                throws IOException {
             graph.toArray(
                     nodes,
                     nodesOffset,

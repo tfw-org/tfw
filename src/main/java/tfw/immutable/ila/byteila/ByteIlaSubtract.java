@@ -1,7 +1,7 @@
 package tfw.immutable.ila.byteila;
 
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 
 public final class ByteIlaSubtract {
     private ByteIlaSubtract() {
@@ -30,7 +30,7 @@ public final class ByteIlaSubtract {
             this.bufferSize = bufferSize;
         }
 
-        protected void toArrayImpl(byte[] array, int offset, long ilaStart, int length) throws DataInvalidException {
+        protected void toArrayImpl(byte[] array, int offset, long ilaStart, int length) throws IOException {
             ByteIlaIterator li =
                     new ByteIlaIterator(ByteIlaSegment.create(leftIla, ilaStart, length), new byte[bufferSize]);
             ByteIlaIterator ri =

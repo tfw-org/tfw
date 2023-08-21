@@ -1,7 +1,7 @@
 package tfw.immutable.ila.longila;
 
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 
 public final class LongIlaConcatenate {
     private LongIlaConcatenate() {
@@ -37,7 +37,7 @@ public final class LongIlaConcatenate {
             this.leftIlaLength = leftIla.length();
         }
 
-        protected void toArrayImpl(long[] array, int offset, long start, int length) throws DataInvalidException {
+        protected void toArrayImpl(long[] array, int offset, long start, int length) throws IOException {
             if (start + length <= leftIlaLength) {
                 leftIla.toArray(array, offset, start, length);
             } else if (start >= leftIlaLength) {

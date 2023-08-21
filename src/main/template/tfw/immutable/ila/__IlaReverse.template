@@ -1,8 +1,8 @@
 // booleanila,byteila,charila,doubleila,floatila,intila,longila,objectila,shortila
 package %%PACKAGE%%;
 
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 
 public final class %%NAME%%IlaReverse {
     private %%NAME%%IlaReverse() {
@@ -27,7 +27,7 @@ public final class %%NAME%%IlaReverse {
             this.buffer = buffer;
         }
 
-        protected void toArrayImpl(%%TYPE_OR_TEMPLATE%%[] array, int offset, long start, int length) throws DataInvalidException {
+        protected void toArrayImpl(%%TYPE_OR_TEMPLATE%%[] array, int offset, long start, int length) throws IOException {
             final Strided%%NAME%%Ila%%TEMPLATE%% strided%%NAME%%Ila = new Strided%%NAME%%Ila%%DIAMOND%%(ila, buffer.clone());
 
             strided%%NAME%%Ila.toArray(array, offset + (length - 1), -1, length() - (start + length), length);

@@ -1,8 +1,8 @@
 // booleanila,byteila,charila,doubleila,floatila,intila,longila,objectila,shortila
 package %%PACKAGE%%;
 
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 
 public final class %%NAME%%IlaRemove {
     private %%NAME%%IlaRemove() {
@@ -27,7 +27,7 @@ public final class %%NAME%%IlaRemove {
             this.index = index;
         }
 
-        protected void toArrayImpl(%%TYPE_OR_TEMPLATE%%[] array, int offset, long start, int length) throws DataInvalidException {
+        protected void toArrayImpl(%%TYPE_OR_TEMPLATE%%[] array, int offset, long start, int length) throws IOException {
             final long startPlusLength = start + length;
 
             if (index <= start) {

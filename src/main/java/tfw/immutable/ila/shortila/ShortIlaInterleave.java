@@ -1,7 +1,7 @@
 package tfw.immutable.ila.shortila;
 
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 
 public final class ShortIlaInterleave {
     private ShortIlaInterleave() {
@@ -38,7 +38,7 @@ public final class ShortIlaInterleave {
             }
         }
 
-        protected void toArrayImpl(short[] array, int offset, long start, int length) throws DataInvalidException {
+        protected void toArrayImpl(short[] array, int offset, long start, int length) throws IOException {
             int currentIla = (int) (start % ilasLength);
             long ilaStart = start / ilasLength;
             final int ilaStride = ilasLength;

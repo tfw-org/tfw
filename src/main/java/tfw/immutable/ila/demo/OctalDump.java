@@ -1,8 +1,8 @@
 package tfw.immutable.ila.demo;
 
 import java.io.File;
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 import tfw.immutable.ila.byteila.ByteIla;
 import tfw.immutable.ila.byteila.ByteIlaFromFile;
 import tfw.immutable.ila.byteila.ByteIlaIterator;
@@ -35,7 +35,7 @@ import tfw.immutable.ila.shortila.ShortIlaSegment;
 public class OctalDump {
     public static final int BUFFER_SIZE = 1000;
 
-    public static void main(String[] args) throws DataInvalidException {
+    public static void main(String[] args) throws IOException {
         if (args.length != 3 || args[1].length() != 2) {
             System.err.println("Usage: OctalDump <-t type> <file>");
             System.err.println("       type = <d,f,o,x><1,2,4,8>");
@@ -133,7 +133,7 @@ public class OctalDump {
                 this.bufferSize = bufferSize;
             }
 
-            protected void toArrayImpl(String[] array, int offset, long start, int length) throws DataInvalidException {
+            protected void toArrayImpl(String[] array, int offset, long start, int length) throws IOException {
                 ByteIlaIterator bii = new ByteIlaIterator(
                         ByteIlaSegment.create(byteIla, start, byteIla.length() - start), new byte[bufferSize]);
 
@@ -188,7 +188,7 @@ public class OctalDump {
                 this.bufferSize = bufferSize;
             }
 
-            protected void toArrayImpl(String[] array, int offset, long start, int length) throws DataInvalidException {
+            protected void toArrayImpl(String[] array, int offset, long start, int length) throws IOException {
                 ShortIlaIterator sii = new ShortIlaIterator(
                         ShortIlaSegment.create(shortIla, start * 2, shortIla.length() - start * 2),
                         new short[bufferSize]);
@@ -244,7 +244,7 @@ public class OctalDump {
                 this.bufferSize = bufferSize;
             }
 
-            protected void toArrayImpl(String[] array, int offset, long start, int length) throws DataInvalidException {
+            protected void toArrayImpl(String[] array, int offset, long start, int length) throws IOException {
                 IntIlaIterator iii = new IntIlaIterator(
                         IntIlaSegment.create(intIla, start * 4, intIla.length() - start * 4), new int[bufferSize]);
 
@@ -297,7 +297,7 @@ public class OctalDump {
                 this.bufferSize = bufferSize;
             }
 
-            protected void toArrayImpl(String[] array, int offset, long start, int length) throws DataInvalidException {
+            protected void toArrayImpl(String[] array, int offset, long start, int length) throws IOException {
                 LongIlaIterator lii = new LongIlaIterator(
                         LongIlaSegment.create(longIla, start * 8, longIla.length() - start * 8), new long[bufferSize]);
 
@@ -348,7 +348,7 @@ public class OctalDump {
                 this.bufferSize = bufferSize;
             }
 
-            protected void toArrayImpl(String[] array, int offset, long start, int length) throws DataInvalidException {
+            protected void toArrayImpl(String[] array, int offset, long start, int length) throws IOException {
                 FloatIlaIterator fii = new FloatIlaIterator(
                         FloatIlaSegment.create(floatIla, start * 4, floatIla.length() - start * 4),
                         new float[bufferSize]);
@@ -390,7 +390,7 @@ public class OctalDump {
                 this.bufferSize = bufferSize;
             }
 
-            protected void toArrayImpl(String[] array, int offset, long start, int length) throws DataInvalidException {
+            protected void toArrayImpl(String[] array, int offset, long start, int length) throws IOException {
                 DoubleIlaIterator dii = new DoubleIlaIterator(
                         DoubleIlaSegment.create(doubleIla, start * 4, doubleIla.length() - start * 4),
                         new double[bufferSize]);

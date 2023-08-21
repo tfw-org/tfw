@@ -1,5 +1,6 @@
 package tfw.immutable.ilm.doubleilm;
 
+import java.io.IOException;
 import tfw.check.Argument;
 import tfw.immutable.DataInvalidException;
 import tfw.immutable.ila.doubleila.DoubleIla;
@@ -26,7 +27,11 @@ public class ReplicateDoubleIlm {
         @Override
         protected void toArrayImpl(double[] array, int offset, long rowStart, long colStart, int rowCount, int colCount)
                 throws DataInvalidException {
-            doubleIla.toArray(array, offset, colStart, colCount);
+            try {
+                doubleIla.toArray(array, offset, colStart, colCount);
+            } catch (IOException e) {
+                throw new DataInvalidException("Failed to get data!", e);
+            }
 
             for (int i = 0; i < rowCount; i++) {
                 System.arraycopy(array, offset, array, offset + (colCount * i), colCount);

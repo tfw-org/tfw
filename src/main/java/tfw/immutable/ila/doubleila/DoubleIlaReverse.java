@@ -1,7 +1,7 @@
 package tfw.immutable.ila.doubleila;
 
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 
 public final class DoubleIlaReverse {
     private DoubleIlaReverse() {
@@ -26,7 +26,7 @@ public final class DoubleIlaReverse {
             this.buffer = buffer;
         }
 
-        protected void toArrayImpl(double[] array, int offset, long start, int length) throws DataInvalidException {
+        protected void toArrayImpl(double[] array, int offset, long start, int length) throws IOException {
             final StridedDoubleIla stridedDoubleIla = new StridedDoubleIla(ila, buffer.clone());
 
             stridedDoubleIla.toArray(array, offset + (length - 1), -1, length() - (start + length), length);

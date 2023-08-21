@@ -3,12 +3,12 @@ package tfw.immutable.ila.objectila;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import java.io.IOException;
 import org.junit.jupiter.api.Test;
-import tfw.immutable.DataInvalidException;
 
 class ObjectIlaIteratorTest {
     @Test
-    void testObjectIlaFill() throws DataInvalidException {
+    void testObjectIlaFill() throws IOException {
         final int LENGTH = 29;
         Object[] array = new Object[LENGTH];
 

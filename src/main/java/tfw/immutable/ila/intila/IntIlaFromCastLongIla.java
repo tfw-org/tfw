@@ -1,7 +1,7 @@
 package tfw.immutable.ila.intila;
 
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 import tfw.immutable.ila.longila.LongIla;
 import tfw.immutable.ila.longila.LongIlaIterator;
 import tfw.immutable.ila.longila.LongIlaSegment;
@@ -29,7 +29,7 @@ public final class IntIlaFromCastLongIla {
             this.bufferSize = bufferSize;
         }
 
-        protected void toArrayImpl(int[] array, int offset, long start, int length) throws DataInvalidException {
+        protected void toArrayImpl(int[] array, int offset, long start, int length) throws IOException {
             LongIlaIterator fi =
                     new LongIlaIterator(LongIlaSegment.create(longIla, start, length), new long[bufferSize]);
 

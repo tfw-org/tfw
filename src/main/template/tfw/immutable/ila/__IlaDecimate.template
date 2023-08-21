@@ -1,8 +1,8 @@
 // booleanila,byteila,charila,doubleila,floatila,intila,longila,objectila,shortila
 package %%PACKAGE%%;
 
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 
 public final class %%NAME%%IlaDecimate {
     private %%NAME%%IlaDecimate() {
@@ -30,7 +30,7 @@ public final class %%NAME%%IlaDecimate {
             this.buffer = buffer;
         }
 
-        protected void toArrayImpl(%%TYPE_OR_TEMPLATE%%[] array, int offset, long start, int length) throws DataInvalidException {
+        protected void toArrayImpl(%%TYPE_OR_TEMPLATE%%[] array, int offset, long start, int length) throws IOException {
             final long segmentStart = start * factor;
             final long segmentLength = StrictMath.min(ila.length() - segmentStart, length * factor - 1);
             final %%NAME%%Ila%%TEMPLATE%% segment = %%NAME%%IlaSegment.create(ila, segmentStart, segmentLength);

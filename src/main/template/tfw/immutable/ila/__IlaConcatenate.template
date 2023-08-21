@@ -1,8 +1,8 @@
 // booleanila,byteila,charila,doubleila,floatila,intila,longila,objectila,shortila
 package %%PACKAGE%%;
 
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 
 public final class %%NAME%%IlaConcatenate {
     private %%NAME%%IlaConcatenate() {
@@ -38,7 +38,7 @@ public final class %%NAME%%IlaConcatenate {
             this.leftIlaLength = leftIla.length();
         }
 
-        protected void toArrayImpl(%%TYPE_OR_TEMPLATE%%[] array, int offset, long start, int length) throws DataInvalidException {
+        protected void toArrayImpl(%%TYPE_OR_TEMPLATE%%[] array, int offset, long start, int length) throws IOException {
             if (start + length <= leftIlaLength) {
                 leftIla.toArray(array, offset, start, length);
             } else if (start >= leftIlaLength) {

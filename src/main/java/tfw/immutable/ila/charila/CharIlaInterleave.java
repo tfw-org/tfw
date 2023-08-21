@@ -1,7 +1,7 @@
 package tfw.immutable.ila.charila;
 
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 
 public final class CharIlaInterleave {
     private CharIlaInterleave() {
@@ -38,7 +38,7 @@ public final class CharIlaInterleave {
             }
         }
 
-        protected void toArrayImpl(char[] array, int offset, long start, int length) throws DataInvalidException {
+        protected void toArrayImpl(char[] array, int offset, long start, int length) throws IOException {
             int currentIla = (int) (start % ilasLength);
             long ilaStart = start / ilasLength;
             final int ilaStride = ilasLength;

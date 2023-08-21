@@ -3,13 +3,13 @@ package tfw.immutable.ila.doubleila;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import java.io.IOException;
 import java.util.Random;
 import org.junit.jupiter.api.Test;
-import tfw.immutable.DataInvalidException;
 
 class DoubleIlaIteratorTest {
     @Test
-    void testDoubleIlaFill() throws DataInvalidException {
+    void testDoubleIlaFill() throws IOException {
         final Random random = new Random();
         final int LENGTH = 29;
         double[] array = new double[LENGTH];

@@ -1,7 +1,7 @@
 package tfw.immutable.ila.booleanila;
 
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 
 public final class BooleanIlaConcatenate {
     private BooleanIlaConcatenate() {
@@ -37,7 +37,7 @@ public final class BooleanIlaConcatenate {
             this.leftIlaLength = leftIla.length();
         }
 
-        protected void toArrayImpl(boolean[] array, int offset, long start, int length) throws DataInvalidException {
+        protected void toArrayImpl(boolean[] array, int offset, long start, int length) throws IOException {
             if (start + length <= leftIlaLength) {
                 leftIla.toArray(array, offset, start, length);
             } else if (start >= leftIlaLength) {

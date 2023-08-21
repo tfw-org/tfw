@@ -1,7 +1,7 @@
 package tfw.immutable.ila.shortila;
 
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 
 public final class ShortIlaScalarAdd {
     private ShortIlaScalarAdd() {
@@ -25,7 +25,7 @@ public final class ShortIlaScalarAdd {
             this.scalar = scalar;
         }
 
-        protected void toArrayImpl(short[] array, int offset, long start, int length) throws DataInvalidException {
+        protected void toArrayImpl(short[] array, int offset, long start, int length) throws IOException {
             ila.toArray(array, offset, start, length);
 
             for (int ii = offset; length > 0; ii++, --length) {

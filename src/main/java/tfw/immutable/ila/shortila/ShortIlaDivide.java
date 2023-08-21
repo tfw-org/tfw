@@ -1,7 +1,7 @@
 package tfw.immutable.ila.shortila;
 
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 
 public final class ShortIlaDivide {
     private ShortIlaDivide() {
@@ -30,7 +30,7 @@ public final class ShortIlaDivide {
             this.bufferSize = bufferSize;
         }
 
-        protected void toArrayImpl(short[] array, int offset, long ilaStart, int length) throws DataInvalidException {
+        protected void toArrayImpl(short[] array, int offset, long ilaStart, int length) throws IOException {
             ShortIlaIterator li =
                     new ShortIlaIterator(ShortIlaSegment.create(leftIla, ilaStart, length), new short[bufferSize]);
             ShortIlaIterator ri =

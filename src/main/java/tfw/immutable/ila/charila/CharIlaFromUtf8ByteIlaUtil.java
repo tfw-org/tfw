@@ -11,7 +11,7 @@
  */
 package tfw.immutable.ila.charila;
 
-import tfw.immutable.DataInvalidException;
+import java.io.IOException;
 import tfw.immutable.ila.byteila.ByteIla;
 
 public final class CharIlaFromUtf8ByteIlaUtil {
@@ -75,7 +75,7 @@ public final class CharIlaFromUtf8ByteIlaUtil {
 
     public static long calculateCharLengthAndFillByteIndexTable(
             final ByteIla utf8ByteIla, final byte[] byteBuffer, final long charDelta, final long[] byteIndexTable)
-            throws DataInvalidException {
+            throws IOException {
         final long utf8ByteIlaLength = utf8ByteIla.length();
 
         long charLength = 0;
@@ -144,7 +144,7 @@ public final class CharIlaFromUtf8ByteIlaUtil {
             final long startCharIndex,
             final long startByteIndex,
             final long targetCharIndex)
-            throws DataInvalidException {
+            throws IOException {
         final long utf8ByteIlaLength = utf8ByteIla.length();
 
         long charIndex = startCharIndex;

@@ -1,7 +1,7 @@
 package tfw.immutable.ila.byteila;
 
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 
 public final class ByteIlaRemove {
     private ByteIlaRemove() {
@@ -26,7 +26,7 @@ public final class ByteIlaRemove {
             this.index = index;
         }
 
-        protected void toArrayImpl(byte[] array, int offset, long start, int length) throws DataInvalidException {
+        protected void toArrayImpl(byte[] array, int offset, long start, int length) throws IOException {
             final long startPlusLength = start + length;
 
             if (index <= start) {

@@ -1,7 +1,7 @@
 package tfw.immutable.ila.objectila;
 
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 
 public final class ObjectIlaReverse {
     private ObjectIlaReverse() {
@@ -26,7 +26,7 @@ public final class ObjectIlaReverse {
             this.buffer = buffer;
         }
 
-        protected void toArrayImpl(T[] array, int offset, long start, int length) throws DataInvalidException {
+        protected void toArrayImpl(T[] array, int offset, long start, int length) throws IOException {
             final StridedObjectIla<T> stridedObjectIla = new StridedObjectIla<>(ila, buffer.clone());
 
             stridedObjectIla.toArray(array, offset + (length - 1), -1, length() - (start + length), length);

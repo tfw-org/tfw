@@ -1,7 +1,7 @@
 package tfw.immutable.ila.doubleila;
 
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 
 public final class DoubleIlaNegate {
     private DoubleIlaNegate() {
@@ -23,7 +23,7 @@ public final class DoubleIlaNegate {
             this.ila = ila;
         }
 
-        protected void toArrayImpl(double[] array, int offset, long start, int length) throws DataInvalidException {
+        protected void toArrayImpl(double[] array, int offset, long start, int length) throws IOException {
             ila.toArray(array, offset, start, length);
 
             for (int ii = offset; length > 0; ii++, --length) {

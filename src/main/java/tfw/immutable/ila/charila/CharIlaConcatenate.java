@@ -1,7 +1,7 @@
 package tfw.immutable.ila.charila;
 
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 
 public final class CharIlaConcatenate {
     private CharIlaConcatenate() {
@@ -37,7 +37,7 @@ public final class CharIlaConcatenate {
             this.leftIlaLength = leftIla.length();
         }
 
-        protected void toArrayImpl(char[] array, int offset, long start, int length) throws DataInvalidException {
+        protected void toArrayImpl(char[] array, int offset, long start, int length) throws IOException {
             if (start + length <= leftIlaLength) {
                 leftIla.toArray(array, offset, start, length);
             } else if (start >= leftIlaLength) {

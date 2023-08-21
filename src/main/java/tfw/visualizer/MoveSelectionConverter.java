@@ -1,6 +1,6 @@
 package tfw.visualizer;
 
-import tfw.immutable.DataInvalidException;
+import java.io.IOException;
 import tfw.immutable.ila.booleanila.BooleanIla;
 import tfw.immutable.ila.booleanila.BooleanIlaUtil;
 import tfw.tsm.Converter;
@@ -68,7 +68,7 @@ public class MoveSelectionConverter extends Converter {
                 lefts = tlbr[1];
                 bottoms = tlbr[2];
                 rights = tlbr[3];
-            } catch (DataInvalidException die) {
+            } catch (IOException e) {
                 return;
             }
 

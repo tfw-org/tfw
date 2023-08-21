@@ -1,7 +1,7 @@
 package tfw.immutable.ila.doubleila;
 
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 
 public class DoubleIlaClip {
     private DoubleIlaClip() {}
@@ -30,7 +30,7 @@ public class DoubleIlaClip {
             this.bufferSize = bufferSize;
         }
 
-        protected void toArrayImpl(double[] array, int offset, long start, int length) throws DataInvalidException {
+        protected void toArrayImpl(double[] array, int offset, long start, int length) throws IOException {
             DoubleIlaIterator dii =
                     new DoubleIlaIterator(DoubleIlaSegment.create(doubleIla, start, length), new double[bufferSize]);
 

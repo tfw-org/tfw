@@ -1,8 +1,8 @@
 // byteila,charila,doubleila,intila,longila,shortila
 package %%PACKAGE%%;
 
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 import tfw.immutable.ila.floatila.FloatIla;
 import tfw.immutable.ila.floatila.FloatIlaIterator;
 import tfw.immutable.ila.floatila.FloatIlaSegment;
@@ -30,7 +30,7 @@ public final class %%NAME%%IlaFromCastFloatIla {
             this.bufferSize = bufferSize;
         }
 
-        protected void toArrayImpl(%%TYPE%%[] array, int offset, long start, int length) throws DataInvalidException {
+        protected void toArrayImpl(%%TYPE%%[] array, int offset, long start, int length) throws IOException {
             FloatIlaIterator fi =
                     new FloatIlaIterator(FloatIlaSegment.create(floatIla, start, length), new float[bufferSize]);
 

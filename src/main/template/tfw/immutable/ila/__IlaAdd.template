@@ -1,8 +1,8 @@
 // byteila,charila,doubleila,floatila,intila,longila,shortila
 package %%PACKAGE%%;
 
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 
 public final class %%NAME%%IlaAdd {
     private %%NAME%%IlaAdd() {
@@ -31,7 +31,7 @@ public final class %%NAME%%IlaAdd {
             this.bufferSize = bufferSize;
         }
 
-        protected void toArrayImpl(%%TYPE%%[] array, int offset, long ilaStart, int length) throws DataInvalidException {
+        protected void toArrayImpl(%%TYPE%%[] array, int offset, long ilaStart, int length) throws IOException {
             %%NAME%%IlaIterator li =
                     new %%NAME%%IlaIterator(%%NAME%%IlaSegment.create(leftIla, ilaStart, length), new %%TYPE%%[bufferSize]);
             %%NAME%%IlaIterator ri =

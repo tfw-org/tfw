@@ -1,7 +1,7 @@
 package tfw.immutable.ila.shortila;
 
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 
 public final class ShortIlaIterator {
     private final ShortIla instance;
@@ -39,7 +39,7 @@ public final class ShortIlaIterator {
      * Either know the length of the ShortIla, or use hasNext()
      * properly.
      */
-    public short next() throws DataInvalidException {
+    public short next() throws IOException {
         // do we need to fetch into buffer?
         if (bufferIndex == buffer.length) {
             // how much do we fetch?
@@ -61,7 +61,7 @@ public final class ShortIlaIterator {
      * Either know the length of the ShortIla, or use hasNext()
      * properly.
      */
-    public void skip(long amount) throws DataInvalidException {
+    public void skip(long amount) throws IOException {
         long newBufferIndex = bufferIndex + amount;
         actualPosition += amount;
 

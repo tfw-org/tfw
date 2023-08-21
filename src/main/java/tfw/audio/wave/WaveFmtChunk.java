@@ -1,7 +1,7 @@
 package tfw.audio.wave;
 
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 import tfw.immutable.ila.byteila.ByteIla;
 import tfw.immutable.ila.byteila.ByteIlaSegment;
 
@@ -16,7 +16,7 @@ public final class WaveFmtChunk extends WaveChunk {
     public final ByteIla extraFormatBytes;
     public final ByteIla chunkData;
 
-    public WaveFmtChunk(final ByteIla byteIla, final int bufferSize) throws DataInvalidException {
+    public WaveFmtChunk(final ByteIla byteIla, final int bufferSize) throws IOException {
         super(validateAndGetChunkID(byteIla, bufferSize), getChunkDataSize(byteIla, bufferSize));
 
         Argument.assertEquals(chunkID, 0x666D7420, "chunkID", "'fmt ' 0x666D7420");
@@ -38,14 +38,14 @@ public final class WaveFmtChunk extends WaveChunk {
         chunkData = ByteIlaSegment.create(byteIla, 0, 8 + chunkDataSize + extraFormatBytesSize);
     }
 
-    private static int validateAndGetChunkID(final ByteIla byteIla, final int bufferSize) throws DataInvalidException {
+    private static int validateAndGetChunkID(final ByteIla byteIla, final int bufferSize) throws IOException {
         Argument.assertNotNull(byteIla, "byteIla");
         Argument.assertNotLessThan(byteIla.length(), 24, "byteIla.length()");
 
         return WaveUtil.intFromSignedFourBytes(byteIla, 0, false, bufferSize);
     }
 
-    private static int getChunkDataSize(final ByteIla byteIla, final int bufferSize) throws DataInvalidException {
+    private static int getChunkDataSize(final ByteIla byteIla, final int bufferSize) throws IOException {
         return WaveUtil.intFromSignedFourBytes(byteIla, 4, true, bufferSize);
     }
 }

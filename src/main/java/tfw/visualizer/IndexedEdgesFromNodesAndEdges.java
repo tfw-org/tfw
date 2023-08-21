@@ -1,6 +1,6 @@
 package tfw.visualizer;
 
-import tfw.immutable.DataInvalidException;
+import java.io.IOException;
 import tfw.immutable.ila.longila.LongIla;
 import tfw.immutable.ila.objectila.ObjectIla;
 
@@ -23,7 +23,7 @@ public class IndexedEdgesFromNodesAndEdges {
         }
 
         @Override
-        public void toArray(long[] array, int offset, long start, int length) throws DataInvalidException {
+        public void toArray(long[] array, int offset, long start, int length) throws IOException {
             final Object[] nodeArray = new Object[(int) nodes.length()];
             final Object[] edgeArray = new Object[length];
 

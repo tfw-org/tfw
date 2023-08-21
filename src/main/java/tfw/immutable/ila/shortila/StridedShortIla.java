@@ -1,7 +1,7 @@
 package tfw.immutable.ila.shortila;
 
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 
 public final class StridedShortIla {
     private final ShortIla ila;
@@ -20,7 +20,7 @@ public final class StridedShortIla {
     }
 
     public void toArray(final short[] array, final int offset, final int stride, final long start, final int length)
-            throws DataInvalidException {
+            throws IOException {
         Argument.assertNotLessThan(offset, 0, "offset");
         Argument.assertNotGreaterThanOrEquals(offset, array.length, "offset", "array.length");
         Argument.assertNotEquals(stride, 0, "stride");

@@ -1,8 +1,8 @@
 // booleanila,byteila,charila,doubleila,floatila,intila,longila,objectila,shortila
 package %%PACKAGE%%;
 
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 
 public final class Strided%%NAME%%Ila%%TEMPLATE%% {
     private final %%NAME%%Ila%%TEMPLATE%% ila;
@@ -21,7 +21,7 @@ public final class Strided%%NAME%%Ila%%TEMPLATE%% {
     }
 
     public void toArray(final %%TYPE_OR_TEMPLATE%%[] array, final int offset, final int stride, final long start, final int length)
-            throws DataInvalidException {
+            throws IOException {
         Argument.assertNotLessThan(offset, 0, "offset");
         Argument.assertNotGreaterThanOrEquals(offset, array.length, "offset", "array.length");
         Argument.assertNotEquals(stride, 0, "stride");

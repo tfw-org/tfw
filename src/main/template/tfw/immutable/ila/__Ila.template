@@ -1,10 +1,9 @@
 // booleanila,byteila,charila,doubleila,floatila,intila,longila,objectila,shortila
 package %%PACKAGE%%;
 
-import tfw.immutable.DataInvalidException;
+import java.io.IOException;
 import tfw.immutable.ila.ImmutableLongArray;
 
 public interface %%NAME%%Ila%%TEMPLATE%% extends ImmutableLongArray {
-    void toArray(final %%TYPE_OR_TEMPLATE%%[] array, final int arrayOffset, final long ilaStart, final int length)
-            throws DataInvalidException;
+    void toArray(final %%TYPE_OR_TEMPLATE%%[] array, final int arrayOffset, final long ilaStart, int length) throws IOException;
 }

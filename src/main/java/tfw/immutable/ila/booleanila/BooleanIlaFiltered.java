@@ -1,7 +1,7 @@
 package tfw.immutable.ila.booleanila;
 
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 import tfw.immutable.ila.AbstractIlaCheck;
 
 public final class BooleanIlaFiltered {
@@ -40,7 +40,7 @@ public final class BooleanIlaFiltered {
             return length;
         }
 
-        public final void toArray(boolean[] array, int offset, long start, int length) throws DataInvalidException {
+        public final void toArray(boolean[] array, int offset, long start, int length) throws IOException {
             calculateLength();
 
             if (length == 0) {
@@ -72,7 +72,7 @@ public final class BooleanIlaFiltered {
                             length--;
                         }
                     }
-                } catch (DataInvalidException die) {
+                } catch (IOException die) {
                     length = 0;
                 }
             }

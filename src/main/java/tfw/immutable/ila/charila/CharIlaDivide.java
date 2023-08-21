@@ -1,7 +1,7 @@
 package tfw.immutable.ila.charila;
 
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 
 public final class CharIlaDivide {
     private CharIlaDivide() {
@@ -30,7 +30,7 @@ public final class CharIlaDivide {
             this.bufferSize = bufferSize;
         }
 
-        protected void toArrayImpl(char[] array, int offset, long ilaStart, int length) throws DataInvalidException {
+        protected void toArrayImpl(char[] array, int offset, long ilaStart, int length) throws IOException {
             CharIlaIterator li =
                     new CharIlaIterator(CharIlaSegment.create(leftIla, ilaStart, length), new char[bufferSize]);
             CharIlaIterator ri =

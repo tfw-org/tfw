@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import tfw.audio.au.Au;
 import tfw.audio.au.NormalizedDoubleIlaFromAuAudioData;
-import tfw.immutable.DataInvalidException;
 import tfw.immutable.ila.byteila.ByteIla;
 import tfw.immutable.ila.byteila.ByteIlaFromFile;
 import tfw.immutable.ila.byteila.ByteIlaUtil;
@@ -13,7 +12,7 @@ import tfw.immutable.ila.doubleila.DoubleIlaUtil;
 
 public class AuDemo {
 
-    public static void main(String[] args) throws DataInvalidException, IOException {
+    public static void main(String[] args) throws IOException {
         File file = new File(args[0]);
         ByteIla byteIla = ByteIlaFromFile.create(file);
         Au auFileFormat = new Au(byteIla);

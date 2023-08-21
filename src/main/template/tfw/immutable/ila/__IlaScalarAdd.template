@@ -1,8 +1,8 @@
 // byteila,charila,doubleila,floatila,intila,longila,shortila
 package %%PACKAGE%%;
 
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 
 public final class %%NAME%%IlaScalarAdd {
     private %%NAME%%IlaScalarAdd() {
@@ -26,7 +26,7 @@ public final class %%NAME%%IlaScalarAdd {
             this.scalar = scalar;
         }
 
-        protected void toArrayImpl(%%TYPE%%[] array, int offset, long start, int length) throws DataInvalidException {
+        protected void toArrayImpl(%%TYPE%%[] array, int offset, long start, int length) throws IOException {
             ila.toArray(array, offset, start, length);
 
             for (int ii = offset; length > 0; ii++, --length) {

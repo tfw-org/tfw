@@ -1,7 +1,7 @@
 package tfw.immutable.ila.longila;
 
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 
 public final class LongIlaBound {
     private LongIlaBound() {
@@ -28,7 +28,7 @@ public final class LongIlaBound {
             this.maximum = maximum;
         }
 
-        protected void toArrayImpl(long[] array, int offset, long start, int length) throws DataInvalidException {
+        protected void toArrayImpl(long[] array, int offset, long start, int length) throws IOException {
             ila.toArray(array, offset, start, length);
 
             for (int ii = offset; length > 0; ii++, --length) {

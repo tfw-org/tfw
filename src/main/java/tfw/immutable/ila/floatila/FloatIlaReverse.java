@@ -1,7 +1,7 @@
 package tfw.immutable.ila.floatila;
 
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 
 public final class FloatIlaReverse {
     private FloatIlaReverse() {
@@ -26,7 +26,7 @@ public final class FloatIlaReverse {
             this.buffer = buffer;
         }
 
-        protected void toArrayImpl(float[] array, int offset, long start, int length) throws DataInvalidException {
+        protected void toArrayImpl(float[] array, int offset, long start, int length) throws IOException {
             final StridedFloatIla stridedFloatIla = new StridedFloatIla(ila, buffer.clone());
 
             stridedFloatIla.toArray(array, offset + (length - 1), -1, length() - (start + length), length);

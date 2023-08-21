@@ -1,7 +1,7 @@
 package tfw.immutable.ila.floatila;
 
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 import tfw.immutable.ila.intila.IntIla;
 import tfw.immutable.ila.intila.IntIlaIterator;
 import tfw.immutable.ila.intila.IntIlaSegment;
@@ -27,7 +27,7 @@ public final class FloatIlaFromIntIla {
             this.bufferSize = bufferSize;
         }
 
-        protected void toArrayImpl(float[] array, int offset, long start, int length) throws DataInvalidException {
+        protected void toArrayImpl(float[] array, int offset, long start, int length) throws IOException {
             IntIlaIterator iii = new IntIlaIterator(IntIlaSegment.create(intIla, start, length), new int[bufferSize]);
 
             for (int i = 0; i < length; i++) {

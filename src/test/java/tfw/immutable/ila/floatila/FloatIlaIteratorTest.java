@@ -3,13 +3,13 @@ package tfw.immutable.ila.floatila;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import java.io.IOException;
 import java.util.Random;
 import org.junit.jupiter.api.Test;
-import tfw.immutable.DataInvalidException;
 
 class FloatIlaIteratorTest {
     @Test
-    void testFloatIlaFill() throws DataInvalidException {
+    void testFloatIlaFill() throws IOException {
         final Random random = new Random();
         final int LENGTH = 29;
         float[] array = new float[LENGTH];

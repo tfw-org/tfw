@@ -1,7 +1,7 @@
 package tfw.immutable.ila.floatila;
 
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 
 public final class FloatIlaSubtract {
     private FloatIlaSubtract() {
@@ -30,7 +30,7 @@ public final class FloatIlaSubtract {
             this.bufferSize = bufferSize;
         }
 
-        protected void toArrayImpl(float[] array, int offset, long ilaStart, int length) throws DataInvalidException {
+        protected void toArrayImpl(float[] array, int offset, long ilaStart, int length) throws IOException {
             FloatIlaIterator li =
                     new FloatIlaIterator(FloatIlaSegment.create(leftIla, ilaStart, length), new float[bufferSize]);
             FloatIlaIterator ri =

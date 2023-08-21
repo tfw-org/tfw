@@ -3,13 +3,13 @@ package tfw.immutable.ila.byteila;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import java.io.IOException;
 import java.util.Random;
 import org.junit.jupiter.api.Test;
-import tfw.immutable.DataInvalidException;
 
 class ByteIlaIteratorTest {
     @Test
-    void testByteIlaFill() throws DataInvalidException {
+    void testByteIlaFill() throws IOException {
         final Random random = new Random();
         final int LENGTH = 29;
         byte[] array = new byte[LENGTH];

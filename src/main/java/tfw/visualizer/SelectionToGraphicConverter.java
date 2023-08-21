@@ -2,6 +2,7 @@ package tfw.visualizer;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.io.IOException;
 import tfw.awt.ecd.GraphicECD;
 import tfw.awt.graphic.Graphic;
 import tfw.awt.graphic.SetColorGraphic;
@@ -46,7 +47,7 @@ public class SelectionToGraphicConverter extends Converter {
             IntIlm intIlm = (IntIlm) get(pixelNodeTLBRECD);
             tlbr = IntIlmUtil.toArray(intIlm);
             width = (int) intIlm.width();
-        } catch (DataInvalidException die) {
+        } catch (DataInvalidException | IOException e) {
             return;
         }
 

@@ -1,7 +1,7 @@
 package tfw.immutable.ila.byteila;
 
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 
 public final class ByteIlaBound {
     private ByteIlaBound() {
@@ -28,7 +28,7 @@ public final class ByteIlaBound {
             this.maximum = maximum;
         }
 
-        protected void toArrayImpl(byte[] array, int offset, long start, int length) throws DataInvalidException {
+        protected void toArrayImpl(byte[] array, int offset, long start, int length) throws IOException {
             ila.toArray(array, offset, start, length);
 
             for (int ii = offset; length > 0; ii++, --length) {
