@@ -1,6 +1,6 @@
 package tfw.immutable.ilm.booleanilm;
 
-import tfw.immutable.DataInvalidException;
+import java.io.IOException;
 import tfw.immutable.ilm.AbstractStridedIlm;
 
 public abstract class AbstractStridedBooleanIlm extends AbstractStridedIlm implements StridedBooleanIlm {
@@ -13,7 +13,7 @@ public abstract class AbstractStridedBooleanIlm extends AbstractStridedIlm imple
             long colStart,
             int rowCount,
             int colCount)
-            throws DataInvalidException;
+            throws IOException;
 
     protected AbstractStridedBooleanIlm(final long width, final long height) {
         super(width, height);
@@ -29,7 +29,7 @@ public abstract class AbstractStridedBooleanIlm extends AbstractStridedIlm imple
             long colStart,
             int rowCount,
             int colCount)
-            throws DataInvalidException {
+            throws IOException {
         boundsCheck(array.length, offset, rowStride, colStride, rowStart, colStart, rowCount, colCount);
         toArrayImpl(array, offset, rowStride, colStride, rowStart, colStart, rowCount, colCount);
     }

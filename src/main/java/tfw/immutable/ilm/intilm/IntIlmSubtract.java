@@ -1,7 +1,7 @@
 package tfw.immutable.ilm.intilm;
 
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 
 public class IntIlmSubtract {
     private IntIlmSubtract() {}
@@ -30,7 +30,7 @@ public class IntIlmSubtract {
 
         @Override
         protected void toArrayImpl(int[] array, int offset, long rowStart, long colStart, int rowCount, int colCount)
-                throws DataInvalidException {
+                throws IOException {
             if (buffer.length < leftIlm.width()) {
                 buffer = new int[(int) leftIlm.width()];
             }

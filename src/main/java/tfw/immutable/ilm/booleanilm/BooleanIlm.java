@@ -1,10 +1,10 @@
 package tfw.immutable.ilm.booleanilm;
 
-import tfw.immutable.DataInvalidException;
+import java.io.IOException;
 import tfw.immutable.ilm.ImmutableLongMatrix;
 
 public interface BooleanIlm extends ImmutableLongMatrix {
-    void toArray(boolean[] array, int offset, long rowStart, long columnStart, int rowCount, int colCount)
-            throws DataInvalidException;
+    void toArray(final boolean[] array, int offset, long rowStart, long columnStart, int rowCount, int colCount)
+            throws IOException;
 }
 // AUTO GENERATED FROM TEMPLATE

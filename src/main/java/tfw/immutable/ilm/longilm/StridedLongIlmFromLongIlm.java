@@ -1,8 +1,8 @@
 package tfw.immutable.ilm.longilm;
 
+import java.io.IOException;
 import java.util.Arrays;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 
 public final class StridedLongIlmFromLongIlm {
     private StridedLongIlmFromLongIlm() {}
@@ -34,7 +34,7 @@ public final class StridedLongIlmFromLongIlm {
                 long colStart,
                 int rowCount,
                 int colCount)
-                throws DataInvalidException {
+                throws IOException {
             final long[] b = Arrays.copyOf(buffer, colCount);
 
             for (int i = 0; i < rowCount; i++) {

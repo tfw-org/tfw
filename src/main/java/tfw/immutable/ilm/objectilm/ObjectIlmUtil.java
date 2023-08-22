@@ -1,13 +1,13 @@
 package tfw.immutable.ilm.objectilm;
 
+import java.io.IOException;
 import java.util.Arrays;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 
 public final class ObjectIlmUtil {
     private ObjectIlmUtil() {}
 
-    public static <T> T[] toArray(final ObjectIlm<T> objectIlm, T[] array) throws DataInvalidException {
+    public static <T> T[] toArray(final ObjectIlm<T> objectIlm, T[] array) throws IOException {
         return toArray(objectIlm, 0, 0, (int) objectIlm.height(), (int) objectIlm.width(), array);
     }
 
@@ -18,7 +18,7 @@ public final class ObjectIlmUtil {
             final int rowCount,
             int colCount,
             T[] array)
-            throws DataInvalidException {
+            throws IOException {
         Argument.assertNotLessThan(rowCount, 0, "rowCount");
         Argument.assertNotLessThan(colCount, 0, "colCount");
 

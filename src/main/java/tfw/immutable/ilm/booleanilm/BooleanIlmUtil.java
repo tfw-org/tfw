@@ -1,12 +1,12 @@
 package tfw.immutable.ilm.booleanilm;
 
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 
 public final class BooleanIlmUtil {
     private BooleanIlmUtil() {}
 
-    public static boolean[] toArray(final BooleanIlm booleanIlm) throws DataInvalidException {
+    public static boolean[] toArray(final BooleanIlm booleanIlm) throws IOException {
         Argument.assertNotGreaterThan(booleanIlm.width(), Integer.MAX_VALUE, "width()", "native array size");
         Argument.assertNotGreaterThan(booleanIlm.height(), Integer.MAX_VALUE, "height()", "native array size");
 
@@ -15,7 +15,7 @@ public final class BooleanIlmUtil {
 
     public static boolean[] toArray(
             final BooleanIlm booleanIlm, final long rowStart, final long columnStart, final int rowCount, int colCount)
-            throws DataInvalidException {
+            throws IOException {
         Argument.assertNotLessThan(rowCount, 0, "rowCount");
         Argument.assertNotLessThan(colCount, 0, "colCount");
 

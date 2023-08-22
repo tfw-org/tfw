@@ -2,7 +2,6 @@ package tfw.immutable.ilm.doubleilm;
 
 import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 import tfw.immutable.ila.doubleila.DoubleIla;
 
 public class TakeSkipDoubleIlm {
@@ -29,13 +28,9 @@ public class TakeSkipDoubleIlm {
 
         @Override
         protected void toArrayImpl(double[] array, int offset, long rowStart, long colStart, int rowCount, int colCount)
-                throws DataInvalidException {
+                throws IOException {
             for (int i = 0; i < rowCount; i++) {
-                try {
-                    doubleIla.toArray(array, offset + i * colCount, (rowStart + i) * skip + colStart, colCount);
-                } catch (IOException e) {
-                    throw new DataInvalidException("Failed to get data!", e);
-                }
+                doubleIla.toArray(array, offset + i * colCount, (rowStart + i) * skip + colStart, colCount);
             }
         }
     }

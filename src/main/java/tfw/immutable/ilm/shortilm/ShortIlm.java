@@ -1,10 +1,10 @@
 package tfw.immutable.ilm.shortilm;
 
-import tfw.immutable.DataInvalidException;
+import java.io.IOException;
 import tfw.immutable.ilm.ImmutableLongMatrix;
 
 public interface ShortIlm extends ImmutableLongMatrix {
-    void toArray(short[] array, int offset, long rowStart, long columnStart, int rowCount, int colCount)
-            throws DataInvalidException;
+    void toArray(final short[] array, int offset, long rowStart, long columnStart, int rowCount, int colCount)
+            throws IOException;
 }
 // AUTO GENERATED FROM TEMPLATE

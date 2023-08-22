@@ -1,7 +1,7 @@
 package tfw.immutable.ilm.doubleilm;
 
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 
 public class MultiplyDoubleIlm {
     private MultiplyDoubleIlm() {}
@@ -30,7 +30,7 @@ public class MultiplyDoubleIlm {
 
         @Override
         protected void toArrayImpl(double[] array, int offset, long rowStart, long colStart, int rowCount, int colCount)
-                throws DataInvalidException {
+                throws IOException {
             if (buffer.length < colCount) {
                 buffer = new double[colCount];
             }

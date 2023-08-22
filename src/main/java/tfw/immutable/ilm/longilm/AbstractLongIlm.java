@@ -1,20 +1,20 @@
 package tfw.immutable.ilm.longilm;
 
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 import tfw.immutable.ilm.AbstractIlm;
 
 public abstract class AbstractLongIlm extends AbstractIlm implements LongIlm {
     protected abstract void toArrayImpl(
-            final long[] array, int offset, long rowStart, long colStart, int rowCount, int colCount)
-            throws DataInvalidException;
+            final long[] array, final int offset, long rowStart, long colStart, int rowCount, int colCount)
+            throws IOException;
 
     protected AbstractLongIlm(long width, long height) {
         super(width, height);
     }
 
     public final void toArray(long[] array, int offset, long rowStart, long colStart, int rowCount, int colCount)
-            throws DataInvalidException {
+            throws IOException {
         Argument.assertNotNull(array, "array");
 
         if (width == 0 || height == 0 || array.length == 0) {

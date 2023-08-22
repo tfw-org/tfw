@@ -1,7 +1,7 @@
 package tfw.immutable.ilm.intilm;
 
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 import tfw.immutable.ilm.doubleilm.DoubleIlm;
 
 public class IntIlmFromCastDoubleIlm {
@@ -26,7 +26,7 @@ public class IntIlmFromCastDoubleIlm {
 
         @Override
         protected void toArrayImpl(int[] array, int offset, long rowStart, long colStart, int rowCount, int colCount)
-                throws DataInvalidException {
+                throws IOException {
             if (buffer.length < doubleIlm.width()) {
                 buffer = new double[(int) doubleIlm.width()];
             }

@@ -1,12 +1,12 @@
 package tfw.immutable.ilm.floatilm;
 
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 
 public final class FloatIlmUtil {
     private FloatIlmUtil() {}
 
-    public static float[] toArray(final FloatIlm floatIlm) throws DataInvalidException {
+    public static float[] toArray(final FloatIlm floatIlm) throws IOException {
         Argument.assertNotGreaterThan(floatIlm.width(), Integer.MAX_VALUE, "width()", "native array size");
         Argument.assertNotGreaterThan(floatIlm.height(), Integer.MAX_VALUE, "height()", "native array size");
 
@@ -15,7 +15,7 @@ public final class FloatIlmUtil {
 
     public static float[] toArray(
             final FloatIlm floatIlm, final long rowStart, final long columnStart, final int rowCount, int colCount)
-            throws DataInvalidException {
+            throws IOException {
         Argument.assertNotLessThan(rowCount, 0, "rowCount");
         Argument.assertNotLessThan(colCount, 0, "colCount");
 

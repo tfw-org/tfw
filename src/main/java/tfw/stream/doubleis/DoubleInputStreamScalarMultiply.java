@@ -1,7 +1,7 @@
 package tfw.stream.doubleis;
 
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 
 public class DoubleInputStreamScalarMultiply {
     public static DoubleInputStream create(DoubleInputStream doubleInputStream, double value) {
@@ -19,19 +19,19 @@ public class DoubleInputStreamScalarMultiply {
             this.value = value;
         }
 
-        public long available() throws DataInvalidException {
+        public long available() throws IOException {
             return doubleInputStream.available();
         }
 
-        public void close() throws DataInvalidException {
+        public void close() throws IOException {
             doubleInputStream.close();
         }
 
-        public int read(double[] array) throws DataInvalidException {
+        public int read(double[] array) throws IOException {
             return read(array, 0, array.length);
         }
 
-        public int read(double[] array, int offset, int length) throws DataInvalidException {
+        public int read(double[] array, int offset, int length) throws IOException {
             int elementsRead = doubleInputStream.read(array, offset, length);
 
             for (int i = 0; i < elementsRead; i++) {
@@ -41,7 +41,7 @@ public class DoubleInputStreamScalarMultiply {
             return elementsRead;
         }
 
-        public long skip(long n) throws DataInvalidException {
+        public long skip(long n) throws IOException {
             return doubleInputStream.skip(n);
         }
     }

@@ -1,10 +1,10 @@
 // booleanilm,byteilm,charilm,doubleilm,floatilm,intilm,longilm,objectilm,shortilm
 package %%PACKAGE%%;
 
-import tfw.immutable.DataInvalidException;
+import java.io.IOException;
 import tfw.immutable.ilm.ImmutableLongMatrix;
 
 public interface %%NAME%%Ilm%%TEMPLATE%% extends ImmutableLongMatrix {
-    void toArray(%%TYPE_OR_TEMPLATE%%[] array, int offset, long rowStart, long columnStart, int rowCount, int colCount)
-            throws DataInvalidException;
+    void toArray(final %%TYPE_OR_TEMPLATE%%[] array, int offset, long rowStart, long columnStart, int rowCount, int colCount)
+            throws IOException;
 }

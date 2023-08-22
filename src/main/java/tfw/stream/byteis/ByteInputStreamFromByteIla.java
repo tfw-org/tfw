@@ -1,7 +1,6 @@
 package tfw.stream.byteis;
 
 import java.io.IOException;
-import tfw.immutable.DataInvalidException;
 import tfw.immutable.ila.byteila.ByteIla;
 
 public final class ByteInputStreamFromByteIla {
@@ -20,22 +19,22 @@ public final class ByteInputStreamFromByteIla {
         }
 
         @Override
-        public long available() throws DataInvalidException {
+        public long available() throws IOException {
             return byteIla.length() - index;
         }
 
         @Override
-        public void close() throws DataInvalidException {
+        public void close() throws IOException {
             index = byteIla.length();
         }
 
         @Override
-        public int read(byte[] array) throws DataInvalidException {
+        public int read(byte[] array) throws IOException {
             return read(array, 0, array.length);
         }
 
         @Override
-        public int read(byte[] array, int offset, int length) throws DataInvalidException {
+        public int read(byte[] array, int offset, int length) throws IOException {
             if (array == null) {
                 throw new NullPointerException("array cannot be null");
             } else if (offset < 0 || length < 0 || length > array.length - offset) {
@@ -45,11 +44,7 @@ public final class ByteInputStreamFromByteIla {
             }
 
             if (index < byteIla.length()) {
-                try {
-                    byteIla.toArray(buffer, 0, index++, 1);
-                } catch (IOException e) {
-                    throw new DataInvalidException("Could not get data!", e);
-                }
+                byteIla.toArray(buffer, 0, index++, 1);
 
                 array[offset] = buffer[0];
             } else {
@@ -74,7 +69,7 @@ public final class ByteInputStreamFromByteIla {
         }
 
         @Override
-        public long skip(long n) throws DataInvalidException {
+        public long skip(long n) throws IOException {
             final long originalIndex = index;
 
             index = Math.min(byteIla.length(), index + n);

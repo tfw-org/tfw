@@ -1,7 +1,7 @@
 package tfw.immutable.ilm.booleanilm;
 
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 
 public final class BooleanIlmFromStridedBooleanIlm {
     private BooleanIlmFromStridedBooleanIlm() {}
@@ -24,7 +24,7 @@ public final class BooleanIlmFromStridedBooleanIlm {
         @Override
         protected void toArrayImpl(
                 final boolean[] array, int offset, long rowStart, long colStart, int rowCount, int colCount)
-                throws DataInvalidException {
+                throws IOException {
             stridedIlm.toArray(array, offset, colCount, 1, rowStart, colStart, rowCount, colCount);
         }
     }

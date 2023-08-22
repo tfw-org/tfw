@@ -1,20 +1,20 @@
 package tfw.immutable.ilm.booleanilm;
 
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 import tfw.immutable.ilm.AbstractIlm;
 
 public abstract class AbstractBooleanIlm extends AbstractIlm implements BooleanIlm {
     protected abstract void toArrayImpl(
-            final boolean[] array, int offset, long rowStart, long colStart, int rowCount, int colCount)
-            throws DataInvalidException;
+            final boolean[] array, final int offset, long rowStart, long colStart, int rowCount, int colCount)
+            throws IOException;
 
     protected AbstractBooleanIlm(long width, long height) {
         super(width, height);
     }
 
     public final void toArray(boolean[] array, int offset, long rowStart, long colStart, int rowCount, int colCount)
-            throws DataInvalidException {
+            throws IOException {
         Argument.assertNotNull(array, "array");
 
         if (width == 0 || height == 0 || array.length == 0) {

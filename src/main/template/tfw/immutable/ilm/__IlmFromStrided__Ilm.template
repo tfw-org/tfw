@@ -1,8 +1,8 @@
 // booleanilm,byteilm,charilm,doubleilm,floatilm,intilm,longilm,objectilm,shortilm
 package %%PACKAGE%%;
 
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 
 public final class %%NAME%%IlmFromStrided%%NAME%%Ilm%%TEMPLATE%% {
     private %%NAME%%IlmFromStrided%%NAME%%Ilm() {}
@@ -25,7 +25,7 @@ public final class %%NAME%%IlmFromStrided%%NAME%%Ilm%%TEMPLATE%% {
         @Override
         protected void toArrayImpl(
                 final %%TYPE_OR_TEMPLATE%%[] array, int offset, long rowStart, long colStart, int rowCount, int colCount)
-                throws DataInvalidException {
+                throws IOException {
             stridedIlm.toArray(array, offset, colCount, 1, rowStart, colStart, rowCount, colCount);
         }
     }

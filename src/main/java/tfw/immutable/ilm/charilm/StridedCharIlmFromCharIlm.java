@@ -1,8 +1,8 @@
 package tfw.immutable.ilm.charilm;
 
+import java.io.IOException;
 import java.util.Arrays;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 
 public final class StridedCharIlmFromCharIlm {
     private StridedCharIlmFromCharIlm() {}
@@ -34,7 +34,7 @@ public final class StridedCharIlmFromCharIlm {
                 long colStart,
                 int rowCount,
                 int colCount)
-                throws DataInvalidException {
+                throws IOException {
             final char[] b = Arrays.copyOf(buffer, colCount);
 
             for (int i = 0; i < rowCount; i++) {

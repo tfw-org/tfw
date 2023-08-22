@@ -2,7 +2,6 @@ package tfw.visualizer;
 
 import java.awt.FontMetrics;
 import java.io.IOException;
-import tfw.immutable.DataInvalidException;
 import tfw.immutable.ilm.doubleilm.DoubleIlm;
 import tfw.immutable.ilm.intilm.IntIlm;
 import tfw.tsm.Proxy;
@@ -97,7 +96,7 @@ public final class PixelNodeBoundsFromNormalizedXYs {
 
         @Override
         public void toArray(int[] array, int offset, long rowStart, long columnStart, int rowCount, int colCount)
-                throws DataInvalidException {
+                throws IOException {
             // TODO Auto-generated method stub
 
         }
