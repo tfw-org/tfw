@@ -1,6 +1,6 @@
 package tfw.visualizer;
 
-import tfw.immutable.DataInvalidException;
+import java.io.IOException;
 import tfw.immutable.ila.booleanila.BooleanIla;
 import tfw.immutable.ila.booleanila.BooleanIlaFill;
 import tfw.immutable.ilm.intilm.IntIlm;
@@ -67,7 +67,7 @@ public class SelectionConverter extends Converter {
 
                 tlbr = IntIlmUtil.toArray(tlbrIlm);
                 width = (int) tlbrIlm.width();
-            } catch (DataInvalidException die) {
+            } catch (IOException e) {
                 return;
             }
 

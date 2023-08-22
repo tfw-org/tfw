@@ -1,15 +1,15 @@
 package tfw.stream.doubleis;
 
-import tfw.immutable.DataInvalidException;
+import java.io.IOException;
 
 public interface DoubleInputStream {
-    public long available() throws DataInvalidException;
+    public long available() throws IOException;
 
-    public void close() throws DataInvalidException;
+    public void close() throws IOException;
 
-    public int read(double[] array) throws DataInvalidException;
+    public int read(double[] array) throws IOException;
 
-    public int read(double[] array, int offset, int length) throws DataInvalidException;
+    public int read(double[] array, int offset, int length) throws IOException;
 
-    public long skip(long n) throws DataInvalidException;
+    public long skip(long n) throws IOException;
 }

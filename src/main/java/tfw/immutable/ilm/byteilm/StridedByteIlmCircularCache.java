@@ -1,8 +1,8 @@
 package tfw.immutable.ilm.byteilm;
 
+import java.io.IOException;
 import java.util.Arrays;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 
 public class StridedByteIlmCircularCache {
     private StridedByteIlmCircularCache() {}
@@ -46,7 +46,7 @@ public class StridedByteIlmCircularCache {
                 long colStart,
                 int rowCount,
                 int colCount)
-                throws DataInvalidException {
+                throws IOException {
             if (cacheStart == 0 && cacheEnd == 0 || rowStart > cacheEnd || rowStart + rowCount < cacheStart) {
                 if (buffer.length == 0) {
                     buffer = Arrays.copyOf(buffer, cacheLength);

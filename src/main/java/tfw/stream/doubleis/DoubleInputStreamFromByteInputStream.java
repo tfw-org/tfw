@@ -1,7 +1,7 @@
 package tfw.stream.doubleis;
 
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 import tfw.stream.byteis.ByteInputStream;
 
 public class DoubleInputStreamFromByteInputStream {
@@ -20,22 +20,22 @@ public class DoubleInputStreamFromByteInputStream {
         }
 
         @Override
-        public long available() throws DataInvalidException {
+        public long available() throws IOException {
             return byteInputStream.available();
         }
 
         @Override
-        public void close() throws DataInvalidException {
+        public void close() throws IOException {
             byteInputStream.close();
         }
 
         @Override
-        public int read(double[] array) throws DataInvalidException {
+        public int read(double[] array) throws IOException {
             return read(array, 0, array.length);
         }
 
         @Override
-        public synchronized int read(double[] array, int offset, int length) throws DataInvalidException {
+        public synchronized int read(double[] array, int offset, int length) throws IOException {
             int totalElementsRead = 0;
 
             for (int i = 0; i < length; i++) {
@@ -58,7 +58,7 @@ public class DoubleInputStreamFromByteInputStream {
         }
 
         @Override
-        public long skip(long n) throws DataInvalidException {
+        public long skip(long n) throws IOException {
             return byteInputStream.skip(n);
         }
     }

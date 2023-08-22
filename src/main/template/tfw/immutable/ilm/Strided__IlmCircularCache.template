@@ -1,9 +1,9 @@
 // booleanilm,byteilm,charilm,doubleilm,floatilm,intilm,longilm,objectilm,shortilm
 package %%PACKAGE%%;
 
+import java.io.IOException;
 import java.util.Arrays;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 
 public class Strided%%NAME%%IlmCircularCache {
     private Strided%%NAME%%IlmCircularCache() {}
@@ -47,7 +47,7 @@ public class Strided%%NAME%%IlmCircularCache {
                 long colStart,
                 int rowCount,
                 int colCount)
-                throws DataInvalidException {
+                throws IOException {
             if (cacheStart == 0 && cacheEnd == 0 || rowStart > cacheEnd || rowStart + rowCount < cacheStart) {
                 if (buffer.length == 0) {
                     buffer = Arrays.copyOf(buffer, cacheLength);

@@ -1,7 +1,7 @@
 package tfw.immutable.ilm.doubleilm;
 
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 
 public class InterleavedMagnitudeDoubleIlm {
     private InterleavedMagnitudeDoubleIlm() {}
@@ -26,7 +26,7 @@ public class InterleavedMagnitudeDoubleIlm {
 
         @Override
         protected void toArrayImpl(double[] array, int offset, long rowStart, long colStart, int rowCount, int colCount)
-                throws DataInvalidException {
+                throws IOException {
             for (int i = 0; i < rowCount; i++) {
                 doubleIlm.toArray(buffer, 0, rowStart + i, colStart * 2, 1, colCount * 2);
 

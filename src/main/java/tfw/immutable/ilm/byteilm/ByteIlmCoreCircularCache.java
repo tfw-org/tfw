@@ -1,7 +1,7 @@
 package tfw.immutable.ilm.byteilm;
 
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 
 public class ByteIlmCoreCircularCache {
     private ByteIlmCoreCircularCache() {}
@@ -29,7 +29,7 @@ public class ByteIlmCoreCircularCache {
 
         @Override
         protected void toArrayImpl(byte[] array, int offset, long rowStart, long colStart, int rowCount, int colCount)
-                throws DataInvalidException {
+                throws IOException {
             core.toArrayImpl(array, offset, rowStart, colStart, rowCount, colCount);
         }
     }
@@ -57,7 +57,7 @@ public class ByteIlmCoreCircularCache {
         }
 
         public void toArrayImpl(byte[] array, int offset, long rowStart, long colStart, int rowCount, int colCount)
-                throws DataInvalidException {
+                throws IOException {
             synchronized (lock) {
                 if (buffer.length == 0) {
                     buffer = new byte[cacheLength];

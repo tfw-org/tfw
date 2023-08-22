@@ -1,8 +1,8 @@
 package tfw.immutable.ilm.doubleilm;
 
+import java.io.IOException;
 import java.math.BigInteger;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 
 public class ColumnScalingDoubleIlm {
     private ColumnScalingDoubleIlm() {}
@@ -41,7 +41,7 @@ public class ColumnScalingDoubleIlm {
 
         @Override
         protected void toArrayImpl(double[] array, int offset, long rowStart, long colStart, int rowCount, int colCount)
-                throws DataInvalidException {
+                throws IOException {
             long lastRowCopied = -1;
 
             for (int i = 0; i < rowCount; i++) {
@@ -79,7 +79,7 @@ public class ColumnScalingDoubleIlm {
 
         @Override
         protected void toArrayImpl(double[] array, int offset, long rowStart, long colStart, int rowCount, int colCount)
-                throws DataInvalidException {
+                throws IOException {
             // TODO Auto-generated method stub
 
         }

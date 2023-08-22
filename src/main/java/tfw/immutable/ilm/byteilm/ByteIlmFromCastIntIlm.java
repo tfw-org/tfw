@@ -1,7 +1,7 @@
 package tfw.immutable.ilm.byteilm;
 
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 import tfw.immutable.ilm.intilm.IntIlm;
 
 public class ByteIlmFromCastIntIlm {
@@ -26,7 +26,7 @@ public class ByteIlmFromCastIntIlm {
 
         @Override
         protected void toArrayImpl(byte[] array, int offset, long rowStart, long colStart, int rowCount, int colCount)
-                throws DataInvalidException {
+                throws IOException {
             if (buffer.length < intIlm.width()) {
                 buffer = new int[(int) intIlm.width()];
             }

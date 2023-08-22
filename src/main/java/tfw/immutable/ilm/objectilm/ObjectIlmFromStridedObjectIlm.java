@@ -1,7 +1,7 @@
 package tfw.immutable.ilm.objectilm;
 
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 
 public final class ObjectIlmFromStridedObjectIlm<T> {
     private ObjectIlmFromStridedObjectIlm() {}
@@ -24,7 +24,7 @@ public final class ObjectIlmFromStridedObjectIlm<T> {
         @Override
         protected void toArrayImpl(
                 final T[] array, int offset, long rowStart, long colStart, int rowCount, int colCount)
-                throws DataInvalidException {
+                throws IOException {
             stridedIlm.toArray(array, offset, colCount, 1, rowStart, colStart, rowCount, colCount);
         }
     }

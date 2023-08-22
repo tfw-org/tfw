@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 import tfw.immutable.ilm.doubleilm.DoubleIlm;
 import tfw.visualizer.graph.Graph;
 
@@ -221,7 +220,7 @@ public class NormalXYDoubleIlmFromGraph {
 
         @Override
         public void toArray(double[] array, int offset, long rowStart, long columnStart, int rowCount, int colCount)
-                throws DataInvalidException {
+                throws IOException {
             // TODO Auto-generated method stub
 
         }

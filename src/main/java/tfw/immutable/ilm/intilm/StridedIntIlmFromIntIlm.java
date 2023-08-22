@@ -1,8 +1,8 @@
 package tfw.immutable.ilm.intilm;
 
+import java.io.IOException;
 import java.util.Arrays;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 
 public final class StridedIntIlmFromIntIlm {
     private StridedIntIlmFromIntIlm() {}
@@ -34,7 +34,7 @@ public final class StridedIntIlmFromIntIlm {
                 long colStart,
                 int rowCount,
                 int colCount)
-                throws DataInvalidException {
+                throws IOException {
             final int[] b = Arrays.copyOf(buffer, colCount);
 
             for (int i = 0; i < rowCount; i++) {

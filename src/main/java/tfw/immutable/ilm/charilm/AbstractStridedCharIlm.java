@@ -1,6 +1,6 @@
 package tfw.immutable.ilm.charilm;
 
-import tfw.immutable.DataInvalidException;
+import java.io.IOException;
 import tfw.immutable.ilm.AbstractStridedIlm;
 
 public abstract class AbstractStridedCharIlm extends AbstractStridedIlm implements StridedCharIlm {
@@ -13,7 +13,7 @@ public abstract class AbstractStridedCharIlm extends AbstractStridedIlm implemen
             long colStart,
             int rowCount,
             int colCount)
-            throws DataInvalidException;
+            throws IOException;
 
     protected AbstractStridedCharIlm(final long width, final long height) {
         super(width, height);
@@ -29,7 +29,7 @@ public abstract class AbstractStridedCharIlm extends AbstractStridedIlm implemen
             long colStart,
             int rowCount,
             int colCount)
-            throws DataInvalidException {
+            throws IOException {
         boundsCheck(array.length, offset, rowStride, colStride, rowStart, colStart, rowCount, colCount);
         toArrayImpl(array, offset, rowStride, colStride, rowStart, colStart, rowCount, colCount);
     }

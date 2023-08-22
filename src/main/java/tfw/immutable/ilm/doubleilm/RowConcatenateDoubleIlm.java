@@ -1,7 +1,7 @@
 package tfw.immutable.ilm.doubleilm;
 
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 
 public class RowConcatenateDoubleIlm {
     private RowConcatenateDoubleIlm() {}
@@ -27,7 +27,7 @@ public class RowConcatenateDoubleIlm {
 
         @Override
         protected void toArrayImpl(double[] array, int offset, long rowStart, long colStart, int rowCount, int colCount)
-                throws DataInvalidException {
+                throws IOException {
             if (colStart + colCount <= stridedLeftIlm.width()) {
                 stridedLeftIlm.toArray(array, offset, colCount, 1, rowStart, colStart, rowCount, colCount);
             } else if (colStart >= stridedLeftIlm.width()) {

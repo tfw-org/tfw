@@ -1,9 +1,9 @@
 // booleanilm,byteilm,charilm,doubleilm,floatilm,intilm,longilm,objectilm,shortilm
 package %%PACKAGE%%;
 
+import java.io.IOException;
 import java.util.Arrays;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 
 public final class Strided%%NAME%%IlmFrom%%NAME%%Ilm%%TEMPLATE%% {
     private Strided%%NAME%%IlmFrom%%NAME%%Ilm() {}
@@ -35,7 +35,7 @@ public final class Strided%%NAME%%IlmFrom%%NAME%%Ilm%%TEMPLATE%% {
                 long colStart,
                 int rowCount,
                 int colCount)
-                throws DataInvalidException {
+                throws IOException {
             final %%TYPE_OR_TEMPLATE%%[] b = Arrays.copyOf(buffer, colCount);
 
             for (int i = 0; i < rowCount; i++) {

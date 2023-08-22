@@ -1,6 +1,6 @@
 package tfw.immutable.ilm.shortilm;
 
-import tfw.immutable.DataInvalidException;
+import java.io.IOException;
 import tfw.immutable.ilm.ImmutableLongMatrix;
 
 public interface StridedShortIlm extends ImmutableLongMatrix {
@@ -13,6 +13,6 @@ public interface StridedShortIlm extends ImmutableLongMatrix {
             long colStart,
             int rowCount,
             int colCount)
-            throws DataInvalidException;
+            throws IOException;
 }
 // AUTO GENERATED FROM TEMPLATE

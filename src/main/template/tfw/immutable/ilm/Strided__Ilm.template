@@ -1,7 +1,7 @@
 // booleanilm,byteilm,charilm,doubleilm,floatilm,intilm,longilm,objectilm,shortilm
 package %%PACKAGE%%;
 
-import tfw.immutable.DataInvalidException;
+import java.io.IOException;
 import tfw.immutable.ilm.ImmutableLongMatrix;
 
 public interface Strided%%NAME%%Ilm%%TEMPLATE%% extends ImmutableLongMatrix {
@@ -14,5 +14,5 @@ public interface Strided%%NAME%%Ilm%%TEMPLATE%% extends ImmutableLongMatrix {
             long colStart,
             int rowCount,
             int colCount)
-            throws DataInvalidException;
+            throws IOException;
 }

@@ -7,7 +7,6 @@ import tfw.awt.ecd.GraphicECD;
 import tfw.awt.graphic.Graphic;
 import tfw.awt.graphic.SetColorGraphic;
 import tfw.awt.graphic.SetStrokeGraphic;
-import tfw.immutable.DataInvalidException;
 import tfw.immutable.ila.booleanila.BooleanIla;
 import tfw.immutable.ila.booleanila.BooleanIlaUtil;
 import tfw.immutable.ilm.intilm.IntIlm;
@@ -47,7 +46,7 @@ public class SelectionToGraphicConverter extends Converter {
             IntIlm intIlm = (IntIlm) get(pixelNodeTLBRECD);
             tlbr = IntIlmUtil.toArray(intIlm);
             width = (int) intIlm.width();
-        } catch (DataInvalidException | IOException e) {
+        } catch (IOException e) {
             return;
         }
 

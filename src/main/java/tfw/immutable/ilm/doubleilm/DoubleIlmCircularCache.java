@@ -1,7 +1,7 @@
 package tfw.immutable.ilm.doubleilm;
 
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 
 public class DoubleIlmCircularCache {
     private DoubleIlmCircularCache() {}
@@ -36,7 +36,7 @@ public class DoubleIlmCircularCache {
         @Override
         protected synchronized void toArrayImpl(
                 double[] array, int offset, long rowStart, long colStart, int rowCount, int colCount)
-                throws DataInvalidException {
+                throws IOException {
             if (cacheStart == 0 && cacheEnd == 0 || rowStart > cacheEnd || rowStart + rowCount < cacheStart) {
                 if (buffer.length == 0) {
                     buffer = new double[cacheLength];
