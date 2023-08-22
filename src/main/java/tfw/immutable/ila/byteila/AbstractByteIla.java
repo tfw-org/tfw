@@ -1,11 +1,10 @@
 package tfw.immutable.ila.byteila;
 
-import tfw.immutable.DataInvalidException;
+import java.io.IOException;
 import tfw.immutable.ila.AbstractIla;
 
 public abstract class AbstractByteIla extends AbstractIla implements ByteIla {
-    protected abstract void toArrayImpl(final byte[] array, int offset, long start, int length)
-            throws DataInvalidException;
+    protected abstract void toArrayImpl(final byte[] array, int offset, long start, int length) throws IOException;
 
     protected AbstractByteIla(final long length) {
         super(length);
@@ -13,7 +12,7 @@ public abstract class AbstractByteIla extends AbstractIla implements ByteIla {
 
     @Override
     public final void toArray(final byte[] array, final int offset, final long start, final int length)
-            throws DataInvalidException {
+            throws IOException {
         if (length == 0) {
             return;
         }

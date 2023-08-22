@@ -1,7 +1,7 @@
 package tfw.immutable.ila.charila;
 
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 import tfw.immutable.ila.shortila.ShortIla;
 import tfw.immutable.ila.shortila.ShortIlaIterator;
 import tfw.immutable.ila.shortila.ShortIlaSegment;
@@ -29,7 +29,7 @@ public final class CharIlaFromCastShortIla {
             this.bufferSize = bufferSize;
         }
 
-        protected void toArrayImpl(char[] array, int offset, long start, int length) throws DataInvalidException {
+        protected void toArrayImpl(char[] array, int offset, long start, int length) throws IOException {
             ShortIlaIterator fi =
                     new ShortIlaIterator(ShortIlaSegment.create(shortIla, start, length), new short[bufferSize]);
 

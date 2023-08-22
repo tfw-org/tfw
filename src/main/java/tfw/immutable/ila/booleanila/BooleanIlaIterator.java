@@ -1,7 +1,7 @@
 package tfw.immutable.ila.booleanila;
 
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 
 public final class BooleanIlaIterator {
     private final BooleanIla instance;
@@ -39,7 +39,7 @@ public final class BooleanIlaIterator {
      * Either know the length of the BooleanIla, or use hasNext()
      * properly.
      */
-    public boolean next() throws DataInvalidException {
+    public boolean next() throws IOException {
         // do we need to fetch into buffer?
         if (bufferIndex == buffer.length) {
             // how much do we fetch?
@@ -61,7 +61,7 @@ public final class BooleanIlaIterator {
      * Either know the length of the BooleanIla, or use hasNext()
      * properly.
      */
-    public void skip(long amount) throws DataInvalidException {
+    public void skip(long amount) throws IOException {
         long newBufferIndex = bufferIndex + amount;
         actualPosition += amount;
 

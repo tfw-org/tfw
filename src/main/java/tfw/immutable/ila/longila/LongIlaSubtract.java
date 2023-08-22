@@ -1,7 +1,7 @@
 package tfw.immutable.ila.longila;
 
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 
 public final class LongIlaSubtract {
     private LongIlaSubtract() {
@@ -30,7 +30,7 @@ public final class LongIlaSubtract {
             this.bufferSize = bufferSize;
         }
 
-        protected void toArrayImpl(long[] array, int offset, long ilaStart, int length) throws DataInvalidException {
+        protected void toArrayImpl(long[] array, int offset, long ilaStart, int length) throws IOException {
             LongIlaIterator li =
                     new LongIlaIterator(LongIlaSegment.create(leftIla, ilaStart, length), new long[bufferSize]);
             LongIlaIterator ri =

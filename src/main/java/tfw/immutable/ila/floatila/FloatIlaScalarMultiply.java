@@ -1,7 +1,7 @@
 package tfw.immutable.ila.floatila;
 
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 
 public final class FloatIlaScalarMultiply {
     private FloatIlaScalarMultiply() {
@@ -25,7 +25,7 @@ public final class FloatIlaScalarMultiply {
             this.scalar = scalar;
         }
 
-        protected void toArrayImpl(float[] array, int offset, long start, int length) throws DataInvalidException {
+        protected void toArrayImpl(float[] array, int offset, long start, int length) throws IOException {
             ila.toArray(array, offset, start, length);
 
             for (int ii = offset; length > 0; ii++, --length) {

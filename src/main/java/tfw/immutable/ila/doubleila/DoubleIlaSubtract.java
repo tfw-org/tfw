@@ -1,7 +1,7 @@
 package tfw.immutable.ila.doubleila;
 
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 
 public final class DoubleIlaSubtract {
     private DoubleIlaSubtract() {
@@ -30,7 +30,7 @@ public final class DoubleIlaSubtract {
             this.bufferSize = bufferSize;
         }
 
-        protected void toArrayImpl(double[] array, int offset, long ilaStart, int length) throws DataInvalidException {
+        protected void toArrayImpl(double[] array, int offset, long ilaStart, int length) throws IOException {
             DoubleIlaIterator li =
                     new DoubleIlaIterator(DoubleIlaSegment.create(leftIla, ilaStart, length), new double[bufferSize]);
             DoubleIlaIterator ri =

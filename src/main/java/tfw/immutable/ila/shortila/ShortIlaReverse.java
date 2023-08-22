@@ -1,7 +1,7 @@
 package tfw.immutable.ila.shortila;
 
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 
 public final class ShortIlaReverse {
     private ShortIlaReverse() {
@@ -26,7 +26,7 @@ public final class ShortIlaReverse {
             this.buffer = buffer;
         }
 
-        protected void toArrayImpl(short[] array, int offset, long start, int length) throws DataInvalidException {
+        protected void toArrayImpl(short[] array, int offset, long start, int length) throws IOException {
             final StridedShortIla stridedShortIla = new StridedShortIla(ila, buffer.clone());
 
             stridedShortIla.toArray(array, offset + (length - 1), -1, length() - (start + length), length);

@@ -1,7 +1,7 @@
 package tfw.immutable.ila.byteila;
 
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 
 public final class ByteIlaDecimate {
     private ByteIlaDecimate() {
@@ -29,7 +29,7 @@ public final class ByteIlaDecimate {
             this.buffer = buffer;
         }
 
-        protected void toArrayImpl(byte[] array, int offset, long start, int length) throws DataInvalidException {
+        protected void toArrayImpl(byte[] array, int offset, long start, int length) throws IOException {
             final long segmentStart = start * factor;
             final long segmentLength = StrictMath.min(ila.length() - segmentStart, length * factor - 1);
             final ByteIla segment = ByteIlaSegment.create(ila, segmentStart, segmentLength);

@@ -1,9 +1,9 @@
 package tfw.swing.list;
 
 import java.awt.EventQueue;
+import java.io.IOException;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
-import tfw.immutable.DataInvalidException;
 import tfw.immutable.ila.intila.IntIla;
 import tfw.immutable.ila.intila.IntIlaUtil;
 import tfw.immutable.ila.objectila.ObjectIla;
@@ -55,7 +55,7 @@ public class SelectionAndListCommit extends Commit {
                         list.setModel(defaultListModel);
                     }
                 });
-            } catch (DataInvalidException die) {
+            } catch (IOException e) {
                 return;
             }
         }
@@ -75,7 +75,7 @@ public class SelectionAndListCommit extends Commit {
                         }
                     }
                 });
-            } catch (DataInvalidException e) {
+            } catch (IOException e) {
                 return;
             }
         }
@@ -88,7 +88,7 @@ public class SelectionAndListCommit extends Commit {
                         list.setSelectedIndices(selectedIndex);
                     }
                 });
-            } catch (DataInvalidException e) {
+            } catch (IOException e) {
                 return;
             }
         }

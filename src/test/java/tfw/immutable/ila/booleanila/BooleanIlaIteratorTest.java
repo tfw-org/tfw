@@ -3,13 +3,13 @@ package tfw.immutable.ila.booleanila;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import java.io.IOException;
 import java.util.Random;
 import org.junit.jupiter.api.Test;
-import tfw.immutable.DataInvalidException;
 
 class BooleanIlaIteratorTest {
     @Test
-    void testBooleanIlaFill() throws DataInvalidException {
+    void testBooleanIlaFill() throws IOException {
         final Random random = new Random();
         final int LENGTH = 29;
         boolean[] array = new boolean[LENGTH];

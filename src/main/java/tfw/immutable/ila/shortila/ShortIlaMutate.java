@@ -1,7 +1,7 @@
 package tfw.immutable.ila.shortila;
 
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 
 public final class ShortIlaMutate {
     private ShortIlaMutate() {
@@ -28,7 +28,7 @@ public final class ShortIlaMutate {
             this.value = value;
         }
 
-        protected void toArrayImpl(short[] array, int offset, long start, int length) throws DataInvalidException {
+        protected void toArrayImpl(short[] array, int offset, long start, int length) throws IOException {
             final long startPlusLength = start + length;
 
             if (index < start || index >= startPlusLength) {

@@ -1,7 +1,7 @@
 package tfw.audio.byteila;
 
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 import tfw.immutable.ila.byteila.AbstractByteIla;
 import tfw.immutable.ila.byteila.ByteIla;
 import tfw.immutable.ila.shortila.ShortIla;
@@ -32,7 +32,7 @@ public final class MuLawByteIlaFromLinearShortIla {
             this.bufferSize = bufferSize;
         }
 
-        protected void toArrayImpl(byte[] array, int offset, long start, int length) throws DataInvalidException {
+        protected void toArrayImpl(byte[] array, int offset, long start, int length) throws IOException {
             ShortIlaIterator si =
                     new ShortIlaIterator(ShortIlaSegment.create(shortIla, start, length), new short[bufferSize]);
 

@@ -1,7 +1,7 @@
 package tfw.immutable.ila.booleanila;
 
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 
 public final class BooleanIlaSegment {
     private BooleanIlaSegment() {
@@ -31,7 +31,7 @@ public final class BooleanIlaSegment {
             this.start = start;
         }
 
-        protected void toArrayImpl(boolean[] array, int offset, long start, int length) throws DataInvalidException {
+        protected void toArrayImpl(boolean[] array, int offset, long start, int length) throws IOException {
             ila.toArray(array, offset, this.start + start, length);
         }
     }

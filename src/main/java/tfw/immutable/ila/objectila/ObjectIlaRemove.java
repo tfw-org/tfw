@@ -1,7 +1,7 @@
 package tfw.immutable.ila.objectila;
 
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 
 public final class ObjectIlaRemove {
     private ObjectIlaRemove() {
@@ -26,7 +26,7 @@ public final class ObjectIlaRemove {
             this.index = index;
         }
 
-        protected void toArrayImpl(T[] array, int offset, long start, int length) throws DataInvalidException {
+        protected void toArrayImpl(T[] array, int offset, long start, int length) throws IOException {
             final long startPlusLength = start + length;
 
             if (index <= start) {

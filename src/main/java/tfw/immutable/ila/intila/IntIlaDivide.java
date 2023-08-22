@@ -1,7 +1,7 @@
 package tfw.immutable.ila.intila;
 
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 
 public final class IntIlaDivide {
     private IntIlaDivide() {
@@ -30,7 +30,7 @@ public final class IntIlaDivide {
             this.bufferSize = bufferSize;
         }
 
-        protected void toArrayImpl(int[] array, int offset, long ilaStart, int length) throws DataInvalidException {
+        protected void toArrayImpl(int[] array, int offset, long ilaStart, int length) throws IOException {
             IntIlaIterator li =
                     new IntIlaIterator(IntIlaSegment.create(leftIla, ilaStart, length), new int[bufferSize]);
             IntIlaIterator ri =

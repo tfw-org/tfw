@@ -1,6 +1,6 @@
 package tfw.visualizer.graph;
 
-import tfw.immutable.DataInvalidException;
+import java.io.IOException;
 
 public class GraphFromArrays {
     private GraphFromArrays() {}
@@ -38,7 +38,7 @@ public class GraphFromArrays {
                 int edgesOffset,
                 long edgesStart,
                 int edgesLength)
-                throws DataInvalidException {
+                throws IOException {
             System.arraycopy(this.nodes, (int) nodesStart, nodes, nodesOffset, nodesLength);
             System.arraycopy(this.froms, (int) edgesStart, edgeFroms, edgesOffset, edgesLength);
             System.arraycopy(this.tos, (int) edgesStart, edgeTos, edgesOffset, edgesLength);

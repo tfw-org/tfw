@@ -1,7 +1,7 @@
 package tfw.immutable.ila.byteila;
 
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 
 public class ByteIlaSwap {
     private ByteIlaSwap() {}
@@ -27,7 +27,7 @@ public class ByteIlaSwap {
             this.bufferSize = bufferSize;
         }
 
-        protected void toArrayImpl(byte[] array, int offset, long start, int length) throws DataInvalidException {
+        protected void toArrayImpl(byte[] array, int offset, long start, int length) throws IOException {
             long end = start + length - 1;
             long blockStart = start - (start % bytesToSwap);
             long blockEnd = end + bytesToSwap - (end % bytesToSwap) - 1;

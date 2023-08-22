@@ -1,7 +1,7 @@
 package tfw.immutable.ila.intila;
 
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 
 public final class IntIlaReverse {
     private IntIlaReverse() {
@@ -26,7 +26,7 @@ public final class IntIlaReverse {
             this.buffer = buffer;
         }
 
-        protected void toArrayImpl(int[] array, int offset, long start, int length) throws DataInvalidException {
+        protected void toArrayImpl(int[] array, int offset, long start, int length) throws IOException {
             final StridedIntIla stridedIntIla = new StridedIntIla(ila, buffer.clone());
 
             stridedIntIla.toArray(array, offset + (length - 1), -1, length() - (start + length), length);

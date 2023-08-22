@@ -1,7 +1,7 @@
 package tfw.immutable.ila.charila;
 
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 
 public final class CharIlaRemove {
     private CharIlaRemove() {
@@ -26,7 +26,7 @@ public final class CharIlaRemove {
             this.index = index;
         }
 
-        protected void toArrayImpl(char[] array, int offset, long start, int length) throws DataInvalidException {
+        protected void toArrayImpl(char[] array, int offset, long start, int length) throws IOException {
             final long startPlusLength = start + length;
 
             if (index <= start) {

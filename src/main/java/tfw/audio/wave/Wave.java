@@ -1,8 +1,8 @@
 package tfw.audio.wave;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 import tfw.immutable.ila.byteila.ByteIla;
 import tfw.immutable.ila.byteila.ByteIlaSegment;
 
@@ -10,18 +10,12 @@ public final class Wave {
     private final WaveChunk[] waveChunks;
     public final ByteIla waveByteData;
 
-    public Wave(final ByteIla byteIla, final int bufferSize) throws DataInvalidException {
+    public Wave(final ByteIla byteIla, final int bufferSize) throws IOException {
         Argument.assertNotNull(byteIla, "byteIla");
         waveByteData = byteIla;
 
         ArrayList<WaveChunk> chunkList = new ArrayList<>();
-        WaveRiffChunk waveRiffChunk = null;
-
-        try {
-            waveRiffChunk = new WaveRiffChunk(byteIla, bufferSize);
-        } catch (DataInvalidException die) {
-            throw new IllegalArgumentException("Not a WAVE File!");
-        }
+        WaveRiffChunk waveRiffChunk = new WaveRiffChunk(byteIla, bufferSize);
 
         chunkList.add(waveRiffChunk);
 

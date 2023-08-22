@@ -1,6 +1,6 @@
 package tfw.tsm;
 
-import tfw.immutable.DataInvalidException;
+import java.io.IOException;
 import tfw.immutable.ila.objectila.ObjectIla;
 import tfw.immutable.ila.objectila.ObjectIlaFromArray;
 
@@ -30,7 +30,7 @@ public class ObjectIlaMultiplexerStrategy implements MultiplexerStrategy {
                 this.objs = new Object[(int) ila.length()];
 
                 ila.toArray(objs, 0, 0, objs.length);
-            } catch (DataInvalidException e) {
+            } catch (IOException e) {
                 throw new RuntimeException("Exception occurred accessing multiplexed state:" + e.getMessage(), e);
             }
         }
@@ -60,7 +60,7 @@ public class ObjectIlaMultiplexerStrategy implements MultiplexerStrategy {
                 array = new Object[(int) objectIla.length()];
 
                 objectIla.toArray(array, 0, 0, array.length);
-            } catch (DataInvalidException e) {
+            } catch (IOException e) {
                 throw new RuntimeException("Exception occurred accessing multiplexed state:" + e.getMessage(), e);
             }
         }

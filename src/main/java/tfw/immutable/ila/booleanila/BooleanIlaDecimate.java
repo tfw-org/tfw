@@ -1,7 +1,7 @@
 package tfw.immutable.ila.booleanila;
 
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 
 public final class BooleanIlaDecimate {
     private BooleanIlaDecimate() {
@@ -29,7 +29,7 @@ public final class BooleanIlaDecimate {
             this.buffer = buffer;
         }
 
-        protected void toArrayImpl(boolean[] array, int offset, long start, int length) throws DataInvalidException {
+        protected void toArrayImpl(boolean[] array, int offset, long start, int length) throws IOException {
             final long segmentStart = start * factor;
             final long segmentLength = StrictMath.min(ila.length() - segmentStart, length * factor - 1);
             final BooleanIla segment = BooleanIlaSegment.create(ila, segmentStart, segmentLength);

@@ -1,11 +1,10 @@
 package tfw.immutable.ila.floatila;
 
-import tfw.immutable.DataInvalidException;
+import java.io.IOException;
 import tfw.immutable.ila.AbstractIla;
 
 public abstract class AbstractFloatIla extends AbstractIla implements FloatIla {
-    protected abstract void toArrayImpl(final float[] array, int offset, long start, int length)
-            throws DataInvalidException;
+    protected abstract void toArrayImpl(final float[] array, int offset, long start, int length) throws IOException;
 
     protected AbstractFloatIla(final long length) {
         super(length);
@@ -13,7 +12,7 @@ public abstract class AbstractFloatIla extends AbstractIla implements FloatIla {
 
     @Override
     public final void toArray(final float[] array, final int offset, final long start, final int length)
-            throws DataInvalidException {
+            throws IOException {
         if (length == 0) {
             return;
         }

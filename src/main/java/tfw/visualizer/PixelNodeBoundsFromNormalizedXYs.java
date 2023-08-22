@@ -1,6 +1,7 @@
 package tfw.visualizer;
 
 import java.awt.FontMetrics;
+import java.io.IOException;
 import tfw.immutable.DataInvalidException;
 import tfw.immutable.ilm.doubleilm.DoubleIlm;
 import tfw.immutable.ilm.intilm.IntIlm;
@@ -55,7 +56,7 @@ public final class PixelNodeBoundsFromNormalizedXYs {
             return 4;
         }
 
-        public int[] toArray() throws DataInvalidException {
+        public int[] toArray() throws IOException {
             Object[] nodes = new Object[(int) graph.nodesLength()];
             Object[] froms = new Object[0];
             Object[] tos = new Object[0];
@@ -90,8 +91,8 @@ public final class PixelNodeBoundsFromNormalizedXYs {
             return null;
         }
 
-        public int[] toArray(long rowStart, long columnStart, int width, int height) throws DataInvalidException {
-            throw new DataInvalidException("Method not implemented!");
+        public int[] toArray(long rowStart, long columnStart, int width, int height) throws IOException {
+            throw new IOException("Method not implemented!");
         }
 
         @Override

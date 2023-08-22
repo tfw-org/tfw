@@ -1,7 +1,7 @@
 package tfw.immutable.ila.byteila;
 
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 
 public final class StridedByteIla {
     private final ByteIla ila;
@@ -20,7 +20,7 @@ public final class StridedByteIla {
     }
 
     public void toArray(final byte[] array, final int offset, final int stride, final long start, final int length)
-            throws DataInvalidException {
+            throws IOException {
         Argument.assertNotLessThan(offset, 0, "offset");
         Argument.assertNotGreaterThanOrEquals(offset, array.length, "offset", "array.length");
         Argument.assertNotEquals(stride, 0, "stride");

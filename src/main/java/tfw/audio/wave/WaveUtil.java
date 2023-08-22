@@ -3,7 +3,6 @@ package tfw.audio.wave;
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
-import tfw.immutable.DataInvalidException;
 import tfw.immutable.ila.byteila.ByteIla;
 import tfw.immutable.ila.byteila.ByteIlaSegment;
 import tfw.immutable.ila.byteila.ByteIlaSwap;
@@ -13,8 +12,7 @@ public final class WaveUtil {
     private WaveUtil() {}
 
     public static int intFromSignedFourBytes(
-            final ByteIla byteIla, final long offset, final boolean swap, final int bufferSize)
-            throws DataInvalidException {
+            final ByteIla byteIla, final long offset, final boolean swap, final int bufferSize) throws IOException {
         final ByteIla swapByteIla = swap ? ByteIlaSwap.create(byteIla, 4, bufferSize) : byteIla;
         byte[] b = ByteIlaUtil.toArray(ByteIlaSegment.create(swapByteIla, offset, 4));
         ByteArrayInputStream bais = new ByteArrayInputStream(b);
@@ -23,12 +21,12 @@ public final class WaveUtil {
         try {
             return dis.readInt();
         } catch (IOException ioe) {
-            throw new DataInvalidException("intFromSignedFourBytes", ioe);
+            throw new IOException("intFromSignedFourBytes", ioe);
         }
     }
 
     public static int intFromUnsignedTwoBytes(final ByteIla byteIla, final long offset, final int bufferSize)
-            throws DataInvalidException {
+            throws IOException {
         final ByteIla swapByteIla = ByteIlaSwap.create(byteIla, 2, bufferSize);
         byte[] b = ByteIlaUtil.toArray(ByteIlaSegment.create(swapByteIla, offset, 2));
         ByteArrayInputStream bais = new ByteArrayInputStream(b);
@@ -37,7 +35,7 @@ public final class WaveUtil {
         try {
             return dis.readUnsignedShort();
         } catch (IOException ioe) {
-            throw new DataInvalidException("intFromUnsignedTwoBytes", ioe);
+            throw new IOException("intFromUnsignedTwoBytes", ioe);
         }
     }
 }

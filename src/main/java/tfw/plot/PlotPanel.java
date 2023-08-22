@@ -5,10 +5,10 @@ import java.awt.Graphics2D;
 import java.awt.event.ComponentListener;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.io.IOException;
 import javax.swing.JPanel;
 import tfw.awt.ecd.GraphicECD;
 import tfw.awt.graphic.Graphic;
-import tfw.immutable.DataInvalidException;
 import tfw.immutable.ila.objectila.ObjectIla;
 import tfw.tsm.Branch;
 import tfw.tsm.BranchBox;
@@ -74,7 +74,7 @@ public class PlotPanel extends JPanel implements BranchBox {
                 mg = new Object[(int) multiGraphic.length()];
 
                 multiGraphic.toArray(mg, 0, 0, mg.length);
-            } catch (DataInvalidException die) {
+            } catch (IOException e) {
                 return;
             }
         }

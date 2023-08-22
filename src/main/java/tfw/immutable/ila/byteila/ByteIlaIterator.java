@@ -1,7 +1,7 @@
 package tfw.immutable.ila.byteila;
 
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 
 public final class ByteIlaIterator {
     private final ByteIla instance;
@@ -39,7 +39,7 @@ public final class ByteIlaIterator {
      * Either know the length of the ByteIla, or use hasNext()
      * properly.
      */
-    public byte next() throws DataInvalidException {
+    public byte next() throws IOException {
         // do we need to fetch into buffer?
         if (bufferIndex == buffer.length) {
             // how much do we fetch?
@@ -61,7 +61,7 @@ public final class ByteIlaIterator {
      * Either know the length of the ByteIla, or use hasNext()
      * properly.
      */
-    public void skip(long amount) throws DataInvalidException {
+    public void skip(long amount) throws IOException {
         long newBufferIndex = bufferIndex + amount;
         actualPosition += amount;
 

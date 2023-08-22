@@ -1,12 +1,11 @@
 // booleanila,byteila,charila,doubleila,floatila,intila,longila,objectila,shortila
 package %%PACKAGE%%;
 
-import tfw.immutable.DataInvalidException;
+import java.io.IOException;
 import tfw.immutable.ila.AbstractIla;
 
 public abstract class Abstract%%NAME%%Ila%%TEMPLATE%% extends AbstractIla implements %%NAME%%Ila%%TEMPLATE%% {
-    protected abstract void toArrayImpl(final %%TYPE_OR_TEMPLATE%%[] array, int offset, long start, int length)
-            throws DataInvalidException;
+    protected abstract void toArrayImpl(final %%TYPE_OR_TEMPLATE%%[] array, int offset, long start, int length) throws IOException;
 
     protected Abstract%%NAME%%Ila(final long length) {
         super(length);
@@ -14,7 +13,7 @@ public abstract class Abstract%%NAME%%Ila%%TEMPLATE%% extends AbstractIla implem
 
     @Override
     public final void toArray(final %%TYPE_OR_TEMPLATE%%[] array, final int offset, final long start, final int length)
-            throws DataInvalidException {
+            throws IOException {
         if (length == 0) {
             return;
         }

@@ -1,7 +1,7 @@
 package tfw.immutable.ila.floatila;
 
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 
 public final class FloatIlaInsert {
     private FloatIlaInsert() {
@@ -28,7 +28,7 @@ public final class FloatIlaInsert {
             this.value = value;
         }
 
-        protected void toArrayImpl(float[] array, int offset, long start, int length) throws DataInvalidException {
+        protected void toArrayImpl(float[] array, int offset, long start, int length) throws IOException {
             final long startPlusLength = start + length;
 
             if (index < start) {

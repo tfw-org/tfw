@@ -1,7 +1,7 @@
 package tfw.immutable.ila.booleanila;
 
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 
 public final class BooleanIlaInsert {
     private BooleanIlaInsert() {
@@ -28,7 +28,7 @@ public final class BooleanIlaInsert {
             this.value = value;
         }
 
-        protected void toArrayImpl(boolean[] array, int offset, long start, int length) throws DataInvalidException {
+        protected void toArrayImpl(boolean[] array, int offset, long start, int length) throws IOException {
             final long startPlusLength = start + length;
 
             if (index < start) {

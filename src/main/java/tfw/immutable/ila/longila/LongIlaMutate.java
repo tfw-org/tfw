@@ -1,7 +1,7 @@
 package tfw.immutable.ila.longila;
 
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 
 public final class LongIlaMutate {
     private LongIlaMutate() {
@@ -28,7 +28,7 @@ public final class LongIlaMutate {
             this.value = value;
         }
 
-        protected void toArrayImpl(long[] array, int offset, long start, int length) throws DataInvalidException {
+        protected void toArrayImpl(long[] array, int offset, long start, int length) throws IOException {
             final long startPlusLength = start + length;
 
             if (index < start || index >= startPlusLength) {

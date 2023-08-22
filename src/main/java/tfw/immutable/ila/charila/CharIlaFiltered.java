@@ -1,7 +1,7 @@
 package tfw.immutable.ila.charila;
 
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 import tfw.immutable.ila.AbstractIlaCheck;
 
 public final class CharIlaFiltered {
@@ -40,7 +40,7 @@ public final class CharIlaFiltered {
             return length;
         }
 
-        public final void toArray(char[] array, int offset, long start, int length) throws DataInvalidException {
+        public final void toArray(char[] array, int offset, long start, int length) throws IOException {
             calculateLength();
 
             if (length == 0) {
@@ -72,7 +72,7 @@ public final class CharIlaFiltered {
                             length--;
                         }
                     }
-                } catch (DataInvalidException die) {
+                } catch (IOException die) {
                     length = 0;
                 }
             }

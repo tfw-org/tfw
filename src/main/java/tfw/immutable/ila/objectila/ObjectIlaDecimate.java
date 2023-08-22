@@ -1,7 +1,7 @@
 package tfw.immutable.ila.objectila;
 
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 
 public final class ObjectIlaDecimate {
     private ObjectIlaDecimate() {
@@ -29,7 +29,7 @@ public final class ObjectIlaDecimate {
             this.buffer = buffer;
         }
 
-        protected void toArrayImpl(T[] array, int offset, long start, int length) throws DataInvalidException {
+        protected void toArrayImpl(T[] array, int offset, long start, int length) throws IOException {
             final long segmentStart = start * factor;
             final long segmentLength = StrictMath.min(ila.length() - segmentStart, length * factor - 1);
             final ObjectIla<T> segment = ObjectIlaSegment.create(ila, segmentStart, segmentLength);

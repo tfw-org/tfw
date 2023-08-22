@@ -1,13 +1,13 @@
 package tfw.immutable.ila.charila;
 
-import tfw.immutable.DataInvalidException;
+import java.io.IOException;
 import tfw.immutable.ila.byteila.ByteIla;
 
 public final class CharIlaFromUtf8ByteIla {
     private CharIlaFromUtf8ByteIla() {}
 
     public static CharIla create(final ByteIla utf8ByteIla, final int byteBufferLength, final int maxIndexTableLength)
-            throws DataInvalidException {
+            throws IOException {
         return new MyCharIla(utf8ByteIla, byteBufferLength, maxIndexTableLength);
     }
 
@@ -22,7 +22,7 @@ public final class CharIlaFromUtf8ByteIla {
         private long nextByteIndex = -1;
 
         public MyCharIla(final ByteIla utf8ByteIla, final int byteBufferLength, final int indexTableLength)
-                throws DataInvalidException {
+                throws IOException {
             this.utf8ByteIla = utf8ByteIla;
             this.byteBuffer = new byte[CharIlaFromUtf8ByteIlaUtil.calculateByteBufferLength(byteBufferLength)];
             this.charDelta = CharIlaFromUtf8ByteIlaUtil.calculateCharDelta(indexTableLength, utf8ByteIla.length());
@@ -39,7 +39,7 @@ public final class CharIlaFromUtf8ByteIla {
         }
 
         @Override
-        public void toArray(char[] array, int offset, long start, int length) throws DataInvalidException {
+        public void toArray(char[] array, int offset, long start, int length) throws IOException {
             final int byteIndexTableIndex = (int) (start / charDelta);
             final long startByteIndex = byteIndexTable[byteIndexTableIndex];
             final long startCharIndex = byteIndexTableIndex * charDelta;

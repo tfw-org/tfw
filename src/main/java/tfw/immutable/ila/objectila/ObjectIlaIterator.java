@@ -1,7 +1,7 @@
 package tfw.immutable.ila.objectila;
 
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 
 public final class ObjectIlaIterator<T> {
     private final ObjectIla<T> instance;
@@ -39,7 +39,7 @@ public final class ObjectIlaIterator<T> {
      * Either know the length of the ObjectIla, or use hasNext()
      * properly.
      */
-    public T next() throws DataInvalidException {
+    public T next() throws IOException {
         // do we need to fetch into buffer?
         if (bufferIndex == buffer.length) {
             // how much do we fetch?
@@ -61,7 +61,7 @@ public final class ObjectIlaIterator<T> {
      * Either know the length of the ObjectIla, or use hasNext()
      * properly.
      */
-    public void skip(long amount) throws DataInvalidException {
+    public void skip(long amount) throws IOException {
         long newBufferIndex = bufferIndex + amount;
         actualPosition += amount;
 

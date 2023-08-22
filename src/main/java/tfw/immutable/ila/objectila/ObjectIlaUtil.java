@@ -1,17 +1,17 @@
 package tfw.immutable.ila.objectila;
 
+import java.io.IOException;
 import java.util.Arrays;
-import tfw.immutable.DataInvalidException;
 
 public final class ObjectIlaUtil {
     private ObjectIlaUtil() {}
 
-    public static <T> T[] toArray(final ObjectIla<T> objectIla, T[] array) throws DataInvalidException {
+    public static <T> T[] toArray(final ObjectIla<T> objectIla, T[] array) throws IOException {
         return toArray(objectIla, 0, (int) Math.min(objectIla.length(), Integer.MAX_VALUE), array);
     }
 
     public static <T> T[] toArray(final ObjectIla<T> objectIla, final long ilaStart, final int length, final T[] array)
-            throws DataInvalidException {
+            throws IOException {
         final int intObjectIlaLength = (int) Math.min(objectIla.length(), Integer.MAX_VALUE);
 
         if (array.length < intObjectIlaLength) {

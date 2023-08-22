@@ -1,7 +1,7 @@
 package tfw.immutable.ila.objectila;
 
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 
 public final class ObjectIlaSegment {
     private ObjectIlaSegment() {
@@ -31,7 +31,7 @@ public final class ObjectIlaSegment {
             this.start = start;
         }
 
-        protected void toArrayImpl(T[] array, int offset, long start, int length) throws DataInvalidException {
+        protected void toArrayImpl(T[] array, int offset, long start, int length) throws IOException {
             ila.toArray(array, offset, this.start + start, length);
         }
     }

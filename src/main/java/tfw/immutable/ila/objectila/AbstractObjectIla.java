@@ -1,11 +1,10 @@
 package tfw.immutable.ila.objectila;
 
-import tfw.immutable.DataInvalidException;
+import java.io.IOException;
 import tfw.immutable.ila.AbstractIla;
 
 public abstract class AbstractObjectIla<T> extends AbstractIla implements ObjectIla<T> {
-    protected abstract void toArrayImpl(final T[] array, int offset, long start, int length)
-            throws DataInvalidException;
+    protected abstract void toArrayImpl(final T[] array, int offset, long start, int length) throws IOException;
 
     protected AbstractObjectIla(final long length) {
         super(length);
@@ -13,7 +12,7 @@ public abstract class AbstractObjectIla<T> extends AbstractIla implements Object
 
     @Override
     public final void toArray(final T[] array, final int offset, final long start, final int length)
-            throws DataInvalidException {
+            throws IOException {
         if (length == 0) {
             return;
         }

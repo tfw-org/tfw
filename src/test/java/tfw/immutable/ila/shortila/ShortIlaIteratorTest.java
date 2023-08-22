@@ -3,13 +3,13 @@ package tfw.immutable.ila.shortila;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import java.io.IOException;
 import java.util.Random;
 import org.junit.jupiter.api.Test;
-import tfw.immutable.DataInvalidException;
 
 class ShortIlaIteratorTest {
     @Test
-    void testShortIlaFill() throws DataInvalidException {
+    void testShortIlaFill() throws IOException {
         final Random random = new Random();
         final int LENGTH = 29;
         short[] array = new short[LENGTH];

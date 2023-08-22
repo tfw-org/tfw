@@ -1,7 +1,7 @@
 package tfw.visualizer.graph;
 
+import java.io.IOException;
 import java.util.HashSet;
-import tfw.immutable.DataInvalidException;
 import tfw.immutable.ila.booleanila.BooleanIla;
 import tfw.immutable.ila.booleanila.BooleanIlaUtil;
 
@@ -39,7 +39,7 @@ public class GraphSelectionFilter {
                 int edgesOffset,
                 long edgesStart,
                 int edgesLength)
-                throws DataInvalidException {
+                throws IOException {
             Object[] allNodes = new Object[(int) graph.nodesLength()];
             Object[] allFroms = new Object[(int) graph.edgesLength()];
             Object[] allTos = new Object[(int) graph.edgesLength()];

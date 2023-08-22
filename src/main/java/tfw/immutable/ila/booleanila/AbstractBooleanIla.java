@@ -1,11 +1,10 @@
 package tfw.immutable.ila.booleanila;
 
-import tfw.immutable.DataInvalidException;
+import java.io.IOException;
 import tfw.immutable.ila.AbstractIla;
 
 public abstract class AbstractBooleanIla extends AbstractIla implements BooleanIla {
-    protected abstract void toArrayImpl(final boolean[] array, int offset, long start, int length)
-            throws DataInvalidException;
+    protected abstract void toArrayImpl(final boolean[] array, int offset, long start, int length) throws IOException;
 
     protected AbstractBooleanIla(final long length) {
         super(length);
@@ -13,7 +12,7 @@ public abstract class AbstractBooleanIla extends AbstractIla implements BooleanI
 
     @Override
     public final void toArray(final boolean[] array, final int offset, final long start, final int length)
-            throws DataInvalidException {
+            throws IOException {
         if (length == 0) {
             return;
         }

@@ -2,7 +2,6 @@ package tfw.audio.au;
 
 import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 import tfw.immutable.ila.byteila.ByteIla;
 import tfw.immutable.ila.byteila.ByteIlaConcatenate;
 import tfw.immutable.ila.byteila.ByteIlaFromArray;
@@ -113,7 +112,7 @@ public final class Au {
      * @throws DataInvalidException if the byteIla has invalid data.
      * @throws IOException if a valid AU header is not found.
      */
-    public Au(ByteIla byteIla) throws DataInvalidException, IOException {
+    public Au(ByteIla byteIla) throws IOException {
         Argument.assertNotNull(byteIla, "byteIla");
 
         if (byteIla.length() < MINIMUM_HEADER_LENGTH) {
