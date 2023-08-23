@@ -18,11 +18,15 @@ public final class ByteIlaNegate {
         private final ByteIla ila;
 
         MyByteIla(ByteIla ila) {
-            super(ila.length());
-
             this.ila = ila;
         }
 
+        @Override
+        protected long lengthImpl() throws IOException {
+            return ila.length();
+        }
+
+        @Override
         protected void toArrayImpl(byte[] array, int offset, long start, int length) throws IOException {
             ila.toArray(array, offset, start, length);
 

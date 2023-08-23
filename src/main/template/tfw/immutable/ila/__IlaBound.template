@@ -22,13 +22,17 @@ public final class %%NAME%%IlaBound {
         private final %%TYPE%% maximum;
 
         My%%NAME%%Ila(%%NAME%%Ila ila, %%TYPE%% minimum, %%TYPE%% maximum) {
-            super(ila.length());
-
             this.ila = ila;
             this.minimum = minimum;
             this.maximum = maximum;
         }
 
+        @Override
+        protected long lengthImpl() throws IOException {
+            return ila.length();
+        }
+
+        @Override
         protected void toArrayImpl(%%TYPE%%[] array, int offset, long start, int length) throws IOException {
             ila.toArray(array, offset, start, length);
 

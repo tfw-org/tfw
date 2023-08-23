@@ -9,7 +9,7 @@ public final class %%NAME%%IlaMutate {
         // non-instantiable class
     }
 
-    public static %%TEMPLATE_SPACE%%%%NAME%%Ila%%TEMPLATE%% create(%%NAME%%Ila%%TEMPLATE%% ila, long index, %%TYPE_OR_TEMPLATE%% value) {
+    public static %%TEMPLATE_SPACE%%%%NAME%%Ila%%TEMPLATE%% create(%%NAME%%Ila%%TEMPLATE%% ila, long index, %%TYPE_OR_TEMPLATE%% value) throws IOException {
         Argument.assertNotNull(ila, "ila");
         Argument.assertNotLessThan(index, 0, "index");
         Argument.assertLessThan(index, ila.length(), "index", "ila.length()");
@@ -23,12 +23,17 @@ public final class %%NAME%%IlaMutate {
         private final %%TYPE_OR_TEMPLATE%% value;
 
         My%%NAME%%Ila(%%NAME%%Ila%%TEMPLATE%% ila, long index, %%TYPE_OR_TEMPLATE%% value) {
-            super(ila.length());
             this.ila = ila;
             this.index = index;
             this.value = value;
         }
 
+        @Override
+        protected long lengthImpl() throws IOException {
+            return ila.length();
+        }
+
+        @Override
         protected void toArrayImpl(%%TYPE_OR_TEMPLATE%%[] array, int offset, long start, int length) throws IOException {
             final long startPlusLength = start + length;
 

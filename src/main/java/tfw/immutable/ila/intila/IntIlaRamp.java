@@ -16,13 +16,20 @@ public final class IntIlaRamp {
     private static class MyIntIla extends AbstractIntIla {
         private final int startValue;
         private final int increment;
+        private final long length;
 
         MyIntIla(int startValue, int increment, long length) {
-            super(length);
             this.startValue = startValue;
             this.increment = increment;
+            this.length = length;
         }
 
+        @Override
+        protected long lengthImpl() {
+            return length;
+        }
+
+        @Override
         protected void toArrayImpl(int[] array, int offset, long start, int length) {
             final int startPlusLength = (int) (start + length);
 

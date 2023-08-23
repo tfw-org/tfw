@@ -8,7 +8,7 @@ public final class BooleanIlaMutate {
         // non-instantiable class
     }
 
-    public static BooleanIla create(BooleanIla ila, long index, boolean value) {
+    public static BooleanIla create(BooleanIla ila, long index, boolean value) throws IOException {
         Argument.assertNotNull(ila, "ila");
         Argument.assertNotLessThan(index, 0, "index");
         Argument.assertLessThan(index, ila.length(), "index", "ila.length()");
@@ -22,12 +22,17 @@ public final class BooleanIlaMutate {
         private final boolean value;
 
         MyBooleanIla(BooleanIla ila, long index, boolean value) {
-            super(ila.length());
             this.ila = ila;
             this.index = index;
             this.value = value;
         }
 
+        @Override
+        protected long lengthImpl() throws IOException {
+            return ila.length();
+        }
+
+        @Override
         protected void toArrayImpl(boolean[] array, int offset, long start, int length) throws IOException {
             final long startPlusLength = start + length;
 

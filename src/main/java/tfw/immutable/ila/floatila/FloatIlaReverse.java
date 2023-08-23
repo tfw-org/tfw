@@ -20,12 +20,16 @@ public final class FloatIlaReverse {
         private final float[] buffer;
 
         MyFloatIla(FloatIla ila, final float[] buffer) {
-            super(ila.length());
-
             this.ila = ila;
             this.buffer = buffer;
         }
 
+        @Override
+        protected long lengthImpl() throws IOException {
+            return ila.length();
+        }
+
+        @Override
         protected void toArrayImpl(float[] array, int offset, long start, int length) throws IOException {
             final StridedFloatIla stridedFloatIla = new StridedFloatIla(ila, buffer.clone());
 

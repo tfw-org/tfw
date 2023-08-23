@@ -19,11 +19,15 @@ public final class %%NAME%%IlaInvert {
         private final %%NAME%%Ila ila;
 
         My%%NAME%%Ila(%%NAME%%Ila ila) {
-            super(ila.length());
-
             this.ila = ila;
         }
 
+        @Override
+        protected long lengthImpl() throws IOException {
+            return ila.length();
+        }
+
+        @Override
         protected void toArrayImpl(%%TYPE%%[] array, int offset, long start, int length) throws IOException {
             ila.toArray(array, offset, start, length);
 

@@ -28,16 +28,21 @@ public final class ByteIlaConcatenate {
     private static class MyByteIla extends AbstractByteIla {
         private final ByteIla leftIla;
         private final ByteIla rightIla;
-        private final long leftIlaLength;
 
         MyByteIla(ByteIla leftIla, ByteIla rightIla) {
-            super(leftIla.length() + rightIla.length());
             this.leftIla = leftIla;
             this.rightIla = rightIla;
-            this.leftIlaLength = leftIla.length();
         }
 
+        @Override
+        protected long lengthImpl() throws IOException {
+            return leftIla.length() + rightIla.length();
+        }
+
+        @Override
         protected void toArrayImpl(byte[] array, int offset, long start, int length) throws IOException {
+            final long leftIlaLength = leftIla.length();
+
             if (start + length <= leftIlaLength) {
                 leftIla.toArray(array, offset, start, length);
             } else if (start >= leftIlaLength) {

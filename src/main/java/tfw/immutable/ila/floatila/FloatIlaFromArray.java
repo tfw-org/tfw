@@ -17,11 +17,15 @@ public final class FloatIlaFromArray {
         private final float[] array;
 
         MyFloatIla(float[] array) {
-            super(array.length);
-
             this.array = array;
         }
 
+        @Override
+        protected long lengthImpl() {
+            return array.length;
+        }
+
+        @Override
         protected void toArrayImpl(float[] array, int offset, long start, int length) {
             System.arraycopy(this.array, (int) start, array, offset, length);
         }

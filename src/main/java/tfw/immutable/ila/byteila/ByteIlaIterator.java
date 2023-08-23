@@ -15,7 +15,7 @@ public final class ByteIlaIterator {
 
     public static final int DEFAULT_BUFFER_SIZE = 10000;
 
-    public ByteIlaIterator(ByteIla instance, byte[] buffer) {
+    public ByteIlaIterator(ByteIla instance, byte[] buffer) throws IOException {
         Argument.assertNotNull(instance, "instance");
         Argument.assertNotNull(buffer, "buffer");
         Argument.assertNotLessThan(buffer.length, 1, "buffer.length");

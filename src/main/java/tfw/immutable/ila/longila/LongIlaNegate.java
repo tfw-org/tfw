@@ -18,11 +18,15 @@ public final class LongIlaNegate {
         private final LongIla ila;
 
         MyLongIla(LongIla ila) {
-            super(ila.length());
-
             this.ila = ila;
         }
 
+        @Override
+        protected long lengthImpl() throws IOException {
+            return ila.length();
+        }
+
+        @Override
         protected void toArrayImpl(long[] array, int offset, long start, int length) throws IOException {
             ila.toArray(array, offset, start, length);
 

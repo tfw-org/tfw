@@ -8,7 +8,7 @@ public final class DoubleIlaDivide {
         // non-instantiable class
     }
 
-    public static DoubleIla create(DoubleIla leftIla, DoubleIla rightIla, int bufferSize) {
+    public static DoubleIla create(DoubleIla leftIla, DoubleIla rightIla, int bufferSize) throws IOException {
         Argument.assertNotNull(leftIla, "leftIla");
         Argument.assertNotNull(rightIla, "rightIla");
         Argument.assertEquals(leftIla.length(), rightIla.length(), "leftIla.length()", "rightIla.length()");
@@ -23,13 +23,17 @@ public final class DoubleIlaDivide {
         private final int bufferSize;
 
         MyDoubleIla(DoubleIla leftIla, DoubleIla rightIla, int bufferSize) {
-            super(leftIla.length());
-
             this.leftIla = leftIla;
             this.rightIla = rightIla;
             this.bufferSize = bufferSize;
         }
 
+        @Override
+        protected long lengthImpl() throws IOException {
+            return leftIla.length();
+        }
+
+        @Override
         protected void toArrayImpl(double[] array, int offset, long ilaStart, int length) throws IOException {
             DoubleIlaIterator li =
                     new DoubleIlaIterator(DoubleIlaSegment.create(leftIla, ilaStart, length), new double[bufferSize]);

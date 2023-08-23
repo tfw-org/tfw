@@ -23,12 +23,17 @@ public final class CharIlaDecimate {
         private final char[] buffer;
 
         MyCharIla(CharIla ila, long factor, char[] buffer) {
-            super((ila.length() + factor - 1) / factor);
             this.ila = ila;
             this.factor = factor;
             this.buffer = buffer;
         }
 
+        @Override
+        protected long lengthImpl() throws IOException {
+            return (ila.length() + factor - 1) / factor;
+        }
+
+        @Override
         protected void toArrayImpl(char[] array, int offset, long start, int length) throws IOException {
             final long segmentStart = start * factor;
             final long segmentLength = StrictMath.min(ila.length() - segmentStart, length * factor - 1);

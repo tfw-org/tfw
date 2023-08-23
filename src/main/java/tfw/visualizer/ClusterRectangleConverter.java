@@ -1,5 +1,6 @@
 package tfw.visualizer;
 
+import java.io.IOException;
 import tfw.immutable.ila.intila.IntIlaFill;
 import tfw.immutable.ila.intila.IntIlaFromArray;
 import tfw.immutable.ila.objectila.ObjectIla;
@@ -54,7 +55,12 @@ public class ClusterRectangleConverter extends Converter {
         int y = ((Integer) get(yECD)).intValue();
         int width = ((Integer) get(widthECD)).intValue();
         int height = ((Integer) get(heightECD)).intValue();
-        int numberOfClusters = (int) ((ObjectIla) get(nodeClustersECD)).length();
+        int numberOfClusters;
+        try {
+            numberOfClusters = (int) ((ObjectIla) get(nodeClustersECD)).length();
+        } catch (IOException e) {
+            numberOfClusters = 0;
+        }
 
         if (numberOfClusters == 0) {
             return;

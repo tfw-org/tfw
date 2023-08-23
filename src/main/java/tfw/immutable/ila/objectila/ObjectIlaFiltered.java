@@ -2,7 +2,6 @@ package tfw.immutable.ila.objectila;
 
 import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.ila.AbstractIlaCheck;
 
 public final class ObjectIlaFiltered<T> {
     private ObjectIlaFiltered() {
@@ -21,12 +20,10 @@ public final class ObjectIlaFiltered<T> {
         return new MyObjectIla<>(ila, filter, buffer);
     }
 
-    private static class MyObjectIla<T> implements ObjectIla<T> {
+    private static class MyObjectIla<T> extends AbstractObjectIla<T> {
         private final ObjectIla<T> ila;
         private final ObjectFilter<T> filter;
         private final T[] buffer;
-
-        private long length = -1;
 
         private MyObjectIla(ObjectIla<T> ila, ObjectFilter<T> filter, T[] buffer) {
             this.ila = ila;
@@ -34,21 +31,22 @@ public final class ObjectIlaFiltered<T> {
             this.buffer = buffer;
         }
 
-        public final long length() {
-            calculateLength();
+        @Override
+        protected long lengthImpl() throws IOException {
+            long length = ila.length();
+            ObjectIlaIterator<T> oii = new ObjectIlaIterator<>(ila, buffer.clone());
+
+            while (oii.hasNext()) {
+                if (filter.matches(oii.next())) {
+                    length--;
+                }
+            }
 
             return length;
         }
 
-        public final void toArray(T[] array, int offset, long start, int length) throws IOException {
-            calculateLength();
-
-            if (length == 0) {
-                return;
-            }
-
-            AbstractIlaCheck.boundsCheck(this.length, array.length, offset, start, length);
-
+        @Override
+        public void toArrayImpl(T[] array, int offset, long start, int length) throws IOException {
             ObjectIlaIterator<T> oii = new ObjectIlaIterator<>(ObjectIlaSegment.create(ila, start), buffer.clone());
 
             // left off here
@@ -57,23 +55,6 @@ public final class ObjectIlaFiltered<T> {
 
                 if (!filter.matches(node)) {
                     array[i] = node;
-                }
-            }
-        }
-
-        private void calculateLength() {
-            if (length < 0) {
-                length = ila.length();
-                ObjectIlaIterator<T> oii = new ObjectIlaIterator<>(ila, buffer.clone());
-
-                try {
-                    while (oii.hasNext()) {
-                        if (filter.matches(oii.next())) {
-                            length--;
-                        }
-                    }
-                } catch (IOException die) {
-                    length = 0;
                 }
             }
         }

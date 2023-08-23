@@ -20,12 +20,16 @@ public final class DoubleIlaReverse {
         private final double[] buffer;
 
         MyDoubleIla(DoubleIla ila, final double[] buffer) {
-            super(ila.length());
-
             this.ila = ila;
             this.buffer = buffer;
         }
 
+        @Override
+        protected long lengthImpl() throws IOException {
+            return ila.length();
+        }
+
+        @Override
         protected void toArrayImpl(double[] array, int offset, long start, int length) throws IOException {
             final StridedDoubleIla stridedDoubleIla = new StridedDoubleIla(ila, buffer.clone());
 

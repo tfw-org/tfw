@@ -23,12 +23,16 @@ public final class FloatIlaFromCastLongIla {
         private final int bufferSize;
 
         MyFloatIla(LongIla longIla, int bufferSize) {
-            super(longIla.length());
-
             this.longIla = longIla;
             this.bufferSize = bufferSize;
         }
 
+        @Override
+        protected long lengthImpl() throws IOException {
+            return longIla.length();
+        }
+
+        @Override
         protected void toArrayImpl(float[] array, int offset, long start, int length) throws IOException {
             LongIlaIterator fi =
                     new LongIlaIterator(LongIlaSegment.create(longIla, start, length), new long[bufferSize]);

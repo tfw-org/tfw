@@ -126,13 +126,17 @@ public class OctalDump {
             private final int bufferSize;
 
             MyObjectIla(final ByteIla byteIla, final char type, final int bufferSize) {
-                super(byteIla.length() / 16 + (byteIla.length() % 16 == 0 ? 0 : 1));
-
                 this.byteIla = byteIla;
                 this.type = type;
                 this.bufferSize = bufferSize;
             }
 
+            @Override
+            protected long lengthImpl() throws IOException {
+                return byteIla.length() / 16 + (byteIla.length() % 16 == 0 ? 0 : 1);
+            }
+
+            @Override
             protected void toArrayImpl(String[] array, int offset, long start, int length) throws IOException {
                 ByteIlaIterator bii = new ByteIlaIterator(
                         ByteIlaSegment.create(byteIla, start, byteIla.length() - start), new byte[bufferSize]);
@@ -181,13 +185,17 @@ public class OctalDump {
             private final int bufferSize;
 
             MyObjectIla(final ShortIla shortIla, final char type, final int bufferSize) {
-                super(shortIla.length() / 8 + (shortIla.length() % 8 == 0 ? 0 : 1));
-
                 this.shortIla = shortIla;
                 this.type = type;
                 this.bufferSize = bufferSize;
             }
 
+            @Override
+            protected long lengthImpl() throws IOException {
+                return shortIla.length() / 8 + (shortIla.length() % 8 == 0 ? 0 : 1);
+            }
+
+            @Override
             protected void toArrayImpl(String[] array, int offset, long start, int length) throws IOException {
                 ShortIlaIterator sii = new ShortIlaIterator(
                         ShortIlaSegment.create(shortIla, start * 2, shortIla.length() - start * 2),
@@ -237,13 +245,17 @@ public class OctalDump {
             private final int bufferSize;
 
             MyObjectIla(final IntIla intIla, final char type, final int bufferSize) {
-                super(intIla.length() / 4 + (intIla.length() % 4 == 0 ? 0 : 1));
-
                 this.intIla = intIla;
                 this.type = type;
                 this.bufferSize = bufferSize;
             }
 
+            @Override
+            protected long lengthImpl() throws IOException {
+                return intIla.length() / 4 + (intIla.length() % 4 == 0 ? 0 : 1);
+            }
+
+            @Override
             protected void toArrayImpl(String[] array, int offset, long start, int length) throws IOException {
                 IntIlaIterator iii = new IntIlaIterator(
                         IntIlaSegment.create(intIla, start * 4, intIla.length() - start * 4), new int[bufferSize]);
@@ -290,13 +302,17 @@ public class OctalDump {
             private final int bufferSize;
 
             MyObjectIla(final LongIla longIla, final char type, final int bufferSize) {
-                super(longIla.length() / 2 + (longIla.length() % 2 == 0 ? 0 : 1));
-
                 this.longIla = longIla;
                 this.type = type;
                 this.bufferSize = bufferSize;
             }
 
+            @Override
+            protected long lengthImpl() throws IOException {
+                return longIla.length() / 2 + (longIla.length() % 2 == 0 ? 0 : 1);
+            }
+
+            @Override
             protected void toArrayImpl(String[] array, int offset, long start, int length) throws IOException {
                 LongIlaIterator lii = new LongIlaIterator(
                         LongIlaSegment.create(longIla, start * 8, longIla.length() - start * 8), new long[bufferSize]);
@@ -342,12 +358,16 @@ public class OctalDump {
             private final int bufferSize;
 
             MyObjectIla(final FloatIla floatIla, final int bufferSize) {
-                super(floatIla.length() / 4 + (floatIla.length() % 4 == 0 ? 0 : 1));
-
                 this.floatIla = floatIla;
                 this.bufferSize = bufferSize;
             }
 
+            @Override
+            protected long lengthImpl() throws IOException {
+                return floatIla.length() / 4 + (floatIla.length() % 4 == 0 ? 0 : 1);
+            }
+
+            @Override
             protected void toArrayImpl(String[] array, int offset, long start, int length) throws IOException {
                 FloatIlaIterator fii = new FloatIlaIterator(
                         FloatIlaSegment.create(floatIla, start * 4, floatIla.length() - start * 4),
@@ -384,12 +404,16 @@ public class OctalDump {
             private final int bufferSize;
 
             MyObjectIla(final DoubleIla doubleIla, final int bufferSize) {
-                super(doubleIla.length() / 2 + (doubleIla.length() % 2 == 0 ? 0 : 1));
-
                 this.doubleIla = doubleIla;
                 this.bufferSize = bufferSize;
             }
 
+            @Override
+            protected long lengthImpl() throws IOException {
+                return doubleIla.length() / 2 + (doubleIla.length() % 2 == 0 ? 0 : 1);
+            }
+
+            @Override
             protected void toArrayImpl(String[] array, int offset, long start, int length) throws IOException {
                 DoubleIlaIterator dii = new DoubleIlaIterator(
                         DoubleIlaSegment.create(doubleIla, start * 4, doubleIla.length() - start * 4),

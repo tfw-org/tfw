@@ -8,7 +8,7 @@ public final class FloatIlaMultiply {
         // non-instantiable class
     }
 
-    public static FloatIla create(FloatIla leftIla, FloatIla rightIla, int bufferSize) {
+    public static FloatIla create(FloatIla leftIla, FloatIla rightIla, int bufferSize) throws IOException {
         Argument.assertNotNull(leftIla, "leftIla");
         Argument.assertNotNull(rightIla, "rightIla");
         Argument.assertEquals(leftIla.length(), rightIla.length(), "leftIla.length()", "rightIla.length()");
@@ -23,13 +23,17 @@ public final class FloatIlaMultiply {
         private final int bufferSize;
 
         MyFloatIla(FloatIla leftIla, FloatIla rightIla, int bufferSize) {
-            super(leftIla.length());
-
             this.leftIla = leftIla;
             this.rightIla = rightIla;
             this.bufferSize = bufferSize;
         }
 
+        @Override
+        protected long lengthImpl() throws IOException {
+            return leftIla.length();
+        }
+
+        @Override
         protected void toArrayImpl(float[] array, int offset, long ilaStart, int length) throws IOException {
             FloatIlaIterator li =
                     new FloatIlaIterator(FloatIlaSegment.create(leftIla, ilaStart, length), new float[bufferSize]);

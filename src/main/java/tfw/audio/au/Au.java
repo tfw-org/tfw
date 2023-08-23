@@ -161,7 +161,8 @@ public final class Au {
      * @param annotation annotation bytes (length must be a multiple of 8).
      * @param audioData audio bytes.
      */
-    public Au(long encoding, long sampleRate, long numberOfChannels, ByteIla annotation, ByteIla audioData) {
+    public Au(long encoding, long sampleRate, long numberOfChannels, ByteIla annotation, ByteIla audioData)
+            throws IOException {
         checkEncoding(encoding);
         Argument.assertGreaterThanOrEqualTo(sampleRate, 0, "sampleRate");
         Argument.assertGreaterThanOrEqualTo(numberOfChannels, 0, "numberOfChannels");

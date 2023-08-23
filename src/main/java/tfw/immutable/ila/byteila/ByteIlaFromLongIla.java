@@ -21,12 +21,16 @@ public final class ByteIlaFromLongIla {
         private final int bufferSize;
 
         MyByteIla(final LongIla longIla, final int bufferSize) {
-            super(longIla.length() * 8);
-
             this.longIla = longIla;
             this.bufferSize = bufferSize;
         }
 
+        @Override
+        protected long lengthImpl() throws IOException {
+            return longIla.length() * 8;
+        }
+
+        @Override
         protected void toArrayImpl(byte[] array, int offset, long start, int length) throws IOException {
             LongIlaIterator lii = new LongIlaIterator(
                     LongIlaSegment.create(longIla, start / 8, longIla.length() - start / 8), new long[bufferSize]);

@@ -18,7 +18,8 @@ public class IndexedEdgesFromNodesAndEdges {
             this.edges = edges;
         }
 
-        public long length() {
+        @Override
+        public long length() throws IOException {
             return edges.length();
         }
 

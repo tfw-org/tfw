@@ -25,12 +25,16 @@ public final class ALawByteIlaFromLinearShortIla {
         private final int bufferSize;
 
         MyByteIla(final ShortIla shortIla, final int bufferSize) {
-            super(shortIla.length());
-
             this.shortIla = shortIla;
             this.bufferSize = bufferSize;
         }
 
+        @Override
+        protected long lengthImpl() throws IOException {
+            return shortIla.length();
+        }
+
+        @Override
         protected void toArrayImpl(byte[] array, int offset, long start, int length) throws IOException {
             ShortIlaIterator si =
                     new ShortIlaIterator(ShortIlaSegment.create(shortIla, start, length), new short[bufferSize]);

@@ -15,7 +15,7 @@ public final class IntIlaIterator {
 
     public static final int DEFAULT_BUFFER_SIZE = 10000;
 
-    public IntIlaIterator(IntIla instance, int[] buffer) {
+    public IntIlaIterator(IntIla instance, int[] buffer) throws IOException {
         Argument.assertNotNull(instance, "instance");
         Argument.assertNotNull(buffer, "buffer");
         Argument.assertNotLessThan(buffer.length, 1, "buffer.length");

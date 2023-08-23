@@ -6,9 +6,7 @@ import tfw.immutable.ila.AbstractIla;
 public abstract class AbstractByteIla extends AbstractIla implements ByteIla {
     protected abstract void toArrayImpl(final byte[] array, int offset, long start, int length) throws IOException;
 
-    protected AbstractByteIla(final long length) {
-        super(length);
-    }
+    protected AbstractByteIla() {}
 
     @Override
     public final void toArray(final byte[] array, final int offset, final long start, final int length)

@@ -20,13 +20,17 @@ public class ByteIlaSwap {
         private final int bufferSize;
 
         MyByteIla(final ByteIla byteIla, final int bytesToSwap, final int bufferSize) {
-            super(byteIla.length() - (byteIla.length() % bytesToSwap));
-
             this.byteIla = byteIla;
             this.bytesToSwap = bytesToSwap;
             this.bufferSize = bufferSize;
         }
 
+        @Override
+        protected long lengthImpl() throws IOException {
+            return byteIla.length() - (byteIla.length() % bytesToSwap);
+        }
+
+        @Override
         protected void toArrayImpl(byte[] array, int offset, long start, int length) throws IOException {
             long end = start + length - 1;
             long blockStart = start - (start % bytesToSwap);

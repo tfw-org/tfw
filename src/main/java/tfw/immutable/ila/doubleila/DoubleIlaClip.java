@@ -22,14 +22,18 @@ public class DoubleIlaClip {
         private final int bufferSize;
 
         public MyDoubleIla(final DoubleIla doubleIla, final double min, final double max, final int bufferSize) {
-            super(doubleIla.length());
-
             this.doubleIla = doubleIla;
             this.min = min;
             this.max = max;
             this.bufferSize = bufferSize;
         }
 
+        @Override
+        protected long lengthImpl() throws IOException {
+            return doubleIla.length();
+        }
+
+        @Override
         protected void toArrayImpl(double[] array, int offset, long start, int length) throws IOException {
             DoubleIlaIterator dii =
                     new DoubleIlaIterator(DoubleIlaSegment.create(doubleIla, start, length), new double[bufferSize]);

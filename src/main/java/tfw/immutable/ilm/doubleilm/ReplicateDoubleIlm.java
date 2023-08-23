@@ -18,7 +18,7 @@ public class ReplicateDoubleIlm {
         private final DoubleIla doubleIla;
 
         public MyDoubleIlm(DoubleIla doubleIla, long repetitions) {
-            super(doubleIla.length(), repetitions);
+            super(deleteMe(doubleIla), repetitions);
 
             this.doubleIla = doubleIla;
         }
@@ -30,6 +30,14 @@ public class ReplicateDoubleIlm {
 
             for (int i = 0; i < rowCount; i++) {
                 System.arraycopy(array, offset, array, offset + (colCount * i), colCount);
+            }
+        }
+
+        private static long deleteMe(final DoubleIla doubleIla) {
+            try {
+                return doubleIla.length();
+            } catch (IOException e) {
+                return 0;
             }
         }
     }

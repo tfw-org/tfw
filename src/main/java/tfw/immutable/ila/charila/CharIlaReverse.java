@@ -20,12 +20,16 @@ public final class CharIlaReverse {
         private final char[] buffer;
 
         MyCharIla(CharIla ila, final char[] buffer) {
-            super(ila.length());
-
             this.ila = ila;
             this.buffer = buffer;
         }
 
+        @Override
+        protected long lengthImpl() throws IOException {
+            return ila.length();
+        }
+
+        @Override
         protected void toArrayImpl(char[] array, int offset, long start, int length) throws IOException {
             final StridedCharIla stridedCharIla = new StridedCharIla(ila, buffer.clone());
 

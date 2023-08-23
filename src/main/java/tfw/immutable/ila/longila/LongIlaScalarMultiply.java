@@ -19,12 +19,16 @@ public final class LongIlaScalarMultiply {
         private final long scalar;
 
         MyLongIla(LongIla ila, long scalar) {
-            super(ila.length());
-
             this.ila = ila;
             this.scalar = scalar;
         }
 
+        @Override
+        protected long lengthImpl() throws IOException {
+            return ila.length();
+        }
+
+        @Override
         protected void toArrayImpl(long[] array, int offset, long start, int length) throws IOException {
             ila.toArray(array, offset, start, length);
 

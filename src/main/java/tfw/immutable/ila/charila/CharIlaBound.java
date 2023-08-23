@@ -21,13 +21,17 @@ public final class CharIlaBound {
         private final char maximum;
 
         MyCharIla(CharIla ila, char minimum, char maximum) {
-            super(ila.length());
-
             this.ila = ila;
             this.minimum = minimum;
             this.maximum = maximum;
         }
 
+        @Override
+        protected long lengthImpl() throws IOException {
+            return ila.length();
+        }
+
+        @Override
         protected void toArrayImpl(char[] array, int offset, long start, int length) throws IOException {
             ila.toArray(array, offset, start, length);
 

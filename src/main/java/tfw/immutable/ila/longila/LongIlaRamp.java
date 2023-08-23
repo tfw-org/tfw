@@ -16,13 +16,20 @@ public final class LongIlaRamp {
     private static class MyLongIla extends AbstractLongIla {
         private final long startValue;
         private final long increment;
+        private final long length;
 
         MyLongIla(long startValue, long increment, long length) {
-            super(length);
             this.startValue = startValue;
             this.increment = increment;
+            this.length = length;
         }
 
+        @Override
+        protected long lengthImpl() {
+            return length;
+        }
+
+        @Override
         protected void toArrayImpl(long[] array, int offset, long start, int length) {
             final int startPlusLength = (int) (start + length);
 

@@ -19,12 +19,16 @@ public final class CharIlaScalarAdd {
         private final char scalar;
 
         MyCharIla(CharIla ila, char scalar) {
-            super(ila.length());
-
             this.ila = ila;
             this.scalar = scalar;
         }
 
+        @Override
+        protected long lengthImpl() throws IOException {
+            return ila.length();
+        }
+
+        @Override
         protected void toArrayImpl(char[] array, int offset, long start, int length) throws IOException {
             ila.toArray(array, offset, start, length);
 

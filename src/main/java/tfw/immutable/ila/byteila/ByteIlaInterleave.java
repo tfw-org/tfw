@@ -8,7 +8,7 @@ public final class ByteIlaInterleave {
         // non-instantiable class
     }
 
-    public static ByteIla create(ByteIla[] ilas, final byte[] buffer) {
+    public static ByteIla create(ByteIla[] ilas, final byte[] buffer) throws IOException {
         Argument.assertNotNull(ilas, "ilas");
         Argument.assertNotLessThan(ilas.length, 1, "ilas.length");
         Argument.assertNotNull(ilas[0], "ilas[0]");
@@ -28,8 +28,6 @@ public final class ByteIlaInterleave {
         private final int ilasLength;
 
         MyByteIla(ByteIla[] ilas, final byte[] buffer) {
-            super(ilas[0].length() * ilas.length);
-
             stridedByteIlas = new StridedByteIla[ilas.length];
             ilasLength = ilas.length;
 
@@ -38,6 +36,12 @@ public final class ByteIlaInterleave {
             }
         }
 
+        @Override
+        protected long lengthImpl() throws IOException {
+            return stridedByteIlas[0].length() * stridedByteIlas.length;
+        }
+
+        @Override
         protected void toArrayImpl(byte[] array, int offset, long start, int length) throws IOException {
             int currentIla = (int) (start % ilasLength);
             long ilaStart = start / ilasLength;

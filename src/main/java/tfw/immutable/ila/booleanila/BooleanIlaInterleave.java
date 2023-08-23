@@ -8,7 +8,7 @@ public final class BooleanIlaInterleave {
         // non-instantiable class
     }
 
-    public static BooleanIla create(BooleanIla[] ilas, final boolean[] buffer) {
+    public static BooleanIla create(BooleanIla[] ilas, final boolean[] buffer) throws IOException {
         Argument.assertNotNull(ilas, "ilas");
         Argument.assertNotLessThan(ilas.length, 1, "ilas.length");
         Argument.assertNotNull(ilas[0], "ilas[0]");
@@ -28,8 +28,6 @@ public final class BooleanIlaInterleave {
         private final int ilasLength;
 
         MyBooleanIla(BooleanIla[] ilas, final boolean[] buffer) {
-            super(ilas[0].length() * ilas.length);
-
             stridedBooleanIlas = new StridedBooleanIla[ilas.length];
             ilasLength = ilas.length;
 
@@ -38,6 +36,12 @@ public final class BooleanIlaInterleave {
             }
         }
 
+        @Override
+        protected long lengthImpl() throws IOException {
+            return stridedBooleanIlas[0].length() * stridedBooleanIlas.length;
+        }
+
+        @Override
         protected void toArrayImpl(boolean[] array, int offset, long start, int length) throws IOException {
             int currentIla = (int) (start % ilasLength);
             long ilaStart = start / ilasLength;

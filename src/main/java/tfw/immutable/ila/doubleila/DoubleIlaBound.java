@@ -21,13 +21,17 @@ public final class DoubleIlaBound {
         private final double maximum;
 
         MyDoubleIla(DoubleIla ila, double minimum, double maximum) {
-            super(ila.length());
-
             this.ila = ila;
             this.minimum = minimum;
             this.maximum = maximum;
         }
 
+        @Override
+        protected long lengthImpl() throws IOException {
+            return ila.length();
+        }
+
+        @Override
         protected void toArrayImpl(double[] array, int offset, long start, int length) throws IOException {
             ila.toArray(array, offset, start, length);
 

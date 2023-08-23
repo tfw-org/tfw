@@ -18,11 +18,15 @@ public final class FloatIlaNegate {
         private final FloatIla ila;
 
         MyFloatIla(FloatIla ila) {
-            super(ila.length());
-
             this.ila = ila;
         }
 
+        @Override
+        protected long lengthImpl() throws IOException {
+            return ila.length();
+        }
+
+        @Override
         protected void toArrayImpl(float[] array, int offset, long start, int length) throws IOException {
             ila.toArray(array, offset, start, length);
 

@@ -16,13 +16,20 @@ public final class FloatIlaRamp {
     private static class MyFloatIla extends AbstractFloatIla {
         private final float startValue;
         private final float increment;
+        private final long length;
 
         MyFloatIla(float startValue, float increment, long length) {
-            super(length);
             this.startValue = startValue;
             this.increment = increment;
+            this.length = length;
         }
 
+        @Override
+        protected long lengthImpl() {
+            return length;
+        }
+
+        @Override
         protected void toArrayImpl(float[] array, int offset, long start, int length) {
             final int startPlusLength = (int) (start + length);
 

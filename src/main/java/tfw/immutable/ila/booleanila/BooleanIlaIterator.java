@@ -15,7 +15,7 @@ public final class BooleanIlaIterator {
 
     public static final int DEFAULT_BUFFER_SIZE = 10000;
 
-    public BooleanIlaIterator(BooleanIla instance, boolean[] buffer) {
+    public BooleanIlaIterator(BooleanIla instance, boolean[] buffer) throws IOException {
         Argument.assertNotNull(instance, "instance");
         Argument.assertNotNull(buffer, "buffer");
         Argument.assertNotLessThan(buffer.length, 1, "buffer.length");

@@ -8,7 +8,7 @@ public final class DoubleIlaMutate {
         // non-instantiable class
     }
 
-    public static DoubleIla create(DoubleIla ila, long index, double value) {
+    public static DoubleIla create(DoubleIla ila, long index, double value) throws IOException {
         Argument.assertNotNull(ila, "ila");
         Argument.assertNotLessThan(index, 0, "index");
         Argument.assertLessThan(index, ila.length(), "index", "ila.length()");
@@ -22,12 +22,17 @@ public final class DoubleIlaMutate {
         private final double value;
 
         MyDoubleIla(DoubleIla ila, long index, double value) {
-            super(ila.length());
             this.ila = ila;
             this.index = index;
             this.value = value;
         }
 
+        @Override
+        protected long lengthImpl() throws IOException {
+            return ila.length();
+        }
+
+        @Override
         protected void toArrayImpl(double[] array, int offset, long start, int length) throws IOException {
             final long startPlusLength = start + length;
 

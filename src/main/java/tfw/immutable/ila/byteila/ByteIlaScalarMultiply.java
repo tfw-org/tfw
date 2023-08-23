@@ -19,12 +19,16 @@ public final class ByteIlaScalarMultiply {
         private final byte scalar;
 
         MyByteIla(ByteIla ila, byte scalar) {
-            super(ila.length());
-
             this.ila = ila;
             this.scalar = scalar;
         }
 
+        @Override
+        protected long lengthImpl() throws IOException {
+            return ila.length();
+        }
+
+        @Override
         protected void toArrayImpl(byte[] array, int offset, long start, int length) throws IOException {
             ila.toArray(array, offset, start, length);
 

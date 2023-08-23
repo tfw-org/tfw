@@ -8,7 +8,7 @@ public final class IntIlaRemove {
         // non-instantiable class
     }
 
-    public static IntIla create(IntIla ila, long index) {
+    public static IntIla create(IntIla ila, long index) throws IOException {
         Argument.assertNotNull(ila, "ila");
         Argument.assertNotLessThan(index, 0, "index");
         Argument.assertLessThan(index, ila.length(), "index", "ila.length()");
@@ -21,11 +21,16 @@ public final class IntIlaRemove {
         private final long index;
 
         MyIntIla(IntIla ila, long index) {
-            super(ila.length() - 1);
             this.ila = ila;
             this.index = index;
         }
 
+        @Override
+        protected long lengthImpl() throws IOException {
+            return ila.length() - 1;
+        }
+
+        @Override
         protected void toArrayImpl(int[] array, int offset, long start, int length) throws IOException {
             final long startPlusLength = start + length;
 

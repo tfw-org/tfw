@@ -2,7 +2,6 @@ package tfw.immutable.ila.byteila;
 
 import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.ila.AbstractIlaCheck;
 
 public final class ByteIlaFiltered {
     private ByteIlaFiltered() {
@@ -21,12 +20,10 @@ public final class ByteIlaFiltered {
         return new MyByteIla(ila, filter, buffer);
     }
 
-    private static class MyByteIla implements ByteIla {
+    private static class MyByteIla extends AbstractByteIla {
         private final ByteIla ila;
         private final ByteFilter filter;
         private final byte[] buffer;
-
-        private long length = -1;
 
         private MyByteIla(ByteIla ila, ByteFilter filter, byte[] buffer) {
             this.ila = ila;
@@ -34,21 +31,22 @@ public final class ByteIlaFiltered {
             this.buffer = buffer;
         }
 
-        public final long length() {
-            calculateLength();
+        @Override
+        protected long lengthImpl() throws IOException {
+            long length = ila.length();
+            ByteIlaIterator oii = new ByteIlaIterator(ila, buffer.clone());
+
+            while (oii.hasNext()) {
+                if (filter.matches(oii.next())) {
+                    length--;
+                }
+            }
 
             return length;
         }
 
-        public final void toArray(byte[] array, int offset, long start, int length) throws IOException {
-            calculateLength();
-
-            if (length == 0) {
-                return;
-            }
-
-            AbstractIlaCheck.boundsCheck(this.length, array.length, offset, start, length);
-
+        @Override
+        public void toArrayImpl(byte[] array, int offset, long start, int length) throws IOException {
             ByteIlaIterator oii = new ByteIlaIterator(ByteIlaSegment.create(ila, start), buffer.clone());
 
             // left off here
@@ -57,23 +55,6 @@ public final class ByteIlaFiltered {
 
                 if (!filter.matches(node)) {
                     array[i] = node;
-                }
-            }
-        }
-
-        private void calculateLength() {
-            if (length < 0) {
-                length = ila.length();
-                ByteIlaIterator oii = new ByteIlaIterator(ila, buffer.clone());
-
-                try {
-                    while (oii.hasNext()) {
-                        if (filter.matches(oii.next())) {
-                            length--;
-                        }
-                    }
-                } catch (IOException die) {
-                    length = 0;
                 }
             }
         }

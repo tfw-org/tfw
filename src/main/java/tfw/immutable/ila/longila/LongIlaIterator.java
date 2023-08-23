@@ -15,7 +15,7 @@ public final class LongIlaIterator {
 
     public static final int DEFAULT_BUFFER_SIZE = 10000;
 
-    public LongIlaIterator(LongIla instance, long[] buffer) {
+    public LongIlaIterator(LongIla instance, long[] buffer) throws IOException {
         Argument.assertNotNull(instance, "instance");
         Argument.assertNotNull(buffer, "buffer");
         Argument.assertNotLessThan(buffer.length, 1, "buffer.length");

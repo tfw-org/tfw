@@ -17,11 +17,15 @@ public final class ObjectIlaFromArray {
         private final T[] array;
 
         MyObjectIla(T[] array) {
-            super(array.length);
-
             this.array = array;
         }
 
+        @Override
+        protected long lengthImpl() {
+            return array.length;
+        }
+
+        @Override
         protected void toArrayImpl(T[] array, int offset, long start, int length) {
             System.arraycopy(this.array, (int) start, array, offset, length);
         }

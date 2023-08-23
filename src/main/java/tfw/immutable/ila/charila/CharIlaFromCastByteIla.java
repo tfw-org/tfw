@@ -23,10 +23,13 @@ public final class CharIlaFromCastByteIla {
         private final int bufferSize;
 
         MyCharIla(ByteIla byteIla, int bufferSize) {
-            super(byteIla.length());
-
             this.byteIla = byteIla;
             this.bufferSize = bufferSize;
+        }
+
+        @Override
+        protected long lengthImpl() throws IOException {
+            return byteIla.length();
         }
 
         protected void toArrayImpl(char[] array, int offset, long start, int length) throws IOException {

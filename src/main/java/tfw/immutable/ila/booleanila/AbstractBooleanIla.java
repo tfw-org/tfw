@@ -6,9 +6,7 @@ import tfw.immutable.ila.AbstractIla;
 public abstract class AbstractBooleanIla extends AbstractIla implements BooleanIla {
     protected abstract void toArrayImpl(final boolean[] array, int offset, long start, int length) throws IOException;
 
-    protected AbstractBooleanIla(final long length) {
-        super(length);
-    }
+    protected AbstractBooleanIla() {}
 
     @Override
     public final void toArray(final boolean[] array, final int offset, final long start, final int length)

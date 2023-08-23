@@ -16,13 +16,20 @@ public final class ByteIlaRamp {
     private static class MyByteIla extends AbstractByteIla {
         private final byte startValue;
         private final byte increment;
+        private final long length;
 
         MyByteIla(byte startValue, byte increment, long length) {
-            super(length);
             this.startValue = startValue;
             this.increment = increment;
+            this.length = length;
         }
 
+        @Override
+        protected long lengthImpl() {
+            return length;
+        }
+
+        @Override
         protected void toArrayImpl(byte[] array, int offset, long start, int length) {
             final int startPlusLength = (int) (start + length);
 

@@ -24,12 +24,16 @@ public final class %%NAME%%IlaFromCastCharIla {
         private final int bufferSize;
 
         My%%NAME%%Ila(CharIla charIla, int bufferSize) {
-            super(charIla.length());
-
             this.charIla = charIla;
             this.bufferSize = bufferSize;
         }
 
+        @Override
+        protected long lengthImpl() throws IOException {
+            return charIla.length();
+        }
+
+        @Override
         protected void toArrayImpl(%%TYPE%%[] array, int offset, long start, int length) throws IOException {
             CharIlaIterator fi =
                     new CharIlaIterator(CharIlaSegment.create(charIla, start, length), new char[bufferSize]);

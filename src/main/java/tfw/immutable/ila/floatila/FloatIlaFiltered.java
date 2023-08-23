@@ -2,7 +2,6 @@ package tfw.immutable.ila.floatila;
 
 import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.ila.AbstractIlaCheck;
 
 public final class FloatIlaFiltered {
     private FloatIlaFiltered() {
@@ -21,12 +20,10 @@ public final class FloatIlaFiltered {
         return new MyFloatIla(ila, filter, buffer);
     }
 
-    private static class MyFloatIla implements FloatIla {
+    private static class MyFloatIla extends AbstractFloatIla {
         private final FloatIla ila;
         private final FloatFilter filter;
         private final float[] buffer;
-
-        private long length = -1;
 
         private MyFloatIla(FloatIla ila, FloatFilter filter, float[] buffer) {
             this.ila = ila;
@@ -34,21 +31,22 @@ public final class FloatIlaFiltered {
             this.buffer = buffer;
         }
 
-        public final long length() {
-            calculateLength();
+        @Override
+        protected long lengthImpl() throws IOException {
+            long length = ila.length();
+            FloatIlaIterator oii = new FloatIlaIterator(ila, buffer.clone());
+
+            while (oii.hasNext()) {
+                if (filter.matches(oii.next())) {
+                    length--;
+                }
+            }
 
             return length;
         }
 
-        public final void toArray(float[] array, int offset, long start, int length) throws IOException {
-            calculateLength();
-
-            if (length == 0) {
-                return;
-            }
-
-            AbstractIlaCheck.boundsCheck(this.length, array.length, offset, start, length);
-
+        @Override
+        public void toArrayImpl(float[] array, int offset, long start, int length) throws IOException {
             FloatIlaIterator oii = new FloatIlaIterator(FloatIlaSegment.create(ila, start), buffer.clone());
 
             // left off here
@@ -57,23 +55,6 @@ public final class FloatIlaFiltered {
 
                 if (!filter.matches(node)) {
                     array[i] = node;
-                }
-            }
-        }
-
-        private void calculateLength() {
-            if (length < 0) {
-                length = ila.length();
-                FloatIlaIterator oii = new FloatIlaIterator(ila, buffer.clone());
-
-                try {
-                    while (oii.hasNext()) {
-                        if (filter.matches(oii.next())) {
-                            length--;
-                        }
-                    }
-                } catch (IOException die) {
-                    length = 0;
                 }
             }
         }

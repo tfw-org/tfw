@@ -21,12 +21,16 @@ public final class %%NAME%%IlaReverse {
         private final %%TYPE_OR_TEMPLATE%%[] buffer;
 
         My%%NAME%%Ila(%%NAME%%Ila%%TEMPLATE%% ila, final %%TYPE_OR_TEMPLATE%%[] buffer) {
-            super(ila.length());
-
             this.ila = ila;
             this.buffer = buffer;
         }
 
+        @Override
+        protected long lengthImpl() throws IOException {
+            return ila.length();
+        }
+
+        @Override
         protected void toArrayImpl(%%TYPE_OR_TEMPLATE%%[] array, int offset, long start, int length) throws IOException {
             final Strided%%NAME%%Ila%%TEMPLATE%% strided%%NAME%%Ila = new Strided%%NAME%%Ila%%DIAMOND%%(ila, buffer.clone());
 

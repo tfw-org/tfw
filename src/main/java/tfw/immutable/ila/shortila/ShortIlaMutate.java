@@ -8,7 +8,7 @@ public final class ShortIlaMutate {
         // non-instantiable class
     }
 
-    public static ShortIla create(ShortIla ila, long index, short value) {
+    public static ShortIla create(ShortIla ila, long index, short value) throws IOException {
         Argument.assertNotNull(ila, "ila");
         Argument.assertNotLessThan(index, 0, "index");
         Argument.assertLessThan(index, ila.length(), "index", "ila.length()");
@@ -22,12 +22,17 @@ public final class ShortIlaMutate {
         private final short value;
 
         MyShortIla(ShortIla ila, long index, short value) {
-            super(ila.length());
             this.ila = ila;
             this.index = index;
             this.value = value;
         }
 
+        @Override
+        protected long lengthImpl() throws IOException {
+            return ila.length();
+        }
+
+        @Override
         protected void toArrayImpl(short[] array, int offset, long start, int length) throws IOException {
             final long startPlusLength = start + length;
 

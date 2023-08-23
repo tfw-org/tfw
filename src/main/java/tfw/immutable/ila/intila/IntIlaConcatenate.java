@@ -28,16 +28,21 @@ public final class IntIlaConcatenate {
     private static class MyIntIla extends AbstractIntIla {
         private final IntIla leftIla;
         private final IntIla rightIla;
-        private final long leftIlaLength;
 
         MyIntIla(IntIla leftIla, IntIla rightIla) {
-            super(leftIla.length() + rightIla.length());
             this.leftIla = leftIla;
             this.rightIla = rightIla;
-            this.leftIlaLength = leftIla.length();
         }
 
+        @Override
+        protected long lengthImpl() throws IOException {
+            return leftIla.length() + rightIla.length();
+        }
+
+        @Override
         protected void toArrayImpl(int[] array, int offset, long start, int length) throws IOException {
+            final long leftIlaLength = leftIla.length();
+
             if (start + length <= leftIlaLength) {
                 leftIla.toArray(array, offset, start, length);
             } else if (start >= leftIlaLength) {

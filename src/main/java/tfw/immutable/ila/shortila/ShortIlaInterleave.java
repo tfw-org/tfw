@@ -8,7 +8,7 @@ public final class ShortIlaInterleave {
         // non-instantiable class
     }
 
-    public static ShortIla create(ShortIla[] ilas, final short[] buffer) {
+    public static ShortIla create(ShortIla[] ilas, final short[] buffer) throws IOException {
         Argument.assertNotNull(ilas, "ilas");
         Argument.assertNotLessThan(ilas.length, 1, "ilas.length");
         Argument.assertNotNull(ilas[0], "ilas[0]");
@@ -28,8 +28,6 @@ public final class ShortIlaInterleave {
         private final int ilasLength;
 
         MyShortIla(ShortIla[] ilas, final short[] buffer) {
-            super(ilas[0].length() * ilas.length);
-
             stridedShortIlas = new StridedShortIla[ilas.length];
             ilasLength = ilas.length;
 
@@ -38,6 +36,12 @@ public final class ShortIlaInterleave {
             }
         }
 
+        @Override
+        protected long lengthImpl() throws IOException {
+            return stridedShortIlas[0].length() * stridedShortIlas.length;
+        }
+
+        @Override
         protected void toArrayImpl(short[] array, int offset, long start, int length) throws IOException {
             int currentIla = (int) (start % ilasLength);
             long ilaStart = start / ilasLength;

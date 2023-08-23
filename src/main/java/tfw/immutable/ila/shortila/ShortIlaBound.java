@@ -21,13 +21,17 @@ public final class ShortIlaBound {
         private final short maximum;
 
         MyShortIla(ShortIla ila, short minimum, short maximum) {
-            super(ila.length());
-
             this.ila = ila;
             this.minimum = minimum;
             this.maximum = maximum;
         }
 
+        @Override
+        protected long lengthImpl() throws IOException {
+            return ila.length();
+        }
+
+        @Override
         protected void toArrayImpl(short[] array, int offset, long start, int length) throws IOException {
             ila.toArray(array, offset, start, length);
 

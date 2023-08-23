@@ -23,12 +23,17 @@ public final class ByteIlaDecimate {
         private final byte[] buffer;
 
         MyByteIla(ByteIla ila, long factor, byte[] buffer) {
-            super((ila.length() + factor - 1) / factor);
             this.ila = ila;
             this.factor = factor;
             this.buffer = buffer;
         }
 
+        @Override
+        protected long lengthImpl() throws IOException {
+            return (ila.length() + factor - 1) / factor;
+        }
+
+        @Override
         protected void toArrayImpl(byte[] array, int offset, long start, int length) throws IOException {
             final long segmentStart = start * factor;
             final long segmentLength = StrictMath.min(ila.length() - segmentStart, length * factor - 1);

@@ -9,7 +9,7 @@ public final class %%NAME%%IlaInterleave {
         // non-instantiable class
     }
 
-    public static %%TEMPLATE_SPACE%%%%NAME%%Ila%%TEMPLATE%% create(%%NAME%%Ila%%TEMPLATE%%[] ilas, final %%TYPE_OR_TEMPLATE%%[] buffer) {
+    public static %%TEMPLATE_SPACE%%%%NAME%%Ila%%TEMPLATE%% create(%%NAME%%Ila%%TEMPLATE%%[] ilas, final %%TYPE_OR_TEMPLATE%%[] buffer) throws IOException {
         Argument.assertNotNull(ilas, "ilas");
         Argument.assertNotLessThan(ilas.length, 1, "ilas.length");
         Argument.assertNotNull(ilas[0], "ilas[0]");
@@ -29,8 +29,6 @@ public final class %%NAME%%IlaInterleave {
         private final int ilasLength;
 
         My%%NAME%%Ila(%%NAME%%Ila%%TEMPLATE%%[] ilas, final %%TYPE_OR_TEMPLATE%%[] buffer) {
-            super(ilas[0].length() * ilas.length);
-
             strided%%NAME%%Ilas = new Strided%%NAME%%Ila[ilas.length];
             ilasLength = ilas.length;
 
@@ -39,6 +37,12 @@ public final class %%NAME%%IlaInterleave {
             }
         }
 
+        @Override
+        protected long lengthImpl() throws IOException {
+            return strided%%NAME%%Ilas[0].length() * strided%%NAME%%Ilas.length;
+        }
+
+        @Override
         protected void toArrayImpl(%%TYPE_OR_TEMPLATE%%[] array, int offset, long start, int length) throws IOException {
             int currentIla = (int) (start % ilasLength);
             long ilaStart = start / ilasLength;

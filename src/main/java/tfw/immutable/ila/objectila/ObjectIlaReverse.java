@@ -20,12 +20,16 @@ public final class ObjectIlaReverse {
         private final T[] buffer;
 
         MyObjectIla(ObjectIla<T> ila, final T[] buffer) {
-            super(ila.length());
-
             this.ila = ila;
             this.buffer = buffer;
         }
 
+        @Override
+        protected long lengthImpl() throws IOException {
+            return ila.length();
+        }
+
+        @Override
         protected void toArrayImpl(T[] array, int offset, long start, int length) throws IOException {
             final StridedObjectIla<T> stridedObjectIla = new StridedObjectIla<>(ila, buffer.clone());
 

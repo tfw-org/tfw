@@ -8,7 +8,7 @@ public final class FloatIlaRemove {
         // non-instantiable class
     }
 
-    public static FloatIla create(FloatIla ila, long index) {
+    public static FloatIla create(FloatIla ila, long index) throws IOException {
         Argument.assertNotNull(ila, "ila");
         Argument.assertNotLessThan(index, 0, "index");
         Argument.assertLessThan(index, ila.length(), "index", "ila.length()");
@@ -21,11 +21,16 @@ public final class FloatIlaRemove {
         private final long index;
 
         MyFloatIla(FloatIla ila, long index) {
-            super(ila.length() - 1);
             this.ila = ila;
             this.index = index;
         }
 
+        @Override
+        protected long lengthImpl() throws IOException {
+            return ila.length() - 1;
+        }
+
+        @Override
         protected void toArrayImpl(float[] array, int offset, long start, int length) throws IOException {
             final long startPlusLength = start + length;
 
