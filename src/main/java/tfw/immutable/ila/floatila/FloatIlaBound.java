@@ -21,13 +21,17 @@ public final class FloatIlaBound {
         private final float maximum;
 
         MyFloatIla(FloatIla ila, float minimum, float maximum) {
-            super(ila.length());
-
             this.ila = ila;
             this.minimum = minimum;
             this.maximum = maximum;
         }
 
+        @Override
+        protected long lengthImpl() throws IOException {
+            return ila.length();
+        }
+
+        @Override
         protected void toArrayImpl(float[] array, int offset, long start, int length) throws IOException {
             ila.toArray(array, offset, start, length);
 

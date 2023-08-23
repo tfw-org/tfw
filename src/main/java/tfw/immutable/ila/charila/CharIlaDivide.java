@@ -8,7 +8,7 @@ public final class CharIlaDivide {
         // non-instantiable class
     }
 
-    public static CharIla create(CharIla leftIla, CharIla rightIla, int bufferSize) {
+    public static CharIla create(CharIla leftIla, CharIla rightIla, int bufferSize) throws IOException {
         Argument.assertNotNull(leftIla, "leftIla");
         Argument.assertNotNull(rightIla, "rightIla");
         Argument.assertEquals(leftIla.length(), rightIla.length(), "leftIla.length()", "rightIla.length()");
@@ -23,13 +23,17 @@ public final class CharIlaDivide {
         private final int bufferSize;
 
         MyCharIla(CharIla leftIla, CharIla rightIla, int bufferSize) {
-            super(leftIla.length());
-
             this.leftIla = leftIla;
             this.rightIla = rightIla;
             this.bufferSize = bufferSize;
         }
 
+        @Override
+        protected long lengthImpl() throws IOException {
+            return leftIla.length();
+        }
+
+        @Override
         protected void toArrayImpl(char[] array, int offset, long ilaStart, int length) throws IOException {
             CharIlaIterator li =
                     new CharIlaIterator(CharIlaSegment.create(leftIla, ilaStart, length), new char[bufferSize]);

@@ -15,7 +15,7 @@ public final class DoubleIlaIterator {
 
     public static final int DEFAULT_BUFFER_SIZE = 10000;
 
-    public DoubleIlaIterator(DoubleIla instance, double[] buffer) {
+    public DoubleIlaIterator(DoubleIla instance, double[] buffer) throws IOException {
         Argument.assertNotNull(instance, "instance");
         Argument.assertNotNull(buffer, "buffer");
         Argument.assertNotLessThan(buffer.length, 1, "buffer.length");

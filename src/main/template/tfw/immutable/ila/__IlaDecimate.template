@@ -24,12 +24,17 @@ public final class %%NAME%%IlaDecimate {
         private final %%TYPE_OR_TEMPLATE%%[] buffer;
 
         My%%NAME%%Ila(%%NAME%%Ila%%TEMPLATE%% ila, long factor, %%TYPE_OR_TEMPLATE%%[] buffer) {
-            super((ila.length() + factor - 1) / factor);
             this.ila = ila;
             this.factor = factor;
             this.buffer = buffer;
         }
 
+        @Override
+        protected long lengthImpl() throws IOException {
+            return (ila.length() + factor - 1) / factor;
+        }
+
+        @Override
         protected void toArrayImpl(%%TYPE_OR_TEMPLATE%%[] array, int offset, long start, int length) throws IOException {
             final long segmentStart = start * factor;
             final long segmentLength = StrictMath.min(ila.length() - segmentStart, length * factor - 1);

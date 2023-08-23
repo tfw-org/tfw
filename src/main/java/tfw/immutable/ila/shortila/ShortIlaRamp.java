@@ -16,13 +16,20 @@ public final class ShortIlaRamp {
     private static class MyShortIla extends AbstractShortIla {
         private final short startValue;
         private final short increment;
+        private final long length;
 
         MyShortIla(short startValue, short increment, long length) {
-            super(length);
             this.startValue = startValue;
             this.increment = increment;
+            this.length = length;
         }
 
+        @Override
+        protected long lengthImpl() {
+            return length;
+        }
+
+        @Override
         protected void toArrayImpl(short[] array, int offset, long start, int length) {
             final int startPlusLength = (int) (start + length);
 

@@ -23,10 +23,13 @@ public final class DoubleIlaFromCastByteIla {
         private final int bufferSize;
 
         MyDoubleIla(ByteIla byteIla, int bufferSize) {
-            super(byteIla.length());
-
             this.byteIla = byteIla;
             this.bufferSize = bufferSize;
+        }
+
+        @Override
+        protected long lengthImpl() throws IOException {
+            return byteIla.length();
         }
 
         protected void toArrayImpl(double[] array, int offset, long start, int length) throws IOException {

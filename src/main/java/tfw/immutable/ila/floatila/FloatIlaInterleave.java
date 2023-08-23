@@ -8,7 +8,7 @@ public final class FloatIlaInterleave {
         // non-instantiable class
     }
 
-    public static FloatIla create(FloatIla[] ilas, final float[] buffer) {
+    public static FloatIla create(FloatIla[] ilas, final float[] buffer) throws IOException {
         Argument.assertNotNull(ilas, "ilas");
         Argument.assertNotLessThan(ilas.length, 1, "ilas.length");
         Argument.assertNotNull(ilas[0], "ilas[0]");
@@ -28,8 +28,6 @@ public final class FloatIlaInterleave {
         private final int ilasLength;
 
         MyFloatIla(FloatIla[] ilas, final float[] buffer) {
-            super(ilas[0].length() * ilas.length);
-
             stridedFloatIlas = new StridedFloatIla[ilas.length];
             ilasLength = ilas.length;
 
@@ -38,6 +36,12 @@ public final class FloatIlaInterleave {
             }
         }
 
+        @Override
+        protected long lengthImpl() throws IOException {
+            return stridedFloatIlas[0].length() * stridedFloatIlas.length;
+        }
+
+        @Override
         protected void toArrayImpl(float[] array, int offset, long start, int length) throws IOException {
             int currentIla = (int) (start % ilasLength);
             long ilaStart = start / ilasLength;

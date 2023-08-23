@@ -20,12 +20,16 @@ public final class BooleanIlaReverse {
         private final boolean[] buffer;
 
         MyBooleanIla(BooleanIla ila, final boolean[] buffer) {
-            super(ila.length());
-
             this.ila = ila;
             this.buffer = buffer;
         }
 
+        @Override
+        protected long lengthImpl() throws IOException {
+            return ila.length();
+        }
+
+        @Override
         protected void toArrayImpl(boolean[] array, int offset, long start, int length) throws IOException {
             final StridedBooleanIla stridedBooleanIla = new StridedBooleanIla(ila, buffer.clone());
 

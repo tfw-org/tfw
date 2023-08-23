@@ -21,12 +21,16 @@ public final class IntIlaFromFloatIla {
         private final int bufferSize;
 
         MyIntIla(final FloatIla floatIla, final int bufferSize) {
-            super(floatIla.length());
-
             this.floatIla = floatIla;
             this.bufferSize = bufferSize;
         }
 
+        @Override
+        protected long lengthImpl() throws IOException {
+            return floatIla.length();
+        }
+
+        @Override
         protected void toArrayImpl(int[] array, int offset, long start, int length) throws IOException {
             FloatIlaIterator fii =
                     new FloatIlaIterator(FloatIlaSegment.create(floatIla, start, length), new float[bufferSize]);

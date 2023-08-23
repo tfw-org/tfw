@@ -16,13 +16,20 @@ public final class CharIlaRamp {
     private static class MyCharIla extends AbstractCharIla {
         private final char startValue;
         private final char increment;
+        private final long length;
 
         MyCharIla(char startValue, char increment, long length) {
-            super(length);
             this.startValue = startValue;
             this.increment = increment;
+            this.length = length;
         }
 
+        @Override
+        protected long lengthImpl() {
+            return length;
+        }
+
+        @Override
         protected void toArrayImpl(char[] array, int offset, long start, int length) {
             final int startPlusLength = (int) (start + length);
 

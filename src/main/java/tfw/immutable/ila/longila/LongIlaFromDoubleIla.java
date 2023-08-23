@@ -21,12 +21,16 @@ public final class LongIlaFromDoubleIla {
         private final int bufferSize;
 
         MyLongIla(final DoubleIla doubleIla, final int bufferSize) {
-            super(doubleIla.length());
-
             this.doubleIla = doubleIla;
             this.bufferSize = bufferSize;
         }
 
+        @Override
+        protected long lengthImpl() throws IOException {
+            return doubleIla.length();
+        }
+
+        @Override
         protected void toArrayImpl(long[] array, int offset, long start, int length) throws IOException {
             DoubleIlaIterator dii =
                     new DoubleIlaIterator(DoubleIlaSegment.create(doubleIla, start, length), new double[bufferSize]);

@@ -15,12 +15,19 @@ public final class FloatIlaFill {
 
     private static class MyFloatIla extends AbstractFloatIla {
         private final float value;
+        private final long length;
 
         MyFloatIla(float value, long length) {
-            super(length);
             this.value = value;
+            this.length = length;
         }
 
+        @Override
+        protected long lengthImpl() {
+            return length;
+        }
+
+        @Override
         protected void toArrayImpl(float[] array, int offset, long start, int length) {
             final int startPlusLength = (int) (start + length);
             for (int startInt = (int) start; startInt != startPlusLength; ++startInt, offset++) {

@@ -16,13 +16,20 @@ public final class DoubleIlaRamp {
     private static class MyDoubleIla extends AbstractDoubleIla {
         private final double startValue;
         private final double increment;
+        private final long length;
 
         MyDoubleIla(double startValue, double increment, long length) {
-            super(length);
             this.startValue = startValue;
             this.increment = increment;
+            this.length = length;
         }
 
+        @Override
+        protected long lengthImpl() {
+            return length;
+        }
+
+        @Override
         protected void toArrayImpl(double[] array, int offset, long start, int length) {
             final int startPlusLength = (int) (start + length);
 

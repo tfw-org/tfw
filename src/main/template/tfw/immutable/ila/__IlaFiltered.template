@@ -3,7 +3,6 @@ package %%PACKAGE%%;
 
 import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.ila.AbstractIlaCheck;
 
 public final class %%NAME%%IlaFiltered%%TEMPLATE%% {
     private %%NAME%%IlaFiltered() {
@@ -22,12 +21,10 @@ public final class %%NAME%%IlaFiltered%%TEMPLATE%% {
         return new My%%NAME%%Ila%%DIAMOND%%(ila, filter, buffer);
     }
 
-    private static class My%%NAME%%Ila%%TEMPLATE%% implements %%NAME%%Ila%%TEMPLATE%% {
+    private static class My%%NAME%%Ila%%TEMPLATE%% extends Abstract%%NAME%%Ila%%TEMPLATE%% {
         private final %%NAME%%Ila%%TEMPLATE%% ila;
         private final %%NAME%%Filter%%TEMPLATE%% filter;
         private final %%TYPE_OR_TEMPLATE%%[] buffer;
-
-        private long length = -1;
 
         private My%%NAME%%Ila(%%NAME%%Ila%%TEMPLATE%% ila, %%NAME%%Filter%%TEMPLATE%% filter, %%TYPE_OR_TEMPLATE%%[] buffer) {
             this.ila = ila;
@@ -35,21 +32,22 @@ public final class %%NAME%%IlaFiltered%%TEMPLATE%% {
             this.buffer = buffer;
         }
 
-        public final long length() {
-            calculateLength();
+        @Override
+        protected long lengthImpl() throws IOException {
+            long length = ila.length();
+            %%NAME%%IlaIterator%%TEMPLATE%% oii = new %%NAME%%IlaIterator%%DIAMOND%%(ila, buffer.clone());
+
+            while (oii.hasNext()) {
+                if (filter.matches(oii.next())) {
+                    length--;
+                }
+            }
 
             return length;
         }
 
-        public final void toArray(%%TYPE_OR_TEMPLATE%%[] array, int offset, long start, int length) throws IOException {
-            calculateLength();
-
-            if (length == 0) {
-                return;
-            }
-
-            AbstractIlaCheck.boundsCheck(this.length, array.length, offset, start, length);
-
+        @Override
+        public void toArrayImpl(%%TYPE_OR_TEMPLATE%%[] array, int offset, long start, int length) throws IOException {
             %%NAME%%IlaIterator%%TEMPLATE%% oii = new %%NAME%%IlaIterator%%DIAMOND%%(%%NAME%%IlaSegment.create(ila, start), buffer.clone());
 
             // left off here
@@ -58,23 +56,6 @@ public final class %%NAME%%IlaFiltered%%TEMPLATE%% {
 
                 if (!filter.matches(node)) {
                     array[i] = node;
-                }
-            }
-        }
-
-        private void calculateLength() {
-            if (length < 0) {
-                length = ila.length();
-                %%NAME%%IlaIterator%%TEMPLATE%% oii = new %%NAME%%IlaIterator%%DIAMOND%%(ila, buffer.clone());
-
-                try {
-                    while (oii.hasNext()) {
-                        if (filter.matches(oii.next())) {
-                            length--;
-                        }
-                    }
-                } catch (IOException die) {
-                    length = 0;
                 }
             }
         }

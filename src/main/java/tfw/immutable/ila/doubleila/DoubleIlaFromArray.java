@@ -17,11 +17,15 @@ public final class DoubleIlaFromArray {
         private final double[] array;
 
         MyDoubleIla(double[] array) {
-            super(array.length);
-
             this.array = array;
         }
 
+        @Override
+        protected long lengthImpl() {
+            return array.length;
+        }
+
+        @Override
         protected void toArrayImpl(double[] array, int offset, long start, int length) {
             System.arraycopy(this.array, (int) start, array, offset, length);
         }

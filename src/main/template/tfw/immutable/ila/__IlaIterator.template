@@ -16,7 +16,7 @@ public final class %%NAME%%IlaIterator%%TEMPLATE%% {
 
     public static final int DEFAULT_BUFFER_SIZE = 10000;
 
-    public %%NAME%%IlaIterator(%%NAME%%Ila%%TEMPLATE%% instance, %%TYPE_OR_TEMPLATE%%[] buffer) {
+    public %%NAME%%IlaIterator(%%NAME%%Ila%%TEMPLATE%% instance, %%TYPE_OR_TEMPLATE%%[] buffer) throws IOException {
         Argument.assertNotNull(instance, "instance");
         Argument.assertNotNull(buffer, "buffer");
         Argument.assertNotLessThan(buffer.length, 1, "buffer.length");

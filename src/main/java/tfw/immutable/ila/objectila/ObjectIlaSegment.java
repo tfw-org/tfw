@@ -8,11 +8,11 @@ public final class ObjectIlaSegment {
         // non-instantiable class
     }
 
-    public static <T> ObjectIla<T> create(ObjectIla<T> ila, long start) {
+    public static <T> ObjectIla<T> create(ObjectIla<T> ila, long start) throws IOException {
         return create(ila, start, ila.length() - start);
     }
 
-    public static <T> ObjectIla<T> create(ObjectIla<T> ila, long start, long length) {
+    public static <T> ObjectIla<T> create(ObjectIla<T> ila, long start, long length) throws IOException {
         Argument.assertNotNull(ila, "ila");
         Argument.assertNotLessThan(start, 0, "start");
         Argument.assertNotLessThan(length, 0, "length");
@@ -24,13 +24,20 @@ public final class ObjectIlaSegment {
     private static class MyObjectIla<T> extends AbstractObjectIla<T> {
         private final ObjectIla<T> ila;
         private final long start;
+        private final long length;
 
         MyObjectIla(ObjectIla<T> ila, long start, long length) {
-            super(length);
             this.ila = ila;
             this.start = start;
+            this.length = length;
         }
 
+        @Override
+        protected long lengthImpl() {
+            return length;
+        }
+
+        @Override
         protected void toArrayImpl(T[] array, int offset, long start, int length) throws IOException {
             ila.toArray(array, offset, this.start + start, length);
         }

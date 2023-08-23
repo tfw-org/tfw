@@ -15,12 +15,19 @@ public final class ObjectIlaFill {
 
     private static class MyObjectIla<T> extends AbstractObjectIla<T> {
         private final T value;
+        private final long length;
 
         MyObjectIla(T value, long length) {
-            super(length);
             this.value = value;
+            this.length = length;
         }
 
+        @Override
+        protected long lengthImpl() {
+            return length;
+        }
+
+        @Override
         protected void toArrayImpl(T[] array, int offset, long start, int length) {
             final int startPlusLength = (int) (start + length);
             for (int startInt = (int) start; startInt != startPlusLength; ++startInt, offset++) {

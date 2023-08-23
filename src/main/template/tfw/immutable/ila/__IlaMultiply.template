@@ -9,7 +9,7 @@ public final class %%NAME%%IlaMultiply {
         // non-instantiable class
     }
 
-    public static %%NAME%%Ila create(%%NAME%%Ila leftIla, %%NAME%%Ila rightIla, int bufferSize) {
+    public static %%NAME%%Ila create(%%NAME%%Ila leftIla, %%NAME%%Ila rightIla, int bufferSize) throws IOException {
         Argument.assertNotNull(leftIla, "leftIla");
         Argument.assertNotNull(rightIla, "rightIla");
         Argument.assertEquals(leftIla.length(), rightIla.length(), "leftIla.length()", "rightIla.length()");
@@ -24,13 +24,17 @@ public final class %%NAME%%IlaMultiply {
         private final int bufferSize;
 
         My%%NAME%%Ila(%%NAME%%Ila leftIla, %%NAME%%Ila rightIla, int bufferSize) {
-            super(leftIla.length());
-
             this.leftIla = leftIla;
             this.rightIla = rightIla;
             this.bufferSize = bufferSize;
         }
 
+        @Override
+        protected long lengthImpl() throws IOException {
+            return leftIla.length();
+        }
+
+        @Override
         protected void toArrayImpl(%%TYPE%%[] array, int offset, long ilaStart, int length) throws IOException {
             %%NAME%%IlaIterator li =
                     new %%NAME%%IlaIterator(%%NAME%%IlaSegment.create(leftIla, ilaStart, length), new %%TYPE%%[bufferSize]);

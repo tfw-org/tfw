@@ -16,12 +16,19 @@ public final class %%NAME%%IlaFill {
 
     private static class My%%NAME%%Ila%%TEMPLATE%% extends Abstract%%NAME%%Ila%%TEMPLATE%% {
         private final %%TYPE_OR_TEMPLATE%% value;
+        private final long length;
 
         My%%NAME%%Ila(%%TYPE_OR_TEMPLATE%% value, long length) {
-            super(length);
             this.value = value;
+            this.length = length;
         }
 
+        @Override
+        protected long lengthImpl() {
+            return length;
+        }
+
+        @Override
         protected void toArrayImpl(%%TYPE_OR_TEMPLATE%%[] array, int offset, long start, int length) {
             final int startPlusLength = (int) (start + length);
             for (int startInt = (int) start; startInt != startPlusLength; ++startInt, offset++) {

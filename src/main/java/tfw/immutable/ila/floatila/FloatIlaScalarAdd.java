@@ -19,12 +19,16 @@ public final class FloatIlaScalarAdd {
         private final float scalar;
 
         MyFloatIla(FloatIla ila, float scalar) {
-            super(ila.length());
-
             this.ila = ila;
             this.scalar = scalar;
         }
 
+        @Override
+        protected long lengthImpl() throws IOException {
+            return ila.length();
+        }
+
+        @Override
         protected void toArrayImpl(float[] array, int offset, long start, int length) throws IOException {
             ila.toArray(array, offset, start, length);
 

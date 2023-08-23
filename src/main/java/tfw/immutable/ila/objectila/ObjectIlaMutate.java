@@ -8,7 +8,7 @@ public final class ObjectIlaMutate {
         // non-instantiable class
     }
 
-    public static <T> ObjectIla<T> create(ObjectIla<T> ila, long index, T value) {
+    public static <T> ObjectIla<T> create(ObjectIla<T> ila, long index, T value) throws IOException {
         Argument.assertNotNull(ila, "ila");
         Argument.assertNotLessThan(index, 0, "index");
         Argument.assertLessThan(index, ila.length(), "index", "ila.length()");
@@ -22,12 +22,17 @@ public final class ObjectIlaMutate {
         private final T value;
 
         MyObjectIla(ObjectIla<T> ila, long index, T value) {
-            super(ila.length());
             this.ila = ila;
             this.index = index;
             this.value = value;
         }
 
+        @Override
+        protected long lengthImpl() throws IOException {
+            return ila.length();
+        }
+
+        @Override
         protected void toArrayImpl(T[] array, int offset, long start, int length) throws IOException {
             final long startPlusLength = start + length;
 

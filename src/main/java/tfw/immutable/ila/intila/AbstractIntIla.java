@@ -6,9 +6,7 @@ import tfw.immutable.ila.AbstractIla;
 public abstract class AbstractIntIla extends AbstractIla implements IntIla {
     protected abstract void toArrayImpl(final int[] array, int offset, long start, int length) throws IOException;
 
-    protected AbstractIntIla(final long length) {
-        super(length);
-    }
+    protected AbstractIntIla() {}
 
     @Override
     public final void toArray(final int[] array, final int offset, final long start, final int length)

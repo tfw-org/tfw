@@ -8,7 +8,7 @@ public final class ByteIlaMultiply {
         // non-instantiable class
     }
 
-    public static ByteIla create(ByteIla leftIla, ByteIla rightIla, int bufferSize) {
+    public static ByteIla create(ByteIla leftIla, ByteIla rightIla, int bufferSize) throws IOException {
         Argument.assertNotNull(leftIla, "leftIla");
         Argument.assertNotNull(rightIla, "rightIla");
         Argument.assertEquals(leftIla.length(), rightIla.length(), "leftIla.length()", "rightIla.length()");
@@ -23,13 +23,17 @@ public final class ByteIlaMultiply {
         private final int bufferSize;
 
         MyByteIla(ByteIla leftIla, ByteIla rightIla, int bufferSize) {
-            super(leftIla.length());
-
             this.leftIla = leftIla;
             this.rightIla = rightIla;
             this.bufferSize = bufferSize;
         }
 
+        @Override
+        protected long lengthImpl() throws IOException {
+            return leftIla.length();
+        }
+
+        @Override
         protected void toArrayImpl(byte[] array, int offset, long ilaStart, int length) throws IOException {
             ByteIlaIterator li =
                     new ByteIlaIterator(ByteIlaSegment.create(leftIla, ilaStart, length), new byte[bufferSize]);

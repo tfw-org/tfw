@@ -15,12 +15,19 @@ public final class LongIlaFill {
 
     private static class MyLongIla extends AbstractLongIla {
         private final long value;
+        private final long length;
 
         MyLongIla(long value, long length) {
-            super(length);
             this.value = value;
+            this.length = length;
         }
 
+        @Override
+        protected long lengthImpl() {
+            return length;
+        }
+
+        @Override
         protected void toArrayImpl(long[] array, int offset, long start, int length) {
             final int startPlusLength = (int) (start + length);
             for (int startInt = (int) start; startInt != startPlusLength; ++startInt, offset++) {

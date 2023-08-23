@@ -20,12 +20,16 @@ public final class ShortIlaReverse {
         private final short[] buffer;
 
         MyShortIla(ShortIla ila, final short[] buffer) {
-            super(ila.length());
-
             this.ila = ila;
             this.buffer = buffer;
         }
 
+        @Override
+        protected long lengthImpl() throws IOException {
+            return ila.length();
+        }
+
+        @Override
         protected void toArrayImpl(short[] array, int offset, long start, int length) throws IOException {
             final StridedShortIla stridedShortIla = new StridedShortIla(ila, buffer.clone());
 

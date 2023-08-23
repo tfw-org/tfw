@@ -2,7 +2,6 @@ package tfw.immutable.ila.doubleila;
 
 import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.ila.AbstractIlaCheck;
 
 public final class DoubleIlaFiltered {
     private DoubleIlaFiltered() {
@@ -21,12 +20,10 @@ public final class DoubleIlaFiltered {
         return new MyDoubleIla(ila, filter, buffer);
     }
 
-    private static class MyDoubleIla implements DoubleIla {
+    private static class MyDoubleIla extends AbstractDoubleIla {
         private final DoubleIla ila;
         private final DoubleFilter filter;
         private final double[] buffer;
-
-        private long length = -1;
 
         private MyDoubleIla(DoubleIla ila, DoubleFilter filter, double[] buffer) {
             this.ila = ila;
@@ -34,21 +31,22 @@ public final class DoubleIlaFiltered {
             this.buffer = buffer;
         }
 
-        public final long length() {
-            calculateLength();
+        @Override
+        protected long lengthImpl() throws IOException {
+            long length = ila.length();
+            DoubleIlaIterator oii = new DoubleIlaIterator(ila, buffer.clone());
+
+            while (oii.hasNext()) {
+                if (filter.matches(oii.next())) {
+                    length--;
+                }
+            }
 
             return length;
         }
 
-        public final void toArray(double[] array, int offset, long start, int length) throws IOException {
-            calculateLength();
-
-            if (length == 0) {
-                return;
-            }
-
-            AbstractIlaCheck.boundsCheck(this.length, array.length, offset, start, length);
-
+        @Override
+        public void toArrayImpl(double[] array, int offset, long start, int length) throws IOException {
             DoubleIlaIterator oii = new DoubleIlaIterator(DoubleIlaSegment.create(ila, start), buffer.clone());
 
             // left off here
@@ -57,23 +55,6 @@ public final class DoubleIlaFiltered {
 
                 if (!filter.matches(node)) {
                     array[i] = node;
-                }
-            }
-        }
-
-        private void calculateLength() {
-            if (length < 0) {
-                length = ila.length();
-                DoubleIlaIterator oii = new DoubleIlaIterator(ila, buffer.clone());
-
-                try {
-                    while (oii.hasNext()) {
-                        if (filter.matches(oii.next())) {
-                            length--;
-                        }
-                    }
-                } catch (IOException die) {
-                    length = 0;
                 }
             }
         }

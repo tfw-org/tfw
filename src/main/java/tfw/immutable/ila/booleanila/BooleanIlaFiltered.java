@@ -2,7 +2,6 @@ package tfw.immutable.ila.booleanila;
 
 import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.ila.AbstractIlaCheck;
 
 public final class BooleanIlaFiltered {
     private BooleanIlaFiltered() {
@@ -21,12 +20,10 @@ public final class BooleanIlaFiltered {
         return new MyBooleanIla(ila, filter, buffer);
     }
 
-    private static class MyBooleanIla implements BooleanIla {
+    private static class MyBooleanIla extends AbstractBooleanIla {
         private final BooleanIla ila;
         private final BooleanFilter filter;
         private final boolean[] buffer;
-
-        private long length = -1;
 
         private MyBooleanIla(BooleanIla ila, BooleanFilter filter, boolean[] buffer) {
             this.ila = ila;
@@ -34,21 +31,22 @@ public final class BooleanIlaFiltered {
             this.buffer = buffer;
         }
 
-        public final long length() {
-            calculateLength();
+        @Override
+        protected long lengthImpl() throws IOException {
+            long length = ila.length();
+            BooleanIlaIterator oii = new BooleanIlaIterator(ila, buffer.clone());
+
+            while (oii.hasNext()) {
+                if (filter.matches(oii.next())) {
+                    length--;
+                }
+            }
 
             return length;
         }
 
-        public final void toArray(boolean[] array, int offset, long start, int length) throws IOException {
-            calculateLength();
-
-            if (length == 0) {
-                return;
-            }
-
-            AbstractIlaCheck.boundsCheck(this.length, array.length, offset, start, length);
-
+        @Override
+        public void toArrayImpl(boolean[] array, int offset, long start, int length) throws IOException {
             BooleanIlaIterator oii = new BooleanIlaIterator(BooleanIlaSegment.create(ila, start), buffer.clone());
 
             // left off here
@@ -57,23 +55,6 @@ public final class BooleanIlaFiltered {
 
                 if (!filter.matches(node)) {
                     array[i] = node;
-                }
-            }
-        }
-
-        private void calculateLength() {
-            if (length < 0) {
-                length = ila.length();
-                BooleanIlaIterator oii = new BooleanIlaIterator(ila, buffer.clone());
-
-                try {
-                    while (oii.hasNext()) {
-                        if (filter.matches(oii.next())) {
-                            length--;
-                        }
-                    }
-                } catch (IOException die) {
-                    length = 0;
                 }
             }
         }

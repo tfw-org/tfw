@@ -29,9 +29,12 @@ public final class ByteIlaFromFile {
         private TimerRunnable timerRunnable = null;
 
         public MyByteIla(File file) {
-            super(file.length());
-
             this.file = file;
+        }
+
+        @Override
+        protected long lengthImpl() {
+            return file.length();
         }
 
         @Override

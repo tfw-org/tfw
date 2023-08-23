@@ -8,7 +8,7 @@ public final class ObjectIlaInterleave {
         // non-instantiable class
     }
 
-    public static <T> ObjectIla<T> create(ObjectIla<T>[] ilas, final T[] buffer) {
+    public static <T> ObjectIla<T> create(ObjectIla<T>[] ilas, final T[] buffer) throws IOException {
         Argument.assertNotNull(ilas, "ilas");
         Argument.assertNotLessThan(ilas.length, 1, "ilas.length");
         Argument.assertNotNull(ilas[0], "ilas[0]");
@@ -28,8 +28,6 @@ public final class ObjectIlaInterleave {
         private final int ilasLength;
 
         MyObjectIla(ObjectIla<T>[] ilas, final T[] buffer) {
-            super(ilas[0].length() * ilas.length);
-
             stridedObjectIlas = new StridedObjectIla[ilas.length];
             ilasLength = ilas.length;
 
@@ -38,6 +36,12 @@ public final class ObjectIlaInterleave {
             }
         }
 
+        @Override
+        protected long lengthImpl() throws IOException {
+            return stridedObjectIlas[0].length() * stridedObjectIlas.length;
+        }
+
+        @Override
         protected void toArrayImpl(T[] array, int offset, long start, int length) throws IOException {
             int currentIla = (int) (start % ilasLength);
             long ilaStart = start / ilasLength;

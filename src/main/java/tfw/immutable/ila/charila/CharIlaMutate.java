@@ -8,7 +8,7 @@ public final class CharIlaMutate {
         // non-instantiable class
     }
 
-    public static CharIla create(CharIla ila, long index, char value) {
+    public static CharIla create(CharIla ila, long index, char value) throws IOException {
         Argument.assertNotNull(ila, "ila");
         Argument.assertNotLessThan(index, 0, "index");
         Argument.assertLessThan(index, ila.length(), "index", "ila.length()");
@@ -22,12 +22,17 @@ public final class CharIlaMutate {
         private final char value;
 
         MyCharIla(CharIla ila, long index, char value) {
-            super(ila.length());
             this.ila = ila;
             this.index = index;
             this.value = value;
         }
 
+        @Override
+        protected long lengthImpl() throws IOException {
+            return ila.length();
+        }
+
+        @Override
         protected void toArrayImpl(char[] array, int offset, long start, int length) throws IOException {
             final long startPlusLength = start + length;
 

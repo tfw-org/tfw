@@ -2,7 +2,6 @@ package tfw.immutable.ila.charila;
 
 import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.ila.AbstractIlaCheck;
 
 public final class CharIlaFiltered {
     private CharIlaFiltered() {
@@ -21,12 +20,10 @@ public final class CharIlaFiltered {
         return new MyCharIla(ila, filter, buffer);
     }
 
-    private static class MyCharIla implements CharIla {
+    private static class MyCharIla extends AbstractCharIla {
         private final CharIla ila;
         private final CharFilter filter;
         private final char[] buffer;
-
-        private long length = -1;
 
         private MyCharIla(CharIla ila, CharFilter filter, char[] buffer) {
             this.ila = ila;
@@ -34,21 +31,22 @@ public final class CharIlaFiltered {
             this.buffer = buffer;
         }
 
-        public final long length() {
-            calculateLength();
+        @Override
+        protected long lengthImpl() throws IOException {
+            long length = ila.length();
+            CharIlaIterator oii = new CharIlaIterator(ila, buffer.clone());
+
+            while (oii.hasNext()) {
+                if (filter.matches(oii.next())) {
+                    length--;
+                }
+            }
 
             return length;
         }
 
-        public final void toArray(char[] array, int offset, long start, int length) throws IOException {
-            calculateLength();
-
-            if (length == 0) {
-                return;
-            }
-
-            AbstractIlaCheck.boundsCheck(this.length, array.length, offset, start, length);
-
+        @Override
+        public void toArrayImpl(char[] array, int offset, long start, int length) throws IOException {
             CharIlaIterator oii = new CharIlaIterator(CharIlaSegment.create(ila, start), buffer.clone());
 
             // left off here
@@ -57,23 +55,6 @@ public final class CharIlaFiltered {
 
                 if (!filter.matches(node)) {
                     array[i] = node;
-                }
-            }
-        }
-
-        private void calculateLength() {
-            if (length < 0) {
-                length = ila.length();
-                CharIlaIterator oii = new CharIlaIterator(ila, buffer.clone());
-
-                try {
-                    while (oii.hasNext()) {
-                        if (filter.matches(oii.next())) {
-                            length--;
-                        }
-                    }
-                } catch (IOException die) {
-                    length = 0;
                 }
             }
         }

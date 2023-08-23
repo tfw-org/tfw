@@ -20,12 +20,16 @@ public final class ByteIlaReverse {
         private final byte[] buffer;
 
         MyByteIla(ByteIla ila, final byte[] buffer) {
-            super(ila.length());
-
             this.ila = ila;
             this.buffer = buffer;
         }
 
+        @Override
+        protected long lengthImpl() throws IOException {
+            return ila.length();
+        }
+
+        @Override
         protected void toArrayImpl(byte[] array, int offset, long start, int length) throws IOException {
             final StridedByteIla stridedByteIla = new StridedByteIla(ila, buffer.clone());
 

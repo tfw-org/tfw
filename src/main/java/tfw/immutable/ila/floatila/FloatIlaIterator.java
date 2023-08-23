@@ -15,7 +15,7 @@ public final class FloatIlaIterator {
 
     public static final int DEFAULT_BUFFER_SIZE = 10000;
 
-    public FloatIlaIterator(FloatIla instance, float[] buffer) {
+    public FloatIlaIterator(FloatIla instance, float[] buffer) throws IOException {
         Argument.assertNotNull(instance, "instance");
         Argument.assertNotNull(buffer, "buffer");
         Argument.assertNotLessThan(buffer.length, 1, "buffer.length");

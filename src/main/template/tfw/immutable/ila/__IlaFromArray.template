@@ -18,11 +18,15 @@ public final class %%NAME%%IlaFromArray {
         private final %%TYPE_OR_TEMPLATE%%[] array;
 
         My%%NAME%%Ila(%%TYPE_OR_TEMPLATE%%[] array) {
-            super(array.length);
-
             this.array = array;
         }
 
+        @Override
+        protected long lengthImpl() {
+            return array.length;
+        }
+
+        @Override
         protected void toArrayImpl(%%TYPE_OR_TEMPLATE%%[] array, int offset, long start, int length) {
             System.arraycopy(this.array, (int) start, array, offset, length);
         }

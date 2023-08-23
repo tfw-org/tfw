@@ -16,7 +16,7 @@ public final class Strided%%NAME%%Ila%%TEMPLATE%% {
         this.buffer = buffer;
     }
 
-    public long length() {
+    public long length() throws IOException {
         return ila.length();
     }
 

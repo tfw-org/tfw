@@ -18,11 +18,15 @@ public final class DoubleIlaRound {
         private final DoubleIla ila;
 
         MyDoubleIla(DoubleIla ila) {
-            super(ila.length());
-
             this.ila = ila;
         }
 
+        @Override
+        protected long lengthImpl() throws IOException {
+            return ila.length();
+        }
+
+        @Override
         protected void toArrayImpl(double[] array, int offset, long start, int length) throws IOException {
             ila.toArray(array, offset, start, length);
 

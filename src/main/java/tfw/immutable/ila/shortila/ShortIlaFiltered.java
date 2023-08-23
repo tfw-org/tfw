@@ -2,7 +2,6 @@ package tfw.immutable.ila.shortila;
 
 import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.ila.AbstractIlaCheck;
 
 public final class ShortIlaFiltered {
     private ShortIlaFiltered() {
@@ -21,12 +20,10 @@ public final class ShortIlaFiltered {
         return new MyShortIla(ila, filter, buffer);
     }
 
-    private static class MyShortIla implements ShortIla {
+    private static class MyShortIla extends AbstractShortIla {
         private final ShortIla ila;
         private final ShortFilter filter;
         private final short[] buffer;
-
-        private long length = -1;
 
         private MyShortIla(ShortIla ila, ShortFilter filter, short[] buffer) {
             this.ila = ila;
@@ -34,21 +31,22 @@ public final class ShortIlaFiltered {
             this.buffer = buffer;
         }
 
-        public final long length() {
-            calculateLength();
+        @Override
+        protected long lengthImpl() throws IOException {
+            long length = ila.length();
+            ShortIlaIterator oii = new ShortIlaIterator(ila, buffer.clone());
+
+            while (oii.hasNext()) {
+                if (filter.matches(oii.next())) {
+                    length--;
+                }
+            }
 
             return length;
         }
 
-        public final void toArray(short[] array, int offset, long start, int length) throws IOException {
-            calculateLength();
-
-            if (length == 0) {
-                return;
-            }
-
-            AbstractIlaCheck.boundsCheck(this.length, array.length, offset, start, length);
-
+        @Override
+        public void toArrayImpl(short[] array, int offset, long start, int length) throws IOException {
             ShortIlaIterator oii = new ShortIlaIterator(ShortIlaSegment.create(ila, start), buffer.clone());
 
             // left off here
@@ -57,23 +55,6 @@ public final class ShortIlaFiltered {
 
                 if (!filter.matches(node)) {
                     array[i] = node;
-                }
-            }
-        }
-
-        private void calculateLength() {
-            if (length < 0) {
-                length = ila.length();
-                ShortIlaIterator oii = new ShortIlaIterator(ila, buffer.clone());
-
-                try {
-                    while (oii.hasNext()) {
-                        if (filter.matches(oii.next())) {
-                            length--;
-                        }
-                    }
-                } catch (IOException die) {
-                    length = 0;
                 }
             }
         }

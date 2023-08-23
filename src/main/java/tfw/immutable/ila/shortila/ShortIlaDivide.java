@@ -8,7 +8,7 @@ public final class ShortIlaDivide {
         // non-instantiable class
     }
 
-    public static ShortIla create(ShortIla leftIla, ShortIla rightIla, int bufferSize) {
+    public static ShortIla create(ShortIla leftIla, ShortIla rightIla, int bufferSize) throws IOException {
         Argument.assertNotNull(leftIla, "leftIla");
         Argument.assertNotNull(rightIla, "rightIla");
         Argument.assertEquals(leftIla.length(), rightIla.length(), "leftIla.length()", "rightIla.length()");
@@ -23,13 +23,17 @@ public final class ShortIlaDivide {
         private final int bufferSize;
 
         MyShortIla(ShortIla leftIla, ShortIla rightIla, int bufferSize) {
-            super(leftIla.length());
-
             this.leftIla = leftIla;
             this.rightIla = rightIla;
             this.bufferSize = bufferSize;
         }
 
+        @Override
+        protected long lengthImpl() throws IOException {
+            return leftIla.length();
+        }
+
+        @Override
         protected void toArrayImpl(short[] array, int offset, long ilaStart, int length) throws IOException {
             ShortIlaIterator li =
                     new ShortIlaIterator(ShortIlaSegment.create(leftIla, ilaStart, length), new short[bufferSize]);

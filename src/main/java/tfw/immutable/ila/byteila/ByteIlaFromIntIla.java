@@ -21,10 +21,13 @@ public final class ByteIlaFromIntIla {
         private final int bufferSize;
 
         MyByteIla(final IntIla intIla, final int bufferSize) {
-            super(intIla.length() * 4);
-
             this.intIla = intIla;
             this.bufferSize = bufferSize;
+        }
+
+        @Override
+        protected long lengthImpl() throws IOException {
+            return intIla.length() * 4;
         }
 
         protected void toArrayImpl(byte[] array, int offset, long start, int length) throws IOException {

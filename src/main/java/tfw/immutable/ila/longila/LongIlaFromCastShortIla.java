@@ -23,12 +23,16 @@ public final class LongIlaFromCastShortIla {
         private final int bufferSize;
 
         MyLongIla(ShortIla shortIla, int bufferSize) {
-            super(shortIla.length());
-
             this.shortIla = shortIla;
             this.bufferSize = bufferSize;
         }
 
+        @Override
+        protected long lengthImpl() throws IOException {
+            return shortIla.length();
+        }
+
+        @Override
         protected void toArrayImpl(long[] array, int offset, long start, int length) throws IOException {
             ShortIlaIterator fi =
                     new ShortIlaIterator(ShortIlaSegment.create(shortIla, start, length), new short[bufferSize]);
