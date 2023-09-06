@@ -6,7 +6,7 @@ import tfw.check.Argument;
 public class InterleavedMagnitudeDoubleIlm {
     private InterleavedMagnitudeDoubleIlm() {}
 
-    public static DoubleIlm create(DoubleIlm doubleIlm) {
+    public static DoubleIlm create(DoubleIlm doubleIlm) throws IOException {
         Argument.assertNotNull(doubleIlm, "doubleIlm");
         Argument.assertEquals(doubleIlm.width() % 2, 0, "doubleIlm.width()", "0");
 
@@ -17,11 +17,19 @@ public class InterleavedMagnitudeDoubleIlm {
         private final DoubleIlm doubleIlm;
         private final double[] buffer;
 
-        public MyDoubleIlm(DoubleIlm doubleIlm) {
-            super(doubleIlm.width() / 2, doubleIlm.height());
-
+        public MyDoubleIlm(DoubleIlm doubleIlm) throws IOException {
             this.doubleIlm = doubleIlm;
             this.buffer = new double[(int) doubleIlm.width()];
+        }
+
+        @Override
+        protected long widthImpl() throws IOException {
+            return doubleIlm.width() / 2;
+        }
+
+        @Override
+        protected long heightImpl() throws IOException {
+            return doubleIlm.height();
         }
 
         @Override

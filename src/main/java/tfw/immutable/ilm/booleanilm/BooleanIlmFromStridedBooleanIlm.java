@@ -16,9 +16,17 @@ public final class BooleanIlmFromStridedBooleanIlm {
         private final StridedBooleanIlm stridedIlm;
 
         public MyBooleanIlm(final StridedBooleanIlm stridedIlm) {
-            super(stridedIlm.width(), stridedIlm.height());
-
             this.stridedIlm = stridedIlm;
+        }
+
+        @Override
+        protected long widthImpl() throws IOException {
+            return stridedIlm.width();
+        }
+
+        @Override
+        protected long heightImpl() throws IOException {
+            return stridedIlm.height();
         }
 
         @Override

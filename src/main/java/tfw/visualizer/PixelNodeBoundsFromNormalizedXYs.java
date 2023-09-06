@@ -47,7 +47,7 @@ public final class PixelNodeBoundsFromNormalizedXYs {
             this.fontMetrics = fontMetrics;
         }
 
-        public long width() {
+        public long width() throws IOException {
             return normalizedXYs.width();
         }
 

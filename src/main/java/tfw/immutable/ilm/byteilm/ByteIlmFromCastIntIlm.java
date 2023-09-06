@@ -19,9 +19,17 @@ public class ByteIlmFromCastIntIlm {
         private int[] buffer = new int[0];
 
         public MyByteIlm(IntIlm intIlm) {
-            super(intIlm.width(), intIlm.height());
-
             this.intIlm = intIlm;
+        }
+
+        @Override
+        protected long widthImpl() throws IOException {
+            return intIlm.width();
+        }
+
+        @Override
+        protected long heightImpl() throws IOException {
+            return intIlm.height();
         }
 
         @Override

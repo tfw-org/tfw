@@ -6,7 +6,7 @@ import tfw.check.Argument;
 public class IntIlmSubtract {
     private IntIlmSubtract() {}
 
-    public static IntIlm create(IntIlm leftIlm, IntIlm rightIlm) {
+    public static IntIlm create(IntIlm leftIlm, IntIlm rightIlm) throws IOException {
         Argument.assertNotNull(leftIlm, "leftIlm");
         Argument.assertNotNull(rightIlm, "rightIlm");
         Argument.assertEquals(leftIlm.width(), rightIlm.width(), "leftIlm.width()", "rightIlm.width()");
@@ -22,10 +22,18 @@ public class IntIlmSubtract {
         private int[] buffer = new int[0];
 
         public MyIntIlm(IntIlm leftIlm, IntIlm rightIlm) {
-            super(leftIlm.width(), leftIlm.height());
-
             this.leftIlm = leftIlm;
             this.rightIlm = rightIlm;
+        }
+
+        @Override
+        protected long widthImpl() throws IOException {
+            return leftIlm.width();
+        }
+
+        @Override
+        protected long heightImpl() throws IOException {
+            return leftIlm.height();
         }
 
         @Override

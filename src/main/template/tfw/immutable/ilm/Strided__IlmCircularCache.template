@@ -8,7 +8,8 @@ import tfw.check.Argument;
 public class Strided%%NAME%%IlmCircularCache {
     private Strided%%NAME%%IlmCircularCache() {}
 
-    public static %%TEMPLATE_SPACE%%Strided%%NAME%%Ilm%%TEMPLATE%% create(Strided%%NAME%%Ilm%%TEMPLATE%% stridedIlm, int numRows, %%TYPE_OR_TEMPLATE%%[] buffer) {
+    public static %%TEMPLATE_SPACE%%Strided%%NAME%%Ilm%%TEMPLATE%% create(final Strided%%NAME%%Ilm%%TEMPLATE%% stridedIlm, final int numRows, %%TYPE_OR_TEMPLATE%%[] buffer)
+            throws IOException {
         Argument.assertNotNull(stridedIlm, "stridedIlm");
         Argument.assertGreaterThan(numRows, 0, "numRows");
         Argument.assertNotNull(buffer, "buffer");
@@ -26,15 +27,23 @@ public class Strided%%NAME%%IlmCircularCache {
         private final int rStride;
         private final int maxRows;
 
-        public My%%NAME%%Ilm(Strided%%NAME%%Ilm%%TEMPLATE%% stridedIlm, int numRows, %%TYPE_OR_TEMPLATE%%[] buffer) {
-            super(stridedIlm.width(), stridedIlm.height());
-
+        public My%%NAME%%Ilm(Strided%%NAME%%Ilm%%TEMPLATE%% stridedIlm, int numRows, %%TYPE_OR_TEMPLATE%%[] buffer) throws IOException {
             this.stridedIlm = stridedIlm;
             this.maxRows = numRows;
             this.buffer = buffer;
 
             cacheLength = (int) stridedIlm.width() * maxRows;
             rStride = (int) stridedIlm.width();
+        }
+
+        @Override
+        protected long widthImpl() throws IOException {
+            return stridedIlm.width();
+        }
+
+        @Override
+        protected long heightImpl() throws IOException {
+            return stridedIlm.height();
         }
 
         @Override

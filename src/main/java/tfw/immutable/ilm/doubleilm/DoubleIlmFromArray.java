@@ -1,5 +1,6 @@
 package tfw.immutable.ilm.doubleilm;
 
+import java.io.IOException;
 import tfw.check.Argument;
 
 public final class DoubleIlmFromArray {
@@ -18,15 +19,27 @@ public final class DoubleIlmFromArray {
 
     private static class MyDoubleIlm extends AbstractDoubleIlm {
         private final double[] array;
+        private final int ilmWidth;
 
-        MyDoubleIlm(double[] array, int width) {
-            super(width, width == 0 ? 0 : array.length / width);
-
+        MyDoubleIlm(double[] array, int ilmWidth) {
             this.array = array;
+            this.ilmWidth = ilmWidth;
         }
 
+        @Override
+        protected long widthImpl() {
+            return ilmWidth;
+        }
+
+        @Override
+        protected long heightImpl() {
+            return ilmWidth == 0 ? 0 : array.length / ilmWidth;
+        }
+
+        @Override
         protected void toArrayImpl(
-                final double[] array, int offset, long rowStart, long colStart, int rowCount, int colCount) {
+                final double[] array, int offset, long rowStart, long colStart, int rowCount, int colCount)
+                throws IOException {
             int intWidth = (int) width();
 
             for (int i = 0; i < rowCount; i++) {

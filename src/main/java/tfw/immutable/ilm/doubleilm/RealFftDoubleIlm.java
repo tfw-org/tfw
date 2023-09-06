@@ -7,7 +7,7 @@ import tfw.dsp.xform.Ooura1D;
 public class RealFftDoubleIlm {
     private RealFftDoubleIlm() {}
 
-    public static DoubleIlm create(DoubleIlm doubleIlm, int fftSize) {
+    public static DoubleIlm create(DoubleIlm doubleIlm, int fftSize) throws IOException {
         Argument.assertNotNull(doubleIlm, "doubleIlm");
         // Check to make sure fftSize is a power of 2.
 
@@ -22,15 +22,23 @@ public class RealFftDoubleIlm {
         private final int[] ip;
         private final double[] w;
 
-        public MyDoubleIlm(DoubleIlm doubleIlm, int fftSize) {
-            super(fftSize, doubleIlm.height());
-
+        public MyDoubleIlm(DoubleIlm doubleIlm, int fftSize) throws IOException {
             this.doubleIlm = doubleIlm;
             this.fftSize = fftSize;
             this.dataWidth = (int) doubleIlm.width();
             this.buffer = new double[fftSize];
             this.ip = new int[2 + (int) Math.ceil(Math.sqrt(fftSize / 2))];
             this.w = new double[fftSize / 2];
+        }
+
+        @Override
+        protected long widthImpl() throws IOException {
+            return fftSize;
+        }
+
+        @Override
+        protected long heightImpl() throws IOException {
+            return doubleIlm.height();
         }
 
         @Override

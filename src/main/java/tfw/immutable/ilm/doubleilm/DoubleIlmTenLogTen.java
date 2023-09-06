@@ -6,7 +6,7 @@ import tfw.check.Argument;
 public class DoubleIlmTenLogTen {
     private DoubleIlmTenLogTen() {}
 
-    public static DoubleIlm create(DoubleIlm doubleIlm) {
+    public static DoubleIlm create(DoubleIlm doubleIlm) throws IOException {
         Argument.assertNotNull(doubleIlm, "doubleIlm");
 
         return new MyDoubleIlm(doubleIlm);
@@ -16,11 +16,19 @@ public class DoubleIlmTenLogTen {
         private final DoubleIlm doubleIlm;
         private final double[] buffer;
 
-        public MyDoubleIlm(DoubleIlm doubleIlm) {
-            super(doubleIlm.width(), doubleIlm.height());
-
+        public MyDoubleIlm(DoubleIlm doubleIlm) throws IOException {
             this.doubleIlm = doubleIlm;
             this.buffer = new double[(int) doubleIlm.width()];
+        }
+
+        @Override
+        protected long widthImpl() throws IOException {
+            return doubleIlm.width();
+        }
+
+        @Override
+        protected long heightImpl() throws IOException {
+            return doubleIlm.height();
         }
 
         @Override

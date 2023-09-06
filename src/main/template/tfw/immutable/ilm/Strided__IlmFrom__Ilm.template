@@ -20,12 +20,21 @@ public final class Strided%%NAME%%IlmFrom%%NAME%%Ilm%%TEMPLATE%% {
         private final %%TYPE_OR_TEMPLATE%%[] buffer;
 
         public MyStrided%%NAME%%Ilm(final %%NAME%%Ilm%%TEMPLATE%% ilm, final %%TYPE_OR_TEMPLATE%%[] buffer) {
-            super(ilm.width(), ilm.height());
-
             this.ilm = ilm;
             this.buffer = buffer;
         }
 
+        @Override
+        public long widthImpl() throws IOException {
+            return ilm.width();
+        }
+
+        @Override
+        public long heightImpl() throws IOException {
+            return ilm.height();
+        }
+
+        @Override
         public final void toArrayImpl(
                 %%TYPE_OR_TEMPLATE%%[] array,
                 int offset,

@@ -19,12 +19,21 @@ public final class StridedDoubleIlmFromDoubleIlm {
         private final double[] buffer;
 
         public MyStridedDoubleIlm(final DoubleIlm ilm, final double[] buffer) {
-            super(ilm.width(), ilm.height());
-
             this.ilm = ilm;
             this.buffer = buffer;
         }
 
+        @Override
+        public long widthImpl() throws IOException {
+            return ilm.width();
+        }
+
+        @Override
+        public long heightImpl() throws IOException {
+            return ilm.height();
+        }
+
+        @Override
         public final void toArrayImpl(
                 double[] array,
                 int offset,

@@ -6,7 +6,7 @@ import tfw.check.Argument;
 public class IntIlmCircularCache {
     private IntIlmCircularCache() {}
 
-    public static IntIlm create(IntIlm intIlm, int numRows) {
+    public static IntIlm create(IntIlm intIlm, int numRows) throws IOException {
         Argument.assertNotNull(intIlm, "intIlm");
         Argument.assertGreaterThan(numRows, 0, "numRows");
 
@@ -21,13 +21,21 @@ public class IntIlmCircularCache {
         private long cacheEnd = 0;
         private final int maxRows;
 
-        public MyIntIlm(IntIlm intIlm, int numRows) {
-            super(intIlm.width(), intIlm.height());
-
+        public MyIntIlm(IntIlm intIlm, int numRows) throws IOException {
             this.intIlm = intIlm;
             this.maxRows = numRows;
 
             cacheLength = (int) intIlm.width() * maxRows;
+        }
+
+        @Override
+        protected long widthImpl() throws IOException {
+            return intIlm.width();
+        }
+
+        @Override
+        protected long heightImpl() throws IOException {
+            return intIlm.height();
         }
 
         @Override

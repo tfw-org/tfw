@@ -15,11 +15,23 @@ public class IntIlmFill {
 
     private static class MyIntIlm extends AbstractIntIlm {
         private final int value;
+        private final long ilmWidth;
+        private final long ilmHeight;
 
-        public MyIntIlm(int value, long width, long height) {
-            super(width, height);
-
+        public MyIntIlm(int value, long ilmWidth, long ilmHeight) {
             this.value = value;
+            this.ilmWidth = ilmWidth;
+            this.ilmHeight = ilmHeight;
+        }
+
+        @Override
+        protected long widthImpl() {
+            return ilmWidth;
+        }
+
+        @Override
+        protected long heightImpl() {
+            return ilmHeight;
         }
 
         @Override

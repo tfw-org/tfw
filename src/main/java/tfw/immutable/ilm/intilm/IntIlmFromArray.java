@@ -1,5 +1,6 @@
 package tfw.immutable.ilm.intilm;
 
+import java.io.IOException;
 import tfw.check.Argument;
 
 public final class IntIlmFromArray {
@@ -18,15 +19,27 @@ public final class IntIlmFromArray {
 
     private static class MyIntIlm extends AbstractIntIlm {
         private final int[] array;
+        private final int ilmWidth;
 
-        MyIntIlm(int[] array, int width) {
-            super(width, width == 0 ? 0 : array.length / width);
-
+        MyIntIlm(int[] array, int ilmWidth) {
             this.array = array;
+            this.ilmWidth = ilmWidth;
         }
 
+        @Override
+        protected long widthImpl() {
+            return ilmWidth;
+        }
+
+        @Override
+        protected long heightImpl() {
+            return ilmWidth == 0 ? 0 : array.length / ilmWidth;
+        }
+
+        @Override
         protected void toArrayImpl(
-                final int[] array, int offset, long rowStart, long colStart, int rowCount, int colCount) {
+                final int[] array, int offset, long rowStart, long colStart, int rowCount, int colCount)
+                throws IOException {
             int intWidth = (int) width();
 
             for (int i = 0; i < rowCount; i++) {

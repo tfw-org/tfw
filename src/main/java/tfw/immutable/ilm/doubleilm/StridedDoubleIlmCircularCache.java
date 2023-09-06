@@ -7,7 +7,8 @@ import tfw.check.Argument;
 public class StridedDoubleIlmCircularCache {
     private StridedDoubleIlmCircularCache() {}
 
-    public static StridedDoubleIlm create(StridedDoubleIlm stridedIlm, int numRows, double[] buffer) {
+    public static StridedDoubleIlm create(final StridedDoubleIlm stridedIlm, final int numRows, double[] buffer)
+            throws IOException {
         Argument.assertNotNull(stridedIlm, "stridedIlm");
         Argument.assertGreaterThan(numRows, 0, "numRows");
         Argument.assertNotNull(buffer, "buffer");
@@ -25,15 +26,23 @@ public class StridedDoubleIlmCircularCache {
         private final int rStride;
         private final int maxRows;
 
-        public MyDoubleIlm(StridedDoubleIlm stridedIlm, int numRows, double[] buffer) {
-            super(stridedIlm.width(), stridedIlm.height());
-
+        public MyDoubleIlm(StridedDoubleIlm stridedIlm, int numRows, double[] buffer) throws IOException {
             this.stridedIlm = stridedIlm;
             this.maxRows = numRows;
             this.buffer = buffer;
 
             cacheLength = (int) stridedIlm.width() * maxRows;
             rStride = (int) stridedIlm.width();
+        }
+
+        @Override
+        protected long widthImpl() throws IOException {
+            return stridedIlm.width();
+        }
+
+        @Override
+        protected long heightImpl() throws IOException {
+            return stridedIlm.height();
         }
 
         @Override

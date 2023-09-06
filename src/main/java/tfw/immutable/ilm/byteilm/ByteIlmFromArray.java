@@ -1,5 +1,6 @@
 package tfw.immutable.ilm.byteilm;
 
+import java.io.IOException;
 import tfw.check.Argument;
 
 public final class ByteIlmFromArray {
@@ -18,15 +19,27 @@ public final class ByteIlmFromArray {
 
     private static class MyByteIlm extends AbstractByteIlm {
         private final byte[] array;
+        private final int ilmWidth;
 
-        MyByteIlm(byte[] array, int width) {
-            super(width, width == 0 ? 0 : array.length / width);
-
+        MyByteIlm(byte[] array, int ilmWidth) {
             this.array = array;
+            this.ilmWidth = ilmWidth;
         }
 
+        @Override
+        protected long widthImpl() {
+            return ilmWidth;
+        }
+
+        @Override
+        protected long heightImpl() {
+            return ilmWidth == 0 ? 0 : array.length / ilmWidth;
+        }
+
+        @Override
         protected void toArrayImpl(
-                final byte[] array, int offset, long rowStart, long colStart, int rowCount, int colCount) {
+                final byte[] array, int offset, long rowStart, long colStart, int rowCount, int colCount)
+                throws IOException {
             int intWidth = (int) width();
 
             for (int i = 0; i < rowCount; i++) {

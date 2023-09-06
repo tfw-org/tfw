@@ -6,7 +6,7 @@ import tfw.check.Argument;
 public class DoubleIlmScalarMultiply {
     private DoubleIlmScalarMultiply() {}
 
-    public static DoubleIlm create(DoubleIlm doubleIlm, double scalar) {
+    public static DoubleIlm create(DoubleIlm doubleIlm, double scalar) throws IOException {
         Argument.assertNotNull(doubleIlm, "doubleIlm");
 
         return new MyDoubleIlm(doubleIlm, scalar);
@@ -17,12 +17,20 @@ public class DoubleIlmScalarMultiply {
         private final double[] buffer;
         private final double scalar;
 
-        public MyDoubleIlm(DoubleIlm doubleIlm, double scalar) {
-            super(doubleIlm.width(), doubleIlm.height());
-
+        public MyDoubleIlm(DoubleIlm doubleIlm, double scalar) throws IOException {
             this.doubleIlm = doubleIlm;
             this.buffer = new double[(int) doubleIlm.width()];
             this.scalar = scalar;
+        }
+
+        @Override
+        protected long widthImpl() throws IOException {
+            return doubleIlm.width();
+        }
+
+        @Override
+        protected long heightImpl() throws IOException {
+            return doubleIlm.height();
         }
 
         @Override

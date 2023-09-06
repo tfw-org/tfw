@@ -2,30 +2,12 @@ package tfw.immutable.ilm;
 
 import tfw.check.Argument;
 
-public abstract class AbstractStridedIlm implements ImmutableLongMatrix {
-    private final long width;
-    private final long height;
+public final class AbstractStridedIlmCheck {
+    private AbstractStridedIlmCheck() {}
 
-    public AbstractStridedIlm(final long width, final long height) {
-        Argument.assertNotLessThan(width, 0, "width");
-        Argument.assertNotLessThan(height, 0, "height");
-
-        if (width == 0 && height != 0) throw new IllegalArgumentException("width == 0 && height != 0 not allowed!");
-        if (height == 0 && width != 0) throw new IllegalArgumentException("height == 0 && width != 0 not allowed!");
-
-        this.width = width;
-        this.height = height;
-    }
-
-    public final long width() {
-        return width;
-    }
-
-    public final long height() {
-        return height;
-    }
-
-    protected final void boundsCheck(
+    public static void boundsCheck(
+            long width,
+            long height,
             int arrayLength,
             int offset,
             int rowStride,

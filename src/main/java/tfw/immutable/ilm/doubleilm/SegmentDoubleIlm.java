@@ -7,7 +7,8 @@ public class SegmentDoubleIlm {
     private SegmentDoubleIlm() {}
 
     public static DoubleIlm create(
-            DoubleIlm doubleIlm, long startingRow, long startingColumn, long numberOfRows, long numberOfColumns) {
+            DoubleIlm doubleIlm, long startingRow, long startingColumn, long numberOfRows, long numberOfColumns)
+            throws IOException {
         Argument.assertNotNull(doubleIlm, "doubleIlm");
         Argument.assertNotLessThan(startingRow, 0, "startingRow");
         Argument.assertNotLessThan(startingColumn, 0, "startingColumn");
@@ -28,14 +29,26 @@ public class SegmentDoubleIlm {
         private final DoubleIlm doubleIlm;
         private final long startingRow;
         private final long startingColumn;
+        private final long numberOfRows;
+        private final long numberOfColumns;
 
         public MyDoubleIlm(
                 DoubleIlm doubleIlm, long startingRow, long startingColumn, long numberOfRows, long numberOfColumns) {
-            super(numberOfColumns, numberOfRows);
-
             this.doubleIlm = doubleIlm;
             this.startingRow = startingRow;
             this.startingColumn = startingColumn;
+            this.numberOfRows = numberOfRows;
+            this.numberOfColumns = numberOfColumns;
+        }
+
+        @Override
+        protected long widthImpl() {
+            return numberOfColumns;
+        }
+
+        @Override
+        protected long heightImpl() {
+            return numberOfRows;
         }
 
         @Override
