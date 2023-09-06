@@ -19,12 +19,21 @@ public final class StridedLongIlmFromLongIlm {
         private final long[] buffer;
 
         public MyStridedLongIlm(final LongIlm ilm, final long[] buffer) {
-            super(ilm.width(), ilm.height());
-
             this.ilm = ilm;
             this.buffer = buffer;
         }
 
+        @Override
+        public long widthImpl() throws IOException {
+            return ilm.width();
+        }
+
+        @Override
+        public long heightImpl() throws IOException {
+            return ilm.height();
+        }
+
+        @Override
         public final void toArrayImpl(
                 long[] array,
                 int offset,

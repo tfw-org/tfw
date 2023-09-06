@@ -19,12 +19,21 @@ public final class StridedFloatIlmFromFloatIlm {
         private final float[] buffer;
 
         public MyStridedFloatIlm(final FloatIlm ilm, final float[] buffer) {
-            super(ilm.width(), ilm.height());
-
             this.ilm = ilm;
             this.buffer = buffer;
         }
 
+        @Override
+        public long widthImpl() throws IOException {
+            return ilm.width();
+        }
+
+        @Override
+        public long heightImpl() throws IOException {
+            return ilm.height();
+        }
+
+        @Override
         public final void toArrayImpl(
                 float[] array,
                 int offset,

@@ -19,9 +19,17 @@ public class IntIlmFromCastDoubleIlm {
         private double[] buffer = new double[0];
 
         public MyIntIlm(DoubleIlm doubleIlm) {
-            super(doubleIlm.width(), doubleIlm.height());
-
             this.doubleIlm = doubleIlm;
+        }
+
+        @Override
+        protected long widthImpl() throws IOException {
+            return doubleIlm.width();
+        }
+
+        @Override
+        protected long heightImpl() throws IOException {
+            return doubleIlm.height();
         }
 
         @Override

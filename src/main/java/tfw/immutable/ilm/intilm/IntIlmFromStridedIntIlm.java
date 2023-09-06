@@ -16,9 +16,17 @@ public final class IntIlmFromStridedIntIlm {
         private final StridedIntIlm stridedIlm;
 
         public MyIntIlm(final StridedIntIlm stridedIlm) {
-            super(stridedIlm.width(), stridedIlm.height());
-
             this.stridedIlm = stridedIlm;
+        }
+
+        @Override
+        protected long widthImpl() throws IOException {
+            return stridedIlm.width();
+        }
+
+        @Override
+        protected long heightImpl() throws IOException {
+            return stridedIlm.height();
         }
 
         @Override

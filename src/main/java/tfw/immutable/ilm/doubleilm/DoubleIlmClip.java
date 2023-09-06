@@ -6,7 +6,7 @@ import tfw.check.Argument;
 public class DoubleIlmClip {
     private DoubleIlmClip() {}
 
-    public static DoubleIlm create(DoubleIlm doubleIlm, double min, double max) {
+    public static DoubleIlm create(DoubleIlm doubleIlm, double min, double max) throws IOException {
         Argument.assertNotNull(doubleIlm, "doubleIlm");
         Argument.assertLessThan(min, max, "min", "max");
 
@@ -19,13 +19,21 @@ public class DoubleIlmClip {
         private final double min;
         private final double max;
 
-        public MyDoubleIlm(DoubleIlm doubleIlm, double min, double max) {
-            super(doubleIlm.width(), doubleIlm.height());
-
+        public MyDoubleIlm(DoubleIlm doubleIlm, double min, double max) throws IOException {
             this.doubleIlm = doubleIlm;
             this.buffer = new double[(int) doubleIlm.width()];
             this.min = min;
             this.max = max;
+        }
+
+        @Override
+        protected long widthImpl() throws IOException {
+            return doubleIlm.width();
+        }
+
+        @Override
+        protected long heightImpl() throws IOException {
+            return doubleIlm.height();
         }
 
         @Override

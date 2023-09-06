@@ -17,13 +17,23 @@ public class TakeSkipDoubleIlm {
 
     private static class MyDoubleIlm extends AbstractDoubleIlm {
         private final DoubleIla doubleIla;
+        private final long take;
         private final long skip;
 
         public MyDoubleIlm(DoubleIla doubleIla, long take, long skip) {
-            super(take, (deleteMe(doubleIla) - take) / skip + 1);
-
             this.doubleIla = doubleIla;
+            this.take = take;
             this.skip = skip;
+        }
+
+        @Override
+        protected long widthImpl() throws IOException {
+            return take;
+        }
+
+        @Override
+        protected long heightImpl() throws IOException {
+            return (deleteMe(doubleIla) - take) / skip + 1;
         }
 
         @Override

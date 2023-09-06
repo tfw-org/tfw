@@ -16,9 +16,17 @@ public final class FloatIlmFromStridedFloatIlm {
         private final StridedFloatIlm stridedIlm;
 
         public MyFloatIlm(final StridedFloatIlm stridedIlm) {
-            super(stridedIlm.width(), stridedIlm.height());
-
             this.stridedIlm = stridedIlm;
+        }
+
+        @Override
+        protected long widthImpl() throws IOException {
+            return stridedIlm.width();
+        }
+
+        @Override
+        protected long heightImpl() throws IOException {
+            return stridedIlm.height();
         }
 
         @Override

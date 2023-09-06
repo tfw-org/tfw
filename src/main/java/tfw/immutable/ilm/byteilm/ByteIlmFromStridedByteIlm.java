@@ -16,9 +16,17 @@ public final class ByteIlmFromStridedByteIlm {
         private final StridedByteIlm stridedIlm;
 
         public MyByteIlm(final StridedByteIlm stridedIlm) {
-            super(stridedIlm.width(), stridedIlm.height());
-
             this.stridedIlm = stridedIlm;
+        }
+
+        @Override
+        protected long widthImpl() throws IOException {
+            return stridedIlm.width();
+        }
+
+        @Override
+        protected long heightImpl() throws IOException {
+            return stridedIlm.height();
         }
 
         @Override

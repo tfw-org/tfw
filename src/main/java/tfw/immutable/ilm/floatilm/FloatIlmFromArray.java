@@ -1,5 +1,6 @@
 package tfw.immutable.ilm.floatilm;
 
+import java.io.IOException;
 import tfw.check.Argument;
 
 public final class FloatIlmFromArray {
@@ -18,15 +19,27 @@ public final class FloatIlmFromArray {
 
     private static class MyFloatIlm extends AbstractFloatIlm {
         private final float[] array;
+        private final int ilmWidth;
 
-        MyFloatIlm(float[] array, int width) {
-            super(width, width == 0 ? 0 : array.length / width);
-
+        MyFloatIlm(float[] array, int ilmWidth) {
             this.array = array;
+            this.ilmWidth = ilmWidth;
         }
 
+        @Override
+        protected long widthImpl() {
+            return ilmWidth;
+        }
+
+        @Override
+        protected long heightImpl() {
+            return ilmWidth == 0 ? 0 : array.length / ilmWidth;
+        }
+
+        @Override
         protected void toArrayImpl(
-                final float[] array, int offset, long rowStart, long colStart, int rowCount, int colCount) {
+                final float[] array, int offset, long rowStart, long colStart, int rowCount, int colCount)
+                throws IOException {
             int intWidth = (int) width();
 
             for (int i = 0; i < rowCount; i++) {

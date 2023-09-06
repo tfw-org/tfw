@@ -19,12 +19,21 @@ public final class StridedBooleanIlmFromBooleanIlm {
         private final boolean[] buffer;
 
         public MyStridedBooleanIlm(final BooleanIlm ilm, final boolean[] buffer) {
-            super(ilm.width(), ilm.height());
-
             this.ilm = ilm;
             this.buffer = buffer;
         }
 
+        @Override
+        public long widthImpl() throws IOException {
+            return ilm.width();
+        }
+
+        @Override
+        public long heightImpl() throws IOException {
+            return ilm.height();
+        }
+
+        @Override
         public final void toArrayImpl(
                 boolean[] array,
                 int offset,

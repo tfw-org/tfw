@@ -1,5 +1,6 @@
 package tfw.immutable.ilm.booleanilm;
 
+import java.io.IOException;
 import tfw.check.Argument;
 
 public final class BooleanIlmFromArray {
@@ -18,15 +19,27 @@ public final class BooleanIlmFromArray {
 
     private static class MyBooleanIlm extends AbstractBooleanIlm {
         private final boolean[] array;
+        private final int ilmWidth;
 
-        MyBooleanIlm(boolean[] array, int width) {
-            super(width, width == 0 ? 0 : array.length / width);
-
+        MyBooleanIlm(boolean[] array, int ilmWidth) {
             this.array = array;
+            this.ilmWidth = ilmWidth;
         }
 
+        @Override
+        protected long widthImpl() {
+            return ilmWidth;
+        }
+
+        @Override
+        protected long heightImpl() {
+            return ilmWidth == 0 ? 0 : array.length / ilmWidth;
+        }
+
+        @Override
         protected void toArrayImpl(
-                final boolean[] array, int offset, long rowStart, long colStart, int rowCount, int colCount) {
+                final boolean[] array, int offset, long rowStart, long colStart, int rowCount, int colCount)
+                throws IOException {
             int intWidth = (int) width();
 
             for (int i = 0; i < rowCount; i++) {

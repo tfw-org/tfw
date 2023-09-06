@@ -27,16 +27,22 @@ public class ColumnScalingDoubleIlm {
         private final BigInteger inputElements;
 
         public MyDoubleIlm1(DoubleIlm doubleIlm, long outputElements, long inputElements) {
-            super(
-                    doubleIlm.width(),
-                    BigInteger.valueOf(doubleIlm.height())
-                            .multiply(BigInteger.valueOf(outputElements))
-                            .divide(BigInteger.valueOf(inputElements))
-                            .longValue());
-
             this.doubleIlm = doubleIlm;
             this.outputElements = BigInteger.valueOf(outputElements);
             this.inputElements = BigInteger.valueOf(inputElements);
+        }
+
+        @Override
+        protected long widthImpl() throws IOException {
+            return doubleIlm.width();
+        }
+
+        @Override
+        protected long heightImpl() throws IOException {
+            return BigInteger.valueOf(doubleIlm.height())
+                    .multiply(outputElements)
+                    .divide(inputElements)
+                    .longValue();
         }
 
         @Override
@@ -65,16 +71,22 @@ public class ColumnScalingDoubleIlm {
         private final long denominator;
 
         public MyDoubleIlm2(DoubleIlm doubleIlm, long numerator, long denominator) {
-            super(
-                    doubleIlm.width(),
-                    BigInteger.valueOf(doubleIlm.height())
-                            .multiply(BigInteger.valueOf(numerator))
-                            .divide(BigInteger.valueOf(denominator))
-                            .longValue());
-
             this.doubleIlm = doubleIlm;
             this.numerator = numerator;
             this.denominator = denominator;
+        }
+
+        @Override
+        protected long widthImpl() throws IOException {
+            return doubleIlm.width();
+        }
+
+        @Override
+        protected long heightImpl() throws IOException {
+            return BigInteger.valueOf(doubleIlm.height())
+                    .multiply(BigInteger.valueOf(numerator))
+                    .divide(BigInteger.valueOf(denominator))
+                    .longValue();
         }
 
         @Override

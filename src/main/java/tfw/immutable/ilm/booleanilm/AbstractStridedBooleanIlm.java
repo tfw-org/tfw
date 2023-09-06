@@ -1,9 +1,10 @@
 package tfw.immutable.ilm.booleanilm;
 
 import java.io.IOException;
-import tfw.immutable.ilm.AbstractStridedIlm;
+import tfw.immutable.ilm.AbstractIlm;
+import tfw.immutable.ilm.AbstractStridedIlmCheck;
 
-public abstract class AbstractStridedBooleanIlm extends AbstractStridedIlm implements StridedBooleanIlm {
+public abstract class AbstractStridedBooleanIlm extends AbstractIlm implements StridedBooleanIlm {
     protected abstract void toArrayImpl(
             boolean[] array,
             int offset,
@@ -15,9 +16,7 @@ public abstract class AbstractStridedBooleanIlm extends AbstractStridedIlm imple
             int colCount)
             throws IOException;
 
-    protected AbstractStridedBooleanIlm(final long width, final long height) {
-        super(width, height);
-    }
+    protected AbstractStridedBooleanIlm() {}
 
     @Override
     public final void toArray(
@@ -30,7 +29,8 @@ public abstract class AbstractStridedBooleanIlm extends AbstractStridedIlm imple
             int rowCount,
             int colCount)
             throws IOException {
-        boundsCheck(array.length, offset, rowStride, colStride, rowStart, colStart, rowCount, colCount);
+        AbstractStridedIlmCheck.boundsCheck(
+                width(), height(), array.length, offset, rowStride, colStride, rowStart, colStart, rowCount, colCount);
         toArrayImpl(array, offset, rowStride, colStride, rowStart, colStart, rowCount, colCount);
     }
 }

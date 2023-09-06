@@ -49,8 +49,14 @@ public class ByteInterleavedImagePanel extends JPanelBB {
 
         protected void commit() {
             ByteIlm byteIlm = (ByteIlm) get(byteIlmECD);
-            int width = (int) byteIlm.width();
-            int height = (int) byteIlm.height();
+            int width;
+            int height;
+            try {
+                width = (int) byteIlm.width();
+                height = (int) byteIlm.height();
+            } catch (IOException e) {
+                return;
+            }
             ColorModel colorModel = (ColorModel) get(colorModelECD);
             //			ByteIla byteIla = ByteIlaFromByteIlm.create(byteIlm);
             ByteIla byteIla = null;

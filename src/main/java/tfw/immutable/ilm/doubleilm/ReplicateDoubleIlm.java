@@ -16,11 +16,21 @@ public class ReplicateDoubleIlm {
 
     private static class MyDoubleIlm extends AbstractDoubleIlm {
         private final DoubleIla doubleIla;
+        private final long repetitions;
 
         public MyDoubleIlm(DoubleIla doubleIla, long repetitions) {
-            super(deleteMe(doubleIla), repetitions);
-
             this.doubleIla = doubleIla;
+            this.repetitions = repetitions;
+        }
+
+        @Override
+        protected long widthImpl() throws IOException {
+            return doubleIla.length();
+        }
+
+        @Override
+        protected long heightImpl() throws IOException {
+            return repetitions;
         }
 
         @Override
@@ -30,14 +40,6 @@ public class ReplicateDoubleIlm {
 
             for (int i = 0; i < rowCount; i++) {
                 System.arraycopy(array, offset, array, offset + (colCount * i), colCount);
-            }
-        }
-
-        private static long deleteMe(final DoubleIla doubleIla) {
-            try {
-                return doubleIla.length();
-            } catch (IOException e) {
-                return 0;
             }
         }
     }

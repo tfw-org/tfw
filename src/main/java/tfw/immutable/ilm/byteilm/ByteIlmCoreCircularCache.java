@@ -6,7 +6,7 @@ import tfw.check.Argument;
 public class ByteIlmCoreCircularCache {
     private ByteIlmCoreCircularCache() {}
 
-    public static ByteIlm create(ByteIlm byteIlm, int numRows, ByteIlm byteIlmCoreCircularCache) {
+    public static ByteIlm create(ByteIlm byteIlm, int numRows, ByteIlm byteIlmCoreCircularCache) throws IOException {
         Argument.assertNotNull(byteIlm, "byteIlm");
         Argument.assertGreaterThan(numRows, 0, "numRows");
 
@@ -14,10 +14,11 @@ public class ByteIlmCoreCircularCache {
     }
 
     private static class MyByteIlm extends AbstractByteIlm {
+        private final ByteIlm byteIlm;
         private final Core core;
 
-        MyByteIlm(ByteIlm byteIlm, int numRows, ByteIlm byteIlmCoreCircularCache) {
-            super(byteIlm.width(), byteIlm.height());
+        MyByteIlm(ByteIlm byteIlm, int numRows, ByteIlm byteIlmCoreCircularCache) throws IOException {
+            this.byteIlm = byteIlm;
 
             if (byteIlmCoreCircularCache instanceof MyByteIlm) {
                 core = ((MyByteIlm) byteIlmCoreCircularCache).core;
@@ -25,6 +26,16 @@ public class ByteIlmCoreCircularCache {
             } else {
                 core = new Core(byteIlm, numRows);
             }
+        }
+
+        @Override
+        protected long widthImpl() throws IOException {
+            return byteIlm.width();
+        }
+
+        @Override
+        protected long heightImpl() throws IOException {
+            return byteIlm.height();
         }
 
         @Override
@@ -43,7 +54,7 @@ public class ByteIlmCoreCircularCache {
         private long cacheEnd = 0;
         private final int maxRows;
 
-        public Core(ByteIlm byteIlm, int numRows) {
+        public Core(ByteIlm byteIlm, int numRows) throws IOException {
             this.byteIlm = byteIlm;
             this.maxRows = numRows;
 

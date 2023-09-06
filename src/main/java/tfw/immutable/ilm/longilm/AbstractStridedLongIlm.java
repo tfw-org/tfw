@@ -1,9 +1,10 @@
 package tfw.immutable.ilm.longilm;
 
 import java.io.IOException;
-import tfw.immutable.ilm.AbstractStridedIlm;
+import tfw.immutable.ilm.AbstractIlm;
+import tfw.immutable.ilm.AbstractStridedIlmCheck;
 
-public abstract class AbstractStridedLongIlm extends AbstractStridedIlm implements StridedLongIlm {
+public abstract class AbstractStridedLongIlm extends AbstractIlm implements StridedLongIlm {
     protected abstract void toArrayImpl(
             long[] array,
             int offset,
@@ -15,9 +16,7 @@ public abstract class AbstractStridedLongIlm extends AbstractStridedIlm implemen
             int colCount)
             throws IOException;
 
-    protected AbstractStridedLongIlm(final long width, final long height) {
-        super(width, height);
-    }
+    protected AbstractStridedLongIlm() {}
 
     @Override
     public final void toArray(
@@ -30,7 +29,8 @@ public abstract class AbstractStridedLongIlm extends AbstractStridedIlm implemen
             int rowCount,
             int colCount)
             throws IOException {
-        boundsCheck(array.length, offset, rowStride, colStride, rowStart, colStart, rowCount, colCount);
+        AbstractStridedIlmCheck.boundsCheck(
+                width(), height(), array.length, offset, rowStride, colStride, rowStart, colStart, rowCount, colCount);
         toArrayImpl(array, offset, rowStride, colStride, rowStart, colStart, rowCount, colCount);
     }
 }

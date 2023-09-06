@@ -19,12 +19,21 @@ public final class StridedCharIlmFromCharIlm {
         private final char[] buffer;
 
         public MyStridedCharIlm(final CharIlm ilm, final char[] buffer) {
-            super(ilm.width(), ilm.height());
-
             this.ilm = ilm;
             this.buffer = buffer;
         }
 
+        @Override
+        public long widthImpl() throws IOException {
+            return ilm.width();
+        }
+
+        @Override
+        public long heightImpl() throws IOException {
+            return ilm.height();
+        }
+
+        @Override
         public final void toArrayImpl(
                 char[] array,
                 int offset,

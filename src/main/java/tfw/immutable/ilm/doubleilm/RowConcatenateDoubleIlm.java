@@ -6,7 +6,7 @@ import tfw.check.Argument;
 public class RowConcatenateDoubleIlm {
     private RowConcatenateDoubleIlm() {}
 
-    public static DoubleIlm create(DoubleIlm leftIlm, DoubleIlm rightIlm) {
+    public static DoubleIlm create(DoubleIlm leftIlm, DoubleIlm rightIlm) throws IOException {
         Argument.assertNotNull(leftIlm, "leftIlm");
         Argument.assertNotNull(rightIlm, "rightIlm");
         Argument.assertEquals(leftIlm.height(), rightIlm.height(), "leftIlm.height()", "rightIlm.height()");
@@ -19,10 +19,18 @@ public class RowConcatenateDoubleIlm {
         private final StridedDoubleIlm stridedRightIlm;
 
         public MyDoubleIlm(DoubleIlm leftIlm, DoubleIlm rightIlm) {
-            super(leftIlm.width() + rightIlm.width(), leftIlm.height());
-
             this.stridedLeftIlm = StridedDoubleIlmFromDoubleIlm.create(leftIlm, new double[0]);
             this.stridedRightIlm = StridedDoubleIlmFromDoubleIlm.create(rightIlm, new double[0]);
+        }
+
+        @Override
+        protected long widthImpl() throws IOException {
+            return stridedLeftIlm.width() + stridedRightIlm.width();
+        }
+
+        @Override
+        protected long heightImpl() throws IOException {
+            return stridedLeftIlm.height();
         }
 
         @Override
