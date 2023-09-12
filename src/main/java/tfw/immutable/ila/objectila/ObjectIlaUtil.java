@@ -16,11 +16,11 @@ public final class ObjectIlaUtil {
 
         if (array.length < intObjectIlaLength) {
             T[] copy = Arrays.copyOf(array, length);
-            objectIla.toArray(copy, 0, ilaStart, length);
+            objectIla.get(copy, 0, ilaStart, length);
 
             return copy;
         } else {
-            objectIla.toArray(array, 0, ilaStart, length);
+            objectIla.get(array, 0, ilaStart, length);
             if (array.length > intObjectIlaLength) {
                 array[intObjectIlaLength] = null;
             }

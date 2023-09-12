@@ -76,7 +76,7 @@ package %%PACKAGE%%;
             for (int length = 1; length <= ilaLength; ++length) {
                 for (long start = 0; start < ilaLength - length + 1; ++start) {
                     final %%TYPE%%[] two = %%NAME%%IlaUtil.toArray(ila, start, length);
-                    ila.toArray(four, 0, start, length);
+                    ila.get(four, 0, start, length);
                     for (int ii = 0; ii < length; ++ii) {
                         if (!(four[ii]%%IS_EQUALS_START%%two[ii]%%IS_EQUALS_END%%))
                             throw new Exception("four[" + ii + "] ("

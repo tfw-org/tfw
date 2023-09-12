@@ -26,7 +26,7 @@ public final class FloatIlaFromArray {
         }
 
         @Override
-        protected void toArrayImpl(float[] array, int offset, long start, int length) {
+        protected void getImpl(float[] array, int offset, long start, int length) {
             System.arraycopy(this.array, (int) start, array, offset, length);
         }
     }

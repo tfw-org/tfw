@@ -88,7 +88,7 @@ class MultiplexerTest {
         queue.waitTilEmpty();
 
         final Object[] multiValueArray0 = new Object[(int) mvCommit.value.length()];
-        mvCommit.value.toArray(multiValueArray0, 0, 0, multiValueArray0.length);
+        mvCommit.value.get(multiValueArray0, 0, 0, multiValueArray0.length);
 
         assertEquals("0", valueCommit0.value, "value 0 not correct");
         assertEquals("one", valueCommit1.value, "value 1 not correct");
@@ -108,7 +108,7 @@ class MultiplexerTest {
         queue.waitTilEmpty();
 
         final Object[] multiValueArray1 = new Object[(int) mvCommit.value.length()];
-        mvCommit.value.toArray(multiValueArray1, 0, 0, multiValueArray1.length);
+        mvCommit.value.get(multiValueArray1, 0, 0, multiValueArray1.length);
 
         assertEquals("tc0", valueCommit0.value, "value 0 not correct");
         assertEquals("tc1", valueCommit1.value, "value 1 not correct");
@@ -130,7 +130,7 @@ class MultiplexerTest {
         queue.waitTilEmpty();
 
         final Object[] multiValueArray2 = new Object[(int) mvCommit.value.length()];
-        mvCommit.value.toArray(multiValueArray2, 0, 0, multiValueArray2.length);
+        mvCommit.value.get(multiValueArray2, 0, 0, multiValueArray2.length);
 
         assertEquals(tc0Value, multiValueArray2[0], "multiValue[0] not correct");
         assertEquals(tc1Value, multiValueArray2[1], "multiValue[1] not correct");
@@ -145,8 +145,8 @@ class MultiplexerTest {
 
         final Object[] multiValueArray3 = new Object[(int) mvCommit.value.length()];
         final Object[] objArray3 = new Object[(int) obj.length()];
-        mvCommit.value.toArray(multiValueArray3, 0, 0, multiValueArray3.length);
-        obj.toArray(objArray3, 0, 0, objArray3.length);
+        mvCommit.value.get(multiValueArray3, 0, 0, multiValueArray3.length);
+        obj.get(objArray3, 0, 0, objArray3.length);
 
         assertEquals(objArray3[0], multiValueArray3[0], "multiValue[0] not correct");
         assertEquals(objArray3[1], multiValueArray3[1], "multiValue[1] not correct");
@@ -155,7 +155,7 @@ class MultiplexerTest {
         queue.waitTilEmpty();
 
         final Object[] objArray4 = new Object[(int) obj.length()];
-        obj.toArray(objArray4, 0, 0, objArray4.length);
+        obj.get(objArray4, 0, 0, objArray4.length);
 
         assertEquals(objArray4[0], valueCommit0.value, "value 0 not correct");
         assertEquals(objArray4[1], valueCommit1.value, "value 1 not correct");
@@ -303,7 +303,7 @@ class MultiplexerTest {
         Object[][] mmArray = new Object[2][];
 
         Object[] mma = new Object[(int) objs.length()];
-        objs.toArray(mma, 0, 0, mma.length);
+        objs.get(mma, 0, 0, mma.length);
 
         final ObjectIla<Object> mma0Ila = (ObjectIla<Object>) mma[0];
         final ObjectIla<Object> mma1Ila = (ObjectIla<Object>) mma[1];
@@ -311,8 +311,8 @@ class MultiplexerTest {
         mmArray[0] = new Object[(int) mma0Ila.length()];
         mmArray[1] = new Object[(int) mma1Ila.length()];
 
-        mma0Ila.toArray(mmArray[0], 0, 0, mmArray[0].length);
-        mma1Ila.toArray(mmArray[1], 0, 0, mmArray[1].length);
+        mma0Ila.get(mmArray[0], 0, 0, mmArray[0].length);
+        mma1Ila.get(mmArray[1], 0, 0, mmArray[1].length);
 
         return mmArray;
     }

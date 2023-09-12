@@ -30,10 +30,10 @@ public final class LongIlaReverse {
         }
 
         @Override
-        protected void toArrayImpl(long[] array, int offset, long start, int length) throws IOException {
+        protected void getImpl(long[] array, int offset, long start, int length) throws IOException {
             final StridedLongIla stridedLongIla = new StridedLongIla(ila, buffer.clone());
 
-            stridedLongIla.toArray(array, offset + (length - 1), -1, length() - (start + length), length);
+            stridedLongIla.get(array, offset + (length - 1), -1, length() - (start + length), length);
         }
     }
 }

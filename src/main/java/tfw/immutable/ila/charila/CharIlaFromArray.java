@@ -26,7 +26,7 @@ public final class CharIlaFromArray {
         }
 
         @Override
-        protected void toArrayImpl(char[] array, int offset, long start, int length) {
+        protected void getImpl(char[] array, int offset, long start, int length) {
             System.arraycopy(this.array, (int) start, array, offset, length);
         }
     }

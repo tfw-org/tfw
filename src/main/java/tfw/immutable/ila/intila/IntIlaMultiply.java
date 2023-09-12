@@ -34,7 +34,7 @@ public final class IntIlaMultiply {
         }
 
         @Override
-        protected void toArrayImpl(int[] array, int offset, long ilaStart, int length) throws IOException {
+        protected void getImpl(int[] array, int offset, long ilaStart, int length) throws IOException {
             IntIlaIterator li =
                     new IntIlaIterator(IntIlaSegment.create(leftIla, ilaStart, length), new int[bufferSize]);
             IntIlaIterator ri =

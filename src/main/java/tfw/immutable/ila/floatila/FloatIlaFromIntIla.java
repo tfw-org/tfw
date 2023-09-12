@@ -31,7 +31,7 @@ public final class FloatIlaFromIntIla {
         }
 
         @Override
-        protected void toArrayImpl(float[] array, int offset, long start, int length) throws IOException {
+        protected void getImpl(float[] array, int offset, long start, int length) throws IOException {
             IntIlaIterator iii = new IntIlaIterator(IntIlaSegment.create(intIla, start, length), new int[bufferSize]);
 
             for (int i = 0; i < length; i++) {

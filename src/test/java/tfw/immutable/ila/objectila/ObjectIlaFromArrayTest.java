@@ -45,7 +45,7 @@ class ObjectIlaFromArrayTest {
                             for (int ii = (int) start, index = offset; ii < start + length; ++ii, index += stride) {
                                 arrayBase[index] = creation[ii];
                             }
-                            stridedIla.toArray(ilaBase, offset, stride, start, length);
+                            stridedIla.get(ilaBase, offset, stride, start, length);
                             for (int ii = 0; ii < arrayBase.length; ++ii) {
                                 if (arrayBase[ii] != ilaBase[ii])
                                     throw new Exception("actual[" + ii + "] ("

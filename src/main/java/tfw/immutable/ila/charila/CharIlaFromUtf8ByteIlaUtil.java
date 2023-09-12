@@ -89,7 +89,7 @@ public final class CharIlaFromUtf8ByteIlaUtil {
             final long remainingBytes = utf8ByteIlaLength - byteIndex;
             final int bytesToGet = (int) (byteBuffer.length <= remainingBytes ? byteBuffer.length : remainingBytes);
 
-            utf8ByteIla.toArray(byteBuffer, 0, byteIndex, bytesToGet);
+            utf8ByteIla.get(byteBuffer, 0, byteIndex, bytesToGet);
 
             for (int byteBufferIndex = 0; byteBufferIndex < bytesToGet; byteBufferIndex++, byteIndex++) {
                 final byte b = byteBuffer[byteBufferIndex];
@@ -156,7 +156,7 @@ public final class CharIlaFromUtf8ByteIlaUtil {
             final long remainingBytes = utf8ByteIlaLength - byteIndex;
             final int bytesToGet = (int) (byteBuffer.length <= remainingBytes ? byteBuffer.length : remainingBytes);
 
-            utf8ByteIla.toArray(byteBuffer, 0, byteIndex, bytesToGet);
+            utf8ByteIla.get(byteBuffer, 0, byteIndex, bytesToGet);
 
             for (int byteBufferIndex = 0; byteBufferIndex < bytesToGet; byteBufferIndex++, byteIndex++) {
                 final byte b = byteBuffer[byteBufferIndex];

@@ -28,7 +28,7 @@ public final class ObjectIlaFill {
         }
 
         @Override
-        protected void toArrayImpl(T[] array, int offset, long start, int length) {
+        protected void getImpl(T[] array, int offset, long start, int length) {
             final int startPlusLength = (int) (start + length);
             for (int startInt = (int) start; startInt != startPlusLength; ++startInt, offset++) {
                 array[offset] = value;

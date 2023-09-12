@@ -34,7 +34,7 @@ public final class FloatIlaMultiply {
         }
 
         @Override
-        protected void toArrayImpl(float[] array, int offset, long ilaStart, int length) throws IOException {
+        protected void getImpl(float[] array, int offset, long ilaStart, int length) throws IOException {
             FloatIlaIterator li =
                     new FloatIlaIterator(FloatIlaSegment.create(leftIla, ilaStart, length), new float[bufferSize]);
             FloatIlaIterator ri =

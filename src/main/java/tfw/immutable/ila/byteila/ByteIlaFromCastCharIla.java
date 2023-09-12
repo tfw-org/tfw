@@ -33,7 +33,7 @@ public final class ByteIlaFromCastCharIla {
         }
 
         @Override
-        protected void toArrayImpl(byte[] array, int offset, long start, int length) throws IOException {
+        protected void getImpl(byte[] array, int offset, long start, int length) throws IOException {
             CharIlaIterator fi =
                     new CharIlaIterator(CharIlaSegment.create(charIla, start, length), new char[bufferSize]);
 

@@ -36,7 +36,7 @@ public class ReplicateDoubleIlm {
         @Override
         protected void toArrayImpl(double[] array, int offset, long rowStart, long colStart, int rowCount, int colCount)
                 throws IOException {
-            doubleIla.toArray(array, offset, colStart, colCount);
+            doubleIla.get(array, offset, colStart, colCount);
 
             for (int i = 0; i < rowCount; i++) {
                 System.arraycopy(array, offset, array, offset + (colCount * i), colCount);

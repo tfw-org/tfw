@@ -46,7 +46,7 @@ public final class DoubleIlaFiltered {
         }
 
         @Override
-        public void toArrayImpl(double[] array, int offset, long start, int length) throws IOException {
+        public void getImpl(double[] array, int offset, long start, int length) throws IOException {
             DoubleIlaIterator oii = new DoubleIlaIterator(DoubleIlaSegment.create(ila, start), buffer.clone());
 
             // left off here

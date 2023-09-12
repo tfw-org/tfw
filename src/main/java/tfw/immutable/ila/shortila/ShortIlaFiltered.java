@@ -46,7 +46,7 @@ public final class ShortIlaFiltered {
         }
 
         @Override
-        public void toArrayImpl(short[] array, int offset, long start, int length) throws IOException {
+        public void getImpl(short[] array, int offset, long start, int length) throws IOException {
             ShortIlaIterator oii = new ShortIlaIterator(ShortIlaSegment.create(ila, start), buffer.clone());
 
             // left off here

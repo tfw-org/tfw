@@ -46,7 +46,7 @@ public final class CharIlaFiltered {
         }
 
         @Override
-        public void toArrayImpl(char[] array, int offset, long start, int length) throws IOException {
+        public void getImpl(char[] array, int offset, long start, int length) throws IOException {
             CharIlaIterator oii = new CharIlaIterator(CharIlaSegment.create(ila, start), buffer.clone());
 
             // left off here

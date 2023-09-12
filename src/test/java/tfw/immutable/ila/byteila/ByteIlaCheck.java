@@ -38,8 +38,8 @@ public final class ByteIlaCheck {
                     for (int ii = 0; ii < four.length; ++ii) {
                         five[ii] = four[ii] = (byte) random.nextInt();
                     }
-                    ila.toArray(four, offset, start, length);
-                    stridedByteIla.toArray(five, offset, 1, start, length);
+                    ila.get(four, offset, start, length);
+                    stridedByteIla.get(five, offset, 1, start, length);
                     for (int ii = 0; ii < length; ++ii) {
                         byte delta = (byte) (four[ii] - five[ii]);
                         if (!(neps <= delta && delta <= eps))
@@ -86,8 +86,8 @@ public final class ByteIlaCheck {
                             for (int ii = 0; ii < targetBase.length; ++ii) {
                                 targetBase[ii] = actualBase[ii] = (byte) random.nextInt();
                             }
-                            stridedTarget.toArray(targetBase, offset, stride, start, length);
-                            stridedActual.toArray(actualBase, offset, stride, start, length);
+                            stridedTarget.get(targetBase, offset, stride, start, length);
+                            stridedActual.get(actualBase, offset, stride, start, length);
                             for (int ii = 0; ii < arraySize; ++ii) {
                                 byte delta = (byte) (actualBase[ii] - targetBase[ii]);
                                 if (!(neps <= delta && delta <= eps))

@@ -46,7 +46,7 @@ public final class BooleanIlaFiltered {
         }
 
         @Override
-        public void toArrayImpl(boolean[] array, int offset, long start, int length) throws IOException {
+        public void getImpl(boolean[] array, int offset, long start, int length) throws IOException {
             BooleanIlaIterator oii = new BooleanIlaIterator(BooleanIlaSegment.create(ila, start), buffer.clone());
 
             // left off here

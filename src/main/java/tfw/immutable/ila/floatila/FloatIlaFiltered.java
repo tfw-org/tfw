@@ -46,7 +46,7 @@ public final class FloatIlaFiltered {
         }
 
         @Override
-        public void toArrayImpl(float[] array, int offset, long start, int length) throws IOException {
+        public void getImpl(float[] array, int offset, long start, int length) throws IOException {
             FloatIlaIterator oii = new FloatIlaIterator(FloatIlaSegment.create(ila, start), buffer.clone());
 
             // left off here

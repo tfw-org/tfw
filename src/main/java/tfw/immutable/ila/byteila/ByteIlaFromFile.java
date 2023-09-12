@@ -38,7 +38,7 @@ public final class ByteIlaFromFile {
         }
 
         @Override
-        protected void toArrayImpl(byte[] array, int offset, long start, int length) throws IOException {
+        protected void getImpl(byte[] array, int offset, long start, int length) throws IOException {
             if (raf == null) {
                 try {
                     raf = new RandomAccessFile(file, "r");

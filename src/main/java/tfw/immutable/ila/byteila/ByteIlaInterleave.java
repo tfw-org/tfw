@@ -42,7 +42,7 @@ public final class ByteIlaInterleave {
         }
 
         @Override
-        protected void toArrayImpl(byte[] array, int offset, long start, int length) throws IOException {
+        protected void getImpl(byte[] array, int offset, long start, int length) throws IOException {
             int currentIla = (int) (start % ilasLength);
             long ilaStart = start / ilasLength;
             final int ilaStride = ilasLength;
@@ -59,7 +59,7 @@ public final class ByteIlaInterleave {
                     --ilaLength;
                 }
                 if (ilaLength > 0) {
-                    stridedByteIlas[currentIla].toArray(array, offset, ilaStride, ilaStart, ilaLength);
+                    stridedByteIlas[currentIla].get(array, offset, ilaStride, ilaStart, ilaLength);
                 }
                 offset++;
                 ++currentIla;

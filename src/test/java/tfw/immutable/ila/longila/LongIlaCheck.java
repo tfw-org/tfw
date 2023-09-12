@@ -38,8 +38,8 @@ public final class LongIlaCheck {
                     for (int ii = 0; ii < four.length; ++ii) {
                         five[ii] = four[ii] = random.nextLong();
                     }
-                    ila.toArray(four, offset, start, length);
-                    stridedLongIla.toArray(five, offset, 1, start, length);
+                    ila.get(four, offset, start, length);
+                    stridedLongIla.get(five, offset, 1, start, length);
                     for (int ii = 0; ii < length; ++ii) {
                         long delta = (four[ii] - five[ii]);
                         if (!(neps <= delta && delta <= eps))
@@ -86,8 +86,8 @@ public final class LongIlaCheck {
                             for (int ii = 0; ii < targetBase.length; ++ii) {
                                 targetBase[ii] = actualBase[ii] = random.nextLong();
                             }
-                            stridedTarget.toArray(targetBase, offset, stride, start, length);
-                            stridedActual.toArray(actualBase, offset, stride, start, length);
+                            stridedTarget.get(targetBase, offset, stride, start, length);
+                            stridedActual.get(actualBase, offset, stride, start, length);
                             for (int ii = 0; ii < arraySize; ++ii) {
                                 long delta = (actualBase[ii] - targetBase[ii]);
                                 if (!(neps <= delta && delta <= eps))

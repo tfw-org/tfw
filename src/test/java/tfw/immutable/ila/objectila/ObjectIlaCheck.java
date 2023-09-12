@@ -36,8 +36,8 @@ public final class ObjectIlaCheck {
                         for (int ii = 0; ii < four.length; ++ii) {
                             five[ii] = four[ii] = new Object();
                         }
-                        ila.toArray(four, offset, start, length);
-                        stridedObjectIla.toArray(five, offset, 1, start, length);
+                        ila.get(four, offset, start, length);
+                        stridedObjectIla.get(five, offset, 1, start, length);
                         for (int ii = 0; ii < length; ++ii) {
                             if (!(four[ii].equals(five[ii])))
                                 throw new Exception("four[" + ii + "] ("
@@ -84,8 +84,8 @@ public final class ObjectIlaCheck {
                                 for (int ii = 0; ii < targetBase.length; ++ii) {
                                     targetBase[ii] = actualBase[ii] = new Object();
                                 }
-                                stridedTarget.toArray(targetBase, offset, stride, start, length);
-                                stridedActual.toArray(actualBase, offset, stride, start, length);
+                                stridedTarget.get(targetBase, offset, stride, start, length);
+                                stridedActual.get(actualBase, offset, stride, start, length);
                                 for (int ii = 0; ii < arraySize; ++ii) {
                                     if (!(actualBase[ii].equals(targetBase[ii])))
                                         throw new Exception("actual[" + ii

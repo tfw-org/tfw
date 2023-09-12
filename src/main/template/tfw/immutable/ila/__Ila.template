@@ -5,5 +5,5 @@ import java.io.IOException;
 import tfw.immutable.ila.ImmutableLongArray;
 
 public interface %%NAME%%Ila%%TEMPLATE%% extends ImmutableLongArray {
-    void toArray(final %%TYPE_OR_TEMPLATE%%[] array, final int arrayOffset, final long ilaStart, int length) throws IOException;
+    void get(final %%TYPE_OR_TEMPLATE%%[] array, final int arrayOffset, final long ilaStart, int length) throws IOException;
 }

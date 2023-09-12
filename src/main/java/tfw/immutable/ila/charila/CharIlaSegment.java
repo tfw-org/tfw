@@ -38,8 +38,8 @@ public final class CharIlaSegment {
         }
 
         @Override
-        protected void toArrayImpl(char[] array, int offset, long start, int length) throws IOException {
-            ila.toArray(array, offset, this.start + start, length);
+        protected void getImpl(char[] array, int offset, long start, int length) throws IOException {
+            ila.get(array, offset, this.start + start, length);
         }
     }
 }

@@ -34,7 +34,7 @@ public final class BooleanIlaDecimate {
         }
 
         @Override
-        protected void toArrayImpl(boolean[] array, int offset, long start, int length) throws IOException {
+        protected void getImpl(boolean[] array, int offset, long start, int length) throws IOException {
             final long segmentStart = start * factor;
             final long segmentLength = StrictMath.min(ila.length() - segmentStart, length * factor - 1);
             final BooleanIla segment = BooleanIlaSegment.create(ila, segmentStart, segmentLength);

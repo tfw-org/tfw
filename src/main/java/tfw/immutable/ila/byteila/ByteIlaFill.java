@@ -28,7 +28,7 @@ public final class ByteIlaFill {
         }
 
         @Override
-        protected void toArrayImpl(byte[] array, int offset, long start, int length) {
+        protected void getImpl(byte[] array, int offset, long start, int length) {
             final int startPlusLength = (int) (start + length);
             for (int startInt = (int) start; startInt != startPlusLength; ++startInt, offset++) {
                 array[offset] = value;

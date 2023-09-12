@@ -42,7 +42,7 @@ public final class LongIlaInterleave {
         }
 
         @Override
-        protected void toArrayImpl(long[] array, int offset, long start, int length) throws IOException {
+        protected void getImpl(long[] array, int offset, long start, int length) throws IOException {
             int currentIla = (int) (start % ilasLength);
             long ilaStart = start / ilasLength;
             final int ilaStride = ilasLength;
@@ -59,7 +59,7 @@ public final class LongIlaInterleave {
                     --ilaLength;
                 }
                 if (ilaLength > 0) {
-                    stridedLongIlas[currentIla].toArray(array, offset, ilaStride, ilaStart, ilaLength);
+                    stridedLongIlas[currentIla].get(array, offset, ilaStride, ilaStart, ilaLength);
                 }
                 offset++;
                 ++currentIla;

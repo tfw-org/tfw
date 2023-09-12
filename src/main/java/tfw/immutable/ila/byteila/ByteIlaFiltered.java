@@ -46,7 +46,7 @@ public final class ByteIlaFiltered {
         }
 
         @Override
-        public void toArrayImpl(byte[] array, int offset, long start, int length) throws IOException {
+        public void getImpl(byte[] array, int offset, long start, int length) throws IOException {
             ByteIlaIterator oii = new ByteIlaIterator(ByteIlaSegment.create(ila, start), buffer.clone());
 
             // left off here

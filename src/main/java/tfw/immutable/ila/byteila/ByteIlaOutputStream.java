@@ -38,7 +38,7 @@ public class ByteIlaOutputStream extends OutputStream {
         byte[] b = new byte[bytesToWrite];
 
         for (long i = 0; bytesToWrite > 0; ) {
-            byteIla.toArray(b, 0, i, bytesToWrite);
+            byteIla.get(b, 0, i, bytesToWrite);
             write(b, 0, bytesToWrite);
             i += bytesToWrite;
 

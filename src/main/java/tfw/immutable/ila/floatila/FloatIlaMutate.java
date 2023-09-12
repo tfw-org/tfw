@@ -33,19 +33,19 @@ public final class FloatIlaMutate {
         }
 
         @Override
-        protected void toArrayImpl(float[] array, int offset, long start, int length) throws IOException {
+        protected void getImpl(float[] array, int offset, long start, int length) throws IOException {
             final long startPlusLength = start + length;
 
             if (index < start || index >= startPlusLength) {
-                ila.toArray(array, offset, start, length);
+                ila.get(array, offset, start, length);
             } else {
                 final int indexMinusStart = (int) (index - start);
                 if (index > start) {
-                    ila.toArray(array, offset, start, indexMinusStart);
+                    ila.get(array, offset, start, indexMinusStart);
                 }
                 array[offset + indexMinusStart] = value;
                 if (index <= startPlusLength) {
-                    ila.toArray(array, offset + (indexMinusStart + 1), index + 1, length - indexMinusStart - 1);
+                    ila.get(array, offset + (indexMinusStart + 1), index + 1, length - indexMinusStart - 1);
                 }
             }
         }

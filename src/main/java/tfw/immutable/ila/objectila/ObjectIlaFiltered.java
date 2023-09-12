@@ -46,7 +46,7 @@ public final class ObjectIlaFiltered<T> {
         }
 
         @Override
-        public void toArrayImpl(T[] array, int offset, long start, int length) throws IOException {
+        public void getImpl(T[] array, int offset, long start, int length) throws IOException {
             ObjectIlaIterator<T> oii = new ObjectIlaIterator<>(ObjectIlaSegment.create(ila, start), buffer.clone());
 
             // left off here

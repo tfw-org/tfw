@@ -34,7 +34,7 @@ public final class %%NAME%%IlaFromCastLongIla {
         }
 
         @Override
-        protected void toArrayImpl(%%TYPE%%[] array, int offset, long start, int length) throws IOException {
+        protected void getImpl(%%TYPE%%[] array, int offset, long start, int length) throws IOException {
             LongIlaIterator fi =
                     new LongIlaIterator(LongIlaSegment.create(longIla, start, length), new long[bufferSize]);
 

@@ -33,7 +33,7 @@ class CharIlaFromUtf8ByteIlaTest {
         final int charIlaLength = (int) charIlaFromUtf8ByteIla.length();
         final char[] charactersFromCharIla = new char[charIlaLength];
 
-        charIlaFromUtf8ByteIla.toArray(charactersFromCharIla, 0, 0, charIlaLength);
+        charIlaFromUtf8ByteIla.get(charactersFromCharIla, 0, 0, charIlaLength);
 
         // Compare the two arrays.
         assertTrue(Arrays.equals(charactersFromString, charactersFromCharIla));

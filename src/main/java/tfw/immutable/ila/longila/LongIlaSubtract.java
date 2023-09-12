@@ -34,7 +34,7 @@ public final class LongIlaSubtract {
         }
 
         @Override
-        protected void toArrayImpl(long[] array, int offset, long ilaStart, int length) throws IOException {
+        protected void getImpl(long[] array, int offset, long ilaStart, int length) throws IOException {
             LongIlaIterator li =
                     new LongIlaIterator(LongIlaSegment.create(leftIla, ilaStart, length), new long[bufferSize]);
             LongIlaIterator ri =

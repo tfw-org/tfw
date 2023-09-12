@@ -40,7 +40,7 @@ public class TakeSkipDoubleIlm {
         protected void toArrayImpl(double[] array, int offset, long rowStart, long colStart, int rowCount, int colCount)
                 throws IOException {
             for (int i = 0; i < rowCount; i++) {
-                doubleIla.toArray(array, offset + i * colCount, (rowStart + i) * skip + colStart, colCount);
+                doubleIla.get(array, offset + i * colCount, (rowStart + i) * skip + colStart, colCount);
             }
         }
 

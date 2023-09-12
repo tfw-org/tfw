@@ -12,7 +12,7 @@ public final class FloatIlaUtil {
     public static float[] toArray(final FloatIla floatIla, final long ilaStart, int length) throws IOException {
         float[] result = new float[length];
 
-        floatIla.toArray(result, 0, ilaStart, length);
+        floatIla.get(result, 0, ilaStart, length);
 
         return result;
     }

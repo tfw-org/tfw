@@ -33,21 +33,21 @@ public final class IntIlaInsert {
         }
 
         @Override
-        protected void toArrayImpl(int[] array, int offset, long start, int length) throws IOException {
+        protected void getImpl(int[] array, int offset, long start, int length) throws IOException {
             final long startPlusLength = start + length;
 
             if (index < start) {
-                ila.toArray(array, offset, start - 1, length);
+                ila.get(array, offset, start - 1, length);
             } else if (index >= startPlusLength) {
-                ila.toArray(array, offset, start, length);
+                ila.get(array, offset, start, length);
             } else {
                 final int indexMinusStart = (int) (index - start);
                 if (index > start) {
-                    ila.toArray(array, offset, start, indexMinusStart);
+                    ila.get(array, offset, start, indexMinusStart);
                 }
                 array[offset + indexMinusStart] = value;
                 if (index < startPlusLength - 1) {
-                    ila.toArray(array, offset + (indexMinusStart + 1), index, length - indexMinusStart - 1);
+                    ila.get(array, offset + (indexMinusStart + 1), index, length - indexMinusStart - 1);
                 }
             }
         }

@@ -24,12 +24,12 @@ public class IndexedEdgesFromNodesAndEdges {
         }
 
         @Override
-        public void toArray(long[] array, int offset, long start, int length) throws IOException {
+        public void get(long[] array, int offset, long start, int length) throws IOException {
             final Object[] nodeArray = new Object[(int) nodes.length()];
             final Object[] edgeArray = new Object[length];
 
-            nodes.toArray(nodeArray, 0, 0, nodeArray.length);
-            edges.toArray(edgeArray, 0, start, edgeArray.length);
+            nodes.get(nodeArray, 0, 0, nodeArray.length);
+            edges.get(edgeArray, 0, start, edgeArray.length);
 
             createIndexArray(nodeArray, edgeArray, array, offset);
         }

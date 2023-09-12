@@ -30,7 +30,8 @@ public final class ByteIlaFromIntIla {
             return intIla.length() * 4;
         }
 
-        protected void toArrayImpl(byte[] array, int offset, long start, int length) throws IOException {
+        @Override
+        protected void getImpl(byte[] array, int offset, long start, int length) throws IOException {
             IntIlaIterator iii = new IntIlaIterator(
                     IntIlaSegment.create(intIla, start / 4, intIla.length() - start / 4), new int[bufferSize]);
             int col = (int) (start % 4);

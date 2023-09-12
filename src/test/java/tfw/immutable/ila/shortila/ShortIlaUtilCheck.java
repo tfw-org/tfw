@@ -77,7 +77,7 @@ public final class ShortIlaUtilCheck {
         for (int length = 1; length <= ilaLength; ++length) {
             for (long start = 0; start < ilaLength - length + 1; ++start) {
                 final short[] two = ShortIlaUtil.toArray(ila, start, length);
-                ila.toArray(four, 0, start, length);
+                ila.get(four, 0, start, length);
                 for (int ii = 0; ii < length; ++ii) {
                     short delta = (short) (four[ii] - two[ii]);
                     if (!(neps <= delta && delta <= eps))

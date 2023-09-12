@@ -26,7 +26,7 @@ public final class DoubleIlaFromArray {
         }
 
         @Override
-        protected void toArrayImpl(double[] array, int offset, long start, int length) {
+        protected void getImpl(double[] array, int offset, long start, int length) {
             System.arraycopy(this.array, (int) start, array, offset, length);
         }
     }

@@ -78,7 +78,7 @@ public final class BooleanIlaUtilCheck {
             for (int length = 1; length <= ilaLength; ++length) {
                 for (long start = 0; start < ilaLength - length + 1; ++start) {
                     final boolean[] two = BooleanIlaUtil.toArray(ila, start, length);
-                    ila.toArray(four, 0, start, length);
+                    ila.get(four, 0, start, length);
                     for (int ii = 0; ii < length; ++ii) {
                         if (!(four[ii] == two[ii]))
                             throw new Exception("four[" + ii + "] ("

@@ -28,7 +28,7 @@ public final class ShortIlaFill {
         }
 
         @Override
-        protected void toArrayImpl(short[] array, int offset, long start, int length) {
+        protected void getImpl(short[] array, int offset, long start, int length) {
             final int startPlusLength = (int) (start + length);
             for (int startInt = (int) start; startInt != startPlusLength; ++startInt, offset++) {
                 array[offset] = value;

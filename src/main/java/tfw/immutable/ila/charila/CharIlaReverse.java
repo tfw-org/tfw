@@ -30,10 +30,10 @@ public final class CharIlaReverse {
         }
 
         @Override
-        protected void toArrayImpl(char[] array, int offset, long start, int length) throws IOException {
+        protected void getImpl(char[] array, int offset, long start, int length) throws IOException {
             final StridedCharIla stridedCharIla = new StridedCharIla(ila, buffer.clone());
 
-            stridedCharIla.toArray(array, offset + (length - 1), -1, length() - (start + length), length);
+            stridedCharIla.get(array, offset + (length - 1), -1, length() - (start + length), length);
         }
     }
 }

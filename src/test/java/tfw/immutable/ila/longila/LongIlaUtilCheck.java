@@ -77,7 +77,7 @@ public final class LongIlaUtilCheck {
         for (int length = 1; length <= ilaLength; ++length) {
             for (long start = 0; start < ilaLength - length + 1; ++start) {
                 final long[] two = LongIlaUtil.toArray(ila, start, length);
-                ila.toArray(four, 0, start, length);
+                ila.get(four, 0, start, length);
                 for (int ii = 0; ii < length; ++ii) {
                     long delta = (four[ii] - two[ii]);
                     if (!(neps <= delta && delta <= eps))

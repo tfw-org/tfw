@@ -34,7 +34,7 @@ public final class %%NAME%%IlaFromCastCharIla {
         }
 
         @Override
-        protected void toArrayImpl(%%TYPE%%[] array, int offset, long start, int length) throws IOException {
+        protected void getImpl(%%TYPE%%[] array, int offset, long start, int length) throws IOException {
             CharIlaIterator fi =
                     new CharIlaIterator(CharIlaSegment.create(charIla, start, length), new char[bufferSize]);
 

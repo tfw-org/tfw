@@ -34,7 +34,7 @@ public final class CharIlaDecimate {
         }
 
         @Override
-        protected void toArrayImpl(char[] array, int offset, long start, int length) throws IOException {
+        protected void getImpl(char[] array, int offset, long start, int length) throws IOException {
             final long segmentStart = start * factor;
             final long segmentLength = StrictMath.min(ila.length() - segmentStart, length * factor - 1);
             final CharIla segment = CharIlaSegment.create(ila, segmentStart, segmentLength);

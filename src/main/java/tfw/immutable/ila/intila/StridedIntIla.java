@@ -19,7 +19,7 @@ public final class StridedIntIla {
         return ila.length();
     }
 
-    public void toArray(final int[] array, final int offset, final int stride, final long start, final int length)
+    public void get(final int[] array, final int offset, final int stride, final long start, final int length)
             throws IOException {
         Argument.assertNotLessThan(offset, 0, "offset");
         Argument.assertNotGreaterThanOrEquals(offset, array.length, "offset", "array.length");

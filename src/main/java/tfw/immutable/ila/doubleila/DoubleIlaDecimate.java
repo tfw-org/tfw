@@ -34,7 +34,7 @@ public final class DoubleIlaDecimate {
         }
 
         @Override
-        protected void toArrayImpl(double[] array, int offset, long start, int length) throws IOException {
+        protected void getImpl(double[] array, int offset, long start, int length) throws IOException {
             final long segmentStart = start * factor;
             final long segmentLength = StrictMath.min(ila.length() - segmentStart, length * factor - 1);
             final DoubleIla segment = DoubleIlaSegment.create(ila, segmentStart, segmentLength);
