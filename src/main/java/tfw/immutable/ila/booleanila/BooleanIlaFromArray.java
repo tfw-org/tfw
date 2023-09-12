@@ -26,7 +26,7 @@ public final class BooleanIlaFromArray {
         }
 
         @Override
-        protected void toArrayImpl(boolean[] array, int offset, long start, int length) {
+        protected void getImpl(boolean[] array, int offset, long start, int length) {
             System.arraycopy(this.array, (int) start, array, offset, length);
         }
     }

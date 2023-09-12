@@ -38,8 +38,8 @@ public final class DoubleIlaSegment {
         }
 
         @Override
-        protected void toArrayImpl(double[] array, int offset, long start, int length) throws IOException {
-            ila.toArray(array, offset, this.start + start, length);
+        protected void getImpl(double[] array, int offset, long start, int length) throws IOException {
+            ila.get(array, offset, this.start + start, length);
         }
     }
 }

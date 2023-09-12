@@ -73,7 +73,7 @@ public class PlotPanel extends JPanel implements BranchBox {
             try {
                 mg = new Object[(int) multiGraphic.length()];
 
-                multiGraphic.toArray(mg, 0, 0, mg.length);
+                multiGraphic.get(mg, 0, 0, mg.length);
             } catch (IOException e) {
                 return;
             }

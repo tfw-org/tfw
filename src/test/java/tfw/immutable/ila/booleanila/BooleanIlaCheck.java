@@ -41,8 +41,8 @@ public final class BooleanIlaCheck {
                         for (int ii = 0; ii < four.length; ++ii) {
                             five[ii] = four[ii] = random.nextBoolean();
                         }
-                        ila.toArray(four, offset, start, length);
-                        stridedBooleanIla.toArray(five, offset, 1, start, length);
+                        ila.get(four, offset, start, length);
+                        stridedBooleanIla.get(five, offset, 1, start, length);
                         for (int ii = 0; ii < length; ++ii) {
                             if (!(four[ii] == five[ii]))
                                 throw new Exception("four[" + ii + "] ("
@@ -90,8 +90,8 @@ public final class BooleanIlaCheck {
                                 for (int ii = 0; ii < targetBase.length; ++ii) {
                                     targetBase[ii] = actualBase[ii] = random.nextBoolean();
                                 }
-                                stridedTarget.toArray(targetBase, offset, stride, start, length);
-                                stridedActual.toArray(actualBase, offset, stride, start, length);
+                                stridedTarget.get(targetBase, offset, stride, start, length);
+                                stridedActual.get(actualBase, offset, stride, start, length);
                                 for (int ii = 0; ii < arraySize; ++ii) {
                                     if (!(actualBase[ii] == targetBase[ii]))
                                         throw new Exception("actual[" + ii

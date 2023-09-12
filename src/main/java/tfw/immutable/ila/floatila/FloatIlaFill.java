@@ -28,7 +28,7 @@ public final class FloatIlaFill {
         }
 
         @Override
-        protected void toArrayImpl(float[] array, int offset, long start, int length) {
+        protected void getImpl(float[] array, int offset, long start, int length) {
             final int startPlusLength = (int) (start + length);
             for (int startInt = (int) start; startInt != startPlusLength; ++startInt, offset++) {
                 array[offset] = value;

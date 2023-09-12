@@ -37,8 +37,8 @@ package %%PACKAGE%%;
                         for (int ii = 0; ii < four.length; ++ii) {
                             five[ii] = four[ii] = %%RANDOM_VALUE%%;
                         }
-                        ila.toArray(four, offset, start, length);
-                        strided%%NAME%%Ila.toArray(five, offset, 1, start, length);
+                        ila.get(four, offset, start, length);
+                        strided%%NAME%%Ila.get(five, offset, 1, start, length);
                         for (int ii = 0; ii < length; ++ii) {
                             if (!(four[ii]%%IS_EQUALS_START%%five[ii]%%IS_EQUALS_END%%))
                                 throw new Exception("four[" + ii + "] ("
@@ -85,8 +85,8 @@ package %%PACKAGE%%;
                                 for (int ii = 0; ii < targetBase.length; ++ii) {
                                     targetBase[ii] = actualBase[ii] = %%RANDOM_VALUE%%;
                                 }
-                                stridedTarget.toArray(targetBase, offset, stride, start, length);
-                                stridedActual.toArray(actualBase, offset, stride, start, length);
+                                stridedTarget.get(targetBase, offset, stride, start, length);
+                                stridedActual.get(actualBase, offset, stride, start, length);
                                 for (int ii = 0; ii < arraySize; ++ii) {
                                     if (!(actualBase[ii]%%IS_EQUALS_START%%targetBase[ii]%%IS_EQUALS_END%%))
                                         throw new Exception("actual[" + ii

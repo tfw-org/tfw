@@ -55,9 +55,9 @@ public class SimpleTreeLayoutConverter extends Converter {
             nodeClusterFroms = new Object[(int) nodeClusterFromsIla.length()];
             nodeClusterTos = new Object[(int) nodeClusterTosIla.length()];
 
-            nodeClustersIla.toArray(nodeClusters, 0, 0, nodeClusters.length);
-            nodeClusterFromsIla.toArray(nodeClusterFroms, 0, 0, nodeClusterFroms.length);
-            nodeClusterTosIla.toArray(nodeClusterTos, 0, 0, nodeClusterTos.length);
+            nodeClustersIla.get(nodeClusters, 0, 0, nodeClusters.length);
+            nodeClusterFromsIla.get(nodeClusterFroms, 0, 0, nodeClusterFroms.length);
+            nodeClusterTosIla.get(nodeClusterTos, 0, 0, nodeClusterTos.length);
         } catch (IOException e) {
             return;
         }

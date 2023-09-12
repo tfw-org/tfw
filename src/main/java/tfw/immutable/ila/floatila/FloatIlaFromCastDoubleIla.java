@@ -33,7 +33,7 @@ public final class FloatIlaFromCastDoubleIla {
         }
 
         @Override
-        protected void toArrayImpl(float[] array, int offset, long start, int length) throws IOException {
+        protected void getImpl(float[] array, int offset, long start, int length) throws IOException {
             DoubleIlaIterator fi =
                     new DoubleIlaIterator(DoubleIlaSegment.create(doubleIla, start, length), new double[bufferSize]);
 

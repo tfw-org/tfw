@@ -77,7 +77,7 @@ public final class ByteIlaUtilCheck {
         for (int length = 1; length <= ilaLength; ++length) {
             for (long start = 0; start < ilaLength - length + 1; ++start) {
                 final byte[] two = ByteIlaUtil.toArray(ila, start, length);
-                ila.toArray(four, 0, start, length);
+                ila.get(four, 0, start, length);
                 for (int ii = 0; ii < length; ++ii) {
                     byte delta = (byte) (four[ii] - two[ii]);
                     if (!(neps <= delta && delta <= eps))

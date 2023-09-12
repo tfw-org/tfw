@@ -30,10 +30,10 @@ public final class FloatIlaReverse {
         }
 
         @Override
-        protected void toArrayImpl(float[] array, int offset, long start, int length) throws IOException {
+        protected void getImpl(float[] array, int offset, long start, int length) throws IOException {
             final StridedFloatIla stridedFloatIla = new StridedFloatIla(ila, buffer.clone());
 
-            stridedFloatIla.toArray(array, offset + (length - 1), -1, length() - (start + length), length);
+            stridedFloatIla.get(array, offset + (length - 1), -1, length() - (start + length), length);
         }
     }
 }

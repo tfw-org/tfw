@@ -26,7 +26,7 @@ public final class LongIlaFromArray {
         }
 
         @Override
-        protected void toArrayImpl(long[] array, int offset, long start, int length) {
+        protected void getImpl(long[] array, int offset, long start, int length) {
             System.arraycopy(this.array, (int) start, array, offset, length);
         }
     }

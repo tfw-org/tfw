@@ -30,10 +30,10 @@ public final class ShortIlaReverse {
         }
 
         @Override
-        protected void toArrayImpl(short[] array, int offset, long start, int length) throws IOException {
+        protected void getImpl(short[] array, int offset, long start, int length) throws IOException {
             final StridedShortIla stridedShortIla = new StridedShortIla(ila, buffer.clone());
 
-            stridedShortIla.toArray(array, offset + (length - 1), -1, length() - (start + length), length);
+            stridedShortIla.get(array, offset + (length - 1), -1, length() - (start + length), length);
         }
     }
 }

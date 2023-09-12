@@ -38,8 +38,8 @@ public final class ShortIlaSegment {
         }
 
         @Override
-        protected void toArrayImpl(short[] array, int offset, long start, int length) throws IOException {
-            ila.toArray(array, offset, this.start + start, length);
+        protected void getImpl(short[] array, int offset, long start, int length) throws IOException {
+            ila.get(array, offset, this.start + start, length);
         }
     }
 }

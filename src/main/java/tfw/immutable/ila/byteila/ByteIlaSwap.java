@@ -31,7 +31,7 @@ public class ByteIlaSwap {
         }
 
         @Override
-        protected void toArrayImpl(byte[] array, int offset, long start, int length) throws IOException {
+        protected void getImpl(byte[] array, int offset, long start, int length) throws IOException {
             long end = start + length - 1;
             long blockStart = start - (start % bytesToSwap);
             long blockEnd = end + bytesToSwap - (end % bytesToSwap) - 1;

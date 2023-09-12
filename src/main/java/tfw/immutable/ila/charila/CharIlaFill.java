@@ -28,7 +28,7 @@ public final class CharIlaFill {
         }
 
         @Override
-        protected void toArrayImpl(char[] array, int offset, long start, int length) {
+        protected void getImpl(char[] array, int offset, long start, int length) {
             final int startPlusLength = (int) (start + length);
             for (int startInt = (int) start; startInt != startPlusLength; ++startInt, offset++) {
                 array[offset] = value;

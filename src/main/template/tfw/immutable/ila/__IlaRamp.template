@@ -31,7 +31,7 @@ public final class %%NAME%%IlaRamp {
         }
 
         @Override
-        protected void toArrayImpl(%%TYPE%%[] array, int offset, long start, int length) {
+        protected void getImpl(%%TYPE%%[] array, int offset, long start, int length) {
             final int startPlusLength = (int) (start + length);
 
             // CORRECT, BUT WAY TOO SLOW

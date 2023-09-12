@@ -34,7 +34,7 @@ public final class CharIlaMultiply {
         }
 
         @Override
-        protected void toArrayImpl(char[] array, int offset, long ilaStart, int length) throws IOException {
+        protected void getImpl(char[] array, int offset, long ilaStart, int length) throws IOException {
             CharIlaIterator li =
                     new CharIlaIterator(CharIlaSegment.create(leftIla, ilaStart, length), new char[bufferSize]);
             CharIlaIterator ri =

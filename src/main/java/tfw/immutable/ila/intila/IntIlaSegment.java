@@ -38,8 +38,8 @@ public final class IntIlaSegment {
         }
 
         @Override
-        protected void toArrayImpl(int[] array, int offset, long start, int length) throws IOException {
-            ila.toArray(array, offset, this.start + start, length);
+        protected void getImpl(int[] array, int offset, long start, int length) throws IOException {
+            ila.get(array, offset, this.start + start, length);
         }
     }
 }

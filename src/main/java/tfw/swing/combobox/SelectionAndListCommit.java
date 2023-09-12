@@ -70,7 +70,7 @@ public class SelectionAndListCommit extends Commit {
             final ObjectIla<Object> listIla = (ObjectIla<Object>) get(listECD);
             final Object[] list = new Object[(int) listIla.length()];
 
-            listIla.toArray(list, 0, 0, list.length);
+            listIla.get(list, 0, 0, list.length);
 
             EventQueue.invokeLater(new Runnable() {
                 public void run() {

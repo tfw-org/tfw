@@ -42,7 +42,7 @@ public final class BooleanIlaInterleave {
         }
 
         @Override
-        protected void toArrayImpl(boolean[] array, int offset, long start, int length) throws IOException {
+        protected void getImpl(boolean[] array, int offset, long start, int length) throws IOException {
             int currentIla = (int) (start % ilasLength);
             long ilaStart = start / ilasLength;
             final int ilaStride = ilasLength;
@@ -59,7 +59,7 @@ public final class BooleanIlaInterleave {
                     --ilaLength;
                 }
                 if (ilaLength > 0) {
-                    stridedBooleanIlas[currentIla].toArray(array, offset, ilaStride, ilaStart, ilaLength);
+                    stridedBooleanIlas[currentIla].get(array, offset, ilaStride, ilaStart, ilaLength);
                 }
                 offset++;
                 ++currentIla;

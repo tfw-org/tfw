@@ -34,7 +34,7 @@ public class DoubleIlaClip {
         }
 
         @Override
-        protected void toArrayImpl(double[] array, int offset, long start, int length) throws IOException {
+        protected void getImpl(double[] array, int offset, long start, int length) throws IOException {
             DoubleIlaIterator dii =
                     new DoubleIlaIterator(DoubleIlaSegment.create(doubleIla, start, length), new double[bufferSize]);
 

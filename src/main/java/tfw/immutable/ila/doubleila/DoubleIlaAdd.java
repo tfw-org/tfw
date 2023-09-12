@@ -34,7 +34,7 @@ public final class DoubleIlaAdd {
         }
 
         @Override
-        protected void toArrayImpl(double[] array, int offset, long ilaStart, int length) throws IOException {
+        protected void getImpl(double[] array, int offset, long ilaStart, int length) throws IOException {
             DoubleIlaIterator li =
                     new DoubleIlaIterator(DoubleIlaSegment.create(leftIla, ilaStart, length), new double[bufferSize]);
             DoubleIlaIterator ri =

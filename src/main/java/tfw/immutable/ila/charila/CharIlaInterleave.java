@@ -42,7 +42,7 @@ public final class CharIlaInterleave {
         }
 
         @Override
-        protected void toArrayImpl(char[] array, int offset, long start, int length) throws IOException {
+        protected void getImpl(char[] array, int offset, long start, int length) throws IOException {
             int currentIla = (int) (start % ilasLength);
             long ilaStart = start / ilasLength;
             final int ilaStride = ilasLength;
@@ -59,7 +59,7 @@ public final class CharIlaInterleave {
                     --ilaLength;
                 }
                 if (ilaLength > 0) {
-                    stridedCharIlas[currentIla].toArray(array, offset, ilaStride, ilaStart, ilaLength);
+                    stridedCharIlas[currentIla].get(array, offset, ilaStride, ilaStart, ilaLength);
                 }
                 offset++;
                 ++currentIla;

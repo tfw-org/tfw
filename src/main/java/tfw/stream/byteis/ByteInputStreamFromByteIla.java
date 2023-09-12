@@ -44,7 +44,7 @@ public final class ByteInputStreamFromByteIla {
             }
 
             if (index < byteIla.length()) {
-                byteIla.toArray(buffer, 0, index++, 1);
+                byteIla.get(buffer, 0, index++, 1);
 
                 array[offset] = buffer[0];
             } else {
@@ -55,7 +55,7 @@ public final class ByteInputStreamFromByteIla {
             try {
                 for (; i < length; i++) {
                     if (index < byteIla.length()) {
-                        byteIla.toArray(buffer, 0, index++, 1);
+                        byteIla.get(buffer, 0, index++, 1);
 
                         array[offset + i] = buffer[0];
                     } else {

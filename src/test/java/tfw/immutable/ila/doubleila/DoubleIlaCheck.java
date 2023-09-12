@@ -38,8 +38,8 @@ public final class DoubleIlaCheck {
                     for (int ii = 0; ii < four.length; ++ii) {
                         five[ii] = four[ii] = random.nextDouble();
                     }
-                    ila.toArray(four, offset, start, length);
-                    stridedDoubleIla.toArray(five, offset, 1, start, length);
+                    ila.get(four, offset, start, length);
+                    stridedDoubleIla.get(five, offset, 1, start, length);
                     for (int ii = 0; ii < length; ++ii) {
                         double delta = (four[ii] - five[ii]);
                         if (!(neps <= delta && delta <= eps))
@@ -86,8 +86,8 @@ public final class DoubleIlaCheck {
                             for (int ii = 0; ii < targetBase.length; ++ii) {
                                 targetBase[ii] = actualBase[ii] = random.nextDouble();
                             }
-                            stridedTarget.toArray(targetBase, offset, stride, start, length);
-                            stridedActual.toArray(actualBase, offset, stride, start, length);
+                            stridedTarget.get(targetBase, offset, stride, start, length);
+                            stridedActual.get(actualBase, offset, stride, start, length);
                             for (int ii = 0; ii < arraySize; ++ii) {
                                 double delta = (actualBase[ii] - targetBase[ii]);
                                 if (!(neps <= delta && delta <= eps))

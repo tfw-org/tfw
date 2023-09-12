@@ -38,8 +38,8 @@ public final class BooleanIlaSegment {
         }
 
         @Override
-        protected void toArrayImpl(boolean[] array, int offset, long start, int length) throws IOException {
-            ila.toArray(array, offset, this.start + start, length);
+        protected void getImpl(boolean[] array, int offset, long start, int length) throws IOException {
+            ila.get(array, offset, this.start + start, length);
         }
     }
 }

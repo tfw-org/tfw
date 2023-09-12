@@ -40,17 +40,17 @@ public final class IntIlaConcatenate {
         }
 
         @Override
-        protected void toArrayImpl(int[] array, int offset, long start, int length) throws IOException {
+        protected void getImpl(int[] array, int offset, long start, int length) throws IOException {
             final long leftIlaLength = leftIla.length();
 
             if (start + length <= leftIlaLength) {
-                leftIla.toArray(array, offset, start, length);
+                leftIla.get(array, offset, start, length);
             } else if (start >= leftIlaLength) {
-                rightIla.toArray(array, offset, start - leftIlaLength, length);
+                rightIla.get(array, offset, start - leftIlaLength, length);
             } else {
                 final int leftAmount = (int) (leftIlaLength - start);
-                leftIla.toArray(array, offset, start, leftAmount);
-                rightIla.toArray(array, offset + leftAmount, 0, length - leftAmount);
+                leftIla.get(array, offset, start, leftAmount);
+                rightIla.get(array, offset + leftAmount, 0, length - leftAmount);
             }
         }
     }

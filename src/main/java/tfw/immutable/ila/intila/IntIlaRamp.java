@@ -30,7 +30,7 @@ public final class IntIlaRamp {
         }
 
         @Override
-        protected void toArrayImpl(int[] array, int offset, long start, int length) {
+        protected void getImpl(int[] array, int offset, long start, int length) {
             final int startPlusLength = (int) (start + length);
 
             // CORRECT, BUT WAY TOO SLOW

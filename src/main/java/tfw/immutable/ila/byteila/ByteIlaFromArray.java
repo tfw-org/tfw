@@ -26,7 +26,7 @@ public final class ByteIlaFromArray {
         }
 
         @Override
-        protected void toArrayImpl(byte[] array, int offset, long start, int length) {
+        protected void getImpl(byte[] array, int offset, long start, int length) {
             System.arraycopy(this.array, (int) start, array, offset, length);
         }
     }

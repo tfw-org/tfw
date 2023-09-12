@@ -12,7 +12,7 @@ public final class ByteIlaUtil {
     public static byte[] toArray(final ByteIla byteIla, final long ilaStart, int length) throws IOException {
         byte[] result = new byte[length];
 
-        byteIla.toArray(result, 0, ilaStart, length);
+        byteIla.get(result, 0, ilaStart, length);
 
         return result;
     }

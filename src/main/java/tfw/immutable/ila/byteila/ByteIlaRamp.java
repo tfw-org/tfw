@@ -30,7 +30,7 @@ public final class ByteIlaRamp {
         }
 
         @Override
-        protected void toArrayImpl(byte[] array, int offset, long start, int length) {
+        protected void getImpl(byte[] array, int offset, long start, int length) {
             final int startPlusLength = (int) (start + length);
 
             // CORRECT, BUT WAY TOO SLOW

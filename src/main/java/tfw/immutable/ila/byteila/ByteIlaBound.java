@@ -32,8 +32,8 @@ public final class ByteIlaBound {
         }
 
         @Override
-        protected void toArrayImpl(byte[] array, int offset, long start, int length) throws IOException {
-            ila.toArray(array, offset, start, length);
+        protected void getImpl(byte[] array, int offset, long start, int length) throws IOException {
+            ila.get(array, offset, start, length);
 
             for (int ii = offset; length > 0; ii++, --length) {
                 byte tmp = array[ii];

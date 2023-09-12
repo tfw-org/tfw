@@ -39,7 +39,7 @@ public final class CharIlaFromUtf8ByteIla {
         }
 
         @Override
-        public void toArray(char[] array, int offset, long start, int length) throws IOException {
+        public void get(char[] array, int offset, long start, int length) throws IOException {
             final int byteIndexTableIndex = (int) (start / charDelta);
             final long startByteIndex = byteIndexTable[byteIndexTableIndex];
             final long startCharIndex = byteIndexTableIndex * charDelta;
@@ -57,7 +57,7 @@ public final class CharIlaFromUtf8ByteIla {
                 final long remainingBytes = utf8ByteIla.length() - byteIndex;
                 final int bytesToGet = (int) (byteBuffer.length < remainingBytes ? byteBuffer.length : remainingBytes);
 
-                utf8ByteIla.toArray(byteBuffer, 0, byteIndex, bytesToGet);
+                utf8ByteIla.get(byteBuffer, 0, byteIndex, bytesToGet);
 
                 for (int byteBufferIndex = 0;
                         byteBufferIndex < bytesToGet && arrayIndex <= lastArrayIndex;

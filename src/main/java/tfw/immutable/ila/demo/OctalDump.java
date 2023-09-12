@@ -137,7 +137,7 @@ public class OctalDump {
             }
 
             @Override
-            protected void toArrayImpl(String[] array, int offset, long start, int length) throws IOException {
+            protected void getImpl(String[] array, int offset, long start, int length) throws IOException {
                 ByteIlaIterator bii = new ByteIlaIterator(
                         ByteIlaSegment.create(byteIla, start, byteIla.length() - start), new byte[bufferSize]);
 
@@ -196,7 +196,7 @@ public class OctalDump {
             }
 
             @Override
-            protected void toArrayImpl(String[] array, int offset, long start, int length) throws IOException {
+            protected void getImpl(String[] array, int offset, long start, int length) throws IOException {
                 ShortIlaIterator sii = new ShortIlaIterator(
                         ShortIlaSegment.create(shortIla, start * 2, shortIla.length() - start * 2),
                         new short[bufferSize]);
@@ -256,7 +256,7 @@ public class OctalDump {
             }
 
             @Override
-            protected void toArrayImpl(String[] array, int offset, long start, int length) throws IOException {
+            protected void getImpl(String[] array, int offset, long start, int length) throws IOException {
                 IntIlaIterator iii = new IntIlaIterator(
                         IntIlaSegment.create(intIla, start * 4, intIla.length() - start * 4), new int[bufferSize]);
 
@@ -313,7 +313,7 @@ public class OctalDump {
             }
 
             @Override
-            protected void toArrayImpl(String[] array, int offset, long start, int length) throws IOException {
+            protected void getImpl(String[] array, int offset, long start, int length) throws IOException {
                 LongIlaIterator lii = new LongIlaIterator(
                         LongIlaSegment.create(longIla, start * 8, longIla.length() - start * 8), new long[bufferSize]);
 
@@ -368,7 +368,7 @@ public class OctalDump {
             }
 
             @Override
-            protected void toArrayImpl(String[] array, int offset, long start, int length) throws IOException {
+            protected void getImpl(String[] array, int offset, long start, int length) throws IOException {
                 FloatIlaIterator fii = new FloatIlaIterator(
                         FloatIlaSegment.create(floatIla, start * 4, floatIla.length() - start * 4),
                         new float[bufferSize]);
@@ -414,7 +414,7 @@ public class OctalDump {
             }
 
             @Override
-            protected void toArrayImpl(String[] array, int offset, long start, int length) throws IOException {
+            protected void getImpl(String[] array, int offset, long start, int length) throws IOException {
                 DoubleIlaIterator dii = new DoubleIlaIterator(
                         DoubleIlaSegment.create(doubleIla, start * 4, doubleIla.length() - start * 4),
                         new double[bufferSize]);

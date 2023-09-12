@@ -31,17 +31,17 @@ public final class DoubleIlaRemove {
         }
 
         @Override
-        protected void toArrayImpl(double[] array, int offset, long start, int length) throws IOException {
+        protected void getImpl(double[] array, int offset, long start, int length) throws IOException {
             final long startPlusLength = start + length;
 
             if (index <= start) {
-                ila.toArray(array, offset, start + 1, length);
+                ila.get(array, offset, start + 1, length);
             } else if (index >= startPlusLength) {
-                ila.toArray(array, offset, start, length);
+                ila.get(array, offset, start, length);
             } else {
                 final int indexMinusStart = (int) (index - start);
-                ila.toArray(array, offset, start, indexMinusStart);
-                ila.toArray(array, offset + indexMinusStart, index + 1, length - indexMinusStart);
+                ila.get(array, offset, start, indexMinusStart);
+                ila.get(array, offset + indexMinusStart, index + 1, length - indexMinusStart);
             }
         }
     }

@@ -30,10 +30,10 @@ public final class DoubleIlaReverse {
         }
 
         @Override
-        protected void toArrayImpl(double[] array, int offset, long start, int length) throws IOException {
+        protected void getImpl(double[] array, int offset, long start, int length) throws IOException {
             final StridedDoubleIla stridedDoubleIla = new StridedDoubleIla(ila, buffer.clone());
 
-            stridedDoubleIla.toArray(array, offset + (length - 1), -1, length() - (start + length), length);
+            stridedDoubleIla.get(array, offset + (length - 1), -1, length() - (start + length), length);
         }
     }
 }

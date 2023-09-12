@@ -33,7 +33,7 @@ public final class CharIlaFromCastShortIla {
         }
 
         @Override
-        protected void toArrayImpl(char[] array, int offset, long start, int length) throws IOException {
+        protected void getImpl(char[] array, int offset, long start, int length) throws IOException {
             ShortIlaIterator fi =
                     new ShortIlaIterator(ShortIlaSegment.create(shortIla, start, length), new short[bufferSize]);
 

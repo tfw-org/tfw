@@ -12,7 +12,7 @@ public final class IntIlaUtil {
     public static int[] toArray(final IntIla intIla, final long ilaStart, int length) throws IOException {
         int[] result = new int[length];
 
-        intIla.toArray(result, 0, ilaStart, length);
+        intIla.get(result, 0, ilaStart, length);
 
         return result;
     }

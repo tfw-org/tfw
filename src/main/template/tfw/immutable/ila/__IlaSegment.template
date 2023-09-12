@@ -39,8 +39,8 @@ public final class %%NAME%%IlaSegment {
         }
 
         @Override
-        protected void toArrayImpl(%%TYPE_OR_TEMPLATE%%[] array, int offset, long start, int length) throws IOException {
-            ila.toArray(array, offset, this.start + start, length);
+        protected void getImpl(%%TYPE_OR_TEMPLATE%%[] array, int offset, long start, int length) throws IOException {
+            ila.get(array, offset, this.start + start, length);
         }
     }
 }

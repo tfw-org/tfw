@@ -31,7 +31,7 @@ public final class ShortIlaFromByteIla {
         }
 
         @Override
-        protected void toArrayImpl(short[] array, int offset, long start, int length) throws IOException {
+        protected void getImpl(short[] array, int offset, long start, int length) throws IOException {
             ByteIlaIterator bii =
                     new ByteIlaIterator(ByteIlaSegment.create(byteIla, 2 * start, 2 * length), new byte[bufferSize]);
 

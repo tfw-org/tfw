@@ -26,7 +26,7 @@ public final class ShortIlaFromArray {
         }
 
         @Override
-        protected void toArrayImpl(short[] array, int offset, long start, int length) {
+        protected void getImpl(short[] array, int offset, long start, int length) {
             System.arraycopy(this.array, (int) start, array, offset, length);
         }
     }

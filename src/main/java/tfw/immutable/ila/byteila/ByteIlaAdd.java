@@ -34,7 +34,7 @@ public final class ByteIlaAdd {
         }
 
         @Override
-        protected void toArrayImpl(byte[] array, int offset, long ilaStart, int length) throws IOException {
+        protected void getImpl(byte[] array, int offset, long ilaStart, int length) throws IOException {
             ByteIlaIterator li =
                     new ByteIlaIterator(ByteIlaSegment.create(leftIla, ilaStart, length), new byte[bufferSize]);
             ByteIlaIterator ri =

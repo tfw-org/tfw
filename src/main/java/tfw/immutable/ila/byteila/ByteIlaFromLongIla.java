@@ -31,7 +31,7 @@ public final class ByteIlaFromLongIla {
         }
 
         @Override
-        protected void toArrayImpl(byte[] array, int offset, long start, int length) throws IOException {
+        protected void getImpl(byte[] array, int offset, long start, int length) throws IOException {
             LongIlaIterator lii = new LongIlaIterator(
                     LongIlaSegment.create(longIla, start / 8, longIla.length() - start / 8), new long[bufferSize]);
             int col = (int) (start % 8);

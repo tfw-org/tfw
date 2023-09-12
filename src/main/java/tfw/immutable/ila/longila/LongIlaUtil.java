@@ -12,7 +12,7 @@ public final class LongIlaUtil {
     public static long[] toArray(final LongIla longIla, final long ilaStart, int length) throws IOException {
         long[] result = new long[length];
 
-        longIla.toArray(result, 0, ilaStart, length);
+        longIla.get(result, 0, ilaStart, length);
 
         return result;
     }

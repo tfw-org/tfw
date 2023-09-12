@@ -30,8 +30,8 @@ public final class %%NAME%%IlaScalarMultiply {
         }
 
         @Override
-        protected void toArrayImpl(%%TYPE%%[] array, int offset, long start, int length) throws IOException {
-            ila.toArray(array, offset, start, length);
+        protected void getImpl(%%TYPE%%[] array, int offset, long start, int length) throws IOException {
+            ila.get(array, offset, start, length);
 
             for (int ii = offset; length > 0; ii++, --length) {
                 array[ii] *= scalar;

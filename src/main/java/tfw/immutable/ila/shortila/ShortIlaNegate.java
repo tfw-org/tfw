@@ -27,8 +27,8 @@ public final class ShortIlaNegate {
         }
 
         @Override
-        protected void toArrayImpl(short[] array, int offset, long start, int length) throws IOException {
-            ila.toArray(array, offset, start, length);
+        protected void getImpl(short[] array, int offset, long start, int length) throws IOException {
+            ila.get(array, offset, start, length);
 
             for (int ii = offset; length > 0; ii++, --length) {
                 array[ii] = (short) -array[ii];

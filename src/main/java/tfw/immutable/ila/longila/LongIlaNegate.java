@@ -27,8 +27,8 @@ public final class LongIlaNegate {
         }
 
         @Override
-        protected void toArrayImpl(long[] array, int offset, long start, int length) throws IOException {
-            ila.toArray(array, offset, start, length);
+        protected void getImpl(long[] array, int offset, long start, int length) throws IOException {
+            ila.get(array, offset, start, length);
 
             for (int ii = offset; length > 0; ii++, --length) {
                 array[ii] = -array[ii];

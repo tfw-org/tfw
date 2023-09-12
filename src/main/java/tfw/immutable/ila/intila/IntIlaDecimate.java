@@ -34,7 +34,7 @@ public final class IntIlaDecimate {
         }
 
         @Override
-        protected void toArrayImpl(int[] array, int offset, long start, int length) throws IOException {
+        protected void getImpl(int[] array, int offset, long start, int length) throws IOException {
             final long segmentStart = start * factor;
             final long segmentLength = StrictMath.min(ila.length() - segmentStart, length * factor - 1);
             final IntIla segment = IntIlaSegment.create(ila, segmentStart, segmentLength);

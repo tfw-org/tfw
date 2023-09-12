@@ -42,7 +42,7 @@ public final class ObjectIlaInterleave {
         }
 
         @Override
-        protected void toArrayImpl(T[] array, int offset, long start, int length) throws IOException {
+        protected void getImpl(T[] array, int offset, long start, int length) throws IOException {
             int currentIla = (int) (start % ilasLength);
             long ilaStart = start / ilasLength;
             final int ilaStride = ilasLength;
@@ -59,7 +59,7 @@ public final class ObjectIlaInterleave {
                     --ilaLength;
                 }
                 if (ilaLength > 0) {
-                    stridedObjectIlas[currentIla].toArray(array, offset, ilaStride, ilaStart, ilaLength);
+                    stridedObjectIlas[currentIla].get(array, offset, ilaStride, ilaStart, ilaLength);
                 }
                 offset++;
                 ++currentIla;

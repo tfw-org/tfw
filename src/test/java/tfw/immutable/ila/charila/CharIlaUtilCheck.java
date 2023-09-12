@@ -77,7 +77,7 @@ public final class CharIlaUtilCheck {
         for (int length = 1; length <= ilaLength; ++length) {
             for (long start = 0; start < ilaLength - length + 1; ++start) {
                 final char[] two = CharIlaUtil.toArray(ila, start, length);
-                ila.toArray(four, 0, start, length);
+                ila.get(four, 0, start, length);
                 for (int ii = 0; ii < length; ++ii) {
                     char delta = (char) (four[ii] - two[ii]);
                     if (!(neps <= delta && delta <= eps))

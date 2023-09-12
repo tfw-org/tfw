@@ -34,7 +34,7 @@ public final class ShortIlaDivide {
         }
 
         @Override
-        protected void toArrayImpl(short[] array, int offset, long ilaStart, int length) throws IOException {
+        protected void getImpl(short[] array, int offset, long ilaStart, int length) throws IOException {
             ShortIlaIterator li =
                     new ShortIlaIterator(ShortIlaSegment.create(leftIla, ilaStart, length), new short[bufferSize]);
             ShortIlaIterator ri =

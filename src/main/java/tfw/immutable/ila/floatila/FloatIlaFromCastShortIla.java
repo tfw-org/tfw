@@ -33,7 +33,7 @@ public final class FloatIlaFromCastShortIla {
         }
 
         @Override
-        protected void toArrayImpl(float[] array, int offset, long start, int length) throws IOException {
+        protected void getImpl(float[] array, int offset, long start, int length) throws IOException {
             ShortIlaIterator fi =
                     new ShortIlaIterator(ShortIlaSegment.create(shortIla, start, length), new short[bufferSize]);
 

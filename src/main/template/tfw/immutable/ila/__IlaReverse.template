@@ -31,10 +31,10 @@ public final class %%NAME%%IlaReverse {
         }
 
         @Override
-        protected void toArrayImpl(%%TYPE_OR_TEMPLATE%%[] array, int offset, long start, int length) throws IOException {
+        protected void getImpl(%%TYPE_OR_TEMPLATE%%[] array, int offset, long start, int length) throws IOException {
             final Strided%%NAME%%Ila%%TEMPLATE%% strided%%NAME%%Ila = new Strided%%NAME%%Ila%%DIAMOND%%(ila, buffer.clone());
 
-            strided%%NAME%%Ila.toArray(array, offset + (length - 1), -1, length() - (start + length), length);
+            strided%%NAME%%Ila.get(array, offset + (length - 1), -1, length() - (start + length), length);
         }
     }
 }

@@ -33,7 +33,7 @@ public final class CharIlaFromCastDoubleIla {
         }
 
         @Override
-        protected void toArrayImpl(char[] array, int offset, long start, int length) throws IOException {
+        protected void getImpl(char[] array, int offset, long start, int length) throws IOException {
             DoubleIlaIterator fi =
                     new DoubleIlaIterator(DoubleIlaSegment.create(doubleIla, start, length), new double[bufferSize]);
 

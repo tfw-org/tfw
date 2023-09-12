@@ -48,7 +48,7 @@ public final class IntIlaIterator {
             }
 
             amountLeftToFetch -= amountToFetch;
-            instance.toArray(buffer, 0, fetchPosition, amountToFetch);
+            instance.get(buffer, 0, fetchPosition, amountToFetch);
             fetchPosition += amountToFetch;
             bufferIndex = 0;
         }

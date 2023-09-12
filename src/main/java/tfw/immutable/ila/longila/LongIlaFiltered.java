@@ -46,7 +46,7 @@ public final class LongIlaFiltered {
         }
 
         @Override
-        public void toArrayImpl(long[] array, int offset, long start, int length) throws IOException {
+        public void getImpl(long[] array, int offset, long start, int length) throws IOException {
             LongIlaIterator oii = new LongIlaIterator(LongIlaSegment.create(ila, start), buffer.clone());
 
             // left off here

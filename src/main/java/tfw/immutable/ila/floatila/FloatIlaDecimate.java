@@ -34,7 +34,7 @@ public final class FloatIlaDecimate {
         }
 
         @Override
-        protected void toArrayImpl(float[] array, int offset, long start, int length) throws IOException {
+        protected void getImpl(float[] array, int offset, long start, int length) throws IOException {
             final long segmentStart = start * factor;
             final long segmentLength = StrictMath.min(ila.length() - segmentStart, length * factor - 1);
             final FloatIla segment = FloatIlaSegment.create(ila, segmentStart, segmentLength);
