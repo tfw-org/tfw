@@ -21,7 +21,7 @@ public final class ByteIlmUtil {
 
         byte[] result = new byte[rowCount * colCount];
 
-        byteIlm.toArray(result, 0, rowStart, columnStart, rowCount, colCount);
+        byteIlm.get(result, 0, rowStart, columnStart, rowCount, colCount);
 
         return result;
     }

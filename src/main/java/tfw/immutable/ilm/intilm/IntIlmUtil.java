@@ -21,7 +21,7 @@ public final class IntIlmUtil {
 
         int[] result = new int[rowCount * colCount];
 
-        intIlm.toArray(result, 0, rowStart, columnStart, rowCount, colCount);
+        intIlm.get(result, 0, rowStart, columnStart, rowCount, colCount);
 
         return result;
     }

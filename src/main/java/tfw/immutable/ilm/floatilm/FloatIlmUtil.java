@@ -21,7 +21,7 @@ public final class FloatIlmUtil {
 
         float[] result = new float[rowCount * colCount];
 
-        floatIlm.toArray(result, 0, rowStart, columnStart, rowCount, colCount);
+        floatIlm.get(result, 0, rowStart, columnStart, rowCount, colCount);
 
         return result;
     }

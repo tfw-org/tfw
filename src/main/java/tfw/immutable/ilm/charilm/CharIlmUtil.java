@@ -21,7 +21,7 @@ public final class CharIlmUtil {
 
         char[] result = new char[rowCount * colCount];
 
-        charIlm.toArray(result, 0, rowStart, columnStart, rowCount, colCount);
+        charIlm.get(result, 0, rowStart, columnStart, rowCount, colCount);
 
         return result;
     }

@@ -30,10 +30,10 @@ public final class ShortIlmFromStridedShortIlm {
         }
 
         @Override
-        protected void toArrayImpl(
-                final short[] array, int offset, long rowStart, long colStart, int rowCount, int colCount)
+        protected void getImpl(
+                final short[] array, final int offset, long rowStart, long colStart, int rowCount, int colCount)
                 throws IOException {
-            stridedIlm.toArray(array, offset, colCount, 1, rowStart, colStart, rowCount, colCount);
+            stridedIlm.get(array, offset, colCount, 1, rowStart, colStart, rowCount, colCount);
         }
     }
 }

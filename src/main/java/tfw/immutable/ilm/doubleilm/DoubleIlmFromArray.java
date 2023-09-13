@@ -37,8 +37,8 @@ public final class DoubleIlmFromArray {
         }
 
         @Override
-        protected void toArrayImpl(
-                final double[] array, int offset, long rowStart, long colStart, int rowCount, int colCount)
+        protected void getImpl(
+                final double[] array, final int offset, long rowStart, long colStart, int rowCount, int colCount)
                 throws IOException {
             int intWidth = (int) width();
 

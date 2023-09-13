@@ -52,9 +52,9 @@ public class SegmentDoubleIlm {
         }
 
         @Override
-        protected void toArrayImpl(double[] array, int offset, long rowStart, long colStart, int rowCount, int colCount)
+        protected void getImpl(double[] array, int offset, long rowStart, long colStart, int rowCount, int colCount)
                 throws IOException {
-            doubleIlm.toArray(array, offset, startingRow + rowStart, startingColumn + colStart, rowCount, colCount);
+            doubleIlm.get(array, offset, startingRow + rowStart, startingColumn + colStart, rowCount, colCount);
         }
     }
 }

@@ -60,7 +60,7 @@ class TakeSkipDoubleIlmTest {
             0.0, 1.0, 0.0, 2.0, 0.0, 3.0
         };
         double[] takeSkip5Test = new double[36];
-        stridedTakeSkip5.toArray(takeSkip5Test, 7, 12, 2, 0, 1, 3, 3);
+        stridedTakeSkip5.get(takeSkip5Test, 7, 12, 2, 0, 1, 3, 3);
         assertTrue(Arrays.equals(takeSkip5Array, takeSkip5Test));
         assertEquals(stridedTakeSkip5.width(), 10);
         assertEquals(stridedTakeSkip5.height(), 3);

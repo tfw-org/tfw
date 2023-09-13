@@ -21,7 +21,7 @@ public final class DoubleIlmUtil {
 
         double[] result = new double[rowCount * colCount];
 
-        doubleIlm.toArray(result, 0, rowStart, columnStart, rowCount, colCount);
+        doubleIlm.get(result, 0, rowStart, columnStart, rowCount, colCount);
 
         return result;
     }

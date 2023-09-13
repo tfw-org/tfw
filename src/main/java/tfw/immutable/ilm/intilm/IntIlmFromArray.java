@@ -37,8 +37,8 @@ public final class IntIlmFromArray {
         }
 
         @Override
-        protected void toArrayImpl(
-                final int[] array, int offset, long rowStart, long colStart, int rowCount, int colCount)
+        protected void getImpl(
+                final int[] array, final int offset, long rowStart, long colStart, int rowCount, int colCount)
                 throws IOException {
             int intWidth = (int) width();
 

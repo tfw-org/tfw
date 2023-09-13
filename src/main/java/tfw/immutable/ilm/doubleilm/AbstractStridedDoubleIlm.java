@@ -5,7 +5,7 @@ import tfw.immutable.ilm.AbstractIlm;
 import tfw.immutable.ilm.AbstractStridedIlmCheck;
 
 public abstract class AbstractStridedDoubleIlm extends AbstractIlm implements StridedDoubleIlm {
-    protected abstract void toArrayImpl(
+    protected abstract void getImpl(
             double[] array,
             int offset,
             int rowStride,
@@ -19,7 +19,7 @@ public abstract class AbstractStridedDoubleIlm extends AbstractIlm implements St
     protected AbstractStridedDoubleIlm() {}
 
     @Override
-    public final void toArray(
+    public final void get(
             double[] array,
             int offset,
             int rowStride,
@@ -31,7 +31,7 @@ public abstract class AbstractStridedDoubleIlm extends AbstractIlm implements St
             throws IOException {
         AbstractStridedIlmCheck.boundsCheck(
                 width(), height(), array.length, offset, rowStride, colStride, rowStart, colStart, rowCount, colCount);
-        toArrayImpl(array, offset, rowStride, colStride, rowStart, colStart, rowCount, colCount);
+        getImpl(array, offset, rowStride, colStride, rowStart, colStart, rowCount, colCount);
     }
 }
 // AUTO GENERATED FROM TEMPLATE

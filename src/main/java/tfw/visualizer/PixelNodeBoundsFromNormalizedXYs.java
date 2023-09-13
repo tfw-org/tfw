@@ -55,14 +55,14 @@ public final class PixelNodeBoundsFromNormalizedXYs {
             return 4;
         }
 
-        public int[] toArray() throws IOException {
+        public int[] get() throws IOException {
             Object[] nodes = new Object[(int) graph.nodesLength()];
             Object[] froms = new Object[0];
             Object[] tos = new Object[0];
 
-            graph.toArray(nodes, 0, 0, (int) graph.nodesLength(), froms, tos, 0, 0, 0);
+            graph.get(nodes, 0, 0, (int) graph.nodesLength(), froms, tos, 0, 0, 0);
 
-            double[][] xys = null; // normalizedXYs.toArray();
+            double[][] xys = null; // normalizedXYs.get();
             double[] xs = xys[0];
             double[] ys = xys[1];
 
@@ -90,12 +90,12 @@ public final class PixelNodeBoundsFromNormalizedXYs {
             return null;
         }
 
-        public int[] toArray(long rowStart, long columnStart, int width, int height) throws IOException {
+        public int[] get(long rowStart, long columnStart, int width, int height) throws IOException {
             throw new IOException("Method not implemented!");
         }
 
         @Override
-        public void toArray(int[] array, int offset, long rowStart, long columnStart, int rowCount, int colCount)
+        public void get(int[] array, int offset, long rowStart, long columnStart, int rowCount, int colCount)
                 throws IOException {
             // TODO Auto-generated method stub
 

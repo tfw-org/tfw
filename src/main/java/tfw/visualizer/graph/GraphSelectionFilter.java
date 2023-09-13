@@ -29,7 +29,7 @@ public class GraphSelectionFilter {
             return graph.edgesLength();
         }
 
-        public void toArray(
+        public void get(
                 Object[] nodes,
                 int nodesOffset,
                 long nodesStart,
@@ -45,7 +45,7 @@ public class GraphSelectionFilter {
             Object[] allTos = new Object[(int) graph.edgesLength()];
             boolean[] selectedNodesArray = BooleanIlaUtil.toArray(selectedNodes);
 
-            graph.toArray(allNodes, 0, 0, (int) graph.nodesLength(), allFroms, allTos, 0, 0, (int) graph.edgesLength());
+            graph.get(allNodes, 0, 0, (int) graph.nodesLength(), allFroms, allTos, 0, 0, (int) graph.edgesLength());
 
             HashSet<Object> selectedNodeSet = new HashSet<>();
             for (int i = 0; i < selectedNodesArray.length; i++) {
@@ -63,7 +63,7 @@ public class GraphSelectionFilter {
                 }
             }
 
-            graph.toArray(
+            graph.get(
                     nodes,
                     nodesOffset,
                     nodesStart,

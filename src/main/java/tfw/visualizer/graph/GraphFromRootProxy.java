@@ -51,7 +51,7 @@ public class GraphFromRootProxy {
             return edgeFroms.length;
         }
 
-        public void toArray(
+        public void get(
                 Object[] nodes,
                 int nodesOffset,
                 long nodesStart,

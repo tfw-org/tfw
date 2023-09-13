@@ -34,18 +34,18 @@ public class RowConcatenateDoubleIlm {
         }
 
         @Override
-        protected void toArrayImpl(double[] array, int offset, long rowStart, long colStart, int rowCount, int colCount)
+        protected void getImpl(double[] array, int offset, long rowStart, long colStart, int rowCount, int colCount)
                 throws IOException {
             if (colStart + colCount <= stridedLeftIlm.width()) {
-                stridedLeftIlm.toArray(array, offset, colCount, 1, rowStart, colStart, rowCount, colCount);
+                stridedLeftIlm.get(array, offset, colCount, 1, rowStart, colStart, rowCount, colCount);
             } else if (colStart >= stridedLeftIlm.width()) {
-                stridedRightIlm.toArray(
+                stridedRightIlm.get(
                         array, offset, colCount, 1, rowStart, colStart - stridedLeftIlm.width(), rowCount, colCount);
             } else {
                 int firstAmount = (int) (stridedLeftIlm.width() - colStart);
 
-                stridedLeftIlm.toArray(array, offset, colCount, 1, rowStart, colStart, rowCount, firstAmount);
-                stridedRightIlm.toArray(
+                stridedLeftIlm.get(array, offset, colCount, 1, rowStart, colStart, rowCount, firstAmount);
+                stridedRightIlm.get(
                         array, offset + firstAmount, colCount, 1, rowStart, 0, rowCount, colCount - firstAmount);
             }
         }

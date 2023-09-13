@@ -7,7 +7,7 @@ public interface Graph {
 
     long edgesLength();
 
-    void toArray(
+    void get(
             Object[] nodes,
             int nodesOffset,
             long nodesStart,

@@ -37,8 +37,8 @@ public final class CharIlmFromArray {
         }
 
         @Override
-        protected void toArrayImpl(
-                final char[] array, int offset, long rowStart, long colStart, int rowCount, int colCount)
+        protected void getImpl(
+                final char[] array, final int offset, long rowStart, long colStart, int rowCount, int colCount)
                 throws IOException {
             int intWidth = (int) width();
 

@@ -37,8 +37,8 @@ public final class ShortIlmFromArray {
         }
 
         @Override
-        protected void toArrayImpl(
-                final short[] array, int offset, long rowStart, long colStart, int rowCount, int colCount)
+        protected void getImpl(
+                final short[] array, final int offset, long rowStart, long colStart, int rowCount, int colCount)
                 throws IOException {
             int intWidth = (int) width();
 

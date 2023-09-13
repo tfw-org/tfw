@@ -46,7 +46,7 @@ public class StridedLongIlmCircularCache {
         }
 
         @Override
-        protected synchronized void toArrayImpl(
+        protected synchronized void getImpl(
                 long[] array,
                 int offset,
                 int rowStride,
@@ -66,7 +66,7 @@ public class StridedLongIlmCircularCache {
                         stridedIlm.height() > rowStart + maxRows ? maxRows : (int) (stridedIlm.height() - rowStart);
 
                 if (stridedIlm.height() <= maxRows) {
-                    stridedIlm.toArray(buffer, 0, rStride, cStride, 0, colStart, (int) stridedIlm.height(), colCount);
+                    stridedIlm.get(buffer, 0, rStride, cStride, 0, colStart, (int) stridedIlm.height(), colCount);
                     cacheStart = 0;
                     cacheEnd = stridedIlm.height();
 
@@ -81,7 +81,7 @@ public class StridedLongIlmCircularCache {
                 }
 
                 if (rowStart % maxRows == 0) {
-                    stridedIlm.toArray(
+                    stridedIlm.get(
                             buffer,
                             rowStartOffset * rStride,
                             rStride,
@@ -98,15 +98,14 @@ public class StridedLongIlmCircularCache {
                         firstLength = rowCount;
                     }
 
-                    stridedIlm.toArray(
+                    stridedIlm.get(
                             buffer, first * rStride, rStride, cStride, rowStart, colStart, firstLength, colCount);
 
                     if (firstLength + first > rowCount) {
                         first = rowCount - firstLength;
                     }
                     if (first > 0) {
-                        stridedIlm.toArray(
-                                buffer, 0, rStride, cStride, rowStart + firstLength, colStart, first, colCount);
+                        stridedIlm.get(buffer, 0, rStride, cStride, rowStart + firstLength, colStart, first, colCount);
                     }
                 }
 
@@ -145,7 +144,7 @@ public class StridedLongIlmCircularCache {
                         : (int) (stridedIlm.height() - cacheEnd);
 
                 if (newRowStartOffset + newRowCount <= maxRows) {
-                    stridedIlm.toArray(
+                    stridedIlm.get(
                             buffer,
                             newRowStartOffset * rStride,
                             rStride,
@@ -158,7 +157,7 @@ public class StridedLongIlmCircularCache {
                     int countA = maxRows - newRowStartOffset;
                     int countB = newRowCount - countA;
 
-                    stridedIlm.toArray(
+                    stridedIlm.get(
                             buffer,
                             newRowStartOffset * rStride,
                             rStride,
@@ -167,7 +166,7 @@ public class StridedLongIlmCircularCache {
                             colStart,
                             countA,
                             colCount);
-                    stridedIlm.toArray(buffer, 0, rStride, cStride, cacheEnd + countA, colStart, countB, colCount);
+                    stridedIlm.get(buffer, 0, rStride, cStride, cacheEnd + countA, colStart, countB, colCount);
                 }
 
                 for (int i = 0; i < rowCount; i++) {
@@ -189,7 +188,7 @@ public class StridedLongIlmCircularCache {
                 int newRowEndOffset = (int) (cacheStart % maxRows);
 
                 if (rowStartOffset + newRowCount <= maxRows) {
-                    stridedIlm.toArray(
+                    stridedIlm.get(
                             buffer,
                             rowStartOffset * rStride,
                             rStride,
@@ -203,10 +202,10 @@ public class StridedLongIlmCircularCache {
                     int countA = maxRows - end;
                     int countB = newRowCount - countA;
 
-                    stridedIlm.toArray(buffer, end * rStride, rStride, cStride, rowStart, colStart, countA, colCount);
+                    stridedIlm.get(buffer, end * rStride, rStride, cStride, rowStart, colStart, countA, colCount);
 
                     if (countB > 0) {
-                        stridedIlm.toArray(buffer, 0, rStride, cStride, rowStart + countA, colStart, countB, colCount);
+                        stridedIlm.get(buffer, 0, rStride, cStride, rowStart + countA, colStart, countB, colCount);
                     } else {
                         System.out.println("maxRows = " + maxRows);
                         System.out.println("countA = " + countA);

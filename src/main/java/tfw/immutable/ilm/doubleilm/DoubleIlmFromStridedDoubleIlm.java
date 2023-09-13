@@ -30,10 +30,10 @@ public final class DoubleIlmFromStridedDoubleIlm {
         }
 
         @Override
-        protected void toArrayImpl(
-                final double[] array, int offset, long rowStart, long colStart, int rowCount, int colCount)
+        protected void getImpl(
+                final double[] array, final int offset, long rowStart, long colStart, int rowCount, int colCount)
                 throws IOException {
-            stridedIlm.toArray(array, offset, colCount, 1, rowStart, colStart, rowCount, colCount);
+            stridedIlm.get(array, offset, colCount, 1, rowStart, colStart, rowCount, colCount);
         }
     }
 }
