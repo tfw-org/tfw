@@ -23,7 +23,7 @@ public final class %%NAME%%IlaCheck {
     public static void checkFourFiveEquivalence(%%NAME%%Ila ila, int offsetLength, %%TYPE%% epsilon) throws Exception {
         if (offsetLength < 0) throw new Exception("offsetLength < 0 not allowed");
 
-        final Strided%%NAME%%Ila strided%%NAME%%Ila = new Strided%%NAME%%Ila(ila, new %%TYPE%%[1000]);
+        final Strided%%NAME%%Ila strided%%NAME%%Ila = Strided%%NAME%%IlaFrom%%NAME%%Ila.create(ila, new %%TYPE%%[1000]);
         final %%TYPE%% eps = epsilon < 0.0 ?%%CAST_FROM_INT%% -epsilon : epsilon;
         final %%TYPE%% neps =%%CAST_FROM_INT%% -eps;
         %%RANDOM_INIT%%final int ilaLength = ila.length() + offsetLength <= Integer.MAX_VALUE
@@ -63,8 +63,8 @@ public final class %%NAME%%IlaCheck {
         if (maxAbsStride < 1) throw new Exception("maxAbsStride < 1 not allowed");
         if (target.length() != actual.length()) throw new Exception("target.length() != actual.length()");
 
-        final Strided%%NAME%%Ila stridedTarget = new Strided%%NAME%%Ila(target, new %%TYPE%%[1000]);
-        final Strided%%NAME%%Ila stridedActual = new Strided%%NAME%%Ila(target, new %%TYPE%%[1000]);
+        final Strided%%NAME%%Ila stridedTarget = Strided%%NAME%%IlaFrom%%NAME%%Ila.create(target, new %%TYPE%%[1000]);
+        final Strided%%NAME%%Ila stridedActual = Strided%%NAME%%IlaFrom%%NAME%%Ila.create(target, new %%TYPE%%[1000]);
         final %%TYPE%% eps = epsilon < 0.0 ?%%CAST_FROM_INT%% -epsilon : epsilon;
         final %%TYPE%% neps =%%CAST_FROM_INT%% -eps;
         %%RANDOM_INIT%%final int ilaLength = stridedTarget.length() + addlOffsetLength <= Integer.MAX_VALUE

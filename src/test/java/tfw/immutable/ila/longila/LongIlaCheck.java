@@ -23,7 +23,7 @@ public final class LongIlaCheck {
     public static void checkFourFiveEquivalence(LongIla ila, int offsetLength, long epsilon) throws Exception {
         if (offsetLength < 0) throw new Exception("offsetLength < 0 not allowed");
 
-        final StridedLongIla stridedLongIla = new StridedLongIla(ila, new long[1000]);
+        final StridedLongIla stridedLongIla = StridedLongIlaFromLongIla.create(ila, new long[1000]);
         final long eps = epsilon < 0.0 ? -epsilon : epsilon;
         final long neps = -eps;
         final Random random = new Random(0);
@@ -64,8 +64,8 @@ public final class LongIlaCheck {
         if (maxAbsStride < 1) throw new Exception("maxAbsStride < 1 not allowed");
         if (target.length() != actual.length()) throw new Exception("target.length() != actual.length()");
 
-        final StridedLongIla stridedTarget = new StridedLongIla(target, new long[1000]);
-        final StridedLongIla stridedActual = new StridedLongIla(target, new long[1000]);
+        final StridedLongIla stridedTarget = StridedLongIlaFromLongIla.create(target, new long[1000]);
+        final StridedLongIla stridedActual = StridedLongIlaFromLongIla.create(target, new long[1000]);
         final long eps = epsilon < 0.0 ? -epsilon : epsilon;
         final long neps = -eps;
         final Random random = new Random(0);

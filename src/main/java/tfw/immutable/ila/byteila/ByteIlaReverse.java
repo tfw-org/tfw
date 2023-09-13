@@ -31,7 +31,7 @@ public final class ByteIlaReverse {
 
         @Override
         protected void getImpl(byte[] array, int offset, long start, int length) throws IOException {
-            final StridedByteIla stridedByteIla = new StridedByteIla(ila, buffer.clone());
+            final StridedByteIla stridedByteIla = StridedByteIlaFromByteIla.create(ila, buffer.clone());
 
             stridedByteIla.get(array, offset + (length - 1), -1, length() - (start + length), length);
         }

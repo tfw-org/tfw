@@ -28,7 +28,7 @@ class %%NAME%%IlaFromArrayTest {
             creation[ii] = %%RANDOM_VALUE%%;
         }
         final %%NAME%%Ila%%TEMPLATE%% ila = %%NAME%%IlaFromArray.create(creation);
-        final Strided%%NAME%%Ila%%TEMPLATE%% stridedIla = new Strided%%NAME%%Ila%%TEMPLATE%%(ila, new %%TYPE%%[1000]);
+        final Strided%%NAME%%Ila%%TEMPLATE%% stridedIla = Strided%%NAME%%IlaFrom%%NAME%%Ila.create(ila, new %%TYPE%%[1000]);
 
         for (int stride = -maxAbsStride; stride <= maxAbsStride; ++stride) {
             if (stride != 0) {

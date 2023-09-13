@@ -33,7 +33,7 @@ public final class %%NAME%%IlaInterleave {
             ilasLength = ilas.length;
 
             for (int i = 0; i < ilas.length; i++) {
-                strided%%NAME%%Ilas[i] = new Strided%%NAME%%Ila%%DIAMOND%%(ilas[i], buffer.clone());
+                strided%%NAME%%Ilas[i] = Strided%%NAME%%IlaFrom%%NAME%%Ila.create(ilas[i], buffer.clone());
             }
         }
 

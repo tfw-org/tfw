@@ -32,7 +32,7 @@ public final class FloatIlaInterleave {
             ilasLength = ilas.length;
 
             for (int i = 0; i < ilas.length; i++) {
-                stridedFloatIlas[i] = new StridedFloatIla(ilas[i], buffer.clone());
+                stridedFloatIlas[i] = StridedFloatIlaFromFloatIla.create(ilas[i], buffer.clone());
             }
         }
 

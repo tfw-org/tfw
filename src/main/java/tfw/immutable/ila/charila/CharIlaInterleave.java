@@ -32,7 +32,7 @@ public final class CharIlaInterleave {
             ilasLength = ilas.length;
 
             for (int i = 0; i < ilas.length; i++) {
-                stridedCharIlas[i] = new StridedCharIla(ilas[i], buffer.clone());
+                stridedCharIlas[i] = StridedCharIlaFromCharIla.create(ilas[i], buffer.clone());
             }
         }
 

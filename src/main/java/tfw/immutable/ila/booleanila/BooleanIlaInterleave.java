@@ -32,7 +32,7 @@ public final class BooleanIlaInterleave {
             ilasLength = ilas.length;
 
             for (int i = 0; i < ilas.length; i++) {
-                stridedBooleanIlas[i] = new StridedBooleanIla(ilas[i], buffer.clone());
+                stridedBooleanIlas[i] = StridedBooleanIlaFromBooleanIla.create(ilas[i], buffer.clone());
             }
         }
 

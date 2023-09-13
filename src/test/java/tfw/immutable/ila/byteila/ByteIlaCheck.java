@@ -23,7 +23,7 @@ public final class ByteIlaCheck {
     public static void checkFourFiveEquivalence(ByteIla ila, int offsetLength, byte epsilon) throws Exception {
         if (offsetLength < 0) throw new Exception("offsetLength < 0 not allowed");
 
-        final StridedByteIla stridedByteIla = new StridedByteIla(ila, new byte[1000]);
+        final StridedByteIla stridedByteIla = StridedByteIlaFromByteIla.create(ila, new byte[1000]);
         final byte eps = epsilon < 0.0 ? (byte) -epsilon : epsilon;
         final byte neps = (byte) -eps;
         final Random random = new Random(0);
@@ -64,8 +64,8 @@ public final class ByteIlaCheck {
         if (maxAbsStride < 1) throw new Exception("maxAbsStride < 1 not allowed");
         if (target.length() != actual.length()) throw new Exception("target.length() != actual.length()");
 
-        final StridedByteIla stridedTarget = new StridedByteIla(target, new byte[1000]);
-        final StridedByteIla stridedActual = new StridedByteIla(target, new byte[1000]);
+        final StridedByteIla stridedTarget = StridedByteIlaFromByteIla.create(target, new byte[1000]);
+        final StridedByteIla stridedActual = StridedByteIlaFromByteIla.create(target, new byte[1000]);
         final byte eps = epsilon < 0.0 ? (byte) -epsilon : epsilon;
         final byte neps = (byte) -eps;
         final Random random = new Random(0);

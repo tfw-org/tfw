@@ -23,7 +23,7 @@ public final class CharIlaCheck {
     public static void checkFourFiveEquivalence(CharIla ila, int offsetLength, char epsilon) throws Exception {
         if (offsetLength < 0) throw new Exception("offsetLength < 0 not allowed");
 
-        final StridedCharIla stridedCharIla = new StridedCharIla(ila, new char[1000]);
+        final StridedCharIla stridedCharIla = StridedCharIlaFromCharIla.create(ila, new char[1000]);
         final char eps = epsilon < 0.0 ? (char) -epsilon : epsilon;
         final char neps = (char) -eps;
         final Random random = new Random(0);
@@ -64,8 +64,8 @@ public final class CharIlaCheck {
         if (maxAbsStride < 1) throw new Exception("maxAbsStride < 1 not allowed");
         if (target.length() != actual.length()) throw new Exception("target.length() != actual.length()");
 
-        final StridedCharIla stridedTarget = new StridedCharIla(target, new char[1000]);
-        final StridedCharIla stridedActual = new StridedCharIla(target, new char[1000]);
+        final StridedCharIla stridedTarget = StridedCharIlaFromCharIla.create(target, new char[1000]);
+        final StridedCharIla stridedActual = StridedCharIlaFromCharIla.create(target, new char[1000]);
         final char eps = epsilon < 0.0 ? (char) -epsilon : epsilon;
         final char neps = (char) -eps;
         final Random random = new Random(0);

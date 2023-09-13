@@ -28,7 +28,7 @@ public final class BooleanIlaCheck {
         } else {
             if (offsetLength < 0) throw new Exception("offsetLength < 0 not allowed");
 
-            final StridedBooleanIla stridedBooleanIla = new StridedBooleanIla(ila, new boolean[1000]);
+            final StridedBooleanIla stridedBooleanIla = StridedBooleanIlaFromBooleanIla.create(ila, new boolean[10]);
             final Random random = new Random(0);
             final int ilaLength = ila.length() + offsetLength <= Integer.MAX_VALUE
                     ? (int) ila.length()
@@ -70,8 +70,8 @@ public final class BooleanIlaCheck {
             if (maxAbsStride < 1) throw new Exception("maxAbsStride < 1 not allowed");
             if (target.length() != actual.length()) throw new Exception("target.length() != actual.length()");
 
-            final StridedBooleanIla stridedTarget = new StridedBooleanIla(target, new boolean[1000]);
-            final StridedBooleanIla stridedActual = new StridedBooleanIla(target, new boolean[1000]);
+            final StridedBooleanIla stridedTarget = StridedBooleanIlaFromBooleanIla.create(target, new boolean[10]);
+            final StridedBooleanIla stridedActual = StridedBooleanIlaFromBooleanIla.create(target, new boolean[10]);
             final Random random = new Random(0);
             final int ilaLength = target.length() + addlOffsetLength <= Integer.MAX_VALUE
                     ? (int) target.length()

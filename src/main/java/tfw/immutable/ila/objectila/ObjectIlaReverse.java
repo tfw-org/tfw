@@ -31,7 +31,7 @@ public final class ObjectIlaReverse {
 
         @Override
         protected void getImpl(T[] array, int offset, long start, int length) throws IOException {
-            final StridedObjectIla<T> stridedObjectIla = new StridedObjectIla<>(ila, buffer.clone());
+            final StridedObjectIla<T> stridedObjectIla = StridedObjectIlaFromObjectIla.create(ila, buffer.clone());
 
             stridedObjectIla.get(array, offset + (length - 1), -1, length() - (start + length), length);
         }

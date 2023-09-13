@@ -30,7 +30,7 @@ class FloatIlaFromArrayTest {
             creation[ii] = random.nextFloat();
         }
         final FloatIla ila = FloatIlaFromArray.create(creation);
-        final StridedFloatIla stridedIla = new StridedFloatIla(ila, new float[1000]);
+        final StridedFloatIla stridedIla = StridedFloatIlaFromFloatIla.create(ila, new float[1000]);
 
         for (int stride = -maxAbsStride; stride <= maxAbsStride; ++stride) {
             if (stride != 0) {

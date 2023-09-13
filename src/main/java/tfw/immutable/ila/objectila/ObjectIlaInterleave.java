@@ -32,7 +32,7 @@ public final class ObjectIlaInterleave {
             ilasLength = ilas.length;
 
             for (int i = 0; i < ilas.length; i++) {
-                stridedObjectIlas[i] = new StridedObjectIla<>(ilas[i], buffer.clone());
+                stridedObjectIlas[i] = StridedObjectIlaFromObjectIla.create(ilas[i], buffer.clone());
             }
         }
 
