@@ -21,7 +21,7 @@ class InterleavedMagnitudeDoubleIlmTest {
 
         double[] test2Check = new double[] {41.0, 85.0, 0.0, 61.0, 113.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
         double[] test2Array = new double[12];
-        stridedMagnitude.toArray(test2Array, 0, 3, 1, 2, 1, 2, 2);
+        stridedMagnitude.get(test2Array, 0, 3, 1, 2, 1, 2, 2);
         assertTrue(Arrays.equals(test2Check, test2Array));
 
         double[] test3Check = new double[] {
@@ -31,12 +31,12 @@ class InterleavedMagnitudeDoubleIlmTest {
             0.0, 5.0, 25.0
         };
         double[] test3Array = new double[12];
-        stridedMagnitude.toArray(test3Array, 7, 3, 1, 0, 0, 2, 2);
+        stridedMagnitude.get(test3Array, 7, 3, 1, 0, 0, 2, 2);
         assertTrue(Arrays.equals(test3Check, test3Array));
 
         double[] test4Check = new double[] {0.0, 0.0, 0.0, 25.0, 0.0, 61.0, 0.0, 0.0, 0.0, 41.0, 0.0, 85.0};
         double[] test4Array = new double[12];
-        stridedMagnitude.toArray(test4Array, 3, 6, 2, 1, 1, 2, 2);
+        stridedMagnitude.get(test4Array, 3, 6, 2, 1, 1, 2, 2);
         assertTrue(Arrays.equals(test4Check, test4Array));
     }
 }

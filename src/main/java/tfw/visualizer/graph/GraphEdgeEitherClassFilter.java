@@ -30,7 +30,7 @@ public class GraphEdgeEitherClassFilter {
             return graph.edgesLength();
         }
 
-        public void toArray(
+        public void get(
                 Object[] nodes,
                 int nodesOffset,
                 long nodesStart,
@@ -41,7 +41,7 @@ public class GraphEdgeEitherClassFilter {
                 long edgesStart,
                 int edgesLength)
                 throws IOException {
-            graph.toArray(
+            graph.get(
                     nodes,
                     nodesOffset,
                     nodesStart,

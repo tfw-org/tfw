@@ -5,7 +5,7 @@ import tfw.immutable.ilm.AbstractIlm;
 import tfw.immutable.ilm.AbstractStridedIlmCheck;
 
 public abstract class AbstractStridedByteIlm extends AbstractIlm implements StridedByteIlm {
-    protected abstract void toArrayImpl(
+    protected abstract void getImpl(
             byte[] array,
             int offset,
             int rowStride,
@@ -19,7 +19,7 @@ public abstract class AbstractStridedByteIlm extends AbstractIlm implements Stri
     protected AbstractStridedByteIlm() {}
 
     @Override
-    public final void toArray(
+    public final void get(
             byte[] array,
             int offset,
             int rowStride,
@@ -31,7 +31,7 @@ public abstract class AbstractStridedByteIlm extends AbstractIlm implements Stri
             throws IOException {
         AbstractStridedIlmCheck.boundsCheck(
                 width(), height(), array.length, offset, rowStride, colStride, rowStart, colStart, rowCount, colCount);
-        toArrayImpl(array, offset, rowStride, colStride, rowStart, colStart, rowCount, colCount);
+        getImpl(array, offset, rowStride, colStride, rowStart, colStart, rowCount, colCount);
     }
 }
 // AUTO GENERATED FROM TEMPLATE

@@ -21,7 +21,7 @@ public final class LongIlmUtil {
 
         long[] result = new long[rowCount * colCount];
 
-        longIlm.toArray(result, 0, rowStart, columnStart, rowCount, colCount);
+        longIlm.get(result, 0, rowStart, columnStart, rowCount, colCount);
 
         return result;
     }

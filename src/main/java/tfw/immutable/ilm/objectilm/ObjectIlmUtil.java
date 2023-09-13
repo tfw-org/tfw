@@ -26,11 +26,11 @@ public final class ObjectIlmUtil {
 
         if (array.length < intArrayLength) {
             T[] copy = Arrays.copyOf(array, intArrayLength);
-            objectIlm.toArray(copy, 0, rowStart, columnStart, rowCount, colCount);
+            objectIlm.get(copy, 0, rowStart, columnStart, rowCount, colCount);
 
             return copy;
         } else {
-            objectIlm.toArray(array, 0, rowStart, columnStart, rowCount, colCount);
+            objectIlm.get(array, 0, rowStart, columnStart, rowCount, colCount);
             if (array.length > intArrayLength) {
                 array[intArrayLength] = null;
             }

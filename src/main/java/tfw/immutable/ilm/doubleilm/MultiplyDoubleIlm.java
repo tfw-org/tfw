@@ -37,16 +37,16 @@ public class MultiplyDoubleIlm {
         }
 
         @Override
-        protected void toArrayImpl(double[] array, int offset, long rowStart, long colStart, int rowCount, int colCount)
+        protected void getImpl(double[] array, int offset, long rowStart, long colStart, int rowCount, int colCount)
                 throws IOException {
             if (buffer.length < colCount) {
                 buffer = new double[colCount];
             }
 
-            leftIlm.toArray(array, offset, rowStart, colStart, rowCount, colCount);
+            leftIlm.get(array, offset, rowStart, colStart, rowCount, colCount);
 
             for (int i = 0; i < rowCount; i++) {
-                rightIlm.toArray(buffer, 0, rowStart + i, colStart, 1, colCount);
+                rightIlm.get(buffer, 0, rowStart + i, colStart, 1, colCount);
 
                 for (int j = 0; j < colCount; j++) {
                     array[offset + (i * colCount) + j] *= buffer[j];

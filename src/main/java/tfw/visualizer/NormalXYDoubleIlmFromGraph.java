@@ -32,7 +32,7 @@ public class NormalXYDoubleIlmFromGraph {
             return 2;
         }
 
-        public double[] toArray() throws IOException {
+        public double[] get() throws IOException {
             // System.out.println("NormalXYDoubleIlmFromGraph:  starting");
             Object[] nodes = new Object[(int) graph.nodesLength()];
             Object[] froms = new Object[(int) graph.edgesLength()];
@@ -41,7 +41,7 @@ public class NormalXYDoubleIlmFromGraph {
             double[] normalYs = new double[(int) graph.nodesLength()];
             int[] nodeClusterNumbers = new int[(int) graph.nodesLength()];
 
-            graph.toArray(nodes, 0, 0, (int) graph.nodesLength(), froms, tos, 0, 0, (int) graph.edgesLength());
+            graph.get(nodes, 0, 0, (int) graph.nodesLength(), froms, tos, 0, 0, (int) graph.edgesLength());
 
             // for (int i=0 ; i < nodes.length ; i++)
             // System.out.println("nodes["+i+"]="+nodes[i]);
@@ -206,7 +206,7 @@ public class NormalXYDoubleIlmFromGraph {
             // System.out.println("Leaving xxx");
         }
 
-        public double[] toArray(long rowStart, long columnStart, int width, int height) throws IOException {
+        public double[] get(long rowStart, long columnStart, int width, int height) throws IOException {
             //	    	double[][] array = toArray();
             //	    	double[][] returnArray = new double[height][width];
             //
@@ -219,7 +219,7 @@ public class NormalXYDoubleIlmFromGraph {
         }
 
         @Override
-        public void toArray(double[] array, int offset, long rowStart, long columnStart, int rowCount, int colCount)
+        public void get(double[] array, int offset, long rowStart, long columnStart, int rowCount, int colCount)
                 throws IOException {
             // TODO Auto-generated method stub
 

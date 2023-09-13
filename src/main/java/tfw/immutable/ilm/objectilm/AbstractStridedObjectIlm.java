@@ -5,7 +5,7 @@ import tfw.immutable.ilm.AbstractIlm;
 import tfw.immutable.ilm.AbstractStridedIlmCheck;
 
 public abstract class AbstractStridedObjectIlm<T> extends AbstractIlm implements StridedObjectIlm<T> {
-    protected abstract void toArrayImpl(
+    protected abstract void getImpl(
             T[] array,
             int offset,
             int rowStride,
@@ -19,7 +19,7 @@ public abstract class AbstractStridedObjectIlm<T> extends AbstractIlm implements
     protected AbstractStridedObjectIlm() {}
 
     @Override
-    public final void toArray(
+    public final void get(
             T[] array,
             int offset,
             int rowStride,
@@ -31,7 +31,7 @@ public abstract class AbstractStridedObjectIlm<T> extends AbstractIlm implements
             throws IOException {
         AbstractStridedIlmCheck.boundsCheck(
                 width(), height(), array.length, offset, rowStride, colStride, rowStart, colStart, rowCount, colCount);
-        toArrayImpl(array, offset, rowStride, colStride, rowStart, colStart, rowCount, colCount);
+        getImpl(array, offset, rowStride, colStride, rowStart, colStart, rowCount, colCount);
     }
 }
 // AUTO GENERATED FROM TEMPLATE

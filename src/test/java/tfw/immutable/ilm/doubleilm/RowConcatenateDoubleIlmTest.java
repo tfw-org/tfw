@@ -38,7 +38,7 @@ class RowConcatenateDoubleIlmTest {
             0.0, 0.0, 0.0, 0.0, 0.0,
         };
         double[] test2Array = new double[25];
-        stridedConcatenateIlm.toArray(test2Array, 0, 5, 1, 1, 1, 3, 3);
+        stridedConcatenateIlm.get(test2Array, 0, 5, 1, 1, 1, 3, 3);
         assertTrue(Arrays.equals(test2Check, test2Array));
 
         double[] test3Check = new double[] {
@@ -49,7 +49,7 @@ class RowConcatenateDoubleIlmTest {
             0.0, 0.0, 0.0, 0.0, 0.0,
         };
         double[] test3Array = new double[25];
-        stridedConcatenateIlm.toArray(test3Array, 6, 5, 1, 1, 4, 3, 3);
+        stridedConcatenateIlm.get(test3Array, 6, 5, 1, 1, 4, 3, 3);
         assertTrue(Arrays.equals(test3Check, test3Array));
 
         double[] test4Check = new double[] {
@@ -60,7 +60,7 @@ class RowConcatenateDoubleIlmTest {
             0.0, 0.0, 0.0, 0.0, 0.0,
         };
         double[] test4Array = new double[25];
-        stridedConcatenateIlm.toArray(test4Array, 6, 10, 2, 1, 6, 2, 2);
+        stridedConcatenateIlm.get(test4Array, 6, 10, 2, 1, 6, 2, 2);
         assertTrue(Arrays.equals(test4Check, test4Array));
     }
 }

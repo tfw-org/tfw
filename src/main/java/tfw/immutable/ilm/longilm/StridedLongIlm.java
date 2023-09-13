@@ -4,7 +4,7 @@ import java.io.IOException;
 import tfw.immutable.ilm.ImmutableLongMatrix;
 
 public interface StridedLongIlm extends ImmutableLongMatrix {
-    void toArray(
+    void get(
             long[] array,
             int offset,
             int rowStride,

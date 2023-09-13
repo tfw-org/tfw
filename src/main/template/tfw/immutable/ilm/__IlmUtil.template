@@ -22,7 +22,7 @@ public final class %%NAME%%IlmUtil {
 
         %%TYPE%%[] result = new %%TYPE%%[rowCount * colCount];
 
-        %%TYPE%%Ilm.toArray(result, 0, rowStart, columnStart, rowCount, colCount);
+        %%TYPE%%Ilm.get(result, 0, rowStart, columnStart, rowCount, colCount);
 
         return result;
     }

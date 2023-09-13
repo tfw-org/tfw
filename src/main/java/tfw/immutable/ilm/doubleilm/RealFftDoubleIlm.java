@@ -42,13 +42,13 @@ public class RealFftDoubleIlm {
         }
 
         @Override
-        protected void toArrayImpl(double[] array, int offset, long rowStart, long colStart, int rowCount, int colCount)
+        protected void getImpl(double[] array, int offset, long rowStart, long colStart, int rowCount, int colCount)
                 throws IOException {
             Argument.assertEquals(colStart, 0, "colStart", "0");
             Argument.assertEquals(colCount, fftSize, "colCount", "fftSize");
 
             for (int i = 0; i < rowCount; i++) {
-                doubleIlm.toArray(buffer, 0, rowStart + i, 0, 1, dataWidth);
+                doubleIlm.get(buffer, 0, rowStart + i, 0, 1, dataWidth);
                 Ooura1D.rdft(fftSize, 1, buffer, ip, w);
 
                 System.arraycopy(buffer, 0, array, offset + (colCount * i), fftSize);

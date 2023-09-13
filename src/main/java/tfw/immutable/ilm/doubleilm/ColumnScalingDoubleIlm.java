@@ -46,7 +46,7 @@ public class ColumnScalingDoubleIlm {
         }
 
         @Override
-        protected void toArrayImpl(double[] array, int offset, long rowStart, long colStart, int rowCount, int colCount)
+        protected void getImpl(double[] array, int offset, long rowStart, long colStart, int rowCount, int colCount)
                 throws IOException {
             long lastRowCopied = -1;
 
@@ -59,7 +59,7 @@ public class ColumnScalingDoubleIlm {
                 if (rowToCopy == lastRowCopied) {
                     System.arraycopy(array, offset + (colCount * (i - 1)), array, offset + (colCount * i), colCount);
                 } else {
-                    doubleIlm.toArray(array, offset + (colCount * i), rowToCopy, colStart, 1, colCount);
+                    doubleIlm.get(array, offset + (colCount * i), rowToCopy, colStart, 1, colCount);
                 }
             }
         }
@@ -90,7 +90,7 @@ public class ColumnScalingDoubleIlm {
         }
 
         @Override
-        protected void toArrayImpl(double[] array, int offset, long rowStart, long colStart, int rowCount, int colCount)
+        protected void getImpl(double[] array, int offset, long rowStart, long colStart, int rowCount, int colCount)
                 throws IOException {
             // TODO Auto-generated method stub
 

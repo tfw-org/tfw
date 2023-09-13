@@ -33,13 +33,13 @@ public class ByteIlmFromCastIntIlm {
         }
 
         @Override
-        protected void toArrayImpl(byte[] array, int offset, long rowStart, long colStart, int rowCount, int colCount)
+        protected void getImpl(byte[] array, int offset, long rowStart, long colStart, int rowCount, int colCount)
                 throws IOException {
             if (buffer.length < intIlm.width()) {
                 buffer = new int[(int) intIlm.width()];
             }
             for (int i = 0; i < rowCount; i++) {
-                intIlm.toArray(buffer, 0, rowStart + i, colStart, 1, colCount);
+                intIlm.get(buffer, 0, rowStart + i, colStart, 1, colCount);
 
                 for (int j = 0; j < colCount; j++) {
                     array[offset + (i * colCount) + j] = (byte) buffer[j];

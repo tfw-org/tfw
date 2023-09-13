@@ -44,7 +44,7 @@ public class EdgeToGraphicConverter extends Converter {
             //			bottoms = pixelNodeTLBR[2];
             //			rights = pixelNodeTLBR[3];
 
-            graph.toArray(nodes, 0, 0, (int) graph.nodesLength(), froms, tos, 0, 0, (int) graph.edgesLength());
+            graph.get(nodes, 0, 0, (int) graph.nodesLength(), froms, tos, 0, 0, (int) graph.edgesLength());
         } catch (Exception e) {
             return;
         }

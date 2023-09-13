@@ -35,7 +35,7 @@ public class IntIlmFill {
         }
 
         @Override
-        protected void toArrayImpl(int[] array, int offset, long rowStart, long colStart, int rowCount, int colCount)
+        protected void getImpl(int[] array, int offset, long rowStart, long colStart, int rowCount, int colCount)
                 throws IOException {
             for (int i = 0; i < rowCount; i++) {
                 for (int j = 0; j < colCount; j++) {

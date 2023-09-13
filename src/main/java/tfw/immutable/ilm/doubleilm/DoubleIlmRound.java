@@ -32,10 +32,10 @@ public class DoubleIlmRound {
         }
 
         @Override
-        protected void toArrayImpl(double[] array, int offset, long rowStart, long colStart, int rowCount, int colCount)
+        protected void getImpl(double[] array, int offset, long rowStart, long colStart, int rowCount, int colCount)
                 throws IOException {
             for (int i = 0; i < rowCount; i++) {
-                doubleIlm.toArray(buffer, 0, rowStart + i, colStart, 1, colCount);
+                doubleIlm.get(buffer, 0, rowStart + i, colStart, 1, colCount);
 
                 for (int j = 0; j < colCount; j++) {
                     array[offset + (i * colCount) + j] = (double) (long) (buffer[j] + 0.5);

@@ -34,7 +34,7 @@ public final class StridedByteIlmFromByteIlm {
         }
 
         @Override
-        public final void toArrayImpl(
+        public final void getImpl(
                 byte[] array,
                 int offset,
                 int rowStride,
@@ -47,7 +47,7 @@ public final class StridedByteIlmFromByteIlm {
             final byte[] b = Arrays.copyOf(buffer, colCount);
 
             for (int i = 0; i < rowCount; i++) {
-                ilm.toArray(b, 0, rowStart + i, colStart, 1, colCount);
+                ilm.get(b, 0, rowStart + i, colStart, 1, colCount);
 
                 for (int j = 0; j < colCount; j++) {
                     array[offset + (i * rowStride) + (j * colStride)] = b[j];

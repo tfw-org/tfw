@@ -6,13 +6,13 @@ import tfw.immutable.ilm.AbstractIlm;
 import tfw.immutable.ilm.AbstractIlmCheck;
 
 public abstract class AbstractIntIlm extends AbstractIlm implements IntIlm {
-    protected abstract void toArrayImpl(
+    protected abstract void getImpl(
             final int[] array, final int offset, long rowStart, long colStart, int rowCount, int colCount)
             throws IOException;
 
     protected AbstractIntIlm() {}
 
-    public final void toArray(int[] array, int offset, long rowStart, long colStart, int rowCount, int colCount)
+    public final void get(int[] array, int offset, long rowStart, long colStart, int rowCount, int colCount)
             throws IOException {
         Argument.assertNotNull(array, "array");
 
@@ -21,7 +21,7 @@ public abstract class AbstractIntIlm extends AbstractIlm implements IntIlm {
         }
 
         AbstractIlmCheck.boundsCheck(width(), height(), array.length, offset, rowStart, colStart, rowCount, colCount);
-        toArrayImpl(array, offset, rowStart, colStart, rowCount, colCount);
+        getImpl(array, offset, rowStart, colStart, rowCount, colCount);
     }
 }
 // AUTO GENERATED FROM TEMPLATE

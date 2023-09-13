@@ -21,7 +21,7 @@ public final class BooleanIlmUtil {
 
         boolean[] result = new boolean[rowCount * colCount];
 
-        booleanIlm.toArray(result, 0, rowStart, columnStart, rowCount, colCount);
+        booleanIlm.get(result, 0, rowStart, columnStart, rowCount, colCount);
 
         return result;
     }

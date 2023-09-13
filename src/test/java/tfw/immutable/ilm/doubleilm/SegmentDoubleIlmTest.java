@@ -34,7 +34,7 @@ class SegmentDoubleIlmTest {
         double[] test2Array = new double[25];
         DoubleIlm segment2 = SegmentDoubleIlm.create(doubleIlm, 2, 2, 3, 3);
         StridedDoubleIlm stridedSegment2 = StridedDoubleIlmFromDoubleIlm.create(segment2, new double[0]);
-        stridedSegment2.toArray(test2Array, 0, 5, 1, 0, 0, 3, 3);
+        stridedSegment2.get(test2Array, 0, 5, 1, 0, 0, 3, 3);
         assertTrue(Arrays.equals(test2Check, test2Array));
 
         double[] test3Check = new double[] {
@@ -47,7 +47,7 @@ class SegmentDoubleIlmTest {
         double[] test3Array = new double[25];
         DoubleIlm segment3 = SegmentDoubleIlm.create(doubleIlm, 0, 0, 3, 3);
         StridedDoubleIlm stridedSegment3 = StridedDoubleIlmFromDoubleIlm.create(segment3, new double[0]);
-        stridedSegment3.toArray(test3Array, 12, 5, 1, 0, 0, 3, 3);
+        stridedSegment3.get(test3Array, 12, 5, 1, 0, 0, 3, 3);
         assertTrue(Arrays.equals(test3Check, test3Array));
 
         double[] test4Check = new double[] {
@@ -60,7 +60,7 @@ class SegmentDoubleIlmTest {
         double[] test4Array = new double[25];
         DoubleIlm segment4 = SegmentDoubleIlm.create(doubleIlm, 1, 1, 3, 3);
         StridedDoubleIlm stridedSegment4 = StridedDoubleIlmFromDoubleIlm.create(segment4, new double[0]);
-        stridedSegment4.toArray(test4Array, 6, 10, 2, 0, 0, 2, 2);
+        stridedSegment4.get(test4Array, 6, 10, 2, 0, 0, 2, 2);
         assertTrue(Arrays.equals(test4Check, test4Array));
     }
 }

@@ -33,22 +33,14 @@ public class TakeSkipDoubleIlm {
 
         @Override
         protected long heightImpl() throws IOException {
-            return (deleteMe(doubleIla) - take) / skip + 1;
+            return (doubleIla.length() - take) / skip + 1;
         }
 
         @Override
-        protected void toArrayImpl(double[] array, int offset, long rowStart, long colStart, int rowCount, int colCount)
+        protected void getImpl(double[] array, int offset, long rowStart, long colStart, int rowCount, int colCount)
                 throws IOException {
             for (int i = 0; i < rowCount; i++) {
                 doubleIla.get(array, offset + i * colCount, (rowStart + i) * skip + colStart, colCount);
-            }
-        }
-
-        private static long deleteMe(final DoubleIla doubleIla) {
-            try {
-                return doubleIla.length();
-            } catch (IOException e) {
-                return 0;
             }
         }
     }

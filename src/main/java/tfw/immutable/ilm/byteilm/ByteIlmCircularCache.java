@@ -39,7 +39,7 @@ public class ByteIlmCircularCache {
         }
 
         @Override
-        protected synchronized void toArrayImpl(
+        protected synchronized void getImpl(
                 byte[] array, int offset, long rowStart, long colStart, int rowCount, int colCount) throws IOException {
             if (cacheStart == 0 && cacheEnd == 0 || rowStart > cacheEnd || rowStart + rowCount < cacheStart) {
                 if (buffer.length == 0) {
@@ -50,7 +50,7 @@ public class ByteIlmCircularCache {
                 int rowsToGet = byteIlm.height() > rowStart + maxRows ? maxRows : (int) (byteIlm.height() - rowStart);
 
                 if (byteIlm.height() <= maxRows) {
-                    byteIlm.toArray(buffer, 0, 0, colStart, (int) byteIlm.height(), colCount);
+                    byteIlm.get(buffer, 0, 0, colStart, (int) byteIlm.height(), colCount);
                     cacheStart = 0;
                     cacheEnd = byteIlm.height();
 
@@ -64,7 +64,7 @@ public class ByteIlmCircularCache {
                 }
 
                 if (rowStart % maxRows == 0) {
-                    byteIlm.toArray(buffer, rowStartOffset * colCount, rowStart, colStart, rowsToGet, colCount);
+                    byteIlm.get(buffer, rowStartOffset * colCount, rowStart, colStart, rowsToGet, colCount);
                 } else {
                     int first = (int) (rowStart % maxRows);
                     int firstLength = maxRows - first;
@@ -73,13 +73,13 @@ public class ByteIlmCircularCache {
                         firstLength = rowCount;
                     }
 
-                    byteIlm.toArray(buffer, first * colCount, rowStart, colStart, firstLength, colCount);
+                    byteIlm.get(buffer, first * colCount, rowStart, colStart, firstLength, colCount);
 
                     if (firstLength + first > rowCount) {
                         first = rowCount - firstLength;
                     }
                     if (first > 0) {
-                        byteIlm.toArray(buffer, 0, rowStart + firstLength, colStart, first, colCount);
+                        byteIlm.get(buffer, 0, rowStart + firstLength, colStart, first, colCount);
                     }
                 }
 
@@ -114,13 +114,13 @@ public class ByteIlmCircularCache {
                         cacheEnd + newRowCount < byteIlm.height() ? newRowCount : (int) (byteIlm.height() - cacheEnd);
 
                 if (newRowStartOffset + newRowCount <= maxRows) {
-                    byteIlm.toArray(buffer, newRowStartOffset * colCount, cacheEnd, colStart, newRowCount, colCount);
+                    byteIlm.get(buffer, newRowStartOffset * colCount, cacheEnd, colStart, newRowCount, colCount);
                 } else {
                     int countA = maxRows - newRowStartOffset;
                     int countB = newRowCount - countA;
 
-                    byteIlm.toArray(buffer, newRowStartOffset * colCount, cacheEnd, colStart, countA, colCount);
-                    byteIlm.toArray(buffer, 0, cacheEnd + countA, colStart, countB, colCount);
+                    byteIlm.get(buffer, newRowStartOffset * colCount, cacheEnd, colStart, countA, colCount);
+                    byteIlm.get(buffer, 0, cacheEnd + countA, colStart, countB, colCount);
                 }
 
                 for (int i = 0; i < rowCount; i++) {
@@ -141,7 +141,7 @@ public class ByteIlmCircularCache {
                 int newRowEndOffset = (int) (cacheStart % maxRows);
 
                 if (rowStartOffset + newRowCount <= maxRows) {
-                    byteIlm.toArray(
+                    byteIlm.get(
                             buffer,
                             rowStartOffset * colCount,
                             cacheStart - newRowCount,
@@ -153,10 +153,10 @@ public class ByteIlmCircularCache {
                     int countA = maxRows - end;
                     int countB = newRowCount - countA;
 
-                    byteIlm.toArray(buffer, end * colCount, rowStart, colStart, countA, colCount);
+                    byteIlm.get(buffer, end * colCount, rowStart, colStart, countA, colCount);
 
                     if (countB > 0) {
-                        byteIlm.toArray(buffer, 0, rowStart + countA, colStart, countB, colCount);
+                        byteIlm.get(buffer, 0, rowStart + countA, colStart, countB, colCount);
                     } else {
                         System.out.println("maxRows = " + maxRows);
                         System.out.println("countA = " + countA);

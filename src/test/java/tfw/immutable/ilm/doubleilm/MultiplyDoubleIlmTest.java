@@ -31,7 +31,7 @@ class MultiplyDoubleIlmTest {
             0.0, 0.0, 0.0, 0.0, 0.0
         };
         double[] test2Array = new double[25];
-        stridedMultiplyIlm.toArray(test2Array, 0, 5, 1, 2, 2, 3, 3);
+        stridedMultiplyIlm.get(test2Array, 0, 5, 1, 2, 2, 3, 3);
         assertTrue(Arrays.equals(test2Check, test2Array));
 
         double[] test3Check = new double[] {
@@ -42,7 +42,7 @@ class MultiplyDoubleIlmTest {
             0.0, 0.0, 14.0, 18.0, 20.0
         };
         double[] test3Array = new double[25];
-        stridedMultiplyIlm.toArray(test3Array, 12, 5, 1, 0, 0, 3, 3);
+        stridedMultiplyIlm.get(test3Array, 12, 5, 1, 0, 0, 3, 3);
         assertTrue(Arrays.equals(test3Check, test3Array));
 
         double[] test4Check = new double[] {
@@ -53,7 +53,7 @@ class MultiplyDoubleIlmTest {
             0.0, 0.0, 0.0, 0.0, 0.0
         };
         double[] test4Array = new double[25];
-        stridedMultiplyIlm.toArray(test4Array, 6, 10, 2, 1, 1, 2, 2);
+        stridedMultiplyIlm.get(test4Array, 6, 10, 2, 1, 1, 2, 2);
         assertTrue(Arrays.equals(test4Check, test4Array));
     }
 }

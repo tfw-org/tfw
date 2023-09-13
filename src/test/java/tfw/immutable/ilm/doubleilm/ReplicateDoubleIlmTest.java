@@ -32,7 +32,7 @@ class ReplicateDoubleIlmTest {
             0.0, 0.0, 1.0, 2.0, 3.0
         };
         double[] test2 = new double[25];
-        stridedReplicate.toArray(test2, 12, 5, 1, 1, 1, 3, 3);
+        stridedReplicate.get(test2, 12, 5, 1, 1, 1, 3, 3);
         assertTrue(Arrays.equals(test2Check, test2));
 
         double[] test3Check = new double[] {
@@ -43,7 +43,7 @@ class ReplicateDoubleIlmTest {
             0.0, 0.0, 0.0, 0.0, 0.0
         };
         double[] test3 = new double[25];
-        stridedReplicate.toArray(test3, 0, 5, 1, 2, 2, 3, 3);
+        stridedReplicate.get(test3, 0, 5, 1, 2, 2, 3, 3);
         assertTrue(Arrays.equals(test3Check, test3));
 
         double[] test4Check = new double[] {
@@ -54,7 +54,7 @@ class ReplicateDoubleIlmTest {
             0.0, 0.0, 0.0, 0.0, 0.0
         };
         double[] test4 = new double[25];
-        stridedReplicate.toArray(test4, 6, 10, 2, 2, 2, 2, 2);
+        stridedReplicate.get(test4, 6, 10, 2, 2, 2, 2, 2);
         assertTrue(Arrays.equals(test4Check, test4));
     }
 }

@@ -37,8 +37,8 @@ public final class BooleanIlmFromArray {
         }
 
         @Override
-        protected void toArrayImpl(
-                final boolean[] array, int offset, long rowStart, long colStart, int rowCount, int colCount)
+        protected void getImpl(
+                final boolean[] array, final int offset, long rowStart, long colStart, int rowCount, int colCount)
                 throws IOException {
             int intWidth = (int) width();
 

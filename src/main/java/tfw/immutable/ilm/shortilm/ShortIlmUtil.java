@@ -21,7 +21,7 @@ public final class ShortIlmUtil {
 
         short[] result = new short[rowCount * colCount];
 
-        shortIlm.toArray(result, 0, rowStart, columnStart, rowCount, colCount);
+        shortIlm.get(result, 0, rowStart, columnStart, rowCount, colCount);
 
         return result;
     }

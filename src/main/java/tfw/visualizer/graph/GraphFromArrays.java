@@ -28,7 +28,7 @@ public class GraphFromArrays {
             return froms.length;
         }
 
-        public void toArray(
+        public void get(
                 Object[] nodes,
                 int nodesOffset,
                 long nodesStart,
