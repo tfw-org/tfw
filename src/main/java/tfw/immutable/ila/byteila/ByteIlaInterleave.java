@@ -32,7 +32,7 @@ public final class ByteIlaInterleave {
             ilasLength = ilas.length;
 
             for (int i = 0; i < ilas.length; i++) {
-                stridedByteIlas[i] = new StridedByteIla(ilas[i], buffer.clone());
+                stridedByteIlas[i] = StridedByteIlaFromByteIla.create(ilas[i], buffer.clone());
             }
         }
 

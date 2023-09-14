@@ -30,7 +30,7 @@ class CharIlaFromArrayTest {
             creation[ii] = (char) random.nextInt();
         }
         final CharIla ila = CharIlaFromArray.create(creation);
-        final StridedCharIla stridedIla = new StridedCharIla(ila, new char[1000]);
+        final StridedCharIla stridedIla = StridedCharIlaFromCharIla.create(ila, new char[1000]);
 
         for (int stride = -maxAbsStride; stride <= maxAbsStride; ++stride) {
             if (stride != 0) {

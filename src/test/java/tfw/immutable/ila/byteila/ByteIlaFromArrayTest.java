@@ -30,7 +30,7 @@ class ByteIlaFromArrayTest {
             creation[ii] = (byte) random.nextInt();
         }
         final ByteIla ila = ByteIlaFromArray.create(creation);
-        final StridedByteIla stridedIla = new StridedByteIla(ila, new byte[1000]);
+        final StridedByteIla stridedIla = StridedByteIlaFromByteIla.create(ila, new byte[1000]);
 
         for (int stride = -maxAbsStride; stride <= maxAbsStride; ++stride) {
             if (stride != 0) {

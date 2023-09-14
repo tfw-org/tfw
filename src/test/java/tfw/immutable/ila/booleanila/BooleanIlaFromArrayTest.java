@@ -30,7 +30,7 @@ class BooleanIlaFromArrayTest {
             creation[ii] = random.nextBoolean();
         }
         final BooleanIla ila = BooleanIlaFromArray.create(creation);
-        final StridedBooleanIla stridedIla = new StridedBooleanIla(ila, new boolean[1000]);
+        final StridedBooleanIla stridedIla = StridedBooleanIlaFromBooleanIla.create(ila, new boolean[1000]);
 
         for (int stride = -maxAbsStride; stride <= maxAbsStride; ++stride) {
             if (stride != 0) {

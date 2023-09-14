@@ -27,7 +27,7 @@ class ObjectIlaFromArrayTest {
             creation[ii] = new Object();
         }
         final ObjectIla<Object> ila = ObjectIlaFromArray.create(creation);
-        final StridedObjectIla<Object> stridedIla = new StridedObjectIla<Object>(ila, new Object[1000]);
+        final StridedObjectIla<Object> stridedIla = StridedObjectIlaFromObjectIla.create(ila, new Object[1000]);
 
         for (int stride = -maxAbsStride; stride <= maxAbsStride; ++stride) {
             if (stride != 0) {

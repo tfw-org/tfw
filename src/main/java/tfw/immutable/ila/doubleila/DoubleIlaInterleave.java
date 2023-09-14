@@ -32,7 +32,7 @@ public final class DoubleIlaInterleave {
             ilasLength = ilas.length;
 
             for (int i = 0; i < ilas.length; i++) {
-                stridedDoubleIlas[i] = new StridedDoubleIla(ilas[i], buffer.clone());
+                stridedDoubleIlas[i] = StridedDoubleIlaFromDoubleIla.create(ilas[i], buffer.clone());
             }
         }
 

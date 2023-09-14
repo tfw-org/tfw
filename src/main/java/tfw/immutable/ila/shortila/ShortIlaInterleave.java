@@ -32,7 +32,7 @@ public final class ShortIlaInterleave {
             ilasLength = ilas.length;
 
             for (int i = 0; i < ilas.length; i++) {
-                stridedShortIlas[i] = new StridedShortIla(ilas[i], buffer.clone());
+                stridedShortIlas[i] = StridedShortIlaFromShortIla.create(ilas[i], buffer.clone());
             }
         }
 

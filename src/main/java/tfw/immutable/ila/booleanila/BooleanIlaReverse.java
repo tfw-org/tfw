@@ -31,7 +31,7 @@ public final class BooleanIlaReverse {
 
         @Override
         protected void getImpl(boolean[] array, int offset, long start, int length) throws IOException {
-            final StridedBooleanIla stridedBooleanIla = new StridedBooleanIla(ila, buffer.clone());
+            final StridedBooleanIla stridedBooleanIla = StridedBooleanIlaFromBooleanIla.create(ila, buffer.clone());
 
             stridedBooleanIla.get(array, offset + (length - 1), -1, length() - (start + length), length);
         }

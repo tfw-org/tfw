@@ -2,45 +2,9 @@
 package %%PACKAGE%%;
 
 import java.io.IOException;
-import tfw.check.Argument;
+import tfw.immutable.ila.ImmutableLongArray;
 
-public final class Strided%%NAME%%Ila%%TEMPLATE%% {
-    private final %%NAME%%Ila%%TEMPLATE%% ila;
-    private final %%TYPE_OR_TEMPLATE%%[] buffer;
-
-    public Strided%%NAME%%Ila(final %%NAME%%Ila%%TEMPLATE%% ila, final %%TYPE_OR_TEMPLATE%%[] buffer) {
-        Argument.assertNotNull(ila, "ila");
-        Argument.assertNotNull(buffer, "buffer");
-
-        this.ila = ila;
-        this.buffer = buffer;
-    }
-
-    public long length() throws IOException {
-        return ila.length();
-    }
-
-    public void get(final %%TYPE_OR_TEMPLATE%%[] array, final int offset, final int stride, final long start, final int length)
-            throws IOException {
-        Argument.assertNotLessThan(offset, 0, "offset");
-        Argument.assertNotGreaterThanOrEquals(offset, array.length, "offset", "array.length");
-        Argument.assertNotEquals(stride, 0, "stride");
-        Argument.assertNotLessThan(start, 0, "start");
-        Argument.assertNotLessThan(length, 0, "length");
-        if (stride < 0) {
-            Argument.assertNotLessThan(offset + (length - 1) * stride, 0, "offset+(length-1)*stride");
-        } else {
-            Argument.assertNotGreaterThan(
-                    offset + (length - 1) * stride + 1, array.length, "offset+(length-1)*stride+1", "array.length");
-        }
-        Argument.assertNotGreaterThan(start + length, ila.length(), "start+length", "Ila.length()");
-
-        final %%NAME%%Ila%%TEMPLATE%% segment%%NAME%%Ila =
-                start == 0 && length == ila.length() ? ila : %%NAME%%IlaSegment.create(ila, start, length);
-        final %%NAME%%IlaIterator%%TEMPLATE%% bii = new %%NAME%%IlaIterator%%DIAMOND%%(segment%%NAME%%Ila, buffer.clone());
-
-        for (int i = 0, ii = offset; i < length; i++, ii += stride) {
-            array[ii] = bii.next();
-        }
-    }
+public interface Strided%%NAME%%Ila%%TEMPLATE%% extends ImmutableLongArray {
+    void get(final %%TYPE_OR_TEMPLATE%%[] array, final int offset, final int stride, final long start, final int length)
+            throws IOException;
 }

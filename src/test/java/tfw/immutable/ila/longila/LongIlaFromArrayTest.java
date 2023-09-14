@@ -30,7 +30,7 @@ class LongIlaFromArrayTest {
             creation[ii] = random.nextLong();
         }
         final LongIla ila = LongIlaFromArray.create(creation);
-        final StridedLongIla stridedIla = new StridedLongIla(ila, new long[1000]);
+        final StridedLongIla stridedIla = StridedLongIlaFromLongIla.create(ila, new long[1000]);
 
         for (int stride = -maxAbsStride; stride <= maxAbsStride; ++stride) {
             if (stride != 0) {

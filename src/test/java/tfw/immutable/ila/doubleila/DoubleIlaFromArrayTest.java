@@ -30,7 +30,7 @@ class DoubleIlaFromArrayTest {
             creation[ii] = random.nextDouble();
         }
         final DoubleIla ila = DoubleIlaFromArray.create(creation);
-        final StridedDoubleIla stridedIla = new StridedDoubleIla(ila, new double[1000]);
+        final StridedDoubleIla stridedIla = StridedDoubleIlaFromDoubleIla.create(ila, new double[1000]);
 
         for (int stride = -maxAbsStride; stride <= maxAbsStride; ++stride) {
             if (stride != 0) {

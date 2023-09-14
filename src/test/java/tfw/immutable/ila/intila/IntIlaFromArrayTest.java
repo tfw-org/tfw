@@ -30,7 +30,7 @@ class IntIlaFromArrayTest {
             creation[ii] = random.nextInt();
         }
         final IntIla ila = IntIlaFromArray.create(creation);
-        final StridedIntIla stridedIla = new StridedIntIla(ila, new int[1000]);
+        final StridedIntIla stridedIla = StridedIntIlaFromIntIla.create(ila, new int[1000]);
 
         for (int stride = -maxAbsStride; stride <= maxAbsStride; ++stride) {
             if (stride != 0) {

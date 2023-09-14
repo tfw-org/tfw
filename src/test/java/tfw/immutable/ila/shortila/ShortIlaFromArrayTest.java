@@ -30,7 +30,7 @@ class ShortIlaFromArrayTest {
             creation[ii] = (short) random.nextInt();
         }
         final ShortIla ila = ShortIlaFromArray.create(creation);
-        final StridedShortIla stridedIla = new StridedShortIla(ila, new short[1000]);
+        final StridedShortIla stridedIla = StridedShortIlaFromShortIla.create(ila, new short[1000]);
 
         for (int stride = -maxAbsStride; stride <= maxAbsStride; ++stride) {
             if (stride != 0) {

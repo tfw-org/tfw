@@ -24,7 +24,7 @@ public final class ObjectIlaCheck {
         } else {
             if (offsetLength < 0) throw new Exception("offsetLength < 0 not allowed");
 
-            final StridedObjectIla<Object> stridedObjectIla = new StridedObjectIla<>(ila, new Object[1000]);
+            final StridedObjectIla<Object> stridedObjectIla = StridedObjectIlaFromObjectIla.create(ila, new Object[10]);
             final int ilaLength = ila.length() + offsetLength <= Integer.MAX_VALUE
                     ? (int) ila.length()
                     : Integer.MAX_VALUE - offsetLength;
@@ -65,8 +65,8 @@ public final class ObjectIlaCheck {
             if (maxAbsStride < 1) throw new Exception("maxAbsStride < 1 not allowed");
             if (target.length() != actual.length()) throw new Exception("target.length() != actual.length()");
 
-            final StridedObjectIla<Object> stridedTarget = new StridedObjectIla<>(target, new Object[1000]);
-            final StridedObjectIla<Object> stridedActual = new StridedObjectIla<>(target, new Object[1000]);
+            final StridedObjectIla<Object> stridedTarget = StridedObjectIlaFromObjectIla.create(target, new Object[10]);
+            final StridedObjectIla<Object> stridedActual = StridedObjectIlaFromObjectIla.create(target, new Object[10]);
             final int ilaLength = target.length() + addlOffsetLength <= Integer.MAX_VALUE
                     ? (int) target.length()
                     : Integer.MAX_VALUE - addlOffsetLength;
