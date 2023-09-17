@@ -22,14 +22,14 @@ public final class DoubleIlaConcatenate {
         if(rightIla.length() == 0)
             return leftIla;
         */
-        return new MyDoubleIla(leftIla, rightIla);
+        return new DoubleIlaImpl(leftIla, rightIla);
     }
 
-    private static class MyDoubleIla extends AbstractDoubleIla {
+    private static class DoubleIlaImpl extends AbstractDoubleIla {
         private final DoubleIla leftIla;
         private final DoubleIla rightIla;
 
-        MyDoubleIla(DoubleIla leftIla, DoubleIla rightIla) {
+        private DoubleIlaImpl(DoubleIla leftIla, DoubleIla rightIla) {
             this.leftIla = leftIla;
             this.rightIla = rightIla;
         }

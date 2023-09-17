@@ -12,14 +12,14 @@ public final class LongIlaReverse {
         Argument.assertNotNull(ila, "ila");
         Argument.assertNotNull(buffer, "buffer");
 
-        return new MyLongIla(ila, buffer);
+        return new LongIlaImpl(ila, buffer);
     }
 
-    private static class MyLongIla extends AbstractLongIla {
+    private static class LongIlaImpl extends AbstractLongIla {
         private final LongIla ila;
         private final long[] buffer;
 
-        MyLongIla(LongIla ila, final long[] buffer) {
+        private LongIlaImpl(LongIla ila, final long[] buffer) {
             this.ila = ila;
             this.buffer = buffer;
         }

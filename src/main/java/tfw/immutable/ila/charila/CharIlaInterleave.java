@@ -20,14 +20,14 @@ public final class CharIlaInterleave {
             Argument.assertEquals(ilas[ii].length(), firstLength, "ilas[0].length()", "ilas[" + ii + "].length()");
         }
 
-        return new MyCharIla(ilas, buffer);
+        return new CharIlaImpl(ilas, buffer);
     }
 
-    private static class MyCharIla extends AbstractCharIla {
+    private static class CharIlaImpl extends AbstractCharIla {
         private final StridedCharIla[] stridedCharIlas;
         private final int ilasLength;
 
-        MyCharIla(CharIla[] ilas, final char[] buffer) {
+        private CharIlaImpl(CharIla[] ilas, final char[] buffer) {
             stridedCharIlas = new StridedCharIla[ilas.length];
             ilasLength = ilas.length;
 

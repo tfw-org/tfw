@@ -10,15 +10,15 @@ public final class ByteIlaRamp {
     public static ByteIla create(byte startValue, byte increment, long length) {
         Argument.assertNotLessThan(length, 0, "length");
 
-        return new MyByteIla(startValue, increment, length);
+        return new ByteIlaImpl(startValue, increment, length);
     }
 
-    private static class MyByteIla extends AbstractByteIla {
+    private static class ByteIlaImpl extends AbstractByteIla {
         private final byte startValue;
         private final byte increment;
         private final long length;
 
-        MyByteIla(byte startValue, byte increment, long length) {
+        private ByteIlaImpl(byte startValue, byte increment, long length) {
             this.startValue = startValue;
             this.increment = increment;
             this.length = length;

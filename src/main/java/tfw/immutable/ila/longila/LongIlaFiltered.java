@@ -17,15 +17,15 @@ public final class LongIlaFiltered {
         Argument.assertNotNull(filter, "filter");
         Argument.assertNotNull(buffer, "buffer");
 
-        return new MyLongIla(ila, filter, buffer);
+        return new LongIlaImpl(ila, filter, buffer);
     }
 
-    private static class MyLongIla extends AbstractLongIla {
+    private static class LongIlaImpl extends AbstractLongIla {
         private final LongIla ila;
         private final LongFilter filter;
         private final long[] buffer;
 
-        private MyLongIla(LongIla ila, LongFilter filter, long[] buffer) {
+        private LongIlaImpl(LongIla ila, LongFilter filter, long[] buffer) {
             this.ila = ila;
             this.filter = filter;
             this.buffer = buffer;

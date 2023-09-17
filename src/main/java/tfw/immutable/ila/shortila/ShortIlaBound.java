@@ -12,15 +12,15 @@ public final class ShortIlaBound {
         Argument.assertNotNull(ila, "ila");
         Argument.assertNotGreaterThan(minimum, maximum, "minimum", "maximum");
 
-        return new MyShortIla(ila, minimum, maximum);
+        return new ShortIlaImpl(ila, minimum, maximum);
     }
 
-    private static class MyShortIla extends AbstractShortIla {
+    private static class ShortIlaImpl extends AbstractShortIla {
         private final ShortIla ila;
         private final short minimum;
         private final short maximum;
 
-        MyShortIla(ShortIla ila, short minimum, short maximum) {
+        private ShortIlaImpl(ShortIla ila, short minimum, short maximum) {
             this.ila = ila;
             this.minimum = minimum;
             this.maximum = maximum;

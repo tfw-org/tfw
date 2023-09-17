@@ -19,16 +19,16 @@ public final class ByteIlaFromFile {
         if (!file.exists()) throw new IllegalArgumentException("file does not exist!");
         if (!file.canRead()) throw new IllegalArgumentException("file cannot be read!");
 
-        return new MyByteIla(file);
+        return new ByteIlaImpl(file);
     }
 
-    private static class MyByteIla extends AbstractByteIla {
+    private static class ByteIlaImpl extends AbstractByteIla {
         private final File file;
 
         private RandomAccessFile raf = null;
         private TimerRunnable timerRunnable = null;
 
-        public MyByteIla(File file) {
+        private ByteIlaImpl(File file) {
             this.file = file;
         }
 
@@ -80,12 +80,12 @@ public final class ByteIlaFromFile {
 
     private static class TimerRunnable implements Runnable {
         private boolean resetTimer = true;
-        private MyByteIla myByteIla = null;
+        private ByteIlaImpl byteIlaImpl = null;
 
-        public TimerRunnable(MyByteIla myByteIla) {
-            if (myByteIla == null) throw new IllegalArgumentException("myByteIla == null not allowed!");
+        public TimerRunnable(ByteIlaImpl byteIlaImpl) {
+            if (byteIlaImpl == null) throw new IllegalArgumentException("byteIlaImpl == null not allowed!");
 
-            this.myByteIla = myByteIla;
+            this.byteIlaImpl = byteIlaImpl;
         }
 
         public synchronized void run() {
@@ -97,7 +97,7 @@ public final class ByteIlaFromFile {
                 } catch (InterruptedException ie) {
                 }
             }
-            myByteIla.closeRAF();
+            byteIlaImpl.closeRAF();
         }
 
         public synchronized void resetTimer() {

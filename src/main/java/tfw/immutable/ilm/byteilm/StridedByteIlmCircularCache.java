@@ -13,10 +13,10 @@ public class StridedByteIlmCircularCache {
         Argument.assertGreaterThan(numRows, 0, "numRows");
         Argument.assertNotNull(buffer, "buffer");
 
-        return new MyByteIlm(stridedIlm, numRows, buffer);
+        return new ByteIlmImpl(stridedIlm, numRows, buffer);
     }
 
-    private static class MyByteIlm extends AbstractStridedByteIlm {
+    private static class ByteIlmImpl extends AbstractStridedByteIlm {
         private final StridedByteIlm stridedIlm;
         private final int cacheLength;
         private byte[] buffer;
@@ -26,7 +26,7 @@ public class StridedByteIlmCircularCache {
         private final int rStride;
         private final int maxRows;
 
-        public MyByteIlm(StridedByteIlm stridedIlm, int numRows, byte[] buffer) throws IOException {
+        private ByteIlmImpl(StridedByteIlm stridedIlm, int numRows, byte[] buffer) throws IOException {
             this.stridedIlm = stridedIlm;
             this.maxRows = numRows;
             this.buffer = buffer;

@@ -10,13 +10,13 @@ public final class DoubleIlaFromArray {
     public static DoubleIla create(double[] array) {
         Argument.assertNotNull(array, "array");
 
-        return new MyDoubleIla(array);
+        return new DoubleIlaImpl(array);
     }
 
-    private static class MyDoubleIla extends AbstractDoubleIla {
+    private static class DoubleIlaImpl extends AbstractDoubleIla {
         private final double[] array;
 
-        MyDoubleIla(double[] array) {
+        private DoubleIlaImpl(double[] array) {
             this.array = array;
         }
 

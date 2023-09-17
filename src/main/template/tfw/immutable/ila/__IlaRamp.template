@@ -11,15 +11,15 @@ public final class %%NAME%%IlaRamp {
     public static %%NAME%%Ila create(%%TYPE%% startValue, %%TYPE%% increment, long length) {
         Argument.assertNotLessThan(length, 0, "length");
 
-        return new My%%NAME%%Ila(startValue, increment, length);
+        return new %%NAME%%IlaImpl(startValue, increment, length);
     }
 
-    private static class My%%NAME%%Ila extends Abstract%%NAME%%Ila {
+    private static class %%NAME%%IlaImpl extends Abstract%%NAME%%Ila {
         private final %%TYPE%% startValue;
         private final %%TYPE%% increment;
         private final long length;
 
-        My%%NAME%%Ila(%%TYPE%% startValue, %%TYPE%% increment, long length) {
+        private %%NAME%%IlaImpl(%%TYPE%% startValue, %%TYPE%% increment, long length) {
             this.startValue = startValue;
             this.increment = increment;
             this.length = length;

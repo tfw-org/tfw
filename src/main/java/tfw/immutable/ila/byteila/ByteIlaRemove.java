@@ -13,14 +13,14 @@ public final class ByteIlaRemove {
         Argument.assertNotLessThan(index, 0, "index");
         Argument.assertLessThan(index, ila.length(), "index", "ila.length()");
 
-        return new MyByteIla(ila, index);
+        return new ByteIlaImpl(ila, index);
     }
 
-    private static class MyByteIla extends AbstractByteIla {
+    private static class ByteIlaImpl extends AbstractByteIla {
         private final ByteIla ila;
         private final long index;
 
-        MyByteIla(ByteIla ila, long index) {
+        private ByteIlaImpl(ByteIla ila, long index) {
             this.ila = ila;
             this.index = index;
         }

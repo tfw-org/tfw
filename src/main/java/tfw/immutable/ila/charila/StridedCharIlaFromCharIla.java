@@ -10,14 +10,14 @@ public final class StridedCharIlaFromCharIla {
         Argument.assertNotNull(ila, "ila");
         Argument.assertNotNull(buffer, "buffer");
 
-        return new MyStridedCharIla(ila, buffer);
+        return new StridedCharIlaImpl(ila, buffer);
     }
 
-    private static class MyStridedCharIla extends AbstractStridedCharIla {
+    private static class StridedCharIlaImpl extends AbstractStridedCharIla {
         private final CharIla ila;
         private final char[] buffer;
 
-        public MyStridedCharIla(final CharIla ila, final char[] buffer) {
+        public StridedCharIlaImpl(final CharIla ila, final char[] buffer) {
             this.ila = ila;
             this.buffer = buffer;
         }

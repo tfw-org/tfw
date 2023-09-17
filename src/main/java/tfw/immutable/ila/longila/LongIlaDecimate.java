@@ -14,15 +14,15 @@ public final class LongIlaDecimate {
         Argument.assertNotLessThan(factor, 2, "factor");
         Argument.assertNotLessThan(buffer.length, 1, "buffer.length");
 
-        return new MyLongIla(ila, factor, buffer);
+        return new LongIlaImpl(ila, factor, buffer);
     }
 
-    private static class MyLongIla extends AbstractLongIla {
+    private static class LongIlaImpl extends AbstractLongIla {
         private final LongIla ila;
         private final long factor;
         private final long[] buffer;
 
-        MyLongIla(LongIla ila, long factor, long[] buffer) {
+        private LongIlaImpl(LongIla ila, long factor, long[] buffer) {
             this.ila = ila;
             this.factor = factor;
             this.buffer = buffer;

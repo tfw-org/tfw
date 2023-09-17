@@ -18,15 +18,15 @@ public final class ObjectIlaSegment {
         Argument.assertNotLessThan(length, 0, "length");
         Argument.assertNotGreaterThan(start + length, ila.length(), "start + length", "ila.length()");
 
-        return new MyObjectIla<>(ila, start, length);
+        return new ObjectIlaImpl<>(ila, start, length);
     }
 
-    private static class MyObjectIla<T> extends AbstractObjectIla<T> {
+    private static class ObjectIlaImpl<T> extends AbstractObjectIla<T> {
         private final ObjectIla<T> ila;
         private final long start;
         private final long length;
 
-        MyObjectIla(ObjectIla<T> ila, long start, long length) {
+        private ObjectIlaImpl(ObjectIla<T> ila, long start, long length) {
             this.ila = ila;
             this.start = start;
             this.length = length;

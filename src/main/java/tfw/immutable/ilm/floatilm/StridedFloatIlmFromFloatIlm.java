@@ -11,14 +11,14 @@ public final class StridedFloatIlmFromFloatIlm {
         Argument.assertNotNull(ilm, "ilm");
         Argument.assertNotNull(buffer, "buffer");
 
-        return new MyStridedFloatIlm(ilm, buffer);
+        return new StridedFloatIlmImpl(ilm, buffer);
     }
 
-    private static class MyStridedFloatIlm extends AbstractStridedFloatIlm {
+    private static class StridedFloatIlmImpl extends AbstractStridedFloatIlm {
         private final FloatIlm ilm;
         private final float[] buffer;
 
-        public MyStridedFloatIlm(final FloatIlm ilm, final float[] buffer) {
+        private StridedFloatIlmImpl(final FloatIlm ilm, final float[] buffer) {
             this.ilm = ilm;
             this.buffer = buffer;
         }

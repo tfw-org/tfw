@@ -9,15 +9,15 @@ public class DoubleIlmScalarMultiply {
     public static DoubleIlm create(DoubleIlm doubleIlm, double scalar) throws IOException {
         Argument.assertNotNull(doubleIlm, "doubleIlm");
 
-        return new MyDoubleIlm(doubleIlm, scalar);
+        return new DoubleIlmImpl(doubleIlm, scalar);
     }
 
-    private static class MyDoubleIlm extends AbstractDoubleIlm {
+    private static class DoubleIlmImpl extends AbstractDoubleIlm {
         private final DoubleIlm doubleIlm;
         private final double[] buffer;
         private final double scalar;
 
-        public MyDoubleIlm(DoubleIlm doubleIlm, double scalar) throws IOException {
+        private DoubleIlmImpl(DoubleIlm doubleIlm, double scalar) throws IOException {
             this.doubleIlm = doubleIlm;
             this.buffer = new double[(int) doubleIlm.width()];
             this.scalar = scalar;

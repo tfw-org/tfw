@@ -10,15 +10,15 @@ public final class CharIlaRamp {
     public static CharIla create(char startValue, char increment, long length) {
         Argument.assertNotLessThan(length, 0, "length");
 
-        return new MyCharIla(startValue, increment, length);
+        return new CharIlaImpl(startValue, increment, length);
     }
 
-    private static class MyCharIla extends AbstractCharIla {
+    private static class CharIlaImpl extends AbstractCharIla {
         private final char startValue;
         private final char increment;
         private final long length;
 
-        MyCharIla(char startValue, char increment, long length) {
+        private CharIlaImpl(char startValue, char increment, long length) {
             this.startValue = startValue;
             this.increment = increment;
             this.length = length;

@@ -10,13 +10,13 @@ public final class ByteIlaFromArray {
     public static ByteIla create(byte[] array) {
         Argument.assertNotNull(array, "array");
 
-        return new MyByteIla(array);
+        return new ByteIlaImpl(array);
     }
 
-    private static class MyByteIla extends AbstractByteIla {
+    private static class ByteIlaImpl extends AbstractByteIla {
         private final byte[] array;
 
-        MyByteIla(byte[] array) {
+        private ByteIlaImpl(byte[] array) {
             this.array = array;
         }
 

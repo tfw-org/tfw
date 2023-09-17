@@ -14,15 +14,15 @@ public final class FloatIlaDivide {
         Argument.assertEquals(leftIla.length(), rightIla.length(), "leftIla.length()", "rightIla.length()");
         Argument.assertNotLessThan(bufferSize, 1, "bufferSize");
 
-        return new MyFloatIla(leftIla, rightIla, bufferSize);
+        return new FloatIlaImpl(leftIla, rightIla, bufferSize);
     }
 
-    private static class MyFloatIla extends AbstractFloatIla {
+    private static class FloatIlaImpl extends AbstractFloatIla {
         private final FloatIla leftIla;
         private final FloatIla rightIla;
         private final int bufferSize;
 
-        MyFloatIla(FloatIla leftIla, FloatIla rightIla, int bufferSize) {
+        private FloatIlaImpl(FloatIla leftIla, FloatIla rightIla, int bufferSize) {
             this.leftIla = leftIla;
             this.rightIla = rightIla;
             this.bufferSize = bufferSize;

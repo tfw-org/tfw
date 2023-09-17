@@ -10,10 +10,10 @@ public class IntIlmCircularCache {
         Argument.assertNotNull(intIlm, "intIlm");
         Argument.assertGreaterThan(numRows, 0, "numRows");
 
-        return new MyIntIlm(intIlm, numRows);
+        return new IntIlmImpl(intIlm, numRows);
     }
 
-    private static class MyIntIlm extends AbstractIntIlm {
+    private static class IntIlmImpl extends AbstractIntIlm {
         private final IntIlm intIlm;
         private final int cacheLength;
         private int[] buffer = new int[0];
@@ -21,7 +21,7 @@ public class IntIlmCircularCache {
         private long cacheEnd = 0;
         private final int maxRows;
 
-        public MyIntIlm(IntIlm intIlm, int numRows) throws IOException {
+        private IntIlmImpl(IntIlm intIlm, int numRows) throws IOException {
             this.intIlm = intIlm;
             this.maxRows = numRows;
 

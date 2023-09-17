@@ -13,14 +13,14 @@ public final class FloatIlaRemove {
         Argument.assertNotLessThan(index, 0, "index");
         Argument.assertLessThan(index, ila.length(), "index", "ila.length()");
 
-        return new MyFloatIla(ila, index);
+        return new FloatIlaImpl(ila, index);
     }
 
-    private static class MyFloatIla extends AbstractFloatIla {
+    private static class FloatIlaImpl extends AbstractFloatIla {
         private final FloatIla ila;
         private final long index;
 
-        MyFloatIla(FloatIla ila, long index) {
+        private FloatIlaImpl(FloatIla ila, long index) {
             this.ila = ila;
             this.index = index;
         }

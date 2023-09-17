@@ -16,14 +16,14 @@ public final class %%NAME%%IlaFromCastShortIla {
         Argument.assertNotNull(shortIla, "shortIla");
         Argument.assertNotLessThan(bufferSize, 1, "bufferSize");
 
-        return new My%%NAME%%Ila(shortIla, bufferSize);
+        return new %%NAME%%IlaImpl(shortIla, bufferSize);
     }
 
-    private static class My%%NAME%%Ila extends Abstract%%NAME%%Ila {
+    private static class %%NAME%%IlaImpl extends Abstract%%NAME%%Ila {
         private final ShortIla shortIla;
         private final int bufferSize;
 
-        My%%NAME%%Ila(ShortIla shortIla, int bufferSize) {
+        private %%NAME%%IlaImpl(ShortIla shortIla, int bufferSize) {
             this.shortIla = shortIla;
             this.bufferSize = bufferSize;
         }

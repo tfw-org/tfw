@@ -11,14 +11,14 @@ public class ReplicateDoubleIlm {
         Argument.assertNotNull(doubleIla, "doubleIla");
         Argument.assertNotLessThan(repetitions, 1, "repetitions");
 
-        return new MyDoubleIlm(doubleIla, repetitions);
+        return new DoubleIlmImpl(doubleIla, repetitions);
     }
 
-    private static class MyDoubleIlm extends AbstractDoubleIlm {
+    private static class DoubleIlmImpl extends AbstractDoubleIlm {
         private final DoubleIla doubleIla;
         private final long repetitions;
 
-        public MyDoubleIlm(DoubleIla doubleIla, long repetitions) {
+        private DoubleIlmImpl(DoubleIla doubleIla, long repetitions) {
             this.doubleIla = doubleIla;
             this.repetitions = repetitions;
         }

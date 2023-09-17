@@ -14,15 +14,15 @@ public final class CharIlaSubtract {
         Argument.assertEquals(leftIla.length(), rightIla.length(), "leftIla.length()", "rightIla.length()");
         Argument.assertNotLessThan(bufferSize, 1, "bufferSize");
 
-        return new MyCharIla(leftIla, rightIla, bufferSize);
+        return new CharIlaImpl(leftIla, rightIla, bufferSize);
     }
 
-    private static class MyCharIla extends AbstractCharIla {
+    private static class CharIlaImpl extends AbstractCharIla {
         private final CharIla leftIla;
         private final CharIla rightIla;
         private final int bufferSize;
 
-        MyCharIla(CharIla leftIla, CharIla rightIla, int bufferSize) {
+        private CharIlaImpl(CharIla leftIla, CharIla rightIla, int bufferSize) {
             this.leftIla = leftIla;
             this.rightIla = rightIla;
             this.bufferSize = bufferSize;

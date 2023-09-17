@@ -12,16 +12,16 @@ public class DoubleIlaClip {
         Argument.assertLessThan(min, max, "min", "max");
         Argument.assertNotLessThan(bufferSize, 1, "bufferSize");
 
-        return new MyDoubleIla(doubleIla, min, max, bufferSize);
+        return new DoubleIlaImpl(doubleIla, min, max, bufferSize);
     }
 
-    private static class MyDoubleIla extends AbstractDoubleIla {
+    private static class DoubleIlaImpl extends AbstractDoubleIla {
         private final DoubleIla doubleIla;
         private final double min;
         private final double max;
         private final int bufferSize;
 
-        public MyDoubleIla(final DoubleIla doubleIla, final double min, final double max, final int bufferSize) {
+        private DoubleIlaImpl(final DoubleIla doubleIla, final double min, final double max, final int bufferSize) {
             this.doubleIla = doubleIla;
             this.min = min;
             this.max = max;

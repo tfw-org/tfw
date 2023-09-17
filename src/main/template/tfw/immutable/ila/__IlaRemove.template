@@ -14,14 +14,14 @@ public final class %%NAME%%IlaRemove {
         Argument.assertNotLessThan(index, 0, "index");
         Argument.assertLessThan(index, ila.length(), "index", "ila.length()");
 
-        return new My%%NAME%%Ila%%DIAMOND%%(ila, index);
+        return new %%NAME%%IlaImpl%%DIAMOND%%(ila, index);
     }
 
-    private static class My%%NAME%%Ila%%TEMPLATE%% extends Abstract%%NAME%%Ila%%TEMPLATE%% {
+    private static class %%NAME%%IlaImpl%%TEMPLATE%% extends Abstract%%NAME%%Ila%%TEMPLATE%% {
         private final %%NAME%%Ila%%TEMPLATE%% ila;
         private final long index;
 
-        My%%NAME%%Ila(%%NAME%%Ila%%TEMPLATE%% ila, long index) {
+        private %%NAME%%IlaImpl(%%NAME%%Ila%%TEMPLATE%% ila, long index) {
             this.ila = ila;
             this.index = index;
         }

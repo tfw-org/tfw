@@ -9,13 +9,13 @@ public final class FloatIlaFromStridedFloatIla {
     public static FloatIla create(final StridedFloatIla stridedIla) {
         Argument.assertNotNull(stridedIla, "stridedIla");
 
-        return new MyFloatIla(stridedIla);
+        return new FloatIlaImpl(stridedIla);
     }
 
-    private static class MyFloatIla extends AbstractFloatIla {
+    private static class FloatIlaImpl extends AbstractFloatIla {
         private final StridedFloatIla stridedIla;
 
-        public MyFloatIla(final StridedFloatIla stridedIla) {
+        private FloatIlaImpl(final StridedFloatIla stridedIla) {
             this.stridedIla = stridedIla;
         }
 

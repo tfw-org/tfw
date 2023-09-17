@@ -12,14 +12,14 @@ public final class IntIlaReverse {
         Argument.assertNotNull(ila, "ila");
         Argument.assertNotNull(buffer, "buffer");
 
-        return new MyIntIla(ila, buffer);
+        return new IntIlaImpl(ila, buffer);
     }
 
-    private static class MyIntIla extends AbstractIntIla {
+    private static class IntIlaImpl extends AbstractIntIla {
         private final IntIla ila;
         private final int[] buffer;
 
-        MyIntIla(IntIla ila, final int[] buffer) {
+        private IntIlaImpl(IntIla ila, final int[] buffer) {
             this.ila = ila;
             this.buffer = buffer;
         }

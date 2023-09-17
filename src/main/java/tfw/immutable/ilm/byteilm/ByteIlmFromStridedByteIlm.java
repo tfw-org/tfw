@@ -9,13 +9,13 @@ public final class ByteIlmFromStridedByteIlm {
     public static ByteIlm create(final StridedByteIlm stridedIlm) {
         Argument.assertNotNull(stridedIlm, "stridedIlm");
 
-        return new MyByteIlm(stridedIlm);
+        return new ByteIlmImpl(stridedIlm);
     }
 
-    private static class MyByteIlm extends AbstractByteIlm {
+    private static class ByteIlmImpl extends AbstractByteIlm {
         private final StridedByteIlm stridedIlm;
 
-        public MyByteIlm(final StridedByteIlm stridedIlm) {
+        private ByteIlmImpl(final StridedByteIlm stridedIlm) {
             this.stridedIlm = stridedIlm;
         }
 

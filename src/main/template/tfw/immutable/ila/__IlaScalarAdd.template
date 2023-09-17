@@ -12,14 +12,14 @@ public final class %%NAME%%IlaScalarAdd {
     public static %%NAME%%Ila create(%%NAME%%Ila ila, %%TYPE%% scalar) {
         Argument.assertNotNull(ila, "ila");
 
-        return new My%%NAME%%Ila(ila, scalar);
+        return new %%NAME%%IlaImpl(ila, scalar);
     }
 
-    private static class My%%NAME%%Ila extends Abstract%%NAME%%Ila {
+    private static class %%NAME%%IlaImpl extends Abstract%%NAME%%Ila {
         private final %%NAME%%Ila ila;
         private final %%TYPE%% scalar;
 
-        My%%NAME%%Ila(%%NAME%%Ila ila, %%TYPE%% scalar) {
+        private %%NAME%%IlaImpl(%%NAME%%Ila ila, %%TYPE%% scalar) {
             this.ila = ila;
             this.scalar = scalar;
         }

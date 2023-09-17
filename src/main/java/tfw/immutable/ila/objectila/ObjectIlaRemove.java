@@ -13,14 +13,14 @@ public final class ObjectIlaRemove {
         Argument.assertNotLessThan(index, 0, "index");
         Argument.assertLessThan(index, ila.length(), "index", "ila.length()");
 
-        return new MyObjectIla<>(ila, index);
+        return new ObjectIlaImpl<>(ila, index);
     }
 
-    private static class MyObjectIla<T> extends AbstractObjectIla<T> {
+    private static class ObjectIlaImpl<T> extends AbstractObjectIla<T> {
         private final ObjectIla<T> ila;
         private final long index;
 
-        MyObjectIla(ObjectIla<T> ila, long index) {
+        private ObjectIlaImpl(ObjectIla<T> ila, long index) {
             this.ila = ila;
             this.index = index;
         }

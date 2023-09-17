@@ -10,14 +10,14 @@ public final class StridedLongIlaFromLongIla {
         Argument.assertNotNull(ila, "ila");
         Argument.assertNotNull(buffer, "buffer");
 
-        return new MyStridedLongIla(ila, buffer);
+        return new StridedLongIlaImpl(ila, buffer);
     }
 
-    private static class MyStridedLongIla extends AbstractStridedLongIla {
+    private static class StridedLongIlaImpl extends AbstractStridedLongIla {
         private final LongIla ila;
         private final long[] buffer;
 
-        public MyStridedLongIla(final LongIla ila, final long[] buffer) {
+        public StridedLongIlaImpl(final LongIla ila, final long[] buffer) {
             this.ila = ila;
             this.buffer = buffer;
         }

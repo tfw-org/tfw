@@ -11,13 +11,13 @@ public final class ByteIlaNegate {
     public static ByteIla create(ByteIla ila) {
         Argument.assertNotNull(ila, "ila");
 
-        return new MyByteIla(ila);
+        return new ByteIlaImpl(ila);
     }
 
-    private static class MyByteIla extends AbstractByteIla {
+    private static class ByteIlaImpl extends AbstractByteIla {
         private final ByteIla ila;
 
-        MyByteIla(ByteIla ila) {
+        private ByteIlaImpl(ByteIla ila) {
             this.ila = ila;
         }
 

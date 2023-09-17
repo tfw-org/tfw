@@ -9,13 +9,13 @@ public final class ObjectIlaFromStridedObjectIla<T> {
     public static <T> ObjectIla<T> create(final StridedObjectIla<T> stridedIla) {
         Argument.assertNotNull(stridedIla, "stridedIla");
 
-        return new MyObjectIla<>(stridedIla);
+        return new ObjectIlaImpl<>(stridedIla);
     }
 
-    private static class MyObjectIla<T> extends AbstractObjectIla<T> {
+    private static class ObjectIlaImpl<T> extends AbstractObjectIla<T> {
         private final StridedObjectIla<T> stridedIla;
 
-        public MyObjectIla(final StridedObjectIla<T> stridedIla) {
+        private ObjectIlaImpl(final StridedObjectIla<T> stridedIla) {
             this.stridedIla = stridedIla;
         }
 

@@ -14,14 +14,14 @@ public final class BooleanIlmFromArray {
             Argument.assertEquals(array.length % width, 0, "array.length % width", "0");
         }
 
-        return new MyBooleanIlm(array, width);
+        return new BooleanIlmImpl(array, width);
     }
 
-    private static class MyBooleanIlm extends AbstractBooleanIlm {
+    private static class BooleanIlmImpl extends AbstractBooleanIlm {
         private final boolean[] array;
         private final int ilmWidth;
 
-        MyBooleanIlm(boolean[] array, int ilmWidth) {
+        private BooleanIlmImpl(boolean[] array, int ilmWidth) {
             this.array = array;
             this.ilmWidth = ilmWidth;
         }

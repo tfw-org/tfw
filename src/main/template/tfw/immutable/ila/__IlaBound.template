@@ -13,15 +13,15 @@ public final class %%NAME%%IlaBound {
         Argument.assertNotNull(ila, "ila");
         Argument.assertNotGreaterThan(minimum, maximum, "minimum", "maximum");
 
-        return new My%%NAME%%Ila(ila, minimum, maximum);
+        return new %%NAME%%IlaImpl(ila, minimum, maximum);
     }
 
-    private static class My%%NAME%%Ila extends Abstract%%NAME%%Ila {
+    private static class %%NAME%%IlaImpl extends Abstract%%NAME%%Ila {
         private final %%NAME%%Ila ila;
         private final %%TYPE%% minimum;
         private final %%TYPE%% maximum;
 
-        My%%NAME%%Ila(%%NAME%%Ila ila, %%TYPE%% minimum, %%TYPE%% maximum) {
+        private %%NAME%%IlaImpl(%%NAME%%Ila ila, %%TYPE%% minimum, %%TYPE%% maximum) {
             this.ila = ila;
             this.minimum = minimum;
             this.maximum = maximum;

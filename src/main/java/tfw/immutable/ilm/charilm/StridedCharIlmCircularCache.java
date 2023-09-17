@@ -13,10 +13,10 @@ public class StridedCharIlmCircularCache {
         Argument.assertGreaterThan(numRows, 0, "numRows");
         Argument.assertNotNull(buffer, "buffer");
 
-        return new MyCharIlm(stridedIlm, numRows, buffer);
+        return new CharIlmImpl(stridedIlm, numRows, buffer);
     }
 
-    private static class MyCharIlm extends AbstractStridedCharIlm {
+    private static class CharIlmImpl extends AbstractStridedCharIlm {
         private final StridedCharIlm stridedIlm;
         private final int cacheLength;
         private char[] buffer;
@@ -26,7 +26,7 @@ public class StridedCharIlmCircularCache {
         private final int rStride;
         private final int maxRows;
 
-        public MyCharIlm(StridedCharIlm stridedIlm, int numRows, char[] buffer) throws IOException {
+        private CharIlmImpl(StridedCharIlm stridedIlm, int numRows, char[] buffer) throws IOException {
             this.stridedIlm = stridedIlm;
             this.maxRows = numRows;
             this.buffer = buffer;

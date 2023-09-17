@@ -14,15 +14,15 @@ public final class DoubleIlaMultiply {
         Argument.assertEquals(leftIla.length(), rightIla.length(), "leftIla.length()", "rightIla.length()");
         Argument.assertNotLessThan(bufferSize, 1, "bufferSize");
 
-        return new MyDoubleIla(leftIla, rightIla, bufferSize);
+        return new DoubleIlaImpl(leftIla, rightIla, bufferSize);
     }
 
-    private static class MyDoubleIla extends AbstractDoubleIla {
+    private static class DoubleIlaImpl extends AbstractDoubleIla {
         private final DoubleIla leftIla;
         private final DoubleIla rightIla;
         private final int bufferSize;
 
-        MyDoubleIla(DoubleIla leftIla, DoubleIla rightIla, int bufferSize) {
+        private DoubleIlaImpl(DoubleIla leftIla, DoubleIla rightIla, int bufferSize) {
             this.leftIla = leftIla;
             this.rightIla = rightIla;
             this.bufferSize = bufferSize;

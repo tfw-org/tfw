@@ -21,14 +21,14 @@ public final class %%NAME%%IlaInterleave {
             Argument.assertEquals(ilas[ii].length(), firstLength, "ilas[0].length()", "ilas[" + ii + "].length()");
         }
 
-        return new My%%NAME%%Ila%%DIAMOND%%(ilas, buffer);
+        return new %%NAME%%IlaImpl%%DIAMOND%%(ilas, buffer);
     }
 
-    private static class My%%NAME%%Ila%%TEMPLATE%% extends Abstract%%NAME%%Ila%%TEMPLATE%% {
+    private static class %%NAME%%IlaImpl%%TEMPLATE%% extends Abstract%%NAME%%Ila%%TEMPLATE%% {
         private final Strided%%NAME%%Ila%%TEMPLATE%%[] strided%%NAME%%Ilas;
         private final int ilasLength;
 
-        My%%NAME%%Ila(%%NAME%%Ila%%TEMPLATE%%[] ilas, final %%TYPE_OR_TEMPLATE%%[] buffer) {
+        private %%NAME%%IlaImpl(%%NAME%%Ila%%TEMPLATE%%[] ilas, final %%TYPE_OR_TEMPLATE%%[] buffer) {
             strided%%NAME%%Ilas = new Strided%%NAME%%Ila[ilas.length];
             ilasLength = ilas.length;
 

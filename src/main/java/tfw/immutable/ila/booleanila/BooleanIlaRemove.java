@@ -13,14 +13,14 @@ public final class BooleanIlaRemove {
         Argument.assertNotLessThan(index, 0, "index");
         Argument.assertLessThan(index, ila.length(), "index", "ila.length()");
 
-        return new MyBooleanIla(ila, index);
+        return new BooleanIlaImpl(ila, index);
     }
 
-    private static class MyBooleanIla extends AbstractBooleanIla {
+    private static class BooleanIlaImpl extends AbstractBooleanIla {
         private final BooleanIla ila;
         private final long index;
 
-        MyBooleanIla(BooleanIla ila, long index) {
+        private BooleanIlaImpl(BooleanIla ila, long index) {
             this.ila = ila;
             this.index = index;
         }

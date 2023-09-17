@@ -11,10 +11,10 @@ public class RealFftDoubleIlm {
         Argument.assertNotNull(doubleIlm, "doubleIlm");
         // Check to make sure fftSize is a power of 2.
 
-        return new MyDoubleIlm(doubleIlm, fftSize);
+        return new DoubleIlmImpl(doubleIlm, fftSize);
     }
 
-    private static class MyDoubleIlm extends AbstractDoubleIlm {
+    private static class DoubleIlmImpl extends AbstractDoubleIlm {
         private final DoubleIlm doubleIlm;
         private final int fftSize;
         private final int dataWidth;
@@ -22,7 +22,7 @@ public class RealFftDoubleIlm {
         private final int[] ip;
         private final double[] w;
 
-        public MyDoubleIlm(DoubleIlm doubleIlm, int fftSize) throws IOException {
+        public DoubleIlmImpl(DoubleIlm doubleIlm, int fftSize) throws IOException {
             this.doubleIlm = doubleIlm;
             this.fftSize = fftSize;
             this.dataWidth = (int) doubleIlm.width();

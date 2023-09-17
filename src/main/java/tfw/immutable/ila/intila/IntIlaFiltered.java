@@ -17,15 +17,15 @@ public final class IntIlaFiltered {
         Argument.assertNotNull(filter, "filter");
         Argument.assertNotNull(buffer, "buffer");
 
-        return new MyIntIla(ila, filter, buffer);
+        return new IntIlaImpl(ila, filter, buffer);
     }
 
-    private static class MyIntIla extends AbstractIntIla {
+    private static class IntIlaImpl extends AbstractIntIla {
         private final IntIla ila;
         private final IntFilter filter;
         private final int[] buffer;
 
-        private MyIntIla(IntIla ila, IntFilter filter, int[] buffer) {
+        private IntIlaImpl(IntIla ila, IntFilter filter, int[] buffer) {
             this.ila = ila;
             this.filter = filter;
             this.buffer = buffer;

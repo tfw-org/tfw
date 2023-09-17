@@ -10,16 +10,16 @@ public class DoubleIlmClip {
         Argument.assertNotNull(doubleIlm, "doubleIlm");
         Argument.assertLessThan(min, max, "min", "max");
 
-        return new MyDoubleIlm(doubleIlm, min, max);
+        return new DoubleIlmImpl(doubleIlm, min, max);
     }
 
-    private static class MyDoubleIlm extends AbstractDoubleIlm {
+    private static class DoubleIlmImpl extends AbstractDoubleIlm {
         private final DoubleIlm doubleIlm;
         private final double[] buffer;
         private final double min;
         private final double max;
 
-        public MyDoubleIlm(DoubleIlm doubleIlm, double min, double max) throws IOException {
+        private DoubleIlmImpl(DoubleIlm doubleIlm, double min, double max) throws IOException {
             this.doubleIlm = doubleIlm;
             this.buffer = new double[(int) doubleIlm.width()];
             this.min = min;

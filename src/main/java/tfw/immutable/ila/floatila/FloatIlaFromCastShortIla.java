@@ -15,14 +15,14 @@ public final class FloatIlaFromCastShortIla {
         Argument.assertNotNull(shortIla, "shortIla");
         Argument.assertNotLessThan(bufferSize, 1, "bufferSize");
 
-        return new MyFloatIla(shortIla, bufferSize);
+        return new FloatIlaImpl(shortIla, bufferSize);
     }
 
-    private static class MyFloatIla extends AbstractFloatIla {
+    private static class FloatIlaImpl extends AbstractFloatIla {
         private final ShortIla shortIla;
         private final int bufferSize;
 
-        MyFloatIla(ShortIla shortIla, int bufferSize) {
+        private FloatIlaImpl(ShortIla shortIla, int bufferSize) {
             this.shortIla = shortIla;
             this.bufferSize = bufferSize;
         }

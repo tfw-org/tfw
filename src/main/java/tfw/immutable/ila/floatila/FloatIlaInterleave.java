@@ -20,14 +20,14 @@ public final class FloatIlaInterleave {
             Argument.assertEquals(ilas[ii].length(), firstLength, "ilas[0].length()", "ilas[" + ii + "].length()");
         }
 
-        return new MyFloatIla(ilas, buffer);
+        return new FloatIlaImpl(ilas, buffer);
     }
 
-    private static class MyFloatIla extends AbstractFloatIla {
+    private static class FloatIlaImpl extends AbstractFloatIla {
         private final StridedFloatIla[] stridedFloatIlas;
         private final int ilasLength;
 
-        MyFloatIla(FloatIla[] ilas, final float[] buffer) {
+        private FloatIlaImpl(FloatIla[] ilas, final float[] buffer) {
             stridedFloatIlas = new StridedFloatIla[ilas.length];
             ilasLength = ilas.length;
 

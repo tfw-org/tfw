@@ -15,18 +15,18 @@ public class ColumnScalingDoubleIlm {
         if (numerator == denominator) {
             return doubleIlm;
         } else if (numerator > denominator) {
-            return new MyDoubleIlm1(doubleIlm, numerator, denominator);
+            return new DoubleIlmImpl1(doubleIlm, numerator, denominator);
         } else {
-            return new MyDoubleIlm2(doubleIlm, numerator, denominator);
+            return new DoubleIlmImpl2(doubleIlm, numerator, denominator);
         }
     }
 
-    private static class MyDoubleIlm1 extends AbstractDoubleIlm {
+    private static class DoubleIlmImpl1 extends AbstractDoubleIlm {
         private final DoubleIlm doubleIlm;
         private final BigInteger outputElements;
         private final BigInteger inputElements;
 
-        public MyDoubleIlm1(DoubleIlm doubleIlm, long outputElements, long inputElements) {
+        private DoubleIlmImpl1(DoubleIlm doubleIlm, long outputElements, long inputElements) {
             this.doubleIlm = doubleIlm;
             this.outputElements = BigInteger.valueOf(outputElements);
             this.inputElements = BigInteger.valueOf(inputElements);
@@ -65,12 +65,12 @@ public class ColumnScalingDoubleIlm {
         }
     }
 
-    private static class MyDoubleIlm2 extends AbstractDoubleIlm {
+    private static class DoubleIlmImpl2 extends AbstractDoubleIlm {
         private final DoubleIlm doubleIlm;
         private final long numerator;
         private final long denominator;
 
-        public MyDoubleIlm2(DoubleIlm doubleIlm, long numerator, long denominator) {
+        private DoubleIlmImpl2(DoubleIlm doubleIlm, long numerator, long denominator) {
             this.doubleIlm = doubleIlm;
             this.numerator = numerator;
             this.denominator = denominator;

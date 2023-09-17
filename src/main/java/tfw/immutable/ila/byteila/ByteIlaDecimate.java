@@ -14,15 +14,15 @@ public final class ByteIlaDecimate {
         Argument.assertNotLessThan(factor, 2, "factor");
         Argument.assertNotLessThan(buffer.length, 1, "buffer.length");
 
-        return new MyByteIla(ila, factor, buffer);
+        return new ByteIlaImpl(ila, factor, buffer);
     }
 
-    private static class MyByteIla extends AbstractByteIla {
+    private static class ByteIlaImpl extends AbstractByteIla {
         private final ByteIla ila;
         private final long factor;
         private final byte[] buffer;
 
-        MyByteIla(ByteIla ila, long factor, byte[] buffer) {
+        private ByteIlaImpl(ByteIla ila, long factor, byte[] buffer) {
             this.ila = ila;
             this.factor = factor;
             this.buffer = buffer;

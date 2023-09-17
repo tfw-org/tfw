@@ -10,14 +10,14 @@ public final class StridedByteIlaFromByteIla {
         Argument.assertNotNull(ila, "ila");
         Argument.assertNotNull(buffer, "buffer");
 
-        return new MyStridedByteIla(ila, buffer);
+        return new StridedByteIlaImpl(ila, buffer);
     }
 
-    private static class MyStridedByteIla extends AbstractStridedByteIla {
+    private static class StridedByteIlaImpl extends AbstractStridedByteIla {
         private final ByteIla ila;
         private final byte[] buffer;
 
-        public MyStridedByteIla(final ByteIla ila, final byte[] buffer) {
+        public StridedByteIlaImpl(final ByteIla ila, final byte[] buffer) {
             this.ila = ila;
             this.buffer = buffer;
         }

@@ -12,15 +12,15 @@ public final class DoubleIlaBound {
         Argument.assertNotNull(ila, "ila");
         Argument.assertNotGreaterThan(minimum, maximum, "minimum", "maximum");
 
-        return new MyDoubleIla(ila, minimum, maximum);
+        return new DoubleIlaImpl(ila, minimum, maximum);
     }
 
-    private static class MyDoubleIla extends AbstractDoubleIla {
+    private static class DoubleIlaImpl extends AbstractDoubleIla {
         private final DoubleIla ila;
         private final double minimum;
         private final double maximum;
 
-        MyDoubleIla(DoubleIla ila, double minimum, double maximum) {
+        private DoubleIlaImpl(DoubleIla ila, double minimum, double maximum) {
             this.ila = ila;
             this.minimum = minimum;
             this.maximum = maximum;

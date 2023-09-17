@@ -20,14 +20,14 @@ public final class ShortIlaInterleave {
             Argument.assertEquals(ilas[ii].length(), firstLength, "ilas[0].length()", "ilas[" + ii + "].length()");
         }
 
-        return new MyShortIla(ilas, buffer);
+        return new ShortIlaImpl(ilas, buffer);
     }
 
-    private static class MyShortIla extends AbstractShortIla {
+    private static class ShortIlaImpl extends AbstractShortIla {
         private final StridedShortIla[] stridedShortIlas;
         private final int ilasLength;
 
-        MyShortIla(ShortIla[] ilas, final short[] buffer) {
+        private ShortIlaImpl(ShortIla[] ilas, final short[] buffer) {
             stridedShortIlas = new StridedShortIla[ilas.length];
             ilasLength = ilas.length;
 

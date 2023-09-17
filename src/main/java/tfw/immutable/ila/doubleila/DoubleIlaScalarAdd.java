@@ -11,14 +11,14 @@ public final class DoubleIlaScalarAdd {
     public static DoubleIla create(DoubleIla ila, double scalar) {
         Argument.assertNotNull(ila, "ila");
 
-        return new MyDoubleIla(ila, scalar);
+        return new DoubleIlaImpl(ila, scalar);
     }
 
-    private static class MyDoubleIla extends AbstractDoubleIla {
+    private static class DoubleIlaImpl extends AbstractDoubleIla {
         private final DoubleIla ila;
         private final double scalar;
 
-        MyDoubleIla(DoubleIla ila, double scalar) {
+        private DoubleIlaImpl(DoubleIla ila, double scalar) {
             this.ila = ila;
             this.scalar = scalar;
         }

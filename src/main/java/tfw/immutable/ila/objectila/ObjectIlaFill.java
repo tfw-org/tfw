@@ -10,14 +10,14 @@ public final class ObjectIlaFill {
     public static <T> ObjectIla<T> create(T value, long length) {
         Argument.assertNotLessThan(length, 0, "length");
 
-        return new MyObjectIla<>(value, length);
+        return new ObjectIlaImpl<>(value, length);
     }
 
-    private static class MyObjectIla<T> extends AbstractObjectIla<T> {
+    private static class ObjectIlaImpl<T> extends AbstractObjectIla<T> {
         private final T value;
         private final long length;
 
-        MyObjectIla(T value, long length) {
+        private ObjectIlaImpl(T value, long length) {
             this.value = value;
             this.length = length;
         }

@@ -8,10 +8,10 @@ public final class CharIlaFromUtf8ByteIla {
 
     public static CharIla create(final ByteIla utf8ByteIla, final int byteBufferLength, final int maxIndexTableLength)
             throws IOException {
-        return new MyCharIla(utf8ByteIla, byteBufferLength, maxIndexTableLength);
+        return new CharIlaImpl(utf8ByteIla, byteBufferLength, maxIndexTableLength);
     }
 
-    private static class MyCharIla implements CharIla {
+    private static class CharIlaImpl implements CharIla {
         private final ByteIla utf8ByteIla;
         private final byte[] byteBuffer;
         private final long charDelta;
@@ -21,7 +21,7 @@ public final class CharIlaFromUtf8ByteIla {
         private long nextCharIndex = -1;
         private long nextByteIndex = -1;
 
-        public MyCharIla(final ByteIla utf8ByteIla, final int byteBufferLength, final int indexTableLength)
+        private CharIlaImpl(final ByteIla utf8ByteIla, final int byteBufferLength, final int indexTableLength)
                 throws IOException {
             this.utf8ByteIla = utf8ByteIla;
             this.byteBuffer = new byte[CharIlaFromUtf8ByteIlaUtil.calculateByteBufferLength(byteBufferLength)];

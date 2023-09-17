@@ -13,14 +13,14 @@ public final class DoubleIlaRemove {
         Argument.assertNotLessThan(index, 0, "index");
         Argument.assertLessThan(index, ila.length(), "index", "ila.length()");
 
-        return new MyDoubleIla(ila, index);
+        return new DoubleIlaImpl(ila, index);
     }
 
-    private static class MyDoubleIla extends AbstractDoubleIla {
+    private static class DoubleIlaImpl extends AbstractDoubleIla {
         private final DoubleIla ila;
         private final long index;
 
-        MyDoubleIla(DoubleIla ila, long index) {
+        private DoubleIlaImpl(DoubleIla ila, long index) {
             this.ila = ila;
             this.index = index;
         }

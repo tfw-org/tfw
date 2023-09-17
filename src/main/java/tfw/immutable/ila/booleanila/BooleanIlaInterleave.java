@@ -20,14 +20,14 @@ public final class BooleanIlaInterleave {
             Argument.assertEquals(ilas[ii].length(), firstLength, "ilas[0].length()", "ilas[" + ii + "].length()");
         }
 
-        return new MyBooleanIla(ilas, buffer);
+        return new BooleanIlaImpl(ilas, buffer);
     }
 
-    private static class MyBooleanIla extends AbstractBooleanIla {
+    private static class BooleanIlaImpl extends AbstractBooleanIla {
         private final StridedBooleanIla[] stridedBooleanIlas;
         private final int ilasLength;
 
-        MyBooleanIla(BooleanIla[] ilas, final boolean[] buffer) {
+        private BooleanIlaImpl(BooleanIla[] ilas, final boolean[] buffer) {
             stridedBooleanIlas = new StridedBooleanIla[ilas.length];
             ilasLength = ilas.length;
 

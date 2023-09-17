@@ -12,14 +12,14 @@ public final class BooleanIlaReverse {
         Argument.assertNotNull(ila, "ila");
         Argument.assertNotNull(buffer, "buffer");
 
-        return new MyBooleanIla(ila, buffer);
+        return new BooleanIlaImpl(ila, buffer);
     }
 
-    private static class MyBooleanIla extends AbstractBooleanIla {
+    private static class BooleanIlaImpl extends AbstractBooleanIla {
         private final BooleanIla ila;
         private final boolean[] buffer;
 
-        MyBooleanIla(BooleanIla ila, final boolean[] buffer) {
+        private BooleanIlaImpl(BooleanIla ila, final boolean[] buffer) {
             this.ila = ila;
             this.buffer = buffer;
         }

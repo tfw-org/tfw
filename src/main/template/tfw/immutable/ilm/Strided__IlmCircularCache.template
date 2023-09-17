@@ -14,10 +14,10 @@ public class Strided%%NAME%%IlmCircularCache {
         Argument.assertGreaterThan(numRows, 0, "numRows");
         Argument.assertNotNull(buffer, "buffer");
 
-        return new My%%NAME%%Ilm%%DIAMOND%%(stridedIlm, numRows, buffer);
+        return new %%NAME%%IlmImpl%%DIAMOND%%(stridedIlm, numRows, buffer);
     }
 
-    private static class My%%NAME%%Ilm%%TEMPLATE%% extends AbstractStrided%%NAME%%Ilm%%TEMPLATE%% {
+    private static class %%NAME%%IlmImpl%%TEMPLATE%% extends AbstractStrided%%NAME%%Ilm%%TEMPLATE%% {
         private final Strided%%NAME%%Ilm%%TEMPLATE%% stridedIlm;
         private final int cacheLength;
         private %%TYPE_OR_TEMPLATE%%[] buffer;
@@ -27,7 +27,7 @@ public class Strided%%NAME%%IlmCircularCache {
         private final int rStride;
         private final int maxRows;
 
-        public My%%NAME%%Ilm(Strided%%NAME%%Ilm%%TEMPLATE%% stridedIlm, int numRows, %%TYPE_OR_TEMPLATE%%[] buffer) throws IOException {
+        private %%NAME%%IlmImpl(Strided%%NAME%%Ilm%%TEMPLATE%% stridedIlm, int numRows, %%TYPE_OR_TEMPLATE%%[] buffer) throws IOException {
             this.stridedIlm = stridedIlm;
             this.maxRows = numRows;
             this.buffer = buffer;

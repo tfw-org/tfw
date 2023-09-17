@@ -20,14 +20,14 @@ public final class DoubleIlaInterleave {
             Argument.assertEquals(ilas[ii].length(), firstLength, "ilas[0].length()", "ilas[" + ii + "].length()");
         }
 
-        return new MyDoubleIla(ilas, buffer);
+        return new DoubleIlaImpl(ilas, buffer);
     }
 
-    private static class MyDoubleIla extends AbstractDoubleIla {
+    private static class DoubleIlaImpl extends AbstractDoubleIla {
         private final StridedDoubleIla[] stridedDoubleIlas;
         private final int ilasLength;
 
-        MyDoubleIla(DoubleIla[] ilas, final double[] buffer) {
+        private DoubleIlaImpl(DoubleIla[] ilas, final double[] buffer) {
             stridedDoubleIlas = new StridedDoubleIla[ilas.length];
             ilasLength = ilas.length;
 

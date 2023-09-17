@@ -9,13 +9,13 @@ public final class BooleanIlaFromStridedBooleanIla {
     public static BooleanIla create(final StridedBooleanIla stridedIla) {
         Argument.assertNotNull(stridedIla, "stridedIla");
 
-        return new MyBooleanIla(stridedIla);
+        return new BooleanIlaImpl(stridedIla);
     }
 
-    private static class MyBooleanIla extends AbstractBooleanIla {
+    private static class BooleanIlaImpl extends AbstractBooleanIla {
         private final StridedBooleanIla stridedIla;
 
-        public MyBooleanIla(final StridedBooleanIla stridedIla) {
+        private BooleanIlaImpl(final StridedBooleanIla stridedIla) {
             this.stridedIla = stridedIla;
         }
 

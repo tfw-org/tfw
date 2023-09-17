@@ -10,13 +10,13 @@ public final class FloatIlaFromArray {
     public static FloatIla create(float[] array) {
         Argument.assertNotNull(array, "array");
 
-        return new MyFloatIla(array);
+        return new FloatIlaImpl(array);
     }
 
-    private static class MyFloatIla extends AbstractFloatIla {
+    private static class FloatIlaImpl extends AbstractFloatIla {
         private final float[] array;
 
-        MyFloatIla(float[] array) {
+        private FloatIlaImpl(float[] array) {
             this.array = array;
         }
 

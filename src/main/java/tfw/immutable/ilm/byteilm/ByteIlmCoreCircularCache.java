@@ -10,18 +10,18 @@ public class ByteIlmCoreCircularCache {
         Argument.assertNotNull(byteIlm, "byteIlm");
         Argument.assertGreaterThan(numRows, 0, "numRows");
 
-        return new MyByteIlm(byteIlm, numRows, byteIlmCoreCircularCache);
+        return new ByteIlmImpl(byteIlm, numRows, byteIlmCoreCircularCache);
     }
 
-    private static class MyByteIlm extends AbstractByteIlm {
+    private static class ByteIlmImpl extends AbstractByteIlm {
         private final ByteIlm byteIlm;
         private final Core core;
 
-        MyByteIlm(ByteIlm byteIlm, int numRows, ByteIlm byteIlmCoreCircularCache) throws IOException {
+        private ByteIlmImpl(ByteIlm byteIlm, int numRows, ByteIlm byteIlmCoreCircularCache) throws IOException {
             this.byteIlm = byteIlm;
 
-            if (byteIlmCoreCircularCache instanceof MyByteIlm) {
-                core = ((MyByteIlm) byteIlmCoreCircularCache).core;
+            if (byteIlmCoreCircularCache instanceof ByteIlmImpl) {
+                core = ((ByteIlmImpl) byteIlmCoreCircularCache).core;
                 core.setByteIlm(byteIlm);
             } else {
                 core = new Core(byteIlm, numRows);

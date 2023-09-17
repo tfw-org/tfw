@@ -17,15 +17,15 @@ public final class ByteIlaFiltered {
         Argument.assertNotNull(filter, "filter");
         Argument.assertNotNull(buffer, "buffer");
 
-        return new MyByteIla(ila, filter, buffer);
+        return new ByteIlaImpl(ila, filter, buffer);
     }
 
-    private static class MyByteIla extends AbstractByteIla {
+    private static class ByteIlaImpl extends AbstractByteIla {
         private final ByteIla ila;
         private final ByteFilter filter;
         private final byte[] buffer;
 
-        private MyByteIla(ByteIla ila, ByteFilter filter, byte[] buffer) {
+        private ByteIlaImpl(ByteIla ila, ByteFilter filter, byte[] buffer) {
             this.ila = ila;
             this.filter = filter;
             this.buffer = buffer;

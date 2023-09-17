@@ -22,14 +22,14 @@ public final class BooleanIlaConcatenate {
         if(rightIla.length() == 0)
             return leftIla;
         */
-        return new MyBooleanIla(leftIla, rightIla);
+        return new BooleanIlaImpl(leftIla, rightIla);
     }
 
-    private static class MyBooleanIla extends AbstractBooleanIla {
+    private static class BooleanIlaImpl extends AbstractBooleanIla {
         private final BooleanIla leftIla;
         private final BooleanIla rightIla;
 
-        MyBooleanIla(BooleanIla leftIla, BooleanIla rightIla) {
+        private BooleanIlaImpl(BooleanIla leftIla, BooleanIla rightIla) {
             this.leftIla = leftIla;
             this.rightIla = rightIla;
         }

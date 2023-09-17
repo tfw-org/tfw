@@ -13,15 +13,15 @@ public final class IntIlaMutate {
         Argument.assertNotLessThan(index, 0, "index");
         Argument.assertLessThan(index, ila.length(), "index", "ila.length()");
 
-        return new MyIntIla(ila, index, value);
+        return new IntIlaImpl(ila, index, value);
     }
 
-    private static class MyIntIla extends AbstractIntIla {
+    private static class IntIlaImpl extends AbstractIntIla {
         private final IntIla ila;
         private final long index;
         private final int value;
 
-        MyIntIla(IntIla ila, long index, int value) {
+        private IntIlaImpl(IntIla ila, long index, int value) {
             this.ila = ila;
             this.index = index;
             this.value = value;

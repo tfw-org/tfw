@@ -12,14 +12,14 @@ public final class ObjectIlaReverse {
         Argument.assertNotNull(ila, "ila");
         Argument.assertNotNull(buffer, "buffer");
 
-        return new MyObjectIla<>(ila, buffer);
+        return new ObjectIlaImpl<>(ila, buffer);
     }
 
-    private static class MyObjectIla<T> extends AbstractObjectIla<T> {
+    private static class ObjectIlaImpl<T> extends AbstractObjectIla<T> {
         private final ObjectIla<T> ila;
         private final T[] buffer;
 
-        MyObjectIla(ObjectIla<T> ila, final T[] buffer) {
+        private ObjectIlaImpl(ObjectIla<T> ila, final T[] buffer) {
             this.ila = ila;
             this.buffer = buffer;
         }

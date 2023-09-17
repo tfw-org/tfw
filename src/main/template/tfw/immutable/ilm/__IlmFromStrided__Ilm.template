@@ -10,13 +10,13 @@ public final class %%NAME%%IlmFromStrided%%NAME%%Ilm%%TEMPLATE%% {
     public static %%TEMPLATE_SPACE%%%%NAME%%Ilm%%TEMPLATE%% create(final Strided%%NAME%%Ilm%%TEMPLATE%% stridedIlm) {
         Argument.assertNotNull(stridedIlm, "stridedIlm");
 
-        return new My%%NAME%%Ilm%%DIAMOND%%(stridedIlm);
+        return new %%NAME%%IlmImpl%%DIAMOND%%(stridedIlm);
     }
 
-    private static class My%%NAME%%Ilm%%TEMPLATE%% extends Abstract%%NAME%%Ilm%%TEMPLATE%% {
+    private static class %%NAME%%IlmImpl%%TEMPLATE%% extends Abstract%%NAME%%Ilm%%TEMPLATE%% {
         private final Strided%%NAME%%Ilm%%TEMPLATE%% stridedIlm;
 
-        public My%%NAME%%Ilm(final Strided%%NAME%%Ilm%%TEMPLATE%% stridedIlm) {
+        private %%NAME%%IlmImpl(final Strided%%NAME%%Ilm%%TEMPLATE%% stridedIlm) {
             this.stridedIlm = stridedIlm;
         }
 

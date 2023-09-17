@@ -10,13 +10,13 @@ public final class ObjectIlaFromArray {
     public static <T> ObjectIla<T> create(T[] array) {
         Argument.assertNotNull(array, "array");
 
-        return new MyObjectIla<>(array);
+        return new ObjectIlaImpl<>(array);
     }
 
-    private static class MyObjectIla<T> extends AbstractObjectIla<T> {
+    private static class ObjectIlaImpl<T> extends AbstractObjectIla<T> {
         private final T[] array;
 
-        MyObjectIla(T[] array) {
+        private ObjectIlaImpl(T[] array) {
             this.array = array;
         }
 

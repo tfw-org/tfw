@@ -12,14 +12,14 @@ public final class CharIlaReverse {
         Argument.assertNotNull(ila, "ila");
         Argument.assertNotNull(buffer, "buffer");
 
-        return new MyCharIla(ila, buffer);
+        return new CharIlaImpl(ila, buffer);
     }
 
-    private static class MyCharIla extends AbstractCharIla {
+    private static class CharIlaImpl extends AbstractCharIla {
         private final CharIla ila;
         private final char[] buffer;
 
-        MyCharIla(CharIla ila, final char[] buffer) {
+        private CharIlaImpl(CharIla ila, final char[] buffer) {
             this.ila = ila;
             this.buffer = buffer;
         }

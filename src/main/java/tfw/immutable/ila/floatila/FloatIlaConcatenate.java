@@ -22,14 +22,14 @@ public final class FloatIlaConcatenate {
         if(rightIla.length() == 0)
             return leftIla;
         */
-        return new MyFloatIla(leftIla, rightIla);
+        return new FloatIlaImpl(leftIla, rightIla);
     }
 
-    private static class MyFloatIla extends AbstractFloatIla {
+    private static class FloatIlaImpl extends AbstractFloatIla {
         private final FloatIla leftIla;
         private final FloatIla rightIla;
 
-        MyFloatIla(FloatIla leftIla, FloatIla rightIla) {
+        private FloatIlaImpl(FloatIla leftIla, FloatIla rightIla) {
             this.leftIla = leftIla;
             this.rightIla = rightIla;
         }

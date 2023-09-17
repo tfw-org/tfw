@@ -14,15 +14,15 @@ public final class IntIlaMultiply {
         Argument.assertEquals(leftIla.length(), rightIla.length(), "leftIla.length()", "rightIla.length()");
         Argument.assertNotLessThan(bufferSize, 1, "bufferSize");
 
-        return new MyIntIla(leftIla, rightIla, bufferSize);
+        return new IntIlaImpl(leftIla, rightIla, bufferSize);
     }
 
-    private static class MyIntIla extends AbstractIntIla {
+    private static class IntIlaImpl extends AbstractIntIla {
         private final IntIla leftIla;
         private final IntIla rightIla;
         private final int bufferSize;
 
-        MyIntIla(IntIla leftIla, IntIla rightIla, int bufferSize) {
+        private IntIlaImpl(IntIla leftIla, IntIla rightIla, int bufferSize) {
             this.leftIla = leftIla;
             this.rightIla = rightIla;
             this.bufferSize = bufferSize;

@@ -17,15 +17,15 @@ public final class ObjectIlaFiltered<T> {
         Argument.assertNotNull(filter, "filter");
         Argument.assertNotNull(buffer, "buffer");
 
-        return new MyObjectIla<>(ila, filter, buffer);
+        return new ObjectIlaImpl<>(ila, filter, buffer);
     }
 
-    private static class MyObjectIla<T> extends AbstractObjectIla<T> {
+    private static class ObjectIlaImpl<T> extends AbstractObjectIla<T> {
         private final ObjectIla<T> ila;
         private final ObjectFilter<T> filter;
         private final T[] buffer;
 
-        private MyObjectIla(ObjectIla<T> ila, ObjectFilter<T> filter, T[] buffer) {
+        private ObjectIlaImpl(ObjectIla<T> ila, ObjectFilter<T> filter, T[] buffer) {
             this.ila = ila;
             this.filter = filter;
             this.buffer = buffer;

@@ -10,14 +10,14 @@ public final class StridedFloatIlaFromFloatIla {
         Argument.assertNotNull(ila, "ila");
         Argument.assertNotNull(buffer, "buffer");
 
-        return new MyStridedFloatIla(ila, buffer);
+        return new StridedFloatIlaImpl(ila, buffer);
     }
 
-    private static class MyStridedFloatIla extends AbstractStridedFloatIla {
+    private static class StridedFloatIlaImpl extends AbstractStridedFloatIla {
         private final FloatIla ila;
         private final float[] buffer;
 
-        public MyStridedFloatIla(final FloatIla ila, final float[] buffer) {
+        public StridedFloatIlaImpl(final FloatIla ila, final float[] buffer) {
             this.ila = ila;
             this.buffer = buffer;
         }

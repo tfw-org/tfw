@@ -11,14 +11,14 @@ public final class FloatIlaScalarMultiply {
     public static FloatIla create(FloatIla ila, float scalar) {
         Argument.assertNotNull(ila, "ila");
 
-        return new MyFloatIla(ila, scalar);
+        return new FloatIlaImpl(ila, scalar);
     }
 
-    private static class MyFloatIla extends AbstractFloatIla {
+    private static class FloatIlaImpl extends AbstractFloatIla {
         private final FloatIla ila;
         private final float scalar;
 
-        MyFloatIla(FloatIla ila, float scalar) {
+        private FloatIlaImpl(FloatIla ila, float scalar) {
             this.ila = ila;
             this.scalar = scalar;
         }

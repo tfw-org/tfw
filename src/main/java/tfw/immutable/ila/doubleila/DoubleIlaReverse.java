@@ -12,14 +12,14 @@ public final class DoubleIlaReverse {
         Argument.assertNotNull(ila, "ila");
         Argument.assertNotNull(buffer, "buffer");
 
-        return new MyDoubleIla(ila, buffer);
+        return new DoubleIlaImpl(ila, buffer);
     }
 
-    private static class MyDoubleIla extends AbstractDoubleIla {
+    private static class DoubleIlaImpl extends AbstractDoubleIla {
         private final DoubleIla ila;
         private final double[] buffer;
 
-        MyDoubleIla(DoubleIla ila, final double[] buffer) {
+        private DoubleIlaImpl(DoubleIla ila, final double[] buffer) {
             this.ila = ila;
             this.buffer = buffer;
         }

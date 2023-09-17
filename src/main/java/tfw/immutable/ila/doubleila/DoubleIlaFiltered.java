@@ -17,15 +17,15 @@ public final class DoubleIlaFiltered {
         Argument.assertNotNull(filter, "filter");
         Argument.assertNotNull(buffer, "buffer");
 
-        return new MyDoubleIla(ila, filter, buffer);
+        return new DoubleIlaImpl(ila, filter, buffer);
     }
 
-    private static class MyDoubleIla extends AbstractDoubleIla {
+    private static class DoubleIlaImpl extends AbstractDoubleIla {
         private final DoubleIla ila;
         private final DoubleFilter filter;
         private final double[] buffer;
 
-        private MyDoubleIla(DoubleIla ila, DoubleFilter filter, double[] buffer) {
+        private DoubleIlaImpl(DoubleIla ila, DoubleFilter filter, double[] buffer) {
             this.ila = ila;
             this.filter = filter;
             this.buffer = buffer;

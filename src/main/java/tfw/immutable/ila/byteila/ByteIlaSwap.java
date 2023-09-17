@@ -11,15 +11,15 @@ public class ByteIlaSwap {
         Argument.assertNotLessThan(bytesToSwap, 2, "bytesToSwap");
         Argument.assertNotLessThan(bufferSize, 1, "bufferSize");
 
-        return new MyByteIla(byteIla, bytesToSwap, bufferSize);
+        return new ByteIlaImpl(byteIla, bytesToSwap, bufferSize);
     }
 
-    private static class MyByteIla extends AbstractByteIla {
+    private static class ByteIlaImpl extends AbstractByteIla {
         private final ByteIla byteIla;
         private final int bytesToSwap;
         private final int bufferSize;
 
-        MyByteIla(final ByteIla byteIla, final int bytesToSwap, final int bufferSize) {
+        private ByteIlaImpl(final ByteIla byteIla, final int bytesToSwap, final int bufferSize) {
             this.byteIla = byteIla;
             this.bytesToSwap = bytesToSwap;
             this.bufferSize = bufferSize;

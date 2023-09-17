@@ -11,14 +11,14 @@ public final class StridedObjectIlmFromObjectIlm<T> {
         Argument.assertNotNull(ilm, "ilm");
         Argument.assertNotNull(buffer, "buffer");
 
-        return new MyStridedObjectIlm<>(ilm, buffer);
+        return new StridedObjectIlmImpl<>(ilm, buffer);
     }
 
-    private static class MyStridedObjectIlm<T> extends AbstractStridedObjectIlm<T> {
+    private static class StridedObjectIlmImpl<T> extends AbstractStridedObjectIlm<T> {
         private final ObjectIlm<T> ilm;
         private final T[] buffer;
 
-        public MyStridedObjectIlm(final ObjectIlm<T> ilm, final T[] buffer) {
+        private StridedObjectIlmImpl(final ObjectIlm<T> ilm, final T[] buffer) {
             this.ilm = ilm;
             this.buffer = buffer;
         }

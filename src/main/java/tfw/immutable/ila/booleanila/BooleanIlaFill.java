@@ -10,14 +10,14 @@ public final class BooleanIlaFill {
     public static BooleanIla create(boolean value, long length) {
         Argument.assertNotLessThan(length, 0, "length");
 
-        return new MyBooleanIla(value, length);
+        return new BooleanIlaImpl(value, length);
     }
 
-    private static class MyBooleanIla extends AbstractBooleanIla {
+    private static class BooleanIlaImpl extends AbstractBooleanIla {
         private final boolean value;
         private final long length;
 
-        MyBooleanIla(boolean value, long length) {
+        private BooleanIlaImpl(boolean value, long length) {
             this.value = value;
             this.length = length;
         }

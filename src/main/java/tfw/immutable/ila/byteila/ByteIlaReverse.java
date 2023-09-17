@@ -12,14 +12,14 @@ public final class ByteIlaReverse {
         Argument.assertNotNull(ila, "ila");
         Argument.assertNotNull(buffer, "buffer");
 
-        return new MyByteIla(ila, buffer);
+        return new ByteIlaImpl(ila, buffer);
     }
 
-    private static class MyByteIla extends AbstractByteIla {
+    private static class ByteIlaImpl extends AbstractByteIla {
         private final ByteIla ila;
         private final byte[] buffer;
 
-        MyByteIla(ByteIla ila, final byte[] buffer) {
+        private ByteIlaImpl(ByteIla ila, final byte[] buffer) {
             this.ila = ila;
             this.buffer = buffer;
         }

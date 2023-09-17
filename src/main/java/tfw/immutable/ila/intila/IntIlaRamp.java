@@ -10,15 +10,15 @@ public final class IntIlaRamp {
     public static IntIla create(int startValue, int increment, long length) {
         Argument.assertNotLessThan(length, 0, "length");
 
-        return new MyIntIla(startValue, increment, length);
+        return new IntIlaImpl(startValue, increment, length);
     }
 
-    private static class MyIntIla extends AbstractIntIla {
+    private static class IntIlaImpl extends AbstractIntIla {
         private final int startValue;
         private final int increment;
         private final long length;
 
-        MyIntIla(int startValue, int increment, long length) {
+        private IntIlaImpl(int startValue, int increment, long length) {
             this.startValue = startValue;
             this.increment = increment;
             this.length = length;

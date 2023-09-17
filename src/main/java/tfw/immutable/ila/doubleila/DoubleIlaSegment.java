@@ -18,15 +18,15 @@ public final class DoubleIlaSegment {
         Argument.assertNotLessThan(length, 0, "length");
         Argument.assertNotGreaterThan(start + length, ila.length(), "start + length", "ila.length()");
 
-        return new MyDoubleIla(ila, start, length);
+        return new DoubleIlaImpl(ila, start, length);
     }
 
-    private static class MyDoubleIla extends AbstractDoubleIla {
+    private static class DoubleIlaImpl extends AbstractDoubleIla {
         private final DoubleIla ila;
         private final long start;
         private final long length;
 
-        MyDoubleIla(DoubleIla ila, long start, long length) {
+        private DoubleIlaImpl(DoubleIla ila, long start, long length) {
             this.ila = ila;
             this.start = start;
             this.length = length;

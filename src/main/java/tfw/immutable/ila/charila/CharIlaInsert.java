@@ -13,15 +13,15 @@ public final class CharIlaInsert {
         Argument.assertNotLessThan(index, 0, "index");
         Argument.assertNotGreaterThan(index, ila.length(), "index", "ila.length()");
 
-        return new MyCharIla(ila, index, value);
+        return new CharIlaImpl(ila, index, value);
     }
 
-    private static class MyCharIla extends AbstractCharIla {
+    private static class CharIlaImpl extends AbstractCharIla {
         private final CharIla ila;
         private final long index;
         private final char value;
 
-        MyCharIla(CharIla ila, long index, char value) {
+        private CharIlaImpl(CharIla ila, long index, char value) {
             this.ila = ila;
             this.index = index;
             this.value = value;

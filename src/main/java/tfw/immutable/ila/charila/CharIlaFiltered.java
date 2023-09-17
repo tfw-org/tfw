@@ -17,15 +17,15 @@ public final class CharIlaFiltered {
         Argument.assertNotNull(filter, "filter");
         Argument.assertNotNull(buffer, "buffer");
 
-        return new MyCharIla(ila, filter, buffer);
+        return new CharIlaImpl(ila, filter, buffer);
     }
 
-    private static class MyCharIla extends AbstractCharIla {
+    private static class CharIlaImpl extends AbstractCharIla {
         private final CharIla ila;
         private final CharFilter filter;
         private final char[] buffer;
 
-        private MyCharIla(CharIla ila, CharFilter filter, char[] buffer) {
+        private CharIlaImpl(CharIla ila, CharFilter filter, char[] buffer) {
             this.ila = ila;
             this.filter = filter;
             this.buffer = buffer;

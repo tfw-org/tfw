@@ -11,14 +11,14 @@ public final class %%NAME%%IlaFill {
     public static %%TEMPLATE_SPACE%%%%NAME%%Ila%%TEMPLATE%% create(%%TYPE_OR_TEMPLATE%% value, long length) {
         Argument.assertNotLessThan(length, 0, "length");
 
-        return new My%%NAME%%Ila%%DIAMOND%%(value, length);
+        return new %%NAME%%IlaImpl%%DIAMOND%%(value, length);
     }
 
-    private static class My%%NAME%%Ila%%TEMPLATE%% extends Abstract%%NAME%%Ila%%TEMPLATE%% {
+    private static class %%NAME%%IlaImpl%%TEMPLATE%% extends Abstract%%NAME%%Ila%%TEMPLATE%% {
         private final %%TYPE_OR_TEMPLATE%% value;
         private final long length;
 
-        My%%NAME%%Ila(%%TYPE_OR_TEMPLATE%% value, long length) {
+        private %%NAME%%IlaImpl(%%TYPE_OR_TEMPLATE%% value, long length) {
             this.value = value;
             this.length = length;
         }

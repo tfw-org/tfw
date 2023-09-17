@@ -10,15 +10,15 @@ public final class LongIlaRamp {
     public static LongIla create(long startValue, long increment, long length) {
         Argument.assertNotLessThan(length, 0, "length");
 
-        return new MyLongIla(startValue, increment, length);
+        return new LongIlaImpl(startValue, increment, length);
     }
 
-    private static class MyLongIla extends AbstractLongIla {
+    private static class LongIlaImpl extends AbstractLongIla {
         private final long startValue;
         private final long increment;
         private final long length;
 
-        MyLongIla(long startValue, long increment, long length) {
+        private LongIlaImpl(long startValue, long increment, long length) {
             this.startValue = startValue;
             this.increment = increment;
             this.length = length;

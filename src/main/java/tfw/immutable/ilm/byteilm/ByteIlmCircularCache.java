@@ -10,10 +10,10 @@ public class ByteIlmCircularCache {
         Argument.assertNotNull(byteIlm, "byteIlm");
         Argument.assertGreaterThan(numRows, 0, "numRows");
 
-        return new MyByteIlm(byteIlm, numRows);
+        return new ByteIlmImpl(byteIlm, numRows);
     }
 
-    private static class MyByteIlm extends AbstractByteIlm {
+    private static class ByteIlmImpl extends AbstractByteIlm {
         private final ByteIlm byteIlm;
         private final int cacheLength;
         private byte[] buffer = new byte[0];
@@ -21,7 +21,7 @@ public class ByteIlmCircularCache {
         private long cacheEnd = 0;
         private final int maxRows;
 
-        public MyByteIlm(ByteIlm byteIlm, int numRows) throws IOException {
+        private ByteIlmImpl(ByteIlm byteIlm, int numRows) throws IOException {
             this.byteIlm = byteIlm;
             this.maxRows = numRows;
 

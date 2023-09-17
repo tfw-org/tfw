@@ -10,14 +10,14 @@ public final class FloatIlaFill {
     public static FloatIla create(float value, long length) {
         Argument.assertNotLessThan(length, 0, "length");
 
-        return new MyFloatIla(value, length);
+        return new FloatIlaImpl(value, length);
     }
 
-    private static class MyFloatIla extends AbstractFloatIla {
+    private static class FloatIlaImpl extends AbstractFloatIla {
         private final float value;
         private final long length;
 
-        MyFloatIla(float value, long length) {
+        private FloatIlaImpl(float value, long length) {
             this.value = value;
             this.length = length;
         }

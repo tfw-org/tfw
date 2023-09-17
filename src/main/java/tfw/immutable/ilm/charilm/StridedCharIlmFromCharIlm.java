@@ -11,14 +11,14 @@ public final class StridedCharIlmFromCharIlm {
         Argument.assertNotNull(ilm, "ilm");
         Argument.assertNotNull(buffer, "buffer");
 
-        return new MyStridedCharIlm(ilm, buffer);
+        return new StridedCharIlmImpl(ilm, buffer);
     }
 
-    private static class MyStridedCharIlm extends AbstractStridedCharIlm {
+    private static class StridedCharIlmImpl extends AbstractStridedCharIlm {
         private final CharIlm ilm;
         private final char[] buffer;
 
-        public MyStridedCharIlm(final CharIlm ilm, final char[] buffer) {
+        private StridedCharIlmImpl(final CharIlm ilm, final char[] buffer) {
             this.ilm = ilm;
             this.buffer = buffer;
         }

@@ -18,15 +18,15 @@ public final class BooleanIlaSegment {
         Argument.assertNotLessThan(length, 0, "length");
         Argument.assertNotGreaterThan(start + length, ila.length(), "start + length", "ila.length()");
 
-        return new MyBooleanIla(ila, start, length);
+        return new BooleanIlaImpl(ila, start, length);
     }
 
-    private static class MyBooleanIla extends AbstractBooleanIla {
+    private static class BooleanIlaImpl extends AbstractBooleanIla {
         private final BooleanIla ila;
         private final long start;
         private final long length;
 
-        MyBooleanIla(BooleanIla ila, long start, long length) {
+        private BooleanIlaImpl(BooleanIla ila, long start, long length) {
             this.ila = ila;
             this.start = start;
             this.length = length;

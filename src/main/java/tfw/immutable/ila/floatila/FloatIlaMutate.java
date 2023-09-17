@@ -13,15 +13,15 @@ public final class FloatIlaMutate {
         Argument.assertNotLessThan(index, 0, "index");
         Argument.assertLessThan(index, ila.length(), "index", "ila.length()");
 
-        return new MyFloatIla(ila, index, value);
+        return new FloatIlaImpl(ila, index, value);
     }
 
-    private static class MyFloatIla extends AbstractFloatIla {
+    private static class FloatIlaImpl extends AbstractFloatIla {
         private final FloatIla ila;
         private final long index;
         private final float value;
 
-        MyFloatIla(FloatIla ila, long index, float value) {
+        private FloatIlaImpl(FloatIla ila, long index, float value) {
             this.ila = ila;
             this.index = index;
             this.value = value;

@@ -13,10 +13,10 @@ public class StridedObjectIlmCircularCache {
         Argument.assertGreaterThan(numRows, 0, "numRows");
         Argument.assertNotNull(buffer, "buffer");
 
-        return new MyObjectIlm<>(stridedIlm, numRows, buffer);
+        return new ObjectIlmImpl<>(stridedIlm, numRows, buffer);
     }
 
-    private static class MyObjectIlm<T> extends AbstractStridedObjectIlm<T> {
+    private static class ObjectIlmImpl<T> extends AbstractStridedObjectIlm<T> {
         private final StridedObjectIlm<T> stridedIlm;
         private final int cacheLength;
         private T[] buffer;
@@ -26,7 +26,7 @@ public class StridedObjectIlmCircularCache {
         private final int rStride;
         private final int maxRows;
 
-        public MyObjectIlm(StridedObjectIlm<T> stridedIlm, int numRows, T[] buffer) throws IOException {
+        private ObjectIlmImpl(StridedObjectIlm<T> stridedIlm, int numRows, T[] buffer) throws IOException {
             this.stridedIlm = stridedIlm;
             this.maxRows = numRows;
             this.buffer = buffer;

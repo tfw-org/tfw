@@ -13,10 +13,10 @@ public class StridedFloatIlmCircularCache {
         Argument.assertGreaterThan(numRows, 0, "numRows");
         Argument.assertNotNull(buffer, "buffer");
 
-        return new MyFloatIlm(stridedIlm, numRows, buffer);
+        return new FloatIlmImpl(stridedIlm, numRows, buffer);
     }
 
-    private static class MyFloatIlm extends AbstractStridedFloatIlm {
+    private static class FloatIlmImpl extends AbstractStridedFloatIlm {
         private final StridedFloatIlm stridedIlm;
         private final int cacheLength;
         private float[] buffer;
@@ -26,7 +26,7 @@ public class StridedFloatIlmCircularCache {
         private final int rStride;
         private final int maxRows;
 
-        public MyFloatIlm(StridedFloatIlm stridedIlm, int numRows, float[] buffer) throws IOException {
+        private FloatIlmImpl(StridedFloatIlm stridedIlm, int numRows, float[] buffer) throws IOException {
             this.stridedIlm = stridedIlm;
             this.maxRows = numRows;
             this.buffer = buffer;

@@ -11,13 +11,13 @@ public final class LongIlaNegate {
     public static LongIla create(LongIla ila) {
         Argument.assertNotNull(ila, "ila");
 
-        return new MyLongIla(ila);
+        return new LongIlaImpl(ila);
     }
 
-    private static class MyLongIla extends AbstractLongIla {
+    private static class LongIlaImpl extends AbstractLongIla {
         private final LongIla ila;
 
-        MyLongIla(LongIla ila) {
+        private LongIlaImpl(LongIla ila) {
             this.ila = ila;
         }
 

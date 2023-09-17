@@ -10,15 +10,15 @@ public class ByteIlmFromCastIntIlm {
     public static ByteIlm create(IntIlm intIlm) {
         Argument.assertNotNull(intIlm, "intIlm");
 
-        return new MyByteIlm(intIlm);
+        return new ByteIlmImpl(intIlm);
     }
 
-    private static class MyByteIlm extends AbstractByteIlm {
+    private static class ByteIlmImpl extends AbstractByteIlm {
         private final IntIlm intIlm;
 
         private int[] buffer = new int[0];
 
-        public MyByteIlm(IntIlm intIlm) {
+        private ByteIlmImpl(IntIlm intIlm) {
             this.intIlm = intIlm;
         }
 
