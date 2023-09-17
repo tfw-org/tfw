@@ -14,14 +14,14 @@ public final class DoubleIlmFromArray {
             Argument.assertEquals(array.length % width, 0, "array.length % width", "0");
         }
 
-        return new MyDoubleIlm(array, width);
+        return new DoubleIlmImpl(array, width);
     }
 
-    private static class MyDoubleIlm extends AbstractDoubleIlm {
+    private static class DoubleIlmImpl extends AbstractDoubleIlm {
         private final double[] array;
         private final int ilmWidth;
 
-        MyDoubleIlm(double[] array, int ilmWidth) {
+        private DoubleIlmImpl(double[] array, int ilmWidth) {
             this.array = array;
             this.ilmWidth = ilmWidth;
         }

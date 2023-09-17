@@ -22,14 +22,14 @@ public final class CharIlaConcatenate {
         if(rightIla.length() == 0)
             return leftIla;
         */
-        return new MyCharIla(leftIla, rightIla);
+        return new CharIlaImpl(leftIla, rightIla);
     }
 
-    private static class MyCharIla extends AbstractCharIla {
+    private static class CharIlaImpl extends AbstractCharIla {
         private final CharIla leftIla;
         private final CharIla rightIla;
 
-        MyCharIla(CharIla leftIla, CharIla rightIla) {
+        private CharIlaImpl(CharIla leftIla, CharIla rightIla) {
             this.leftIla = leftIla;
             this.rightIla = rightIla;
         }

@@ -13,15 +13,15 @@ public final class DoubleIlaInsert {
         Argument.assertNotLessThan(index, 0, "index");
         Argument.assertNotGreaterThan(index, ila.length(), "index", "ila.length()");
 
-        return new MyDoubleIla(ila, index, value);
+        return new DoubleIlaImpl(ila, index, value);
     }
 
-    private static class MyDoubleIla extends AbstractDoubleIla {
+    private static class DoubleIlaImpl extends AbstractDoubleIla {
         private final DoubleIla ila;
         private final long index;
         private final double value;
 
-        MyDoubleIla(DoubleIla ila, long index, double value) {
+        private DoubleIlaImpl(DoubleIla ila, long index, double value) {
             this.ila = ila;
             this.index = index;
             this.value = value;

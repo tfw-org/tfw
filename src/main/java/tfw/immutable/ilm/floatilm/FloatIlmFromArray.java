@@ -14,14 +14,14 @@ public final class FloatIlmFromArray {
             Argument.assertEquals(array.length % width, 0, "array.length % width", "0");
         }
 
-        return new MyFloatIlm(array, width);
+        return new FloatIlmImpl(array, width);
     }
 
-    private static class MyFloatIlm extends AbstractFloatIlm {
+    private static class FloatIlmImpl extends AbstractFloatIlm {
         private final float[] array;
         private final int ilmWidth;
 
-        MyFloatIlm(float[] array, int ilmWidth) {
+        private FloatIlmImpl(float[] array, int ilmWidth) {
             this.array = array;
             this.ilmWidth = ilmWidth;
         }

@@ -13,15 +13,15 @@ public final class ObjectIlaInsert {
         Argument.assertNotLessThan(index, 0, "index");
         Argument.assertNotGreaterThan(index, ila.length(), "index", "ila.length()");
 
-        return new MyObjectIla<>(ila, index, value);
+        return new ObjectIlaImpl<>(ila, index, value);
     }
 
-    private static class MyObjectIla<T> extends AbstractObjectIla<T> {
+    private static class ObjectIlaImpl<T> extends AbstractObjectIla<T> {
         private final ObjectIla<T> ila;
         private final long index;
         private final T value;
 
-        MyObjectIla(ObjectIla<T> ila, long index, T value) {
+        private ObjectIlaImpl(ObjectIla<T> ila, long index, T value) {
             this.ila = ila;
             this.index = index;
             this.value = value;

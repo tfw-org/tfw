@@ -12,14 +12,14 @@ public final class FloatIlaReverse {
         Argument.assertNotNull(ila, "ila");
         Argument.assertNotNull(buffer, "buffer");
 
-        return new MyFloatIla(ila, buffer);
+        return new FloatIlaImpl(ila, buffer);
     }
 
-    private static class MyFloatIla extends AbstractFloatIla {
+    private static class FloatIlaImpl extends AbstractFloatIla {
         private final FloatIla ila;
         private final float[] buffer;
 
-        MyFloatIla(FloatIla ila, final float[] buffer) {
+        private FloatIlaImpl(FloatIla ila, final float[] buffer) {
             this.ila = ila;
             this.buffer = buffer;
         }

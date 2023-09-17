@@ -13,14 +13,14 @@ public final class IntIlaRemove {
         Argument.assertNotLessThan(index, 0, "index");
         Argument.assertLessThan(index, ila.length(), "index", "ila.length()");
 
-        return new MyIntIla(ila, index);
+        return new IntIlaImpl(ila, index);
     }
 
-    private static class MyIntIla extends AbstractIntIla {
+    private static class IntIlaImpl extends AbstractIntIla {
         private final IntIla ila;
         private final long index;
 
-        MyIntIla(IntIla ila, long index) {
+        private IntIlaImpl(IntIla ila, long index) {
             this.ila = ila;
             this.index = index;
         }

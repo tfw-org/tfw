@@ -14,15 +14,15 @@ public final class IntIlaDecimate {
         Argument.assertNotLessThan(factor, 2, "factor");
         Argument.assertNotLessThan(buffer.length, 1, "buffer.length");
 
-        return new MyIntIla(ila, factor, buffer);
+        return new IntIlaImpl(ila, factor, buffer);
     }
 
-    private static class MyIntIla extends AbstractIntIla {
+    private static class IntIlaImpl extends AbstractIntIla {
         private final IntIla ila;
         private final long factor;
         private final int[] buffer;
 
-        MyIntIla(IntIla ila, long factor, int[] buffer) {
+        private IntIlaImpl(IntIla ila, long factor, int[] buffer) {
             this.ila = ila;
             this.factor = factor;
             this.buffer = buffer;

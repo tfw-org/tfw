@@ -11,13 +11,13 @@ public final class FloatIlaInvert {
     public static FloatIla create(FloatIla ila) {
         Argument.assertNotNull(ila, "ila");
 
-        return new MyFloatIla(ila);
+        return new FloatIlaImpl(ila);
     }
 
-    private static class MyFloatIla extends AbstractFloatIla {
+    private static class FloatIlaImpl extends AbstractFloatIla {
         private final FloatIla ila;
 
-        MyFloatIla(FloatIla ila) {
+        private FloatIlaImpl(FloatIla ila) {
             this.ila = ila;
         }
 

@@ -18,15 +18,15 @@ public final class ByteIlaSegment {
         Argument.assertNotLessThan(length, 0, "length");
         Argument.assertNotGreaterThan(start + length, ila.length(), "start + length", "ila.length()");
 
-        return new MyByteIla(ila, start, length);
+        return new ByteIlaImpl(ila, start, length);
     }
 
-    private static class MyByteIla extends AbstractByteIla {
+    private static class ByteIlaImpl extends AbstractByteIla {
         private final ByteIla ila;
         private final long start;
         private final long length;
 
-        MyByteIla(ByteIla ila, long start, long length) {
+        private ByteIlaImpl(ByteIla ila, long start, long length) {
             this.ila = ila;
             this.start = start;
             this.length = length;

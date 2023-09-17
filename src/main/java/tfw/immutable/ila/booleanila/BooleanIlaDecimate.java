@@ -14,15 +14,15 @@ public final class BooleanIlaDecimate {
         Argument.assertNotLessThan(factor, 2, "factor");
         Argument.assertNotLessThan(buffer.length, 1, "buffer.length");
 
-        return new MyBooleanIla(ila, factor, buffer);
+        return new BooleanIlaImpl(ila, factor, buffer);
     }
 
-    private static class MyBooleanIla extends AbstractBooleanIla {
+    private static class BooleanIlaImpl extends AbstractBooleanIla {
         private final BooleanIla ila;
         private final long factor;
         private final boolean[] buffer;
 
-        MyBooleanIla(BooleanIla ila, long factor, boolean[] buffer) {
+        private BooleanIlaImpl(BooleanIla ila, long factor, boolean[] buffer) {
             this.ila = ila;
             this.factor = factor;
             this.buffer = buffer;

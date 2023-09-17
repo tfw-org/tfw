@@ -10,14 +10,14 @@ public final class CharIlaFill {
     public static CharIla create(char value, long length) {
         Argument.assertNotLessThan(length, 0, "length");
 
-        return new MyCharIla(value, length);
+        return new CharIlaImpl(value, length);
     }
 
-    private static class MyCharIla extends AbstractCharIla {
+    private static class CharIlaImpl extends AbstractCharIla {
         private final char value;
         private final long length;
 
-        MyCharIla(char value, long length) {
+        private CharIlaImpl(char value, long length) {
             this.value = value;
             this.length = length;
         }

@@ -12,14 +12,14 @@ public final class ShortIlaReverse {
         Argument.assertNotNull(ila, "ila");
         Argument.assertNotNull(buffer, "buffer");
 
-        return new MyShortIla(ila, buffer);
+        return new ShortIlaImpl(ila, buffer);
     }
 
-    private static class MyShortIla extends AbstractShortIla {
+    private static class ShortIlaImpl extends AbstractShortIla {
         private final ShortIla ila;
         private final short[] buffer;
 
-        MyShortIla(ShortIla ila, final short[] buffer) {
+        private ShortIlaImpl(ShortIla ila, final short[] buffer) {
             this.ila = ila;
             this.buffer = buffer;
         }

@@ -13,14 +13,14 @@ public final class ShortIlaRemove {
         Argument.assertNotLessThan(index, 0, "index");
         Argument.assertLessThan(index, ila.length(), "index", "ila.length()");
 
-        return new MyShortIla(ila, index);
+        return new ShortIlaImpl(ila, index);
     }
 
-    private static class MyShortIla extends AbstractShortIla {
+    private static class ShortIlaImpl extends AbstractShortIla {
         private final ShortIla ila;
         private final long index;
 
-        MyShortIla(ShortIla ila, long index) {
+        private ShortIlaImpl(ShortIla ila, long index) {
             this.ila = ila;
             this.index = index;
         }

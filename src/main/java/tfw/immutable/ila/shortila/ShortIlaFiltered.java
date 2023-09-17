@@ -17,15 +17,15 @@ public final class ShortIlaFiltered {
         Argument.assertNotNull(filter, "filter");
         Argument.assertNotNull(buffer, "buffer");
 
-        return new MyShortIla(ila, filter, buffer);
+        return new ShortIlaImpl(ila, filter, buffer);
     }
 
-    private static class MyShortIla extends AbstractShortIla {
+    private static class ShortIlaImpl extends AbstractShortIla {
         private final ShortIla ila;
         private final ShortFilter filter;
         private final short[] buffer;
 
-        private MyShortIla(ShortIla ila, ShortFilter filter, short[] buffer) {
+        private ShortIlaImpl(ShortIla ila, ShortFilter filter, short[] buffer) {
             this.ila = ila;
             this.filter = filter;
             this.buffer = buffer;

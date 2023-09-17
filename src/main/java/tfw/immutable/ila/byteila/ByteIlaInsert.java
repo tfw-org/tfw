@@ -13,15 +13,15 @@ public final class ByteIlaInsert {
         Argument.assertNotLessThan(index, 0, "index");
         Argument.assertNotGreaterThan(index, ila.length(), "index", "ila.length()");
 
-        return new MyByteIla(ila, index, value);
+        return new ByteIlaImpl(ila, index, value);
     }
 
-    private static class MyByteIla extends AbstractByteIla {
+    private static class ByteIlaImpl extends AbstractByteIla {
         private final ByteIla ila;
         private final long index;
         private final byte value;
 
-        MyByteIla(ByteIla ila, long index, byte value) {
+        private ByteIlaImpl(ByteIla ila, long index, byte value) {
             this.ila = ila;
             this.index = index;
             this.value = value;

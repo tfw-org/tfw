@@ -20,14 +20,14 @@ public final class ObjectIlaInterleave {
             Argument.assertEquals(ilas[ii].length(), firstLength, "ilas[0].length()", "ilas[" + ii + "].length()");
         }
 
-        return new MyObjectIla<>(ilas, buffer);
+        return new ObjectIlaImpl<>(ilas, buffer);
     }
 
-    private static class MyObjectIla<T> extends AbstractObjectIla<T> {
+    private static class ObjectIlaImpl<T> extends AbstractObjectIla<T> {
         private final StridedObjectIla<T>[] stridedObjectIlas;
         private final int ilasLength;
 
-        MyObjectIla(ObjectIla<T>[] ilas, final T[] buffer) {
+        private ObjectIlaImpl(ObjectIla<T>[] ilas, final T[] buffer) {
             stridedObjectIlas = new StridedObjectIla[ilas.length];
             ilasLength = ilas.length;
 

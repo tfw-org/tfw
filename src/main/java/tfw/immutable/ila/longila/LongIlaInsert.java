@@ -13,15 +13,15 @@ public final class LongIlaInsert {
         Argument.assertNotLessThan(index, 0, "index");
         Argument.assertNotGreaterThan(index, ila.length(), "index", "ila.length()");
 
-        return new MyLongIla(ila, index, value);
+        return new LongIlaImpl(ila, index, value);
     }
 
-    private static class MyLongIla extends AbstractLongIla {
+    private static class LongIlaImpl extends AbstractLongIla {
         private final LongIla ila;
         private final long index;
         private final long value;
 
-        MyLongIla(LongIla ila, long index, long value) {
+        private LongIlaImpl(LongIla ila, long index, long value) {
             this.ila = ila;
             this.index = index;
             this.value = value;

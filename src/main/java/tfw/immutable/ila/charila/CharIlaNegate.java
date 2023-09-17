@@ -11,13 +11,13 @@ public final class CharIlaNegate {
     public static CharIla create(CharIla ila) {
         Argument.assertNotNull(ila, "ila");
 
-        return new MyCharIla(ila);
+        return new CharIlaImpl(ila);
     }
 
-    private static class MyCharIla extends AbstractCharIla {
+    private static class CharIlaImpl extends AbstractCharIla {
         private final CharIla ila;
 
-        MyCharIla(CharIla ila) {
+        private CharIlaImpl(CharIla ila) {
             this.ila = ila;
         }
 

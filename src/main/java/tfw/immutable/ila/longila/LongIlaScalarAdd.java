@@ -11,14 +11,14 @@ public final class LongIlaScalarAdd {
     public static LongIla create(LongIla ila, long scalar) {
         Argument.assertNotNull(ila, "ila");
 
-        return new MyLongIla(ila, scalar);
+        return new LongIlaImpl(ila, scalar);
     }
 
-    private static class MyLongIla extends AbstractLongIla {
+    private static class LongIlaImpl extends AbstractLongIla {
         private final LongIla ila;
         private final long scalar;
 
-        MyLongIla(LongIla ila, long scalar) {
+        private LongIlaImpl(LongIla ila, long scalar) {
             this.ila = ila;
             this.scalar = scalar;
         }

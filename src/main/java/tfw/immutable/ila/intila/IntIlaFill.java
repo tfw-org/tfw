@@ -10,14 +10,14 @@ public final class IntIlaFill {
     public static IntIla create(int value, long length) {
         Argument.assertNotLessThan(length, 0, "length");
 
-        return new MyIntIla(value, length);
+        return new IntIlaImpl(value, length);
     }
 
-    private static class MyIntIla extends AbstractIntIla {
+    private static class IntIlaImpl extends AbstractIntIla {
         private final int value;
         private final long length;
 
-        MyIntIla(int value, long length) {
+        private IntIlaImpl(int value, long length) {
             this.value = value;
             this.length = length;
         }

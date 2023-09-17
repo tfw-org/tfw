@@ -11,14 +11,14 @@ public final class IntIlaScalarAdd {
     public static IntIla create(IntIla ila, int scalar) {
         Argument.assertNotNull(ila, "ila");
 
-        return new MyIntIla(ila, scalar);
+        return new IntIlaImpl(ila, scalar);
     }
 
-    private static class MyIntIla extends AbstractIntIla {
+    private static class IntIlaImpl extends AbstractIntIla {
         private final IntIla ila;
         private final int scalar;
 
-        MyIntIla(IntIla ila, int scalar) {
+        private IntIlaImpl(IntIla ila, int scalar) {
             this.ila = ila;
             this.scalar = scalar;
         }

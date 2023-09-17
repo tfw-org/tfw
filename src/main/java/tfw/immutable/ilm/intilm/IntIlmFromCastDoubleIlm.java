@@ -10,15 +10,15 @@ public class IntIlmFromCastDoubleIlm {
     public static IntIlm create(DoubleIlm doubleIlm) {
         Argument.assertNotNull(doubleIlm, "doubleIlm");
 
-        return new MyIntIlm(doubleIlm);
+        return new IntIlmImpl(doubleIlm);
     }
 
-    private static class MyIntIlm extends AbstractIntIlm {
+    private static class IntIlmImpl extends AbstractIntIlm {
         private final DoubleIlm doubleIlm;
 
         private double[] buffer = new double[0];
 
-        public MyIntIlm(DoubleIlm doubleIlm) {
+        private IntIlmImpl(DoubleIlm doubleIlm) {
             this.doubleIlm = doubleIlm;
         }
 

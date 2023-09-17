@@ -11,14 +11,14 @@ public final class StridedDoubleIlmFromDoubleIlm {
         Argument.assertNotNull(ilm, "ilm");
         Argument.assertNotNull(buffer, "buffer");
 
-        return new MyStridedDoubleIlm(ilm, buffer);
+        return new StridedDoubleIlmImpl(ilm, buffer);
     }
 
-    private static class MyStridedDoubleIlm extends AbstractStridedDoubleIlm {
+    private static class StridedDoubleIlmImpl extends AbstractStridedDoubleIlm {
         private final DoubleIlm ilm;
         private final double[] buffer;
 
-        public MyStridedDoubleIlm(final DoubleIlm ilm, final double[] buffer) {
+        private StridedDoubleIlmImpl(final DoubleIlm ilm, final double[] buffer) {
             this.ilm = ilm;
             this.buffer = buffer;
         }

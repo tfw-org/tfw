@@ -9,13 +9,13 @@ public final class IntIlmFromStridedIntIlm {
     public static IntIlm create(final StridedIntIlm stridedIlm) {
         Argument.assertNotNull(stridedIlm, "stridedIlm");
 
-        return new MyIntIlm(stridedIlm);
+        return new IntIlmImpl(stridedIlm);
     }
 
-    private static class MyIntIlm extends AbstractIntIlm {
+    private static class IntIlmImpl extends AbstractIntIlm {
         private final StridedIntIlm stridedIlm;
 
-        public MyIntIlm(final StridedIntIlm stridedIlm) {
+        private IntIlmImpl(final StridedIntIlm stridedIlm) {
             this.stridedIlm = stridedIlm;
         }
 

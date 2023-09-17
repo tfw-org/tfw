@@ -13,10 +13,10 @@ public class StridedLongIlmCircularCache {
         Argument.assertGreaterThan(numRows, 0, "numRows");
         Argument.assertNotNull(buffer, "buffer");
 
-        return new MyLongIlm(stridedIlm, numRows, buffer);
+        return new LongIlmImpl(stridedIlm, numRows, buffer);
     }
 
-    private static class MyLongIlm extends AbstractStridedLongIlm {
+    private static class LongIlmImpl extends AbstractStridedLongIlm {
         private final StridedLongIlm stridedIlm;
         private final int cacheLength;
         private long[] buffer;
@@ -26,7 +26,7 @@ public class StridedLongIlmCircularCache {
         private final int rStride;
         private final int maxRows;
 
-        public MyLongIlm(StridedLongIlm stridedIlm, int numRows, long[] buffer) throws IOException {
+        private LongIlmImpl(StridedLongIlm stridedIlm, int numRows, long[] buffer) throws IOException {
             this.stridedIlm = stridedIlm;
             this.maxRows = numRows;
             this.buffer = buffer;

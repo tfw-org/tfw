@@ -11,14 +11,14 @@ public class RowConcatenateDoubleIlm {
         Argument.assertNotNull(rightIlm, "rightIlm");
         Argument.assertEquals(leftIlm.height(), rightIlm.height(), "leftIlm.height()", "rightIlm.height()");
 
-        return new MyDoubleIlm(leftIlm, rightIlm);
+        return new DoubleIlmImpl(leftIlm, rightIlm);
     }
 
-    private static class MyDoubleIlm extends AbstractDoubleIlm {
+    private static class DoubleIlmImpl extends AbstractDoubleIlm {
         private final StridedDoubleIlm stridedLeftIlm;
         private final StridedDoubleIlm stridedRightIlm;
 
-        public MyDoubleIlm(DoubleIlm leftIlm, DoubleIlm rightIlm) {
+        private DoubleIlmImpl(DoubleIlm leftIlm, DoubleIlm rightIlm) {
             this.stridedLeftIlm = StridedDoubleIlmFromDoubleIlm.create(leftIlm, new double[0]);
             this.stridedRightIlm = StridedDoubleIlmFromDoubleIlm.create(rightIlm, new double[0]);
         }

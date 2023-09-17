@@ -11,14 +11,14 @@ public final class ByteIlaScalarMultiply {
     public static ByteIla create(ByteIla ila, byte scalar) {
         Argument.assertNotNull(ila, "ila");
 
-        return new MyByteIla(ila, scalar);
+        return new ByteIlaImpl(ila, scalar);
     }
 
-    private static class MyByteIla extends AbstractByteIla {
+    private static class ByteIlaImpl extends AbstractByteIla {
         private final ByteIla ila;
         private final byte scalar;
 
-        MyByteIla(ByteIla ila, byte scalar) {
+        private ByteIlaImpl(ByteIla ila, byte scalar) {
             this.ila = ila;
             this.scalar = scalar;
         }

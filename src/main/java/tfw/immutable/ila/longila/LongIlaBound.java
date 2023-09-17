@@ -12,15 +12,15 @@ public final class LongIlaBound {
         Argument.assertNotNull(ila, "ila");
         Argument.assertNotGreaterThan(minimum, maximum, "minimum", "maximum");
 
-        return new MyLongIla(ila, minimum, maximum);
+        return new LongIlaImpl(ila, minimum, maximum);
     }
 
-    private static class MyLongIla extends AbstractLongIla {
+    private static class LongIlaImpl extends AbstractLongIla {
         private final LongIla ila;
         private final long minimum;
         private final long maximum;
 
-        MyLongIla(LongIla ila, long minimum, long maximum) {
+        private LongIlaImpl(LongIla ila, long minimum, long maximum) {
             this.ila = ila;
             this.minimum = minimum;
             this.maximum = maximum;

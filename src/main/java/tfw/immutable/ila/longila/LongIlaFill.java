@@ -10,14 +10,14 @@ public final class LongIlaFill {
     public static LongIla create(long value, long length) {
         Argument.assertNotLessThan(length, 0, "length");
 
-        return new MyLongIla(value, length);
+        return new LongIlaImpl(value, length);
     }
 
-    private static class MyLongIla extends AbstractLongIla {
+    private static class LongIlaImpl extends AbstractLongIla {
         private final long value;
         private final long length;
 
-        MyLongIla(long value, long length) {
+        private LongIlaImpl(long value, long length) {
             this.value = value;
             this.length = length;
         }

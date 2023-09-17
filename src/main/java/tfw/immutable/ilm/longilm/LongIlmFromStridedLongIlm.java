@@ -9,13 +9,13 @@ public final class LongIlmFromStridedLongIlm {
     public static LongIlm create(final StridedLongIlm stridedIlm) {
         Argument.assertNotNull(stridedIlm, "stridedIlm");
 
-        return new MyLongIlm(stridedIlm);
+        return new LongIlmImpl(stridedIlm);
     }
 
-    private static class MyLongIlm extends AbstractLongIlm {
+    private static class LongIlmImpl extends AbstractLongIlm {
         private final StridedLongIlm stridedIlm;
 
-        public MyLongIlm(final StridedLongIlm stridedIlm) {
+        private LongIlmImpl(final StridedLongIlm stridedIlm) {
             this.stridedIlm = stridedIlm;
         }
 

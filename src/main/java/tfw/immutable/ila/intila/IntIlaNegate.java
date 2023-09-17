@@ -11,13 +11,13 @@ public final class IntIlaNegate {
     public static IntIla create(IntIla ila) {
         Argument.assertNotNull(ila, "ila");
 
-        return new MyIntIla(ila);
+        return new IntIlaImpl(ila);
     }
 
-    private static class MyIntIla extends AbstractIntIla {
+    private static class IntIlaImpl extends AbstractIntIla {
         private final IntIla ila;
 
-        MyIntIla(IntIla ila) {
+        private IntIlaImpl(IntIla ila) {
             this.ila = ila;
         }
 

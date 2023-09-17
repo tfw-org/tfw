@@ -14,15 +14,15 @@ public final class ObjectIlaDecimate {
         Argument.assertNotLessThan(factor, 2, "factor");
         Argument.assertNotLessThan(buffer.length, 1, "buffer.length");
 
-        return new MyObjectIla<>(ila, factor, buffer);
+        return new ObjectIlaImpl<>(ila, factor, buffer);
     }
 
-    private static class MyObjectIla<T> extends AbstractObjectIla<T> {
+    private static class ObjectIlaImpl<T> extends AbstractObjectIla<T> {
         private final ObjectIla<T> ila;
         private final long factor;
         private final T[] buffer;
 
-        MyObjectIla(ObjectIla<T> ila, long factor, T[] buffer) {
+        private ObjectIlaImpl(ObjectIla<T> ila, long factor, T[] buffer) {
             this.ila = ila;
             this.factor = factor;
             this.buffer = buffer;

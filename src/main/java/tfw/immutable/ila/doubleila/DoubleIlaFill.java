@@ -10,14 +10,14 @@ public final class DoubleIlaFill {
     public static DoubleIla create(double value, long length) {
         Argument.assertNotLessThan(length, 0, "length");
 
-        return new MyDoubleIla(value, length);
+        return new DoubleIlaImpl(value, length);
     }
 
-    private static class MyDoubleIla extends AbstractDoubleIla {
+    private static class DoubleIlaImpl extends AbstractDoubleIla {
         private final double value;
         private final long length;
 
-        MyDoubleIla(double value, long length) {
+        private DoubleIlaImpl(double value, long length) {
             this.value = value;
             this.length = length;
         }

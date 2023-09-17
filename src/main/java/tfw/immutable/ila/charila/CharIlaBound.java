@@ -12,15 +12,15 @@ public final class CharIlaBound {
         Argument.assertNotNull(ila, "ila");
         Argument.assertNotGreaterThan(minimum, maximum, "minimum", "maximum");
 
-        return new MyCharIla(ila, minimum, maximum);
+        return new CharIlaImpl(ila, minimum, maximum);
     }
 
-    private static class MyCharIla extends AbstractCharIla {
+    private static class CharIlaImpl extends AbstractCharIla {
         private final CharIla ila;
         private final char minimum;
         private final char maximum;
 
-        MyCharIla(CharIla ila, char minimum, char maximum) {
+        private CharIlaImpl(CharIla ila, char minimum, char maximum) {
             this.ila = ila;
             this.minimum = minimum;
             this.maximum = maximum;

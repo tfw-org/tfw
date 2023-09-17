@@ -13,15 +13,15 @@ public final class BooleanIlaInsert {
         Argument.assertNotLessThan(index, 0, "index");
         Argument.assertNotGreaterThan(index, ila.length(), "index", "ila.length()");
 
-        return new MyBooleanIla(ila, index, value);
+        return new BooleanIlaImpl(ila, index, value);
     }
 
-    private static class MyBooleanIla extends AbstractBooleanIla {
+    private static class BooleanIlaImpl extends AbstractBooleanIla {
         private final BooleanIla ila;
         private final long index;
         private final boolean value;
 
-        MyBooleanIla(BooleanIla ila, long index, boolean value) {
+        private BooleanIlaImpl(BooleanIla ila, long index, boolean value) {
             this.ila = ila;
             this.index = index;
             this.value = value;

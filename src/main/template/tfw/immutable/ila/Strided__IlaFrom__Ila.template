@@ -11,14 +11,14 @@ public final class Strided%%NAME%%IlaFrom%%NAME%%Ila%%TEMPLATE%% {
         Argument.assertNotNull(ila, "ila");
         Argument.assertNotNull(buffer, "buffer");
 
-        return new MyStrided%%NAME%%Ila%%DIAMOND%%(ila, buffer);
+        return new Strided%%NAME%%IlaImpl%%DIAMOND%%(ila, buffer);
     }
 
-    private static class MyStrided%%NAME%%Ila%%TEMPLATE%% extends AbstractStrided%%NAME%%Ila%%TEMPLATE%% {
+    private static class Strided%%NAME%%IlaImpl%%TEMPLATE%% extends AbstractStrided%%NAME%%Ila%%TEMPLATE%% {
         private final %%NAME%%Ila%%TEMPLATE%% ila;
         private final %%TYPE_OR_TEMPLATE%%[] buffer;
 
-        public MyStrided%%NAME%%Ila(final %%NAME%%Ila%%TEMPLATE%% ila, final %%TYPE_OR_TEMPLATE%%[] buffer) {
+        public Strided%%NAME%%IlaImpl(final %%NAME%%Ila%%TEMPLATE%% ila, final %%TYPE_OR_TEMPLATE%%[] buffer) {
             this.ila = ila;
             this.buffer = buffer;
         }

@@ -10,15 +10,15 @@ public class IntIlmFill {
         Argument.assertNotLessThan(width, 0, "width");
         Argument.assertNotLessThan(height, 0, "height");
 
-        return new MyIntIlm(value, width, height);
+        return new IntIlmImpl(value, width, height);
     }
 
-    private static class MyIntIlm extends AbstractIntIlm {
+    private static class IntIlmImpl extends AbstractIntIlm {
         private final int value;
         private final long ilmWidth;
         private final long ilmHeight;
 
-        public MyIntIlm(int value, long ilmWidth, long ilmHeight) {
+        private IntIlmImpl(int value, long ilmWidth, long ilmHeight) {
             this.value = value;
             this.ilmWidth = ilmWidth;
             this.ilmHeight = ilmHeight;

@@ -11,14 +11,14 @@ public final class StridedShortIlmFromShortIlm {
         Argument.assertNotNull(ilm, "ilm");
         Argument.assertNotNull(buffer, "buffer");
 
-        return new MyStridedShortIlm(ilm, buffer);
+        return new StridedShortIlmImpl(ilm, buffer);
     }
 
-    private static class MyStridedShortIlm extends AbstractStridedShortIlm {
+    private static class StridedShortIlmImpl extends AbstractStridedShortIlm {
         private final ShortIlm ilm;
         private final short[] buffer;
 
-        public MyStridedShortIlm(final ShortIlm ilm, final short[] buffer) {
+        private StridedShortIlmImpl(final ShortIlm ilm, final short[] buffer) {
             this.ilm = ilm;
             this.buffer = buffer;
         }

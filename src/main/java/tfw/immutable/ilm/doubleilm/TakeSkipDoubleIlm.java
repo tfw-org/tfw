@@ -12,15 +12,15 @@ public class TakeSkipDoubleIlm {
         Argument.assertNotLessThan(take, 1, "take");
         Argument.assertNotLessThan(skip, 1, "skip");
 
-        return new MyDoubleIlm(doubleIla, take, skip);
+        return new DoubleIlmImpl(doubleIla, take, skip);
     }
 
-    private static class MyDoubleIlm extends AbstractDoubleIlm {
+    private static class DoubleIlmImpl extends AbstractDoubleIlm {
         private final DoubleIla doubleIla;
         private final long take;
         private final long skip;
 
-        public MyDoubleIlm(DoubleIla doubleIla, long take, long skip) {
+        private DoubleIlmImpl(DoubleIla doubleIla, long take, long skip) {
             this.doubleIla = doubleIla;
             this.take = take;
             this.skip = skip;

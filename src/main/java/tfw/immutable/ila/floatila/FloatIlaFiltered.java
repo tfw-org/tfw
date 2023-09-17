@@ -17,15 +17,15 @@ public final class FloatIlaFiltered {
         Argument.assertNotNull(filter, "filter");
         Argument.assertNotNull(buffer, "buffer");
 
-        return new MyFloatIla(ila, filter, buffer);
+        return new FloatIlaImpl(ila, filter, buffer);
     }
 
-    private static class MyFloatIla extends AbstractFloatIla {
+    private static class FloatIlaImpl extends AbstractFloatIla {
         private final FloatIla ila;
         private final FloatFilter filter;
         private final float[] buffer;
 
-        private MyFloatIla(FloatIla ila, FloatFilter filter, float[] buffer) {
+        private FloatIlaImpl(FloatIla ila, FloatFilter filter, float[] buffer) {
             this.ila = ila;
             this.filter = filter;
             this.buffer = buffer;

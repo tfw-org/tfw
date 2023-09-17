@@ -9,13 +9,13 @@ public final class CharIlaFromStridedCharIla {
     public static CharIla create(final StridedCharIla stridedIla) {
         Argument.assertNotNull(stridedIla, "stridedIla");
 
-        return new MyCharIla(stridedIla);
+        return new CharIlaImpl(stridedIla);
     }
 
-    private static class MyCharIla extends AbstractCharIla {
+    private static class CharIlaImpl extends AbstractCharIla {
         private final StridedCharIla stridedIla;
 
-        public MyCharIla(final StridedCharIla stridedIla) {
+        private CharIlaImpl(final StridedCharIla stridedIla) {
             this.stridedIla = stridedIla;
         }
 

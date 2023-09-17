@@ -9,13 +9,13 @@ public final class LongIlaFromStridedLongIla {
     public static LongIla create(final StridedLongIla stridedIla) {
         Argument.assertNotNull(stridedIla, "stridedIla");
 
-        return new MyLongIla(stridedIla);
+        return new LongIlaImpl(stridedIla);
     }
 
-    private static class MyLongIla extends AbstractLongIla {
+    private static class LongIlaImpl extends AbstractLongIla {
         private final StridedLongIla stridedIla;
 
-        public MyLongIla(final StridedLongIla stridedIla) {
+        private LongIlaImpl(final StridedLongIla stridedIla) {
             this.stridedIla = stridedIla;
         }
 

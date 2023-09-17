@@ -15,14 +15,14 @@ public final class LongIlaFromCastIntIla {
         Argument.assertNotNull(intIla, "intIla");
         Argument.assertNotLessThan(bufferSize, 1, "bufferSize");
 
-        return new MyLongIla(intIla, bufferSize);
+        return new LongIlaImpl(intIla, bufferSize);
     }
 
-    private static class MyLongIla extends AbstractLongIla {
+    private static class LongIlaImpl extends AbstractLongIla {
         private final IntIla intIla;
         private final int bufferSize;
 
-        MyLongIla(IntIla intIla, int bufferSize) {
+        private LongIlaImpl(IntIla intIla, int bufferSize) {
             this.intIla = intIla;
             this.bufferSize = bufferSize;
         }

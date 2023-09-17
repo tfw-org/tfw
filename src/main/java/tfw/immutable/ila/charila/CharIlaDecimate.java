@@ -14,15 +14,15 @@ public final class CharIlaDecimate {
         Argument.assertNotLessThan(factor, 2, "factor");
         Argument.assertNotLessThan(buffer.length, 1, "buffer.length");
 
-        return new MyCharIla(ila, factor, buffer);
+        return new CharIlaImpl(ila, factor, buffer);
     }
 
-    private static class MyCharIla extends AbstractCharIla {
+    private static class CharIlaImpl extends AbstractCharIla {
         private final CharIla ila;
         private final long factor;
         private final char[] buffer;
 
-        MyCharIla(CharIla ila, long factor, char[] buffer) {
+        private CharIlaImpl(CharIla ila, long factor, char[] buffer) {
             this.ila = ila;
             this.factor = factor;
             this.buffer = buffer;

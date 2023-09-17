@@ -10,14 +10,14 @@ public final class ByteIlaFill {
     public static ByteIla create(byte value, long length) {
         Argument.assertNotLessThan(length, 0, "length");
 
-        return new MyByteIla(value, length);
+        return new ByteIlaImpl(value, length);
     }
 
-    private static class MyByteIla extends AbstractByteIla {
+    private static class ByteIlaImpl extends AbstractByteIla {
         private final byte value;
         private final long length;
 
-        MyByteIla(byte value, long length) {
+        private ByteIlaImpl(byte value, long length) {
             this.value = value;
             this.length = length;
         }

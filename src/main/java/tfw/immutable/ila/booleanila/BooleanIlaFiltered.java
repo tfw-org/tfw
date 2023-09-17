@@ -17,15 +17,15 @@ public final class BooleanIlaFiltered {
         Argument.assertNotNull(filter, "filter");
         Argument.assertNotNull(buffer, "buffer");
 
-        return new MyBooleanIla(ila, filter, buffer);
+        return new BooleanIlaImpl(ila, filter, buffer);
     }
 
-    private static class MyBooleanIla extends AbstractBooleanIla {
+    private static class BooleanIlaImpl extends AbstractBooleanIla {
         private final BooleanIla ila;
         private final BooleanFilter filter;
         private final boolean[] buffer;
 
-        private MyBooleanIla(BooleanIla ila, BooleanFilter filter, boolean[] buffer) {
+        private BooleanIlaImpl(BooleanIla ila, BooleanFilter filter, boolean[] buffer) {
             this.ila = ila;
             this.filter = filter;
             this.buffer = buffer;

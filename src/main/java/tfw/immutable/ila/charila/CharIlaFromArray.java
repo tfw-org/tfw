@@ -10,13 +10,13 @@ public final class CharIlaFromArray {
     public static CharIla create(char[] array) {
         Argument.assertNotNull(array, "array");
 
-        return new MyCharIla(array);
+        return new CharIlaImpl(array);
     }
 
-    private static class MyCharIla extends AbstractCharIla {
+    private static class CharIlaImpl extends AbstractCharIla {
         private final char[] array;
 
-        MyCharIla(char[] array) {
+        private CharIlaImpl(char[] array) {
             this.array = array;
         }
 

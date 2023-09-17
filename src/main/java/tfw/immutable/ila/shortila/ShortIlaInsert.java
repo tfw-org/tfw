@@ -13,15 +13,15 @@ public final class ShortIlaInsert {
         Argument.assertNotLessThan(index, 0, "index");
         Argument.assertNotGreaterThan(index, ila.length(), "index", "ila.length()");
 
-        return new MyShortIla(ila, index, value);
+        return new ShortIlaImpl(ila, index, value);
     }
 
-    private static class MyShortIla extends AbstractShortIla {
+    private static class ShortIlaImpl extends AbstractShortIla {
         private final ShortIla ila;
         private final long index;
         private final short value;
 
-        MyShortIla(ShortIla ila, long index, short value) {
+        private ShortIlaImpl(ShortIla ila, long index, short value) {
             this.ila = ila;
             this.index = index;
             this.value = value;

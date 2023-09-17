@@ -13,14 +13,14 @@ public final class %%NAME%%IlaReverse {
         Argument.assertNotNull(ila, "ila");
         Argument.assertNotNull(buffer, "buffer");
 
-        return new My%%NAME%%Ila%%DIAMOND%%(ila, buffer);
+        return new %%NAME%%IlaImpl%%DIAMOND%%(ila, buffer);
     }
 
-    private static class My%%NAME%%Ila%%TEMPLATE%% extends Abstract%%NAME%%Ila%%TEMPLATE%% {
+    private static class %%NAME%%IlaImpl%%TEMPLATE%% extends Abstract%%NAME%%Ila%%TEMPLATE%% {
         private final %%NAME%%Ila%%TEMPLATE%% ila;
         private final %%TYPE_OR_TEMPLATE%%[] buffer;
 
-        My%%NAME%%Ila(%%NAME%%Ila%%TEMPLATE%% ila, final %%TYPE_OR_TEMPLATE%%[] buffer) {
+        private %%NAME%%IlaImpl(%%NAME%%Ila%%TEMPLATE%% ila, final %%TYPE_OR_TEMPLATE%%[] buffer) {
             this.ila = ila;
             this.buffer = buffer;
         }

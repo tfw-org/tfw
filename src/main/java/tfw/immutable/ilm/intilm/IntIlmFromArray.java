@@ -14,14 +14,14 @@ public final class IntIlmFromArray {
             Argument.assertEquals(array.length % width, 0, "array.length % width", "0");
         }
 
-        return new MyIntIlm(array, width);
+        return new IntIlmImpl(array, width);
     }
 
-    private static class MyIntIlm extends AbstractIntIlm {
+    private static class IntIlmImpl extends AbstractIntIlm {
         private final int[] array;
         private final int ilmWidth;
 
-        MyIntIlm(int[] array, int ilmWidth) {
+        private IntIlmImpl(int[] array, int ilmWidth) {
             this.array = array;
             this.ilmWidth = ilmWidth;
         }

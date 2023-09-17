@@ -18,15 +18,15 @@ public final class FloatIlaSegment {
         Argument.assertNotLessThan(length, 0, "length");
         Argument.assertNotGreaterThan(start + length, ila.length(), "start + length", "ila.length()");
 
-        return new MyFloatIla(ila, start, length);
+        return new FloatIlaImpl(ila, start, length);
     }
 
-    private static class MyFloatIla extends AbstractFloatIla {
+    private static class FloatIlaImpl extends AbstractFloatIla {
         private final FloatIla ila;
         private final long start;
         private final long length;
 
-        MyFloatIla(FloatIla ila, long start, long length) {
+        private FloatIlaImpl(FloatIla ila, long start, long length) {
             this.ila = ila;
             this.start = start;
             this.length = length;

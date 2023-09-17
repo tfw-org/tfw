@@ -18,15 +18,15 @@ public final class CharIlaSegment {
         Argument.assertNotLessThan(length, 0, "length");
         Argument.assertNotGreaterThan(start + length, ila.length(), "start + length", "ila.length()");
 
-        return new MyCharIla(ila, start, length);
+        return new CharIlaImpl(ila, start, length);
     }
 
-    private static class MyCharIla extends AbstractCharIla {
+    private static class CharIlaImpl extends AbstractCharIla {
         private final CharIla ila;
         private final long start;
         private final long length;
 
-        MyCharIla(CharIla ila, long start, long length) {
+        private CharIlaImpl(CharIla ila, long start, long length) {
             this.ila = ila;
             this.start = start;
             this.length = length;

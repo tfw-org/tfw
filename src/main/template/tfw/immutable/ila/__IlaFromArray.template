@@ -11,13 +11,13 @@ public final class %%NAME%%IlaFromArray {
     public static %%TEMPLATE_SPACE%%%%NAME%%Ila%%TEMPLATE%% create(%%TYPE_OR_TEMPLATE%%[] array) {
         Argument.assertNotNull(array, "array");
 
-        return new My%%NAME%%Ila%%DIAMOND%%(array);
+        return new %%NAME%%IlaImpl%%DIAMOND%%(array);
     }
 
-    private static class My%%NAME%%Ila%%TEMPLATE%% extends Abstract%%NAME%%Ila%%TEMPLATE%% {
+    private static class %%NAME%%IlaImpl%%TEMPLATE%% extends Abstract%%NAME%%Ila%%TEMPLATE%% {
         private final %%TYPE_OR_TEMPLATE%%[] array;
 
-        My%%NAME%%Ila(%%TYPE_OR_TEMPLATE%%[] array) {
+        private %%NAME%%IlaImpl(%%TYPE_OR_TEMPLATE%%[] array) {
             this.array = array;
         }
 

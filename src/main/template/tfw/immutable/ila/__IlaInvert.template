@@ -12,13 +12,13 @@ public final class %%NAME%%IlaInvert {
     public static %%NAME%%Ila create(%%NAME%%Ila ila) {
         Argument.assertNotNull(ila, "ila");
 
-        return new My%%NAME%%Ila(ila);
+        return new %%NAME%%IlaImpl(ila);
     }
 
-    private static class My%%NAME%%Ila extends Abstract%%NAME%%Ila {
+    private static class %%NAME%%IlaImpl extends Abstract%%NAME%%Ila {
         private final %%NAME%%Ila ila;
 
-        My%%NAME%%Ila(%%NAME%%Ila ila) {
+        private %%NAME%%IlaImpl(%%NAME%%Ila ila) {
             this.ila = ila;
         }
 

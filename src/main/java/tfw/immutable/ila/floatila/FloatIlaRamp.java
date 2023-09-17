@@ -10,15 +10,15 @@ public final class FloatIlaRamp {
     public static FloatIla create(float startValue, float increment, long length) {
         Argument.assertNotLessThan(length, 0, "length");
 
-        return new MyFloatIla(startValue, increment, length);
+        return new FloatIlaImpl(startValue, increment, length);
     }
 
-    private static class MyFloatIla extends AbstractFloatIla {
+    private static class FloatIlaImpl extends AbstractFloatIla {
         private final float startValue;
         private final float increment;
         private final long length;
 
-        MyFloatIla(float startValue, float increment, long length) {
+        private FloatIlaImpl(float startValue, float increment, long length) {
             this.startValue = startValue;
             this.increment = increment;
             this.length = length;

@@ -9,13 +9,13 @@ public final class DoubleIlaFromStridedDoubleIla {
     public static DoubleIla create(final StridedDoubleIla stridedIla) {
         Argument.assertNotNull(stridedIla, "stridedIla");
 
-        return new MyDoubleIla(stridedIla);
+        return new DoubleIlaImpl(stridedIla);
     }
 
-    private static class MyDoubleIla extends AbstractDoubleIla {
+    private static class DoubleIlaImpl extends AbstractDoubleIla {
         private final StridedDoubleIla stridedIla;
 
-        public MyDoubleIla(final StridedDoubleIla stridedIla) {
+        private DoubleIlaImpl(final StridedDoubleIla stridedIla) {
             this.stridedIla = stridedIla;
         }
 

@@ -22,14 +22,14 @@ public final class ByteIlaConcatenate {
         if(rightIla.length() == 0)
             return leftIla;
         */
-        return new MyByteIla(leftIla, rightIla);
+        return new ByteIlaImpl(leftIla, rightIla);
     }
 
-    private static class MyByteIla extends AbstractByteIla {
+    private static class ByteIlaImpl extends AbstractByteIla {
         private final ByteIla leftIla;
         private final ByteIla rightIla;
 
-        MyByteIla(ByteIla leftIla, ByteIla rightIla) {
+        private ByteIlaImpl(ByteIla leftIla, ByteIla rightIla) {
             this.leftIla = leftIla;
             this.rightIla = rightIla;
         }

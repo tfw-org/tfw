@@ -22,14 +22,14 @@ public final class ObjectIlaConcatenate {
         if(rightIla.length() == 0)
             return leftIla;
         */
-        return new MyObjectIla<>(leftIla, rightIla);
+        return new ObjectIlaImpl<>(leftIla, rightIla);
     }
 
-    private static class MyObjectIla<T> extends AbstractObjectIla<T> {
+    private static class ObjectIlaImpl<T> extends AbstractObjectIla<T> {
         private final ObjectIla<T> leftIla;
         private final ObjectIla<T> rightIla;
 
-        MyObjectIla(ObjectIla<T> leftIla, ObjectIla<T> rightIla) {
+        private ObjectIlaImpl(ObjectIla<T> leftIla, ObjectIla<T> rightIla) {
             this.leftIla = leftIla;
             this.rightIla = rightIla;
         }

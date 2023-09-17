@@ -10,14 +10,14 @@ public final class StridedObjectIlaFromObjectIla<T> {
         Argument.assertNotNull(ila, "ila");
         Argument.assertNotNull(buffer, "buffer");
 
-        return new MyStridedObjectIla<>(ila, buffer);
+        return new StridedObjectIlaImpl<>(ila, buffer);
     }
 
-    private static class MyStridedObjectIla<T> extends AbstractStridedObjectIla<T> {
+    private static class StridedObjectIlaImpl<T> extends AbstractStridedObjectIla<T> {
         private final ObjectIla<T> ila;
         private final T[] buffer;
 
-        public MyStridedObjectIla(final ObjectIla<T> ila, final T[] buffer) {
+        public StridedObjectIlaImpl(final ObjectIla<T> ila, final T[] buffer) {
             this.ila = ila;
             this.buffer = buffer;
         }

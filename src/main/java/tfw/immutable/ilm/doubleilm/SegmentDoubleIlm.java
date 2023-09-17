@@ -22,17 +22,17 @@ public class SegmentDoubleIlm {
                 "startingColumn + numberOfColumns,",
                 "doubleIlm.width()");
 
-        return new MyDoubleIlm(doubleIlm, startingRow, startingColumn, numberOfRows, numberOfColumns);
+        return new DoubleIlmImpl(doubleIlm, startingRow, startingColumn, numberOfRows, numberOfColumns);
     }
 
-    private static class MyDoubleIlm extends AbstractDoubleIlm {
+    private static class DoubleIlmImpl extends AbstractDoubleIlm {
         private final DoubleIlm doubleIlm;
         private final long startingRow;
         private final long startingColumn;
         private final long numberOfRows;
         private final long numberOfColumns;
 
-        public MyDoubleIlm(
+        private DoubleIlmImpl(
                 DoubleIlm doubleIlm, long startingRow, long startingColumn, long numberOfRows, long numberOfColumns) {
             this.doubleIlm = doubleIlm;
             this.startingRow = startingRow;

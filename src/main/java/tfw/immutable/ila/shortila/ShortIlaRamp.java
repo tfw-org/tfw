@@ -10,15 +10,15 @@ public final class ShortIlaRamp {
     public static ShortIla create(short startValue, short increment, long length) {
         Argument.assertNotLessThan(length, 0, "length");
 
-        return new MyShortIla(startValue, increment, length);
+        return new ShortIlaImpl(startValue, increment, length);
     }
 
-    private static class MyShortIla extends AbstractShortIla {
+    private static class ShortIlaImpl extends AbstractShortIla {
         private final short startValue;
         private final short increment;
         private final long length;
 
-        MyShortIla(short startValue, short increment, long length) {
+        private ShortIlaImpl(short startValue, short increment, long length) {
             this.startValue = startValue;
             this.increment = increment;
             this.length = length;

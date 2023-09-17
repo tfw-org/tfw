@@ -9,14 +9,14 @@ public class DoubleIlmTenLogTen {
     public static DoubleIlm create(DoubleIlm doubleIlm) throws IOException {
         Argument.assertNotNull(doubleIlm, "doubleIlm");
 
-        return new MyDoubleIlm(doubleIlm);
+        return new DoubleIlmImpl(doubleIlm);
     }
 
-    private static class MyDoubleIlm extends AbstractDoubleIlm {
+    private static class DoubleIlmImpl extends AbstractDoubleIlm {
         private final DoubleIlm doubleIlm;
         private final double[] buffer;
 
-        public MyDoubleIlm(DoubleIlm doubleIlm) throws IOException {
+        private DoubleIlmImpl(DoubleIlm doubleIlm) throws IOException {
             this.doubleIlm = doubleIlm;
             this.buffer = new double[(int) doubleIlm.width()];
         }

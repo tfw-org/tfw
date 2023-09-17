@@ -14,14 +14,14 @@ public final class ByteIlmFromArray {
             Argument.assertEquals(array.length % width, 0, "array.length % width", "0");
         }
 
-        return new MyByteIlm(array, width);
+        return new ByteIlmImpl(array, width);
     }
 
-    private static class MyByteIlm extends AbstractByteIlm {
+    private static class ByteIlmImpl extends AbstractByteIlm {
         private final byte[] array;
         private final int ilmWidth;
 
-        MyByteIlm(byte[] array, int ilmWidth) {
+        private ByteIlmImpl(byte[] array, int ilmWidth) {
             this.array = array;
             this.ilmWidth = ilmWidth;
         }

@@ -15,15 +15,15 @@ public final class %%NAME%%IlaDecimate {
         Argument.assertNotLessThan(factor, 2, "factor");
         Argument.assertNotLessThan(buffer.length, 1, "buffer.length");
 
-        return new My%%NAME%%Ila%%DIAMOND%%(ila, factor, buffer);
+        return new %%NAME%%IlaImpl%%DIAMOND%%(ila, factor, buffer);
     }
 
-    private static class My%%NAME%%Ila%%TEMPLATE%% extends Abstract%%NAME%%Ila%%TEMPLATE%% {
+    private static class %%NAME%%IlaImpl%%TEMPLATE%% extends Abstract%%NAME%%Ila%%TEMPLATE%% {
         private final %%NAME%%Ila%%TEMPLATE%% ila;
         private final long factor;
         private final %%TYPE_OR_TEMPLATE%%[] buffer;
 
-        My%%NAME%%Ila(%%NAME%%Ila%%TEMPLATE%% ila, long factor, %%TYPE_OR_TEMPLATE%%[] buffer) {
+        private %%NAME%%IlaImpl(%%NAME%%Ila%%TEMPLATE%% ila, long factor, %%TYPE_OR_TEMPLATE%%[] buffer) {
             this.ila = ila;
             this.factor = factor;
             this.buffer = buffer;

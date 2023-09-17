@@ -15,15 +15,15 @@ public final class %%NAME%%IlaMultiply {
         Argument.assertEquals(leftIla.length(), rightIla.length(), "leftIla.length()", "rightIla.length()");
         Argument.assertNotLessThan(bufferSize, 1, "bufferSize");
 
-        return new My%%NAME%%Ila(leftIla, rightIla, bufferSize);
+        return new %%NAME%%IlaImpl(leftIla, rightIla, bufferSize);
     }
 
-    private static class My%%NAME%%Ila extends Abstract%%NAME%%Ila {
+    private static class %%NAME%%IlaImpl extends Abstract%%NAME%%Ila {
         private final %%NAME%%Ila leftIla;
         private final %%NAME%%Ila rightIla;
         private final int bufferSize;
 
-        My%%NAME%%Ila(%%NAME%%Ila leftIla, %%NAME%%Ila rightIla, int bufferSize) {
+        private %%NAME%%IlaImpl(%%NAME%%Ila leftIla, %%NAME%%Ila rightIla, int bufferSize) {
             this.leftIla = leftIla;
             this.rightIla = rightIla;
             this.bufferSize = bufferSize;

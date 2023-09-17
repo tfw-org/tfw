@@ -14,15 +14,15 @@ public final class FloatIlaDecimate {
         Argument.assertNotLessThan(factor, 2, "factor");
         Argument.assertNotLessThan(buffer.length, 1, "buffer.length");
 
-        return new MyFloatIla(ila, factor, buffer);
+        return new FloatIlaImpl(ila, factor, buffer);
     }
 
-    private static class MyFloatIla extends AbstractFloatIla {
+    private static class FloatIlaImpl extends AbstractFloatIla {
         private final FloatIla ila;
         private final long factor;
         private final float[] buffer;
 
-        MyFloatIla(FloatIla ila, long factor, float[] buffer) {
+        private FloatIlaImpl(FloatIla ila, long factor, float[] buffer) {
             this.ila = ila;
             this.factor = factor;
             this.buffer = buffer;

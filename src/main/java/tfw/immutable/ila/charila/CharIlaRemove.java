@@ -13,14 +13,14 @@ public final class CharIlaRemove {
         Argument.assertNotLessThan(index, 0, "index");
         Argument.assertLessThan(index, ila.length(), "index", "ila.length()");
 
-        return new MyCharIla(ila, index);
+        return new CharIlaImpl(ila, index);
     }
 
-    private static class MyCharIla extends AbstractCharIla {
+    private static class CharIlaImpl extends AbstractCharIla {
         private final CharIla ila;
         private final long index;
 
-        MyCharIla(CharIla ila, long index) {
+        private CharIlaImpl(CharIla ila, long index) {
             this.ila = ila;
             this.index = index;
         }

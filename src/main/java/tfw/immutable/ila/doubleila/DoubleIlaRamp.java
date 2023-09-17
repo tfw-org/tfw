@@ -10,15 +10,15 @@ public final class DoubleIlaRamp {
     public static DoubleIla create(double startValue, double increment, long length) {
         Argument.assertNotLessThan(length, 0, "length");
 
-        return new MyDoubleIla(startValue, increment, length);
+        return new DoubleIlaImpl(startValue, increment, length);
     }
 
-    private static class MyDoubleIla extends AbstractDoubleIla {
+    private static class DoubleIlaImpl extends AbstractDoubleIla {
         private final double startValue;
         private final double increment;
         private final long length;
 
-        MyDoubleIla(double startValue, double increment, long length) {
+        private DoubleIlaImpl(double startValue, double increment, long length) {
             this.startValue = startValue;
             this.increment = increment;
             this.length = length;

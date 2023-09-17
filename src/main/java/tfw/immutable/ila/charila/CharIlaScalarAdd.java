@@ -11,14 +11,14 @@ public final class CharIlaScalarAdd {
     public static CharIla create(CharIla ila, char scalar) {
         Argument.assertNotNull(ila, "ila");
 
-        return new MyCharIla(ila, scalar);
+        return new CharIlaImpl(ila, scalar);
     }
 
-    private static class MyCharIla extends AbstractCharIla {
+    private static class CharIlaImpl extends AbstractCharIla {
         private final CharIla ila;
         private final char scalar;
 
-        MyCharIla(CharIla ila, char scalar) {
+        private CharIlaImpl(CharIla ila, char scalar) {
             this.ila = ila;
             this.scalar = scalar;
         }

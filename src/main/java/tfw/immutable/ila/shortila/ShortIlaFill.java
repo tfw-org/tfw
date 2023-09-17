@@ -10,14 +10,14 @@ public final class ShortIlaFill {
     public static ShortIla create(short value, long length) {
         Argument.assertNotLessThan(length, 0, "length");
 
-        return new MyShortIla(value, length);
+        return new ShortIlaImpl(value, length);
     }
 
-    private static class MyShortIla extends AbstractShortIla {
+    private static class ShortIlaImpl extends AbstractShortIla {
         private final short value;
         private final long length;
 
-        MyShortIla(short value, long length) {
+        private ShortIlaImpl(short value, long length) {
             this.value = value;
             this.length = length;
         }

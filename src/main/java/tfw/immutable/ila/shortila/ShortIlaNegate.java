@@ -11,13 +11,13 @@ public final class ShortIlaNegate {
     public static ShortIla create(ShortIla ila) {
         Argument.assertNotNull(ila, "ila");
 
-        return new MyShortIla(ila);
+        return new ShortIlaImpl(ila);
     }
 
-    private static class MyShortIla extends AbstractShortIla {
+    private static class ShortIlaImpl extends AbstractShortIla {
         private final ShortIla ila;
 
-        MyShortIla(ShortIla ila) {
+        private ShortIlaImpl(ShortIla ila) {
             this.ila = ila;
         }
 

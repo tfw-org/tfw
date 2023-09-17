@@ -18,15 +18,15 @@ public final class ShortIlaSegment {
         Argument.assertNotLessThan(length, 0, "length");
         Argument.assertNotGreaterThan(start + length, ila.length(), "start + length", "ila.length()");
 
-        return new MyShortIla(ila, start, length);
+        return new ShortIlaImpl(ila, start, length);
     }
 
-    private static class MyShortIla extends AbstractShortIla {
+    private static class ShortIlaImpl extends AbstractShortIla {
         private final ShortIla ila;
         private final long start;
         private final long length;
 
-        MyShortIla(ShortIla ila, long start, long length) {
+        private ShortIlaImpl(ShortIla ila, long start, long length) {
             this.ila = ila;
             this.start = start;
             this.length = length;

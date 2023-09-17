@@ -11,13 +11,13 @@ public final class DoubleIlaInvert {
     public static DoubleIla create(DoubleIla ila) {
         Argument.assertNotNull(ila, "ila");
 
-        return new MyDoubleIla(ila);
+        return new DoubleIlaImpl(ila);
     }
 
-    private static class MyDoubleIla extends AbstractDoubleIla {
+    private static class DoubleIlaImpl extends AbstractDoubleIla {
         private final DoubleIla ila;
 
-        MyDoubleIla(DoubleIla ila) {
+        private DoubleIlaImpl(DoubleIla ila) {
             this.ila = ila;
         }
 

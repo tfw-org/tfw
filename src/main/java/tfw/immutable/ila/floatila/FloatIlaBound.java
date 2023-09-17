@@ -12,15 +12,15 @@ public final class FloatIlaBound {
         Argument.assertNotNull(ila, "ila");
         Argument.assertNotGreaterThan(minimum, maximum, "minimum", "maximum");
 
-        return new MyFloatIla(ila, minimum, maximum);
+        return new FloatIlaImpl(ila, minimum, maximum);
     }
 
-    private static class MyFloatIla extends AbstractFloatIla {
+    private static class FloatIlaImpl extends AbstractFloatIla {
         private final FloatIla ila;
         private final float minimum;
         private final float maximum;
 
-        MyFloatIla(FloatIla ila, float minimum, float maximum) {
+        private FloatIlaImpl(FloatIla ila, float minimum, float maximum) {
             this.ila = ila;
             this.minimum = minimum;
             this.maximum = maximum;

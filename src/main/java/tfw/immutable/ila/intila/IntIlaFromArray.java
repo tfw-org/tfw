@@ -10,13 +10,13 @@ public final class IntIlaFromArray {
     public static IntIla create(int[] array) {
         Argument.assertNotNull(array, "array");
 
-        return new MyIntIla(array);
+        return new IntIlaImpl(array);
     }
 
-    private static class MyIntIla extends AbstractIntIla {
+    private static class IntIlaImpl extends AbstractIntIla {
         private final int[] array;
 
-        MyIntIla(int[] array) {
+        private IntIlaImpl(int[] array) {
             this.array = array;
         }
 

@@ -13,10 +13,10 @@ public class StridedBooleanIlmCircularCache {
         Argument.assertGreaterThan(numRows, 0, "numRows");
         Argument.assertNotNull(buffer, "buffer");
 
-        return new MyBooleanIlm(stridedIlm, numRows, buffer);
+        return new BooleanIlmImpl(stridedIlm, numRows, buffer);
     }
 
-    private static class MyBooleanIlm extends AbstractStridedBooleanIlm {
+    private static class BooleanIlmImpl extends AbstractStridedBooleanIlm {
         private final StridedBooleanIlm stridedIlm;
         private final int cacheLength;
         private boolean[] buffer;
@@ -26,7 +26,7 @@ public class StridedBooleanIlmCircularCache {
         private final int rStride;
         private final int maxRows;
 
-        public MyBooleanIlm(StridedBooleanIlm stridedIlm, int numRows, boolean[] buffer) throws IOException {
+        private BooleanIlmImpl(StridedBooleanIlm stridedIlm, int numRows, boolean[] buffer) throws IOException {
             this.stridedIlm = stridedIlm;
             this.maxRows = numRows;
             this.buffer = buffer;

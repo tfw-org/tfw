@@ -12,16 +12,16 @@ public class IntIlmSubtract {
         Argument.assertEquals(leftIlm.width(), rightIlm.width(), "leftIlm.width()", "rightIlm.width()");
         Argument.assertEquals(leftIlm.height(), rightIlm.height(), "leftIlm.height()", "rightIlm.height()");
 
-        return new MyIntIlm(leftIlm, rightIlm);
+        return new IntIlmImpl(leftIlm, rightIlm);
     }
 
-    private static class MyIntIlm extends AbstractIntIlm {
+    private static class IntIlmImpl extends AbstractIntIlm {
         private final IntIlm leftIlm;
         private final IntIlm rightIlm;
 
         private int[] buffer = new int[0];
 
-        public MyIntIlm(IntIlm leftIlm, IntIlm rightIlm) {
+        private IntIlmImpl(IntIlm leftIlm, IntIlm rightIlm) {
             this.leftIlm = leftIlm;
             this.rightIlm = rightIlm;
         }

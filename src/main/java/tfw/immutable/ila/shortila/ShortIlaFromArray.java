@@ -10,13 +10,13 @@ public final class ShortIlaFromArray {
     public static ShortIla create(short[] array) {
         Argument.assertNotNull(array, "array");
 
-        return new MyShortIla(array);
+        return new ShortIlaImpl(array);
     }
 
-    private static class MyShortIla extends AbstractShortIla {
+    private static class ShortIlaImpl extends AbstractShortIla {
         private final short[] array;
 
-        MyShortIla(short[] array) {
+        private ShortIlaImpl(short[] array) {
             this.array = array;
         }
 

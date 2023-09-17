@@ -10,10 +10,10 @@ public class DoubleIlmCircularCache {
         Argument.assertNotNull(doubleIlm, "doubleIlm");
         Argument.assertGreaterThan(numRows, 0, "numRows");
 
-        return new MyDoubleIlm(doubleIlm, numRows);
+        return new DoubleIlmImpl(doubleIlm, numRows);
     }
 
-    private static class MyDoubleIlm extends AbstractDoubleIlm {
+    private static class DoubleIlmImpl extends AbstractDoubleIlm {
         private final DoubleIlm doubleIlm;
         private final int cacheLength;
         private double[] buffer = new double[0];
@@ -23,7 +23,7 @@ public class DoubleIlmCircularCache {
         private final int rStride;
         private final int maxRows;
 
-        public MyDoubleIlm(DoubleIlm doubleIlm, int numRows) throws IOException {
+        private DoubleIlmImpl(DoubleIlm doubleIlm, int numRows) throws IOException {
             this.doubleIlm = doubleIlm;
             this.maxRows = numRows;
 

@@ -12,15 +12,15 @@ public final class ByteIlaBound {
         Argument.assertNotNull(ila, "ila");
         Argument.assertNotGreaterThan(minimum, maximum, "minimum", "maximum");
 
-        return new MyByteIla(ila, minimum, maximum);
+        return new ByteIlaImpl(ila, minimum, maximum);
     }
 
-    private static class MyByteIla extends AbstractByteIla {
+    private static class ByteIlaImpl extends AbstractByteIla {
         private final ByteIla ila;
         private final byte minimum;
         private final byte maximum;
 
-        MyByteIla(ByteIla ila, byte minimum, byte maximum) {
+        private ByteIlaImpl(ByteIla ila, byte minimum, byte maximum) {
             this.ila = ila;
             this.minimum = minimum;
             this.maximum = maximum;

@@ -10,14 +10,14 @@ public final class StridedBooleanIlaFromBooleanIla {
         Argument.assertNotNull(ila, "ila");
         Argument.assertNotNull(buffer, "buffer");
 
-        return new MyStridedBooleanIla(ila, buffer);
+        return new StridedBooleanIlaImpl(ila, buffer);
     }
 
-    private static class MyStridedBooleanIla extends AbstractStridedBooleanIla {
+    private static class StridedBooleanIlaImpl extends AbstractStridedBooleanIla {
         private final BooleanIla ila;
         private final boolean[] buffer;
 
-        public MyStridedBooleanIla(final BooleanIla ila, final boolean[] buffer) {
+        public StridedBooleanIlaImpl(final BooleanIla ila, final boolean[] buffer) {
             this.ila = ila;
             this.buffer = buffer;
         }

@@ -23,14 +23,14 @@ public final class %%NAME%%IlaConcatenate {
         if(rightIla.length() == 0)
             return leftIla;
         */
-        return new My%%NAME%%Ila%%DIAMOND%%(leftIla, rightIla);
+        return new %%NAME%%IlaImpl%%DIAMOND%%(leftIla, rightIla);
     }
 
-    private static class My%%NAME%%Ila%%TEMPLATE%% extends Abstract%%NAME%%Ila%%TEMPLATE%% {
+    private static class %%NAME%%IlaImpl%%TEMPLATE%% extends Abstract%%NAME%%Ila%%TEMPLATE%% {
         private final %%NAME%%Ila%%TEMPLATE%% leftIla;
         private final %%NAME%%Ila%%TEMPLATE%% rightIla;
 
-        My%%NAME%%Ila(%%NAME%%Ila%%TEMPLATE%% leftIla, %%NAME%%Ila%%TEMPLATE%% rightIla) {
+        private %%NAME%%IlaImpl(%%NAME%%Ila%%TEMPLATE%% leftIla, %%NAME%%Ila%%TEMPLATE%% rightIla) {
             this.leftIla = leftIla;
             this.rightIla = rightIla;
         }

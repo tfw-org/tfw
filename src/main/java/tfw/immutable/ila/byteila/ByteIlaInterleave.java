@@ -20,14 +20,14 @@ public final class ByteIlaInterleave {
             Argument.assertEquals(ilas[ii].length(), firstLength, "ilas[0].length()", "ilas[" + ii + "].length()");
         }
 
-        return new MyByteIla(ilas, buffer);
+        return new ByteIlaImpl(ilas, buffer);
     }
 
-    private static class MyByteIla extends AbstractByteIla {
+    private static class ByteIlaImpl extends AbstractByteIla {
         private final StridedByteIla[] stridedByteIlas;
         private final int ilasLength;
 
-        MyByteIla(ByteIla[] ilas, final byte[] buffer) {
+        private ByteIlaImpl(ByteIla[] ilas, final byte[] buffer) {
             stridedByteIlas = new StridedByteIla[ilas.length];
             ilasLength = ilas.length;
 

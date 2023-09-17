@@ -10,13 +10,13 @@ public final class BooleanIlaFromArray {
     public static BooleanIla create(boolean[] array) {
         Argument.assertNotNull(array, "array");
 
-        return new MyBooleanIla(array);
+        return new BooleanIlaImpl(array);
     }
 
-    private static class MyBooleanIla extends AbstractBooleanIla {
+    private static class BooleanIlaImpl extends AbstractBooleanIla {
         private final boolean[] array;
 
-        MyBooleanIla(boolean[] array) {
+        private BooleanIlaImpl(boolean[] array) {
             this.array = array;
         }
 

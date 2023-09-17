@@ -12,16 +12,16 @@ public class MultiplyDoubleIlm {
         Argument.assertEquals(leftIlm.width(), rightIlm.width(), "leftIlm.width()", "rightIlm.width()");
         Argument.assertEquals(leftIlm.height(), rightIlm.height(), "leftIlm.height()", "rightIlm.height()");
 
-        return new MyDoubleIlm(leftIlm, rightIlm);
+        return new DoubleIlmImpl(leftIlm, rightIlm);
     }
 
-    private static class MyDoubleIlm extends AbstractDoubleIlm {
+    private static class DoubleIlmImpl extends AbstractDoubleIlm {
         private final DoubleIlm leftIlm;
         private final DoubleIlm rightIlm;
 
         private double[] buffer = new double[0];
 
-        public MyDoubleIlm(DoubleIlm leftIlm, DoubleIlm rightIlm) {
+        private DoubleIlmImpl(DoubleIlm leftIlm, DoubleIlm rightIlm) {
             this.leftIlm = leftIlm;
             this.rightIlm = rightIlm;
         }

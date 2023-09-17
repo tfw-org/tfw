@@ -19,15 +19,15 @@ public final class %%NAME%%IlaSegment {
         Argument.assertNotLessThan(length, 0, "length");
         Argument.assertNotGreaterThan(start + length, ila.length(), "start + length", "ila.length()");
 
-        return new My%%NAME%%Ila%%DIAMOND%%(ila, start, length);
+        return new %%NAME%%IlaImpl%%DIAMOND%%(ila, start, length);
     }
 
-    private static class My%%NAME%%Ila%%TEMPLATE%% extends Abstract%%NAME%%Ila%%TEMPLATE%% {
+    private static class %%NAME%%IlaImpl%%TEMPLATE%% extends Abstract%%NAME%%Ila%%TEMPLATE%% {
         private final %%NAME%%Ila%%TEMPLATE%% ila;
         private final long start;
         private final long length;
 
-        My%%NAME%%Ila(%%NAME%%Ila%%TEMPLATE%% ila, long start, long length) {
+        private %%NAME%%IlaImpl(%%NAME%%Ila%%TEMPLATE%% ila, long start, long length) {
             this.ila = ila;
             this.start = start;
             this.length = length;

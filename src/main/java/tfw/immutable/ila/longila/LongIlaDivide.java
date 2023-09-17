@@ -14,15 +14,15 @@ public final class LongIlaDivide {
         Argument.assertEquals(leftIla.length(), rightIla.length(), "leftIla.length()", "rightIla.length()");
         Argument.assertNotLessThan(bufferSize, 1, "bufferSize");
 
-        return new MyLongIla(leftIla, rightIla, bufferSize);
+        return new LongIlaImpl(leftIla, rightIla, bufferSize);
     }
 
-    private static class MyLongIla extends AbstractLongIla {
+    private static class LongIlaImpl extends AbstractLongIla {
         private final LongIla leftIla;
         private final LongIla rightIla;
         private final int bufferSize;
 
-        MyLongIla(LongIla leftIla, LongIla rightIla, int bufferSize) {
+        private LongIlaImpl(LongIla leftIla, LongIla rightIla, int bufferSize) {
             this.leftIla = leftIla;
             this.rightIla = rightIla;
             this.bufferSize = bufferSize;

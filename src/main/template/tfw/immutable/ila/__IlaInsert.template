@@ -14,15 +14,15 @@ public final class %%NAME%%IlaInsert {
         Argument.assertNotLessThan(index, 0, "index");
         Argument.assertNotGreaterThan(index, ila.length(), "index", "ila.length()");
 
-        return new My%%NAME%%Ila%%DIAMOND%%(ila, index, value);
+        return new %%NAME%%IlaImpl%%DIAMOND%%(ila, index, value);
     }
 
-    private static class My%%NAME%%Ila%%TEMPLATE%% extends Abstract%%NAME%%Ila%%TEMPLATE%% {
+    private static class %%NAME%%IlaImpl%%TEMPLATE%% extends Abstract%%NAME%%Ila%%TEMPLATE%% {
         private final %%NAME%%Ila%%TEMPLATE%% ila;
         private final long index;
         private final %%TYPE_OR_TEMPLATE%% value;
 
-        My%%NAME%%Ila(%%NAME%%Ila%%TEMPLATE%% ila, long index, %%TYPE_OR_TEMPLATE%% value) {
+        private %%NAME%%IlaImpl(%%NAME%%Ila%%TEMPLATE%% ila, long index, %%TYPE_OR_TEMPLATE%% value) {
             this.ila = ila;
             this.index = index;
             this.value = value;

@@ -11,14 +11,14 @@ public final class StridedByteIlmFromByteIlm {
         Argument.assertNotNull(ilm, "ilm");
         Argument.assertNotNull(buffer, "buffer");
 
-        return new MyStridedByteIlm(ilm, buffer);
+        return new StridedByteIlmImpl(ilm, buffer);
     }
 
-    private static class MyStridedByteIlm extends AbstractStridedByteIlm {
+    private static class StridedByteIlmImpl extends AbstractStridedByteIlm {
         private final ByteIlm ilm;
         private final byte[] buffer;
 
-        public MyStridedByteIlm(final ByteIlm ilm, final byte[] buffer) {
+        private StridedByteIlmImpl(final ByteIlm ilm, final byte[] buffer) {
             this.ilm = ilm;
             this.buffer = buffer;
         }

@@ -10,13 +10,13 @@ public final class LongIlaFromArray {
     public static LongIla create(long[] array) {
         Argument.assertNotNull(array, "array");
 
-        return new MyLongIla(array);
+        return new LongIlaImpl(array);
     }
 
-    private static class MyLongIla extends AbstractLongIla {
+    private static class LongIlaImpl extends AbstractLongIla {
         private final long[] array;
 
-        MyLongIla(long[] array) {
+        private LongIlaImpl(long[] array) {
             this.array = array;
         }
 

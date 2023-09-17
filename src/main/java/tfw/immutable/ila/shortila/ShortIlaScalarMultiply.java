@@ -11,14 +11,14 @@ public final class ShortIlaScalarMultiply {
     public static ShortIla create(ShortIla ila, short scalar) {
         Argument.assertNotNull(ila, "ila");
 
-        return new MyShortIla(ila, scalar);
+        return new ShortIlaImpl(ila, scalar);
     }
 
-    private static class MyShortIla extends AbstractShortIla {
+    private static class ShortIlaImpl extends AbstractShortIla {
         private final ShortIla ila;
         private final short scalar;
 
-        MyShortIla(ShortIla ila, short scalar) {
+        private ShortIlaImpl(ShortIla ila, short scalar) {
             this.ila = ila;
             this.scalar = scalar;
         }
