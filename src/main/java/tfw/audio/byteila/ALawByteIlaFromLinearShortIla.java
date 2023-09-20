@@ -17,14 +17,14 @@ public final class ALawByteIlaFromLinearShortIla {
     public static ByteIla create(final ShortIla shortIla, final int bufferSize) {
         Argument.assertNotNull(shortIla, "shortIla");
 
-        return new MyByteIla(shortIla, bufferSize);
+        return new ByteIlaImpl(shortIla, bufferSize);
     }
 
-    private static class MyByteIla extends AbstractByteIla {
+    private static class ByteIlaImpl extends AbstractByteIla {
         private final ShortIla shortIla;
         private final int bufferSize;
 
-        MyByteIla(final ShortIla shortIla, final int bufferSize) {
+        private ByteIlaImpl(final ShortIla shortIla, final int bufferSize) {
             this.shortIla = shortIla;
             this.bufferSize = bufferSize;
         }

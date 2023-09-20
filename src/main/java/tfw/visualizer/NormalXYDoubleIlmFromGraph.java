@@ -14,13 +14,13 @@ public class NormalXYDoubleIlmFromGraph {
     public static DoubleIlm create(Graph graph) {
         Argument.assertNotNull(graph, "graph");
 
-        return new MyDoubleIlm(graph);
+        return new DoubleIlmImpl(graph);
     }
 
-    private static class MyDoubleIlm implements DoubleIlm {
+    private static class DoubleIlmImpl implements DoubleIlm {
         private final Graph graph;
 
-        public MyDoubleIlm(Graph graph) {
+        public DoubleIlmImpl(Graph graph) {
             this.graph = graph;
         }
 

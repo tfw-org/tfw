@@ -93,21 +93,21 @@ class ConverterTest {
     @Test
     public void testConstructor() {
         try {
-            new MyConverter(null, triggeringSinks, nonTriggeringSinks, sources);
+            new TestConverter(null, triggeringSinks, nonTriggeringSinks, sources);
             fail("Constructor accepted null name");
         } catch (IllegalArgumentException expected) {
             // System.out.println(expected);
         }
 
         try {
-            new MyConverter("test", null, nonTriggeringSinks, sources);
+            new TestConverter("test", null, nonTriggeringSinks, sources);
             fail("Constructor accepted null triggering sinks");
         } catch (IllegalArgumentException expected) {
             // System.out.println(expected);
         }
 
         try {
-            new MyConverter("test", new ObjectECD[] {null}, nonTriggeringSinks, sources);
+            new TestConverter("test", new ObjectECD[] {null}, nonTriggeringSinks, sources);
 
             fail("Constructor accepted null element in triggering sinks");
         } catch (IllegalArgumentException expected) {
@@ -115,7 +115,7 @@ class ConverterTest {
         }
 
         try {
-            new MyConverter("test", triggeringSinks, new ObjectECD[] {null}, sources);
+            new TestConverter("test", triggeringSinks, new ObjectECD[] {null}, sources);
 
             fail("Constructor accepted null element in non-triggering sinks");
         } catch (IllegalArgumentException expected) {
@@ -123,7 +123,7 @@ class ConverterTest {
         }
 
         try {
-            new MyConverter("test", triggeringSinks, nonTriggeringSinks, new ObjectECD[] {null});
+            new TestConverter("test", triggeringSinks, nonTriggeringSinks, new ObjectECD[] {null});
 
             fail("Constructor accepted null element in sources");
         } catch (IllegalArgumentException expected) {
@@ -131,7 +131,7 @@ class ConverterTest {
         }
 
         try {
-            new MyConverter("test", triggeringSinks, triggeringSinks, sources);
+            new TestConverter("test", triggeringSinks, triggeringSinks, sources);
 
             fail("Constructor accepted duplicate sinks");
         } catch (IllegalArgumentException expected) {
@@ -139,8 +139,8 @@ class ConverterTest {
         }
     }
 
-    private class MyConverter extends Converter {
-        public MyConverter(
+    private class TestConverter extends Converter {
+        public TestConverter(
                 String name, ObjectECD[] triggeringSinks, ObjectECD[] nonTriggeringSinks, ObjectECD[] sources) {
             super(name, triggeringSinks, nonTriggeringSinks, sources);
         }

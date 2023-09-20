@@ -8,17 +8,17 @@ public final class DrawImageGraphic {
     private DrawImageGraphic() {}
 
     public static Graphic create(Graphic graphic, Image img, int x, int y, ImageObserver observer) {
-        return new MyGraphic(graphic, img, x, y, observer);
+        return new GraphicImpl(graphic, img, x, y, observer);
     }
 
-    private static class MyGraphic implements Graphic {
+    private static class GraphicImpl implements Graphic {
         private final Graphic graphic;
         private final Image img;
         private final int x;
         private final int y;
         private final ImageObserver observer;
 
-        public MyGraphic(Graphic graphic, Image img, int x, int y, ImageObserver observer) {
+        private GraphicImpl(Graphic graphic, Image img, int x, int y, ImageObserver observer) {
             this.graphic = graphic;
             this.img = img;
             this.x = x;

@@ -6,11 +6,11 @@ public class EmptyGraphic {
     private EmptyGraphic() {}
 
     public static Graphic create() {
-        return new MyGraphic();
+        return new GraphicImpl();
     }
 
-    private static class MyGraphic implements Graphic {
-        public MyGraphic() {}
+    private static class GraphicImpl implements Graphic {
+        private GraphicImpl() {}
 
         public void paint(Graphics2D graphics2D) {}
     }

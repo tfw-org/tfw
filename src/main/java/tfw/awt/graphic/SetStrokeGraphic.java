@@ -7,14 +7,14 @@ public final class SetStrokeGraphic {
     private SetStrokeGraphic() {}
 
     public static Graphic create(Graphic graphic, Stroke stroke) {
-        return new MyGraphic(graphic, stroke);
+        return new GraphicImpl(graphic, stroke);
     }
 
-    private static class MyGraphic implements Graphic {
+    private static class GraphicImpl implements Graphic {
         private final Graphic graphic;
         private final Stroke stroke;
 
-        public MyGraphic(Graphic graphic, Stroke stroke) {
+        private GraphicImpl(Graphic graphic, Stroke stroke) {
             this.graphic = graphic;
             this.stroke = stroke;
         }

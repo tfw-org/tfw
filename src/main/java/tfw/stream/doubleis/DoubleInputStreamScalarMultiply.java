@@ -7,14 +7,14 @@ public class DoubleInputStreamScalarMultiply {
     public static DoubleInputStream create(DoubleInputStream doubleInputStream, double value) {
         Argument.assertNotNull(doubleInputStream, "doubleInputStream");
 
-        return new MyDoubleInputStream(doubleInputStream, value);
+        return new DoubleInputStreamImpl(doubleInputStream, value);
     }
 
-    private static class MyDoubleInputStream implements DoubleInputStream {
+    private static class DoubleInputStreamImpl implements DoubleInputStream {
         private final DoubleInputStream doubleInputStream;
         private final double value;
 
-        MyDoubleInputStream(DoubleInputStream doubleInputStream, double value) {
+        private DoubleInputStreamImpl(DoubleInputStream doubleInputStream, double value) {
             this.doubleInputStream = doubleInputStream;
             this.value = value;
         }

@@ -14,7 +14,7 @@ import tfw.tsm.ecd.StringECD;
 class ImportExportTreeStateTest {
     @Test
     void testDefaultExportTreeState() throws Exception {
-        String rootName = "MyRoot";
+        String rootName = "Root";
         String childName = "Child Tree";
         StringECD stringECD = new StringECD("ecd1");
         StringECD stringECDNullState = new StringECD("stringNullState");

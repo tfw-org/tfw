@@ -21,48 +21,48 @@ class CommitTest {
     private final Initiator initB = new Initiator("initiator b", new ObjectECD[] {portB});
     private final Initiator initC = new Initiator("initiator c", new ObjectECD[] {portC});
     private final Initiator initD = new Initiator("initiator d", new ObjectECD[] {portD});
-    private final MyCommit mycommit = new MyCommit(
+    private final TestCommit testCommit = new TestCommit(
             "Test Commit", new ObjectECD[] {portA, portB}, new ObjectECD[] {portC, portD}, new Initiator[] {initA, initB
             });
 
     public void testConstructor() {
         try {
-            new MyCommit(null, new ObjectECD[] {portA}, null, null);
+            new TestCommit(null, new ObjectECD[] {portA}, null, null);
             fail("Constructor accepted null name");
         } catch (IllegalArgumentException expected) {
             // System.out.println(expected);
         }
 
         try {
-            new MyCommit("MyCommit", null, new ObjectECD[] {portA}, null);
+            new TestCommit("TestCommit", null, new ObjectECD[] {portA}, null);
             fail("Constructor accepted null triggerSinks");
         } catch (IllegalArgumentException expected) {
             // System.out.println(expected);
         }
 
         try {
-            new MyCommit("MyCommit", new ObjectECD[] {}, new ObjectECD[] {portA}, null);
+            new TestCommit("TestCommit", new ObjectECD[] {}, new ObjectECD[] {portA}, null);
             fail("Constructor accepted empty triggerSinks");
         } catch (IllegalArgumentException expected) {
             // System.out.println(expected);
         }
 
         try {
-            new MyCommit("MyCommit", new ObjectECD[] {portA, null}, null, null);
+            new TestCommit("TestCommit", new ObjectECD[] {portA, null}, null, null);
             fail("Constructor accepted null triggerSinks element");
         } catch (IllegalArgumentException expected) {
             // System.out.println(expected);
         }
 
         try {
-            new MyCommit("MyCommit", new ObjectECD[] {portA}, new ObjectECD[] {null}, null);
+            new TestCommit("TestCommit", new ObjectECD[] {portA}, new ObjectECD[] {null}, null);
             fail("Constructor accepted null nonTriggerSinks element");
         } catch (IllegalArgumentException expected) {
             // System.out.println(expected);
         }
 
         try {
-            new MyCommit("MyCommit", new ObjectECD[] {portA}, null, new Initiator[] {null});
+            new TestCommit("TestCommit", new ObjectECD[] {portA}, null, new Initiator[] {null});
             fail("Constructor accepted null initiator element");
         } catch (IllegalArgumentException expected) {
             // System.out.println(expected);
@@ -83,33 +83,33 @@ class CommitTest {
         branch.add(initB);
         branch.add(initC);
         branch.add(initD);
-        branch.add(mycommit);
-        mycommit.clear();
+        branch.add(testCommit);
+        testCommit.clear();
         initC.set(portC, "cvalue");
         queue.waitTilEmpty();
-        assertFalse(mycommit.commitFired, "commit() was called on non-trigger sink!");
-        assertFalse(mycommit.debugCommitFired, "debugCommit() was called on non-trigger sink!");
+        assertFalse(testCommit.commitFired, "commit() was called on non-trigger sink!");
+        assertFalse(testCommit.debugCommitFired, "debugCommit() was called on non-trigger sink!");
 
         initA.set(portA, "avalue");
         queue.waitTilEmpty();
-        assertFalse(mycommit.commitFired, "commit() was called on an initiator sink!");
-        assertFalse(mycommit.debugCommitFired, "debugCommit()  was called on an initiator sink!");
+        assertFalse(testCommit.commitFired, "commit() was called on an initiator sink!");
+        assertFalse(testCommit.debugCommitFired, "debugCommit()  was called on an initiator sink!");
 
-        mycommit.clear();
+        testCommit.clear();
         branch.add(new SetAOnA("SetAOnA", portA));
         initA.set(portA, "avalue");
         queue.waitTilEmpty();
-        assertTrue(mycommit.commitFired, "commit() was not called!");
-        assertEquals("true", mycommit.portAState, "portA value wrong!");
+        assertTrue(testCommit.commitFired, "commit() was not called!");
+        assertEquals("true", testCommit.portAState, "portA value wrong!");
 
-        mycommit.clear();
+        testCommit.clear();
         branch.add(new SetAOnC("SetAOnC", portC, portA));
 
         // Visualize.print(branch);
         initC.set(portC, "anything");
         queue.waitTilEmpty();
-        assertTrue(mycommit.commitFired, "commit() was not called!");
-        assertEquals("false", mycommit.portAState, "portA value wrong!");
+        assertTrue(testCommit.commitFired, "commit() was not called!");
+        assertEquals("false", testCommit.portAState, "portA value wrong!");
     }
 
     private class SetAOnA extends Converter {
@@ -142,7 +142,7 @@ class CommitTest {
         }
     }
 
-    private class MyCommit extends Commit {
+    private class TestCommit extends Commit {
         public boolean commitFired = false;
         public boolean debugCommitFired = false;
         public String portAState = null;
@@ -150,7 +150,7 @@ class CommitTest {
         public String portCState = null;
         public String portDState = null;
 
-        public MyCommit(String name, ObjectECD[] triggerSinks, ObjectECD[] nonTriggerSinks, Initiator[] initiators) {
+        public TestCommit(String name, ObjectECD[] triggerSinks, ObjectECD[] nonTriggerSinks, Initiator[] initiators) {
             super(name, triggerSinks, nonTriggerSinks, initiators);
         }
 

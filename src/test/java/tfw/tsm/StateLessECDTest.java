@@ -20,7 +20,7 @@ class StateLessECDTest {
 
         BasicTransactionQueue queue = new BasicTransactionQueue();
         Root root = rf.create("getStateTest", queue);
-        MyTriggeredCommit commit = new MyTriggeredCommit(trigger);
+        TestTriggeredCommit commit = new TestTriggeredCommit(trigger);
         Initiator initiator = new Initiator("TestInitiator", trigger);
         root.add(commit);
         root.add(initiator);
@@ -32,13 +32,13 @@ class StateLessECDTest {
         // System.out.println(commit.setException);
     }
 
-    private class MyTriggeredCommit extends TriggeredConverter {
+    private class TestTriggeredCommit extends TriggeredConverter {
         final StatelessTriggerECD trigger;
         IllegalArgumentException getException = null;
         IllegalArgumentException setException = null;
         Map<ObjectECD, Object> map = null;
 
-        public MyTriggeredCommit(StatelessTriggerECD trigger) {
+        public TestTriggeredCommit(StatelessTriggerECD trigger) {
             super("Test", trigger, null, null);
             this.trigger = trigger;
         }

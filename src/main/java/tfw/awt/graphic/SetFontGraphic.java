@@ -7,14 +7,14 @@ public final class SetFontGraphic {
     private SetFontGraphic() {}
 
     public static Graphic create(Graphic graphic, Font font) {
-        return new MyGraphic(graphic, font);
+        return new GraphicImpl(graphic, font);
     }
 
-    private static class MyGraphic implements Graphic {
+    private static class GraphicImpl implements Graphic {
         private final Graphic graphic;
         private final Font font;
 
-        public MyGraphic(Graphic graphic, Font font) {
+        private GraphicImpl(Graphic graphic, Font font) {
             this.graphic = graphic;
             this.font = font;
         }

@@ -7,14 +7,14 @@ public final class SetColorGraphic {
     private SetColorGraphic() {}
 
     public static Graphic create(Graphic graphic, Color color) {
-        return new MyGraphic(graphic, color);
+        return new GraphicImpl(graphic, color);
     }
 
-    private static class MyGraphic implements Graphic {
+    private static class GraphicImpl implements Graphic {
         private final Graphic graphic;
         private final Color color;
 
-        public MyGraphic(Graphic graphic, Color color) {
+        private GraphicImpl(Graphic graphic, Color color) {
             this.graphic = graphic;
             this.color = color;
         }

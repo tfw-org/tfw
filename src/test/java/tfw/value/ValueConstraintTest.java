@@ -13,8 +13,8 @@ import org.junit.jupiter.api.Test;
  *
  */
 class ValueConstraintTest {
-    private final class MyConstraint extends ClassValueConstraint {
-        public MyConstraint(Class<?> valueType) {
+    private final class TestConstraint extends ClassValueConstraint {
+        public TestConstraint(Class<?> valueType) {
             super(valueType);
         }
     }
@@ -22,7 +22,7 @@ class ValueConstraintTest {
     @Test
     void testNullValueType() {
         try {
-            new MyConstraint(null);
+            new TestConstraint(null);
             fail("Constructor accepted null valueConstraint");
         } catch (IllegalArgumentException expected) {
             // System.out.println(expected);

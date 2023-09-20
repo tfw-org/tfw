@@ -13,14 +13,14 @@ class SetStateTest {
     @Test
     void testDoubleSet() {
         RootFactory rf = new RootFactory();
-        StringECD ecd = new StringECD("myECD");
+        StringECD ecd = new StringECD("stringECD");
         rf.addEventChannel(ecd);
         TestTransactionExceptionHandler exceptionHandler = new TestTransactionExceptionHandler();
         rf.setTransactionExceptionHandler(exceptionHandler);
         BasicTransactionQueue queue = new BasicTransactionQueue();
         Root root = rf.create("Test", queue);
         root.add(new DoubleSetConverter(ecd));
-        Initiator initiator = new Initiator("MyInitiator", ecd);
+        Initiator initiator = new Initiator("Initiator", ecd);
         root.add(initiator);
         initiator.set(ecd, "hello");
         queue.waitTilEmpty();

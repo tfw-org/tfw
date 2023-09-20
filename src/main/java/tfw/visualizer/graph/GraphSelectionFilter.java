@@ -9,14 +9,14 @@ public class GraphSelectionFilter {
     private GraphSelectionFilter() {}
 
     public static Graph create(Graph graph, BooleanIla selectedNodes) {
-        return new MyGraph(graph, selectedNodes);
+        return new GraphImpl(graph, selectedNodes);
     }
 
-    private static class MyGraph implements Graph {
+    private static class GraphImpl implements Graph {
         private final Graph graph;
         private final BooleanIla selectedNodes;
 
-        public MyGraph(Graph graph, BooleanIla selectedNodes) {
+        private GraphImpl(Graph graph, BooleanIla selectedNodes) {
             this.graph = graph;
             this.selectedNodes = selectedNodes;
         }

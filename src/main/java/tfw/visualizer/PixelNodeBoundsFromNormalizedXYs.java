@@ -18,10 +18,10 @@ public final class PixelNodeBoundsFromNormalizedXYs {
             int graphWidth,
             int graphHeight,
             FontMetrics fontMetrics) {
-        return new MyIntIlm(graph, normalizedXYs, graphXOffset, graphYOffset, graphWidth, graphHeight, fontMetrics);
+        return new IntIlmImpl(graph, normalizedXYs, graphXOffset, graphYOffset, graphWidth, graphHeight, fontMetrics);
     }
 
-    private static class MyIntIlm implements IntIlm {
+    private static class IntIlmImpl implements IntIlm {
         private final Graph graph;
         private final DoubleIlm normalizedXYs;
         private final int graphXOffset;
@@ -30,7 +30,7 @@ public final class PixelNodeBoundsFromNormalizedXYs {
         private final int graphHeight;
         private final FontMetrics fontMetrics;
 
-        public MyIntIlm(
+        private IntIlmImpl(
                 Graph graph,
                 DoubleIlm normalizedXYs,
                 int graphXOffset,
