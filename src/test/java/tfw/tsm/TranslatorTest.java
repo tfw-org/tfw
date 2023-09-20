@@ -34,7 +34,7 @@ class TranslatorTest {
         RootFactory rf = new RootFactory();
         rf.addEventChannel(portB, null, AlwaysChangeRule.RULE, null);
 
-        MyExceptionHandler handler = new MyExceptionHandler();
+        TestExceptionHandler handler = new TestExceptionHandler();
         rf.setTransactionExceptionHandler(handler);
 
         BasicTransactionQueue queue = new BasicTransactionQueue();
@@ -118,7 +118,7 @@ class TranslatorTest {
         }
     }
 
-    private void checkHandler(MyExceptionHandler handler) {
+    private void checkHandler(TestExceptionHandler handler) {
         String message = "No exception";
 
         if (handler.exception != null) {
@@ -129,7 +129,7 @@ class TranslatorTest {
         assertNull(handler.exception, "Exception - " + message);
     }
 
-    private class MyExceptionHandler implements TransactionExceptionHandler {
+    private class TestExceptionHandler implements TransactionExceptionHandler {
         Exception exception = null;
 
         public void handle(Exception exception) {

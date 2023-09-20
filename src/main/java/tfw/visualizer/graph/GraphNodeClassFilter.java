@@ -10,14 +10,14 @@ public class GraphNodeClassFilter {
         Argument.assertNotNull(graph, "graph");
         Argument.assertNotNull(classToRemove, "classToRemove");
 
-        return new MyGraph(graph, classToRemove);
+        return new GraphImpl(graph, classToRemove);
     }
 
-    private static class MyGraph implements Graph {
+    private static class GraphImpl implements Graph {
         private final Graph graph;
         private final Class<?> classToRemove;
 
-        public MyGraph(Graph graph, Class<?> classToRemove) {
+        private GraphImpl(Graph graph, Class<?> classToRemove) {
             this.graph = graph;
             this.classToRemove = classToRemove;
         }

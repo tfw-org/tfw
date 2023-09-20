@@ -6,15 +6,15 @@ public class GraphFromArrays {
     private GraphFromArrays() {}
 
     public static Graph create(Object[] nodes, Object[] froms, Object[] tos) {
-        return new MyGraph(nodes, froms, tos);
+        return new GraphImpl(nodes, froms, tos);
     }
 
-    private static class MyGraph implements Graph {
+    private static class GraphImpl implements Graph {
         private final Object[] nodes;
         private final Object[] froms;
         private final Object[] tos;
 
-        public MyGraph(Object[] nodes, Object[] froms, Object[] tos) {
+        private GraphImpl(Object[] nodes, Object[] froms, Object[] tos) {
             this.nodes = nodes.clone();
             this.froms = froms.clone();
             this.tos = tos.clone();

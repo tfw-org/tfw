@@ -13,7 +13,7 @@ public class ObjectIlaMultiplexerStrategy implements MultiplexerStrategy {
      * @see tfw.tsm.MultiplexerStrategy#toMultiStateAccessor(java.lang.Object)
      */
     public MultiStateAccessor toMultiStateAccessor(Object multiState) {
-        return new MyMultiStateAccessor(
+        return new MultiStateAccessorImpl(
                 (multiState == null) ? ObjectIlaFromArray.create(new Object[0]) : (ObjectIla) multiState);
     }
 
@@ -21,11 +21,11 @@ public class ObjectIlaMultiplexerStrategy implements MultiplexerStrategy {
         return null;
     }
 
-    private class MyMultiStateAccessor implements MultiStateAccessor {
+    private class MultiStateAccessorImpl implements MultiStateAccessor {
 
         private final Object[] objs;
 
-        MyMultiStateAccessor(ObjectIla ila) {
+        private MultiStateAccessorImpl(ObjectIla ila) {
             try {
                 this.objs = new Object[(int) ila.length()];
 

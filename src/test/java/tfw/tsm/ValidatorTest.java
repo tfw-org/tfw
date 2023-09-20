@@ -23,7 +23,7 @@ class ValidatorTest {
         ObjectECD[] sinks = new ObjectECD[] {new StringECD("Test")};
 
         try {
-            new MyValidator(null, sinks, null, null);
+            new TestValidator(null, sinks, null, null);
 
             fail("constructor accepted null name");
         } catch (IllegalArgumentException expected) {
@@ -31,7 +31,7 @@ class ValidatorTest {
         }
 
         try {
-            new MyValidator("Test", new ObjectECD[] {null}, null, null);
+            new TestValidator("Test", new ObjectECD[] {null}, null, null);
 
             fail("constructor accepted null element in sink event channels");
         } catch (IllegalArgumentException expected) {
@@ -39,7 +39,7 @@ class ValidatorTest {
         }
 
         try {
-            new MyValidator("Test", sinks, new ObjectECD[] {null}, null);
+            new TestValidator("Test", sinks, new ObjectECD[] {null}, null);
 
             fail("constructor accepted null element in non-triggering sinks");
         } catch (IllegalArgumentException expected) {
@@ -47,7 +47,7 @@ class ValidatorTest {
         }
 
         try {
-            new MyValidator("Test", null, null, null);
+            new TestValidator("Test", null, null, null);
             fail("constructor accepted null sink event channels");
         } catch (IllegalArgumentException expected) {
             // System.out.println(expected);
@@ -69,7 +69,7 @@ class ValidatorTest {
         Initiator initiator =
                 new Initiator("ValidatorTestInitiator", new StringECD[] {eventChannelAECD, eventChannelBECD});
         root.add(initiator);
-        MyValidator validator = new MyValidator(
+        TestValidator validator = new TestValidator(
                 "TestValidator", new StringECD[] {eventChannelAECD}, new StringECD[] {eventChannelBECD}, null);
         root.add(validator);
         String valueA = "valueA";
@@ -152,7 +152,7 @@ class ValidatorTest {
         }
     }
 
-    private class MyValidator extends Validator {
+    private class TestValidator extends Validator {
         private String channelA = null;
 
         private String channelB = null;
@@ -161,7 +161,7 @@ class ValidatorTest {
 
         private String debugChannelB = null;
 
-        public MyValidator(
+        public TestValidator(
                 String name, ObjectECD[] triggeringSinks, ObjectECD[] nonTriggeringSinks, RollbackECD[] initiators) {
             super(name, triggeringSinks, nonTriggeringSinks, initiators);
         }

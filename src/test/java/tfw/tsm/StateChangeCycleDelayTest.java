@@ -22,8 +22,8 @@ class StateChangeCycleDelayTest {
         RootFactory rf = new RootFactory();
         BasicTransactionQueue queue = new BasicTransactionQueue();
         Initiator initiator = new Initiator("Test", ecI);
-        MyConverter converterA = new MyConverter("ConverterA", new StringECD[] {ecI}, ecA);
-        MyConverter converterB = new MyConverter("ConverterB", new StringECD[] {ecI, ecA}, ecB);
+        TestConverter converterA = new TestConverter("ConverterA", new StringECD[] {ecI}, ecA);
+        TestConverter converterB = new TestConverter("ConverterB", new StringECD[] {ecI, ecA}, ecB);
         rf.addEventChannel(ecI);
         rf.addEventChannel(ecA, "A initial");
         rf.addEventChannel(ecB, "B initial");
@@ -50,9 +50,9 @@ class StateChangeCycleDelayTest {
         RootFactory rf = new RootFactory();
         BasicTransactionQueue queue = new BasicTransactionQueue();
         Initiator initiator = new Initiator("Test", ecI);
-        MyConverter converterA = new MyConverter("ConverterA", new StringECD[] {ecI}, ecA);
-        MyConverter converterB = new MyConverter("ConverterB", new StringECD[] {ecA}, ecB);
-        MyConverter converterC = new MyConverter("ConverterC", new StringECD[] {ecI, ecB}, ecC);
+        TestConverter converterA = new TestConverter("ConverterA", new StringECD[] {ecI}, ecA);
+        TestConverter converterB = new TestConverter("ConverterB", new StringECD[] {ecA}, ecB);
+        TestConverter converterC = new TestConverter("ConverterC", new StringECD[] {ecI, ecB}, ecC);
         rf.addEventChannel(ecI);
         rf.addEventChannel(ecA, "A initial");
         rf.addEventChannel(ecB, "B initial");
@@ -85,10 +85,10 @@ class StateChangeCycleDelayTest {
         RootFactory rf = new RootFactory();
         BasicTransactionQueue queue = new BasicTransactionQueue();
         Initiator initiator = new Initiator("Test", ecI);
-        MyConverter converterA = new MyConverter("ConverterA", new StringECD[] {ecI}, ecA);
-        MyConverter converterB = new MyConverter("ConverterB", new StringECD[] {ecI, ecA}, ecB);
-        MyConverter converterC = new MyConverter("ConverterC", new StringECD[] {ecB}, ecC);
-        MyConverter converterD = new MyConverter("ConverterD", new StringECD[] {ecI, ecC}, ecD);
+        TestConverter converterA = new TestConverter("ConverterA", new StringECD[] {ecI}, ecA);
+        TestConverter converterB = new TestConverter("ConverterB", new StringECD[] {ecI, ecA}, ecB);
+        TestConverter converterC = new TestConverter("ConverterC", new StringECD[] {ecB}, ecC);
+        TestConverter converterD = new TestConverter("ConverterD", new StringECD[] {ecI, ecC}, ecD);
         rf.addEventChannel(ecI);
         rf.addEventChannel(ecA, "A initial");
         rf.addEventChannel(ecB, "B initial");
@@ -126,15 +126,15 @@ class StateChangeCycleDelayTest {
         RootFactory rf = new RootFactory();
         BasicTransactionQueue queue = new BasicTransactionQueue();
         Initiator initiator = new Initiator("Test", ecI);
-        MyConverter converterA = new MyConverter("ConverterA", new StringECD[] {ecI}, ecA);
-        MyConverter converterB = new MyConverter("ConverterB", new StringECD[] {ecA}, ecB);
-        MyConverter converterC = new MyConverter("ConverterC", new StringECD[] {ecI, ecB}, ecA, false);
+        TestConverter converterA = new TestConverter("ConverterA", new StringECD[] {ecI}, ecA);
+        TestConverter converterB = new TestConverter("ConverterB", new StringECD[] {ecA}, ecB);
+        TestConverter converterC = new TestConverter("ConverterC", new StringECD[] {ecI, ecB}, ecA, false);
         rf.addEventChannel(ecI);
         rf.addEventChannel(ecA, "A initial");
         rf.addEventChannel(ecB, "B initial");
         rf.addEventChannel(ecC, "C initial");
 
-        MyHandler handler = new MyHandler();
+        TestHandler handler = new TestHandler();
         rf.setTransactionExceptionHandler(handler);
 
         Root root = rf.create("Test", queue);
@@ -160,9 +160,9 @@ class StateChangeCycleDelayTest {
         RootFactory rf = new RootFactory();
         BasicTransactionQueue queue = new BasicTransactionQueue();
         Initiator initiator = new Initiator("Test", ecI);
-        MyConverter converterA = new MyConverter("ConverterA", new StringECD[] {ecI}, ecA);
-        MyConverter converterB = new MyConverter("ConverterB", new StringECD[] {ecI, ecA}, ecB);
-        MyConverter converterC = new MyConverter("ConverterC", new StringECD[] {ecI, ecA, ecB}, ecC);
+        TestConverter converterA = new TestConverter("ConverterA", new StringECD[] {ecI}, ecA);
+        TestConverter converterB = new TestConverter("ConverterB", new StringECD[] {ecI, ecA}, ecB);
+        TestConverter converterC = new TestConverter("ConverterC", new StringECD[] {ecI, ecA, ecB}, ecC);
         rf.addEventChannel(ecI);
         rf.addEventChannel(ecA, "A initial");
         rf.addEventChannel(ecB, "B initial");
@@ -190,7 +190,7 @@ class StateChangeCycleDelayTest {
         assertEquals(3, converterC.getOrder(), "Converter C was called in the wrong order");
     }
 
-    private class MyHandler implements TransactionExceptionHandler {
+    private class TestHandler implements TransactionExceptionHandler {
         private Exception exception = null;
 
         public void handle(Exception exception) {
@@ -198,17 +198,17 @@ class StateChangeCycleDelayTest {
         }
     }
 
-    public class MyConverter extends Converter {
+    public class TestConverter extends Converter {
         private int count = 0;
         private int order = -1;
         private final StringECD output;
         private final boolean fire;
 
-        public MyConverter(String name, StringECD[] inputs, StringECD output) {
+        public TestConverter(String name, StringECD[] inputs, StringECD output) {
             this(name, inputs, output, true);
         }
 
-        public MyConverter(String name, StringECD[] inputs, StringECD output, boolean fire) {
+        public TestConverter(String name, StringECD[] inputs, StringECD output, boolean fire) {
             super(name, inputs, new StringECD[] {output});
             this.output = output;
             this.fire = fire;

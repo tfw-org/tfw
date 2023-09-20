@@ -6,16 +6,16 @@ public final class DrawStringGraphic {
     private DrawStringGraphic() {}
 
     public static Graphic create(Graphic graphic, String string, int x, int y) {
-        return new MyGraphic(graphic, string, x, y);
+        return new GraphicImpl(graphic, string, x, y);
     }
 
-    private static class MyGraphic implements Graphic {
+    private static class GraphicImpl implements Graphic {
         private final Graphic graphic;
         private final String string;
         private final int x;
         private final int y;
 
-        public MyGraphic(Graphic graphic, String string, int x, int y) {
+        private GraphicImpl(Graphic graphic, String string, int x, int y) {
             this.graphic = graphic;
             this.string = string;
             this.x = x;
@@ -32,16 +32,16 @@ public final class DrawStringGraphic {
     }
 
     public static Graphic create(Graphic graphic, String[] strings, int[] xs, int[] ys) {
-        return new MyGraphic1(graphic, strings, xs, ys);
+        return new GraphicImpl1(graphic, strings, xs, ys);
     }
 
-    private static class MyGraphic1 implements Graphic {
+    private static class GraphicImpl1 implements Graphic {
         private final Graphic graphic;
         private final String[] strings;
         private final int[] xs;
         private final int[] ys;
 
-        public MyGraphic1(Graphic graphic, String[] strings, int[] xs, int[] ys) {
+        private GraphicImpl1(Graphic graphic, String[] strings, int[] xs, int[] ys) {
             this.graphic = graphic;
             this.strings = strings;
             this.xs = xs;

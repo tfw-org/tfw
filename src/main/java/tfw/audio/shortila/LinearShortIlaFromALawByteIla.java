@@ -20,14 +20,14 @@ public final class LinearShortIlaFromALawByteIla {
         Argument.assertNotNull(byteIla, "byteIla");
         Argument.assertNotLessThan(bufferSize, 1, "bufferSize");
 
-        return new MyShortIla(byteIla, bufferSize);
+        return new ShortIlaImpl(byteIla, bufferSize);
     }
 
-    private static class MyShortIla extends AbstractShortIla {
+    private static class ShortIlaImpl extends AbstractShortIla {
         private final ByteIla byteIla;
         private final int bufferSize;
 
-        MyShortIla(final ByteIla byteIla, final int bufferSize) {
+        private ShortIlaImpl(final ByteIla byteIla, final int bufferSize) {
             this.byteIla = byteIla;
             this.bufferSize = bufferSize;
         }

@@ -95,8 +95,8 @@ class MultiplexerTest {
         assertEquals("0", multiValueArray0[0], "multiValue[0] not correct");
         assertEquals("one", multiValueArray0[1], "multiValue[1] not correct");
 
-        MyTriggeredConverter tc0 = new MyTriggeredConverter("tc0", triggerECD, "tc0", valueECD);
-        MyTriggeredConverter tc1 = new MyTriggeredConverter("tc1", triggerECD, "tc1", valueECD);
+        TestTriggeredConverter tc0 = new TestTriggeredConverter("tc0", triggerECD, "tc0", valueECD);
+        TestTriggeredConverter tc1 = new TestTriggeredConverter("tc1", triggerECD, "tc1", valueECD);
 
         Initiator triggerInitiator = new Initiator("trigger", triggerECD);
         root.add(triggerInitiator);
@@ -317,12 +317,12 @@ class MultiplexerTest {
         return mmArray;
     }
 
-    private class MyTriggeredConverter extends TriggeredConverter {
+    private class TestTriggeredConverter extends TriggeredConverter {
         private String value;
 
         private final StringECD outputECD;
 
-        public MyTriggeredConverter(String name, StatelessTriggerECD triggerECD, String value, StringECD outputECD) {
+        public TestTriggeredConverter(String name, StatelessTriggerECD triggerECD, String value, StringECD outputECD) {
             super(name, triggerECD, null, new StringECD[] {outputECD});
             this.value = value;
             this.outputECD = outputECD;

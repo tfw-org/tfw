@@ -23,7 +23,7 @@ class TriggerRelayTest {
         BasicTransactionQueue queue = new BasicTransactionQueue();
         Root root = rf.create("Root", queue);
         Initiator initiator = new Initiator("initiator", triggerToRelayECD);
-        MyCommit commit = new MyCommit();
+        CommitImpl commit = new CommitImpl();
         root.add(initiator);
         root.add(commit);
         root.add(new TriggerRelay("relay", triggerToRelayECD, relayedTriggerECD));
@@ -32,11 +32,11 @@ class TriggerRelayTest {
         assertTrue(commit.executed, "Trigger not relayed!");
     }
 
-    private class MyCommit extends TriggeredCommit {
+    private class CommitImpl extends TriggeredCommit {
         public boolean executed = false;
 
-        public MyCommit() {
-            super("MyCommit", relayedTriggerECD);
+        public CommitImpl() {
+            super("CommitImpl", relayedTriggerECD);
         }
 
         protected void commit() {

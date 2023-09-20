@@ -8,14 +8,14 @@ public class DoubleInputStreamFromByteInputStream {
     public static DoubleInputStream create(ByteInputStream byteInputStream) {
         Argument.assertNotNull(byteInputStream, "byteInputStream");
 
-        return new MyDoubleInputStream(byteInputStream);
+        return new DoubleInputStreamImpl(byteInputStream);
     }
 
-    private static class MyDoubleInputStream implements DoubleInputStream {
+    private static class DoubleInputStreamImpl implements DoubleInputStream {
         private final ByteInputStream byteInputStream;
         private final byte[] buffer = new byte[1000];
 
-        public MyDoubleInputStream(ByteInputStream byteInputStream) {
+        private DoubleInputStreamImpl(ByteInputStream byteInputStream) {
             this.byteInputStream = byteInputStream;
         }
 

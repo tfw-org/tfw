@@ -25,17 +25,17 @@ public class GraphFromRootProxy {
     public static Graph create(RootProxy rootProxy) {
         Argument.assertNotNull(rootProxy, "rootProxy");
 
-        return new MyGraph(rootProxy);
+        return new GraphImpl(rootProxy);
     }
 
-    private static class MyGraph implements Graph {
+    private static class GraphImpl implements Graph {
         private final RootProxy rootProxy;
 
         private Object[] nodes = null;
         private Object[] edgeFroms = null;
         private Object[] edgeTos = null;
 
-        public MyGraph(RootProxy rootProxy) {
+        private GraphImpl(RootProxy rootProxy) {
             this.rootProxy = rootProxy;
         }
 

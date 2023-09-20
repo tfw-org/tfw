@@ -43,7 +43,7 @@ public class ColorButtonNB extends JButton implements BranchBox {
 
         final Initiator initiator = new Initiator(fullName + "Initiator", new ObjectECD[] {colorECD});
 
-        branch.add(new MyCommit(fullName, colorECD, enableECD));
+        branch.add(new ColorButtonCommit(fullName, colorECD, enableECD));
         branch.add(initiator);
 
         addActionListener(new ActionListener() {
@@ -90,11 +90,11 @@ public class ColorButtonNB extends JButton implements BranchBox {
         return branch;
     }
 
-    private class MyCommit extends Commit {
+    private class ColorButtonCommit extends Commit {
         private final ColorECD colorName;
         private final BooleanECD enableName;
 
-        public MyCommit(String name, ColorECD colorName, BooleanECD enableName) {
+        private ColorButtonCommit(String name, ColorECD colorName, BooleanECD enableName) {
             super(name + "Commit", new ObjectECD[] {colorName, enableName});
             this.colorName = colorName;
             this.enableName = enableName;

@@ -5,16 +5,16 @@ import tfw.immutable.ila.byteila.ByteIla;
 
 public final class ByteInputStreamFromByteIla {
     public static ByteInputStream create(final ByteIla byteIla) {
-        return new MyByteInputStream(byteIla);
+        return new ByteInputStreamImpl(byteIla);
     }
 
-    private static class MyByteInputStream implements ByteInputStream {
+    private static class ByteInputStreamImpl implements ByteInputStream {
         private final ByteIla byteIla;
         private final byte[] buffer = new byte[1];
 
         private long index = 0;
 
-        public MyByteInputStream(final ByteIla byteIla) {
+        public ByteInputStreamImpl(final ByteIla byteIla) {
             this.byteIla = byteIla;
         }
 

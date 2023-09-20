@@ -117,15 +117,15 @@ public class OctalDump {
             Argument.assertNotNull(byteIla, "byteIla");
             Argument.assertNotLessThan(bufferSize, 1, "bufferSize");
 
-            return new MyObjectIla(byteIla, type, bufferSize);
+            return new ObjectIlaImpl(byteIla, type, bufferSize);
         }
 
-        private static class MyObjectIla extends AbstractObjectIla<String> {
+        private static class ObjectIlaImpl extends AbstractObjectIla<String> {
             private final ByteIla byteIla;
             private final char type;
             private final int bufferSize;
 
-            MyObjectIla(final ByteIla byteIla, final char type, final int bufferSize) {
+            private ObjectIlaImpl(final ByteIla byteIla, final char type, final int bufferSize) {
                 this.byteIla = byteIla;
                 this.type = type;
                 this.bufferSize = bufferSize;
@@ -176,15 +176,15 @@ public class OctalDump {
             Argument.assertNotNull(shortIla, "shortIla");
             Argument.assertNotLessThan(bufferSize, 1, "bufferSize");
 
-            return new MyObjectIla(shortIla, type, bufferSize);
+            return new ObjectIlaImpl(shortIla, type, bufferSize);
         }
 
-        private static class MyObjectIla extends AbstractObjectIla<String> {
+        private static class ObjectIlaImpl extends AbstractObjectIla<String> {
             private final ShortIla shortIla;
             private final char type;
             private final int bufferSize;
 
-            MyObjectIla(final ShortIla shortIla, final char type, final int bufferSize) {
+            private ObjectIlaImpl(final ShortIla shortIla, final char type, final int bufferSize) {
                 this.shortIla = shortIla;
                 this.type = type;
                 this.bufferSize = bufferSize;
@@ -236,15 +236,15 @@ public class OctalDump {
             Argument.assertNotNull(intIla, "intIla");
             Argument.assertNotLessThan(bufferSize, 1, "bufferSize");
 
-            return new MyObjectIla(intIla, type, bufferSize);
+            return new ObjectIlaImpl(intIla, type, bufferSize);
         }
 
-        private static class MyObjectIla extends AbstractObjectIla<String> {
+        private static class ObjectIlaImpl extends AbstractObjectIla<String> {
             private final IntIla intIla;
             private final char type;
             private final int bufferSize;
 
-            MyObjectIla(final IntIla intIla, final char type, final int bufferSize) {
+            private ObjectIlaImpl(final IntIla intIla, final char type, final int bufferSize) {
                 this.intIla = intIla;
                 this.type = type;
                 this.bufferSize = bufferSize;
@@ -293,15 +293,15 @@ public class OctalDump {
             Argument.assertNotNull(longIla, "longIla");
             Argument.assertNotLessThan(bufferSize, 1, "bufferSize");
 
-            return new MyObjectIla(longIla, type, bufferSize);
+            return new ObjectIlaImpl(longIla, type, bufferSize);
         }
 
-        private static class MyObjectIla extends AbstractObjectIla<String> {
+        private static class ObjectIlaImpl extends AbstractObjectIla<String> {
             private final LongIla longIla;
             private final char type;
             private final int bufferSize;
 
-            MyObjectIla(final LongIla longIla, final char type, final int bufferSize) {
+            private ObjectIlaImpl(final LongIla longIla, final char type, final int bufferSize) {
                 this.longIla = longIla;
                 this.type = type;
                 this.bufferSize = bufferSize;
@@ -350,14 +350,14 @@ public class OctalDump {
             Argument.assertNotNull(floatIla, "floatIla");
             Argument.assertNotLessThan(bufferSize, 1, "bufferSize");
 
-            return new MyObjectIla(floatIla, bufferSize);
+            return new ObjectIlaImpl(floatIla, bufferSize);
         }
 
-        private static class MyObjectIla extends AbstractObjectIla<String> {
+        private static class ObjectIlaImpl extends AbstractObjectIla<String> {
             private final FloatIla floatIla;
             private final int bufferSize;
 
-            MyObjectIla(final FloatIla floatIla, final int bufferSize) {
+            private ObjectIlaImpl(final FloatIla floatIla, final int bufferSize) {
                 this.floatIla = floatIla;
                 this.bufferSize = bufferSize;
             }
@@ -396,14 +396,14 @@ public class OctalDump {
             Argument.assertNotNull(doubleIla, "doubleIla");
             Argument.assertNotLessThan(bufferSize, 1, "bufferSize");
 
-            return new MyObjectIla(doubleIla, bufferSize);
+            return new ObjectIlaImpl(doubleIla, bufferSize);
         }
 
-        private static class MyObjectIla extends AbstractObjectIla<String> {
+        private static class ObjectIlaImpl extends AbstractObjectIla<String> {
             private final DoubleIla doubleIla;
             private final int bufferSize;
 
-            MyObjectIla(final DoubleIla doubleIla, final int bufferSize) {
+            private ObjectIlaImpl(final DoubleIla doubleIla, final int bufferSize) {
                 this.doubleIla = doubleIla;
                 this.bufferSize = bufferSize;
             }

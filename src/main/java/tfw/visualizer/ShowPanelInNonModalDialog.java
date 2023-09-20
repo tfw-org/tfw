@@ -21,11 +21,11 @@ public class ShowPanelInNonModalDialog extends Branch {
             StatelessTriggerECD triggerECD, Frame owner, String title, Class<? extends JPanelBB> jPanelBBClass) {
         super("ShowPanelInNonModalDialog");
 
-        add(new MyConverter(triggerECD, owner, title, jPanelBBClass));
+        add(new ConverterImpl(triggerECD, owner, title, jPanelBBClass));
     }
 
-    private class MyCommit extends TriggeredCommit {
-        public MyCommit(StatelessTriggerECD triggerECD) {
+    private class CommitImpl extends TriggeredCommit {
+        public CommitImpl(StatelessTriggerECD triggerECD) {
             super("ShowPanelInMocalDialogCommit", triggerECD, null, null);
         }
 
@@ -43,12 +43,12 @@ public class ShowPanelInNonModalDialog extends Branch {
         }
     }
 
-    private class MyConverter extends TriggeredConverter {
+    private class ConverterImpl extends TriggeredConverter {
         private final Frame owner;
         private final String title;
         private final Class<? extends JPanelBB> jPanelBBClass;
 
-        public MyConverter(
+        private ConverterImpl(
                 StatelessTriggerECD triggerECD, Frame owner, String title, Class<? extends JPanelBB> jPanelBBClass) {
             super("ShowPanelInNonModalDialogConverter", triggerECD, null, null);
 
@@ -77,7 +77,7 @@ public class ShowPanelInNonModalDialog extends Branch {
 
                         dialog.addWindowListenerToBoth(new WindowInitiator(
                                 "ShowPanelInNonModalDialogWI", null, null, WINDOW_CLOSING_ECD, null, null, null, null));
-                        dialog.getBranch().add(new MyCommit(WINDOW_CLOSING_ECD));
+                        dialog.getBranch().add(new CommitImpl(WINDOW_CLOSING_ECD));
                         dialog.setContentPaneForBoth(contentPane);
 
                         add(dialog.getBranch());
