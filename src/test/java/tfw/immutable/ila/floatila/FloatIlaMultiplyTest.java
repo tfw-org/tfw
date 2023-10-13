@@ -15,7 +15,7 @@ class FloatIlaMultiplyTest {
         for (int ii = 0; ii < leftArray.length; ++ii) {
             leftArray[ii] = random.nextFloat();
             rightArray[ii] = random.nextFloat();
-            array[ii] = (leftArray[ii] * rightArray[ii]);
+            array[ii] = leftArray[ii] * rightArray[ii];
         }
         FloatIla leftIla = FloatIlaFromArray.create(leftArray);
         FloatIla rightIla = FloatIlaFromArray.create(rightArray);

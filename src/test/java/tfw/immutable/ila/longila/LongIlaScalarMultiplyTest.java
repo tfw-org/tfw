@@ -14,7 +14,7 @@ class LongIlaScalarMultiplyTest {
         final long[] target = new long[length];
         for (int ii = 0; ii < array.length; ++ii) {
             array[ii] = random.nextLong();
-            target[ii] = (array[ii] * scalar);
+            target[ii] = array[ii] * scalar;
         }
         LongIla ila = LongIlaFromArray.create(array);
         LongIla targetIla = LongIlaFromArray.create(target);

@@ -41,7 +41,7 @@ public final class IntIlaCheck {
                     ila.get(four, offset, start, length);
                     stridedIntIla.get(five, offset, 1, start, length);
                     for (int ii = 0; ii < length; ++ii) {
-                        int delta = (four[ii] - five[ii]);
+                        int delta = four[ii] - five[ii];
                         if (!(neps <= delta && delta <= eps))
                             throw new Exception("four[" + ii + "] ("
                                     + four[ii] + ") !~ five["
@@ -89,7 +89,7 @@ public final class IntIlaCheck {
                             stridedTarget.get(targetBase, offset, stride, start, length);
                             stridedActual.get(actualBase, offset, stride, start, length);
                             for (int ii = 0; ii < arraySize; ++ii) {
-                                int delta = (actualBase[ii] - targetBase[ii]);
+                                int delta = actualBase[ii] - targetBase[ii];
                                 if (!(neps <= delta && delta <= eps))
                                     throw new Exception("actual[" + ii
                                             + "] ("

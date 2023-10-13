@@ -13,7 +13,7 @@ class CharIlaNegateTest {
         final char[] target = new char[length];
         for (int ii = 0; ii < array.length; ++ii) {
             array[ii] = (char) random.nextInt();
-            target[ii] = (char) -array[ii];
+            target[ii] = (char) (-array[ii]);
         }
         CharIla ila = CharIlaFromArray.create(array);
         CharIla targetIla = CharIlaFromArray.create(target);

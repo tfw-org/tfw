@@ -14,7 +14,7 @@ class DoubleIlaScalarAddTest {
         final double[] target = new double[length];
         for (int ii = 0; ii < array.length; ++ii) {
             array[ii] = random.nextDouble();
-            target[ii] = (array[ii] + scalar);
+            target[ii] = array[ii] + scalar;
         }
         DoubleIla ila = DoubleIlaFromArray.create(array);
         DoubleIla targetIla = DoubleIlaFromArray.create(target);

@@ -14,7 +14,7 @@ class FloatIlaScalarAddTest {
         final float[] target = new float[length];
         for (int ii = 0; ii < array.length; ++ii) {
             array[ii] = random.nextFloat();
-            target[ii] = (array[ii] + scalar);
+            target[ii] = array[ii] + scalar;
         }
         FloatIla ila = FloatIlaFromArray.create(array);
         FloatIla targetIla = FloatIlaFromArray.create(target);

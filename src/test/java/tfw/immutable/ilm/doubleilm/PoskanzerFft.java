@@ -95,12 +95,12 @@ public class PoskanzerFft {
             setFftSizeCalled = false;
         }
 
-        n2 = (n = (1 << fftSize)) / 2;
+        n2 = (n = 1 << fftSize) / 2;
 
         // Before converting from time to frequency domain, apply
         // the Hamm window to the audio data to get a cleaner FFT.
-        if ((invFlag == false) && (applyHammWindow == true)) {
-            for (indx1 = 0; (indx1 < real.length) && (indx1 < hammWindow.length); ++indx1) {
+        if (invFlag == false && applyHammWindow == true) {
+            for (indx1 = 0; indx1 < real.length && indx1 < hammWindow.length; ++indx1) {
                 real[indx1] *= hammWindow[indx1];
             }
         } else if (invFlag == true) {
@@ -130,8 +130,8 @@ public class PoskanzerFft {
                         sin = -sin;
                     }
 
-                    tr = (real[kn2] * cos) + (imaginary[kn2] * sin);
-                    ti = (imaginary[kn2] * cos) - (real[kn2] * sin);
+                    tr = real[kn2] * cos + imaginary[kn2] * sin;
+                    ti = imaginary[kn2] * cos - real[kn2] * sin;
 
                     real[kn2] = real[indx1] - tr;
                     imaginary[kn2] = imaginary[indx1] - ti;
@@ -170,8 +170,8 @@ public class PoskanzerFft {
         // After converting back to the time domain, apply the
         // inverse Hamm window to restore a smooth chunk of
         // audio that isn't tapered at either end.
-        if ((invFlag == true) && (applyHammWindow == true)) {
-            for (indx1 = 0; (indx1 < real.length) && (indx1 < iHammWindow.length); ++indx1) {
+        if (invFlag == true && applyHammWindow == true) {
+            for (indx1 = 0; indx1 < real.length && indx1 < iHammWindow.length; ++indx1) {
                 real[indx1] *= iHammWindow[indx1];
             }
         }
@@ -261,7 +261,7 @@ public class PoskanzerFft {
             magnitude = real[indx];
             phase = imaginary[indx];
 
-            real[indx] = Math.sqrt((magnitude * magnitude) + (phase * phase));
+            real[indx] = Math.sqrt(magnitude * magnitude + phase * phase);
             imaginary[indx] = Math.atan2(phase, magnitude);
         }
     }
@@ -333,7 +333,7 @@ public class PoskanzerFft {
             bitreverse[indx1] = reverseBitOrder;
         }
 
-        n2 = (n = (1 << fftSize)) / 2;
+        n2 = (n = 1 << fftSize) / 2;
 
         tableIndx = 0;
 

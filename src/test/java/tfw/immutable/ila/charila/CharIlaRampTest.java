@@ -18,7 +18,7 @@ class CharIlaRampTest {
         }
         CharIla targetIla = CharIlaFromArray.create(array);
         CharIla actualIla = CharIlaRamp.create(startValue, increment, length);
-        final char epsilon = (char) 0.000001;
+        final char epsilon = (char) (0.000001);
         CharIlaCheck.checkAll(
                 targetIla,
                 actualIla,

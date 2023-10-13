@@ -45,8 +45,8 @@ public final class %%NAME%%IlaUtilCheck {
 
     // also performs zero-two equivalence
     public static void checkTwoArgImmutability(%%NAME%%Ila ila, %%TYPE%% epsilon) throws Exception {
-        final %%TYPE%% eps = epsilon < 0.0 ?%%CAST_FROM_INT%% -epsilon : epsilon;
-        final %%TYPE%% neps =%%CAST_FROM_INT%% -eps;
+        final %%TYPE%% eps = epsilon < 0.0 ? %%CAST_FROM_INT%%-epsilon%%CAST_FROM_INT_END%% : %%CAST_FROM_INT%%epsilon%%CAST_FROM_INT_END%%;
+        final %%TYPE%% neps = %%CAST_FROM_INT%%-eps%%CAST_FROM_INT_END%%;
         final int ilaLength = ila.length() <= Integer.MAX_VALUE ? (int) ila.length() : Integer.MAX_VALUE;
         final %%TYPE%%[] baseline = %%NAME%%IlaUtil.toArray(ila, 0, ilaLength);
         if (baseline.length != ilaLength) throw new Exception("baseline.length != ilaLength");
@@ -55,7 +55,7 @@ public final class %%NAME%%IlaUtilCheck {
                 final %%TYPE%%[] subset = %%NAME%%IlaUtil.toArray(ila, start, length);
                 if (subset.length != length) throw new Exception("subset.length != length");
                 for (int ii = 0; ii < subset.length; ++ii) {
-                    %%TYPE%% delta =%%CAST_FROM_INT%% (baseline[ii + (int) start] - subset[ii]);
+                    %%TYPE%% delta = %%CAST_FROM_INT%%baseline[ii + (int) start] - subset[ii]%%CAST_FROM_INT_END%%;
                     if (!(neps <= delta && delta <= eps))
                         throw new Exception("subset[" + ii + "] ("
                                 + subset[ii] + ") !~ baseline["
@@ -69,8 +69,8 @@ public final class %%NAME%%IlaUtilCheck {
     }
 
     public static void checkTwoFourEquivalence(%%NAME%%Ila ila, %%TYPE%% epsilon) throws Exception {
-        final %%TYPE%% eps = epsilon < 0.0 ?%%CAST_FROM_INT%% -epsilon : epsilon;
-        final %%TYPE%% neps =%%CAST_FROM_INT%% -eps;
+        final %%TYPE%% eps = epsilon < 0.0 ? %%CAST_FROM_INT%%-epsilon%%CAST_FROM_INT_END%% : %%CAST_FROM_INT%%epsilon%%CAST_FROM_INT_END%%;
+        final %%TYPE%% neps = %%CAST_FROM_INT%%-eps%%CAST_FROM_INT_END%%;
         final int ilaLength = ila.length() <= Integer.MAX_VALUE ? (int) ila.length() : Integer.MAX_VALUE;
         final %%TYPE%%[] four = new %%TYPE%%[ilaLength];
         for (int length = 1; length <= ilaLength; ++length) {
@@ -78,7 +78,7 @@ public final class %%NAME%%IlaUtilCheck {
                 final %%TYPE%%[] two = %%NAME%%IlaUtil.toArray(ila, start, length);
                 ila.get(four, 0, start, length);
                 for (int ii = 0; ii < length; ++ii) {
-                    %%TYPE%% delta =%%CAST_FROM_INT%% (four[ii] - two[ii]);
+                    %%TYPE%% delta = %%CAST_FROM_INT%%four[ii] - two[ii]%%CAST_FROM_INT_END%%;
                     if (!(neps <= delta && delta <= eps))
                         throw new Exception("four[" + ii + "] ("
                                 + four[ii] + ") !~ two["

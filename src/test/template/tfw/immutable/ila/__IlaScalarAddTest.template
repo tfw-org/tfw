@@ -13,7 +13,7 @@ class %%NAME%%IlaScalarAddTest {
         final %%TYPE%%[] target = new %%TYPE%%[length];
         for (int ii = 0; ii < array.length; ++ii) {
             array[ii] = %%RANDOM_VALUE%%;
-            target[ii] =%%CAST_FROM_INT%% (array[ii] + scalar);
+            target[ii] = %%CAST_FROM_INT%%array[ii] + scalar%%CAST_FROM_INT_END%%;
         }
         %%NAME%%Ila ila = %%NAME%%IlaFromArray.create(array);
         %%NAME%%Ila targetIla = %%NAME%%IlaFromArray.create(target);

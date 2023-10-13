@@ -46,8 +46,8 @@ public final class ShortIlaUtilCheck {
 
     // also performs zero-two equivalence
     public static void checkTwoArgImmutability(ShortIla ila, short epsilon) throws Exception {
-        final short eps = epsilon < 0.0 ? (short) -epsilon : epsilon;
-        final short neps = (short) -eps;
+        final short eps = epsilon < 0.0 ? (short) (-epsilon) : (short) (epsilon);
+        final short neps = (short) (-eps);
         final int ilaLength = ila.length() <= Integer.MAX_VALUE ? (int) ila.length() : Integer.MAX_VALUE;
         final short[] baseline = ShortIlaUtil.toArray(ila, 0, ilaLength);
         if (baseline.length != ilaLength) throw new Exception("baseline.length != ilaLength");
@@ -70,8 +70,8 @@ public final class ShortIlaUtilCheck {
     }
 
     public static void checkTwoFourEquivalence(ShortIla ila, short epsilon) throws Exception {
-        final short eps = epsilon < 0.0 ? (short) -epsilon : epsilon;
-        final short neps = (short) -eps;
+        final short eps = epsilon < 0.0 ? (short) (-epsilon) : (short) (epsilon);
+        final short neps = (short) (-eps);
         final int ilaLength = ila.length() <= Integer.MAX_VALUE ? (int) ila.length() : Integer.MAX_VALUE;
         final short[] four = new short[ilaLength];
         for (int length = 1; length <= ilaLength; ++length) {

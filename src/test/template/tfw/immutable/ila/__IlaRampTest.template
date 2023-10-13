@@ -17,7 +17,7 @@ class %%NAME%%IlaRampTest {
         }
         %%NAME%%Ila targetIla = %%NAME%%IlaFromArray.create(array);
         %%NAME%%Ila actualIla = %%NAME%%IlaRamp.create(startValue, increment, length);
-        final %%TYPE%% epsilon =%%CAST_FROM_DOUBLE%% 0.000001;
+        final %%TYPE%% epsilon = %%CAST_FROM_DOUBLE%%0.000001%%CAST_FROM_DOUBLE_END%%;
         %%NAME%%IlaCheck.checkAll(
                 targetIla,
                 actualIla,

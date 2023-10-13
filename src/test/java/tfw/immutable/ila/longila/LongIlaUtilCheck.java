@@ -56,7 +56,7 @@ public final class LongIlaUtilCheck {
                 final long[] subset = LongIlaUtil.toArray(ila, start, length);
                 if (subset.length != length) throw new Exception("subset.length != length");
                 for (int ii = 0; ii < subset.length; ++ii) {
-                    long delta = (baseline[ii + (int) start] - subset[ii]);
+                    long delta = baseline[ii + (int) start] - subset[ii];
                     if (!(neps <= delta && delta <= eps))
                         throw new Exception("subset[" + ii + "] ("
                                 + subset[ii] + ") !~ baseline["
@@ -79,7 +79,7 @@ public final class LongIlaUtilCheck {
                 final long[] two = LongIlaUtil.toArray(ila, start, length);
                 ila.get(four, 0, start, length);
                 for (int ii = 0; ii < length; ++ii) {
-                    long delta = (four[ii] - two[ii]);
+                    long delta = four[ii] - two[ii];
                     if (!(neps <= delta && delta <= eps))
                         throw new Exception("four[" + ii + "] ("
                                 + four[ii] + ") !~ two["

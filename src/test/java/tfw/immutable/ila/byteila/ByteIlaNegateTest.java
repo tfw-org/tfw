@@ -13,7 +13,7 @@ class ByteIlaNegateTest {
         final byte[] target = new byte[length];
         for (int ii = 0; ii < array.length; ++ii) {
             array[ii] = (byte) random.nextInt();
-            target[ii] = (byte) -array[ii];
+            target[ii] = (byte) (-array[ii]);
         }
         ByteIla ila = ByteIlaFromArray.create(array);
         ByteIla targetIla = ByteIlaFromArray.create(target);

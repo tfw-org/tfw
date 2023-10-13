@@ -9,8 +9,10 @@
 %%ASSERT_EQUALS_DELTA%% =
 %%CREATE_IMMUTABLE_START%% = new Short(
 %%CREATE_IMMUTABLE_END%% = )
-%%CAST_FROM_INT%% = \ (short)
-%%CAST_FROM_DOUBLE%% = \ (short)
+%%CAST_FROM_INT%% = (short) (
+%%CAST_FROM_INT_END%% = )
+%%CAST_FROM_DOUBLE%% = (short) (
+%%CAST_FROM_DOUBLE_END%% = )
 %%TEMPLATE%% = 
 %%SUPPRESS%% =
 %%FULL_CAST%% =

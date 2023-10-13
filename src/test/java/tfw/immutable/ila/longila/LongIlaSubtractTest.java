@@ -15,7 +15,7 @@ class LongIlaSubtractTest {
         for (int ii = 0; ii < leftArray.length; ++ii) {
             leftArray[ii] = random.nextLong();
             rightArray[ii] = random.nextLong();
-            array[ii] = (leftArray[ii] - rightArray[ii]);
+            array[ii] = leftArray[ii] - rightArray[ii];
         }
         LongIla leftIla = LongIlaFromArray.create(leftArray);
         LongIla rightIla = LongIlaFromArray.create(rightArray);

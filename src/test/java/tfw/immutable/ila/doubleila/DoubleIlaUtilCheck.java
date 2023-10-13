@@ -56,7 +56,7 @@ public final class DoubleIlaUtilCheck {
                 final double[] subset = DoubleIlaUtil.toArray(ila, start, length);
                 if (subset.length != length) throw new Exception("subset.length != length");
                 for (int ii = 0; ii < subset.length; ++ii) {
-                    double delta = (baseline[ii + (int) start] - subset[ii]);
+                    double delta = baseline[ii + (int) start] - subset[ii];
                     if (!(neps <= delta && delta <= eps))
                         throw new Exception("subset[" + ii + "] ("
                                 + subset[ii] + ") !~ baseline["
@@ -79,7 +79,7 @@ public final class DoubleIlaUtilCheck {
                 final double[] two = DoubleIlaUtil.toArray(ila, start, length);
                 ila.get(four, 0, start, length);
                 for (int ii = 0; ii < length; ++ii) {
-                    double delta = (four[ii] - two[ii]);
+                    double delta = four[ii] - two[ii];
                     if (!(neps <= delta && delta <= eps))
                         throw new Exception("four[" + ii + "] ("
                                 + four[ii] + ") !~ two["
