@@ -13,7 +13,7 @@ class FloatIlaRoundTest {
         final float[] target = new float[length];
         for (int ii = 0; ii < array.length; ++ii) {
             array[ii] = random.nextFloat();
-            target[ii] = (float) StrictMath.rint(array[ii]);
+            target[ii] = (float) (StrictMath.rint(array[ii]));
         }
         FloatIla ila = FloatIlaFromArray.create(array);
         FloatIla targetIla = FloatIlaFromArray.create(target);

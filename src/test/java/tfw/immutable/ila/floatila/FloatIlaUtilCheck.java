@@ -56,7 +56,7 @@ public final class FloatIlaUtilCheck {
                 final float[] subset = FloatIlaUtil.toArray(ila, start, length);
                 if (subset.length != length) throw new Exception("subset.length != length");
                 for (int ii = 0; ii < subset.length; ++ii) {
-                    float delta = (baseline[ii + (int) start] - subset[ii]);
+                    float delta = baseline[ii + (int) start] - subset[ii];
                     if (!(neps <= delta && delta <= eps))
                         throw new Exception("subset[" + ii + "] ("
                                 + subset[ii] + ") !~ baseline["
@@ -79,7 +79,7 @@ public final class FloatIlaUtilCheck {
                 final float[] two = FloatIlaUtil.toArray(ila, start, length);
                 ila.get(four, 0, start, length);
                 for (int ii = 0; ii < length; ++ii) {
-                    float delta = (four[ii] - two[ii]);
+                    float delta = four[ii] - two[ii];
                     if (!(neps <= delta && delta <= eps))
                         throw new Exception("four[" + ii + "] ("
                                 + four[ii] + ") !~ two["

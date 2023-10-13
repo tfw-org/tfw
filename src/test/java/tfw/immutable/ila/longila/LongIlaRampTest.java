@@ -18,7 +18,7 @@ class LongIlaRampTest {
         }
         LongIla targetIla = LongIlaFromArray.create(array);
         LongIla actualIla = LongIlaRamp.create(startValue, increment, length);
-        final long epsilon = (long) 0.000001;
+        final long epsilon = (long) (0.000001);
         LongIlaCheck.checkAll(
                 targetIla,
                 actualIla,

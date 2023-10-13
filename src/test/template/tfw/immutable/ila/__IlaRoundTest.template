@@ -12,7 +12,7 @@ class %%NAME%%IlaRoundTest {
         final %%TYPE%%[] target = new %%TYPE%%[length];
         for (int ii = 0; ii < array.length; ++ii) {
             array[ii] = %%RANDOM_VALUE%%;
-            target[ii] =%%CAST_FROM_DOUBLE%% StrictMath.rint(array[ii]);
+            target[ii] = %%CAST_FROM_DOUBLE%%StrictMath.rint(array[ii])%%CAST_FROM_DOUBLE_END%%;
         }
         %%NAME%%Ila ila = %%NAME%%IlaFromArray.create(array);
         %%NAME%%Ila targetIla = %%NAME%%IlaFromArray.create(target);

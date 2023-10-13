@@ -14,7 +14,7 @@ class IntIlaScalarAddTest {
         final int[] target = new int[length];
         for (int ii = 0; ii < array.length; ++ii) {
             array[ii] = random.nextInt();
-            target[ii] = (array[ii] + scalar);
+            target[ii] = array[ii] + scalar;
         }
         IntIla ila = IntIlaFromArray.create(array);
         IntIla targetIla = IntIlaFromArray.create(target);
