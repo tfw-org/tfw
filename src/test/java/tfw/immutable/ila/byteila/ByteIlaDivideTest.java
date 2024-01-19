@@ -1,10 +1,23 @@
 package tfw.immutable.ila.byteila;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import java.util.Random;
 import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 
 class ByteIlaDivideTest {
+    @Test
+    void testArguments() {
+        final ByteIla ila1 = ByteIlaFromArray.create(new byte[10]);
+        final ByteIla ila2 = ByteIlaFromArray.create(new byte[20]);
+
+        assertThrows(IllegalArgumentException.class, () -> ByteIlaDivide.create(null, ila2, 1));
+        assertThrows(IllegalArgumentException.class, () -> ByteIlaDivide.create(ila1, null, 1));
+        assertThrows(IllegalArgumentException.class, () -> ByteIlaDivide.create(ila1, ila2, 1));
+        assertThrows(IllegalArgumentException.class, () -> ByteIlaDivide.create(ila1, ila1, 0));
+    }
+
     @Test
     void testAll() throws Exception {
         final Random random = new Random(0);

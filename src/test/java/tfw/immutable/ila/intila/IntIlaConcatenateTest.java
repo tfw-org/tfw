@@ -1,10 +1,20 @@
 package tfw.immutable.ila.intila;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import java.util.Random;
 import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 
 class IntIlaConcatenateTest {
+    @Test
+    void testArguments() {
+        final IntIla ila = IntIlaFromArray.create(new int[10]);
+
+        assertThrows(IllegalArgumentException.class, () -> IntIlaConcatenate.create(ila, null));
+        assertThrows(IllegalArgumentException.class, () -> IntIlaConcatenate.create(null, ila));
+    }
+
     @Test
     void testAll() throws Exception {
         final Random random = new Random(0);

@@ -1,10 +1,17 @@
 // booleanila,byteila,charila,doubleila,floatila,intila,longila,objectila,shortila
 package %%PACKAGE%%;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 %%RANDOM_INCLUDE%%import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 
 class %%NAME%%IlaFromArrayTest {
+    @Test
+    void testArguments() {
+        assertThrows(IllegalArgumentException.class, () -> %%NAME%%IlaFromArray.create(null));
+    }
+
     @Test
     void testImmutabilityCheck() throws Exception {
         final int ilaLength = IlaTestDimensions.defaultIlaLength();
@@ -19,7 +26,7 @@ class %%NAME%%IlaFromArrayTest {
     }
 
     @Test
-    public void testValueCorrectness() throws Exception {
+    void testValueCorrectness() throws Exception {
         final int ilaLength = IlaTestDimensions.defaultIlaLength();
         final int addlOffsetLength = IlaTestDimensions.defaultOffsetLength();
         final int maxAbsStride = IlaTestDimensions.defaultMaxStride();

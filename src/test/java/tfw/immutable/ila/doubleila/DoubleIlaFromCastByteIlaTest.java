@@ -1,5 +1,7 @@
 package tfw.immutable.ila.doubleila;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import java.util.Random;
 import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
@@ -7,6 +9,14 @@ import tfw.immutable.ila.byteila.ByteIla;
 import tfw.immutable.ila.byteila.ByteIlaFromArray;
 
 class DoubleIlaFromCastByteIlaTest {
+    @Test
+    void testArguments() {
+        final ByteIla ila = ByteIlaFromArray.create(new byte[10]);
+
+        assertThrows(IllegalArgumentException.class, () -> DoubleIlaFromCastByteIla.create(null, 1));
+        assertThrows(IllegalArgumentException.class, () -> DoubleIlaFromCastByteIla.create(ila, 0));
+    }
+
     @Test
     void testAll() throws Exception {
         final Random random = new Random(0);

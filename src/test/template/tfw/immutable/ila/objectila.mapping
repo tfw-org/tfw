@@ -4,7 +4,7 @@
 %%PACKAGE%% = tfw.immutable.ila.objectila
 %%RANDOM_VALUE%% = new Object()
 %%RANDOM_INCLUDE%%=
-%%RANDOM_INCLUDE_2%%=
+%%RANDOM_INCLUDE_2%%=\n
 %%RANDOM_INIT_0%%=
 %%RANDOM_INIT%%=
 %%RANDOM_INIT_12%%=

@@ -1,5 +1,8 @@
 package tfw.immutable.ila.longila;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import java.io.IOException;
 import java.util.Random;
 
 public final class LongIlaCheck {
@@ -7,15 +10,31 @@ public final class LongIlaCheck {
         // non-instantiable class
     }
 
+    public static void checkGetArguments(final LongIla ila) throws IOException {
+        final long ilaLength = ila.length();
+        final long[] array = new long[10];
+
+        assertThrows(NullPointerException.class, () -> ila.get(null, 0, 0, 1));
+        assertThrows(IllegalArgumentException.class, () -> ila.get(array, -1, 0, 1));
+        assertThrows(IllegalArgumentException.class, () -> ila.get(array, 0, -1, 1));
+        assertThrows(IllegalArgumentException.class, () -> ila.get(array, 0, 0, -1));
+        assertThrows(IllegalArgumentException.class, () -> ila.get(array, array.length, 0, 1));
+        assertThrows(IllegalArgumentException.class, () -> ila.get(array, 0, ilaLength, 1));
+        assertThrows(IllegalArgumentException.class, () -> ila.get(array, array.length - 1, 0, 2));
+        assertThrows(IllegalArgumentException.class, () -> ila.get(array, 0, ilaLength - 1, 2));
+    }
+
     public static void checkAll(
             final LongIla target, final LongIla actual, int addlOffsetLength, int maxAbsStride, long epsilon)
             throws Exception {
+        checkGetArguments(actual);
         LongIlaUtilCheck.checkAll(actual, epsilon);
         checkFourFiveEquivalence(actual, addlOffsetLength, epsilon);
         checkCorrectness(target, actual, addlOffsetLength, maxAbsStride, epsilon);
     }
 
     public static void checkWithoutCorrectness(LongIla ila, int offsetLength, long epsilon) throws Exception {
+        checkGetArguments(ila);
         LongIlaUtilCheck.checkAll(ila, epsilon);
         checkFourFiveEquivalence(ila, offsetLength, epsilon);
     }

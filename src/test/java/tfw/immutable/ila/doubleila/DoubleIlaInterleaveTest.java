@@ -1,10 +1,33 @@
 package tfw.immutable.ila.doubleila;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import java.util.Random;
 import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 
 class DoubleIlaInterleaveTest {
+    @Test
+    void testArguments() throws Exception {
+        final DoubleIla ila1 = DoubleIlaFromArray.create(new double[10]);
+        final DoubleIla ila2 = DoubleIlaFromArray.create(new double[20]);
+        final DoubleIla[] ilas1 = new DoubleIla[] {};
+        final DoubleIla[] ilas2 = new DoubleIla[] {null, null};
+        final DoubleIla[] ilas3 = new DoubleIla[] {null, ila1};
+        final DoubleIla[] ilas4 = new DoubleIla[] {ila1, null};
+        final DoubleIla[] ilas5 = new DoubleIla[] {ila1, ila1};
+        final DoubleIla[] ilas6 = new DoubleIla[] {ila1, ila2};
+        final double[] buffer = new double[10];
+
+        assertThrows(IllegalArgumentException.class, () -> DoubleIlaInterleave.create(null, buffer));
+        assertThrows(IllegalArgumentException.class, () -> DoubleIlaInterleave.create(ilas5, null));
+        assertThrows(IllegalArgumentException.class, () -> DoubleIlaInterleave.create(ilas1, buffer));
+        assertThrows(IllegalArgumentException.class, () -> DoubleIlaInterleave.create(ilas2, buffer));
+        assertThrows(IllegalArgumentException.class, () -> DoubleIlaInterleave.create(ilas3, buffer));
+        assertThrows(IllegalArgumentException.class, () -> DoubleIlaInterleave.create(ilas4, buffer));
+        assertThrows(IllegalArgumentException.class, () -> DoubleIlaInterleave.create(ilas6, buffer));
+    }
+
     @Test
     void testAll() throws Exception {
         final Random random = new Random(0);

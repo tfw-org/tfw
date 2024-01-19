@@ -1,5 +1,7 @@
 package tfw.immutable.ila.longila;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import java.util.Random;
 import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
@@ -7,6 +9,14 @@ import tfw.immutable.ila.charila.CharIla;
 import tfw.immutable.ila.charila.CharIlaFromArray;
 
 class LongIlaFromCastCharIlaTest {
+    @Test
+    void testArguments() {
+        final CharIla ila = CharIlaFromArray.create(new char[10]);
+
+        assertThrows(IllegalArgumentException.class, () -> LongIlaFromCastCharIla.create(null, 1));
+        assertThrows(IllegalArgumentException.class, () -> LongIlaFromCastCharIla.create(ila, 0));
+    }
+
     @Test
     void testAll() throws Exception {
         final Random random = new Random(0);

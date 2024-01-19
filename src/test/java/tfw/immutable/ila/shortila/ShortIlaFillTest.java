@@ -1,10 +1,20 @@
 package tfw.immutable.ila.shortila;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import java.util.Random;
 import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 
 class ShortIlaFillTest {
+    @Test
+    void testArguments() {
+        final Random random = new Random(0);
+        final short value = (short) random.nextInt();
+
+        assertThrows(IllegalArgumentException.class, () -> ShortIlaFill.create(value, -1));
+    }
+
     @Test
     void testAll() throws Exception {
         final Random random = new Random(0);

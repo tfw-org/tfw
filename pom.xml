@@ -227,6 +227,12 @@
                     <targetTests>
                         <param>tfw*</param>
                     </targetTests>
+                    <excludedClasses>
+                        <param>tfw.math*</param>
+                    </excludedClasses>
+                    <features>
+                        <feature>+auto_threads</feature>
+                    </features>
                 </configuration>
                 <dependencies>
                     <dependency>

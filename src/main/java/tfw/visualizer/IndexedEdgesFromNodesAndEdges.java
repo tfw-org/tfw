@@ -1,15 +1,18 @@
 package tfw.visualizer;
 
 import java.io.IOException;
+import tfw.immutable.ila.longila.AbstractLongIla;
 import tfw.immutable.ila.longila.LongIla;
 import tfw.immutable.ila.objectila.ObjectIla;
 
 public class IndexedEdgesFromNodesAndEdges {
+    private IndexedEdgesFromNodesAndEdges() {}
+
     public static LongIla create(ObjectIla<Object> nodes, ObjectIla<Object> edges) {
         return new LongIlaImpl(nodes, edges);
     }
 
-    private static class LongIlaImpl implements LongIla {
+    private static class LongIlaImpl extends AbstractLongIla {
         private final ObjectIla<Object> nodes;
         private final ObjectIla<Object> edges;
 
@@ -19,12 +22,12 @@ public class IndexedEdgesFromNodesAndEdges {
         }
 
         @Override
-        public long length() throws IOException {
+        public long lengthImpl() throws IOException {
             return edges.length();
         }
 
         @Override
-        public void get(long[] array, int offset, long start, int length) throws IOException {
+        public void getImpl(long[] array, int offset, long start, int length) throws IOException {
             final Object[] nodeArray = new Object[(int) nodes.length()];
             final Object[] edgeArray = new Object[length];
 

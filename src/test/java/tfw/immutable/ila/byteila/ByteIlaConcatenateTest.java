@@ -1,10 +1,20 @@
 package tfw.immutable.ila.byteila;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import java.util.Random;
 import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 
 class ByteIlaConcatenateTest {
+    @Test
+    void testArguments() {
+        final ByteIla ila = ByteIlaFromArray.create(new byte[10]);
+
+        assertThrows(IllegalArgumentException.class, () -> ByteIlaConcatenate.create(ila, null));
+        assertThrows(IllegalArgumentException.class, () -> ByteIlaConcatenate.create(null, ila));
+    }
+
     @Test
     void testAll() throws Exception {
         final Random random = new Random(0);

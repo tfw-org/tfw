@@ -1,9 +1,33 @@
 package tfw.immutable.ila.objectila;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 
 class ObjectIlaInterleaveTest {
+    @Test
+    @SuppressWarnings("unchecked")
+    void testArguments() throws Exception {
+        final ObjectIla<Object> ila1 = ObjectIlaFromArray.create(new Object[10]);
+        final ObjectIla<Object> ila2 = ObjectIlaFromArray.create(new Object[20]);
+        final ObjectIla<Object>[] ilas1 = (ObjectIla<Object>[]) new ObjectIla[] {};
+        final ObjectIla<Object>[] ilas2 = (ObjectIla<Object>[]) new ObjectIla[] {null, null};
+        final ObjectIla<Object>[] ilas3 = (ObjectIla<Object>[]) new ObjectIla[] {null, ila1};
+        final ObjectIla<Object>[] ilas4 = (ObjectIla<Object>[]) new ObjectIla[] {ila1, null};
+        final ObjectIla<Object>[] ilas5 = (ObjectIla<Object>[]) new ObjectIla[] {ila1, ila1};
+        final ObjectIla<Object>[] ilas6 = (ObjectIla<Object>[]) new ObjectIla[] {ila1, ila2};
+        final Object[] buffer = new Object[10];
+
+        assertThrows(IllegalArgumentException.class, () -> ObjectIlaInterleave.create(null, buffer));
+        assertThrows(IllegalArgumentException.class, () -> ObjectIlaInterleave.create(ilas5, null));
+        assertThrows(IllegalArgumentException.class, () -> ObjectIlaInterleave.create(ilas1, buffer));
+        assertThrows(IllegalArgumentException.class, () -> ObjectIlaInterleave.create(ilas2, buffer));
+        assertThrows(IllegalArgumentException.class, () -> ObjectIlaInterleave.create(ilas3, buffer));
+        assertThrows(IllegalArgumentException.class, () -> ObjectIlaInterleave.create(ilas4, buffer));
+        assertThrows(IllegalArgumentException.class, () -> ObjectIlaInterleave.create(ilas6, buffer));
+    }
+
     @Test
     @SuppressWarnings("unchecked")
     void testAll() throws Exception {
