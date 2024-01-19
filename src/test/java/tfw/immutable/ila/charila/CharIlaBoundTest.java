@@ -1,10 +1,20 @@
 package tfw.immutable.ila.charila;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import java.util.Random;
 import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 
 class CharIlaBoundTest {
+    @Test
+    void testArguments() {
+        final CharIla ila = CharIlaFromArray.create(new char[10]);
+
+        assertThrows(IllegalArgumentException.class, () -> CharIlaBound.create(null, (char) (5), (char) (10)));
+        assertThrows(IllegalArgumentException.class, () -> CharIlaBound.create(ila, (char) (10), (char) (5)));
+    }
+
     @Test
     void testAll() throws Exception {
         final Random random = new Random(0);

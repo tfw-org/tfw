@@ -1,10 +1,23 @@
 package tfw.immutable.ila.booleanila;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import java.util.Random;
 import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 
 class BooleanIlaDecimateTest {
+    @Test
+    void testArguments() {
+        final BooleanIla ila = BooleanIlaFromArray.create(new boolean[10]);
+        final boolean[] buffer = new boolean[10];
+
+        assertThrows(IllegalArgumentException.class, () -> BooleanIlaDecimate.create(null, 2, buffer));
+        assertThrows(IllegalArgumentException.class, () -> BooleanIlaDecimate.create(ila, 2, null));
+        assertThrows(IllegalArgumentException.class, () -> BooleanIlaDecimate.create(ila, 1, buffer));
+        assertThrows(IllegalArgumentException.class, () -> BooleanIlaDecimate.create(ila, 2, new boolean[0]));
+    }
+
     @Test
     void testAll() throws Exception {
         final Random random = new Random(0);

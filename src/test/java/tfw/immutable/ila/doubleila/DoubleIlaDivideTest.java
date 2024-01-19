@@ -1,10 +1,23 @@
 package tfw.immutable.ila.doubleila;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import java.util.Random;
 import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 
 class DoubleIlaDivideTest {
+    @Test
+    void testArguments() {
+        final DoubleIla ila1 = DoubleIlaFromArray.create(new double[10]);
+        final DoubleIla ila2 = DoubleIlaFromArray.create(new double[20]);
+
+        assertThrows(IllegalArgumentException.class, () -> DoubleIlaDivide.create(null, ila2, 1));
+        assertThrows(IllegalArgumentException.class, () -> DoubleIlaDivide.create(ila1, null, 1));
+        assertThrows(IllegalArgumentException.class, () -> DoubleIlaDivide.create(ila1, ila2, 1));
+        assertThrows(IllegalArgumentException.class, () -> DoubleIlaDivide.create(ila1, ila1, 0));
+    }
+
     @Test
     void testAll() throws Exception {
         final Random random = new Random(0);

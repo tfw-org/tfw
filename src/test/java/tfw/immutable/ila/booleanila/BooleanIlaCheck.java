@@ -1,5 +1,8 @@
 package tfw.immutable.ila.booleanila;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import java.io.IOException;
 import java.util.Random;
 
 public final class BooleanIlaCheck {
@@ -7,9 +10,24 @@ public final class BooleanIlaCheck {
         // non-instantiable class
     }
 
+    public static void checkGetArguments(final BooleanIla ila) throws IOException {
+        final long ilaLength = ila.length();
+        final boolean[] array = new boolean[10];
+
+        assertThrows(NullPointerException.class, () -> ila.get(null, 0, 0, 1));
+        assertThrows(IllegalArgumentException.class, () -> ila.get(array, -1, 0, 1));
+        assertThrows(IllegalArgumentException.class, () -> ila.get(array, 0, -1, 1));
+        assertThrows(IllegalArgumentException.class, () -> ila.get(array, 0, 0, -1));
+        assertThrows(IllegalArgumentException.class, () -> ila.get(array, array.length, 0, 1));
+        assertThrows(IllegalArgumentException.class, () -> ila.get(array, 0, ilaLength, 1));
+        assertThrows(IllegalArgumentException.class, () -> ila.get(array, array.length - 1, 0, 2));
+        assertThrows(IllegalArgumentException.class, () -> ila.get(array, 0, ilaLength - 1, 2));
+    }
+
     public static void checkAll(
             BooleanIla target, BooleanIla actual, int addlOffsetLength, int maxAbsStride, boolean epsilon)
             throws Exception {
+        checkGetArguments(actual);
         BooleanIlaUtilCheck.checkAll(actual, epsilon);
         checkFourFiveEquivalence(actual, addlOffsetLength, epsilon);
         checkCorrectness(target, actual, addlOffsetLength, maxAbsStride, epsilon);
@@ -17,6 +35,7 @@ public final class BooleanIlaCheck {
 
     public static void checkWithoutCorrectness(final BooleanIla actual, final int offsetLength, boolean epsilon)
             throws Exception {
+        checkGetArguments(actual);
         BooleanIlaUtilCheck.checkAll(actual, epsilon);
         checkFourFiveEquivalence(actual, offsetLength, epsilon);
     }

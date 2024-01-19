@@ -1,5 +1,7 @@
 package tfw.immutable.ila.floatila;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import java.util.Random;
 import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
@@ -7,6 +9,14 @@ import tfw.immutable.ila.shortila.ShortIla;
 import tfw.immutable.ila.shortila.ShortIlaFromArray;
 
 class FloatIlaFromCastShortIlaTest {
+    @Test
+    void testArguments() {
+        final ShortIla ila = ShortIlaFromArray.create(new short[10]);
+
+        assertThrows(IllegalArgumentException.class, () -> FloatIlaFromCastShortIla.create(null, 1));
+        assertThrows(IllegalArgumentException.class, () -> FloatIlaFromCastShortIla.create(ila, 0));
+    }
+
     @Test
     void testAll() throws Exception {
         final Random random = new Random(0);

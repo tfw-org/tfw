@@ -1,10 +1,20 @@
 package tfw.immutable.ila.charila;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import java.util.Random;
 import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 
 class CharIlaConcatenateTest {
+    @Test
+    void testArguments() {
+        final CharIla ila = CharIlaFromArray.create(new char[10]);
+
+        assertThrows(IllegalArgumentException.class, () -> CharIlaConcatenate.create(ila, null));
+        assertThrows(IllegalArgumentException.class, () -> CharIlaConcatenate.create(null, ila));
+    }
+
     @Test
     void testAll() throws Exception {
         final Random random = new Random(0);

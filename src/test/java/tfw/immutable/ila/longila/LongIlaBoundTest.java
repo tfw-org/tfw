@@ -1,10 +1,20 @@
 package tfw.immutable.ila.longila;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import java.util.Random;
 import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 
 class LongIlaBoundTest {
+    @Test
+    void testArguments() {
+        final LongIla ila = LongIlaFromArray.create(new long[10]);
+
+        assertThrows(IllegalArgumentException.class, () -> LongIlaBound.create(null, 5, 10));
+        assertThrows(IllegalArgumentException.class, () -> LongIlaBound.create(ila, 10, 5));
+    }
+
     @Test
     void testAll() throws Exception {
         final Random random = new Random(0);

@@ -1,5 +1,8 @@
 package tfw.immutable.ila.byteila;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import java.io.IOException;
 import java.util.Random;
 
 public final class ByteIlaCheck {
@@ -7,15 +10,31 @@ public final class ByteIlaCheck {
         // non-instantiable class
     }
 
+    public static void checkGetArguments(final ByteIla ila) throws IOException {
+        final long ilaLength = ila.length();
+        final byte[] array = new byte[10];
+
+        assertThrows(NullPointerException.class, () -> ila.get(null, 0, 0, 1));
+        assertThrows(IllegalArgumentException.class, () -> ila.get(array, -1, 0, 1));
+        assertThrows(IllegalArgumentException.class, () -> ila.get(array, 0, -1, 1));
+        assertThrows(IllegalArgumentException.class, () -> ila.get(array, 0, 0, -1));
+        assertThrows(IllegalArgumentException.class, () -> ila.get(array, array.length, 0, 1));
+        assertThrows(IllegalArgumentException.class, () -> ila.get(array, 0, ilaLength, 1));
+        assertThrows(IllegalArgumentException.class, () -> ila.get(array, array.length - 1, 0, 2));
+        assertThrows(IllegalArgumentException.class, () -> ila.get(array, 0, ilaLength - 1, 2));
+    }
+
     public static void checkAll(
             final ByteIla target, final ByteIla actual, int addlOffsetLength, int maxAbsStride, byte epsilon)
             throws Exception {
+        checkGetArguments(actual);
         ByteIlaUtilCheck.checkAll(actual, epsilon);
         checkFourFiveEquivalence(actual, addlOffsetLength, epsilon);
         checkCorrectness(target, actual, addlOffsetLength, maxAbsStride, epsilon);
     }
 
     public static void checkWithoutCorrectness(ByteIla ila, int offsetLength, byte epsilon) throws Exception {
+        checkGetArguments(ila);
         ByteIlaUtilCheck.checkAll(ila, epsilon);
         checkFourFiveEquivalence(ila, offsetLength, epsilon);
     }

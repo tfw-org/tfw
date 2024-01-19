@@ -1,10 +1,23 @@
 // byteila,charila,doubleila,floatila,intila,longila,shortila
 package %%PACKAGE%%;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 %%RANDOM_INCLUDE%%import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 
 class %%NAME%%IlaDivideTest {
+    @Test
+    void testArguments() {
+        final %%NAME%%Ila ila1 = %%NAME%%IlaFromArray.create(new %%TYPE%%[10]);
+        final %%NAME%%Ila ila2 = %%NAME%%IlaFromArray.create(new %%TYPE%%[20]);
+
+        assertThrows(IllegalArgumentException.class, () -> %%NAME%%IlaDivide.create(null, ila2, 1));
+        assertThrows(IllegalArgumentException.class, () -> %%NAME%%IlaDivide.create(ila1, null, 1));
+        assertThrows(IllegalArgumentException.class, () -> %%NAME%%IlaDivide.create(ila1, ila2, 1));
+        assertThrows(IllegalArgumentException.class, () -> %%NAME%%IlaDivide.create(ila1, ila1, 0));
+    }
+
     @Test
     void testAll() throws Exception {
         %%RANDOM_INIT%%final int length = IlaTestDimensions.defaultIlaLength();

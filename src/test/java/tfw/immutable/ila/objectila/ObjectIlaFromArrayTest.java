@@ -1,9 +1,16 @@
 package tfw.immutable.ila.objectila;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 
 class ObjectIlaFromArrayTest {
+    @Test
+    void testArguments() {
+        assertThrows(IllegalArgumentException.class, () -> ObjectIlaFromArray.create(null));
+    }
+
     @Test
     void testImmutabilityCheck() throws Exception {
         final int ilaLength = IlaTestDimensions.defaultIlaLength();
@@ -18,7 +25,7 @@ class ObjectIlaFromArrayTest {
     }
 
     @Test
-    public void testValueCorrectness() throws Exception {
+    void testValueCorrectness() throws Exception {
         final int ilaLength = IlaTestDimensions.defaultIlaLength();
         final int addlOffsetLength = IlaTestDimensions.defaultOffsetLength();
         final int maxAbsStride = IlaTestDimensions.defaultMaxStride();
