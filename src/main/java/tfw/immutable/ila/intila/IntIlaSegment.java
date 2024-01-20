@@ -9,6 +9,8 @@ public final class IntIlaSegment {
     }
 
     public static IntIla create(IntIla ila, long start) throws IOException {
+        Argument.assertNotNull(ila, "ila");
+
         return create(ila, start, ila.length() - start);
     }
 

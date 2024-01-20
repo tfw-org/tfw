@@ -1,10 +1,20 @@
 // byteila,charila,doubleila,floatila,intila,longila,shortila
 package %%PACKAGE%%;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 %%RANDOM_INCLUDE%%import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 
 class %%NAME%%IlaRampTest {
+    @Test
+    void testArguments() throws Exception {
+        %%RANDOM_INIT%%final %%TYPE%% start = %%RANDOM_VALUE%%;
+        final %%TYPE%% increment = %%RANDOM_VALUE%%;
+
+        assertThrows(IllegalArgumentException.class, () -> %%NAME%%IlaRamp.create(start, increment, -1));
+    }
+
     @Test
     void testAll() throws Exception {
         %%RANDOM_INIT%%final %%TYPE%% startValue = %%RANDOM_VALUE%%;

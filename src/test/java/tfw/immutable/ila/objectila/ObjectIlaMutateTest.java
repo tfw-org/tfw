@@ -1,9 +1,22 @@
 package tfw.immutable.ila.objectila;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 
 class ObjectIlaMutateTest {
+    @Test
+    void testArguments() throws Exception {
+        final ObjectIla ila = ObjectIlaFromArray.create(new Object[10]);
+        final long ilaLength = ila.length();
+        final Object value = new Object();
+
+        assertThrows(IllegalArgumentException.class, () -> ObjectIlaMutate.create(null, 0, value));
+        assertThrows(IllegalArgumentException.class, () -> ObjectIlaMutate.create(ila, -1, value));
+        assertThrows(IllegalArgumentException.class, () -> ObjectIlaMutate.create(ila, ilaLength, value));
+    }
+
     @Test
     void testAll() throws Exception {
         final int length = IlaTestDimensions.defaultIlaLength();

@@ -1,10 +1,17 @@
 package tfw.immutable.ila.doubleila;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import java.util.Random;
 import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 
 class DoubleIlaNegateTest {
+    @Test
+    void testArguments() throws Exception {
+        assertThrows(IllegalArgumentException.class, () -> DoubleIlaNegate.create(null));
+    }
+
     @Test
     void testAll() throws Exception {
         final Random random = new Random(0);

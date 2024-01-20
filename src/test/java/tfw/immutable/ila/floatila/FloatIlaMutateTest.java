@@ -1,10 +1,24 @@
 package tfw.immutable.ila.floatila;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import java.util.Random;
 import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 
 class FloatIlaMutateTest {
+    @Test
+    void testArguments() throws Exception {
+        final Random random = new Random(0);
+        final FloatIla ila = FloatIlaFromArray.create(new float[10]);
+        final long ilaLength = ila.length();
+        final float value = random.nextFloat();
+
+        assertThrows(IllegalArgumentException.class, () -> FloatIlaMutate.create(null, 0, value));
+        assertThrows(IllegalArgumentException.class, () -> FloatIlaMutate.create(ila, -1, value));
+        assertThrows(IllegalArgumentException.class, () -> FloatIlaMutate.create(ila, ilaLength, value));
+    }
+
     @Test
     void testAll() throws Exception {
         final Random random = new Random(0);

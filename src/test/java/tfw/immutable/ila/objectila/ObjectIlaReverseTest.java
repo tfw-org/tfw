@@ -1,9 +1,20 @@
 package tfw.immutable.ila.objectila;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 
 class ObjectIlaReverseTest {
+    @Test
+    void testArguments() throws Exception {
+        final ObjectIla ila = ObjectIlaFromArray.create(new Object[10]);
+        final Object[] buffer = new Object[10];
+
+        assertThrows(IllegalArgumentException.class, () -> ObjectIlaReverse.create(null, buffer));
+        assertThrows(IllegalArgumentException.class, () -> ObjectIlaReverse.create(ila, null));
+    }
+
     @Test
     void testAll() throws Exception {
         final int length = IlaTestDimensions.defaultIlaLength();

@@ -9,6 +9,8 @@ public final class CharIlaSegment {
     }
 
     public static CharIla create(CharIla ila, long start) throws IOException {
+        Argument.assertNotNull(ila, "ila");
+
         return create(ila, start, ila.length() - start);
     }
 
