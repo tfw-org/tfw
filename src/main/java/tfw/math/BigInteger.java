@@ -35,8 +35,7 @@ import java.io.ObjectOutputStream;
 import java.io.ObjectStreamField;
 import java.util.Arrays;
 import java.util.Objects;
-import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
+import java.security.SecureRandom;
 
 /**
  * Immutable arbitrary-precision integers.  All operations behave as if
@@ -687,11 +686,11 @@ public class BigInteger extends Number implements Comparable<BigInteger> {
      * @throws IllegalArgumentException {@code numBits} is negative.
      * @see #bitLength()
      */
-    public BigInteger(int numBits, Random rnd) {
+    public BigInteger(int numBits, SecureRandom rnd) {
         this(1, randomBits(numBits, rnd));
     }
 
-    private static byte[] randomBits(int numBits, Random rnd) {
+    private static byte[] randomBits(int numBits, SecureRandom rnd) {
         if (numBits < 0)
             throw new IllegalArgumentException("numBits must be non-negative");
         int numBytes = (int)(((long)numBits+7)/8); // avoid overflow
@@ -725,7 +724,7 @@ public class BigInteger extends Number implements Comparable<BigInteger> {
      * @throws ArithmeticException {@code bitLength < 2} or {@code bitLength} is too large.
      * @see    #bitLength()
      */
-    public BigInteger(int bitLength, int certainty, Random rnd) {
+    public BigInteger(int bitLength, int certainty, SecureRandom rnd) {
         BigInteger prime;
 
         if (bitLength < 2)
@@ -758,7 +757,7 @@ public class BigInteger extends Number implements Comparable<BigInteger> {
      * @see    #bitLength()
      * @since 1.4
      */
-    public static BigInteger probablePrime(int bitLength, Random rnd) {
+    public static BigInteger probablePrime(int bitLength, SecureRandom rnd) {
         if (bitLength < 2)
             throw new ArithmeticException("bitLength < 2");
 
@@ -774,7 +773,7 @@ public class BigInteger extends Number implements Comparable<BigInteger> {
      *
      * This method assumes bitLength > 1.
      */
-    private static BigInteger smallPrime(int bitLength, int certainty, Random rnd) {
+    private static BigInteger smallPrime(int bitLength, int certainty, SecureRandom rnd) {
         int magLen = (bitLength + 31) >>> 5;
         int temp[] = new int[magLen];
         int highBit = 1 << ((bitLength+31) & 0x1f);  // High bit of high int
@@ -818,7 +817,7 @@ public class BigInteger extends Number implements Comparable<BigInteger> {
      * a sieve to eliminate most composites before using a more expensive
      * test.
      */
-    private static BigInteger largePrime(int bitLength, int certainty, Random rnd) {
+    private static BigInteger largePrime(int bitLength, int certainty, SecureRandom rnd) {
         BigInteger p;
         p = new BigInteger(bitLength, rnd).setBit(bitLength-1);
         p.mag[p.mag.length-1] &= 0xfffffffe;
@@ -930,7 +929,7 @@ public class BigInteger extends Number implements Comparable<BigInteger> {
      * @return {@code true} if this BigInteger is probably prime,
      *         {@code false} if it's definitely composite.
      */
-    boolean primeToCertainty(int certainty, Random random) {
+    boolean primeToCertainty(int certainty, SecureRandom random) {
         int rounds = 0;
         int n = (Math.min(certainty, Integer.MAX_VALUE-1)+1)/2;
 
@@ -1082,7 +1081,7 @@ public class BigInteger extends Number implements Comparable<BigInteger> {
      * This BigInteger is a positive, odd number greater than 2.
      * iterations<=50.
      */
-    private boolean passesMillerRabin(int iterations, Random rnd) {
+    private boolean passesMillerRabin(int iterations, SecureRandom rnd) {
         // Find a and m such that m is odd and this == 1 + 2**a * m
         BigInteger thisMinusOne = this.subtract(ONE);
         BigInteger m = thisMinusOne;
@@ -1091,7 +1090,7 @@ public class BigInteger extends Number implements Comparable<BigInteger> {
 
         // Do the tests
         if (rnd == null) {
-            rnd = ThreadLocalRandom.current();
+            rnd = new SecureRandom(); // ThreadLocalRandom.current();
         }
         for (int i=0; i < iterations; i++) {
             // Generate a uniform random on (1, this)
