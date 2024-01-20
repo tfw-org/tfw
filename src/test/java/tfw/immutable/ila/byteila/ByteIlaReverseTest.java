@@ -1,10 +1,21 @@
 package tfw.immutable.ila.byteila;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import java.util.Random;
 import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 
 class ByteIlaReverseTest {
+    @Test
+    void testArguments() throws Exception {
+        final ByteIla ila = ByteIlaFromArray.create(new byte[10]);
+        final byte[] buffer = new byte[10];
+
+        assertThrows(IllegalArgumentException.class, () -> ByteIlaReverse.create(null, buffer));
+        assertThrows(IllegalArgumentException.class, () -> ByteIlaReverse.create(ila, null));
+    }
+
     @Test
     void testAll() throws Exception {
         final Random random = new Random(0);

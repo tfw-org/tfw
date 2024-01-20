@@ -1,10 +1,21 @@
 package tfw.immutable.ila.longila;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import java.util.Random;
 import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 
 class LongIlaReverseTest {
+    @Test
+    void testArguments() throws Exception {
+        final LongIla ila = LongIlaFromArray.create(new long[10]);
+        final long[] buffer = new long[10];
+
+        assertThrows(IllegalArgumentException.class, () -> LongIlaReverse.create(null, buffer));
+        assertThrows(IllegalArgumentException.class, () -> LongIlaReverse.create(ila, null));
+    }
+
     @Test
     void testAll() throws Exception {
         final Random random = new Random(0);

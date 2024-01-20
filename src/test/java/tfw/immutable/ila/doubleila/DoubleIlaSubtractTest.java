@@ -1,10 +1,23 @@
 package tfw.immutable.ila.doubleila;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import java.util.Random;
 import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 
 class DoubleIlaSubtractTest {
+    @Test
+    void testArguments() throws Exception {
+        final DoubleIla ila1 = DoubleIlaFromArray.create(new double[10]);
+        final DoubleIla ila2 = DoubleIlaFromArray.create(new double[20]);
+
+        assertThrows(IllegalArgumentException.class, () -> DoubleIlaSubtract.create(null, ila1, 1));
+        assertThrows(IllegalArgumentException.class, () -> DoubleIlaSubtract.create(ila1, null, 1));
+        assertThrows(IllegalArgumentException.class, () -> DoubleIlaSubtract.create(ila1, ila2, 1));
+        assertThrows(IllegalArgumentException.class, () -> DoubleIlaSubtract.create(ila1, ila1, 0));
+    }
+
     @Test
     void testAll() throws Exception {
         final Random random = new Random(0);

@@ -9,6 +9,8 @@ public final class ByteIlaSegment {
     }
 
     public static ByteIla create(ByteIla ila, long start) throws IOException {
+        Argument.assertNotNull(ila, "ila");
+
         return create(ila, start, ila.length() - start);
     }
 

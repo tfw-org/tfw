@@ -1,10 +1,21 @@
 package tfw.immutable.ila.shortila;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import java.util.Random;
 import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 
 class ShortIlaReverseTest {
+    @Test
+    void testArguments() throws Exception {
+        final ShortIla ila = ShortIlaFromArray.create(new short[10]);
+        final short[] buffer = new short[10];
+
+        assertThrows(IllegalArgumentException.class, () -> ShortIlaReverse.create(null, buffer));
+        assertThrows(IllegalArgumentException.class, () -> ShortIlaReverse.create(ila, null));
+    }
+
     @Test
     void testAll() throws Exception {
         final Random random = new Random(0);

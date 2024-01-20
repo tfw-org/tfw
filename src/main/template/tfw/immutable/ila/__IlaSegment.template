@@ -10,6 +10,8 @@ public final class %%NAME%%IlaSegment {
     }
 
     public static %%TEMPLATE_SPACE%%%%NAME%%Ila%%TEMPLATE%% create(%%NAME%%Ila%%TEMPLATE%% ila, long start) throws IOException {
+        Argument.assertNotNull(ila, "ila");
+
         return create(ila, start, ila.length() - start);
     }
 

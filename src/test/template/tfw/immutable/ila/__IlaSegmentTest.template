@@ -1,10 +1,27 @@
 // booleanila,byteila,charila,doubleila,floatila,intila,longila,objectila,shortila
 package %%PACKAGE%%;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 %%RANDOM_INCLUDE%%import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 
 class %%NAME%%IlaSegmentTest {
+    @Test
+    void testArguments() throws Exception {
+        final %%NAME%%Ila ila = %%NAME%%IlaFromArray.create(new %%TYPE%%[10]);
+        final long ilaLength = ila.length();
+
+        assertThrows(IllegalArgumentException.class, () -> %%NAME%%IlaSegment.create(null, 0));
+        assertThrows(IllegalArgumentException.class, () -> %%NAME%%IlaSegment.create(ila, -1));
+        assertThrows(IllegalArgumentException.class, () -> %%NAME%%IlaSegment.create(ila, ilaLength + 1));
+        assertThrows(IllegalArgumentException.class, () -> %%NAME%%IlaSegment.create(null, 0, 0));
+        assertThrows(IllegalArgumentException.class, () -> %%NAME%%IlaSegment.create(ila, -1, 0));
+        assertThrows(IllegalArgumentException.class, () -> %%NAME%%IlaSegment.create(ila, 0, -1));
+        assertThrows(IllegalArgumentException.class, () -> %%NAME%%IlaSegment.create(ila, ilaLength + 1, 0));
+        assertThrows(IllegalArgumentException.class, () -> %%NAME%%IlaSegment.create(ila, 0, ilaLength + 1));
+    }
+
     @Test
     void testAll() throws Exception {
         %%RANDOM_INIT%%final int length = IlaTestDimensions.defaultIlaLength();

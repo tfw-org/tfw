@@ -1,10 +1,24 @@
 package tfw.immutable.ila.booleanila;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import java.util.Random;
 import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 
 class BooleanIlaMutateTest {
+    @Test
+    void testArguments() throws Exception {
+        final Random random = new Random(0);
+        final BooleanIla ila = BooleanIlaFromArray.create(new boolean[10]);
+        final long ilaLength = ila.length();
+        final boolean value = random.nextBoolean();
+
+        assertThrows(IllegalArgumentException.class, () -> BooleanIlaMutate.create(null, 0, value));
+        assertThrows(IllegalArgumentException.class, () -> BooleanIlaMutate.create(ila, -1, value));
+        assertThrows(IllegalArgumentException.class, () -> BooleanIlaMutate.create(ila, ilaLength, value));
+    }
+
     @Test
     void testAll() throws Exception {
         final Random random = new Random(0);

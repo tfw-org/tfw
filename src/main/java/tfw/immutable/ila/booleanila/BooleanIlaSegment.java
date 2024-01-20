@@ -9,6 +9,8 @@ public final class BooleanIlaSegment {
     }
 
     public static BooleanIla create(BooleanIla ila, long start) throws IOException {
+        Argument.assertNotNull(ila, "ila");
+
         return create(ila, start, ila.length() - start);
     }
 

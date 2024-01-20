@@ -1,10 +1,21 @@
 package tfw.immutable.ila.floatila;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import java.util.Random;
 import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 
 class FloatIlaRampTest {
+    @Test
+    void testArguments() throws Exception {
+        final Random random = new Random(0);
+        final float start = random.nextFloat();
+        final float increment = random.nextFloat();
+
+        assertThrows(IllegalArgumentException.class, () -> FloatIlaRamp.create(start, increment, -1));
+    }
+
     @Test
     void testAll() throws Exception {
         final Random random = new Random(0);

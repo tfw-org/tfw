@@ -9,6 +9,8 @@ public final class DoubleIlaSegment {
     }
 
     public static DoubleIla create(DoubleIla ila, long start) throws IOException {
+        Argument.assertNotNull(ila, "ila");
+
         return create(ila, start, ila.length() - start);
     }
 

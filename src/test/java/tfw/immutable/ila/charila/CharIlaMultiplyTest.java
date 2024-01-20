@@ -1,10 +1,23 @@
 package tfw.immutable.ila.charila;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import java.util.Random;
 import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 
 class CharIlaMultiplyTest {
+    @Test
+    void testArguments() {
+        final CharIla ila1 = CharIlaFromArray.create(new char[10]);
+        final CharIla ila2 = CharIlaFromArray.create(new char[20]);
+
+        assertThrows(IllegalArgumentException.class, () -> CharIlaMultiply.create(null, ila1, 10));
+        assertThrows(IllegalArgumentException.class, () -> CharIlaMultiply.create(ila1, null, 10));
+        assertThrows(IllegalArgumentException.class, () -> CharIlaMultiply.create(ila1, ila1, 0));
+        assertThrows(IllegalArgumentException.class, () -> CharIlaMultiply.create(ila1, ila2, 10));
+    }
+
     @Test
     void testAll() throws Exception {
         final Random random = new Random(0);
