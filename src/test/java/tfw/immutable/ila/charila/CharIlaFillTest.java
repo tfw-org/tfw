@@ -26,13 +26,8 @@ class CharIlaFillTest {
         }
         CharIla targetIla = CharIlaFromArray.create(array);
         CharIla actualIla = CharIlaFill.create(value, length);
-        final char epsilon = (char) 0;
-        CharIlaCheck.checkAll(
-                targetIla,
-                actualIla,
-                IlaTestDimensions.defaultOffsetLength(),
-                IlaTestDimensions.defaultMaxStride(),
-                epsilon);
+
+        CharIlaCheck.check(targetIla, actualIla);
     }
 }
 // AUTO GENERATED FROM TEMPLATE

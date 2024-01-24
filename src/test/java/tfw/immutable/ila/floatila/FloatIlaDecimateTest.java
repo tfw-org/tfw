@@ -35,13 +35,8 @@ class FloatIlaDecimateTest {
             }
             FloatIla targetIla = FloatIlaFromArray.create(target);
             FloatIla actualIla = FloatIlaDecimate.create(ila, factor, new float[100]);
-            final float epsilon = 0.0f;
-            FloatIlaCheck.checkAll(
-                    targetIla,
-                    actualIla,
-                    IlaTestDimensions.defaultOffsetLength(),
-                    IlaTestDimensions.defaultMaxStride(),
-                    epsilon);
+
+            FloatIlaCheck.check(targetIla, actualIla);
         }
     }
 }

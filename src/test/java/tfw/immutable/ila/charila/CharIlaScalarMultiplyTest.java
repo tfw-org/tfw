@@ -29,13 +29,8 @@ class CharIlaScalarMultiplyTest {
         CharIla ila = CharIlaFromArray.create(array);
         CharIla targetIla = CharIlaFromArray.create(target);
         CharIla actualIla = CharIlaScalarMultiply.create(ila, scalar);
-        final char epsilon = (char) 0;
-        CharIlaCheck.checkAll(
-                targetIla,
-                actualIla,
-                IlaTestDimensions.defaultOffsetLength(),
-                IlaTestDimensions.defaultMaxStride(),
-                epsilon);
+
+        CharIlaCheck.check(targetIla, actualIla);
     }
 }
 // AUTO GENERATED FROM TEMPLATE

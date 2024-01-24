@@ -31,13 +31,8 @@ class CharIlaReverseTest {
         CharIla origIla = CharIlaFromArray.create(array);
         CharIla targetIla = CharIlaFromArray.create(reversed);
         CharIla actualIla = CharIlaReverse.create(origIla, new char[1000]);
-        final char epsilon = (char) 0;
-        CharIlaCheck.checkAll(
-                targetIla,
-                actualIla,
-                IlaTestDimensions.defaultOffsetLength(),
-                IlaTestDimensions.defaultMaxStride(),
-                epsilon);
+
+        CharIlaCheck.check(targetIla, actualIla);
     }
 }
 // AUTO GENERATED FROM TEMPLATE

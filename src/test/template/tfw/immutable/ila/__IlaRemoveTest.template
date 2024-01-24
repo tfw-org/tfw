@@ -33,13 +33,8 @@ class %%NAME%%IlaRemoveTest {
             %%NAME%%Ila%%TEMPLATE%% origIla = %%NAME%%IlaFromArray.create(array);
             %%NAME%%Ila%%TEMPLATE%% targetIla = %%NAME%%IlaFromArray.create(target);
             %%NAME%%Ila%%TEMPLATE%% actualIla = %%NAME%%IlaRemove.create(origIla, index);
-            final %%TYPE%% epsilon = %%DEFAULT_VALUE%%;
-            %%NAME%%IlaCheck.checkAll(
-                    targetIla,
-                    actualIla,
-                    IlaTestDimensions.defaultOffsetLength(),
-                    IlaTestDimensions.defaultMaxStride(),
-                    epsilon);
+
+            %%NAME%%IlaCheck.check(targetIla, actualIla);
         }
     }
 }

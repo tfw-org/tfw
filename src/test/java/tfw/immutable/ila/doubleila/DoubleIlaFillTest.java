@@ -26,13 +26,8 @@ class DoubleIlaFillTest {
         }
         DoubleIla targetIla = DoubleIlaFromArray.create(array);
         DoubleIla actualIla = DoubleIlaFill.create(value, length);
-        final double epsilon = 0.0;
-        DoubleIlaCheck.checkAll(
-                targetIla,
-                actualIla,
-                IlaTestDimensions.defaultOffsetLength(),
-                IlaTestDimensions.defaultMaxStride(),
-                epsilon);
+
+        DoubleIlaCheck.check(targetIla, actualIla);
     }
 }
 // AUTO GENERATED FROM TEMPLATE

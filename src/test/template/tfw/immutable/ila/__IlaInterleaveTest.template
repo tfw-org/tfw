@@ -43,13 +43,8 @@ class %%NAME%%IlaInterleaveTest {
             }
             %%NAME%%Ila%%TEMPLATE%% targetIla = %%NAME%%IlaFromArray.create(array);
             %%NAME%%Ila%%TEMPLATE%% actualIla = %%NAME%%IlaInterleave.create(ilas, new %%TYPE%%[1000]);
-            final %%TYPE%% epsilon = %%DEFAULT_VALUE%%;
-            %%NAME%%IlaCheck.checkAll(
-                    targetIla,
-                    actualIla,
-                    IlaTestDimensions.defaultOffsetLength(),
-                    IlaTestDimensions.defaultMaxStride(),
-                    epsilon);
+
+            %%NAME%%IlaCheck.check(targetIla, actualIla);
         }
     }
 }

@@ -34,13 +34,8 @@ class BooleanIlaMutateTest {
             BooleanIla origIla = BooleanIlaFromArray.create(array);
             BooleanIla targetIla = BooleanIlaFromArray.create(target);
             BooleanIla actualIla = BooleanIlaMutate.create(origIla, index, value);
-            final boolean epsilon = false;
-            BooleanIlaCheck.checkAll(
-                    targetIla,
-                    actualIla,
-                    IlaTestDimensions.defaultOffsetLength(),
-                    IlaTestDimensions.defaultMaxStride(),
-                    epsilon);
+
+            BooleanIlaCheck.check(targetIla, actualIla);
         }
     }
 }

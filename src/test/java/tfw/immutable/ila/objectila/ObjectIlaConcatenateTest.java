@@ -33,13 +33,8 @@ class ObjectIlaConcatenateTest {
         ObjectIla<Object> rightIla = ObjectIlaFromArray.create(rightArray);
         ObjectIla<Object> targetIla = ObjectIlaFromArray.create(array);
         ObjectIla<Object> actualIla = ObjectIlaConcatenate.create(leftIla, rightIla);
-        final Object epsilon = Object.class;
-        ObjectIlaCheck.checkAll(
-                targetIla,
-                actualIla,
-                IlaTestDimensions.defaultOffsetLength(),
-                IlaTestDimensions.defaultMaxStride(),
-                epsilon);
+
+        ObjectIlaCheck.check(targetIla, actualIla);
     }
 }
 // AUTO GENERATED FROM TEMPLATE

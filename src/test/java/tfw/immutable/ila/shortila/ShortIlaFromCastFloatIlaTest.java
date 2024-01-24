@@ -30,13 +30,8 @@ class ShortIlaFromCastFloatIlaTest {
         FloatIla ila = FloatIlaFromArray.create(array);
         ShortIla targetIla = ShortIlaFromArray.create(target);
         ShortIla actualIla = ShortIlaFromCastFloatIla.create(ila, 100);
-        final short epsilon = (short) 0;
-        ShortIlaCheck.checkAll(
-                targetIla,
-                actualIla,
-                IlaTestDimensions.defaultOffsetLength(),
-                IlaTestDimensions.defaultMaxStride(),
-                epsilon);
+
+        ShortIlaCheck.check(targetIla, actualIla);
     }
 }
 // AUTO GENERATED FROM TEMPLATE

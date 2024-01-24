@@ -29,13 +29,8 @@ class FloatIlaScalarMultiplyTest {
         FloatIla ila = FloatIlaFromArray.create(array);
         FloatIla targetIla = FloatIlaFromArray.create(target);
         FloatIla actualIla = FloatIlaScalarMultiply.create(ila, scalar);
-        final float epsilon = 0.0f;
-        FloatIlaCheck.checkAll(
-                targetIla,
-                actualIla,
-                IlaTestDimensions.defaultOffsetLength(),
-                IlaTestDimensions.defaultMaxStride(),
-                epsilon);
+
+        FloatIlaCheck.check(targetIla, actualIla);
     }
 }
 // AUTO GENERATED FROM TEMPLATE

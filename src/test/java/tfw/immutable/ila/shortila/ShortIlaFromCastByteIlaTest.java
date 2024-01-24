@@ -30,13 +30,8 @@ class ShortIlaFromCastByteIlaTest {
         ByteIla ila = ByteIlaFromArray.create(array);
         ShortIla targetIla = ShortIlaFromArray.create(target);
         ShortIla actualIla = ShortIlaFromCastByteIla.create(ila, 100);
-        final short epsilon = (short) 0;
-        ShortIlaCheck.checkAll(
-                targetIla,
-                actualIla,
-                IlaTestDimensions.defaultOffsetLength(),
-                IlaTestDimensions.defaultMaxStride(),
-                epsilon);
+
+        ShortIlaCheck.check(targetIla, actualIla);
     }
 }
 // AUTO GENERATED FROM TEMPLATE

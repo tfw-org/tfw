@@ -33,13 +33,8 @@ class BooleanIlaConcatenateTest {
         BooleanIla rightIla = BooleanIlaFromArray.create(rightArray);
         BooleanIla targetIla = BooleanIlaFromArray.create(array);
         BooleanIla actualIla = BooleanIlaConcatenate.create(leftIla, rightIla);
-        final boolean epsilon = false;
-        BooleanIlaCheck.checkAll(
-                targetIla,
-                actualIla,
-                IlaTestDimensions.defaultOffsetLength(),
-                IlaTestDimensions.defaultMaxStride(),
-                epsilon);
+
+        BooleanIlaCheck.check(targetIla, actualIla);
     }
 }
 // AUTO GENERATED FROM TEMPLATE

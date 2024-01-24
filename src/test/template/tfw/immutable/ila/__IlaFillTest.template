@@ -24,12 +24,7 @@ class %%NAME%%IlaFillTest {
         }
         %%NAME%%Ila%%TEMPLATE%% targetIla = %%NAME%%IlaFromArray.create(array);
         %%NAME%%Ila%%TEMPLATE%% actualIla = %%NAME%%IlaFill.create(value, length);
-        final %%TYPE%% epsilon = %%DEFAULT_VALUE%%;
-        %%NAME%%IlaCheck.checkAll(
-                targetIla,
-                actualIla,
-                IlaTestDimensions.defaultOffsetLength(),
-                IlaTestDimensions.defaultMaxStride(),
-                epsilon);
+
+        %%NAME%%IlaCheck.check(targetIla, actualIla);
     }
 }

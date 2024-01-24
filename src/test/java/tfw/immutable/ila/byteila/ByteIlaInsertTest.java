@@ -38,13 +38,8 @@ class ByteIlaInsertTest {
             ByteIla origIla = ByteIlaFromArray.create(array);
             ByteIla targetIla = ByteIlaFromArray.create(target);
             ByteIla actualIla = ByteIlaInsert.create(origIla, index, value);
-            final byte epsilon = (byte) 0;
-            ByteIlaCheck.checkAll(
-                    targetIla,
-                    actualIla,
-                    IlaTestDimensions.defaultOffsetLength(),
-                    IlaTestDimensions.defaultMaxStride(),
-                    epsilon);
+
+            ByteIlaCheck.check(targetIla, actualIla);
         }
     }
 }

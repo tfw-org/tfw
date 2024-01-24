@@ -35,13 +35,8 @@ class BooleanIlaDecimateTest {
             }
             BooleanIla targetIla = BooleanIlaFromArray.create(target);
             BooleanIla actualIla = BooleanIlaDecimate.create(ila, factor, new boolean[100]);
-            final boolean epsilon = false;
-            BooleanIlaCheck.checkAll(
-                    targetIla,
-                    actualIla,
-                    IlaTestDimensions.defaultOffsetLength(),
-                    IlaTestDimensions.defaultMaxStride(),
-                    epsilon);
+
+            BooleanIlaCheck.check(targetIla, actualIla);
         }
     }
 }

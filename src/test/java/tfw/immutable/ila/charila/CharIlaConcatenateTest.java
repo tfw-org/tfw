@@ -33,13 +33,8 @@ class CharIlaConcatenateTest {
         CharIla rightIla = CharIlaFromArray.create(rightArray);
         CharIla targetIla = CharIlaFromArray.create(array);
         CharIla actualIla = CharIlaConcatenate.create(leftIla, rightIla);
-        final char epsilon = (char) 0;
-        CharIlaCheck.checkAll(
-                targetIla,
-                actualIla,
-                IlaTestDimensions.defaultOffsetLength(),
-                IlaTestDimensions.defaultMaxStride(),
-                epsilon);
+
+        CharIlaCheck.check(targetIla, actualIla);
     }
 }
 // AUTO GENERATED FROM TEMPLATE

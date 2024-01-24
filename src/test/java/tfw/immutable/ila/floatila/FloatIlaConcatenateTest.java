@@ -33,13 +33,8 @@ class FloatIlaConcatenateTest {
         FloatIla rightIla = FloatIlaFromArray.create(rightArray);
         FloatIla targetIla = FloatIlaFromArray.create(array);
         FloatIla actualIla = FloatIlaConcatenate.create(leftIla, rightIla);
-        final float epsilon = 0.0f;
-        FloatIlaCheck.checkAll(
-                targetIla,
-                actualIla,
-                IlaTestDimensions.defaultOffsetLength(),
-                IlaTestDimensions.defaultMaxStride(),
-                epsilon);
+
+        FloatIlaCheck.check(targetIla, actualIla);
     }
 }
 // AUTO GENERATED FROM TEMPLATE

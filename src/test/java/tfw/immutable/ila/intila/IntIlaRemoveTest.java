@@ -34,13 +34,8 @@ class IntIlaRemoveTest {
             IntIla origIla = IntIlaFromArray.create(array);
             IntIla targetIla = IntIlaFromArray.create(target);
             IntIla actualIla = IntIlaRemove.create(origIla, index);
-            final int epsilon = 0;
-            IntIlaCheck.checkAll(
-                    targetIla,
-                    actualIla,
-                    IlaTestDimensions.defaultOffsetLength(),
-                    IlaTestDimensions.defaultMaxStride(),
-                    epsilon);
+
+            IntIlaCheck.check(targetIla, actualIla);
         }
     }
 }

@@ -30,13 +30,8 @@ class CharIlaFromCastDoubleIlaTest {
         DoubleIla ila = DoubleIlaFromArray.create(array);
         CharIla targetIla = CharIlaFromArray.create(target);
         CharIla actualIla = CharIlaFromCastDoubleIla.create(ila, 100);
-        final char epsilon = (char) 0.0;
-        CharIlaCheck.checkAll(
-                targetIla,
-                actualIla,
-                IlaTestDimensions.defaultOffsetLength(),
-                IlaTestDimensions.defaultMaxStride(),
-                epsilon);
+
+        CharIlaCheck.check(targetIla, actualIla);
     }
 }
 // AUTO GENERATED FROM TEMPLATE

@@ -44,13 +44,8 @@ class ObjectIlaInterleaveTest {
             }
             ObjectIla<Object> targetIla = ObjectIlaFromArray.create(array);
             ObjectIla<Object> actualIla = ObjectIlaInterleave.create(ilas, new Object[1000]);
-            final Object epsilon = Object.class;
-            ObjectIlaCheck.checkAll(
-                    targetIla,
-                    actualIla,
-                    IlaTestDimensions.defaultOffsetLength(),
-                    IlaTestDimensions.defaultMaxStride(),
-                    epsilon);
+
+            ObjectIlaCheck.check(targetIla, actualIla);
         }
     }
 }

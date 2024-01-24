@@ -35,13 +35,8 @@ class ShortIlaDecimateTest {
             }
             ShortIla targetIla = ShortIlaFromArray.create(target);
             ShortIla actualIla = ShortIlaDecimate.create(ila, factor, new short[100]);
-            final short epsilon = (short) 0;
-            ShortIlaCheck.checkAll(
-                    targetIla,
-                    actualIla,
-                    IlaTestDimensions.defaultOffsetLength(),
-                    IlaTestDimensions.defaultMaxStride(),
-                    epsilon);
+
+            ShortIlaCheck.check(targetIla, actualIla);
         }
     }
 }

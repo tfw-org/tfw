@@ -36,13 +36,8 @@ class %%NAME%%IlaInsertTest {
             %%NAME%%Ila%%TEMPLATE%% origIla = %%NAME%%IlaFromArray.create(array);
             %%NAME%%Ila%%TEMPLATE%% targetIla = %%NAME%%IlaFromArray.create(target);
             %%NAME%%Ila%%TEMPLATE%% actualIla = %%NAME%%IlaInsert.create(origIla, index, value);
-            final %%TYPE%% epsilon = %%DEFAULT_VALUE%%;
-            %%NAME%%IlaCheck.checkAll(
-                    targetIla,
-                    actualIla,
-                    IlaTestDimensions.defaultOffsetLength(),
-                    IlaTestDimensions.defaultMaxStride(),
-                    epsilon);
+
+            %%NAME%%IlaCheck.check(targetIla, actualIla);
         }
     }
 }

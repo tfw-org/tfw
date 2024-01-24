@@ -23,13 +23,8 @@ class ObjectIlaFillTest {
         }
         ObjectIla<Object> targetIla = ObjectIlaFromArray.create(array);
         ObjectIla<Object> actualIla = ObjectIlaFill.create(value, length);
-        final Object epsilon = Object.class;
-        ObjectIlaCheck.checkAll(
-                targetIla,
-                actualIla,
-                IlaTestDimensions.defaultOffsetLength(),
-                IlaTestDimensions.defaultMaxStride(),
-                epsilon);
+
+        ObjectIlaCheck.check(targetIla, actualIla);
     }
 }
 // AUTO GENERATED FROM TEMPLATE

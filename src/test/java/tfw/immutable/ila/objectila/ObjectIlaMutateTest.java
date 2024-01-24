@@ -31,13 +31,8 @@ class ObjectIlaMutateTest {
             ObjectIla<Object> origIla = ObjectIlaFromArray.create(array);
             ObjectIla<Object> targetIla = ObjectIlaFromArray.create(target);
             ObjectIla<Object> actualIla = ObjectIlaMutate.create(origIla, index, value);
-            final Object epsilon = Object.class;
-            ObjectIlaCheck.checkAll(
-                    targetIla,
-                    actualIla,
-                    IlaTestDimensions.defaultOffsetLength(),
-                    IlaTestDimensions.defaultMaxStride(),
-                    epsilon);
+
+            ObjectIlaCheck.check(targetIla, actualIla);
         }
     }
 }

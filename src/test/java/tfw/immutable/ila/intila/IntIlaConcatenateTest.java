@@ -33,13 +33,8 @@ class IntIlaConcatenateTest {
         IntIla rightIla = IntIlaFromArray.create(rightArray);
         IntIla targetIla = IntIlaFromArray.create(array);
         IntIla actualIla = IntIlaConcatenate.create(leftIla, rightIla);
-        final int epsilon = 0;
-        IntIlaCheck.checkAll(
-                targetIla,
-                actualIla,
-                IlaTestDimensions.defaultOffsetLength(),
-                IlaTestDimensions.defaultMaxStride(),
-                epsilon);
+
+        IntIlaCheck.check(targetIla, actualIla);
     }
 }
 // AUTO GENERATED FROM TEMPLATE

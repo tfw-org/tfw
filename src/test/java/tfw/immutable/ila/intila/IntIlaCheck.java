@@ -1,5 +1,7 @@
 package tfw.immutable.ila.intila;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.IOException;
@@ -22,6 +24,32 @@ public final class IntIlaCheck {
         assertThrows(IllegalArgumentException.class, () -> ila.get(array, 0, ilaLength, 1));
         assertThrows(IllegalArgumentException.class, () -> ila.get(array, array.length - 1, 0, 2));
         assertThrows(IllegalArgumentException.class, () -> ila.get(array, 0, ilaLength - 1, 2));
+    }
+
+    public static void checkGetExhaustively(final IntIla ila1, final IntIla ila2) throws IOException {
+        final int length1 = (int) Math.min(ila1.length(), Integer.MAX_VALUE);
+        final int length2 = (int) Math.min(ila2.length(), Integer.MAX_VALUE);
+
+        assertEquals(length1, length2);
+
+        final int[] a1 = new int[length1];
+        final int[] a2 = new int[length1];
+
+        for (int s = 0; s < length1; s++) {
+            for (int l = 0; l < length1 - s; l++) {
+                for (int o = 0; o < length1 - l; o++) {
+                    ila1.get(a1, o, s, l);
+                    ila2.get(a2, o, s, l);
+
+                    assertArrayEquals(a1, a2);
+                }
+            }
+        }
+    }
+
+    public static void check(final IntIla expectedIla, final IntIla actualIla) throws IOException {
+        checkGetArguments(actualIla);
+        checkGetExhaustively(expectedIla, actualIla);
     }
 
     public static void checkAll(

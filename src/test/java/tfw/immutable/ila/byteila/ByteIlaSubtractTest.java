@@ -34,13 +34,8 @@ class ByteIlaSubtractTest {
         ByteIla rightIla = ByteIlaFromArray.create(rightArray);
         ByteIla targetIla = ByteIlaFromArray.create(array);
         ByteIla actualIla = ByteIlaSubtract.create(leftIla, rightIla, 100);
-        final byte epsilon = (byte) 0;
-        ByteIlaCheck.checkAll(
-                targetIla,
-                actualIla,
-                IlaTestDimensions.defaultOffsetLength(),
-                IlaTestDimensions.defaultMaxStride(),
-                epsilon);
+
+        ByteIlaCheck.check(targetIla, actualIla);
     }
 }
 // AUTO GENERATED FROM TEMPLATE

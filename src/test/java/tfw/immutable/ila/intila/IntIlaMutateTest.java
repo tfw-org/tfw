@@ -34,13 +34,8 @@ class IntIlaMutateTest {
             IntIla origIla = IntIlaFromArray.create(array);
             IntIla targetIla = IntIlaFromArray.create(target);
             IntIla actualIla = IntIlaMutate.create(origIla, index, value);
-            final int epsilon = 0;
-            IntIlaCheck.checkAll(
-                    targetIla,
-                    actualIla,
-                    IlaTestDimensions.defaultOffsetLength(),
-                    IlaTestDimensions.defaultMaxStride(),
-                    epsilon);
+
+            IntIlaCheck.check(targetIla, actualIla);
         }
     }
 }
