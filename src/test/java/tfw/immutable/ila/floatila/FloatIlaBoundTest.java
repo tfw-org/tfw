@@ -40,13 +40,8 @@ class FloatIlaBoundTest {
         FloatIla ila = FloatIlaFromArray.create(array);
         FloatIla targetIla = FloatIlaFromArray.create(target);
         FloatIla actualIla = FloatIlaBound.create(ila, minimum, maximum);
-        final float epsilon = 0.0f;
-        FloatIlaCheck.checkAll(
-                targetIla,
-                actualIla,
-                IlaTestDimensions.defaultOffsetLength(),
-                IlaTestDimensions.defaultMaxStride(),
-                epsilon);
+
+        FloatIlaCheck.check(targetIla, actualIla);
     }
 }
 // AUTO GENERATED FROM TEMPLATE

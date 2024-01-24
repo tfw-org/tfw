@@ -34,13 +34,8 @@ class ShortIlaMultiplyTest {
         ShortIla rightIla = ShortIlaFromArray.create(rightArray);
         ShortIla targetIla = ShortIlaFromArray.create(array);
         ShortIla actualIla = ShortIlaMultiply.create(leftIla, rightIla, 100);
-        final short epsilon = (short) 0;
-        ShortIlaCheck.checkAll(
-                targetIla,
-                actualIla,
-                IlaTestDimensions.defaultOffsetLength(),
-                IlaTestDimensions.defaultMaxStride(),
-                epsilon);
+
+        ShortIlaCheck.check(targetIla, actualIla);
     }
 }
 // AUTO GENERATED FROM TEMPLATE

@@ -44,13 +44,8 @@ class ShortIlaInterleaveTest {
             }
             ShortIla targetIla = ShortIlaFromArray.create(array);
             ShortIla actualIla = ShortIlaInterleave.create(ilas, new short[1000]);
-            final short epsilon = (short) 0;
-            ShortIlaCheck.checkAll(
-                    targetIla,
-                    actualIla,
-                    IlaTestDimensions.defaultOffsetLength(),
-                    IlaTestDimensions.defaultMaxStride(),
-                    epsilon);
+
+            ShortIlaCheck.check(targetIla, actualIla);
         }
     }
 }

@@ -34,13 +34,8 @@ class CharIlaRemoveTest {
             CharIla origIla = CharIlaFromArray.create(array);
             CharIla targetIla = CharIlaFromArray.create(target);
             CharIla actualIla = CharIlaRemove.create(origIla, index);
-            final char epsilon = (char) 0;
-            CharIlaCheck.checkAll(
-                    targetIla,
-                    actualIla,
-                    IlaTestDimensions.defaultOffsetLength(),
-                    IlaTestDimensions.defaultMaxStride(),
-                    epsilon);
+
+            CharIlaCheck.check(targetIla, actualIla);
         }
     }
 }

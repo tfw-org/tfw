@@ -33,12 +33,7 @@ class %%NAME%%IlaDivideTest {
         %%NAME%%Ila rightIla = %%NAME%%IlaFromArray.create(rightArray);
         %%NAME%%Ila targetIla = %%NAME%%IlaFromArray.create(array);
         %%NAME%%Ila actualIla = %%NAME%%IlaDivide.create(leftIla, rightIla, 100);
-        final %%TYPE%% epsilon = %%DEFAULT_VALUE%%;
-        %%NAME%%IlaCheck.checkAll(
-                targetIla,
-                actualIla,
-                IlaTestDimensions.defaultOffsetLength(),
-                IlaTestDimensions.defaultMaxStride(),
-                epsilon);
+
+        %%NAME%%IlaCheck.check(targetIla, actualIla);
     }
 }

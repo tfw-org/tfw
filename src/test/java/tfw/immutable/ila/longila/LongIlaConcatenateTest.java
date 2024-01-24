@@ -33,13 +33,8 @@ class LongIlaConcatenateTest {
         LongIla rightIla = LongIlaFromArray.create(rightArray);
         LongIla targetIla = LongIlaFromArray.create(array);
         LongIla actualIla = LongIlaConcatenate.create(leftIla, rightIla);
-        final long epsilon = 0L;
-        LongIlaCheck.checkAll(
-                targetIla,
-                actualIla,
-                IlaTestDimensions.defaultOffsetLength(),
-                IlaTestDimensions.defaultMaxStride(),
-                epsilon);
+
+        LongIlaCheck.check(targetIla, actualIla);
     }
 }
 // AUTO GENERATED FROM TEMPLATE

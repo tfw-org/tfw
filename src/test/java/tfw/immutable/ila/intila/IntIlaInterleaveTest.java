@@ -44,13 +44,8 @@ class IntIlaInterleaveTest {
             }
             IntIla targetIla = IntIlaFromArray.create(array);
             IntIla actualIla = IntIlaInterleave.create(ilas, new int[1000]);
-            final int epsilon = 0;
-            IntIlaCheck.checkAll(
-                    targetIla,
-                    actualIla,
-                    IlaTestDimensions.defaultOffsetLength(),
-                    IlaTestDimensions.defaultMaxStride(),
-                    epsilon);
+
+            IntIlaCheck.check(targetIla, actualIla);
         }
     }
 }

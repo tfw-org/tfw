@@ -35,13 +35,8 @@ class ByteIlaDecimateTest {
             }
             ByteIla targetIla = ByteIlaFromArray.create(target);
             ByteIla actualIla = ByteIlaDecimate.create(ila, factor, new byte[100]);
-            final byte epsilon = (byte) 0;
-            ByteIlaCheck.checkAll(
-                    targetIla,
-                    actualIla,
-                    IlaTestDimensions.defaultOffsetLength(),
-                    IlaTestDimensions.defaultMaxStride(),
-                    epsilon);
+
+            ByteIlaCheck.check(targetIla, actualIla);
         }
     }
 }

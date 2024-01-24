@@ -33,13 +33,8 @@ class ByteIlaConcatenateTest {
         ByteIla rightIla = ByteIlaFromArray.create(rightArray);
         ByteIla targetIla = ByteIlaFromArray.create(array);
         ByteIla actualIla = ByteIlaConcatenate.create(leftIla, rightIla);
-        final byte epsilon = (byte) 0;
-        ByteIlaCheck.checkAll(
-                targetIla,
-                actualIla,
-                IlaTestDimensions.defaultOffsetLength(),
-                IlaTestDimensions.defaultMaxStride(),
-                epsilon);
+
+        ByteIlaCheck.check(targetIla, actualIla);
     }
 }
 // AUTO GENERATED FROM TEMPLATE

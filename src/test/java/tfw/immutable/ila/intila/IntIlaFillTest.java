@@ -26,13 +26,8 @@ class IntIlaFillTest {
         }
         IntIla targetIla = IntIlaFromArray.create(array);
         IntIla actualIla = IntIlaFill.create(value, length);
-        final int epsilon = 0;
-        IntIlaCheck.checkAll(
-                targetIla,
-                actualIla,
-                IlaTestDimensions.defaultOffsetLength(),
-                IlaTestDimensions.defaultMaxStride(),
-                epsilon);
+
+        IntIlaCheck.check(targetIla, actualIla);
     }
 }
 // AUTO GENERATED FROM TEMPLATE

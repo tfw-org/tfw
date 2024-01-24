@@ -34,13 +34,8 @@ class ShortIlaMutateTest {
             ShortIla origIla = ShortIlaFromArray.create(array);
             ShortIla targetIla = ShortIlaFromArray.create(target);
             ShortIla actualIla = ShortIlaMutate.create(origIla, index, value);
-            final short epsilon = (short) 0;
-            ShortIlaCheck.checkAll(
-                    targetIla,
-                    actualIla,
-                    IlaTestDimensions.defaultOffsetLength(),
-                    IlaTestDimensions.defaultMaxStride(),
-                    epsilon);
+
+            ShortIlaCheck.check(targetIla, actualIla);
         }
     }
 }

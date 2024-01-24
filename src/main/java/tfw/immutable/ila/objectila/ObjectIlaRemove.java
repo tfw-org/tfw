@@ -34,9 +34,9 @@ public final class ObjectIlaRemove {
         protected void getImpl(T[] array, int offset, long start, int length) throws IOException {
             final long startPlusLength = start + length;
 
-            if (index <= start) {
+            if ((index - 1) < start) {
                 ila.get(array, offset, start + 1, length);
-            } else if (index >= startPlusLength) {
+            } else if ((index + 1) > startPlusLength) {
                 ila.get(array, offset, start, length);
             } else {
                 final int indexMinusStart = (int) (index - start);

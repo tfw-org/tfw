@@ -38,13 +38,8 @@ class FloatIlaInsertTest {
             FloatIla origIla = FloatIlaFromArray.create(array);
             FloatIla targetIla = FloatIlaFromArray.create(target);
             FloatIla actualIla = FloatIlaInsert.create(origIla, index, value);
-            final float epsilon = 0.0f;
-            FloatIlaCheck.checkAll(
-                    targetIla,
-                    actualIla,
-                    IlaTestDimensions.defaultOffsetLength(),
-                    IlaTestDimensions.defaultMaxStride(),
-                    epsilon);
+
+            FloatIlaCheck.check(targetIla, actualIla);
         }
     }
 }

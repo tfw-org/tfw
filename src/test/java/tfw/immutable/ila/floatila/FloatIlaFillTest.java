@@ -26,13 +26,8 @@ class FloatIlaFillTest {
         }
         FloatIla targetIla = FloatIlaFromArray.create(array);
         FloatIla actualIla = FloatIlaFill.create(value, length);
-        final float epsilon = 0.0f;
-        FloatIlaCheck.checkAll(
-                targetIla,
-                actualIla,
-                IlaTestDimensions.defaultOffsetLength(),
-                IlaTestDimensions.defaultMaxStride(),
-                epsilon);
+
+        FloatIlaCheck.check(targetIla, actualIla);
     }
 }
 // AUTO GENERATED FROM TEMPLATE

@@ -25,13 +25,8 @@ class IntIlaNegateTest {
         IntIla ila = IntIlaFromArray.create(array);
         IntIla targetIla = IntIlaFromArray.create(target);
         IntIla actualIla = IntIlaNegate.create(ila);
-        final int epsilon = 0;
-        IntIlaCheck.checkAll(
-                targetIla,
-                actualIla,
-                IlaTestDimensions.defaultOffsetLength(),
-                IlaTestDimensions.defaultMaxStride(),
-                epsilon);
+
+        IntIlaCheck.check(targetIla, actualIla);
     }
 }
 // AUTO GENERATED FROM TEMPLATE

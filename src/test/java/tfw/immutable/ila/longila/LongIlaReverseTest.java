@@ -31,13 +31,8 @@ class LongIlaReverseTest {
         LongIla origIla = LongIlaFromArray.create(array);
         LongIla targetIla = LongIlaFromArray.create(reversed);
         LongIla actualIla = LongIlaReverse.create(origIla, new long[1000]);
-        final long epsilon = 0L;
-        LongIlaCheck.checkAll(
-                targetIla,
-                actualIla,
-                IlaTestDimensions.defaultOffsetLength(),
-                IlaTestDimensions.defaultMaxStride(),
-                epsilon);
+
+        LongIlaCheck.check(targetIla, actualIla);
     }
 }
 // AUTO GENERATED FROM TEMPLATE

@@ -34,13 +34,8 @@ class IntIlaSubtractTest {
         IntIla rightIla = IntIlaFromArray.create(rightArray);
         IntIla targetIla = IntIlaFromArray.create(array);
         IntIla actualIla = IntIlaSubtract.create(leftIla, rightIla, 100);
-        final int epsilon = 0;
-        IntIlaCheck.checkAll(
-                targetIla,
-                actualIla,
-                IlaTestDimensions.defaultOffsetLength(),
-                IlaTestDimensions.defaultMaxStride(),
-                epsilon);
+
+        IntIlaCheck.check(targetIla, actualIla);
     }
 }
 // AUTO GENERATED FROM TEMPLATE

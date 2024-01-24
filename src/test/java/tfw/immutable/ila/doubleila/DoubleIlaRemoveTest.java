@@ -34,13 +34,8 @@ class DoubleIlaRemoveTest {
             DoubleIla origIla = DoubleIlaFromArray.create(array);
             DoubleIla targetIla = DoubleIlaFromArray.create(target);
             DoubleIla actualIla = DoubleIlaRemove.create(origIla, index);
-            final double epsilon = 0.0;
-            DoubleIlaCheck.checkAll(
-                    targetIla,
-                    actualIla,
-                    IlaTestDimensions.defaultOffsetLength(),
-                    IlaTestDimensions.defaultMaxStride(),
-                    epsilon);
+
+            DoubleIlaCheck.check(targetIla, actualIla);
         }
     }
 }

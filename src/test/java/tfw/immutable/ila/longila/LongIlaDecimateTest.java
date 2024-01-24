@@ -35,13 +35,8 @@ class LongIlaDecimateTest {
             }
             LongIla targetIla = LongIlaFromArray.create(target);
             LongIla actualIla = LongIlaDecimate.create(ila, factor, new long[100]);
-            final long epsilon = 0L;
-            LongIlaCheck.checkAll(
-                    targetIla,
-                    actualIla,
-                    IlaTestDimensions.defaultOffsetLength(),
-                    IlaTestDimensions.defaultMaxStride(),
-                    epsilon);
+
+            LongIlaCheck.check(targetIla, actualIla);
         }
     }
 }

@@ -34,13 +34,8 @@ class DoubleIlaDivideTest {
         DoubleIla rightIla = DoubleIlaFromArray.create(rightArray);
         DoubleIla targetIla = DoubleIlaFromArray.create(array);
         DoubleIla actualIla = DoubleIlaDivide.create(leftIla, rightIla, 100);
-        final double epsilon = 0.0;
-        DoubleIlaCheck.checkAll(
-                targetIla,
-                actualIla,
-                IlaTestDimensions.defaultOffsetLength(),
-                IlaTestDimensions.defaultMaxStride(),
-                epsilon);
+
+        DoubleIlaCheck.check(targetIla, actualIla);
     }
 }
 // AUTO GENERATED FROM TEMPLATE

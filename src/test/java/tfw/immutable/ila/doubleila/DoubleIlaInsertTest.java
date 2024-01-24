@@ -38,13 +38,8 @@ class DoubleIlaInsertTest {
             DoubleIla origIla = DoubleIlaFromArray.create(array);
             DoubleIla targetIla = DoubleIlaFromArray.create(target);
             DoubleIla actualIla = DoubleIlaInsert.create(origIla, index, value);
-            final double epsilon = 0.0;
-            DoubleIlaCheck.checkAll(
-                    targetIla,
-                    actualIla,
-                    IlaTestDimensions.defaultOffsetLength(),
-                    IlaTestDimensions.defaultMaxStride(),
-                    epsilon);
+
+            DoubleIlaCheck.check(targetIla, actualIla);
         }
     }
 }

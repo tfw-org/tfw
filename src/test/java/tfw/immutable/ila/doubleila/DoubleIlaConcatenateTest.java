@@ -33,13 +33,8 @@ class DoubleIlaConcatenateTest {
         DoubleIla rightIla = DoubleIlaFromArray.create(rightArray);
         DoubleIla targetIla = DoubleIlaFromArray.create(array);
         DoubleIla actualIla = DoubleIlaConcatenate.create(leftIla, rightIla);
-        final double epsilon = 0.0;
-        DoubleIlaCheck.checkAll(
-                targetIla,
-                actualIla,
-                IlaTestDimensions.defaultOffsetLength(),
-                IlaTestDimensions.defaultMaxStride(),
-                epsilon);
+
+        DoubleIlaCheck.check(targetIla, actualIla);
     }
 }
 // AUTO GENERATED FROM TEMPLATE

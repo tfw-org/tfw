@@ -34,13 +34,8 @@ class ByteIlaRemoveTest {
             ByteIla origIla = ByteIlaFromArray.create(array);
             ByteIla targetIla = ByteIlaFromArray.create(target);
             ByteIla actualIla = ByteIlaRemove.create(origIla, index);
-            final byte epsilon = (byte) 0;
-            ByteIlaCheck.checkAll(
-                    targetIla,
-                    actualIla,
-                    IlaTestDimensions.defaultOffsetLength(),
-                    IlaTestDimensions.defaultMaxStride(),
-                    epsilon);
+
+            ByteIlaCheck.check(targetIla, actualIla);
         }
     }
 }

@@ -30,13 +30,8 @@ class LongIlaFromCastCharIlaTest {
         CharIla ila = CharIlaFromArray.create(array);
         LongIla targetIla = LongIlaFromArray.create(target);
         LongIla actualIla = LongIlaFromCastCharIla.create(ila, 100);
-        final long epsilon = 0L;
-        LongIlaCheck.checkAll(
-                targetIla,
-                actualIla,
-                IlaTestDimensions.defaultOffsetLength(),
-                IlaTestDimensions.defaultMaxStride(),
-                epsilon);
+
+        LongIlaCheck.check(targetIla, actualIla);
     }
 }
 // AUTO GENERATED FROM TEMPLATE

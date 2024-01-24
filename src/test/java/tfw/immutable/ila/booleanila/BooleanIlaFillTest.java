@@ -26,13 +26,8 @@ class BooleanIlaFillTest {
         }
         BooleanIla targetIla = BooleanIlaFromArray.create(array);
         BooleanIla actualIla = BooleanIlaFill.create(value, length);
-        final boolean epsilon = false;
-        BooleanIlaCheck.checkAll(
-                targetIla,
-                actualIla,
-                IlaTestDimensions.defaultOffsetLength(),
-                IlaTestDimensions.defaultMaxStride(),
-                epsilon);
+
+        BooleanIlaCheck.check(targetIla, actualIla);
     }
 }
 // AUTO GENERATED FROM TEMPLATE

@@ -38,13 +38,8 @@ class ShortIlaInsertTest {
             ShortIla origIla = ShortIlaFromArray.create(array);
             ShortIla targetIla = ShortIlaFromArray.create(target);
             ShortIla actualIla = ShortIlaInsert.create(origIla, index, value);
-            final short epsilon = (short) 0;
-            ShortIlaCheck.checkAll(
-                    targetIla,
-                    actualIla,
-                    IlaTestDimensions.defaultOffsetLength(),
-                    IlaTestDimensions.defaultMaxStride(),
-                    epsilon);
+
+            ShortIlaCheck.check(targetIla, actualIla);
         }
     }
 }

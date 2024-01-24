@@ -33,13 +33,8 @@ class ObjectIlaDecimateTest {
             }
             ObjectIla<Object> targetIla = ObjectIlaFromArray.create(target);
             ObjectIla<Object> actualIla = ObjectIlaDecimate.create(ila, factor, new Object[100]);
-            final Object epsilon = Object.class;
-            ObjectIlaCheck.checkAll(
-                    targetIla,
-                    actualIla,
-                    IlaTestDimensions.defaultOffsetLength(),
-                    IlaTestDimensions.defaultMaxStride(),
-                    epsilon);
+
+            ObjectIlaCheck.check(targetIla, actualIla);
         }
     }
 }

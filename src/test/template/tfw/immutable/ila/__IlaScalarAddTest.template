@@ -27,12 +27,7 @@ class %%NAME%%IlaScalarAddTest {
         %%NAME%%Ila ila = %%NAME%%IlaFromArray.create(array);
         %%NAME%%Ila targetIla = %%NAME%%IlaFromArray.create(target);
         %%NAME%%Ila actualIla = %%NAME%%IlaScalarAdd.create(ila, scalar);
-        final %%TYPE%% epsilon = %%DEFAULT_VALUE%%;
-        %%NAME%%IlaCheck.checkAll(
-                targetIla,
-                actualIla,
-                IlaTestDimensions.defaultOffsetLength(),
-                IlaTestDimensions.defaultMaxStride(),
-                epsilon);
+
+        %%NAME%%IlaCheck.check(targetIla, actualIla);
     }
 }

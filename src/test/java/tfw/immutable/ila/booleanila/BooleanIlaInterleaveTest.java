@@ -44,13 +44,8 @@ class BooleanIlaInterleaveTest {
             }
             BooleanIla targetIla = BooleanIlaFromArray.create(array);
             BooleanIla actualIla = BooleanIlaInterleave.create(ilas, new boolean[1000]);
-            final boolean epsilon = false;
-            BooleanIlaCheck.checkAll(
-                    targetIla,
-                    actualIla,
-                    IlaTestDimensions.defaultOffsetLength(),
-                    IlaTestDimensions.defaultMaxStride(),
-                    epsilon);
+
+            BooleanIlaCheck.check(targetIla, actualIla);
         }
     }
 }

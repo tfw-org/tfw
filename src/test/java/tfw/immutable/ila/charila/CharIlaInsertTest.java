@@ -38,13 +38,8 @@ class CharIlaInsertTest {
             CharIla origIla = CharIlaFromArray.create(array);
             CharIla targetIla = CharIlaFromArray.create(target);
             CharIla actualIla = CharIlaInsert.create(origIla, index, value);
-            final char epsilon = (char) 0;
-            CharIlaCheck.checkAll(
-                    targetIla,
-                    actualIla,
-                    IlaTestDimensions.defaultOffsetLength(),
-                    IlaTestDimensions.defaultMaxStride(),
-                    epsilon);
+
+            CharIlaCheck.check(targetIla, actualIla);
         }
     }
 }

@@ -34,13 +34,8 @@ class BooleanIlaRemoveTest {
             BooleanIla origIla = BooleanIlaFromArray.create(array);
             BooleanIla targetIla = BooleanIlaFromArray.create(target);
             BooleanIla actualIla = BooleanIlaRemove.create(origIla, index);
-            final boolean epsilon = false;
-            BooleanIlaCheck.checkAll(
-                    targetIla,
-                    actualIla,
-                    IlaTestDimensions.defaultOffsetLength(),
-                    IlaTestDimensions.defaultMaxStride(),
-                    epsilon);
+
+            BooleanIlaCheck.check(targetIla, actualIla);
         }
     }
 }

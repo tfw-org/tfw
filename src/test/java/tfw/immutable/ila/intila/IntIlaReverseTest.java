@@ -31,13 +31,8 @@ class IntIlaReverseTest {
         IntIla origIla = IntIlaFromArray.create(array);
         IntIla targetIla = IntIlaFromArray.create(reversed);
         IntIla actualIla = IntIlaReverse.create(origIla, new int[1000]);
-        final int epsilon = 0;
-        IntIlaCheck.checkAll(
-                targetIla,
-                actualIla,
-                IlaTestDimensions.defaultOffsetLength(),
-                IlaTestDimensions.defaultMaxStride(),
-                epsilon);
+
+        IntIlaCheck.check(targetIla, actualIla);
     }
 }
 // AUTO GENERATED FROM TEMPLATE

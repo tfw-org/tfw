@@ -42,10 +42,11 @@ public final class ByteIlaConcatenate {
         @Override
         protected void getImpl(byte[] array, int offset, long start, int length) throws IOException {
             final long leftIlaLength = leftIla.length();
+            final long leftIlaLastIndex = leftIlaLength - 1;
 
-            if (start + length <= leftIlaLength) {
+            if (start + length <= leftIlaLastIndex) {
                 leftIla.get(array, offset, start, length);
-            } else if (start >= leftIlaLength) {
+            } else if (start > leftIlaLastIndex) {
                 rightIla.get(array, offset, start - leftIlaLength, length);
             } else {
                 final int leftAmount = (int) (leftIlaLength - start);

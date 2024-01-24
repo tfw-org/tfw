@@ -29,13 +29,8 @@ class LongIlaScalarMultiplyTest {
         LongIla ila = LongIlaFromArray.create(array);
         LongIla targetIla = LongIlaFromArray.create(target);
         LongIla actualIla = LongIlaScalarMultiply.create(ila, scalar);
-        final long epsilon = 0L;
-        LongIlaCheck.checkAll(
-                targetIla,
-                actualIla,
-                IlaTestDimensions.defaultOffsetLength(),
-                IlaTestDimensions.defaultMaxStride(),
-                epsilon);
+
+        LongIlaCheck.check(targetIla, actualIla);
     }
 }
 // AUTO GENERATED FROM TEMPLATE

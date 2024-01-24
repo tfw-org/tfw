@@ -32,13 +32,8 @@ class ObjectIlaRemoveTest {
             ObjectIla<Object> origIla = ObjectIlaFromArray.create(array);
             ObjectIla<Object> targetIla = ObjectIlaFromArray.create(target);
             ObjectIla<Object> actualIla = ObjectIlaRemove.create(origIla, index);
-            final Object epsilon = Object.class;
-            ObjectIlaCheck.checkAll(
-                    targetIla,
-                    actualIla,
-                    IlaTestDimensions.defaultOffsetLength(),
-                    IlaTestDimensions.defaultMaxStride(),
-                    epsilon);
+
+            ObjectIlaCheck.check(targetIla, actualIla);
         }
     }
 }

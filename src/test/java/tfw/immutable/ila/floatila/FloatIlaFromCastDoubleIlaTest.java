@@ -30,13 +30,8 @@ class FloatIlaFromCastDoubleIlaTest {
         DoubleIla ila = DoubleIlaFromArray.create(array);
         FloatIla targetIla = FloatIlaFromArray.create(target);
         FloatIla actualIla = FloatIlaFromCastDoubleIla.create(ila, 100);
-        final float epsilon = (float) 0.0;
-        FloatIlaCheck.checkAll(
-                targetIla,
-                actualIla,
-                IlaTestDimensions.defaultOffsetLength(),
-                IlaTestDimensions.defaultMaxStride(),
-                epsilon);
+
+        FloatIlaCheck.check(targetIla, actualIla);
     }
 }
 // AUTO GENERATED FROM TEMPLATE

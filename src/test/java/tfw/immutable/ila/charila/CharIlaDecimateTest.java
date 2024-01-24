@@ -35,13 +35,8 @@ class CharIlaDecimateTest {
             }
             CharIla targetIla = CharIlaFromArray.create(target);
             CharIla actualIla = CharIlaDecimate.create(ila, factor, new char[100]);
-            final char epsilon = (char) 0;
-            CharIlaCheck.checkAll(
-                    targetIla,
-                    actualIla,
-                    IlaTestDimensions.defaultOffsetLength(),
-                    IlaTestDimensions.defaultMaxStride(),
-                    epsilon);
+
+            CharIlaCheck.check(targetIla, actualIla);
         }
     }
 }
