@@ -185,7 +185,17 @@
                 <version>3.3.1</version>
                 <configuration>
                     <argLine>--illegal-access=permit</argLine>
+                    <statelessTestsetInfoReporter implementation="org.apache.maven.plugin.surefire.extensions.junit5.JUnit5StatelessTestsetInfoTreeReporter">
+                        <theme>UNICODE</theme>
+                    </statelessTestsetInfoReporter>
                 </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>me.fabriciorby</groupId>
+                        <artifactId>maven-surefire-junit5-tree-reporter</artifactId>
+                        <version>1.2.1</version>
+                    </dependency>
+                </dependencies>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
