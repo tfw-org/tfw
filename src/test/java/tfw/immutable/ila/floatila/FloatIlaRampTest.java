@@ -29,7 +29,7 @@ class FloatIlaRampTest {
         }
         FloatIla targetIla = FloatIlaFromArray.create(array);
         FloatIla actualIla = FloatIlaRamp.create(startValue, increment, length);
-        final float epsilon = (float) (0.000001);
+        final float epsilon = (float) 0.000001;
         FloatIlaCheck.checkAll(
                 targetIla,
                 actualIla,

@@ -33,7 +33,7 @@ public final class DoubleIlaReverse {
         protected void getImpl(double[] array, int offset, long start, int length) throws IOException {
             final StridedDoubleIla stridedDoubleIla = StridedDoubleIlaFromDoubleIla.create(ila, buffer.clone());
 
-            stridedDoubleIla.get(array, offset + (length - 1), -1, length() - (start + length), length);
+            stridedDoubleIla.get(array, offset + length - 1, -1, length() - (start + length), length);
         }
     }
 }

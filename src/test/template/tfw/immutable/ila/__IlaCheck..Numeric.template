@@ -71,8 +71,8 @@ public final class %%NAME%%IlaCheck {
         if (offsetLength < 0) throw new Exception("offsetLength < 0 not allowed");
 
         final Strided%%NAME%%Ila strided%%NAME%%Ila = Strided%%NAME%%IlaFrom%%NAME%%Ila.create(ila, new %%TYPE%%[1000]);
-        final %%TYPE%% eps = epsilon < 0.0 ? %%CAST_FROM_INT%%-epsilon%%CAST_FROM_INT_END%% : %%CAST_FROM_INT%%epsilon%%CAST_FROM_INT_END%%;
-        final %%TYPE%% neps = %%CAST_FROM_INT%%-eps%%CAST_FROM_INT_END%%;
+        final %%TYPE%% eps = epsilon < 0.0 ? %%CAST_FROM_INT%%-epsilon : %%CAST_FROM_INT%%epsilon;
+        final %%TYPE%% neps = %%CAST_FROM_INT%%-eps;
         %%RANDOM_INIT%%final int ilaLength = ila.length() + offsetLength <= Integer.MAX_VALUE
                 ? (int) ila.length()
                 : Integer.MAX_VALUE - offsetLength;
@@ -87,7 +87,7 @@ public final class %%NAME%%IlaCheck {
                     ila.get(four, offset, start, length);
                     strided%%NAME%%Ila.get(five, offset, 1, start, length);
                     for (int ii = 0; ii < length; ++ii) {
-                        %%TYPE%% delta = %%CAST_FROM_INT%%four[ii] - five[ii]%%CAST_FROM_INT_END%%;
+                        %%TYPE%% delta = %%CAST_FROM_INT_PAREN%%four[ii] - five[ii]%%CAST_FROM_INT_PAREN_END%%;
                         if (!(neps <= delta && delta <= eps))
                             throw new Exception("four[" + ii + "] ("
                                     + four[ii] + ") !~ five["
@@ -112,8 +112,8 @@ public final class %%NAME%%IlaCheck {
 
         final Strided%%NAME%%Ila stridedTarget = Strided%%NAME%%IlaFrom%%NAME%%Ila.create(target, new %%TYPE%%[1000]);
         final Strided%%NAME%%Ila stridedActual = Strided%%NAME%%IlaFrom%%NAME%%Ila.create(target, new %%TYPE%%[1000]);
-        final %%TYPE%% eps = epsilon < 0.0 ? %%CAST_FROM_INT%%-epsilon%%CAST_FROM_INT_END%% : %%CAST_FROM_INT%%epsilon%%CAST_FROM_INT_END%%;
-        final %%TYPE%% neps = %%CAST_FROM_INT%%-eps%%CAST_FROM_INT_END%%;
+        final %%TYPE%% eps = epsilon < 0.0 ? %%CAST_FROM_INT%%-epsilon : %%CAST_FROM_INT%%epsilon;
+        final %%TYPE%% neps = %%CAST_FROM_INT%%-eps;
         %%RANDOM_INIT%%final int ilaLength = stridedTarget.length() + addlOffsetLength <= Integer.MAX_VALUE
                 ? (int) stridedTarget.length()
                 : Integer.MAX_VALUE - addlOffsetLength;
@@ -134,7 +134,7 @@ public final class %%NAME%%IlaCheck {
                             stridedTarget.get(targetBase, offset, stride, start, length);
                             stridedActual.get(actualBase, offset, stride, start, length);
                             for (int ii = 0; ii < arraySize; ++ii) {
-                                %%TYPE%% delta = %%CAST_FROM_INT%%actualBase[ii] - targetBase[ii]%%CAST_FROM_INT_END%%;
+                                %%TYPE%% delta = %%CAST_FROM_INT_PAREN%%actualBase[ii] - targetBase[ii]%%CAST_FROM_INT_PAREN_END%%;
                                 if (!(neps <= delta && delta <= eps))
                                     throw new Exception("actual[" + ii
                                             + "] ("

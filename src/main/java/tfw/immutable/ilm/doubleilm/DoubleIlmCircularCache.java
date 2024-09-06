@@ -62,7 +62,7 @@ public class DoubleIlmCircularCache {
                     for (int i = 0; i < rowCount; i++) {
                         for (int j = 0; j < colCount; j++) {
                             array[offset + i * colCount + j] =
-                                    buffer[((i + rowStartOffset) % maxRows) * rStride + j * cStride];
+                                    buffer[(i + rowStartOffset) % maxRows * rStride + j * cStride];
                         }
                     }
 
@@ -92,7 +92,7 @@ public class DoubleIlmCircularCache {
                 for (int i = 0; i < rowCount; i++) {
                     for (int j = 0; j < colCount; j++) {
                         array[offset + i * colCount + j] =
-                                buffer[((i + rowStartOffset) % maxRows) * rStride + j * cStride];
+                                buffer[(i + rowStartOffset) % maxRows * rStride + j * cStride];
                     }
                 }
 
@@ -108,7 +108,7 @@ public class DoubleIlmCircularCache {
                 for (int i = 0; i < rowCount; i++) {
                     for (int j = 0; j < colCount; j++) {
                         array[offset + i * colCount + j] =
-                                buffer[((i + rowStartOffset) % maxRows) * rStride + j * cStride];
+                                buffer[(i + rowStartOffset) % maxRows * rStride + j * cStride];
                     }
                 }
             }
@@ -135,7 +135,7 @@ public class DoubleIlmCircularCache {
                 for (int i = 0; i < rowCount; i++) {
                     for (int j = 0; j < colCount; j++) {
                         array[offset + i * colCount + j] =
-                                buffer[((i + rowStartOffset) % maxRows) * rStride + j * cStride];
+                                buffer[(i + rowStartOffset) % maxRows * rStride + j * cStride];
                     }
                 }
 
@@ -179,15 +179,13 @@ public class DoubleIlmCircularCache {
                     for (int i = 0; i < rowCount; i++) {
                         for (int j = 0; j < colCount; j++) {
                             array[offset + i * colCount + j] =
-                                    buffer[((i + rowStartOffset) % maxRows) * rStride + j * cStride];
+                                    buffer[(i + rowStartOffset) % maxRows * rStride + j * cStride];
                         }
                     }
 
                     cacheEnd -= newRowCount;
                     cacheStart -= newRowCount;
                 }
-
-                return;
             }
         }
     }

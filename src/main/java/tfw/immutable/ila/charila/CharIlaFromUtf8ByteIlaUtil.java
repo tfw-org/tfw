@@ -109,7 +109,7 @@ public final class CharIlaFromUtf8ByteIlaUtil {
 
                     utf8Character = (utf8State != HOEHRMANN_UTF8_ACCEPT)
                             ? (ub & 0x3F) | (utf8Character << 6)
-                            : (0xFF >> type) & (ub);
+                            : (0xFF >> type) & ub;
                     utf8State = HOEHRMANN_LOOKUP_TABLE2[utf8State + type];
 
                     if (utf8State == HOEHRMANN_UTF8_ACCEPT) {
@@ -174,7 +174,7 @@ public final class CharIlaFromUtf8ByteIlaUtil {
 
                     utf8Character = (utf8State != HOEHRMANN_UTF8_ACCEPT)
                             ? (ub & 0x3F) | (utf8Character << 6)
-                            : (0xFF >> type) & (ub);
+                            : (0xFF >> type) & ub;
                     utf8State = HOEHRMANN_LOOKUP_TABLE2[utf8State + type];
 
                     if (utf8State == HOEHRMANN_UTF8_ACCEPT) {

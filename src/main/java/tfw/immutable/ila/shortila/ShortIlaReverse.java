@@ -33,7 +33,7 @@ public final class ShortIlaReverse {
         protected void getImpl(short[] array, int offset, long start, int length) throws IOException {
             final StridedShortIla stridedShortIla = StridedShortIlaFromShortIla.create(ila, buffer.clone());
 
-            stridedShortIla.get(array, offset + (length - 1), -1, length() - (start + length), length);
+            stridedShortIla.get(array, offset + length - 1, -1, length() - (start + length), length);
         }
     }
 }

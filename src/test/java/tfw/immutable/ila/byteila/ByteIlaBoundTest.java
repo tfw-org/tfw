@@ -11,8 +11,8 @@ class ByteIlaBoundTest {
     void testArguments() {
         final ByteIla ila = ByteIlaFromArray.create(new byte[10]);
 
-        assertThrows(IllegalArgumentException.class, () -> ByteIlaBound.create(null, (byte) (5), (byte) (10)));
-        assertThrows(IllegalArgumentException.class, () -> ByteIlaBound.create(ila, (byte) (10), (byte) (5)));
+        assertThrows(IllegalArgumentException.class, () -> ByteIlaBound.create(null, (byte) 5, (byte) 10));
+        assertThrows(IllegalArgumentException.class, () -> ByteIlaBound.create(ila, (byte) 10, (byte) 5));
     }
 
     @Test

@@ -33,7 +33,7 @@ public final class LongIlaReverse {
         protected void getImpl(long[] array, int offset, long start, int length) throws IOException {
             final StridedLongIla stridedLongIla = StridedLongIlaFromLongIla.create(ila, buffer.clone());
 
-            stridedLongIla.get(array, offset + (length - 1), -1, length() - (start + length), length);
+            stridedLongIla.get(array, offset + length - 1, -1, length() - (start + length), length);
         }
     }
 }

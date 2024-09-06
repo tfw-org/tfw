@@ -53,7 +53,9 @@ public final class AbstractStridedIlmCheck {
 
         Argument.assertNotGreaterThan(colStart + colCount, width, "colStart+colCount", "width");
 
-        if (overlaps(rowCount, colCount, rowStride, colStride)) {}
+        if (overlaps(rowCount, colCount, rowStride, colStride)) {
+            throw new IllegalArgumentException("Overlaps failed!");
+        }
     }
 
     private static boolean overlaps(int rowCount, int colCount, int rowStride, int colStride) {

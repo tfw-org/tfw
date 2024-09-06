@@ -43,7 +43,7 @@ public final class LongIlaFromByteIla {
                         | (((long) bii.next() & 0xFF) << 24)
                         | (((long) bii.next() & 0xFF) << 16)
                         | (((long) bii.next() & 0xFF) << 8)
-                        | (((long) bii.next() & 0xFF));
+                        | ((long) bii.next() & 0xFF);
             }
         }
     }

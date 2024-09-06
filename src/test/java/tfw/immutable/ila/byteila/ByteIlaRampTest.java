@@ -29,7 +29,7 @@ class ByteIlaRampTest {
         }
         ByteIla targetIla = ByteIlaFromArray.create(array);
         ByteIla actualIla = ByteIlaRamp.create(startValue, increment, length);
-        final byte epsilon = (byte) (0.000001);
+        final byte epsilon = (byte) 0.000001;
         ByteIlaCheck.checkAll(
                 targetIla,
                 actualIla,

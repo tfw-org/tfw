@@ -198,7 +198,7 @@ public class PoskanzerFft {
             iHammWindow = new double[size];
 
             for (int indx = 0; indx < hammWindow.length; ++indx) {
-                hammWindow[indx] = 0.54 - (0.46 * Math.cos((2 * Math.PI * indx) / hammWindow.length));
+                hammWindow[indx] = 0.54 - (0.46 * Math.cos(2 * Math.PI * indx / hammWindow.length));
                 iHammWindow[indx] = 1 / hammWindow[indx];
             }
         }
@@ -340,7 +340,7 @@ public class PoskanzerFft {
         for (audioSample = 0; audioSample < fftSize; ++audioSample) {
             for (indx1 = 0; indx1 < n; indx1 += n2) {
                 for (indx2 = 0; indx2 < n2; ++indx2, ++indx1) {
-                    ang = (TWOPI * bitreverse[indx1 / n2]) / n;
+                    ang = TWOPI * bitreverse[indx1 / n2] / n;
                     cosTable[tableIndx] = Math.cos(ang);
                     sinTable[tableIndx] = Math.sin(ang);
                     indxTable[tableIndx] = indx1 + n2;

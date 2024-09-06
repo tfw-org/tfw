@@ -45,7 +45,7 @@ public final class DoubleIlaMutate {
                 }
                 array[offset + indexMinusStart] = value;
                 if (index <= startPlusLength) {
-                    ila.get(array, offset + (indexMinusStart + 1), index + 1, length - indexMinusStart - 1);
+                    ila.get(array, offset + indexMinusStart + 1, index + 1, length - indexMinusStart - 1);
                 }
             }
         }

@@ -68,7 +68,7 @@ import java.io.IOException;
     public static void checkFourFiveEquivalence(final %%NAME%%Ila%%TEMPLATE%% ila, final int offsetLength, %%TYPE%% epsilon)
             throws Exception {
         if (epsilon != %%DEFAULT_VALUE%%) {
-            throw new IllegalArgumentException("epsilon != " + (%%DEFAULT_VALUE%%) + " not allowed");
+            throw new IllegalArgumentException("epsilon != " + %%DEFAULT_VALUE%% + " not allowed");
         } else {
             if (offsetLength < 0) throw new Exception("offsetLength < 0 not allowed");
 
@@ -107,7 +107,7 @@ import java.io.IOException;
             %%NAME%%Ila%%TEMPLATE%% target, %%NAME%%Ila%%TEMPLATE%% actual, int addlOffsetLength, int maxAbsStride, %%TYPE%% epsilon)
             throws Exception {
         if (epsilon != %%DEFAULT_VALUE%%) {
-            throw new IllegalArgumentException("epsilon != " + (%%DEFAULT_VALUE%%) + " not allowed");
+            throw new IllegalArgumentException("epsilon != " + %%DEFAULT_VALUE%% + " not allowed");
         } else {
             if (addlOffsetLength < 0) throw new Exception("addlOffsetLength < 0 not allowed");
             if (maxAbsStride < 1) throw new Exception("maxAbsStride < 1 not allowed");

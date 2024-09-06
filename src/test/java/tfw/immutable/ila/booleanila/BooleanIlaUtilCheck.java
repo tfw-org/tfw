@@ -46,7 +46,7 @@ public final class BooleanIlaUtilCheck {
     // also performs zero-two equivalence
     public static void checkTwoArgImmutability(BooleanIla ila, boolean epsilon) throws Exception {
         if (epsilon != false) {
-            throw new IllegalArgumentException("epsilon != " + (false) + " not allowed");
+            throw new IllegalArgumentException("epsilon != " + false + " not allowed");
         } else {
             final int ilaLength = ila.length() <= Integer.MAX_VALUE ? (int) ila.length() : Integer.MAX_VALUE;
             final boolean[] baseline = BooleanIlaUtil.toArray(ila, 0, ilaLength);
@@ -71,7 +71,7 @@ public final class BooleanIlaUtilCheck {
 
     public static void checkTwoFourEquivalence(BooleanIla ila, boolean epsilon) throws Exception {
         if (epsilon != false) {
-            throw new IllegalArgumentException("epsilon != " + (false) + " not allowed");
+            throw new IllegalArgumentException("epsilon != " + false + " not allowed");
         } else {
             final int ilaLength = ila.length() <= Integer.MAX_VALUE ? (int) ila.length() : Integer.MAX_VALUE;
             final boolean[] four = new boolean[ilaLength];
