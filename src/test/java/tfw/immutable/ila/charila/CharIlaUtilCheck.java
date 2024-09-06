@@ -46,8 +46,8 @@ public final class CharIlaUtilCheck {
 
     // also performs zero-two equivalence
     public static void checkTwoArgImmutability(CharIla ila, char epsilon) throws Exception {
-        final char eps = epsilon < 0.0 ? (char) (-epsilon) : (char) (epsilon);
-        final char neps = (char) (-eps);
+        final char eps = epsilon < 0.0 ? (char) -epsilon : (char) epsilon;
+        final char neps = (char) -eps;
         final int ilaLength = ila.length() <= Integer.MAX_VALUE ? (int) ila.length() : Integer.MAX_VALUE;
         final char[] baseline = CharIlaUtil.toArray(ila, 0, ilaLength);
         if (baseline.length != ilaLength) throw new Exception("baseline.length != ilaLength");
@@ -70,8 +70,8 @@ public final class CharIlaUtilCheck {
     }
 
     public static void checkTwoFourEquivalence(CharIla ila, char epsilon) throws Exception {
-        final char eps = epsilon < 0.0 ? (char) (-epsilon) : (char) (epsilon);
-        final char neps = (char) (-eps);
+        final char eps = epsilon < 0.0 ? (char) -epsilon : (char) epsilon;
+        final char neps = (char) -eps;
         final int ilaLength = ila.length() <= Integer.MAX_VALUE ? (int) ila.length() : Integer.MAX_VALUE;
         final char[] four = new char[ilaLength];
         for (int length = 1; length <= ilaLength; ++length) {

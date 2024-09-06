@@ -71,8 +71,8 @@ public final class CharIlaCheck {
         if (offsetLength < 0) throw new Exception("offsetLength < 0 not allowed");
 
         final StridedCharIla stridedCharIla = StridedCharIlaFromCharIla.create(ila, new char[1000]);
-        final char eps = epsilon < 0.0 ? (char) (-epsilon) : (char) (epsilon);
-        final char neps = (char) (-eps);
+        final char eps = epsilon < 0.0 ? (char) -epsilon : (char) epsilon;
+        final char neps = (char) -eps;
         final Random random = new Random(0);
         final int ilaLength = ila.length() + offsetLength <= Integer.MAX_VALUE
                 ? (int) ila.length()
@@ -113,8 +113,8 @@ public final class CharIlaCheck {
 
         final StridedCharIla stridedTarget = StridedCharIlaFromCharIla.create(target, new char[1000]);
         final StridedCharIla stridedActual = StridedCharIlaFromCharIla.create(target, new char[1000]);
-        final char eps = epsilon < 0.0 ? (char) (-epsilon) : (char) (epsilon);
-        final char neps = (char) (-eps);
+        final char eps = epsilon < 0.0 ? (char) -epsilon : (char) epsilon;
+        final char neps = (char) -eps;
         final Random random = new Random(0);
         final int ilaLength = stridedTarget.length() + addlOffsetLength <= Integer.MAX_VALUE
                 ? (int) stridedTarget.length()

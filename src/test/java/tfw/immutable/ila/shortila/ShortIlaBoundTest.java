@@ -11,8 +11,8 @@ class ShortIlaBoundTest {
     void testArguments() {
         final ShortIla ila = ShortIlaFromArray.create(new short[10]);
 
-        assertThrows(IllegalArgumentException.class, () -> ShortIlaBound.create(null, (short) (5), (short) (10)));
-        assertThrows(IllegalArgumentException.class, () -> ShortIlaBound.create(ila, (short) (10), (short) (5)));
+        assertThrows(IllegalArgumentException.class, () -> ShortIlaBound.create(null, (short) 5, (short) 10));
+        assertThrows(IllegalArgumentException.class, () -> ShortIlaBound.create(ila, (short) 10, (short) 5));
     }
 
     @Test

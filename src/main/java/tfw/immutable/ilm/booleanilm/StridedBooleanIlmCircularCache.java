@@ -73,7 +73,7 @@ public class StridedBooleanIlmCircularCache {
                     for (int i = 0; i < rowCount; i++) {
                         for (int j = 0; j < colCount; j++) {
                             array[offset + i * rowStride + j * colStride] =
-                                    buffer[((i + rowStartOffset) % maxRows) * rStride + j * cStride];
+                                    buffer[(i + rowStartOffset) % maxRows * rStride + j * cStride];
                         }
                     }
 
@@ -112,7 +112,7 @@ public class StridedBooleanIlmCircularCache {
                 for (int i = 0; i < rowCount; i++) {
                     for (int j = 0; j < colCount; j++) {
                         array[offset + i * rowStride + j * colStride] =
-                                buffer[((i + rowStartOffset) % maxRows) * rStride + j * cStride];
+                                buffer[(i + rowStartOffset) % maxRows * rStride + j * cStride];
                     }
                 }
 
@@ -128,7 +128,7 @@ public class StridedBooleanIlmCircularCache {
                 for (int i = 0; i < rowCount; i++) {
                     for (int j = 0; j < colCount; j++) {
                         array[offset + i * rowStride + j * colStride] =
-                                buffer[((i + rowStartOffset) % maxRows) * rStride + j * cStride];
+                                buffer[(i + rowStartOffset) % maxRows * rStride + j * cStride];
                     }
                 }
                 return;
@@ -172,7 +172,7 @@ public class StridedBooleanIlmCircularCache {
                 for (int i = 0; i < rowCount; i++) {
                     for (int j = 0; j < colCount; j++) {
                         array[offset + i * rowStride + j * colStride] =
-                                buffer[((i + rowStartOffset) % maxRows) * rStride + j * cStride];
+                                buffer[(i + rowStartOffset) % maxRows * rStride + j * cStride];
                     }
                 }
 
@@ -218,15 +218,13 @@ public class StridedBooleanIlmCircularCache {
                     for (int i = 0; i < rowCount; i++) {
                         for (int j = 0; j < colCount; j++) {
                             array[offset + i * rowStride + j * colStride] =
-                                    buffer[((i + rowStartOffset) % maxRows) * rStride + j * cStride];
+                                    buffer[(i + rowStartOffset) % maxRows * rStride + j * cStride];
                         }
                     }
 
                     cacheEnd -= newRowCount;
                     cacheStart -= newRowCount;
                 }
-
-                return;
             }
         }
     }

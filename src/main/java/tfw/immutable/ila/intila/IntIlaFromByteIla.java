@@ -39,7 +39,7 @@ public final class IntIlaFromByteIla {
                 array[offset + i] = ((bii.next() & 0xFF) << 24)
                         | ((bii.next() & 0xFF) << 16)
                         | ((bii.next() & 0xFF) << 8)
-                        | ((bii.next() & 0xFF));
+                        | (bii.next() & 0xFF);
             }
         }
     }

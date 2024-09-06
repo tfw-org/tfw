@@ -36,7 +36,7 @@ public final class ShortIlaFromByteIla {
                     new ByteIlaIterator(ByteIlaSegment.create(byteIla, 2 * start, 2 * length), new byte[bufferSize]);
 
             for (int i = 0; i < length; i++) {
-                array[offset + i] = (short) (((bii.next() & 0xFF) << 8) | ((bii.next() & 0xFF)));
+                array[offset + i] = (short) (((bii.next() & 0xFF) << 8) | (bii.next() & 0xFF));
             }
         }
     }

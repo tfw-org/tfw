@@ -29,7 +29,7 @@ class IntIlaRampTest {
         }
         IntIla targetIla = IntIlaFromArray.create(array);
         IntIla actualIla = IntIlaRamp.create(startValue, increment, length);
-        final int epsilon = (int) (0.000001);
+        final int epsilon = (int) 0.000001;
         IntIlaCheck.checkAll(
                 targetIla,
                 actualIla,

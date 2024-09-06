@@ -47,7 +47,7 @@ public final class BooleanIlaInsert {
                 }
                 array[offset + indexMinusStart] = value;
                 if (index < startPlusLength - 1) {
-                    ila.get(array, offset + (indexMinusStart + 1), index, length - indexMinusStart - 1);
+                    ila.get(array, offset + indexMinusStart + 1, index, length - indexMinusStart - 1);
                 }
             }
         }

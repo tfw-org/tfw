@@ -44,7 +44,7 @@ package %%PACKAGE%%;
     // also performs zero-two equivalence
     public static void checkTwoArgImmutability(%%NAME%%Ila ila, %%TYPE%% epsilon) throws Exception {
         if (epsilon != %%DEFAULT_VALUE%%) {
-            throw new IllegalArgumentException("epsilon != " + (%%DEFAULT_VALUE%%) + " not allowed");
+            throw new IllegalArgumentException("epsilon != " + %%DEFAULT_VALUE%% + " not allowed");
         } else {
             final int ilaLength = ila.length() <= Integer.MAX_VALUE ? (int) ila.length() : Integer.MAX_VALUE;
             final %%TYPE%%[] baseline = %%NAME%%IlaUtil.toArray(ila, 0, ilaLength);
@@ -69,7 +69,7 @@ package %%PACKAGE%%;
 
     public static void checkTwoFourEquivalence(%%NAME%%Ila ila, %%TYPE%% epsilon) throws Exception {
         if (epsilon != %%DEFAULT_VALUE%%) {
-            throw new IllegalArgumentException("epsilon != " + (%%DEFAULT_VALUE%%) + " not allowed");
+            throw new IllegalArgumentException("epsilon != " + %%DEFAULT_VALUE%% + " not allowed");
         } else {
             final int ilaLength = ila.length() <= Integer.MAX_VALUE ? (int) ila.length() : Integer.MAX_VALUE;
             final %%TYPE%%[] four = new %%TYPE%%[ilaLength];

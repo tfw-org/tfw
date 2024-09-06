@@ -68,7 +68,7 @@ public final class ObjectIlaCheck {
     public static void checkFourFiveEquivalence(final ObjectIla<Object> ila, final int offsetLength, Object epsilon)
             throws Exception {
         if (epsilon != Object.class) {
-            throw new IllegalArgumentException("epsilon != " + (Object.class) + " not allowed");
+            throw new IllegalArgumentException("epsilon != " + Object.class + " not allowed");
         } else {
             if (offsetLength < 0) throw new Exception("offsetLength < 0 not allowed");
 
@@ -107,7 +107,7 @@ public final class ObjectIlaCheck {
             ObjectIla<Object> target, ObjectIla<Object> actual, int addlOffsetLength, int maxAbsStride, Object epsilon)
             throws Exception {
         if (epsilon != Object.class) {
-            throw new IllegalArgumentException("epsilon != " + (Object.class) + " not allowed");
+            throw new IllegalArgumentException("epsilon != " + Object.class + " not allowed");
         } else {
             if (addlOffsetLength < 0) throw new Exception("addlOffsetLength < 0 not allowed");
             if (maxAbsStride < 1) throw new Exception("maxAbsStride < 1 not allowed");

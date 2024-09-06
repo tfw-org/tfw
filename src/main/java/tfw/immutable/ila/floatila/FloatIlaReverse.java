@@ -33,7 +33,7 @@ public final class FloatIlaReverse {
         protected void getImpl(float[] array, int offset, long start, int length) throws IOException {
             final StridedFloatIla stridedFloatIla = StridedFloatIlaFromFloatIla.create(ila, buffer.clone());
 
-            stridedFloatIla.get(array, offset + (length - 1), -1, length() - (start + length), length);
+            stridedFloatIla.get(array, offset + length - 1, -1, length() - (start + length), length);
         }
     }
 }

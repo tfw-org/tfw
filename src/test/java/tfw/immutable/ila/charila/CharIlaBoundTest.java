@@ -11,8 +11,8 @@ class CharIlaBoundTest {
     void testArguments() {
         final CharIla ila = CharIlaFromArray.create(new char[10]);
 
-        assertThrows(IllegalArgumentException.class, () -> CharIlaBound.create(null, (char) (5), (char) (10)));
-        assertThrows(IllegalArgumentException.class, () -> CharIlaBound.create(ila, (char) (10), (char) (5)));
+        assertThrows(IllegalArgumentException.class, () -> CharIlaBound.create(null, (char) 5, (char) 10));
+        assertThrows(IllegalArgumentException.class, () -> CharIlaBound.create(ila, (char) 10, (char) 5));
     }
 
     @Test

@@ -27,7 +27,7 @@ class %%NAME%%IlaAddTest {
         for (int ii = 0; ii < leftArray.length; ++ii) {
             leftArray[ii] = %%RANDOM_VALUE%%;
             rightArray[ii] = %%RANDOM_VALUE%%;
-            array[ii] = %%CAST_FROM_INT%%leftArray[ii] + rightArray[ii]%%CAST_FROM_INT_END%%;
+            array[ii] = %%CAST_FROM_INT_PAREN%%leftArray[ii] + rightArray[ii]%%CAST_FROM_INT_PAREN_END%%;
         }
         %%NAME%%Ila leftIla = %%NAME%%IlaFromArray.create(leftArray);
         %%NAME%%Ila rightIla = %%NAME%%IlaFromArray.create(rightArray);

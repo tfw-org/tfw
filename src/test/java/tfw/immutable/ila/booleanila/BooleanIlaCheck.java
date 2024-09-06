@@ -71,7 +71,7 @@ public final class BooleanIlaCheck {
     public static void checkFourFiveEquivalence(final BooleanIla ila, final int offsetLength, boolean epsilon)
             throws Exception {
         if (epsilon != false) {
-            throw new IllegalArgumentException("epsilon != " + (false) + " not allowed");
+            throw new IllegalArgumentException("epsilon != " + false + " not allowed");
         } else {
             if (offsetLength < 0) throw new Exception("offsetLength < 0 not allowed");
 
@@ -111,7 +111,7 @@ public final class BooleanIlaCheck {
             BooleanIla target, BooleanIla actual, int addlOffsetLength, int maxAbsStride, boolean epsilon)
             throws Exception {
         if (epsilon != false) {
-            throw new IllegalArgumentException("epsilon != " + (false) + " not allowed");
+            throw new IllegalArgumentException("epsilon != " + false + " not allowed");
         } else {
             if (addlOffsetLength < 0) throw new Exception("addlOffsetLength < 0 not allowed");
             if (maxAbsStride < 1) throw new Exception("maxAbsStride < 1 not allowed");

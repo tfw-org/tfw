@@ -34,7 +34,7 @@ public final class %%NAME%%IlaReverse {
         protected void getImpl(%%TYPE_OR_TEMPLATE%%[] array, int offset, long start, int length) throws IOException {
             final Strided%%NAME%%Ila%%TEMPLATE%% strided%%NAME%%Ila = Strided%%NAME%%IlaFrom%%NAME%%Ila.create(ila, buffer.clone());
 
-            strided%%NAME%%Ila.get(array, offset + (length - 1), -1, length() - (start + length), length);
+            strided%%NAME%%Ila.get(array, offset + length - 1, -1, length() - (start + length), length);
         }
     }
 }

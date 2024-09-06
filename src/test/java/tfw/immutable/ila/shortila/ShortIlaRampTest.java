@@ -29,7 +29,7 @@ class ShortIlaRampTest {
         }
         ShortIla targetIla = ShortIlaFromArray.create(array);
         ShortIla actualIla = ShortIlaRamp.create(startValue, increment, length);
-        final short epsilon = (short) (0.000001);
+        final short epsilon = (short) 0.000001;
         ShortIlaCheck.checkAll(
                 targetIla,
                 actualIla,
