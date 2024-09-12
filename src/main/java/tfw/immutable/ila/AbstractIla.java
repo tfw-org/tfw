@@ -1,26 +1,17 @@
 package tfw.immutable.ila;
 
-import tfw.check.Argument;
+import java.io.IOException;
 
-public abstract class AbstractIla implements ImmutableLongArray
-{
-    protected final long length;
-    
-    protected AbstractIla(long length)
-    {
-        Argument.assertNotLessThan(length, 0, "length");
-        
-        this.length = length;
+public abstract class AbstractIla implements ImmutableLongArray {
+    protected abstract long lengthImpl() throws IOException;
+
+    protected AbstractIla() {}
+
+    public final long length() throws IOException {
+        return lengthImpl();
     }
 
-    public final long length()
-    {
-        return length;
-    }
-
-    protected final void boundsCheck(int arrayLength, int offset,
-                                     int stride, long start, int length)
-    {
-    	AbstractIlaCheck.boundsCheck(this.length, arrayLength, offset, stride, start, length);
+    protected final void boundsCheck(int arrayLength, int offset, long start, int length) throws IOException {
+        ImmutableLongArrayUtil.boundsCheck(length(), arrayLength, offset, start, length);
     }
 }

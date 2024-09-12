@@ -1,0 +1,40 @@
+// booleanila,byteila,charila,doubleila,floatila,intila,longila,objectila,shortila
+package %%PACKAGE%%;
+
+import java.io.IOException;
+import tfw.check.Argument;
+
+public final class %%NAME%%IlaReverse {
+    private %%NAME%%IlaReverse() {
+        // non-instantiable class
+    }
+
+    public static %%TEMPLATE_SPACE%%%%NAME%%Ila%%TEMPLATE%% create(%%NAME%%Ila%%TEMPLATE%% ila, final %%TYPE_OR_TEMPLATE%%[] buffer) {
+        Argument.assertNotNull(ila, "ila");
+        Argument.assertNotNull(buffer, "buffer");
+
+        return new %%NAME%%IlaImpl%%DIAMOND%%(ila, buffer);
+    }
+
+    private static class %%NAME%%IlaImpl%%TEMPLATE%% extends Abstract%%NAME%%Ila%%TEMPLATE%% {
+        private final %%NAME%%Ila%%TEMPLATE%% ila;
+        private final %%TYPE_OR_TEMPLATE%%[] buffer;
+
+        private %%NAME%%IlaImpl(%%NAME%%Ila%%TEMPLATE%% ila, final %%TYPE_OR_TEMPLATE%%[] buffer) {
+            this.ila = ila;
+            this.buffer = buffer;
+        }
+
+        @Override
+        protected long lengthImpl() throws IOException {
+            return ila.length();
+        }
+
+        @Override
+        protected void getImpl(%%TYPE_OR_TEMPLATE%%[] array, int offset, long start, int length) throws IOException {
+            final Strided%%NAME%%Ila%%TEMPLATE%% strided%%NAME%%Ila = Strided%%NAME%%IlaFrom%%NAME%%Ila.create(ila, buffer.clone());
+
+            strided%%NAME%%Ila.get(array, offset + length - 1, -1, length() - (start + length), length);
+        }
+    }
+}

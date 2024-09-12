@@ -4,13 +4,11 @@ import tfw.tsm.ecd.EventChannelDescription;
 import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.StatelessTriggerECD;
 
-
 /**
  * The base class for components which participate in transactions base on
  * the firing of a stateless event channel.
  */
-public abstract class TriggeredConverter extends Processor
-{
+public abstract class TriggeredConverter extends Processor {
     private final EventChannelDescription triggerDescription;
 
     /**
@@ -20,17 +18,15 @@ public abstract class TriggeredConverter extends Processor
      * @param sinkDescriptions the set of event channel sink descriptions.
      * @param sourceDescriptions the set of event channel source descriptions.
      */
-    public TriggeredConverter(String name, StatelessTriggerECD triggerDescription,
-        ObjectECD[] sinkDescriptions,
-        EventChannelDescription[] sourceDescriptions)
-    {
-        super(name, new EventChannelDescription[]{ triggerDescription },
-            sinkDescriptions, sourceDescriptions);
+    public TriggeredConverter(
+            String name,
+            StatelessTriggerECD triggerDescription,
+            ObjectECD[] sinkDescriptions,
+            EventChannelDescription[] sourceDescriptions) {
+        super(name, new EventChannelDescription[] {triggerDescription}, sinkDescriptions, sourceDescriptions);
 
-        if (triggerDescription == null)
-        {
-            throw new IllegalArgumentException(
-                "triggerEventChannel == null not allowed");
+        if (triggerDescription == null) {
+            throw new IllegalArgumentException("triggerEventChannel == null not allowed");
         }
 
         this.triggerDescription = triggerDescription;
@@ -38,23 +34,17 @@ public abstract class TriggeredConverter extends Processor
 
     // Override Processor's stateChanged() method to filter on the
     // triggerEventChannel.
-    void stateChange(EventChannel eventChannel)
-    {
-        if (eventChannel.getECD().getEventChannelName().equals(triggerDescription.getEventChannelName()))
-        {
+    void stateChange(EventChannel eventChannel) {
+        if (eventChannel.getECD().getEventChannelName().equals(triggerDescription.getEventChannelName())) {
             getTransactionManager().addProcessor(this);
         }
     }
 
-    void process()
-    {
-        if (isStateNonNull())
-        {
-        	convert();
-        }
-        else
-        {
-        	debugConvert();
+    void process() {
+        if (isStateNonNull()) {
+            convert();
+        } else {
+            debugConvert();
         }
     }
 
@@ -70,7 +60,5 @@ public abstract class TriggeredConverter extends Processor
      * event channel is fired and one or more of the sinks which were specified
      * at construction have null state.
      */
-    protected void debugConvert()
-    {
-    }
+    protected void debugConvert() {}
 }

@@ -1,38 +1,36 @@
 package tfw.immutable.ila.floatila;
 
-import java.util.Random;
-import junit.framework.TestCase;
-import tfw.immutable.ila.IlaTestDimensions;
-import tfw.immutable.ila.floatila.FloatIla;
-import tfw.immutable.ila.floatila.FloatIlaFromArray;
-import tfw.immutable.ila.floatila.FloatIlaScalarAdd;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-/**
- *
- * @immutables.types=numeric
- */
-public class FloatIlaScalarAddTest extends TestCase
-{
-    public void testAll() throws Exception
-    {
+import java.util.Random;
+import org.junit.jupiter.api.Test;
+import tfw.immutable.ila.IlaTestDimensions;
+
+class FloatIlaScalarAddTest {
+    @Test
+    void testArguments() throws Exception {
+        final Random random = new Random(0);
+        final float value = random.nextFloat();
+
+        assertThrows(IllegalArgumentException.class, () -> FloatIlaScalarAdd.create(null, value));
+    }
+
+    @Test
+    void testAll() throws Exception {
         final Random random = new Random(0);
         final int length = IlaTestDimensions.defaultIlaLength();
         final float scalar = random.nextFloat();
         final float[] array = new float[length];
         final float[] target = new float[length];
-        for(int ii = 0; ii < array.length; ++ii)
-        {
+        for (int ii = 0; ii < array.length; ++ii) {
             array[ii] = random.nextFloat();
-            target[ii] = (float) (array[ii] + scalar);
+            target[ii] = array[ii] + scalar;
         }
         FloatIla ila = FloatIlaFromArray.create(array);
         FloatIla targetIla = FloatIlaFromArray.create(target);
         FloatIla actualIla = FloatIlaScalarAdd.create(ila, scalar);
-        final float epsilon = (float) 0.0;
-        FloatIlaCheck.checkAll(targetIla, actualIla,
-                                IlaTestDimensions.defaultOffsetLength(),
-                                IlaTestDimensions.defaultMaxStride(),
-                                epsilon);
+
+        FloatIlaCheck.check(targetIla, actualIla);
     }
 }
 // AUTO GENERATED FROM TEMPLATE

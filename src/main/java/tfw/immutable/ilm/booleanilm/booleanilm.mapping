@@ -1,8 +1,0 @@
-%%TYPE%% = boolean
-%%NAME%% = Boolean
-%%PACKAGE%% = boolean
-%%RANDOM_VALUE%% = random.nextBoolean()
-%%ASSERT_EQUALS_DELTA%% =
-%%DEFAULT_VALUE%% = false
-%%CREATE_IMMUTABLE_START%% = new Boolean(
-%%CREATE_IMMUTABLE_END%% = )

@@ -1,70 +1,33 @@
 package tfw.immutable.ila.shortila;
 
-import java.util.HashMap;
-import java.util.Map;
 import tfw.check.Argument;
-import tfw.immutable.ImmutableProxy;
 
-/**
- *
- * @immutables.types=all
- */
-public final class ShortIlaFromArray
-{
-    private ShortIlaFromArray()
-    {
+public final class ShortIlaFromArray {
+    private ShortIlaFromArray() {
         // non-instantiable class
     }
 
-    public static ShortIla create(short[] array)
-    {
-        return create(array, true);
-    }
-
-    public static ShortIla create(short[] array, boolean cloneArray)
-    {
+    public static ShortIla create(short[] array) {
         Argument.assertNotNull(array, "array");
 
-        return new MyShortIla(array, cloneArray);
+        return new ShortIlaImpl(array);
     }
 
-    private static class MyShortIla extends AbstractShortIla
-        implements ImmutableProxy
-    {
+    private static class ShortIlaImpl extends AbstractShortIla {
         private final short[] array;
 
-        MyShortIla(short[] array, boolean cloneArray)
-        {
-            super(array.length);
-
-            if (cloneArray)
-            {
-                this.array = (short[])array.clone();
-            } else {
-                this.array = array;
-            }
+        private ShortIlaImpl(short[] array) {
+            this.array = array;
         }
 
-        protected void toArrayImpl(short[] array, int offset,
-                                   int stride, long start, int length)
-        {
-            final int startPlusLength = (int) (start + length);
-            for(int startInt = (int) start;
-                startInt != startPlusLength;
-                ++startInt, offset += stride)
-            {
-                array[offset] = this.array[startInt];
-            }
+        @Override
+        protected long lengthImpl() {
+            return array.length;
         }
-                
-        public Map<String, Object> getParameters()
-        {
-            HashMap<String, Object> map = new HashMap<String, Object>();
-                        
-            map.put("name", "ShortIlaFromArray");
-            map.put("length", new Long(length()));
-                        
-            return(map);
+
+        @Override
+        protected void getImpl(short[] array, int offset, long start, int length) {
+            System.arraycopy(this.array, (int) start, array, offset, length);
         }
     }
 }

@@ -1,77 +1,48 @@
 package tfw.immutable.ila.floatila;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.ImmutableProxy;
-import tfw.immutable.DataInvalidException;
 
-/**
- *
- * @immutables.types=all
- */
-public final class FloatIlaRemove
-{
-    private FloatIlaRemove()
-    {
+public final class FloatIlaRemove {
+    private FloatIlaRemove() {
         // non-instantiable class
     }
 
-    public static FloatIla create(FloatIla ila, long index)
-    {
+    public static FloatIla create(FloatIla ila, long index) throws IOException {
         Argument.assertNotNull(ila, "ila");
         Argument.assertNotLessThan(index, 0, "index");
         Argument.assertLessThan(index, ila.length(), "index", "ila.length()");
 
-        return new MyFloatIla(ila, index);
+        return new FloatIlaImpl(ila, index);
     }
 
-    private static class MyFloatIla extends AbstractFloatIla
-        implements ImmutableProxy
-    {
+    private static class FloatIlaImpl extends AbstractFloatIla {
         private final FloatIla ila;
         private final long index;
 
-        MyFloatIla(FloatIla ila, long index)
-        {
-            super(ila.length() - 1);
+        private FloatIlaImpl(FloatIla ila, long index) {
             this.ila = ila;
             this.index = index;
         }
 
-        protected void toArrayImpl(float[] array, int offset,
-                                   int stride, long start, int length)
-            throws DataInvalidException
-        {
+        @Override
+        protected long lengthImpl() throws IOException {
+            return ila.length() - 1;
+        }
+
+        @Override
+        protected void getImpl(float[] array, int offset, long start, int length) throws IOException {
             final long startPlusLength = start + length;
 
-            if(index <= start)
-            {
-                ila.toArray(array, offset, stride, start + 1, length);
-            }
-            else if(index >= startPlusLength)
-            {
-                ila.toArray(array, offset, stride, start, length);
-            }
-            else
-            {
+            if ((index - 1) < start) {
+                ila.get(array, offset, start + 1, length);
+            } else if ((index + 1) > startPlusLength) {
+                ila.get(array, offset, start, length);
+            } else {
                 final int indexMinusStart = (int) (index - start);
-                ila.toArray(array, offset, stride, start, indexMinusStart);
-                ila.toArray(array, offset + indexMinusStart * stride,
-                            stride, index + 1, length - indexMinusStart);
+                ila.get(array, offset, start, indexMinusStart);
+                ila.get(array, offset + indexMinusStart, index + 1, length - indexMinusStart);
             }
-        }
-                
-        public Map<String, Object> getParameters()
-        {
-            HashMap<String, Object> map = new HashMap<String, Object>();
-                        
-            map.put("name", "FloatIlaRemove");
-            map.put("length", new Long(length()));
-            map.put("ila", getImmutableInfo(ila));
-            map.put("index", new Long(index));
-                        
-            return(map);
         }
     }
 }

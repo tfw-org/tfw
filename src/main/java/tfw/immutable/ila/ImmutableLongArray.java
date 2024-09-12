@@ -1,6 +1,7 @@
 package tfw.immutable.ila;
 
-public interface ImmutableLongArray
-{
-    public long length();
+import java.io.IOException;
+
+public interface ImmutableLongArray {
+    long length() throws IOException;
 }

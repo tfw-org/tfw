@@ -1,0 +1,36 @@
+// booleanila,byteila,charila,doubleila,floatila,intila,longila,objectila,shortila
+package %%PACKAGE%%;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+%%RANDOM_INCLUDE%%import org.junit.jupiter.api.Test;
+import tfw.immutable.ila.IlaTestDimensions;
+
+class %%NAME%%IlaReverseTest {
+    @Test
+    void testArguments() throws Exception {
+        final %%NAME%%Ila ila = %%NAME%%IlaFromArray.create(new %%TYPE%%[10]);
+        final %%TYPE%%[] buffer = new %%TYPE%%[10];
+
+        assertThrows(IllegalArgumentException.class, () -> %%NAME%%IlaReverse.create(null, buffer));
+        assertThrows(IllegalArgumentException.class, () -> %%NAME%%IlaReverse.create(ila, null));
+    }
+
+    @Test
+    void testAll() throws Exception {
+        %%RANDOM_INIT%%final int length = IlaTestDimensions.defaultIlaLength();
+        final %%TYPE%%[] array = new %%TYPE%%[length];
+        final %%TYPE%%[] reversed = new %%TYPE%%[length];
+        for (int ii = 0; ii < array.length; ++ii) {
+            array[ii] = %%RANDOM_VALUE%%;
+        }
+        for (int ii = 0; ii < reversed.length; ++ii) {
+            reversed[ii] = array[length - 1 - ii];
+        }
+        %%NAME%%Ila%%TEMPLATE%% origIla = %%NAME%%IlaFromArray.create(array);
+        %%NAME%%Ila%%TEMPLATE%% targetIla = %%NAME%%IlaFromArray.create(reversed);
+        %%NAME%%Ila%%TEMPLATE%% actualIla = %%NAME%%IlaReverse.create(origIla, new %%TYPE%%[1000]);
+
+        %%NAME%%IlaCheck.check(targetIla, actualIla);
+    }
+}

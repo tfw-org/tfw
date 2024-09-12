@@ -1,0 +1,39 @@
+// booleanila,byteila,charila,doubleila,floatila,intila,longila,objectila,shortila
+package %%PACKAGE%%;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+%%RANDOM_INCLUDE%%import org.junit.jupiter.api.Test;
+import tfw.immutable.ila.IlaTestDimensions;
+
+class %%NAME%%IlaMutateTest {
+    @Test
+    void testArguments() throws Exception {
+        %%RANDOM_INIT%%final %%NAME%%Ila ila = %%NAME%%IlaFromArray.create(new %%TYPE%%[10]);
+        final long ilaLength = ila.length();
+        final %%TYPE%% value = %%RANDOM_VALUE%%;
+
+        assertThrows(IllegalArgumentException.class, () -> %%NAME%%IlaMutate.create(null, 0, value));
+        assertThrows(IllegalArgumentException.class, () -> %%NAME%%IlaMutate.create(ila, -1, value));
+        assertThrows(IllegalArgumentException.class, () -> %%NAME%%IlaMutate.create(ila, ilaLength, value));
+    }
+
+    @Test
+    void testAll() throws Exception {
+        %%RANDOM_INIT%%final int length = IlaTestDimensions.defaultIlaLength();
+        final %%TYPE%%[] array = new %%TYPE%%[length];
+        final %%TYPE%%[] target = new %%TYPE%%[length];
+        for (int index = 0; index < length; ++index) {
+            for (int ii = 0; ii < array.length; ++ii) {
+                array[ii] = target[ii] = %%RANDOM_VALUE%%;
+            }
+            final %%TYPE%% value = %%RANDOM_VALUE%%;
+            target[index] = value;
+            %%NAME%%Ila%%TEMPLATE%% origIla = %%NAME%%IlaFromArray.create(array);
+            %%NAME%%Ila%%TEMPLATE%% targetIla = %%NAME%%IlaFromArray.create(target);
+            %%NAME%%Ila%%TEMPLATE%% actualIla = %%NAME%%IlaMutate.create(origIla, index, value);
+
+            %%NAME%%IlaCheck.check(targetIla, actualIla);
+        }
+    }
+}

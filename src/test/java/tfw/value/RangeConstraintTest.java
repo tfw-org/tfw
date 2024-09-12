@@ -1,137 +1,108 @@
 package tfw.value;
 
-import tfw.value.RangeConstraint;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
-import junit.framework.TestCase;
-
+import org.junit.jupiter.api.Test;
 
 /**
  *
  */
-public class RangeConstraintTest extends TestCase
-{
-    public void testConstructionNullMinimum()
-    {
-        try
-        {
-            new RangeConstraint(Integer.class, null, new Integer(10), true, true);
+class RangeConstraintTest {
+    @Test
+    void testConstructionNullMinimum() {
+        try {
+            new RangeConstraint(Integer.class, null, 10, true, true);
             fail("Constructor accepted null minimum!");
-        }
-        catch (IllegalArgumentException expected)
-        {
-            //System.out.println(expected);
+        } catch (IllegalArgumentException expected) {
+            // System.out.println(expected);
         }
     }
 
-    public void testConstructionNullMaximum()
-    {
-        try
-        {
-            new RangeConstraint(Integer.class, new Integer(0), null, true, true);
+    @Test
+    void testConstructionNullMaximum() {
+        try {
+            new RangeConstraint(Integer.class, 0, null, true, true);
             fail("Constructor accepted null maximum!");
-        }
-        catch (IllegalArgumentException expected)
-        {
-            //System.out.println(expected);
+        } catch (IllegalArgumentException expected) {
+            // System.out.println(expected);
         }
     }
 
-    public void testConstructorMinGreaterThanMax()
-    {
-        try
-        {
-            new RangeConstraint(Integer.class, new Integer(10), new Integer(0),
-                true, true);
+    @Test
+    void testConstructorMinGreaterThanMax() {
+        try {
+            new RangeConstraint(Integer.class, 10, 0, true, true);
             fail("Constructor accepted min > max!");
-        }
-        catch (IllegalArgumentException expected)
-        {
-            //System.out.println(expected);
+        } catch (IllegalArgumentException expected) {
+            // System.out.println(expected);
         }
     }
 
-    public void testConstructorMinEqualMaxNeitherInclusive()
-    {
-        try
-        {
-            new RangeConstraint(Integer.class, new Integer(0), new Integer(0),
-                false, false);
+    @Test
+    void testConstructorMinEqualMaxNeitherInclusive() {
+        try {
+            new RangeConstraint(Integer.class, 0, 0, false, false);
             fail("Constructor accepted min == max neither inclusive!");
-        }
-        catch (IllegalArgumentException expected)
-        {
-            //System.out.println(expected);
+        } catch (IllegalArgumentException expected) {
+            // System.out.println(expected);
         }
     }
 
-    public void testIsCompatibles()
-    {
-        RangeConstraint rc = new RangeConstraint(Integer.class, new Integer(0),
-                new Integer(2), false, false);
-        assertFalse("isCompatible(null) returned true", rc.isCompatible(null));
+    @Test
+    void testIsCompatibles() {
+        RangeConstraint rc = new RangeConstraint(Integer.class, 0, 2, false, false);
+        assertFalse(rc.isCompatible(null), "isCompatible(null) returned true");
 
-        RangeConstraint rcLow = new RangeConstraint(Integer.class,
-                new Integer(0), new Integer(0), true, true);
-        assertFalse("isCompatible(rcLow) returned true", rc.isCompatible(rcLow));
+        RangeConstraint rcLow = new RangeConstraint(Integer.class, 0, 0, true, true);
+        assertFalse(rc.isCompatible(rcLow), "isCompatible(rcLow) returned true");
 
-        RangeConstraint rcHigh = new RangeConstraint(Integer.class,
-                new Integer(2), new Integer(2), true, true);
-        assertFalse("isCompatible(rcHigh) returned true",
-            rc.isCompatible(rcHigh));
+        RangeConstraint rcHigh = new RangeConstraint(Integer.class, 2, 2, true, true);
+        assertFalse(rc.isCompatible(rcHigh), "isCompatible(rcHigh) returned true");
 
-        RangeConstraint rcMiddle = new RangeConstraint(Integer.class,
-                new Integer(1), new Integer(1), true, true);
-        assertTrue("isCompatible(rcMiddle) returned false",
-            rc.isCompatible(rcMiddle));
+        RangeConstraint rcMiddle = new RangeConstraint(Integer.class, 1, 1, true, true);
+        assertTrue(rc.isCompatible(rcMiddle), "isCompatible(rcMiddle) returned false");
 
-        assertTrue("isCompatible(rc) returned false", rc.isCompatible(rc));
+        assertTrue(rc.isCompatible(rc), "isCompatible(rc) returned false");
 
-        RangeConstraint rcFloat = new RangeConstraint(Float.class,
-                new Float(1.0), new Float(1.0), true, true);
+        RangeConstraint rcFloat = new RangeConstraint(Float.class, 1.0, 1.0, true, true);
 
-        assertFalse("isCompatible(rcFloat) returned true",
-            rc.isCompatible(rcFloat));
+        assertFalse(rc.isCompatible(rcFloat), "isCompatible(rcFloat) returned true");
     }
 
-    public void testValueCompliance()
-    {
-        RangeConstraint rc = new RangeConstraint(Integer.class, new Integer(0),
-                new Integer(2), false, false);
+    @Test
+    void testValueCompliance() {
+        RangeConstraint rc = new RangeConstraint(Integer.class, 0, 2, false, false);
         String answer = RangeConstraint.VALID;
-        String result = rc.getValueCompliance(new Integer(1));
-        assertEquals("getValueCompliance() return wrong value, ", answer, result);
+        String result = rc.getValueCompliance(1);
+        assertEquals(answer, result, "getValueCompliance() return wrong value, ");
 
-		Integer value = new Integer(-1);
-		answer = "value = '" + value + "' is out of range, must be greater than '0'";
-		result = rc.getValueCompliance(value);
-		assertEquals("getValueCompliance() returned wrong value, ", answer,
-			result);
+        Integer value = -1;
+        answer = "value = '" + value + "' is out of range, must be greater than '0'";
+        result = rc.getValueCompliance(value);
+        assertEquals(answer, result, "getValueCompliance() returned wrong value, ");
 
-		value = new Integer(0);
-		answer = "value = '" + value + "' is out of range, must be greater than '0'";
-		result = rc.getValueCompliance(value);
-		assertEquals("getValueCompliance() returned wrong value, ", answer,
-			result);
+        value = 0;
+        answer = "value = '" + value + "' is out of range, must be greater than '0'";
+        result = rc.getValueCompliance(value);
+        assertEquals(answer, result, "getValueCompliance() returned wrong value, ");
 
-		value = new Integer(3);
-		answer = "value = '" + value + "' is out of range, must be less than '2'";
-		result = rc.getValueCompliance(value);
-		assertEquals("getValueCompliance() returned wrong value, ", answer,
-			result);
+        value = 3;
+        answer = "value = '" + value + "' is out of range, must be less than '2'";
+        result = rc.getValueCompliance(value);
+        assertEquals(answer, result, "getValueCompliance() returned wrong value, ");
 
-		value = new Integer(-1);
-		answer = "value = '" + value + "' is out of range, must be greater than or equal to '0'";
-		rc = new RangeConstraint(Integer.class, new Integer(0),
-				new Integer(2), true, true);
-		result = rc.getValueCompliance(value);
-		assertEquals("getValueCompliance() returned wrong value, ", answer,
-			result);
-			
-		value = new Integer(3);
-		answer = "value = '" + value + "' is out of range, must be less than or equal to '2'";
-		result = rc.getValueCompliance(value);
-		assertEquals("getValueCompliance() returned wrong value, ", answer,
-			result);
+        value = -1;
+        answer = "value = '" + value + "' is out of range, must be greater than or equal to '0'";
+        rc = new RangeConstraint(Integer.class, 0, 2, true, true);
+        result = rc.getValueCompliance(value);
+        assertEquals(answer, result, "getValueCompliance() returned wrong value, ");
 
+        value = 3;
+        answer = "value = '" + value + "' is out of range, must be less than or equal to '2'";
+        result = rc.getValueCompliance(value);
+        assertEquals(answer, result, "getValueCompliance() returned wrong value, ");
     }
 }

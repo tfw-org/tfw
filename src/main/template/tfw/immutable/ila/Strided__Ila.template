@@ -1,0 +1,10 @@
+// booleanila,byteila,charila,doubleila,floatila,intila,longila,objectila,shortila
+package %%PACKAGE%%;
+
+import java.io.IOException;
+import tfw.immutable.ila.ImmutableLongArray;
+
+public interface Strided%%NAME%%Ila%%TEMPLATE%% extends ImmutableLongArray {
+    void get(final %%TYPE_OR_TEMPLATE%%[] array, final int offset, final int stride, final long start, final int length)
+            throws IOException;
+}

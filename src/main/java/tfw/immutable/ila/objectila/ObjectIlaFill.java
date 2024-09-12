@@ -1,60 +1,38 @@
 package tfw.immutable.ila.objectila;
 
-import java.util.HashMap;
-import java.util.Map;
 import tfw.check.Argument;
-import tfw.immutable.ImmutableProxy;
 
-/**
- *
- * @immutables.types=all
- */
-public final class ObjectIlaFill
-{
-    private ObjectIlaFill()
-    {
+public final class ObjectIlaFill {
+    private ObjectIlaFill() {
         // non-instantiable class
     }
 
-    public static ObjectIla create(Object value, long length)
-    {
+    public static <T> ObjectIla<T> create(T value, long length) {
         Argument.assertNotLessThan(length, 0, "length");
 
-        return new MyObjectIla(value, length);
+        return new ObjectIlaImpl<>(value, length);
     }
 
-    private static class MyObjectIla extends AbstractObjectIla
-        implements ImmutableProxy
-    {
-        private final Object value;
+    private static class ObjectIlaImpl<T> extends AbstractObjectIla<T> {
+        private final T value;
+        private final long length;
 
-        MyObjectIla(Object value, long length)
-        {
-            super(length);
+        private ObjectIlaImpl(T value, long length) {
             this.value = value;
+            this.length = length;
         }
 
-        protected void toArrayImpl(Object[] array, int offset,
-                                   int stride, long start, int length)
-        {
+        @Override
+        protected long lengthImpl() {
+            return length;
+        }
+
+        @Override
+        protected void getImpl(T[] array, int offset, long start, int length) {
             final int startPlusLength = (int) (start + length);
-            for(int startInt = (int) start;
-                startInt != startPlusLength;
-                ++startInt, offset += stride)
-            {
+            for (int startInt = (int) start; startInt != startPlusLength; ++startInt, offset++) {
                 array[offset] = value;
             }
-        }
-                
-        public Map<String, Object> getParameters()
-        {
-            HashMap<String, Object> map = new HashMap<String, Object>();
-                        
-            map.put("name", "ObjectIlaFill");
-            map.put("length", new Long(length()));
-            map.put("value", value);
-
-            return(map);
         }
     }
 }

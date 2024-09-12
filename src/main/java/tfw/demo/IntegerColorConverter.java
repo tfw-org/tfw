@@ -1,23 +1,21 @@
 package tfw.demo;
 
 import java.awt.Color;
-
 import tfw.awt.ecd.ColorECD;
 import tfw.tsm.Synchronizer;
 import tfw.tsm.ecd.ObjectECD;
 import tfw.value.IntegerConstraint;
 
-
 /**
  * Converts back and forth between red, green, and blue <code>
  * java.lang.Integer</code> values and <code>java.awt.Color</code>.
  */
-public class IntegerColorConverter extends Synchronizer
-{
+public class IntegerColorConverter extends Synchronizer {
     /**
      * The value constraint for RGB event channels.
      */
     public static final IntegerConstraint RGB_CONSTRAINT = RGBConstraint.CONSTRAINT;
+
     private final RedGreenBlueECD redInteger;
     private final RedGreenBlueECD greenInteger;
     private final RedGreenBlueECD blueInteger;
@@ -36,11 +34,13 @@ public class IntegerColorConverter extends Synchronizer
      * @param color the name of the color event channel, which will
      * carry </code>java.awt.Color</code> events.
      */
-    public IntegerColorConverter(String name, RedGreenBlueECD redInteger,
-        RedGreenBlueECD greenInteger, RedGreenBlueECD blueInteger, ColorECD color)
-    {
-        super(name, createSinks(redInteger, blueInteger, greenInteger),
-            createSources(color), null, null);
+    public IntegerColorConverter(
+            String name,
+            RedGreenBlueECD redInteger,
+            RedGreenBlueECD greenInteger,
+            RedGreenBlueECD blueInteger,
+            ColorECD color) {
+        super(name, createSinks(redInteger, blueInteger, greenInteger), createSources(color), null, null);
         this.redInteger = redInteger;
         this.greenInteger = greenInteger;
         this.blueInteger = blueInteger;
@@ -51,22 +51,15 @@ public class IntegerColorConverter extends Synchronizer
         //				", "+color+"]");
     }
 
-    private static ObjectECD[] createSinks(RedGreenBlueECD red,
-        RedGreenBlueECD green, RedGreenBlueECD blue)
-    {
-        return new ObjectECD[]{ red, green, blue };
+    private static ObjectECD[] createSinks(RedGreenBlueECD red, RedGreenBlueECD green, RedGreenBlueECD blue) {
+        return new ObjectECD[] {red, green, blue};
     }
 
-    private static ObjectECD[] createSources(ColorECD color)
-    {
-        return new ObjectECD[]
-        {
-            color
-        };
+    private static ObjectECD[] createSources(ColorECD color) {
+        return new ObjectECD[] {color};
     }
 
-    protected final void convertAToB()
-    {
+    protected final void convertAToB() {
         //		System.out.println("IntegerColorConverter.convertAToB() = " + get());
         int red = ((Integer) get(redInteger)).intValue();
         int green = ((Integer) get(greenInteger)).intValue();
@@ -74,22 +67,19 @@ public class IntegerColorConverter extends Synchronizer
         set(color, new Color(red, green, blue));
     }
 
-    protected void debugConvertAToB()
-    {
+    protected void debugConvertAToB() {
         //		System.out.println("IntegerColorConverter.debugConvertAToB() = " + get());
     }
 
-    protected void debugConvertBToA()
-    {
+    protected void debugConvertBToA() {
         //		System.out.println("IntegerColorConverter.debugConvertBToA() = " + get());
     }
 
-    protected final void convertBToA()
-    {
+    protected final void convertBToA() {
         //		System.out.println("IntegerColorConverter.convertBToA() = " + get());
         Color c = (Color) get(color);
-        set(redInteger, new Integer(c.getRed()));
-        set(greenInteger, new Integer(c.getGreen()));
-        set(blueInteger, new Integer(c.getBlue()));
+        set(redInteger, c.getRed());
+        set(greenInteger, c.getGreen());
+        set(blueInteger, c.getBlue());
     }
 }

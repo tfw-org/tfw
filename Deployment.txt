@@ -1,20 +1,30 @@
-1. Tag Source Tree (from Eclipse's Package Explorer)
-   a. Select TFW project
-   b. Right Click -> Team -> Tag As Version...
-   c. Enter tag (e.g. "tfw0_14")
-2. Build jar files using "build_tfw.xml" (from Eclipse's Ant View)
-   a. drag build_tfw.xml from Package Explorer to Ant
-   b. double-click "clean"
-   c. double-click "jarclasses"
-   d. double-click "jarjavadoc"
-   e. double-click "jarsrc"
-   f. rename build/jars/* appropriately
-3. Upload to SourceForge (Document "Release Files for Download (FRS)")
-   a. Go to TheFrameWork project and login
-   b. Go to the File Manager under the Admin tab.
-   c. Click on the gear icon next to theframework folder and add a New Folder.
-   d. Click on the gear next to the new folder and Upload Here.
-   e. Select one of the thread files and "Open".
-   f. Do d. & e. for the other two files.
-   f. Cut/Paste the old release into the Old Files directory.
-4. Verify that everything worked.
+ 1. Show pom.xml file.
+ 2. Ensure on "master" branch by looking at left column.
+ 3. Press pencil icon on right to edit the pom.xml file.
+ 4. Remove "-SNAPSHOT" from version field.
+ 5. Press "Commit Changes" button in upper right.
+ 6. Change commit message to "Release <version>" (<version> from pom.xml).
+ 7. Make sure "Commit directly to master branch" is selected.
+ 8. Press "Commit Changes" button.
+ 9. Go back to main project screen.
+10. Press the "Releases" label on the right side.
+11. Press "Draft a new release" button in upper-right.
+12. Press "Choose a tag".
+12. Enter the new <version>.
+13. Press "Create new tag: <version>".
+14. Ensure target is "master".
+15. Enter <version> in Release Title field.
+16. Press "Generate release notes".
+17. Ensure "Set as a pre-release" is unchecked.
+18. Ensure "Set as the latest release" is checked.
+19. Press "Publish release" button.
+20. Check "Actions" to make sure everything went ok.
+21. Go back to main project screen.
+22. Show pom.xml file.
+23. Ensure on "master" branch by looking at left column.
+24. Press pencil icon on right to edit the pom.xml file.
+25. Increment <version> and add "-SNAPSHOT" to version field.
+26. Press "Commit Changes" button in upper right.
+27. Change commit message to "Prepare for next development iteration".
+28. Make sure "Commit directly to master branch" is selected.
+29. Press "Commit Changes" button.

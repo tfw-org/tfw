@@ -1,0 +1,33 @@
+// byteila,charila,doubleila,floatila,intila,longila,shortila
+package %%PACKAGE%%;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+%%RANDOM_INCLUDE%%import org.junit.jupiter.api.Test;
+import tfw.immutable.ila.IlaTestDimensions;
+
+class %%NAME%%IlaScalarAddTest {
+    @Test
+    void testArguments() throws Exception {
+        %%RANDOM_INIT%%final %%TYPE%% value = %%RANDOM_VALUE%%;
+
+        assertThrows(IllegalArgumentException.class, () -> %%NAME%%IlaScalarAdd.create(null, value));
+    }
+
+    @Test
+    void testAll() throws Exception {
+        %%RANDOM_INIT%%final int length = IlaTestDimensions.defaultIlaLength();
+        final %%TYPE%% scalar = %%RANDOM_VALUE%%;
+        final %%TYPE%%[] array = new %%TYPE%%[length];
+        final %%TYPE%%[] target = new %%TYPE%%[length];
+        for (int ii = 0; ii < array.length; ++ii) {
+            array[ii] = %%RANDOM_VALUE%%;
+            target[ii] = %%CAST_FROM_INT_PAREN%%array[ii] + scalar%%CAST_FROM_INT_PAREN_END%%;
+        }
+        %%NAME%%Ila ila = %%NAME%%IlaFromArray.create(array);
+        %%NAME%%Ila targetIla = %%NAME%%IlaFromArray.create(target);
+        %%NAME%%Ila actualIla = %%NAME%%IlaScalarAdd.create(ila, scalar);
+
+        %%NAME%%IlaCheck.check(targetIla, actualIla);
+    }
+}

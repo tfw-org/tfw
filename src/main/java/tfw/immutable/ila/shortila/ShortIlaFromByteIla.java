@@ -1,60 +1,43 @@
 package tfw.immutable.ila.shortila;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
-import tfw.immutable.ImmutableProxy;
 import tfw.immutable.ila.byteila.ByteIla;
 import tfw.immutable.ila.byteila.ByteIlaIterator;
 import tfw.immutable.ila.byteila.ByteIlaSegment;
 
-public final class ShortIlaFromByteIla
-{
+public final class ShortIlaFromByteIla {
     private ShortIlaFromByteIla() {}
 
-    public static ShortIla create(ByteIla byteIla)
-    {
-    	Argument.assertNotNull(byteIla, "byteIla");
+    public static ShortIla create(final ByteIla byteIla, final int bufferSize) {
+        Argument.assertNotNull(byteIla, "byteIla");
+        Argument.assertNotLessThan(bufferSize, 1, "bufferSize");
 
-		return new MyShortIla(byteIla);
+        return new ShortIlaImpl(byteIla, bufferSize);
     }
 
-    private static class MyShortIla extends AbstractShortIla
-		implements ImmutableProxy
-    {
-		private ByteIla byteIla;
+    private static class ShortIlaImpl extends AbstractShortIla {
+        private final ByteIla byteIla;
+        private final int bufferSize;
 
-		MyShortIla(ByteIla byteIla)
-		{
-		    super(byteIla.length() / 2);
-		    
-		    this.byteIla = byteIla;
-		}
+        private ShortIlaImpl(final ByteIla byteIla, final int bufferSize) {
+            this.byteIla = byteIla;
+            this.bufferSize = bufferSize;
+        }
 
-		protected void toArrayImpl(short[] array, int offset, int stride,
-			long start, int length) throws DataInvalidException
-		{
-			ByteIlaIterator bii = new ByteIlaIterator(
-				ByteIlaSegment.create(byteIla, 2 * start, 2 * length));
-				
-		    for (int i=0 ; i < length ; i++)
-		    {
-		    	array[offset+(i * stride)] = (short)
-					(((bii.next() & 0xFF) << 8) |
-					((bii.next() & 0xFF)));
-		    }
-		}
-		
-		public Map<String, Object> getParameters()
-		{
-			HashMap<String, Object> map = new HashMap<String, Object>();
-			
-			map.put("name", "ShortIlaFromByteIla");
-			map.put("byteIla", getImmutableInfo(byteIla));
-			map.put("length", new Long(length()));
-			
-			return(map);
-		}
+        @Override
+        protected long lengthImpl() throws IOException {
+            return byteIla.length() / 2;
+        }
+
+        @Override
+        protected void getImpl(short[] array, int offset, long start, int length) throws IOException {
+            ByteIlaIterator bii =
+                    new ByteIlaIterator(ByteIlaSegment.create(byteIla, 2 * start, 2 * length), new byte[bufferSize]);
+
+            for (int i = 0; i < length; i++) {
+                array[offset + i] = (short) (((bii.next() & 0xFF) << 8) | (bii.next() & 0xFF));
+            }
+        }
     }
 }

@@ -1,62 +1,38 @@
 package tfw.immutable.ila.byteila;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
-import tfw.immutable.ImmutableProxy;
 
-/**
- *
- * @immutables.types=numeric
- */
-public final class ByteIlaNegate
-{
-    private ByteIlaNegate()
-    {
-    	// non-instantiable class
+public final class ByteIlaNegate {
+    private ByteIlaNegate() {
+        // non-instantiable class
     }
 
-    public static ByteIla create(ByteIla ila)
-    {
+    public static ByteIla create(ByteIla ila) {
         Argument.assertNotNull(ila, "ila");
 
-        return new MyByteIla(ila);
+        return new ByteIlaImpl(ila);
     }
 
-    private static class MyByteIla extends AbstractByteIla
-        implements ImmutableProxy
-    {
+    private static class ByteIlaImpl extends AbstractByteIla {
         private final ByteIla ila;
 
-        MyByteIla(ByteIla ila)
-        {
-            super(ila.length());
-                    
+        private ByteIlaImpl(ByteIla ila) {
             this.ila = ila;
         }
 
-        protected void toArrayImpl(byte[] array, int offset,
-                                   int stride, long start, int length)
-            throws DataInvalidException
-        {
-            ila.toArray(array, offset, stride, start, length);
+        @Override
+        protected long lengthImpl() throws IOException {
+            return ila.length();
+        }
 
-            for (int ii = offset; length > 0; ii += stride, --length)
-            {
+        @Override
+        protected void getImpl(byte[] array, int offset, long start, int length) throws IOException {
+            ila.get(array, offset, start, length);
+
+            for (int ii = offset; length > 0; ii++, --length) {
                 array[ii] = (byte) -array[ii];
             }
-        }
-                
-        public Map<String, Object> getParameters()
-        {
-            HashMap<String, Object> map = new HashMap<String, Object>();
-                        
-            map.put("name", "ByteIlaNegate");
-            map.put("ila", getImmutableInfo(ila));
-            map.put("length", new Long(length()));
-                        
-            return(map);
         }
     }
 }

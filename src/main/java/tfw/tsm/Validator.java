@@ -11,26 +11,23 @@ import tfw.tsm.ecd.StatelessTriggerECD;
  * phase of a transaction. Subclasses must implement the
  * {@link #validateState()} method.
  */
-public abstract class Validator extends RollbackHandler
-{
+public abstract class Validator extends RollbackHandler {
     /**
      * Creates a validate with the specified attributes.
-     * 
+     *
      * @param name
      *            the name of this validator component.
      * @param triggeringSinks
      *            the set of sinks which trigger this validator.
-     * 
+     *
      */
-    public Validator(String name, ObjectECD[] triggeringSinks,
-            RollbackECD[] initiators)
-    {
+    public Validator(String name, ObjectECD[] triggeringSinks, RollbackECD[] initiators) {
         this(name, triggeringSinks, null, initiators);
     }
 
     /**
      * Creates a validator with the specified attributes.
-     * 
+     *
      * @param name
      *            the name of this validator component.
      * @param triggeringSinks
@@ -43,16 +40,15 @@ public abstract class Validator extends RollbackHandler
      * @param initiators
      *            the set of sources used to initiate new transactions.
      */
-    public Validator(String name, ObjectECD[] triggeringSinks,
-            ObjectECD[] nonTriggeringSinks, RollbackECD[] initiators)
-    {
+    public Validator(
+            String name, ObjectECD[] triggeringSinks, ObjectECD[] nonTriggeringSinks, RollbackECD[] initiators) {
         super(name, checkSinks(triggeringSinks), nonTriggeringSinks, initiators);
     }
 
     /**
      * Creates a triggered validator. The validator will only run when the
      * trigger fires.
-     * 
+     *
      * @param name
      *            The name of this validator.
      * @param trigger
@@ -65,15 +61,12 @@ public abstract class Validator extends RollbackHandler
      * @param initiators
      *            the set of sources used to initiate new transactions.
      */
-    public Validator(String name, StatelessTriggerECD trigger,
-            ObjectECD[] nonTriggeringSinks, RollbackECD[] initiators)
-    {
-        super(name, new EventChannelDescription[] { trigger },
-                nonTriggeringSinks, initiators);
+    public Validator(
+            String name, StatelessTriggerECD trigger, ObjectECD[] nonTriggeringSinks, RollbackECD[] initiators) {
+        super(name, new EventChannelDescription[] {trigger}, nonTriggeringSinks, initiators);
     }
 
-    private static ObjectECD[] checkSinks(ObjectECD[] triggeringSinks)
-    {
+    private static ObjectECD[] checkSinks(ObjectECD[] triggeringSinks) {
         Argument.assertNotNull(triggeringSinks, "triggeringSinks");
         return triggeringSinks;
     }
@@ -81,47 +74,36 @@ public abstract class Validator extends RollbackHandler
     /**
      * Returns the state of the specified event channel prior to the current
      * state change cycle.
-     * 
+     *
      * @param sinkEventChannel
      *            the sink event channel whose state is to be returned.
      * @return the state of the event channel during the previous state change
      *         cycle.
      */
-    protected final Object getPreviousCycleState(ObjectECD sinkEventChannel)
-    {
+    protected final Object getPreviousCycleState(ObjectECD sinkEventChannel) {
         Argument.assertNotNull(sinkEventChannel, "sinkEventChannel");
         assertNotStateless(sinkEventChannel);
         Sink sink = getSink(sinkEventChannel);
 
-        if (sink == null)
-        {
-            throw new IllegalArgumentException(sinkEventChannel
-                    .getEventChannelName()
-                    + " not found");
+        if (sink == null) {
+            throw new IllegalArgumentException(sinkEventChannel.getEventChannelName() + " not found");
         }
 
-        if (sink.eventChannel == null)
-        {
-            throw new IllegalStateException(sinkEventChannel
-                    + " is not connected to an event channel");
+        if (sink.eventChannel == null) {
+            throw new IllegalStateException(sinkEventChannel + " is not connected to an event channel");
         }
 
-        return (sink.eventChannel.getPreviousCycleState());
+        return sink.eventChannel.getPreviousCycleState();
     }
 
-    final void stateChange(EventChannel eventChannel)
-    {
+    final void stateChange(EventChannel eventChannel) {
         getTransactionManager().addValidator(this);
     }
 
-    final void validate()
-    {
-        if (isStateNonNull())
-        {
+    final void validate() {
+        if (isStateNonNull()) {
             validateState();
-        }
-        else
-        {
+        } else {
             debugValidateState();
         }
     }
@@ -139,8 +121,7 @@ public abstract class Validator extends RollbackHandler
      * its state changed and one or more of the event channels has
      * <code>null</code>.
      */
-    protected void debugValidateState()
-    {
+    protected void debugValidateState() {
         // Do nothing by default.
     }
 }

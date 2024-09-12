@@ -1,24 +1,14 @@
 package tfw.immutable.ila.floatila;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.ImmutableProxy;
-import tfw.immutable.DataInvalidException;
 
-/**
- *
- * @immutables.types=all
- */
-public final class FloatIlaConcatenate
-{
-    private FloatIlaConcatenate()
-    {
+public final class FloatIlaConcatenate {
+    private FloatIlaConcatenate() {
         // non-instantiable class
     }
 
-    public static FloatIla create(FloatIla leftIla, FloatIla rightIla)
-    {
+    public static FloatIla create(FloatIla leftIla, FloatIla rightIla) {
         Argument.assertNotNull(leftIla, "leftIla");
         Argument.assertNotNull(rightIla, "rightIla");
 
@@ -32,56 +22,37 @@ public final class FloatIlaConcatenate
         if(rightIla.length() == 0)
             return leftIla;
         */
-        return new MyFloatIla(leftIla, rightIla);
+        return new FloatIlaImpl(leftIla, rightIla);
     }
 
-    private static class MyFloatIla extends AbstractFloatIla
-        implements ImmutableProxy
-    {
+    private static class FloatIlaImpl extends AbstractFloatIla {
         private final FloatIla leftIla;
         private final FloatIla rightIla;
-        private final long leftIlaLength;
 
-        MyFloatIla(FloatIla leftIla, FloatIla rightIla)
-        {
-            super(leftIla.length() + rightIla.length());
+        private FloatIlaImpl(FloatIla leftIla, FloatIla rightIla) {
             this.leftIla = leftIla;
             this.rightIla = rightIla;
-            this.leftIlaLength = leftIla.length();
         }
 
-        protected void toArrayImpl(float[] array, int offset,
-                                   int stride, long start, int length)
-            throws DataInvalidException
-        {
-            if(start + length <= leftIlaLength)
-            {
-                leftIla.toArray(array, offset, stride, start, length);
-            }
-            else if(start >= leftIlaLength)
-            {
-                rightIla.toArray(array, offset, stride, start - leftIlaLength,
-                                 length);
-            }
-            else
-            {
-                final int leftAmount = (int) (leftIlaLength - start);
-                leftIla.toArray(array, offset, stride, start, leftAmount);
-                rightIla.toArray(array, offset + leftAmount * stride,
-                                 stride, 0, length - leftAmount);
-            }
+        @Override
+        protected long lengthImpl() throws IOException {
+            return leftIla.length() + rightIla.length();
         }
-                
-        public Map<String, Object> getParameters()
-        {
-            HashMap<String, Object> map = new HashMap<String, Object>();
-                        
-            map.put("name", "FloatIlaConcatenate");
-            map.put("length", new Long(length()));
-            map.put("leftIla", getImmutableInfo(leftIla));
-            map.put("rightIla", getImmutableInfo(rightIla));
-                        
-            return(map);
+
+        @Override
+        protected void getImpl(float[] array, int offset, long start, int length) throws IOException {
+            final long leftIlaLength = leftIla.length();
+            final long leftIlaLastIndex = leftIlaLength - 1;
+
+            if (start + length <= leftIlaLastIndex) {
+                leftIla.get(array, offset, start, length);
+            } else if (start > leftIlaLastIndex) {
+                rightIla.get(array, offset, start - leftIlaLength, length);
+            } else {
+                final int leftAmount = (int) (leftIlaLength - start);
+                leftIla.get(array, offset, start, leftAmount);
+                rightIla.get(array, offset + leftAmount, 0, length - leftAmount);
+            }
         }
     }
 }

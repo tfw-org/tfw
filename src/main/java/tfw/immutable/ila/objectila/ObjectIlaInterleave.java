@@ -1,100 +1,73 @@
 package tfw.immutable.ila.objectila;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.ImmutableProxy;
-import tfw.immutable.DataInvalidException;
 
-/**
- * 
- * @immutables.types=all
- */
-public final class ObjectIlaInterleave
-{
-    private ObjectIlaInterleave()
-    {
+public final class ObjectIlaInterleave {
+    private ObjectIlaInterleave() {
         // non-instantiable class
     }
 
-    public static ObjectIla create(ObjectIla[] ilas)
-    {
+    public static <T> ObjectIla<T> create(ObjectIla<T>[] ilas, final T[] buffer) throws IOException {
         Argument.assertNotNull(ilas, "ilas");
         Argument.assertNotLessThan(ilas.length, 1, "ilas.length");
         Argument.assertNotNull(ilas[0], "ilas[0]");
+        Argument.assertNotNull(buffer, "buffer");
+
         final long firstLength = ilas[0].length();
-        for (int ii = 1; ii < ilas.length; ++ii)
-        {
+        for (int ii = 1; ii < ilas.length; ++ii) {
             Argument.assertNotNull(ilas[ii], "ilas[" + ii + "]");
-            Argument.assertEquals(ilas[ii].length(), firstLength,
-                "ilas[0].length()", "ilas[" + ii + "].length()");
+            Argument.assertEquals(ilas[ii].length(), firstLength, "ilas[0].length()", "ilas[" + ii + "].length()");
         }
 
-        return new MyObjectIla(ilas);
+        return new ObjectIlaImpl<>(ilas, buffer);
     }
 
-    private static class MyObjectIla extends AbstractObjectIla implements
-        ImmutableProxy
-    {
-        private final ObjectIla[] ilas;
-
+    private static class ObjectIlaImpl<T> extends AbstractObjectIla<T> {
+        private final StridedObjectIla<T>[] stridedObjectIlas;
         private final int ilasLength;
 
-        MyObjectIla(ObjectIla[] ilas)
-        {
-            super(ilas[0].length() * ilas.length);
-            this.ilas = ilas;
-            this.ilasLength = ilas.length;
+        private ObjectIlaImpl(ObjectIla<T>[] ilas, final T[] buffer) {
+            stridedObjectIlas = new StridedObjectIla[ilas.length];
+            ilasLength = ilas.length;
+
+            for (int i = 0; i < ilas.length; i++) {
+                stridedObjectIlas[i] = StridedObjectIlaFromObjectIla.create(ilas[i], buffer.clone());
+            }
         }
 
-        protected void toArrayImpl(Object[] array, int offset, int stride,
-            long start, int length) throws DataInvalidException
-        {
+        @Override
+        protected long lengthImpl() throws IOException {
+            return stridedObjectIlas[0].length() * stridedObjectIlas.length;
+        }
+
+        @Override
+        protected void getImpl(T[] array, int offset, long start, int length) throws IOException {
             int currentIla = (int) (start % ilasLength);
             long ilaStart = start / ilasLength;
-            final int ilaStride = stride * ilasLength;
+            final int ilaStride = ilasLength;
             int ilaLength = (length + ilasLength - 1) / ilasLength;
             int lengthIndex = length % ilasLength;
-            if (lengthIndex == 0)
-            {
+            if (lengthIndex == 0) {
                 // invalidate lengthIndex so we don't decrement ilaLength
                 // at index 0
                 --lengthIndex;
             }
 
-            for (int ii = 0; ii < ilasLength; ++ii)
-            {
-                if (ii == lengthIndex)
-                {
+            for (int ii = 0; ii < ilasLength; ++ii) {
+                if (ii == lengthIndex) {
                     --ilaLength;
                 }
-                if (ilaLength > 0)
-                {
-                    ilas[currentIla].toArray(array, offset, ilaStride,
-                        ilaStart, ilaLength);
+                if (ilaLength > 0) {
+                    stridedObjectIlas[currentIla].get(array, offset, ilaStride, ilaStart, ilaLength);
                 }
-                offset += stride;
+                offset++;
                 ++currentIla;
-                if (currentIla == ilasLength)
-                {
+                if (currentIla == ilasLength) {
                     currentIla = 0;
                     ++ilaStart;
                 }
             }
-        }
-
-        public Map<String, Object> getParameters()
-        {
-            HashMap<String, Object> map = new HashMap<String, Object>();
-
-            map.put("name", "ObjectIlaInterleave");
-            map.put("length", new Long(length()));
-            for (int ii = 0; ii < ilas.length; ++ii)
-            {
-                map.put("ilas[" + ii + "]", getImmutableInfo(ilas[ii]));
-            }
-
-            return (map);
         }
     }
 }

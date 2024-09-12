@@ -1,22 +1,9 @@
 package tfw.immutable.ila.intila;
 
-import tfw.immutable.DataInvalidException;
+import java.io.IOException;
 import tfw.immutable.ila.ImmutableLongArray;
 
-/**
- *
- * @immutables.types=all
- */
-public interface IntIla extends ImmutableLongArray
-{
-    public int[] toArray()
-        throws DataInvalidException;
-    public int[] toArray(long start, int length)
-        throws DataInvalidException;
-    public void toArray(int[] array, int offset, long start, int length)
-        throws DataInvalidException;
-    public void toArray(int[] array, int offset, int stride,
-                        long start, int length)
-        throws DataInvalidException;
+public interface IntIla extends ImmutableLongArray {
+    void get(final int[] array, final int arrayOffset, final long ilaStart, int length) throws IOException;
 }
 // AUTO GENERATED FROM TEMPLATE

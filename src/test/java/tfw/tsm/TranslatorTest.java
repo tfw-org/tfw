@@ -1,25 +1,16 @@
 package tfw.tsm;
 
-import java.lang.reflect.InvocationTargetException;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.fail;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-import tfw.tsm.AlwaysChangeRule;
-import tfw.tsm.BasicTransactionQueue;
-import tfw.tsm.Branch;
-import tfw.tsm.BranchFactory;
-import tfw.tsm.Commit;
-import tfw.tsm.Initiator;
-import tfw.tsm.Root;
-import tfw.tsm.RootFactory;
-import tfw.tsm.TransactionExceptionHandler;
+import java.lang.reflect.InvocationTargetException;
+import org.junit.jupiter.api.Test;
 import tfw.tsm.ecd.IntegerECD;
 import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.StringECD;
 
-public class TranslatorTest extends TestCase
-{
+class TranslatorTest {
     private final String answer = "Hello World";
 
     private String result = null;
@@ -28,25 +19,22 @@ public class TranslatorTest extends TestCase
 
     private ObjectECD portB = new StringECD("b");
 
-    private ObjectECD[] eventChannels = new ObjectECD[] { portA };
+    private ObjectECD[] eventChannels = new ObjectECD[] {portA};
 
     private Initiator initiator = new Initiator("Initiator", eventChannels);
 
-    private Commit commit = new Commit("Commit", eventChannels)
-    {
-        protected void commit()
-        {
+    private Commit commit = new Commit("Commit", eventChannels) {
+        protected void commit() {
             result = (String) get(portA);
         }
     };
 
-    public void testTranslation() throws InterruptedException,
-            InvocationTargetException
-    {
+    @Test
+    void testTranslation() throws InterruptedException, InvocationTargetException {
         RootFactory rf = new RootFactory();
         rf.addEventChannel(portB, null, AlwaysChangeRule.RULE, null);
 
-        MyExceptionHandler handler = new MyExceptionHandler();
+        TestExceptionHandler handler = new TestExceptionHandler();
         rf.setTransactionExceptionHandler(handler);
 
         BasicTransactionQueue queue = new BasicTransactionQueue();
@@ -70,18 +58,18 @@ public class TranslatorTest extends TestCase
         // Visualize.print(topBranch);
         initiator.set(portA, answer);
         queue.waitTilEmpty();
-        assertEquals("initial connections", answer, result);
+        assertEquals(answer, result, "initial connections");
 
         String newAnswer = "Good bye world";
         initiator.set(portA, newAnswer);
         queue.waitTilEmpty();
-        assertEquals("initial connections", newAnswer, result);
+        assertEquals(newAnswer, result, "initial connections");
 
         middleBranch1.remove(commit);
         result = null;
         initiator.set(portA, answer);
         queue.waitTilEmpty();
-        assertEquals("disconnect sink", null, result);
+        assertEquals(null, result, "disconnect sink");
 
         result = null;
         middleBranch1.add(commit);
@@ -90,7 +78,7 @@ public class TranslatorTest extends TestCase
 
         // No need to send...should fire on connect.
         // initiator.set("a", answer);
-        assertEquals("fire on sink reconnect", answer, result);
+        assertEquals(answer, result, "fire on sink reconnect");
 
         middleBranch2.remove(initiator);
         queue.waitTilEmpty();
@@ -100,72 +88,51 @@ public class TranslatorTest extends TestCase
         initiator.set(portA, answer);
         queue.waitTilEmpty();
 
-        assertEquals("source removal", null, result);
+        assertEquals(null, result, "source removal");
 
-//        result = null;
-//        handler.exception = null;
-//        middleBranch2.add(initiator);
-//        queue.waitTilEmpty();
-//        assertEquals("source fire on reconnect", answer, result);
-//
-//        checkHandler(handler);
+        //        result = null;
+        //        handler.exception = null;
+        //        middleBranch2.add(initiator);
+        //        queue.waitTilEmpty();
+        //        assertEquals("source fire on reconnect", answer, result);
+        //
+        //        checkHandler(handler);
     }
 
-    public void testIncompatableTranslation()
-    {
+    public void testIncompatableTranslation() {
         BranchFactory bf = new BranchFactory();
         StringECD stringECD = new StringECD("StringECD");
         IntegerECD integerECD1 = new IntegerECD("integerECD1", 1, 5);
         IntegerECD integerECD2 = new IntegerECD("integerECD2", 0, 6);
-        try
-        {
+        try {
             bf.addTranslation(integerECD1, integerECD2);
             fail("addTranslation() accepted incompatible ecds");
-        }
-        catch (IllegalArgumentException expected)
-        {
+        } catch (IllegalArgumentException expected) {
             // System.out.println(expected);
         }
-        try
-        {
+        try {
             bf.addTranslation(integerECD2, integerECD1);
             fail("addTranslation() accepted incompatible ecds");
-        }
-        catch (IllegalArgumentException expected)
-        {
+        } catch (IllegalArgumentException expected) {
             // System.out.println(expected);
         }
     }
 
-    private void checkHandler(MyExceptionHandler handler)
-    {
+    private void checkHandler(TestExceptionHandler handler) {
         String message = "No exception";
 
-        if (handler.exception != null)
-        {
+        if (handler.exception != null) {
             handler.exception.printStackTrace();
             message = handler.exception.getMessage();
         }
 
-        assertNull("Exception - " + message, handler.exception);
+        assertNull(handler.exception, "Exception - " + message);
     }
 
-    public static Test suite()
-    {
-        return new TestSuite(TranslatorTest.class);
-    }
-
-    public static void main(String[] args)
-    {
-        junit.textui.TestRunner.run(suite());
-    }
-
-    private class MyExceptionHandler implements TransactionExceptionHandler
-    {
+    private class TestExceptionHandler implements TransactionExceptionHandler {
         Exception exception = null;
 
-        public void handle(Exception exception)
-        {
+        public void handle(Exception exception) {
             // exception.printStackTrace();
             this.exception = exception;
         }

@@ -1,0 +1,45 @@
+// byteila,charila,doubleila,floatila,longila,shortila
+package %%PACKAGE%%;
+
+import java.io.IOException;
+import tfw.check.Argument;
+import tfw.immutable.ila.intila.IntIla;
+import tfw.immutable.ila.intila.IntIlaIterator;
+import tfw.immutable.ila.intila.IntIlaSegment;
+
+public final class %%NAME%%IlaFromCastIntIla {
+    private %%NAME%%IlaFromCastIntIla() {
+        // non-instantiable class
+    }
+
+    public static %%NAME%%Ila create(IntIla intIla, int bufferSize) {
+        Argument.assertNotNull(intIla, "intIla");
+        Argument.assertNotLessThan(bufferSize, 1, "bufferSize");
+
+        return new %%NAME%%IlaImpl(intIla, bufferSize);
+    }
+
+    private static class %%NAME%%IlaImpl extends Abstract%%NAME%%Ila {
+        private final IntIla intIla;
+        private final int bufferSize;
+
+        private %%NAME%%IlaImpl(IntIla intIla, int bufferSize) {
+            this.intIla = intIla;
+            this.bufferSize = bufferSize;
+        }
+
+        @Override
+        protected long lengthImpl() throws IOException {
+            return intIla.length();
+        }
+
+        @Override
+        protected void getImpl(%%TYPE%%[] array, int offset, long start, int length) throws IOException {
+            IntIlaIterator fi = new IntIlaIterator(IntIlaSegment.create(intIla, start, length), new int[bufferSize]);
+
+            for (int ii = offset; length > 0; ii++, --length) {
+                array[ii] = (%%TYPE%%) fi.next();
+            }
+        }
+    }
+}

@@ -1,8 +1,0 @@
-%%TYPE%% = short
-%%NAME%% = Short
-%%PACKAGE%% = short
-%%RANDOM_VALUE%% = (short)random.nextInt()
-%%ASSERT_EQUALS_DELTA%% =
-%%DEFAULT_VALUE%% = (short)0
-%%CREATE_IMMUTABLE_START%% = new Short(
-%%CREATE_IMMUTABLE_END%% = )

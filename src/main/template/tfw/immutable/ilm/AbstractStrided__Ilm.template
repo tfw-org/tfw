@@ -1,0 +1,37 @@
+// booleanilm,byteilm,charilm,doubleilm,floatilm,intilm,longilm,objectilm,shortilm
+package %%PACKAGE%%;
+
+import java.io.IOException;
+import tfw.immutable.ilm.AbstractIlm;
+import tfw.immutable.ilm.AbstractStridedIlmCheck;
+
+public abstract class AbstractStrided%%NAME%%Ilm%%TEMPLATE%% extends AbstractIlm implements Strided%%NAME%%Ilm%%TEMPLATE%% {
+    protected abstract void getImpl(
+            %%TYPE_OR_TEMPLATE%%[] array,
+            int offset,
+            int rowStride,
+            int colStride,
+            long rowStart,
+            long colStart,
+            int rowCount,
+            int colCount)
+            throws IOException;
+
+    protected AbstractStrided%%NAME%%Ilm() {}
+
+    @Override
+    public final void get(
+            %%TYPE_OR_TEMPLATE%%[] array,
+            int offset,
+            int rowStride,
+            int colStride,
+            long rowStart,
+            long colStart,
+            int rowCount,
+            int colCount)
+            throws IOException {
+        AbstractStridedIlmCheck.boundsCheck(
+                width(), height(), array.length, offset, rowStride, colStride, rowStart, colStart, rowCount, colCount);
+        getImpl(array, offset, rowStride, colStride, rowStart, colStart, rowCount, colCount);
+    }
+}

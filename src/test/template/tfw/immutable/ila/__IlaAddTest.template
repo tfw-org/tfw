@@ -1,0 +1,39 @@
+// byteila,charila,doubleila,floatila,intila,longila,shortila
+package %%PACKAGE%%;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+%%RANDOM_INCLUDE%%import org.junit.jupiter.api.Test;
+import tfw.immutable.ila.IlaTestDimensions;
+
+class %%NAME%%IlaAddTest {
+    @Test
+    void testArguments() {
+        final %%NAME%%Ila ila1 = %%NAME%%IlaFromArray.create(new %%TYPE%%[10]);
+        final %%NAME%%Ila ila2 = %%NAME%%IlaFromArray.create(new %%TYPE%%[20]);
+
+        assertThrows(IllegalArgumentException.class, () -> %%NAME%%IlaAdd.create(null, ila1, 10));
+        assertThrows(IllegalArgumentException.class, () -> %%NAME%%IlaAdd.create(ila1, null, 10));
+        assertThrows(IllegalArgumentException.class, () -> %%NAME%%IlaAdd.create(ila1, ila1, 0));
+        assertThrows(IllegalArgumentException.class, () -> %%NAME%%IlaAdd.create(ila1, ila2, 10));
+    }
+
+    @Test
+    void testAll() throws Exception {
+        %%RANDOM_INIT%%final int length = IlaTestDimensions.defaultIlaLength();
+        final %%TYPE%%[] leftArray = new %%TYPE%%[length];
+        final %%TYPE%%[] rightArray = new %%TYPE%%[length];
+        final %%TYPE%%[] array = new %%TYPE%%[length];
+        for (int ii = 0; ii < leftArray.length; ++ii) {
+            leftArray[ii] = %%RANDOM_VALUE%%;
+            rightArray[ii] = %%RANDOM_VALUE%%;
+            array[ii] = %%CAST_FROM_INT_PAREN%%leftArray[ii] + rightArray[ii]%%CAST_FROM_INT_PAREN_END%%;
+        }
+        %%NAME%%Ila leftIla = %%NAME%%IlaFromArray.create(leftArray);
+        %%NAME%%Ila rightIla = %%NAME%%IlaFromArray.create(rightArray);
+        %%NAME%%Ila targetIla = %%NAME%%IlaFromArray.create(array);
+        %%NAME%%Ila actualIla = %%NAME%%IlaAdd.create(leftIla, rightIla, 100);
+
+        %%NAME%%IlaCheck.check(targetIla, actualIla);
+    }
+}

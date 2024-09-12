@@ -1,15 +1,24 @@
 package tfw.immutable.ilm.byteilm;
 
-import java.util.Arrays;
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class ByteIlmFromArrayTest extends TestCase
-{
-	public void testBooleanIlmFromArray() throws Exception
-	{
-		byte[] array = new byte[] {1, 2, 3, 4, 5, 6};
-		ByteIlm byteIlm = ByteIlmFromArray.create(array, 3);
-		
-		assertTrue(Arrays.equals(array, byteIlm.toArray()));
-	}
+import java.util.Arrays;
+import java.util.Random;
+import org.junit.jupiter.api.Test;
+
+class ByteIlmFromArrayTest {
+    @Test
+    void testByteIlmFromArray() throws Exception {
+        final Random random = new Random(0);
+        byte[] array = new byte[6];
+
+        for (int i = 0; i < array.length; i++) {
+            array[i] = (byte) random.nextInt();
+        }
+
+        ByteIlm byteIlm = ByteIlmFromArray.create(array, array.length / 2);
+
+        assertTrue(Arrays.equals(array, ByteIlmUtil.toArray(byteIlm)));
+    }
 }
+// AUTO GENERATED FROM TEMPLATE

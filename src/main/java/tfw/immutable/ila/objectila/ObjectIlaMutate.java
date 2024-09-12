@@ -1,85 +1,53 @@
 package tfw.immutable.ila.objectila;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.ImmutableProxy;
-import tfw.immutable.DataInvalidException;
 
-/**
- *
- * @immutables.types=all
- */
-public final class ObjectIlaMutate
-{
-    private ObjectIlaMutate()
-    {
+public final class ObjectIlaMutate {
+    private ObjectIlaMutate() {
         // non-instantiable class
     }
 
-    public static ObjectIla create(ObjectIla ila, long index, Object value)
-    {
+    public static <T> ObjectIla<T> create(ObjectIla<T> ila, long index, T value) throws IOException {
         Argument.assertNotNull(ila, "ila");
         Argument.assertNotLessThan(index, 0, "index");
         Argument.assertLessThan(index, ila.length(), "index", "ila.length()");
 
-        return new MyObjectIla(ila, index, value);
+        return new ObjectIlaImpl<>(ila, index, value);
     }
 
-    private static class MyObjectIla extends AbstractObjectIla
-        implements ImmutableProxy
-    {
-        private final ObjectIla ila;
+    private static class ObjectIlaImpl<T> extends AbstractObjectIla<T> {
+        private final ObjectIla<T> ila;
         private final long index;
-        private final Object value;
+        private final T value;
 
-        MyObjectIla(ObjectIla ila, long index, Object value)
-        {
-            super(ila.length());
+        private ObjectIlaImpl(ObjectIla<T> ila, long index, T value) {
             this.ila = ila;
             this.index = index;
             this.value = value;
         }
 
-        protected void toArrayImpl(Object[] array, int offset,
-                                   int stride, long start, int length)
-            throws DataInvalidException
-        {
+        @Override
+        protected long lengthImpl() throws IOException {
+            return ila.length();
+        }
+
+        @Override
+        protected void getImpl(T[] array, int offset, long start, int length) throws IOException {
             final long startPlusLength = start + length;
 
-            if(index < start || index >= startPlusLength)
-            {
-                ila.toArray(array, offset, stride, start, length);
-            }
-            else
-            {
+            if (index < start || index >= startPlusLength) {
+                ila.get(array, offset, start, length);
+            } else {
                 final int indexMinusStart = (int) (index - start);
-                if(index > start)
-                {
-                    ila.toArray(array, offset, stride, start,
-                                indexMinusStart);
+                if (index > start) {
+                    ila.get(array, offset, start, indexMinusStart);
                 }
-                array[offset + indexMinusStart * stride] = value;
-                if(index <= startPlusLength)
-                {
-                    ila.toArray(array, offset + (indexMinusStart + 1) * stride,
-                                stride, index + 1, length - 
-                                indexMinusStart - 1);
+                array[offset + indexMinusStart] = value;
+                if (index <= startPlusLength) {
+                    ila.get(array, offset + indexMinusStart + 1, index + 1, length - indexMinusStart - 1);
                 }
             }
-        }
-                
-        public Map<String, Object> getParameters()
-        {
-            HashMap<String, Object> map = new HashMap<String, Object>();
-                        
-            map.put("name", "ObjectIlaMutate");
-            map.put("length", new Long(length()));
-            map.put("ila", getImmutableInfo(ila));
-            map.put("index", new Long(index));
-            map.put("value", value);
-
-            return(map);
         }
     }
 }

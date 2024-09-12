@@ -6,8 +6,7 @@ import tfw.check.Argument;
  * A state change rule based on whether the new state is a different object or
  * not.
  */
-public class DifferentObjectRule implements StateChangeRule
-{
+public class DifferentObjectRule implements StateChangeRule {
     /** An instance of the rule. */
     public static final DifferentObjectRule RULE = new DifferentObjectRule();
 
@@ -15,24 +14,21 @@ public class DifferentObjectRule implements StateChangeRule
      * Hide constructor to avoid un-needed object creation. This rule is
      * stateless and therefore only one instance is needed.
      */
-    private DifferentObjectRule()
-    {
-    }
+    private DifferentObjectRule() {}
 
     /**
      * Returns an instance of the rule.
-     * 
+     *
      * @return an instance of the rule.
      */
-    public static DifferentObjectRule getInstance()
-    {
+    public static DifferentObjectRule getInstance() {
         return RULE;
     }
 
     /**
      * Returns true if the new state is the same object as the current state,
      * otherwise returns false.
-     * 
+     *
      * @param currentState
      *            the current state of the event channel. A <code>null</code>
      *            value is allowed as the initial state.
@@ -43,8 +39,7 @@ public class DifferentObjectRule implements StateChangeRule
      * @throws IllegalArgumentException
      *             if <code>newSate == null</code>.
      */
-    public boolean isChange(Object currentState, Object newState)
-    {
+    public boolean isChange(Object currentState, Object newState) {
         Argument.assertNotNull(newState, "newState");
         return currentState != newState;
     }

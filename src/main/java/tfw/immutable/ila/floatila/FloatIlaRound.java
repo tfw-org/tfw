@@ -1,62 +1,38 @@
 package tfw.immutable.ila.floatila;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
-import tfw.immutable.ImmutableProxy;
 
-/**
- *
- * @immutables.types=floating
- */
-public final class FloatIlaRound
-{
-    private FloatIlaRound()
-    {
-    	// non-instantiable class
+public final class FloatIlaRound {
+    private FloatIlaRound() {
+        // non-instantiable class
     }
 
-    public static FloatIla create(FloatIla ila)
-    {
+    public static FloatIla create(FloatIla ila) {
         Argument.assertNotNull(ila, "ila");
 
-        return new MyFloatIla(ila);
+        return new FloatIlaImpl(ila);
     }
 
-    private static class MyFloatIla extends AbstractFloatIla
-        implements ImmutableProxy
-    {
+    private static class FloatIlaImpl extends AbstractFloatIla {
         private final FloatIla ila;
 
-        MyFloatIla(FloatIla ila)
-        {
-            super(ila.length());
-                    
+        private FloatIlaImpl(FloatIla ila) {
             this.ila = ila;
         }
 
-        protected void toArrayImpl(float[] array, int offset,
-                                   int stride, long start, int length)
-            throws DataInvalidException
-        {
-            ila.toArray(array, offset, stride, start, length);
+        @Override
+        protected long lengthImpl() throws IOException {
+            return ila.length();
+        }
 
-            for (int ii = offset; length > 0; ii += stride, --length)
-            {
+        @Override
+        protected void getImpl(float[] array, int offset, long start, int length) throws IOException {
+            ila.get(array, offset, start, length);
+
+            for (int ii = offset; length > 0; ii++, --length) {
                 array[ii] = (float) StrictMath.rint(array[ii]);
             }
-        }
-                
-        public Map<String, Object> getParameters()
-        {
-            HashMap<String, Object> map = new HashMap<String, Object>();
-                        
-            map.put("name", "FloatIlaRound");
-            map.put("ila", getImmutableInfo(ila));
-            map.put("length", new Long(length()));
-                        
-            return(map);
         }
     }
 }

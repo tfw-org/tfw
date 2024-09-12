@@ -1,0 +1,43 @@
+// booleanila,byteila,charila,doubleila,floatila,intila,longila,objectila,shortila
+package %%PACKAGE%%;
+
+import java.io.IOException;
+import tfw.check.Argument;
+
+public final class Strided%%NAME%%IlaFrom%%NAME%%Ila%%TEMPLATE%% {
+    private Strided%%NAME%%IlaFrom%%NAME%%Ila() {}
+
+    public static %%TEMPLATE_SPACE%%Strided%%NAME%%Ila%%TEMPLATE%% create(final %%NAME%%Ila%%TEMPLATE%% ila, final %%TYPE_OR_TEMPLATE%%[] buffer) {
+        Argument.assertNotNull(ila, "ila");
+        Argument.assertNotNull(buffer, "buffer");
+
+        return new Strided%%NAME%%IlaImpl%%DIAMOND%%(ila, buffer);
+    }
+
+    private static class Strided%%NAME%%IlaImpl%%TEMPLATE%% extends AbstractStrided%%NAME%%Ila%%TEMPLATE%% {
+        private final %%NAME%%Ila%%TEMPLATE%% ila;
+        private final %%TYPE_OR_TEMPLATE%%[] buffer;
+
+        public Strided%%NAME%%IlaImpl(final %%NAME%%Ila%%TEMPLATE%% ila, final %%TYPE_OR_TEMPLATE%%[] buffer) {
+            this.ila = ila;
+            this.buffer = buffer;
+        }
+
+        @Override
+        public long lengthImpl() throws IOException {
+            return ila.length();
+        }
+
+        @Override
+        public void getImpl(final %%TYPE_OR_TEMPLATE%%[] array, final int offset, final int stride, final long start, int length)
+                throws IOException {
+            final %%NAME%%Ila%%TEMPLATE%% segment%%NAME%%Ila =
+                    start == 0 && length == ila.length() ? ila : %%NAME%%IlaSegment.create(ila, start, length);
+            final %%NAME%%IlaIterator%%TEMPLATE%% bii = new %%NAME%%IlaIterator%%DIAMOND%%(segment%%NAME%%Ila, buffer.clone());
+
+            for (int i = 0, ii = offset; i < length; i++, ii += stride) {
+                array[ii] = bii.next();
+            }
+        }
+    }
+}

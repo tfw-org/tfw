@@ -1,81 +1,48 @@
 package tfw.immutable.ila.byteila;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
-import tfw.immutable.ImmutableProxy;
 
-/**
- *
- * @immutables.types=numeric
- */
-public final class ByteIlaDivide
-{
-    private ByteIlaDivide()
-    {
-    	// non-instantiable class
+public final class ByteIlaDivide {
+    private ByteIlaDivide() {
+        // non-instantiable class
     }
 
-    public static ByteIla create(ByteIla leftIla, ByteIla rightIla)
-    {
-    	return create(leftIla, rightIla, ByteIlaIterator.DEFAULT_BUFFER_SIZE);
-    }
-    
-    public static ByteIla create(ByteIla leftIla, ByteIla rightIla,
-        int bufferSize)
-    {
+    public static ByteIla create(ByteIla leftIla, ByteIla rightIla, int bufferSize) throws IOException {
         Argument.assertNotNull(leftIla, "leftIla");
         Argument.assertNotNull(rightIla, "rightIla");
-        Argument.assertEquals(leftIla.length(), rightIla.length(),
-                              "leftIla.length()", "rightIla.length()");
+        Argument.assertEquals(leftIla.length(), rightIla.length(), "leftIla.length()", "rightIla.length()");
         Argument.assertNotLessThan(bufferSize, 1, "bufferSize");
 
-        return new MyByteIla(leftIla, rightIla, bufferSize);
+        return new ByteIlaImpl(leftIla, rightIla, bufferSize);
     }
 
-    private static class MyByteIla extends AbstractByteIla
-        implements ImmutableProxy
-    {
+    private static class ByteIlaImpl extends AbstractByteIla {
         private final ByteIla leftIla;
         private final ByteIla rightIla;
         private final int bufferSize;
 
-        MyByteIla(ByteIla leftIla, ByteIla rightIla, int bufferSize)
-        {
-            super(leftIla.length());
-                    
+        private ByteIlaImpl(ByteIla leftIla, ByteIla rightIla, int bufferSize) {
             this.leftIla = leftIla;
             this.rightIla = rightIla;
             this.bufferSize = bufferSize;
         }
 
-        protected void toArrayImpl(byte[] array, int offset,
-                                   int stride, long start, int length)
-            throws DataInvalidException
-        {
-            ByteIlaIterator li = new ByteIlaIterator(
-                ByteIlaSegment.create(leftIla, start, length), bufferSize);
-            ByteIlaIterator ri = new ByteIlaIterator(
-                ByteIlaSegment.create(rightIla, start, length), bufferSize);
+        @Override
+        protected long lengthImpl() throws IOException {
+            return leftIla.length();
+        }
 
-            for (int ii = offset; li.hasNext(); ii += stride)
-            {
+        @Override
+        protected void getImpl(byte[] array, int offset, long ilaStart, int length) throws IOException {
+            ByteIlaIterator li =
+                    new ByteIlaIterator(ByteIlaSegment.create(leftIla, ilaStart, length), new byte[bufferSize]);
+            ByteIlaIterator ri =
+                    new ByteIlaIterator(ByteIlaSegment.create(rightIla, ilaStart, length), new byte[bufferSize]);
+
+            for (int ii = offset; li.hasNext(); ii++) {
                 array[ii] = (byte) (li.next() / ri.next());
             }
-        }
-                
-        public Map<String, Object> getParameters()
-        {
-            HashMap<String, Object> map = new HashMap<String, Object>();
-                        
-            map.put("name", "ByteIlaDivide");
-            map.put("leftIla", getImmutableInfo(leftIla));
-            map.put("rightIla", getImmutableInfo(rightIla));
-            map.put("bufferSize", new Integer(bufferSize));
-            map.put("length", new Long(length()));
-                        
-            return(map);
         }
     }
 }

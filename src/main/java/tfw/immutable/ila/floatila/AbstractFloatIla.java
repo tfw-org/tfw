@@ -1,77 +1,21 @@
 package tfw.immutable.ila.floatila;
 
-import tfw.immutable.DataInvalidException;
-import tfw.immutable.ImmutableProxy;
+import java.io.IOException;
 import tfw.immutable.ila.AbstractIla;
-import tfw.immutable.ila.ImmutableLongArray;
 
-/**
- *
- * @immutables.types=all
- */
-public abstract class AbstractFloatIla
-    extends AbstractIla
-    implements FloatIla
-{
-    protected abstract void toArrayImpl(float[] array, int offset,
-                                        int stride, long start, int length)
-        throws DataInvalidException;
+public abstract class AbstractFloatIla extends AbstractIla implements FloatIla {
+    protected abstract void getImpl(final float[] array, int offset, long start, int length) throws IOException;
 
-    protected AbstractFloatIla(long length)
-    {
-        super(length);
-    }
-    
-    public static Object getImmutableInfo(ImmutableLongArray ila)
-    {
-        if(ila instanceof ImmutableProxy)
-        {
-            return(((ImmutableProxy) ila).getParameters());
-        }
-        else
-        {
-            return(ila.toString());
-        }
-    }
+    protected AbstractFloatIla() {}
 
-    public final float[] toArray()
-        throws DataInvalidException
-    {
-        if(length() > (long) Integer.MAX_VALUE)
-            throw new ArrayIndexOutOfBoundsException
-                ("Ila too large for native array");
-
-        return toArray((long) 0, (int) length());
-    }
-
-    public final float[] toArray(long start, int length)
-        throws DataInvalidException
-    {
-        float[] result = new float[length];
-        
-        toArray(result, 0, start, length);
-        
-        return result;
-    }
-
-    public final void toArray(float[] array, int offset,
-                              long start, int length)
-        throws DataInvalidException
-    {
-        toArray(array, offset, 1, start, length);
-    }
-
-    public final void toArray(float[] array, int offset, int stride,
-                              long start, int length)
-        throws DataInvalidException
-    {
-        if(length == 0)
-        {
+    @Override
+    public final void get(final float[] array, final int offset, final long start, int length) throws IOException {
+        if (length == 0) {
             return;
         }
-        
-        boundsCheck(array.length, offset, stride, start, length);
-        toArrayImpl(array, offset, stride, start, length);
+
+        boundsCheck(array.length, offset, start, length);
+        getImpl(array, offset, start, length);
     }
 }
 // AUTO GENERATED FROM TEMPLATE

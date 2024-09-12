@@ -1,7 +1,6 @@
 package tfw.swing;
 
 import java.awt.Color;
-
 import tfw.awt.event.ActionInitiator;
 import tfw.check.Argument;
 import tfw.component.EventChannelCopyConverter;
@@ -12,26 +11,26 @@ import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.StatelessTriggerECD;
 import tfw.tsm.ecd.StringECD;
 
-public class JTextFieldModifiableBB extends JTextFieldBB
-{
+public class JTextFieldModifiableBB extends JTextFieldBB {
+    private static final long serialVersionUID = 1L;
+
     private final Color defaultDisabledBackground;
 
     private final Color defaultEnabledBackground;
 
     private final Color modifiedBackground = new Color(153, 153, 204);
 
-    public JTextFieldModifiableBB(String name, StringECD textECD,
-            StringECD textAdjECD, BooleanECD enabledECD,
-            StatelessTriggerECD applyECD)
-    {
-        this(new Branch("JTextFieldModifiableBB[" + name + "]"), textECD,
-                textAdjECD, enabledECD, applyECD);
+    public JTextFieldModifiableBB(
+            String name, StringECD textECD, StringECD textAdjECD, BooleanECD enabledECD, StatelessTriggerECD applyECD) {
+        this(new Branch("JTextFieldModifiableBB[" + name + "]"), textECD, textAdjECD, enabledECD, applyECD);
     }
 
-    public JTextFieldModifiableBB(Branch branch, StringECD textECD,
-            StringECD textAdjECD, BooleanECD enabledECD,
-            StatelessTriggerECD applyECD)
-    {
+    public JTextFieldModifiableBB(
+            Branch branch,
+            StringECD textECD,
+            StringECD textAdjECD,
+            BooleanECD enabledECD,
+            StatelessTriggerECD applyECD) {
         super(branch, textAdjECD, enabledECD);
 
         setEnabled(false);
@@ -39,29 +38,21 @@ public class JTextFieldModifiableBB extends JTextFieldBB
         setEnabled(true);
         defaultEnabledBackground = getBackground();
 
-        ActionInitiator actionInitiator = new ActionInitiator(
-                "JTextFieldModifiableBB", applyECD);
+        ActionInitiator actionInitiator = new ActionInitiator("JTextFieldModifiableBB", applyECD);
         addActionListenerToBoth(actionInitiator);
 
-        branch.add(new ForegroundBackgroundHandler(branch.getName(), textECD,
-                textAdjECD, enabledECD));
-        branch.add(new EventChannelCopyConverter(branch.getName(), textECD,
-                textAdjECD));
+        branch.add(new ForegroundBackgroundHandler(branch.getName(), textECD, textAdjECD, enabledECD));
+        branch.add(new EventChannelCopyConverter(branch.getName(), textECD, textAdjECD));
     }
 
-    private static ObjectECD[] toArray(StringECD textSink,
-            StringECD textAdjSink, BooleanECD enableSink)
-    {
+    private static ObjectECD[] toArray(StringECD textSink, StringECD textAdjSink, BooleanECD enableSink) {
         Argument.assertNotNull(textSink, "textSink");
         Argument.assertNotNull(textAdjSink, "textAdjSink");
 
-        if (enableSink == null)
-        {
-            return new ObjectECD[] { textSink, textAdjSink };
-        }
-        else
-        {
-            return new ObjectECD[] { textSink, textAdjSink, enableSink };
+        if (enableSink == null) {
+            return new ObjectECD[] {textSink, textAdjSink};
+        } else {
+            return new ObjectECD[] {textSink, textAdjSink, enableSink};
         }
     }
 
@@ -70,47 +61,37 @@ public class JTextFieldModifiableBB extends JTextFieldBB
      * value of the text field if the text event channel is set during the state
      * change cycle.
      */
-    private final class ForegroundBackgroundHandler extends Commit
-    {
+    private final class ForegroundBackgroundHandler extends Commit {
         private final StringECD textName;
 
         private final StringECD textAdjName;
 
         private final BooleanECD enableName;
 
-        public ForegroundBackgroundHandler(String name, StringECD textSink,
-                StringECD textAdjSink, BooleanECD enableSink)
-        {
-            super("ForegroundBackgroundHandler[" + name + "]", toArray(
-                    textSink, textAdjSink, enableSink));
+        public ForegroundBackgroundHandler(
+                String name, StringECD textSink, StringECD textAdjSink, BooleanECD enableSink) {
+            super("ForegroundBackgroundHandler[" + name + "]", toArray(textSink, textAdjSink, enableSink));
 
             this.textName = textSink;
             this.textAdjName = textAdjSink;
             this.enableName = enableSink;
         }
 
-        protected void commit()
-        {
+        protected void commit() {
             String text = (String) get(textName);
             String textAdj = (String) get(textAdjName);
 
             boolean enabled = true;
-            if (this.enableName != null)
-            {
+            if (this.enableName != null) {
                 enabled = ((Boolean) get(enableName)).booleanValue();
             }
 
-            if (!text.equals(textAdj))
-            {
+            if (!text.equals(textAdj)) {
                 setBackground(modifiedBackground);
-            }
-            else if (enabled)
-            {
+            } else if (enabled) {
                 setBackground(defaultEnabledBackground);
                 setForeground(Color.black);
-            }
-            else
-            {
+            } else {
                 setBackground(defaultDisabledBackground);
                 setForeground(Color.black);
             }

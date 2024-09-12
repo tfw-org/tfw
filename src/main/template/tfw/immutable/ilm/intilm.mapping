@@ -1,0 +1,11 @@
+%%TYPE%% = int
+%%NAME%% = Int
+%%PACKAGE%% = tfw.immutable.ilm.intilm
+%%RANDOM_VALUE%% = random.nextInt()
+%%ASSERT_EQUALS_DELTA%% =
+%%CREATE_IMMUTABLE_START%% = new Integer(
+%%CREATE_IMMUTABLE_END%% = )
+%%DIAMOND%% = 
+%%TEMPLATE%% =
+%%TEMPLATE_SPACE%% =
+%%TYPE_OR_TEMPLATE%% = int

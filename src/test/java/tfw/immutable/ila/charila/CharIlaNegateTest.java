@@ -1,37 +1,32 @@
 package tfw.immutable.ila.charila;
 
-import java.util.Random;
-import junit.framework.TestCase;
-import tfw.immutable.ila.IlaTestDimensions;
-import tfw.immutable.ila.charila.CharIla;
-import tfw.immutable.ila.charila.CharIlaFromArray;
-import tfw.immutable.ila.charila.CharIlaNegate;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-/**
- *
- * @immutables.types=numeric
- */
-public class CharIlaNegateTest extends TestCase
-{
-    public void testAll() throws Exception
-    {
+import java.util.Random;
+import org.junit.jupiter.api.Test;
+import tfw.immutable.ila.IlaTestDimensions;
+
+class CharIlaNegateTest {
+    @Test
+    void testArguments() throws Exception {
+        assertThrows(IllegalArgumentException.class, () -> CharIlaNegate.create(null));
+    }
+
+    @Test
+    void testAll() throws Exception {
         final Random random = new Random(0);
         final int length = IlaTestDimensions.defaultIlaLength();
         final char[] array = new char[length];
         final char[] target = new char[length];
-        for(int ii = 0; ii < array.length; ++ii)
-        {
-            array[ii] = (char)random.nextInt();
+        for (int ii = 0; ii < array.length; ++ii) {
+            array[ii] = (char) random.nextInt();
             target[ii] = (char) -array[ii];
         }
         CharIla ila = CharIlaFromArray.create(array);
         CharIla targetIla = CharIlaFromArray.create(target);
         CharIla actualIla = CharIlaNegate.create(ila);
-        final char epsilon = (char) 0.0;
-        CharIlaCheck.checkAll(targetIla, actualIla,
-                                IlaTestDimensions.defaultOffsetLength(),
-                                IlaTestDimensions.defaultMaxStride(),
-                                epsilon);
+
+        CharIlaCheck.check(targetIla, actualIla);
     }
 }
 // AUTO GENERATED FROM TEMPLATE

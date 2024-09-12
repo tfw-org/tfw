@@ -1,37 +1,32 @@
 package tfw.immutable.ila.doubleila;
 
-import java.util.Random;
-import junit.framework.TestCase;
-import tfw.immutable.ila.IlaTestDimensions;
-import tfw.immutable.ila.doubleila.DoubleIla;
-import tfw.immutable.ila.doubleila.DoubleIlaFromArray;
-import tfw.immutable.ila.doubleila.DoubleIlaInvert;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-/**
- *
- * @immutables.types=floating
- */
-public class DoubleIlaInvertTest extends TestCase
-{
-    public void testAll() throws Exception
-    {
+import java.util.Random;
+import org.junit.jupiter.api.Test;
+import tfw.immutable.ila.IlaTestDimensions;
+
+class DoubleIlaInvertTest {
+    @Test
+    void testArguments() throws Exception {
+        assertThrows(IllegalArgumentException.class, () -> DoubleIlaInvert.create(null));
+    }
+
+    @Test
+    void testAll() throws Exception {
         final Random random = new Random(0);
         final int length = IlaTestDimensions.defaultIlaLength();
         final double[] array = new double[length];
         final double[] target = new double[length];
-        for(int ii = 0; ii < array.length; ++ii)
-        {
+        for (int ii = 0; ii < array.length; ++ii) {
             array[ii] = random.nextDouble();
             target[ii] = (double) 1 / array[ii];
         }
         DoubleIla ila = DoubleIlaFromArray.create(array);
         DoubleIla targetIla = DoubleIlaFromArray.create(target);
         DoubleIla actualIla = DoubleIlaInvert.create(ila);
-        final double epsilon = (double) 0.0;
-        DoubleIlaCheck.checkAll(targetIla, actualIla,
-                                IlaTestDimensions.defaultOffsetLength(),
-                                IlaTestDimensions.defaultMaxStride(),
-                                epsilon);
+
+        DoubleIlaCheck.check(targetIla, actualIla);
     }
 }
 // AUTO GENERATED FROM TEMPLATE

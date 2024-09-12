@@ -1,8 +1,0 @@
-%%TYPE%% = byte
-%%NAME%% = Byte
-%%PACKAGE%% = byte
-%%RANDOM_VALUE%% = (byte)random.nextInt()
-%%ASSERT_EQUALS_DELTA%% =
-%%DEFAULT_VALUE%% = (byte)0
-%%CREATE_IMMUTABLE_START%% = new Byte(
-%%CREATE_IMMUTABLE_END%% = )

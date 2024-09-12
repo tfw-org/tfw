@@ -1,39 +1,37 @@
 package tfw.immutable.ila.floatila;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import java.util.Random;
-import junit.framework.TestCase;
-import tfw.immutable.ila.floatila.FloatIla;
-import tfw.immutable.ila.floatila.FloatIlaFromArray;
-import tfw.immutable.ila.floatila.FloatIlaFromCastByteIla;
+import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 import tfw.immutable.ila.byteila.ByteIla;
 import tfw.immutable.ila.byteila.ByteIlaFromArray;
 
-/**
- *
- * @immutables.types=numericnotbyte
- */
-public class FloatIlaFromCastByteIlaTest extends TestCase
-{
-    public void testAll() throws Exception
-    {
+class FloatIlaFromCastByteIlaTest {
+    @Test
+    void testArguments() {
+        final ByteIla ila = ByteIlaFromArray.create(new byte[10]);
+
+        assertThrows(IllegalArgumentException.class, () -> FloatIlaFromCastByteIla.create(null, 1));
+        assertThrows(IllegalArgumentException.class, () -> FloatIlaFromCastByteIla.create(ila, 0));
+    }
+
+    @Test
+    void testAll() throws Exception {
         final Random random = new Random(0);
         final int length = IlaTestDimensions.defaultIlaLength();
         final byte[] array = new byte[length];
         final float[] target = new float[length];
-        for(int ii = 0; ii < array.length; ++ii)
-        {
+        for (int ii = 0; ii < array.length; ++ii) {
             array[ii] = (byte) random.nextInt();
             target[ii] = (float) array[ii];
         }
         ByteIla ila = ByteIlaFromArray.create(array);
         FloatIla targetIla = FloatIlaFromArray.create(target);
-        FloatIla actualIla = FloatIlaFromCastByteIla.create(ila);
-        final float epsilon = (float) 0.0;
-        FloatIlaCheck.checkAll(targetIla, actualIla,
-                                IlaTestDimensions.defaultOffsetLength(),
-                                IlaTestDimensions.defaultMaxStride(),
-                                epsilon);
+        FloatIla actualIla = FloatIlaFromCastByteIla.create(ila, 100);
+
+        FloatIlaCheck.check(targetIla, actualIla);
     }
 }
 // AUTO GENERATED FROM TEMPLATE

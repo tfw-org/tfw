@@ -1,70 +1,33 @@
 package tfw.immutable.ila.charila;
 
-import java.util.HashMap;
-import java.util.Map;
 import tfw.check.Argument;
-import tfw.immutable.ImmutableProxy;
 
-/**
- *
- * @immutables.types=all
- */
-public final class CharIlaFromArray
-{
-    private CharIlaFromArray()
-    {
+public final class CharIlaFromArray {
+    private CharIlaFromArray() {
         // non-instantiable class
     }
 
-    public static CharIla create(char[] array)
-    {
-        return create(array, true);
-    }
-
-    public static CharIla create(char[] array, boolean cloneArray)
-    {
+    public static CharIla create(char[] array) {
         Argument.assertNotNull(array, "array");
 
-        return new MyCharIla(array, cloneArray);
+        return new CharIlaImpl(array);
     }
 
-    private static class MyCharIla extends AbstractCharIla
-        implements ImmutableProxy
-    {
+    private static class CharIlaImpl extends AbstractCharIla {
         private final char[] array;
 
-        MyCharIla(char[] array, boolean cloneArray)
-        {
-            super(array.length);
-
-            if (cloneArray)
-            {
-                this.array = (char[])array.clone();
-            } else {
-                this.array = array;
-            }
+        private CharIlaImpl(char[] array) {
+            this.array = array;
         }
 
-        protected void toArrayImpl(char[] array, int offset,
-                                   int stride, long start, int length)
-        {
-            final int startPlusLength = (int) (start + length);
-            for(int startInt = (int) start;
-                startInt != startPlusLength;
-                ++startInt, offset += stride)
-            {
-                array[offset] = this.array[startInt];
-            }
+        @Override
+        protected long lengthImpl() {
+            return array.length;
         }
-                
-        public Map<String, Object> getParameters()
-        {
-            HashMap<String, Object> map = new HashMap<String, Object>();
-                        
-            map.put("name", "CharIlaFromArray");
-            map.put("length", new Long(length()));
-                        
-            return(map);
+
+        @Override
+        protected void getImpl(char[] array, int offset, long start, int length) {
+            System.arraycopy(this.array, (int) start, array, offset, length);
         }
     }
 }

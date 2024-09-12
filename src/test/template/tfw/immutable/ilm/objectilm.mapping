@@ -1,0 +1,15 @@
+%%TYPE%% = Object
+%%NAME%% = Object
+%%PACKAGE%% = tfw.immutable.ilm.objectilm
+%%RANDOM_VALUE%% = new Object()
+%%RANDOM_INCLUDE%%=
+%%RANDOM_INCLUDE_2%%=
+%%RANDOM_INIT_0%%=
+%%RANDOM_INIT%%=
+%%RANDOM_INIT_12%%=
+%%DEFAULT_VALUE%%=Object.class
+%%ASSERT_EQUALS_DELTA%% =
+%%CREATE_IMMUTABLE_START%% =
+%%CREATE_IMMUTABLE_END%% =
+%%IS_EQUALS_START%% = .equals(
+%%IS_EQUALS_END%% = )

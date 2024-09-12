@@ -1,39 +1,37 @@
 package tfw.immutable.ila.longila;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import java.util.Random;
-import junit.framework.TestCase;
-import tfw.immutable.ila.longila.LongIla;
-import tfw.immutable.ila.longila.LongIlaFromArray;
-import tfw.immutable.ila.longila.LongIlaFromCastIntIla;
+import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 import tfw.immutable.ila.intila.IntIla;
 import tfw.immutable.ila.intila.IntIlaFromArray;
 
-/**
- *
- * @immutables.types=numericnotint
- */
-public class LongIlaFromCastIntIlaTest extends TestCase
-{
-    public void testAll() throws Exception
-    {
+class LongIlaFromCastIntIlaTest {
+    @Test
+    void testArguments() {
+        final IntIla ila = IntIlaFromArray.create(new int[10]);
+
+        assertThrows(IllegalArgumentException.class, () -> LongIlaFromCastIntIla.create(null, 1));
+        assertThrows(IllegalArgumentException.class, () -> LongIlaFromCastIntIla.create(ila, 0));
+    }
+
+    @Test
+    void testAll() throws Exception {
         final Random random = new Random(0);
         final int length = IlaTestDimensions.defaultIlaLength();
         final int[] array = new int[length];
         final long[] target = new long[length];
-        for(int ii = 0; ii < array.length; ++ii)
-        {
+        for (int ii = 0; ii < array.length; ++ii) {
             array[ii] = random.nextInt();
             target[ii] = (long) array[ii];
         }
         IntIla ila = IntIlaFromArray.create(array);
         LongIla targetIla = LongIlaFromArray.create(target);
-        LongIla actualIla = LongIlaFromCastIntIla.create(ila);
-        final long epsilon = (long) 0.0;
-        LongIlaCheck.checkAll(targetIla, actualIla,
-                                IlaTestDimensions.defaultOffsetLength(),
-                                IlaTestDimensions.defaultMaxStride(),
-                                epsilon);
+        LongIla actualIla = LongIlaFromCastIntIla.create(ila, 100);
+
+        LongIlaCheck.check(targetIla, actualIla);
     }
 }
 // AUTO GENERATED FROM TEMPLATE

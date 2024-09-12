@@ -1,90 +1,75 @@
 package tfw.tsm;
 
-import junit.framework.TestCase;
-import tfw.tsm.EventChannelState;
-import tfw.tsm.TreeState;
-import tfw.tsm.TreeStateBuffer;
-import tfw.tsm.ecd.StringECD;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
 
+import org.junit.jupiter.api.Test;
+import tfw.tsm.ecd.StringECD;
 
 /**
  *
  */
-public class TreeStateBufferTest extends TestCase
-{
-    public void testBuffer() throws Exception
-    {
+class TreeStateBufferTest {
+    @Test
+    void testBuffer() throws Exception {
         TreeStateBuffer tsb = new TreeStateBuffer();
         StringECD strECD = new StringECD("mystring");
 
-		try{
-			tsb.toTreeState();
-			fail("toTreeState() returned without a name");
-		} catch (IllegalStateException expected){
-			//System.out.println(expected);
-		}
-        try
-        {
+        try {
+            tsb.toTreeState();
+            fail("toTreeState() returned without a name");
+        } catch (IllegalStateException expected) {
+            // System.out.println(expected);
+        }
+        try {
             tsb.setName(null);
             fail("setName() accepted null value");
-        }
-        catch (IllegalArgumentException expected)
-        {
-            //System.out.println(expected);
+        } catch (IllegalArgumentException expected) {
+            // System.out.println(expected);
         }
 
-        try
-        {
+        try {
             tsb.addState(null);
             fail("addState() accepted null event channel state");
-        }
-        catch (IllegalArgumentException expected)
-        {
-            //System.out.println(expected);
+        } catch (IllegalArgumentException expected) {
+            // System.out.println(expected);
         }
 
-        try
-        {
+        try {
             tsb.addChild(null);
             fail("addChild() accepted null child");
-        }
-        catch (IllegalArgumentException expected)
-        {
-            //System.out.println(expected);
+        } catch (IllegalArgumentException expected) {
+            // System.out.println(expected);
         }
 
         String name = "TestTreeState";
         tsb.setName(name);
 
         TreeState tstate = tsb.toTreeState();
-        assertNotNull("toTreeState() returned null", tstate);
-        assertEquals("getName() returned wrong value", name, tstate.getName());
+        assertNotNull(tstate, "toTreeState() returned null");
+        assertEquals(name, tstate.getName(), "getName() returned wrong value");
 
         TreeState[] children = tstate.getChildren();
-        assertNotNull("getChildState() returned null", children);
-        assertEquals("getChildState() returned wrong number of children", 0,
-            children.length);
+        assertNotNull(children, "getChildState() returned null");
+        assertEquals(0, children.length, "getChildState() returned wrong number of children");
 
         EventChannelState[] ecds = tstate.getState();
-        assertNotNull("getEventChannels() returned null", ecds);
-        assertEquals("getEventChannels() returned wrong number of event channels",
-            0, ecds.length);
+        assertNotNull(ecds, "getEventChannels() returned null");
+        assertEquals(0, ecds.length, "getEventChannels() returned wrong number of event channels");
 
         EventChannelState state = new EventChannelState(strECD, "Hello World");
         tsb.addState(state);
         tstate = tsb.toTreeState();
         ecds = tstate.getState();
-        assertEquals("getEventChannels() returned wrong number of event channels",
-            1, ecds.length);
-        assertEquals("getState() returned the wrong value", state,
-            tstate.getState()[0]);
+        assertEquals(1, ecds.length, "getEventChannels() returned wrong number of event channels");
+        assertEquals(state, tstate.getState()[0], "getState() returned the wrong value");
 
         tsb.setName("Parent");
         tsb.addChild(tstate);
 
         TreeState parent = tsb.toTreeState();
         children = parent.getChildren();
-        assertEquals("getChildState() return the wrong number of children", 1,
-            children.length);
+        assertEquals(1, children.length, "getChildState() return the wrong number of children");
     }
 }

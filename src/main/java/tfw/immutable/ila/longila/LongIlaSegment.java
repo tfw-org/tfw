@@ -1,68 +1,47 @@
 package tfw.immutable.ila.longila;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.ImmutableProxy;
-import tfw.immutable.DataInvalidException;
 
-/**
- *
- * @immutables.types=all
- */
-public final class LongIlaSegment
-{
-    private LongIlaSegment()
-    {
+public final class LongIlaSegment {
+    private LongIlaSegment() {
         // non-instantiable class
     }
 
-    public static LongIla create(LongIla ila, long start)
-    {
+    public static LongIla create(LongIla ila, long start) throws IOException {
+        Argument.assertNotNull(ila, "ila");
+
         return create(ila, start, ila.length() - start);
     }
 
-    public static LongIla create(LongIla ila, long start, long length)
-    {
+    public static LongIla create(LongIla ila, long start, long length) throws IOException {
         Argument.assertNotNull(ila, "ila");
         Argument.assertNotLessThan(start, 0, "start");
         Argument.assertNotLessThan(length, 0, "length");
-        Argument.assertNotGreaterThan((start + length), ila.length(),
-                                      "start + length", "ila.length()");
+        Argument.assertNotGreaterThan(start + length, ila.length(), "start + length", "ila.length()");
 
-        return new MyLongIla(ila, start, length);
+        return new LongIlaImpl(ila, start, length);
     }
 
-    private static class MyLongIla extends AbstractLongIla
-        implements ImmutableProxy
-    {
+    private static class LongIlaImpl extends AbstractLongIla {
         private final LongIla ila;
         private final long start;
+        private final long length;
 
-        MyLongIla(LongIla ila, long start, long length)
-        {
-            super(length);
+        private LongIlaImpl(LongIla ila, long start, long length) {
             this.ila = ila;
             this.start = start;
+            this.length = length;
         }
 
-        protected void toArrayImpl(long[] array, int offset,
-                                   int stride, long start, int length)
-            throws DataInvalidException
-        {
-            ila.toArray(array, offset, stride, this.start + start, length);
+        @Override
+        protected long lengthImpl() {
+            return length;
         }
-                
-        public Map<String, Object> getParameters()
-        {
-            HashMap<String, Object> map = new HashMap<String, Object>();
-                        
-            map.put("name", "LongIlaSegment");
-            map.put("length", new Long(length()));
-            map.put("start", new Long(start));
-            map.put("ila", getImmutableInfo(ila));
-                        
-            return(map);
+
+        @Override
+        protected void getImpl(long[] array, int offset, long start, int length) throws IOException {
+            ila.get(array, offset, this.start + start, length);
         }
     }
 }

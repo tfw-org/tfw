@@ -1,43 +1,41 @@
 package tfw.immutable.ila.booleanila;
 
-import java.util.Random;
-import junit.framework.TestCase;
-import tfw.immutable.ila.IlaTestDimensions;
-import tfw.immutable.ila.booleanila.BooleanIla;
-import tfw.immutable.ila.booleanila.BooleanIlaFromArray;
-import tfw.immutable.ila.booleanila.BooleanIlaRemove;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-/**
- *
- * @immutables.types=all
- */
-public class BooleanIlaRemoveTest extends TestCase
-{
-    public void testAll() throws Exception
-    {
+import java.util.Random;
+import org.junit.jupiter.api.Test;
+import tfw.immutable.ila.IlaTestDimensions;
+
+class BooleanIlaRemoveTest {
+    @Test
+    void testArguments() throws Exception {
+        final BooleanIla ila = BooleanIlaFromArray.create(new boolean[10]);
+        final long ilaLength = ila.length();
+
+        assertThrows(IllegalArgumentException.class, () -> BooleanIlaRemove.create(null, 0));
+        assertThrows(IllegalArgumentException.class, () -> BooleanIlaRemove.create(ila, -1));
+        assertThrows(IllegalArgumentException.class, () -> BooleanIlaRemove.create(ila, ilaLength));
+    }
+
+    @Test
+    void testAll() throws Exception {
         final Random random = new Random(0);
         final int length = IlaTestDimensions.defaultIlaLength();
         final boolean[] array = new boolean[length];
-        final boolean[] target = new boolean[length-1];
-        for(int index = 0; index < length; ++index)
-        {
+        final boolean[] target = new boolean[length - 1];
+        for (int index = 0; index < length; ++index) {
             int targetii = 0;
-            for(int ii = 0; ii < array.length; ++ii)
-            {
+            for (int ii = 0; ii < array.length; ++ii) {
                 array[ii] = random.nextBoolean();
-                if(ii != index)
-                {
+                if (ii != index) {
                     target[targetii++] = array[ii];
                 }
             }
             BooleanIla origIla = BooleanIlaFromArray.create(array);
             BooleanIla targetIla = BooleanIlaFromArray.create(target);
             BooleanIla actualIla = BooleanIlaRemove.create(origIla, index);
-            final boolean epsilon = false;
-            BooleanIlaCheck.checkAll(targetIla, actualIla,
-                                      IlaTestDimensions.defaultOffsetLength(),
-                                      IlaTestDimensions.defaultMaxStride(),
-                                      epsilon);
+
+            BooleanIlaCheck.check(targetIla, actualIla);
         }
     }
 }

@@ -1,0 +1,30 @@
+// booleanila,byteila,charila,doubleila,floatila,intila,longila,objectila,shortila
+package %%PACKAGE%%;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+%%RANDOM_INCLUDE%%import org.junit.jupiter.api.Test;
+import tfw.immutable.ila.IlaTestDimensions;
+
+class %%NAME%%IlaFillTest {
+    @Test
+    void testArguments() {
+        %%RANDOM_INIT%%final %%TYPE%% value = %%RANDOM_VALUE%%;
+
+        assertThrows(IllegalArgumentException.class, () -> %%NAME%%IlaFill.create(value, -1));
+    }
+
+    @Test
+    void testAll() throws Exception {
+        %%RANDOM_INIT%%final %%TYPE%% value = %%RANDOM_VALUE%%;
+        final int length = IlaTestDimensions.defaultIlaLength();
+        final %%TYPE%%[] array = new %%TYPE%%[length];
+        for (int ii = 0; ii < array.length; ++ii) {
+            array[ii] = value;
+        }
+        %%NAME%%Ila%%TEMPLATE%% targetIla = %%NAME%%IlaFromArray.create(array);
+        %%NAME%%Ila%%TEMPLATE%% actualIla = %%NAME%%IlaFill.create(value, length);
+
+        %%NAME%%IlaCheck.check(targetIla, actualIla);
+    }
+}

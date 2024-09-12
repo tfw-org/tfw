@@ -1,81 +1,48 @@
 package tfw.immutable.ila.floatila;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
-import tfw.immutable.ImmutableProxy;
 
-/**
- *
- * @immutables.types=numeric
- */
-public final class FloatIlaDivide
-{
-    private FloatIlaDivide()
-    {
-    	// non-instantiable class
+public final class FloatIlaDivide {
+    private FloatIlaDivide() {
+        // non-instantiable class
     }
 
-    public static FloatIla create(FloatIla leftIla, FloatIla rightIla)
-    {
-    	return create(leftIla, rightIla, FloatIlaIterator.DEFAULT_BUFFER_SIZE);
-    }
-    
-    public static FloatIla create(FloatIla leftIla, FloatIla rightIla,
-        int bufferSize)
-    {
+    public static FloatIla create(FloatIla leftIla, FloatIla rightIla, int bufferSize) throws IOException {
         Argument.assertNotNull(leftIla, "leftIla");
         Argument.assertNotNull(rightIla, "rightIla");
-        Argument.assertEquals(leftIla.length(), rightIla.length(),
-                              "leftIla.length()", "rightIla.length()");
+        Argument.assertEquals(leftIla.length(), rightIla.length(), "leftIla.length()", "rightIla.length()");
         Argument.assertNotLessThan(bufferSize, 1, "bufferSize");
 
-        return new MyFloatIla(leftIla, rightIla, bufferSize);
+        return new FloatIlaImpl(leftIla, rightIla, bufferSize);
     }
 
-    private static class MyFloatIla extends AbstractFloatIla
-        implements ImmutableProxy
-    {
+    private static class FloatIlaImpl extends AbstractFloatIla {
         private final FloatIla leftIla;
         private final FloatIla rightIla;
         private final int bufferSize;
 
-        MyFloatIla(FloatIla leftIla, FloatIla rightIla, int bufferSize)
-        {
-            super(leftIla.length());
-                    
+        private FloatIlaImpl(FloatIla leftIla, FloatIla rightIla, int bufferSize) {
             this.leftIla = leftIla;
             this.rightIla = rightIla;
             this.bufferSize = bufferSize;
         }
 
-        protected void toArrayImpl(float[] array, int offset,
-                                   int stride, long start, int length)
-            throws DataInvalidException
-        {
-            FloatIlaIterator li = new FloatIlaIterator(
-                FloatIlaSegment.create(leftIla, start, length), bufferSize);
-            FloatIlaIterator ri = new FloatIlaIterator(
-                FloatIlaSegment.create(rightIla, start, length), bufferSize);
-
-            for (int ii = offset; li.hasNext(); ii += stride)
-            {
-                array[ii] = (float) (li.next() / ri.next());
-            }
+        @Override
+        protected long lengthImpl() throws IOException {
+            return leftIla.length();
         }
-                
-        public Map<String, Object> getParameters()
-        {
-            HashMap<String, Object> map = new HashMap<String, Object>();
-                        
-            map.put("name", "FloatIlaDivide");
-            map.put("leftIla", getImmutableInfo(leftIla));
-            map.put("rightIla", getImmutableInfo(rightIla));
-            map.put("bufferSize", new Integer(bufferSize));
-            map.put("length", new Long(length()));
-                        
-            return(map);
+
+        @Override
+        protected void getImpl(float[] array, int offset, long ilaStart, int length) throws IOException {
+            FloatIlaIterator li =
+                    new FloatIlaIterator(FloatIlaSegment.create(leftIla, ilaStart, length), new float[bufferSize]);
+            FloatIlaIterator ri =
+                    new FloatIlaIterator(FloatIlaSegment.create(rightIla, ilaStart, length), new float[bufferSize]);
+
+            for (int ii = offset; li.hasNext(); ii++) {
+                array[ii] = li.next() / ri.next();
+            }
         }
     }
 }

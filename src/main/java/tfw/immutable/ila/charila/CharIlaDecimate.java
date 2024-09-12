@@ -1,79 +1,49 @@
 package tfw.immutable.ila.charila;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.ImmutableProxy;
-import tfw.immutable.DataInvalidException;
 
-/**
- *
- * @immutables.types=all
- */
-public final class CharIlaDecimate
-{
-    private CharIlaDecimate()
-    {
+public final class CharIlaDecimate {
+    private CharIlaDecimate() {
         // non-instantiable class
     }
 
-    public static CharIla create(CharIla ila, long factor)
-    {
-        return create(ila, factor, CharIlaIterator.DEFAULT_BUFFER_SIZE);
-    }
-
-    public static CharIla create(CharIla ila, long factor, int bufferSize)
-    {
+    public static CharIla create(CharIla ila, long factor, char[] buffer) {
         Argument.assertNotNull(ila, "ila");
+        Argument.assertNotNull(buffer, "buffer");
         Argument.assertNotLessThan(factor, 2, "factor");
-        Argument.assertNotLessThan(bufferSize, 1, "bufferSize");
+        Argument.assertNotLessThan(buffer.length, 1, "buffer.length");
 
-        return new MyCharIla(ila, factor, bufferSize);
+        return new CharIlaImpl(ila, factor, buffer);
     }
 
-    private static class MyCharIla extends AbstractCharIla
-        implements ImmutableProxy
-    {
+    private static class CharIlaImpl extends AbstractCharIla {
         private final CharIla ila;
         private final long factor;
-        private final int bufferSize;
+        private final char[] buffer;
 
-        MyCharIla(CharIla ila, long factor, int bufferSize)
-        {
-            super((ila.length() + factor - 1) / factor);
+        private CharIlaImpl(CharIla ila, long factor, char[] buffer) {
             this.ila = ila;
             this.factor = factor;
-            this.bufferSize = bufferSize;
+            this.buffer = buffer;
         }
 
-        protected void toArrayImpl(char[] array, int offset,
-                                   int stride, long start, int length)
-            throws DataInvalidException
-        {
-            final long segmentStart = start * factor;
-            final long segmentLength = StrictMath.min(ila.length() -
-                segmentStart, length * factor - 1);
-            CharIlaIterator fi = new CharIlaIterator(
-                CharIlaSegment.create(ila, segmentStart, segmentLength),
-                    bufferSize);
+        @Override
+        protected long lengthImpl() throws IOException {
+            return (ila.length() + factor - 1) / factor;
+        }
 
-            for (int ii = offset; length > 0; ii += stride, --length)
-            {
-                array[ii] = (char) fi.next();
+        @Override
+        protected void getImpl(char[] array, int offset, long start, int length) throws IOException {
+            final long segmentStart = start * factor;
+            final long segmentLength = StrictMath.min(ila.length() - segmentStart, length * factor - 1);
+            final CharIla segment = CharIlaSegment.create(ila, segmentStart, segmentLength);
+            final CharIlaIterator fi = new CharIlaIterator(segment, buffer.clone());
+
+            for (int ii = offset; length > 0; ii++, --length) {
+                array[ii] = fi.next();
                 fi.skip(factor - 1);
             }
-        }
-                
-        public Map<String, Object> getParameters()
-        {
-            HashMap<String, Object> map = new HashMap<String, Object>();
-                        
-            map.put("name", "CharIlaDecimate");
-            map.put("ila", getImmutableInfo(ila));
-            map.put("length", new Long(length()));
-            map.put("factor", new Long(factor));
-                        
-            return(map);
         }
     }
 }

@@ -1,60 +1,38 @@
 package tfw.immutable.ila.doubleila;
 
-import java.util.HashMap;
-import java.util.Map;
 import tfw.check.Argument;
-import tfw.immutable.ImmutableProxy;
 
-/**
- *
- * @immutables.types=all
- */
-public final class DoubleIlaFill
-{
-    private DoubleIlaFill()
-    {
+public final class DoubleIlaFill {
+    private DoubleIlaFill() {
         // non-instantiable class
     }
 
-    public static DoubleIla create(double value, long length)
-    {
+    public static DoubleIla create(double value, long length) {
         Argument.assertNotLessThan(length, 0, "length");
 
-        return new MyDoubleIla(value, length);
+        return new DoubleIlaImpl(value, length);
     }
 
-    private static class MyDoubleIla extends AbstractDoubleIla
-        implements ImmutableProxy
-    {
+    private static class DoubleIlaImpl extends AbstractDoubleIla {
         private final double value;
+        private final long length;
 
-        MyDoubleIla(double value, long length)
-        {
-            super(length);
+        private DoubleIlaImpl(double value, long length) {
             this.value = value;
+            this.length = length;
         }
 
-        protected void toArrayImpl(double[] array, int offset,
-                                   int stride, long start, int length)
-        {
+        @Override
+        protected long lengthImpl() {
+            return length;
+        }
+
+        @Override
+        protected void getImpl(double[] array, int offset, long start, int length) {
             final int startPlusLength = (int) (start + length);
-            for(int startInt = (int) start;
-                startInt != startPlusLength;
-                ++startInt, offset += stride)
-            {
+            for (int startInt = (int) start; startInt != startPlusLength; ++startInt, offset++) {
                 array[offset] = value;
             }
-        }
-                
-        public Map<String, Object> getParameters()
-        {
-            HashMap<String, Object> map = new HashMap<String, Object>();
-                        
-            map.put("name", "DoubleIlaFill");
-            map.put("length", new Long(length()));
-            map.put("value", new Double(value));
-
-            return(map);
         }
     }
 }

@@ -1,0 +1,41 @@
+// byteila,charila,doubleila,floatila,intila,longila,shortila
+package %%PACKAGE%%;
+
+import java.io.IOException;
+import tfw.check.Argument;
+
+public final class %%NAME%%IlaScalarAdd {
+    private %%NAME%%IlaScalarAdd() {
+        // non-instantiable class
+    }
+
+    public static %%NAME%%Ila create(%%NAME%%Ila ila, %%TYPE%% scalar) {
+        Argument.assertNotNull(ila, "ila");
+
+        return new %%NAME%%IlaImpl(ila, scalar);
+    }
+
+    private static class %%NAME%%IlaImpl extends Abstract%%NAME%%Ila {
+        private final %%NAME%%Ila ila;
+        private final %%TYPE%% scalar;
+
+        private %%NAME%%IlaImpl(%%NAME%%Ila ila, %%TYPE%% scalar) {
+            this.ila = ila;
+            this.scalar = scalar;
+        }
+
+        @Override
+        protected long lengthImpl() throws IOException {
+            return ila.length();
+        }
+
+        @Override
+        protected void getImpl(%%TYPE%%[] array, int offset, long start, int length) throws IOException {
+            ila.get(array, offset, start, length);
+
+            for (int ii = offset; length > 0; ii++, --length) {
+                array[ii] += scalar;
+            }
+        }
+    }
+}

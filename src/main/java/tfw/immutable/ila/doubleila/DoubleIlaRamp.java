@@ -1,74 +1,50 @@
 package tfw.immutable.ila.doubleila;
 
-import java.util.HashMap;
-import java.util.Map;
 import tfw.check.Argument;
-import tfw.immutable.ImmutableProxy;
 
-/**
- *
- * @immutables.types=numeric
- */
-public final class DoubleIlaRamp
-{
-    private DoubleIlaRamp()
-    {
+public final class DoubleIlaRamp {
+    private DoubleIlaRamp() {
         // non-instantiable class
     }
 
-    public static DoubleIla create(double startValue, double increment,
-                                   long length)
-    {
+    public static DoubleIla create(double startValue, double increment, long length) {
         Argument.assertNotLessThan(length, 0, "length");
 
-        return new MyDoubleIla(startValue, increment, length);
+        return new DoubleIlaImpl(startValue, increment, length);
     }
 
-    private static class MyDoubleIla extends AbstractDoubleIla
-        implements ImmutableProxy
-    {
+    private static class DoubleIlaImpl extends AbstractDoubleIla {
         private final double startValue;
         private final double increment;
+        private final long length;
 
-        MyDoubleIla(double startValue, double increment, long length)
-        {
-            super(length);
+        private DoubleIlaImpl(double startValue, double increment, long length) {
             this.startValue = startValue;
             this.increment = increment;
+            this.length = length;
         }
 
-        protected void toArrayImpl(double[] array, int offset,
-                                   int stride, long start, int length)
-        {
+        @Override
+        protected long lengthImpl() {
+            return length;
+        }
+
+        @Override
+        protected void getImpl(double[] array, int offset, long start, int length) {
             final int startPlusLength = (int) (start + length);
 
             // CORRECT, BUT WAY TOO SLOW
-            //double value = startValue;
-            //for(long ii = 0; ii < start; ++ii)
-            //{
+            // double value = startValue;
+            // for(long ii = 0; ii < start; ++ii)
+            // {
             //    value += increment;
-            //}
-            
+            // }
+
             // INCORRECT, BUT FAST
-            double value = (double) (startValue + increment * start);
-            for(int startInt = (int) start;
-                startInt != startPlusLength;
-                ++startInt, offset += stride, value += increment)
-            {
+            double value = startValue + increment * start;
+            for (int startInt = (int) start; startInt != startPlusLength; ++startInt, offset++, value += increment) {
                 array[offset] = value;
             }
-        }
-                
-        public Map<String, Object> getParameters()
-        {
-            HashMap<String, Object> map = new HashMap<String, Object>();
-                        
-            map.put("name", "DoubleIlaRamp");
-            map.put("length", new Long(length()));
-            map.put("startValue", new Double(startValue));
-            map.put("increment", new Double(increment));
-
-            return(map);
         }
     }
 }

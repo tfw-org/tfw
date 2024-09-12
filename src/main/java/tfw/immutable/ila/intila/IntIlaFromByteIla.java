@@ -1,62 +1,46 @@
 package tfw.immutable.ila.intila;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
-import tfw.immutable.ImmutableProxy;
 import tfw.immutable.ila.byteila.ByteIla;
 import tfw.immutable.ila.byteila.ByteIlaIterator;
 import tfw.immutable.ila.byteila.ByteIlaSegment;
 
-public final class IntIlaFromByteIla
-{
+public final class IntIlaFromByteIla {
     private IntIlaFromByteIla() {}
 
-    public static IntIla create(ByteIla byteIla)
-    {
-    	Argument.assertNotNull(byteIla, "byteIla");
-    	
-		return new MyIntIla(byteIla);
+    public static IntIla create(final ByteIla byteIla, final int bufferSize) {
+        Argument.assertNotNull(byteIla, "byteIla");
+        Argument.assertNotLessThan(bufferSize, 1, "bufferSize");
+
+        return new IntIlaImpl(byteIla, bufferSize);
     }
 
-    private static class MyIntIla extends AbstractIntIla
-		implements ImmutableProxy
-    {
-		private ByteIla byteIla;
+    private static class IntIlaImpl extends AbstractIntIla {
+        private final ByteIla byteIla;
+        private final int bufferSize;
 
-		MyIntIla(ByteIla byteIla)
-		{
-		    super(byteIla.length() / 4);
-		    
-		    this.byteIla = byteIla;
-		}
+        private IntIlaImpl(final ByteIla byteIla, final int bufferSize) {
+            this.byteIla = byteIla;
+            this.bufferSize = bufferSize;
+        }
 
-		protected void toArrayImpl(int[] array, int offset, int stride,
-			long start, int length) throws DataInvalidException
-		{
-			ByteIlaIterator bii = new ByteIlaIterator(
-				ByteIlaSegment.create(byteIla, 4 * start, 4 * length));
-				
-		    for (int i=0 ; i < length ; i++)
-		    {
-		    	array[offset+(i * stride)] =
-					((bii.next() & 0xFF) << 24) |
-					((bii.next() & 0xFF) << 16) |
-					((bii.next() & 0xFF) <<  8) |
-					((bii.next() & 0xFF));
-		    }
-		}
-		
-		public Map<String, Object> getParameters()
-		{
-			HashMap<String, Object> map = new HashMap<String, Object>();
-			
-			map.put("name", "IntIlaFromByteIla");
-			map.put("byteIla", getImmutableInfo(byteIla));
-			map.put("length", new Long(length()));
-			
-			return(map);
-		}
+        @Override
+        protected long lengthImpl() throws IOException {
+            return byteIla.length() / 4;
+        }
+
+        @Override
+        protected void getImpl(int[] array, int offset, long start, int length) throws IOException {
+            ByteIlaIterator bii =
+                    new ByteIlaIterator(ByteIlaSegment.create(byteIla, 4 * start, 4 * length), new byte[bufferSize]);
+
+            for (int i = 0; i < length; i++) {
+                array[offset + i] = ((bii.next() & 0xFF) << 24)
+                        | ((bii.next() & 0xFF) << 16)
+                        | ((bii.next() & 0xFF) << 8)
+                        | (bii.next() & 0xFF);
+            }
+        }
     }
 }

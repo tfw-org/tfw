@@ -1,41 +1,48 @@
 package tfw.immutable.ilm.doubleilm;
 
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
 
 public class DoubleIlmScalarMultiply {
-	private DoubleIlmScalarMultiply() {}
-	
-	public static DoubleIlm create(DoubleIlm doubleIlm, double scalar) {
-		Argument.assertNotNull(doubleIlm,  "doubleIlm");
-		
-		return new MyDoubleIlm(doubleIlm, scalar);
-	}
-	
-	private static class MyDoubleIlm extends AbstractDoubleIlm {
-		private final DoubleIlm doubleIlm;
-		private final double[] buffer;
-		private final double scalar;
-		
-		public MyDoubleIlm(DoubleIlm doubleIlm, double scalar) {
-			super(doubleIlm.width(), doubleIlm.height());
-			
-			this.doubleIlm = doubleIlm;
-			this.buffer = new double[(int)doubleIlm.width()];
-			this.scalar = scalar;
-		}
+    private DoubleIlmScalarMultiply() {}
 
-		@Override
-		protected void toArrayImpl(double[] array, int offset, int rowStride, int colStride, long rowStart,
-				long colStart, int rowCount, int colCount) throws DataInvalidException {
-			for (int i=0 ; i < rowCount ; i++) {
-				doubleIlm.toArray(buffer, 0, buffer.length, 1,
-						rowStart+i, colStart, 1, colCount);
-				
-				for (int j=0 ; j < colCount ; j++) {
-					array[offset+(i*rowStride)+(j*colStride)] = buffer[j]*scalar;
-				}
-			}
-		}
-	}
+    public static DoubleIlm create(DoubleIlm doubleIlm, double scalar) throws IOException {
+        Argument.assertNotNull(doubleIlm, "doubleIlm");
+
+        return new DoubleIlmImpl(doubleIlm, scalar);
+    }
+
+    private static class DoubleIlmImpl extends AbstractDoubleIlm {
+        private final DoubleIlm doubleIlm;
+        private final double[] buffer;
+        private final double scalar;
+
+        private DoubleIlmImpl(DoubleIlm doubleIlm, double scalar) throws IOException {
+            this.doubleIlm = doubleIlm;
+            this.buffer = new double[(int) doubleIlm.width()];
+            this.scalar = scalar;
+        }
+
+        @Override
+        protected long widthImpl() throws IOException {
+            return doubleIlm.width();
+        }
+
+        @Override
+        protected long heightImpl() throws IOException {
+            return doubleIlm.height();
+        }
+
+        @Override
+        protected void getImpl(double[] array, int offset, long rowStart, long colStart, int rowCount, int colCount)
+                throws IOException {
+            for (int i = 0; i < rowCount; i++) {
+                doubleIlm.get(buffer, 0, rowStart + i, colStart, 1, colCount);
+
+                for (int j = 0; j < colCount; j++) {
+                    array[offset + (i * colCount) + j] = buffer[j] * scalar;
+                }
+            }
+        }
+    }
 }

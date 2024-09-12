@@ -1,81 +1,48 @@
 package tfw.immutable.ila.intila;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
-import tfw.immutable.ImmutableProxy;
 
-/**
- *
- * @immutables.types=numeric
- */
-public final class IntIlaSubtract
-{
-    private IntIlaSubtract()
-    {
-    	// non-instantiable class
+public final class IntIlaSubtract {
+    private IntIlaSubtract() {
+        // non-instantiable class
     }
 
-    public static IntIla create(IntIla leftIla, IntIla rightIla)
-    {
-    	return create(leftIla, rightIla, IntIlaIterator.DEFAULT_BUFFER_SIZE);
-    }
-    
-    public static IntIla create(IntIla leftIla, IntIla rightIla,
-        int bufferSize)
-    {
+    public static IntIla create(IntIla leftIla, IntIla rightIla, int bufferSize) throws IOException {
         Argument.assertNotNull(leftIla, "leftIla");
         Argument.assertNotNull(rightIla, "rightIla");
-        Argument.assertEquals(leftIla.length(), rightIla.length(),
-                              "leftIla.length()", "rightIla.length()");
+        Argument.assertEquals(leftIla.length(), rightIla.length(), "leftIla.length()", "rightIla.length()");
         Argument.assertNotLessThan(bufferSize, 1, "bufferSize");
 
-        return new MyIntIla(leftIla, rightIla, bufferSize);
+        return new IntIlaImpl(leftIla, rightIla, bufferSize);
     }
 
-    private static class MyIntIla extends AbstractIntIla
-        implements ImmutableProxy
-    {
+    private static class IntIlaImpl extends AbstractIntIla {
         private final IntIla leftIla;
         private final IntIla rightIla;
         private final int bufferSize;
 
-        MyIntIla(IntIla leftIla, IntIla rightIla, int bufferSize)
-        {
-            super(leftIla.length());
-                    
+        private IntIlaImpl(IntIla leftIla, IntIla rightIla, int bufferSize) {
             this.leftIla = leftIla;
             this.rightIla = rightIla;
             this.bufferSize = bufferSize;
         }
 
-        protected void toArrayImpl(int[] array, int offset,
-                                   int stride, long start, int length)
-            throws DataInvalidException
-        {
-            IntIlaIterator li = new IntIlaIterator(
-                IntIlaSegment.create(leftIla, start, length), bufferSize);
-            IntIlaIterator ri = new IntIlaIterator(
-                IntIlaSegment.create(rightIla, start, length), bufferSize);
-
-            for (int ii = offset; li.hasNext(); ii += stride)
-            {
-                array[ii] = (int) (li.next() - ri.next());
-            }
+        @Override
+        protected long lengthImpl() throws IOException {
+            return leftIla.length();
         }
-                
-        public Map<String, Object> getParameters()
-        {
-            HashMap<String, Object> map = new HashMap<String, Object>();
-                        
-            map.put("name", "IntIlaSubtract");
-            map.put("leftIla", getImmutableInfo(leftIla));
-            map.put("rightIla", getImmutableInfo(rightIla));
-            map.put("bufferSize", new Integer(bufferSize));
-            map.put("length", new Long(length()));
-                        
-            return(map);
+
+        @Override
+        protected void getImpl(int[] array, int offset, long ilaStart, int length) throws IOException {
+            IntIlaIterator li =
+                    new IntIlaIterator(IntIlaSegment.create(leftIla, ilaStart, length), new int[bufferSize]);
+            IntIlaIterator ri =
+                    new IntIlaIterator(IntIlaSegment.create(rightIla, ilaStart, length), new int[bufferSize]);
+
+            for (int ii = offset; li.hasNext(); ii++) {
+                array[ii] = li.next() - ri.next();
+            }
         }
     }
 }

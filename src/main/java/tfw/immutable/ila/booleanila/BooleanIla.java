@@ -1,22 +1,9 @@
 package tfw.immutable.ila.booleanila;
 
-import tfw.immutable.DataInvalidException;
+import java.io.IOException;
 import tfw.immutable.ila.ImmutableLongArray;
 
-/**
- *
- * @immutables.types=all
- */
-public interface BooleanIla extends ImmutableLongArray
-{
-    public boolean[] toArray()
-        throws DataInvalidException;
-    public boolean[] toArray(long start, int length)
-        throws DataInvalidException;
-    public void toArray(boolean[] array, int offset, long start, int length)
-        throws DataInvalidException;
-    public void toArray(boolean[] array, int offset, int stride,
-                        long start, int length)
-        throws DataInvalidException;
+public interface BooleanIla extends ImmutableLongArray {
+    void get(final boolean[] array, final int arrayOffset, final long ilaStart, int length) throws IOException;
 }
 // AUTO GENERATED FROM TEMPLATE

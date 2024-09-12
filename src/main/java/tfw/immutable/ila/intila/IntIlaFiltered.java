@@ -1,142 +1,62 @@
 package tfw.immutable.ila.intila;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
-import tfw.immutable.ImmutableProxy;
-import tfw.immutable.ila.AbstractIlaCheck;
-import tfw.immutable.ila.ImmutableLongArray;
 
-/**
- *
- * @immutables.types=all
- */
-public final class IntIlaFiltered
-{
-    private IntIlaFiltered()
-    {
+public final class IntIlaFiltered {
+    private IntIlaFiltered() {
         // non-instantiable class
     }
 
-    public static interface IntFilter {
-        public boolean matches(int value);
+    public interface IntFilter {
+        boolean matches(int value);
     }
 
-    public static IntIla create(IntIla ila, IntFilter filter)
-    {
+    public static IntIla create(IntIla ila, IntFilter filter, int[] buffer) {
         Argument.assertNotNull(ila, "ila");
         Argument.assertNotNull(filter, "filter");
+        Argument.assertNotNull(buffer, "buffer");
 
-        return new MyIntIla(ila, filter);
+        return new IntIlaImpl(ila, filter, buffer);
     }
 
-    private static class MyIntIla implements IntIla,
-        ImmutableLongArray, ImmutableProxy
-    {
+    private static class IntIlaImpl extends AbstractIntIla {
         private final IntIla ila;
         private final IntFilter filter;
+        private final int[] buffer;
 
-        private long length = -1;
-
-        private MyIntIla(IntIla ila, IntFilter filter)
-        {
+        private IntIlaImpl(IntIla ila, IntFilter filter, int[] buffer) {
             this.ila = ila;
             this.filter = filter;
+            this.buffer = buffer;
         }
-        
-        public final long length() {
-            calculateLength();
+
+        @Override
+        protected long lengthImpl() throws IOException {
+            long length = ila.length();
+            IntIlaIterator oii = new IntIlaIterator(ila, buffer.clone());
+
+            while (oii.hasNext()) {
+                if (filter.matches(oii.next())) {
+                    length--;
+                }
+            }
 
             return length;
         }
 
-        public final int[] toArray()
-            throws DataInvalidException
-        {
-            calculateLength();
+        @Override
+        public void getImpl(int[] array, int offset, long start, int length) throws IOException {
+            IntIlaIterator oii = new IntIlaIterator(IntIlaSegment.create(ila, start), buffer.clone());
 
-            if(length() > (long) Integer.MAX_VALUE)
-                throw new ArrayIndexOutOfBoundsException
-                    ("Ila too large for native array");
-
-            return toArray((long) 0, (int) length());
-        }
-
-        public final int[] toArray(long start, int length)
-            throws DataInvalidException
-        {
-            calculateLength();
-
-            int[] result = new int[length];
-
-            toArray(result, 0, start, length);
-
-            return result;
-        }
-
-        public final void toArray(int[] array, int offset,
-                                  long start, int length)
-            throws DataInvalidException
-        {
-            toArray(array, offset, 1, start, length);
-        }
-
-        public final void toArray(int[] array, int offset, int stride,
-                                  long start, int length)
-            throws DataInvalidException
-        {
-            calculateLength();
-
-            if(length == 0)
-            {
-                return;
-            }
-
-            AbstractIlaCheck.boundsCheck(this.length, array.length, offset, stride, start, length);
-
-            IntIlaIterator oii = new IntIlaIterator(IntIlaSegment.create(ila, start));
-            
             // left off here
-            for (int i=offset; oii.hasNext(); i+=stride) {
+            for (int i = offset; oii.hasNext(); i++) {
                 int node = oii.next();
-                
+
                 if (!filter.matches(node)) {
                     array[i] = node;
                 }
             }
-        }
-
-        private void calculateLength()
-        {
-            if (length < 0) {			
-                length = ila.length();
-                IntIlaIterator oii = new IntIlaIterator(ila);
-                
-                try {
-                    for (int i=0 ; oii.hasNext() ; i++) {
-                        if (filter.matches(oii.next())) {
-                            length--;
-                        }
-                    }
-                }
-                catch (DataInvalidException die) {
-                    length = 0;
-                }
-            }
-        }
-
-        public Map<String, Object> getParameters()
-        {
-            calculateLength();
-
-            HashMap<String, Object> map = new HashMap<String, Object>();
-                        
-            map.put("name", "IntIlaFromArray");
-            map.put("length", new Long(length()));
-                        
-            return(map);
         }
     }
 }

@@ -1,57 +1,39 @@
 package tfw.immutable.ila.booleanila;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.ImmutableProxy;
-import tfw.immutable.DataInvalidException;
 
-/**
- *
- * @immutables.types=all
- */
-public final class BooleanIlaReverse
-{
-    private BooleanIlaReverse()
-    {
+public final class BooleanIlaReverse {
+    private BooleanIlaReverse() {
         // non-instantiable class
     }
 
-    public static BooleanIla create(BooleanIla ila)
-    {
+    public static BooleanIla create(BooleanIla ila, final boolean[] buffer) {
         Argument.assertNotNull(ila, "ila");
+        Argument.assertNotNull(buffer, "buffer");
 
-        return new MyBooleanIla(ila);
+        return new BooleanIlaImpl(ila, buffer);
     }
 
-    private static class MyBooleanIla extends AbstractBooleanIla
-        implements ImmutableProxy
-    {
+    private static class BooleanIlaImpl extends AbstractBooleanIla {
         private final BooleanIla ila;
+        private final boolean[] buffer;
 
-        MyBooleanIla(BooleanIla ila)
-        {
-            super(ila.length());
+        private BooleanIlaImpl(BooleanIla ila, final boolean[] buffer) {
             this.ila = ila;
+            this.buffer = buffer;
         }
 
-        protected void toArrayImpl(boolean[] array, int offset,
-                                   int stride, long start, int length)
-            throws DataInvalidException
-        {
-            ila.toArray(array, offset + (length - 1) * stride,
-                        -stride, length() - (start + length), length);
+        @Override
+        protected long lengthImpl() throws IOException {
+            return ila.length();
         }
-                
-        public Map<String, Object> getParameters()
-        {
-            HashMap<String, Object> map = new HashMap<String, Object>();
-                        
-            map.put("name", "BooleanIlaReverse");
-            map.put("length", new Long(length()));
-            map.put("ila", getImmutableInfo(ila));
-                        
-            return(map);
+
+        @Override
+        protected void getImpl(boolean[] array, int offset, long start, int length) throws IOException {
+            final StridedBooleanIla stridedBooleanIla = StridedBooleanIlaFromBooleanIla.create(ila, buffer.clone());
+
+            stridedBooleanIla.get(array, offset + length - 1, -1, length() - (start + length), length);
         }
     }
 }

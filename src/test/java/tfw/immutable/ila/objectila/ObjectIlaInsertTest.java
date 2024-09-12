@@ -1,46 +1,42 @@
 package tfw.immutable.ila.objectila;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
-import tfw.immutable.ila.objectila.ObjectIla;
-import tfw.immutable.ila.objectila.ObjectIlaFromArray;
-import tfw.immutable.ila.objectila.ObjectIlaInsert;
 
-/**
- *
- * @immutables.types=all
- */
-public class ObjectIlaInsertTest extends TestCase
-{
-    public void testAll() throws Exception
-    {
-        
+class ObjectIlaInsertTest {
+    @Test
+    void testArguments() throws Exception {
+        final ObjectIla<Object> ila = ObjectIlaFromArray.create(new Object[10]);
+        final long ilaLength = ila.length();
+        final Object value = new Object();
+
+        assertThrows(IllegalArgumentException.class, () -> ObjectIlaInsert.create(null, 0, value));
+        assertThrows(IllegalArgumentException.class, () -> ObjectIlaInsert.create(ila, -1, value));
+        assertThrows(IllegalArgumentException.class, () -> ObjectIlaInsert.create(ila, ilaLength + 1, value));
+    }
+
+    @Test
+    void testAll() throws Exception {
         final int length = IlaTestDimensions.defaultIlaLength();
         final Object[] array = new Object[length];
-        final Object[] target = new Object[length+1];
-        for(int index = 0; index < length; ++index)
-        {
+        final Object[] target = new Object[length + 1];
+        for (int index = 0; index < length; ++index) {
             final Object value = new Object();
             int skipit = 0;
-            for(int ii = 0; ii < array.length; ++ii)
-            {
-                if(index == ii)
-                {
+            for (int ii = 0; ii < array.length; ++ii) {
+                if (index == ii) {
                     skipit = 1;
                     target[ii] = value;
                 }
                 target[ii + skipit] = array[ii] = new Object();
             }
-            ObjectIla origIla = ObjectIlaFromArray.create(array);
-            ObjectIla targetIla = ObjectIlaFromArray.create(target);
-            ObjectIla actualIla = ObjectIlaInsert.create(origIla, index,
-                                                             value);
-            final Object epsilon = Object.class;
-            ObjectIlaCheck.checkAll(targetIla, actualIla,
-                                      IlaTestDimensions.defaultOffsetLength(),
-                                      IlaTestDimensions.defaultMaxStride(),
-                                      epsilon);
+            ObjectIla<Object> origIla = ObjectIlaFromArray.create(array);
+            ObjectIla<Object> targetIla = ObjectIlaFromArray.create(target);
+            ObjectIla<Object> actualIla = ObjectIlaInsert.create(origIla, index, value);
+
+            ObjectIlaCheck.check(targetIla, actualIla);
         }
     }
 }

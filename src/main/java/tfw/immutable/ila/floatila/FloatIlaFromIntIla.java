@@ -1,58 +1,42 @@
 package tfw.immutable.ila.floatila;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
-import tfw.immutable.ImmutableProxy;
 import tfw.immutable.ila.intila.IntIla;
 import tfw.immutable.ila.intila.IntIlaIterator;
 import tfw.immutable.ila.intila.IntIlaSegment;
 
-public final class FloatIlaFromIntIla
-{
+public final class FloatIlaFromIntIla {
     private FloatIlaFromIntIla() {}
 
-    public static FloatIla create(IntIla intIla)
-    {
-    	Argument.assertNotNull(intIla, "intIla");
+    public static FloatIla create(final IntIla intIla, final int bufferSize) {
+        Argument.assertNotNull(intIla, "intIla");
+        Argument.assertNotLessThan(bufferSize, 1, "bufferSize");
 
-		return new MyFloatIla(intIla);
+        return new FloatIlaImpl(intIla, bufferSize);
     }
 
-    private static class MyFloatIla extends AbstractFloatIla
-		implements ImmutableProxy
-    {
-		private IntIla intIla;
+    private static class FloatIlaImpl extends AbstractFloatIla {
+        private final IntIla intIla;
+        private final int bufferSize;
 
-		MyFloatIla(IntIla intIla)
-		{
-		    super(intIla.length());
-		    
-		    this.intIla = intIla;
-		}
+        private FloatIlaImpl(final IntIla intIla, final int bufferSize) {
+            this.intIla = intIla;
+            this.bufferSize = bufferSize;
+        }
 
-		protected void toArrayImpl(float[] array, int offset, int stride,
-			long start, int length) throws DataInvalidException
-		{
-			IntIlaIterator iii = new IntIlaIterator(
-				IntIlaSegment.create(intIla, start, length));
-				
-		    for (int i=0 ; i < length ; i++)
-		    {
-		    	array[offset+(i * stride)] = Float.intBitsToFloat(iii.next());
-		    }
-		}
-		
-		public Map<String, Object> getParameters()
-		{
-			HashMap<String, Object> map = new HashMap<String, Object>();
-			
-			map.put("name", "FloatIlaFromIntIla");
-			map.put("intIla", getImmutableInfo(intIla));
-			map.put("length", new Long(length()));
-			
-			return(map);
-		}
+        @Override
+        protected long lengthImpl() throws IOException {
+            return intIla.length();
+        }
+
+        @Override
+        protected void getImpl(float[] array, int offset, long start, int length) throws IOException {
+            IntIlaIterator iii = new IntIlaIterator(IntIlaSegment.create(intIla, start, length), new int[bufferSize]);
+
+            for (int i = 0; i < length; i++) {
+                array[offset + i] = Float.intBitsToFloat(iii.next());
+            }
+        }
     }
 }

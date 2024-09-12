@@ -1,0 +1,30 @@
+// doubleila,floatila
+package %%PACKAGE%%;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+%%RANDOM_INCLUDE%%import org.junit.jupiter.api.Test;
+import tfw.immutable.ila.IlaTestDimensions;
+
+class %%NAME%%IlaRoundTest {
+    @Test
+    void testArguments() throws Exception {
+        assertThrows(IllegalArgumentException.class, () -> %%NAME%%IlaRound.create(null));
+    }
+
+    @Test
+    void testAll() throws Exception {
+        %%RANDOM_INIT%%final int length = IlaTestDimensions.defaultIlaLength();
+        final %%TYPE%%[] array = new %%TYPE%%[length];
+        final %%TYPE%%[] target = new %%TYPE%%[length];
+        for (int ii = 0; ii < array.length; ++ii) {
+            array[ii] = %%RANDOM_VALUE%%;
+            target[ii] = %%CAST_FROM_DOUBLE%%StrictMath.rint(array[ii]);
+        }
+        %%NAME%%Ila ila = %%NAME%%IlaFromArray.create(array);
+        %%NAME%%Ila targetIla = %%NAME%%IlaFromArray.create(target);
+        %%NAME%%Ila actualIla = %%NAME%%IlaRound.create(ila);
+
+        %%NAME%%IlaCheck.check(targetIla, actualIla);
+    }
+}

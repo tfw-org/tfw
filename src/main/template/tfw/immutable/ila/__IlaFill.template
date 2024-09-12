@@ -1,0 +1,39 @@
+// booleanila,byteila,charila,doubleila,floatila,intila,longila,objectila,shortila
+package %%PACKAGE%%;
+
+import tfw.check.Argument;
+
+public final class %%NAME%%IlaFill {
+    private %%NAME%%IlaFill() {
+        // non-instantiable class
+    }
+
+    public static %%TEMPLATE_SPACE%%%%NAME%%Ila%%TEMPLATE%% create(%%TYPE_OR_TEMPLATE%% value, long length) {
+        Argument.assertNotLessThan(length, 0, "length");
+
+        return new %%NAME%%IlaImpl%%DIAMOND%%(value, length);
+    }
+
+    private static class %%NAME%%IlaImpl%%TEMPLATE%% extends Abstract%%NAME%%Ila%%TEMPLATE%% {
+        private final %%TYPE_OR_TEMPLATE%% value;
+        private final long length;
+
+        private %%NAME%%IlaImpl(%%TYPE_OR_TEMPLATE%% value, long length) {
+            this.value = value;
+            this.length = length;
+        }
+
+        @Override
+        protected long lengthImpl() {
+            return length;
+        }
+
+        @Override
+        protected void getImpl(%%TYPE_OR_TEMPLATE%%[] array, int offset, long start, int length) {
+            final int startPlusLength = (int) (start + length);
+            for (int startInt = (int) start; startInt != startPlusLength; ++startInt, offset++) {
+                array[offset] = value;
+            }
+        }
+    }
+}

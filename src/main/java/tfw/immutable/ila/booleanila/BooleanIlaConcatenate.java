@@ -1,24 +1,14 @@
 package tfw.immutable.ila.booleanila;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.ImmutableProxy;
-import tfw.immutable.DataInvalidException;
 
-/**
- *
- * @immutables.types=all
- */
-public final class BooleanIlaConcatenate
-{
-    private BooleanIlaConcatenate()
-    {
+public final class BooleanIlaConcatenate {
+    private BooleanIlaConcatenate() {
         // non-instantiable class
     }
 
-    public static BooleanIla create(BooleanIla leftIla, BooleanIla rightIla)
-    {
+    public static BooleanIla create(BooleanIla leftIla, BooleanIla rightIla) {
         Argument.assertNotNull(leftIla, "leftIla");
         Argument.assertNotNull(rightIla, "rightIla");
 
@@ -32,56 +22,37 @@ public final class BooleanIlaConcatenate
         if(rightIla.length() == 0)
             return leftIla;
         */
-        return new MyBooleanIla(leftIla, rightIla);
+        return new BooleanIlaImpl(leftIla, rightIla);
     }
 
-    private static class MyBooleanIla extends AbstractBooleanIla
-        implements ImmutableProxy
-    {
+    private static class BooleanIlaImpl extends AbstractBooleanIla {
         private final BooleanIla leftIla;
         private final BooleanIla rightIla;
-        private final long leftIlaLength;
 
-        MyBooleanIla(BooleanIla leftIla, BooleanIla rightIla)
-        {
-            super(leftIla.length() + rightIla.length());
+        private BooleanIlaImpl(BooleanIla leftIla, BooleanIla rightIla) {
             this.leftIla = leftIla;
             this.rightIla = rightIla;
-            this.leftIlaLength = leftIla.length();
         }
 
-        protected void toArrayImpl(boolean[] array, int offset,
-                                   int stride, long start, int length)
-            throws DataInvalidException
-        {
-            if(start + length <= leftIlaLength)
-            {
-                leftIla.toArray(array, offset, stride, start, length);
-            }
-            else if(start >= leftIlaLength)
-            {
-                rightIla.toArray(array, offset, stride, start - leftIlaLength,
-                                 length);
-            }
-            else
-            {
-                final int leftAmount = (int) (leftIlaLength - start);
-                leftIla.toArray(array, offset, stride, start, leftAmount);
-                rightIla.toArray(array, offset + leftAmount * stride,
-                                 stride, 0, length - leftAmount);
-            }
+        @Override
+        protected long lengthImpl() throws IOException {
+            return leftIla.length() + rightIla.length();
         }
-                
-        public Map<String, Object> getParameters()
-        {
-            HashMap<String, Object> map = new HashMap<String, Object>();
-                        
-            map.put("name", "BooleanIlaConcatenate");
-            map.put("length", new Long(length()));
-            map.put("leftIla", getImmutableInfo(leftIla));
-            map.put("rightIla", getImmutableInfo(rightIla));
-                        
-            return(map);
+
+        @Override
+        protected void getImpl(boolean[] array, int offset, long start, int length) throws IOException {
+            final long leftIlaLength = leftIla.length();
+            final long leftIlaLastIndex = leftIlaLength - 1;
+
+            if (start + length <= leftIlaLastIndex) {
+                leftIla.get(array, offset, start, length);
+            } else if (start > leftIlaLastIndex) {
+                rightIla.get(array, offset, start - leftIlaLength, length);
+            } else {
+                final int leftAmount = (int) (leftIlaLength - start);
+                leftIla.get(array, offset, start, leftAmount);
+                rightIla.get(array, offset + leftAmount, 0, length - leftAmount);
+            }
         }
     }
 }

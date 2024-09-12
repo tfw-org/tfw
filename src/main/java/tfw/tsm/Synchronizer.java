@@ -19,32 +19,28 @@ import tfw.tsm.ecd.ObjectECD;
  * transaction is not allowed and will result in a
  * <code>java.lang.IllegalStateException</code> being thrown.
  */
-public abstract class Synchronizer extends Processor
-{
+public abstract class Synchronizer extends Processor {
     private final List<ObjectECD> aEventList;
     private final List<ObjectECD> bEventList;
     private final List<ObjectECD> additionalList;
     private HashSet<EventChannel> aToBConvert = new HashSet<EventChannel>();
     private HashSet<EventChannel> bToAConvert = new HashSet<EventChannel>();
-    private CommitRollbackListener crListener = new CommitRollbackListener()
-    {
-    	public void rollback()
-    	{
-    		aToBConvert.clear();
-    		bToAConvert.clear();
-    	}
-    	
-    	public void commit() {}
-    	
-    	public String getName()
-    	{
-    		return Synchronizer.this.getName();
-    	}
+    private CommitRollbackListener crListener = new CommitRollbackListener() {
+        public void rollback() {
+            aToBConvert.clear();
+            bToAConvert.clear();
+        }
+
+        public void commit() {}
+
+        public String getName() {
+            return Synchronizer.this.getName();
+        }
     };
-    
+
     /**
      * Creates a synchronizer.
-     * 
+     *
      * @param name
      *            The name of the component.
      * @param aPortInputDescriptions
@@ -56,27 +52,24 @@ public abstract class Synchronizer extends Processor
      * @param outputDescriptions
      *            The array of EventChannelDescriptions for output.
      */
-    public Synchronizer(String name,
+    public Synchronizer(
+            String name,
             ObjectECD[] aPortInputDescriptions,
             ObjectECD[] bPortInputDescriptions,
             ObjectECD[] additionalInputDescriptions,
-            EventChannelDescription[] outputDescriptions)
-    {
-        super(name,
-        	checkTriggeringSinks(aPortInputDescriptions,
-        		bPortInputDescriptions),
-            checkAdditionalSinks(additionalInputDescriptions),
-        	ECDUtility.concat(aPortInputDescriptions,
-        			ECDUtility.concat(bPortInputDescriptions, outputDescriptions)));
+            EventChannelDescription[] outputDescriptions) {
+        super(
+                name,
+                checkTriggeringSinks(aPortInputDescriptions, bPortInputDescriptions),
+                checkAdditionalSinks(additionalInputDescriptions),
+                ECDUtility.concat(
+                        aPortInputDescriptions, ECDUtility.concat(bPortInputDescriptions, outputDescriptions)));
 
-        this.aEventList = Collections.unmodifiableList(
-        	Arrays.asList(aPortInputDescriptions));
-        this.bEventList = Collections.unmodifiableList(
-        	Arrays.asList(bPortInputDescriptions));
-        this.additionalList = (additionalInputDescriptions == null) ?
-        	Collections.unmodifiableList(new ArrayList<ObjectECD>()) :
-        	Collections.unmodifiableList(
-        		Arrays.asList(additionalInputDescriptions));
+        this.aEventList = Collections.unmodifiableList(Arrays.asList(aPortInputDescriptions));
+        this.bEventList = Collections.unmodifiableList(Arrays.asList(bPortInputDescriptions));
+        this.additionalList = (additionalInputDescriptions == null)
+                ? Collections.unmodifiableList(new ArrayList<ObjectECD>())
+                : Collections.unmodifiableList(Arrays.asList(additionalInputDescriptions));
     }
 
     /**
@@ -100,9 +93,7 @@ public abstract class Synchronizer extends Processor
      * can be overridden for debugging purposes to determine what event channels
      * are null.
      */
-    protected void debugConvertAToB()
-    {
-    }
+    protected void debugConvertAToB() {}
 
     /**
      * This method is called during the processing phase of a transaction when
@@ -111,84 +102,64 @@ public abstract class Synchronizer extends Processor
      * can be overridden for debugging purposes to determine what event channels
      * are null.
      */
-    protected void debugConvertBToA()
-    {
-    }
+    protected void debugConvertBToA() {}
 
-    void process()
-    {
-        if (!aToBConvert.isEmpty())
-        {
-//        	if (bToAConvert.isEmpty() ||
-//        		getTransactionManager().isComponentChangeTransactionExecuting())
-//        	{
-            	if (isStateNonNull(aEventList) && isStateNonNull(additionalList))
-                {
-                    convertAToB();
-                }
-                else
-                {
-                    debugConvertAToB();
-                }
-//        	}
-//        	else
-//        	{
-//        		throwBothSetsChangedException();
-//        	}
+    void process() {
+        if (!aToBConvert.isEmpty()) {
+            //        	if (bToAConvert.isEmpty() ||
+            //        		getTransactionManager().isComponentChangeTransactionExecuting())
+            //        	{
+            if (isStateNonNull(aEventList) && isStateNonNull(additionalList)) {
+                convertAToB();
+            } else {
+                debugConvertAToB();
+            }
+            //        	}
+            //        	else
+            //        	{
+            //        		throwBothSetsChangedException();
+            //        	}
+        } else if (!bToAConvert.isEmpty()) {
+            //        	if (aToBConvert.isEmpty())
+            //        	{
+            if (isStateNonNull(bEventList) && isStateNonNull(additionalList)) {
+                convertBToA();
+            } else {
+                debugConvertBToA();
+            }
+            //        	}
+            //        	else
+            //        	{
+            //        		throwBothSetsChangedException();
+            //        	}
         }
-        else if (!bToAConvert.isEmpty())
-        {
-//        	if (aToBConvert.isEmpty())
-//        	{
-            	if (isStateNonNull(bEventList) && isStateNonNull(additionalList))
-                {
-                    convertBToA();
-                }
-                else
-                {
-                    debugConvertBToA();
-                }
-//        	}
-//        	else
-//        	{
-//        		throwBothSetsChangedException();
-//        	}
-        }
-        
+
         aToBConvert.clear();
         bToAConvert.clear();
     }
 
-    void stateChange(EventChannel eventChannel)
-    {
-    	getTransactionManager().addCommitRollbackListener(crListener);
+    void stateChange(EventChannel eventChannel) {
+        getTransactionManager().addCommitRollbackListener(crListener);
         // call super to get added to the transaction processors...
         super.stateChange(eventChannel);
-        
-        if (aEventList.contains(eventChannel.getECD()))
-        {
+
+        if (aEventList.contains(eventChannel.getECD())) {
             aToBConvert.add(eventChannel);
-        }
-        else if (bEventList.contains(eventChannel.getECD()))
-        {
+        } else if (bEventList.contains(eventChannel.getECD())) {
             bToAConvert.add(eventChannel);
         }
     }
 
-    private static ObjectECD[] checkAdditionalSinks(
-            ObjectECD[] sinkEventChannels)
-    {
-        if (sinkEventChannels != null)
-        {
-            Argument.assertElementNotNull(sinkEventChannels,
-                    "sinkEventChannels");
+    private static ObjectECD[] checkAdditionalSinks(ObjectECD[] sinkEventChannels) {
+        if (sinkEventChannels != null) {
+            Argument.assertElementNotNull(sinkEventChannels, "sinkEventChannels");
         }
         return sinkEventChannels;
     }
-    
+
     /**
      * Validates the arguments and returns a concatinated list of sinks.
-     * 
+     *
      * @param sinks
      *            non-triggering sinks.
      * @param aPortDescriptions
@@ -199,55 +170,45 @@ public abstract class Synchronizer extends Processor
      *         <code>aPortDescriptions</code> and
      *         <code>bPortDescriptions</code>
      */
-    private static ObjectECD[] checkTriggeringSinks(
-            ObjectECD[] aPortDescriptions,
-            ObjectECD[] bPortDescriptions)
-    {
+    private static ObjectECD[] checkTriggeringSinks(ObjectECD[] aPortDescriptions, ObjectECD[] bPortDescriptions) {
         Argument.assertNotNull(aPortDescriptions, "aPortDescriptions");
         Argument.assertNotNull(bPortDescriptions, "bPortDescriptions");
         Argument.assertElementNotNull(aPortDescriptions, "aPortDescription");
         Argument.assertElementNotNull(bPortDescriptions, "bPortDescription");
 
-        if (aPortDescriptions.length == 0)
-        {
-            throw new IllegalArgumentException(
-                    "aPortDescriptions.length == 0 not allowed");
+        if (aPortDescriptions.length == 0) {
+            throw new IllegalArgumentException("aPortDescriptions.length == 0 not allowed");
         }
 
-        if (bPortDescriptions.length == 0)
-        {
-            throw new IllegalArgumentException(
-                    "bPortDescriptions.length == 0 not allowed");
+        if (bPortDescriptions.length == 0) {
+            throw new IllegalArgumentException("bPortDescriptions.length == 0 not allowed");
         }
 
         return ECDUtility.concat(aPortDescriptions, bPortDescriptions);
     }
-    
-    private void throwBothSetsChangedException()
-    {
-    	StringBuffer sb = new StringBuffer();
-    	sb.append(getFullyQualifiedName());
-    	sb.append(" - Cannot convert AToB and BToA in the same transaction!\n");
-    	sb.append("A changes:\n");
-    	
-    	for (EventChannel ec : aToBConvert)
-    	{
-    		sb.append(ec.getECD().getEventChannelName());
-    		sb.append(" by ");
-    		sb.append(ec.getCurrentStateSource());
-    		sb.append("\n");
-    	}
-    	
-    	sb.append("B Changes:\n");
-    	
-    	for (EventChannel ec : bToAConvert)
-    	{
-    		sb.append(ec.getECD().getEventChannelName());
-    		sb.append(" by ");
-    		sb.append(ec.getCurrentStateSource());
-    		sb.append("\n");
-    	}
-    	
+
+    private void throwBothSetsChangedException() {
+        StringBuffer sb = new StringBuffer();
+        sb.append(getFullyQualifiedName());
+        sb.append(" - Cannot convert AToB and BToA in the same transaction!\n");
+        sb.append("A changes:\n");
+
+        for (EventChannel ec : aToBConvert) {
+            sb.append(ec.getECD().getEventChannelName());
+            sb.append(" by ");
+            sb.append(ec.getCurrentStateSource());
+            sb.append("\n");
+        }
+
+        sb.append("B Changes:\n");
+
+        for (EventChannel ec : bToAConvert) {
+            sb.append(ec.getECD().getEventChannelName());
+            sb.append(" by ");
+            sb.append(ec.getCurrentStateSource());
+            sb.append("\n");
+        }
+
         throw new IllegalStateException(sb.toString());
     }
 }

@@ -1,62 +1,38 @@
 package tfw.immutable.ila.longila;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
-import tfw.immutable.ImmutableProxy;
 
-/**
- *
- * @immutables.types=numeric
- */
-public final class LongIlaNegate
-{
-    private LongIlaNegate()
-    {
-    	// non-instantiable class
+public final class LongIlaNegate {
+    private LongIlaNegate() {
+        // non-instantiable class
     }
 
-    public static LongIla create(LongIla ila)
-    {
+    public static LongIla create(LongIla ila) {
         Argument.assertNotNull(ila, "ila");
 
-        return new MyLongIla(ila);
+        return new LongIlaImpl(ila);
     }
 
-    private static class MyLongIla extends AbstractLongIla
-        implements ImmutableProxy
-    {
+    private static class LongIlaImpl extends AbstractLongIla {
         private final LongIla ila;
 
-        MyLongIla(LongIla ila)
-        {
-            super(ila.length());
-                    
+        private LongIlaImpl(LongIla ila) {
             this.ila = ila;
         }
 
-        protected void toArrayImpl(long[] array, int offset,
-                                   int stride, long start, int length)
-            throws DataInvalidException
-        {
-            ila.toArray(array, offset, stride, start, length);
-
-            for (int ii = offset; length > 0; ii += stride, --length)
-            {
-                array[ii] = (long) -array[ii];
-            }
+        @Override
+        protected long lengthImpl() throws IOException {
+            return ila.length();
         }
-                
-        public Map<String, Object> getParameters()
-        {
-            HashMap<String, Object> map = new HashMap<String, Object>();
-                        
-            map.put("name", "LongIlaNegate");
-            map.put("ila", getImmutableInfo(ila));
-            map.put("length", new Long(length()));
-                        
-            return(map);
+
+        @Override
+        protected void getImpl(long[] array, int offset, long start, int length) throws IOException {
+            ila.get(array, offset, start, length);
+
+            for (int ii = offset; length > 0; ii++, --length) {
+                array[ii] = -array[ii];
+            }
         }
     }
 }

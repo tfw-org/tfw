@@ -1,0 +1,30 @@
+// doubleila,floatila
+package %%PACKAGE%%;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+%%RANDOM_INCLUDE%%import org.junit.jupiter.api.Test;
+import tfw.immutable.ila.IlaTestDimensions;
+
+class %%NAME%%IlaInvertTest {
+    @Test
+    void testArguments() throws Exception {
+        assertThrows(IllegalArgumentException.class, () -> %%NAME%%IlaInvert.create(null));
+    }
+
+    @Test
+    void testAll() throws Exception {
+        %%RANDOM_INIT%%final int length = IlaTestDimensions.defaultIlaLength();
+        final %%TYPE%%[] array = new %%TYPE%%[length];
+        final %%TYPE%%[] target = new %%TYPE%%[length];
+        for (int ii = 0; ii < array.length; ++ii) {
+            array[ii] = %%RANDOM_VALUE%%;
+            target[ii] = (%%TYPE%%) 1 / array[ii];
+        }
+        %%NAME%%Ila ila = %%NAME%%IlaFromArray.create(array);
+        %%NAME%%Ila targetIla = %%NAME%%IlaFromArray.create(target);
+        %%NAME%%Ila actualIla = %%NAME%%IlaInvert.create(ila);
+
+        %%NAME%%IlaCheck.check(targetIla, actualIla);
+    }
+}

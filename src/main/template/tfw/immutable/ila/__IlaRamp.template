@@ -1,0 +1,51 @@
+// byteila,charila,doubleila,floatila,intila,longila,shortila
+package %%PACKAGE%%;
+
+import tfw.check.Argument;
+
+public final class %%NAME%%IlaRamp {
+    private %%NAME%%IlaRamp() {
+        // non-instantiable class
+    }
+
+    public static %%NAME%%Ila create(%%TYPE%% startValue, %%TYPE%% increment, long length) {
+        Argument.assertNotLessThan(length, 0, "length");
+
+        return new %%NAME%%IlaImpl(startValue, increment, length);
+    }
+
+    private static class %%NAME%%IlaImpl extends Abstract%%NAME%%Ila {
+        private final %%TYPE%% startValue;
+        private final %%TYPE%% increment;
+        private final long length;
+
+        private %%NAME%%IlaImpl(%%TYPE%% startValue, %%TYPE%% increment, long length) {
+            this.startValue = startValue;
+            this.increment = increment;
+            this.length = length;
+        }
+
+        @Override
+        protected long lengthImpl() {
+            return length;
+        }
+
+        @Override
+        protected void getImpl(%%TYPE%%[] array, int offset, long start, int length) {
+            final int startPlusLength = (int) (start + length);
+
+            // CORRECT, BUT WAY TOO SLOW
+            // %%TYPE%% value = startValue;
+            // for(long ii = 0; ii < start; ++ii)
+            // {
+            //    value += increment;
+            // }
+
+            // INCORRECT, BUT FAST
+            %%TYPE%% value = %%CAST_FROM_LONG_PRE%%startValue + increment * start%%CAST_FROM_LONG_POST%%;
+            for (int startInt = (int) start; startInt != startPlusLength; ++startInt, offset++, value += increment) {
+                array[offset] = value;
+            }
+        }
+    }
+}

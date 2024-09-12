@@ -1,15 +1,24 @@
 package tfw.immutable.ilm.booleanilm;
 
-import java.util.Arrays;
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class BooleanIlmFromArrayTest extends TestCase
-{
-	public void testBooleanIlmFromArray() throws Exception
-	{
-		boolean[] array = new boolean[] {true, false, true, false, true, false};
-		BooleanIlm booleanIlm = BooleanIlmFromArray.create(array, 3);
-		
-		assertTrue(Arrays.equals(array, booleanIlm.toArray()));
-	}
+import java.util.Arrays;
+import java.util.Random;
+import org.junit.jupiter.api.Test;
+
+class BooleanIlmFromArrayTest {
+    @Test
+    void testBooleanIlmFromArray() throws Exception {
+        final Random random = new Random(0);
+        boolean[] array = new boolean[6];
+
+        for (int i = 0; i < array.length; i++) {
+            array[i] = random.nextBoolean();
+        }
+
+        BooleanIlm booleanIlm = BooleanIlmFromArray.create(array, array.length / 2);
+
+        assertTrue(Arrays.equals(array, BooleanIlmUtil.toArray(booleanIlm)));
+    }
 }
+// AUTO GENERATED FROM TEMPLATE

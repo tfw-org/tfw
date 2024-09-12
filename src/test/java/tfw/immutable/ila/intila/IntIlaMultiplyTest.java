@@ -1,40 +1,41 @@
 package tfw.immutable.ila.intila;
 
-import java.util.Random;
-import junit.framework.TestCase;
-import tfw.immutable.ila.IlaTestDimensions;
-import tfw.immutable.ila.intila.IntIla;
-import tfw.immutable.ila.intila.IntIlaFromArray;
-import tfw.immutable.ila.intila.IntIlaMultiply;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-/**
- *
- * @immutables.types=numeric
- */
-public class IntIlaMultiplyTest extends TestCase
-{
-    public void testAll() throws Exception
-    {
+import java.util.Random;
+import org.junit.jupiter.api.Test;
+import tfw.immutable.ila.IlaTestDimensions;
+
+class IntIlaMultiplyTest {
+    @Test
+    void testArguments() {
+        final IntIla ila1 = IntIlaFromArray.create(new int[10]);
+        final IntIla ila2 = IntIlaFromArray.create(new int[20]);
+
+        assertThrows(IllegalArgumentException.class, () -> IntIlaMultiply.create(null, ila1, 10));
+        assertThrows(IllegalArgumentException.class, () -> IntIlaMultiply.create(ila1, null, 10));
+        assertThrows(IllegalArgumentException.class, () -> IntIlaMultiply.create(ila1, ila1, 0));
+        assertThrows(IllegalArgumentException.class, () -> IntIlaMultiply.create(ila1, ila2, 10));
+    }
+
+    @Test
+    void testAll() throws Exception {
         final Random random = new Random(0);
         final int length = IlaTestDimensions.defaultIlaLength();
         final int[] leftArray = new int[length];
         final int[] rightArray = new int[length];
         final int[] array = new int[length];
-        for(int ii = 0; ii < leftArray.length; ++ii)
-        {
+        for (int ii = 0; ii < leftArray.length; ++ii) {
             leftArray[ii] = random.nextInt();
             rightArray[ii] = random.nextInt();
-            array[ii] = (int) (leftArray[ii] * rightArray[ii]);
+            array[ii] = leftArray[ii] * rightArray[ii];
         }
         IntIla leftIla = IntIlaFromArray.create(leftArray);
         IntIla rightIla = IntIlaFromArray.create(rightArray);
         IntIla targetIla = IntIlaFromArray.create(array);
-        IntIla actualIla = IntIlaMultiply.create(leftIla, rightIla);
-        final int epsilon = (int) 0.0;
-        IntIlaCheck.checkAll(targetIla, actualIla,
-                                IlaTestDimensions.defaultOffsetLength(),
-                                IlaTestDimensions.defaultMaxStride(),
-                                epsilon);
+        IntIla actualIla = IntIlaMultiply.create(leftIla, rightIla, 100);
+
+        IntIlaCheck.check(targetIla, actualIla);
     }
 }
 // AUTO GENERATED FROM TEMPLATE

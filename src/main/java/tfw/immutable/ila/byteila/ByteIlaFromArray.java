@@ -1,70 +1,33 @@
 package tfw.immutable.ila.byteila;
 
-import java.util.HashMap;
-import java.util.Map;
 import tfw.check.Argument;
-import tfw.immutable.ImmutableProxy;
 
-/**
- *
- * @immutables.types=all
- */
-public final class ByteIlaFromArray
-{
-    private ByteIlaFromArray()
-    {
+public final class ByteIlaFromArray {
+    private ByteIlaFromArray() {
         // non-instantiable class
     }
 
-    public static ByteIla create(byte[] array)
-    {
-        return create(array, true);
-    }
-
-    public static ByteIla create(byte[] array, boolean cloneArray)
-    {
+    public static ByteIla create(byte[] array) {
         Argument.assertNotNull(array, "array");
 
-        return new MyByteIla(array, cloneArray);
+        return new ByteIlaImpl(array);
     }
 
-    private static class MyByteIla extends AbstractByteIla
-        implements ImmutableProxy
-    {
+    private static class ByteIlaImpl extends AbstractByteIla {
         private final byte[] array;
 
-        MyByteIla(byte[] array, boolean cloneArray)
-        {
-            super(array.length);
-
-            if (cloneArray)
-            {
-                this.array = (byte[])array.clone();
-            } else {
-                this.array = array;
-            }
+        private ByteIlaImpl(byte[] array) {
+            this.array = array;
         }
 
-        protected void toArrayImpl(byte[] array, int offset,
-                                   int stride, long start, int length)
-        {
-            final int startPlusLength = (int) (start + length);
-            for(int startInt = (int) start;
-                startInt != startPlusLength;
-                ++startInt, offset += stride)
-            {
-                array[offset] = this.array[startInt];
-            }
+        @Override
+        protected long lengthImpl() {
+            return array.length;
         }
-                
-        public Map<String, Object> getParameters()
-        {
-            HashMap<String, Object> map = new HashMap<String, Object>();
-                        
-            map.put("name", "ByteIlaFromArray");
-            map.put("length", new Long(length()));
-                        
-            return(map);
+
+        @Override
+        protected void getImpl(byte[] array, int offset, long start, int length) {
+            System.arraycopy(this.array, (int) start, array, offset, length);
         }
     }
 }

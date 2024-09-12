@@ -1,7 +1,9 @@
 package tfw.immutable.ilm;
 
-public interface ImmutableLongMatrix
-{
-    public long width();
-    public long height();
+import java.io.IOException;
+
+public interface ImmutableLongMatrix {
+    long width() throws IOException;
+
+    long height() throws IOException;
 }

@@ -1,74 +1,50 @@
 package tfw.immutable.ila.floatila;
 
-import java.util.HashMap;
-import java.util.Map;
 import tfw.check.Argument;
-import tfw.immutable.ImmutableProxy;
 
-/**
- *
- * @immutables.types=numeric
- */
-public final class FloatIlaRamp
-{
-    private FloatIlaRamp()
-    {
+public final class FloatIlaRamp {
+    private FloatIlaRamp() {
         // non-instantiable class
     }
 
-    public static FloatIla create(float startValue, float increment,
-                                   long length)
-    {
+    public static FloatIla create(float startValue, float increment, long length) {
         Argument.assertNotLessThan(length, 0, "length");
 
-        return new MyFloatIla(startValue, increment, length);
+        return new FloatIlaImpl(startValue, increment, length);
     }
 
-    private static class MyFloatIla extends AbstractFloatIla
-        implements ImmutableProxy
-    {
+    private static class FloatIlaImpl extends AbstractFloatIla {
         private final float startValue;
         private final float increment;
+        private final long length;
 
-        MyFloatIla(float startValue, float increment, long length)
-        {
-            super(length);
+        private FloatIlaImpl(float startValue, float increment, long length) {
             this.startValue = startValue;
             this.increment = increment;
+            this.length = length;
         }
 
-        protected void toArrayImpl(float[] array, int offset,
-                                   int stride, long start, int length)
-        {
+        @Override
+        protected long lengthImpl() {
+            return length;
+        }
+
+        @Override
+        protected void getImpl(float[] array, int offset, long start, int length) {
             final int startPlusLength = (int) (start + length);
 
             // CORRECT, BUT WAY TOO SLOW
-            //float value = startValue;
-            //for(long ii = 0; ii < start; ++ii)
-            //{
+            // float value = startValue;
+            // for(long ii = 0; ii < start; ++ii)
+            // {
             //    value += increment;
-            //}
-            
+            // }
+
             // INCORRECT, BUT FAST
-            float value = (float) (startValue + increment * start);
-            for(int startInt = (int) start;
-                startInt != startPlusLength;
-                ++startInt, offset += stride, value += increment)
-            {
+            float value = startValue + increment * start;
+            for (int startInt = (int) start; startInt != startPlusLength; ++startInt, offset++, value += increment) {
                 array[offset] = value;
             }
-        }
-                
-        public Map<String, Object> getParameters()
-        {
-            HashMap<String, Object> map = new HashMap<String, Object>();
-                        
-            map.put("name", "FloatIlaRamp");
-            map.put("length", new Long(length()));
-            map.put("startValue", new Float(startValue));
-            map.put("increment", new Float(increment));
-
-            return(map);
         }
     }
 }

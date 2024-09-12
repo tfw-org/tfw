@@ -1,0 +1,35 @@
+// byteila,charila,doubleila,intila,longila,shortila
+package %%PACKAGE%%;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+%%RANDOM_INCLUDE%%import org.junit.jupiter.api.Test;
+import tfw.immutable.ila.IlaTestDimensions;
+import tfw.immutable.ila.floatila.FloatIla;
+import tfw.immutable.ila.floatila.FloatIlaFromArray;
+
+class %%NAME%%IlaFromCastFloatIlaTest {
+    @Test
+    void testArguments() {
+        final FloatIla ila = FloatIlaFromArray.create(new float[10]);
+
+        assertThrows(IllegalArgumentException.class, () -> %%NAME%%IlaFromCastFloatIla.create(null, 1));
+        assertThrows(IllegalArgumentException.class, () -> %%NAME%%IlaFromCastFloatIla.create(ila, 0));
+    }
+
+    @Test
+    void testAll() throws Exception {
+        %%RANDOM_INIT%%final int length = IlaTestDimensions.defaultIlaLength();
+        final float[] array = new float[length];
+        final %%TYPE%%[] target = new %%TYPE%%[length];
+        for (int ii = 0; ii < array.length; ++ii) {
+            array[ii] = random.nextFloat();
+            target[ii] = (%%TYPE%%) array[ii];
+        }
+        FloatIla ila = FloatIlaFromArray.create(array);
+        %%NAME%%Ila targetIla = %%NAME%%IlaFromArray.create(target);
+        %%NAME%%Ila actualIla = %%NAME%%IlaFromCastFloatIla.create(ila, 100);
+
+        %%NAME%%IlaCheck.check(targetIla, actualIla);
+    }
+}

@@ -1,7 +1,8 @@
 package tfw.component;
 
-import junit.framework.TestCase;
-import tfw.component.TriggerRelay;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import org.junit.jupiter.api.Test;
 import tfw.tsm.BasicTransactionQueue;
 import tfw.tsm.Initiator;
 import tfw.tsm.Root;
@@ -9,44 +10,36 @@ import tfw.tsm.RootFactory;
 import tfw.tsm.TriggeredCommit;
 import tfw.tsm.ecd.StatelessTriggerECD;
 
-public class TriggerRelayTest extends TestCase
-{
-    private final StatelessTriggerECD triggerToRelayECD = new StatelessTriggerECD(
-            "triggerToRelay");
+class TriggerRelayTest {
+    private final StatelessTriggerECD triggerToRelayECD = new StatelessTriggerECD("triggerToRelay");
 
-    private final StatelessTriggerECD relayedTriggerECD = new StatelessTriggerECD(
-            "relayedTrigger");
+    private final StatelessTriggerECD relayedTriggerECD = new StatelessTriggerECD("relayedTrigger");
 
-    public void testTriggerRelay()
-    {
+    @Test
+    void testTriggerRelay() {
         RootFactory rf = new RootFactory();
         rf.addEventChannel(triggerToRelayECD);
         rf.addEventChannel(relayedTriggerECD);
         BasicTransactionQueue queue = new BasicTransactionQueue();
         Root root = rf.create("Root", queue);
         Initiator initiator = new Initiator("initiator", triggerToRelayECD);
-        MyCommit commit = new MyCommit();
+        CommitImpl commit = new CommitImpl();
         root.add(initiator);
         root.add(commit);
-        root
-                .add(new TriggerRelay("relay", triggerToRelayECD,
-                        relayedTriggerECD));
+        root.add(new TriggerRelay("relay", triggerToRelayECD, relayedTriggerECD));
         initiator.trigger(triggerToRelayECD);
         queue.waitTilEmpty();
-        assertTrue("Trigger not relayed!", commit.executed);
+        assertTrue(commit.executed, "Trigger not relayed!");
     }
 
-    private class MyCommit extends TriggeredCommit
-    {
+    private class CommitImpl extends TriggeredCommit {
         public boolean executed = false;
 
-        public MyCommit()
-        {
-            super("MyCommit", relayedTriggerECD);
+        public CommitImpl() {
+            super("CommitImpl", relayedTriggerECD);
         }
 
-        protected void commit()
-        {
+        protected void commit() {
             this.executed = true;
         }
     }

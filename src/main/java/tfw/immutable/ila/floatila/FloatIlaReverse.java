@@ -1,57 +1,39 @@
 package tfw.immutable.ila.floatila;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.ImmutableProxy;
-import tfw.immutable.DataInvalidException;
 
-/**
- *
- * @immutables.types=all
- */
-public final class FloatIlaReverse
-{
-    private FloatIlaReverse()
-    {
+public final class FloatIlaReverse {
+    private FloatIlaReverse() {
         // non-instantiable class
     }
 
-    public static FloatIla create(FloatIla ila)
-    {
+    public static FloatIla create(FloatIla ila, final float[] buffer) {
         Argument.assertNotNull(ila, "ila");
+        Argument.assertNotNull(buffer, "buffer");
 
-        return new MyFloatIla(ila);
+        return new FloatIlaImpl(ila, buffer);
     }
 
-    private static class MyFloatIla extends AbstractFloatIla
-        implements ImmutableProxy
-    {
+    private static class FloatIlaImpl extends AbstractFloatIla {
         private final FloatIla ila;
+        private final float[] buffer;
 
-        MyFloatIla(FloatIla ila)
-        {
-            super(ila.length());
+        private FloatIlaImpl(FloatIla ila, final float[] buffer) {
             this.ila = ila;
+            this.buffer = buffer;
         }
 
-        protected void toArrayImpl(float[] array, int offset,
-                                   int stride, long start, int length)
-            throws DataInvalidException
-        {
-            ila.toArray(array, offset + (length - 1) * stride,
-                        -stride, length() - (start + length), length);
+        @Override
+        protected long lengthImpl() throws IOException {
+            return ila.length();
         }
-                
-        public Map<String, Object> getParameters()
-        {
-            HashMap<String, Object> map = new HashMap<String, Object>();
-                        
-            map.put("name", "FloatIlaReverse");
-            map.put("length", new Long(length()));
-            map.put("ila", getImmutableInfo(ila));
-                        
-            return(map);
+
+        @Override
+        protected void getImpl(float[] array, int offset, long start, int length) throws IOException {
+            final StridedFloatIla stridedFloatIla = StridedFloatIlaFromFloatIla.create(ila, buffer.clone());
+
+            stridedFloatIla.get(array, offset + length - 1, -1, length() - (start + length), length);
         }
     }
 }

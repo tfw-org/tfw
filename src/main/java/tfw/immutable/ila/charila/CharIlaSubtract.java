@@ -1,81 +1,48 @@
 package tfw.immutable.ila.charila;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.DataInvalidException;
-import tfw.immutable.ImmutableProxy;
 
-/**
- *
- * @immutables.types=numeric
- */
-public final class CharIlaSubtract
-{
-    private CharIlaSubtract()
-    {
-    	// non-instantiable class
+public final class CharIlaSubtract {
+    private CharIlaSubtract() {
+        // non-instantiable class
     }
 
-    public static CharIla create(CharIla leftIla, CharIla rightIla)
-    {
-    	return create(leftIla, rightIla, CharIlaIterator.DEFAULT_BUFFER_SIZE);
-    }
-    
-    public static CharIla create(CharIla leftIla, CharIla rightIla,
-        int bufferSize)
-    {
+    public static CharIla create(CharIla leftIla, CharIla rightIla, int bufferSize) throws IOException {
         Argument.assertNotNull(leftIla, "leftIla");
         Argument.assertNotNull(rightIla, "rightIla");
-        Argument.assertEquals(leftIla.length(), rightIla.length(),
-                              "leftIla.length()", "rightIla.length()");
+        Argument.assertEquals(leftIla.length(), rightIla.length(), "leftIla.length()", "rightIla.length()");
         Argument.assertNotLessThan(bufferSize, 1, "bufferSize");
 
-        return new MyCharIla(leftIla, rightIla, bufferSize);
+        return new CharIlaImpl(leftIla, rightIla, bufferSize);
     }
 
-    private static class MyCharIla extends AbstractCharIla
-        implements ImmutableProxy
-    {
+    private static class CharIlaImpl extends AbstractCharIla {
         private final CharIla leftIla;
         private final CharIla rightIla;
         private final int bufferSize;
 
-        MyCharIla(CharIla leftIla, CharIla rightIla, int bufferSize)
-        {
-            super(leftIla.length());
-                    
+        private CharIlaImpl(CharIla leftIla, CharIla rightIla, int bufferSize) {
             this.leftIla = leftIla;
             this.rightIla = rightIla;
             this.bufferSize = bufferSize;
         }
 
-        protected void toArrayImpl(char[] array, int offset,
-                                   int stride, long start, int length)
-            throws DataInvalidException
-        {
-            CharIlaIterator li = new CharIlaIterator(
-                CharIlaSegment.create(leftIla, start, length), bufferSize);
-            CharIlaIterator ri = new CharIlaIterator(
-                CharIlaSegment.create(rightIla, start, length), bufferSize);
+        @Override
+        protected long lengthImpl() throws IOException {
+            return leftIla.length();
+        }
 
-            for (int ii = offset; li.hasNext(); ii += stride)
-            {
+        @Override
+        protected void getImpl(char[] array, int offset, long ilaStart, int length) throws IOException {
+            CharIlaIterator li =
+                    new CharIlaIterator(CharIlaSegment.create(leftIla, ilaStart, length), new char[bufferSize]);
+            CharIlaIterator ri =
+                    new CharIlaIterator(CharIlaSegment.create(rightIla, ilaStart, length), new char[bufferSize]);
+
+            for (int ii = offset; li.hasNext(); ii++) {
                 array[ii] = (char) (li.next() - ri.next());
             }
-        }
-                
-        public Map<String, Object> getParameters()
-        {
-            HashMap<String, Object> map = new HashMap<String, Object>();
-                        
-            map.put("name", "CharIlaSubtract");
-            map.put("leftIla", getImmutableInfo(leftIla));
-            map.put("rightIla", getImmutableInfo(rightIla));
-            map.put("bufferSize", new Integer(bufferSize));
-            map.put("length", new Long(length()));
-                        
-            return(map);
         }
     }
 }

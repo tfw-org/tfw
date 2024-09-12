@@ -1,39 +1,37 @@
 package tfw.immutable.ila.longila;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import java.util.Random;
-import junit.framework.TestCase;
-import tfw.immutable.ila.longila.LongIla;
-import tfw.immutable.ila.longila.LongIlaFromArray;
-import tfw.immutable.ila.longila.LongIlaFromCastCharIla;
+import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 import tfw.immutable.ila.charila.CharIla;
 import tfw.immutable.ila.charila.CharIlaFromArray;
 
-/**
- *
- * @immutables.types=numericnotchar
- */
-public class LongIlaFromCastCharIlaTest extends TestCase
-{
-    public void testAll() throws Exception
-    {
+class LongIlaFromCastCharIlaTest {
+    @Test
+    void testArguments() {
+        final CharIla ila = CharIlaFromArray.create(new char[10]);
+
+        assertThrows(IllegalArgumentException.class, () -> LongIlaFromCastCharIla.create(null, 1));
+        assertThrows(IllegalArgumentException.class, () -> LongIlaFromCastCharIla.create(ila, 0));
+    }
+
+    @Test
+    void testAll() throws Exception {
         final Random random = new Random(0);
         final int length = IlaTestDimensions.defaultIlaLength();
         final char[] array = new char[length];
         final long[] target = new long[length];
-        for(int ii = 0; ii < array.length; ++ii)
-        {
+        for (int ii = 0; ii < array.length; ++ii) {
             array[ii] = (char) random.nextInt();
             target[ii] = (long) array[ii];
         }
         CharIla ila = CharIlaFromArray.create(array);
         LongIla targetIla = LongIlaFromArray.create(target);
-        LongIla actualIla = LongIlaFromCastCharIla.create(ila);
-        final long epsilon = (long) 0.0;
-        LongIlaCheck.checkAll(targetIla, actualIla,
-                                IlaTestDimensions.defaultOffsetLength(),
-                                IlaTestDimensions.defaultMaxStride(),
-                                epsilon);
+        LongIla actualIla = LongIlaFromCastCharIla.create(ila, 100);
+
+        LongIlaCheck.check(targetIla, actualIla);
     }
 }
 // AUTO GENERATED FROM TEMPLATE

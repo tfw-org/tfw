@@ -1,79 +1,49 @@
 package tfw.immutable.ila.byteila;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.ImmutableProxy;
-import tfw.immutable.DataInvalidException;
 
-/**
- *
- * @immutables.types=all
- */
-public final class ByteIlaDecimate
-{
-    private ByteIlaDecimate()
-    {
+public final class ByteIlaDecimate {
+    private ByteIlaDecimate() {
         // non-instantiable class
     }
 
-    public static ByteIla create(ByteIla ila, long factor)
-    {
-        return create(ila, factor, ByteIlaIterator.DEFAULT_BUFFER_SIZE);
-    }
-
-    public static ByteIla create(ByteIla ila, long factor, int bufferSize)
-    {
+    public static ByteIla create(ByteIla ila, long factor, byte[] buffer) {
         Argument.assertNotNull(ila, "ila");
+        Argument.assertNotNull(buffer, "buffer");
         Argument.assertNotLessThan(factor, 2, "factor");
-        Argument.assertNotLessThan(bufferSize, 1, "bufferSize");
+        Argument.assertNotLessThan(buffer.length, 1, "buffer.length");
 
-        return new MyByteIla(ila, factor, bufferSize);
+        return new ByteIlaImpl(ila, factor, buffer);
     }
 
-    private static class MyByteIla extends AbstractByteIla
-        implements ImmutableProxy
-    {
+    private static class ByteIlaImpl extends AbstractByteIla {
         private final ByteIla ila;
         private final long factor;
-        private final int bufferSize;
+        private final byte[] buffer;
 
-        MyByteIla(ByteIla ila, long factor, int bufferSize)
-        {
-            super((ila.length() + factor - 1) / factor);
+        private ByteIlaImpl(ByteIla ila, long factor, byte[] buffer) {
             this.ila = ila;
             this.factor = factor;
-            this.bufferSize = bufferSize;
+            this.buffer = buffer;
         }
 
-        protected void toArrayImpl(byte[] array, int offset,
-                                   int stride, long start, int length)
-            throws DataInvalidException
-        {
-            final long segmentStart = start * factor;
-            final long segmentLength = StrictMath.min(ila.length() -
-                segmentStart, length * factor - 1);
-            ByteIlaIterator fi = new ByteIlaIterator(
-                ByteIlaSegment.create(ila, segmentStart, segmentLength),
-                    bufferSize);
+        @Override
+        protected long lengthImpl() throws IOException {
+            return (ila.length() + factor - 1) / factor;
+        }
 
-            for (int ii = offset; length > 0; ii += stride, --length)
-            {
-                array[ii] = (byte) fi.next();
+        @Override
+        protected void getImpl(byte[] array, int offset, long start, int length) throws IOException {
+            final long segmentStart = start * factor;
+            final long segmentLength = StrictMath.min(ila.length() - segmentStart, length * factor - 1);
+            final ByteIla segment = ByteIlaSegment.create(ila, segmentStart, segmentLength);
+            final ByteIlaIterator fi = new ByteIlaIterator(segment, buffer.clone());
+
+            for (int ii = offset; length > 0; ii++, --length) {
+                array[ii] = fi.next();
                 fi.skip(factor - 1);
             }
-        }
-                
-        public Map<String, Object> getParameters()
-        {
-            HashMap<String, Object> map = new HashMap<String, Object>();
-                        
-            map.put("name", "ByteIlaDecimate");
-            map.put("ila", getImmutableInfo(ila));
-            map.put("length", new Long(length()));
-            map.put("factor", new Long(factor));
-                        
-            return(map);
         }
     }
 }

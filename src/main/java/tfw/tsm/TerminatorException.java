@@ -5,21 +5,23 @@ package tfw.tsm;
  * which is in compatible with the event channel value constraint.
  */
 class TerminatorException extends RuntimeException {
-	
-	/**
-	 * Creates an exception with the specified message.
-	 * @param message the exception message
-	 */
-	public TerminatorException(String message){
-		super(message);
-	}
-	
-	/**
-	 * Creates an exception with the specified attributes.
-	 * @param message the exception message
-	 * @param cause the cause.
-	 */
-	public TerminatorException(String message, Throwable cause){
-		super(message, cause);
-	}
+
+    private static final long serialVersionUID = 1L;
+
+    /**
+     * Creates an exception with the specified message.
+     * @param message the exception message
+     */
+    public TerminatorException(String message) {
+        super(message);
+    }
+
+    /**
+     * Creates an exception with the specified attributes.
+     * @param message the exception message
+     * @param cause the cause.
+     */
+    public TerminatorException(String message, Throwable cause) {
+        super(message, cause);
+    }
 }

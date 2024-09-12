@@ -5,14 +5,13 @@ package tfw.tsm;
  * of a transaction. To set the handler see
  * {@link RootFactory#setTransactionExceptionHandler(TransactionExceptionHandler)}
  */
-public interface TransactionExceptionHandler
-{
+public interface TransactionExceptionHandler {
     /**
      * Called by the transaction manager when an un-caught exception occurs
      * during a transaction.
-     * 
+     *
      * @param exception
      *            an uncaught exception thrown during a transaction.
      */
-    public void handle(Exception exception);
+    void handle(Exception exception);
 }

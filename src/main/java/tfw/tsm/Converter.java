@@ -1,10 +1,8 @@
 package tfw.tsm;
 
-
 import tfw.check.Argument;
 import tfw.tsm.ecd.EventChannelDescription;
 import tfw.tsm.ecd.ObjectECD;
-
 
 /**
  * The base class for event handlers that take in one set of events and
@@ -12,19 +10,17 @@ import tfw.tsm.ecd.ObjectECD;
  * method. <code>Converter</code> is an event processor and participates
  * in the processing phase of transactions.
  */
-public abstract class Converter extends Processor
-{
+public abstract class Converter extends Processor {
     /**
      * Constructs a <code>Converter</code> with the specified
      * inputs and outputs.
      *
      * @param name the name of this converter.
-     * @param sinkEventChannels the input event channels.
-     * @param sourceEventChannels the output event channels.
+     * @param sinkDescriptions the input event channels.
+     * @param sourceDescriptions the output event channels.
      */
-    public Converter(String name, EventChannelDescription[] sinkDescriptions,
-        EventChannelDescription[] sourceDescriptions)
-    {
+    public Converter(
+            String name, EventChannelDescription[] sinkDescriptions, EventChannelDescription[] sourceDescriptions) {
         this(name, sinkDescriptions, null, sourceDescriptions);
     }
 
@@ -40,29 +36,23 @@ public abstract class Converter extends Processor
      * or the {@link #debugConvert()} method to be called.
      * @param sources output event channels for this converter.
      */
-    public Converter(String name, EventChannelDescription[] triggeringSinks,
-        ObjectECD[] nonTriggeringSinks,
-        EventChannelDescription[] sources)
-    {
-        super(name, checkTriggeringSinks(triggeringSinks), nonTriggeringSinks,
-            sources);
+    public Converter(
+            String name,
+            EventChannelDescription[] triggeringSinks,
+            ObjectECD[] nonTriggeringSinks,
+            EventChannelDescription[] sources) {
+        super(name, checkTriggeringSinks(triggeringSinks), nonTriggeringSinks, sources);
     }
 
-    void process()
-    {
-        if (isStateNonNull())
-        {
+    void process() {
+        if (isStateNonNull()) {
             convert();
-        }
-        else
-        {
+        } else {
             debugConvert();
         }
     }
 
-    private static EventChannelDescription[] checkTriggeringSinks(
-            EventChannelDescription[] triggeringSinks)
-    {
+    private static EventChannelDescription[] checkTriggeringSinks(EventChannelDescription[] triggeringSinks) {
         Argument.assertNotNull(triggeringSinks, "triggeringSinks");
         Argument.assertElementNotNull(triggeringSinks, "triggeringSinks");
 
@@ -87,7 +77,5 @@ public abstract class Converter extends Processor
      * the state change phase in which one or more of the
      * <code>sinkEventChannels</code> has it's state changed.
      */
-    protected void debugConvert()
-    {
-    }
+    protected void debugConvert() {}
 }

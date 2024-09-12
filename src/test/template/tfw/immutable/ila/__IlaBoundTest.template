@@ -1,0 +1,45 @@
+// byteila,charila,doubleila,floatila,intila,longila,shortila
+package %%PACKAGE%%;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+%%RANDOM_INCLUDE%%import org.junit.jupiter.api.Test;
+import tfw.immutable.ila.IlaTestDimensions;
+
+class %%NAME%%IlaBoundTest {
+    @Test
+    void testArguments() {
+        final %%NAME%%Ila ila = %%NAME%%IlaFromArray.create(new %%TYPE%%[10]);
+
+        assertThrows(IllegalArgumentException.class, () -> %%NAME%%IlaBound.create(null, %%CAST_FROM_INT%%5, %%CAST_FROM_INT%%10));
+        assertThrows(IllegalArgumentException.class, () -> %%NAME%%IlaBound.create(ila, %%CAST_FROM_INT%%10, %%CAST_FROM_INT%%5));
+    }
+
+    @Test
+    void testAll() throws Exception {
+        %%RANDOM_INIT%%final int length = IlaTestDimensions.defaultIlaLength();
+        final %%TYPE%%[] array = new %%TYPE%%[length];
+        final %%TYPE%%[] target = new %%TYPE%%[length];
+        %%TYPE%% minimum = %%RANDOM_VALUE%%;
+        %%TYPE%% maximum = %%RANDOM_VALUE%%;
+        if (minimum > maximum) {
+            %%TYPE%% tmp = minimum;
+            minimum = maximum;
+            maximum = tmp;
+        }
+        for (int ii = 0; ii < array.length; ++ii) {
+            array[ii] = %%RANDOM_VALUE%%;
+            target[ii] = array[ii];
+            if (target[ii] < minimum) {
+                target[ii] = minimum;
+            } else if (target[ii] > maximum) {
+                target[ii] = maximum;
+            }
+        }
+        %%NAME%%Ila ila = %%NAME%%IlaFromArray.create(array);
+        %%NAME%%Ila targetIla = %%NAME%%IlaFromArray.create(target);
+        %%NAME%%Ila actualIla = %%NAME%%IlaBound.create(ila, minimum, maximum);
+
+        %%NAME%%IlaCheck.check(targetIla, actualIla);
+    }
+}

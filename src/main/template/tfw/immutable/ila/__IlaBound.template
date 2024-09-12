@@ -1,0 +1,49 @@
+// byteila,charila,doubleila,floatila,intila,longila,shortila
+package %%PACKAGE%%;
+
+import java.io.IOException;
+import tfw.check.Argument;
+
+public final class %%NAME%%IlaBound {
+    private %%NAME%%IlaBound() {
+        // non-instantiable class
+    }
+
+    public static %%NAME%%Ila create(%%NAME%%Ila ila, %%TYPE%% minimum, %%TYPE%% maximum) {
+        Argument.assertNotNull(ila, "ila");
+        Argument.assertNotGreaterThan(minimum, maximum, "minimum", "maximum");
+
+        return new %%NAME%%IlaImpl(ila, minimum, maximum);
+    }
+
+    private static class %%NAME%%IlaImpl extends Abstract%%NAME%%Ila {
+        private final %%NAME%%Ila ila;
+        private final %%TYPE%% minimum;
+        private final %%TYPE%% maximum;
+
+        private %%NAME%%IlaImpl(%%NAME%%Ila ila, %%TYPE%% minimum, %%TYPE%% maximum) {
+            this.ila = ila;
+            this.minimum = minimum;
+            this.maximum = maximum;
+        }
+
+        @Override
+        protected long lengthImpl() throws IOException {
+            return ila.length();
+        }
+
+        @Override
+        protected void getImpl(%%TYPE%%[] array, int offset, long start, int length) throws IOException {
+            ila.get(array, offset, start, length);
+
+            for (int ii = offset; length > 0; ii++, --length) {
+                %%TYPE%% tmp = array[ii];
+                if (tmp < minimum) {
+                    array[ii] = minimum;
+                } else if (tmp > maximum) {
+                    array[ii] = maximum;
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,49 @@
+// byteila,charila,doubleila,floatila,intila,longila,shortila
+package %%PACKAGE%%;
+
+import java.io.IOException;
+import tfw.check.Argument;
+
+public final class %%NAME%%IlaSubtract {
+    private %%NAME%%IlaSubtract() {
+        // non-instantiable class
+    }
+
+    public static %%NAME%%Ila create(%%NAME%%Ila leftIla, %%NAME%%Ila rightIla, int bufferSize) throws IOException {
+        Argument.assertNotNull(leftIla, "leftIla");
+        Argument.assertNotNull(rightIla, "rightIla");
+        Argument.assertEquals(leftIla.length(), rightIla.length(), "leftIla.length()", "rightIla.length()");
+        Argument.assertNotLessThan(bufferSize, 1, "bufferSize");
+
+        return new %%NAME%%IlaImpl(leftIla, rightIla, bufferSize);
+    }
+
+    private static class %%NAME%%IlaImpl extends Abstract%%NAME%%Ila {
+        private final %%NAME%%Ila leftIla;
+        private final %%NAME%%Ila rightIla;
+        private final int bufferSize;
+
+        private %%NAME%%IlaImpl(%%NAME%%Ila leftIla, %%NAME%%Ila rightIla, int bufferSize) {
+            this.leftIla = leftIla;
+            this.rightIla = rightIla;
+            this.bufferSize = bufferSize;
+        }
+
+        @Override
+        protected long lengthImpl() throws IOException {
+            return leftIla.length();
+        }
+
+        @Override
+        protected void getImpl(%%TYPE%%[] array, int offset, long ilaStart, int length) throws IOException {
+            %%NAME%%IlaIterator li =
+                    new %%NAME%%IlaIterator(%%NAME%%IlaSegment.create(leftIla, ilaStart, length), new %%TYPE%%[bufferSize]);
+            %%NAME%%IlaIterator ri =
+                    new %%NAME%%IlaIterator(%%NAME%%IlaSegment.create(rightIla, ilaStart, length), new %%TYPE%%[bufferSize]);
+
+            for (int ii = offset; li.hasNext(); ii++) {
+                array[ii] = %%CAST_FROM_INT_PRE%%li.next() - ri.next()%%CAST_FROM_INT_POST%%;
+            }
+        }
+    }
+}

@@ -1,50 +1,50 @@
 package tfw.immutable.ila.shortila;
 
-import java.util.Random;
-import junit.framework.TestCase;
-import tfw.immutable.ila.IlaTestDimensions;
-import tfw.immutable.ila.shortila.ShortIla;
-import tfw.immutable.ila.shortila.ShortIlaFromArray;
-import tfw.immutable.ila.shortila.ShortIlaSegment;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-/**
- *
- * @immutables.types=all
- */
-public class ShortIlaSegmentTest extends TestCase
-{
-    public void testAll() throws Exception
-    {
+import java.util.Random;
+import org.junit.jupiter.api.Test;
+import tfw.immutable.ila.IlaTestDimensions;
+
+class ShortIlaSegmentTest {
+    @Test
+    void testArguments() throws Exception {
+        final ShortIla ila = ShortIlaFromArray.create(new short[10]);
+        final long ilaLength = ila.length();
+
+        assertThrows(IllegalArgumentException.class, () -> ShortIlaSegment.create(null, 0));
+        assertThrows(IllegalArgumentException.class, () -> ShortIlaSegment.create(ila, -1));
+        assertThrows(IllegalArgumentException.class, () -> ShortIlaSegment.create(ila, ilaLength + 1));
+        assertThrows(IllegalArgumentException.class, () -> ShortIlaSegment.create(null, 0, 0));
+        assertThrows(IllegalArgumentException.class, () -> ShortIlaSegment.create(ila, -1, 0));
+        assertThrows(IllegalArgumentException.class, () -> ShortIlaSegment.create(ila, 0, -1));
+        assertThrows(IllegalArgumentException.class, () -> ShortIlaSegment.create(ila, ilaLength + 1, 0));
+        assertThrows(IllegalArgumentException.class, () -> ShortIlaSegment.create(ila, 0, ilaLength + 1));
+    }
+
+    @Test
+    void testAll() throws Exception {
         final Random random = new Random(0);
         final int length = IlaTestDimensions.defaultIlaLength();
         final short[] master = new short[length];
-        for(int ii = 0; ii < master.length; ++ii)
-        {
-            master[ii] = (short)random.nextInt();
+        for (int ii = 0; ii < master.length; ++ii) {
+            master[ii] = (short) random.nextInt();
         }
         ShortIla masterIla = ShortIlaFromArray.create(master);
-        ShortIla checkIla = ShortIlaSegment.create(masterIla, 0,
-                                                         masterIla.length());
+        ShortIla checkIla = ShortIlaSegment.create(masterIla, 0, masterIla.length());
         final int offsetLength = IlaTestDimensions.defaultOffsetLength();
         final int maxStride = IlaTestDimensions.defaultMaxStride();
-        final short epsilon = (short)0;
-        ShortIlaCheck.checkWithoutCorrectness(checkIla, offsetLength,
-                                                 epsilon);
-        for(long start = 0; start < length; ++start)
-        {
-            for(long len = 0; len < length - start; ++len)
-            {
+        final short epsilon = (short) 0;
+        ShortIlaCheck.checkWithoutCorrectness(checkIla, offsetLength, epsilon);
+        for (long start = 0; start < length; ++start) {
+            for (long len = 0; len < length - start; ++len) {
                 short[] array = new short[(int) len];
-                for(int ii = 0; ii < array.length; ++ii)
-                {
+                for (int ii = 0; ii < array.length; ++ii) {
                     array[ii] = master[ii + (int) start];
                 }
                 ShortIla targetIla = ShortIlaFromArray.create(array);
-                ShortIla actualIla = ShortIlaSegment.create(masterIla,
-                                                                  start, len);
-                ShortIlaCheck.checkCorrectness(targetIla, actualIla,
-                                                  offsetLength, maxStride,
-                                                  epsilon);
+                ShortIla actualIla = ShortIlaSegment.create(masterIla, start, len);
+                ShortIlaCheck.checkCorrectness(targetIla, actualIla, offsetLength, maxStride, epsilon);
             }
         }
     }

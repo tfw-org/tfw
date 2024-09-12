@@ -1,0 +1,63 @@
+// booleanila,byteila,charila,doubleila,floatila,intila,longila,objectila,shortila
+package %%PACKAGE%%;
+
+import java.io.IOException;
+import tfw.check.Argument;
+
+public final class %%NAME%%IlaFiltered%%TEMPLATE%% {
+    private %%NAME%%IlaFiltered() {
+        // non-instantiable class
+    }
+
+    public interface %%NAME%%Filter%%TEMPLATE%% {
+        boolean matches(%%TYPE_OR_TEMPLATE%% value);
+    }
+
+    public static %%TEMPLATE_SPACE%%%%NAME%%Ila%%TEMPLATE%% create(%%NAME%%Ila%%TEMPLATE%% ila, %%NAME%%Filter%%TEMPLATE%% filter, %%TYPE_OR_TEMPLATE%%[] buffer) {
+        Argument.assertNotNull(ila, "ila");
+        Argument.assertNotNull(filter, "filter");
+        Argument.assertNotNull(buffer, "buffer");
+
+        return new %%NAME%%IlaImpl%%DIAMOND%%(ila, filter, buffer);
+    }
+
+    private static class %%NAME%%IlaImpl%%TEMPLATE%% extends Abstract%%NAME%%Ila%%TEMPLATE%% {
+        private final %%NAME%%Ila%%TEMPLATE%% ila;
+        private final %%NAME%%Filter%%TEMPLATE%% filter;
+        private final %%TYPE_OR_TEMPLATE%%[] buffer;
+
+        private %%NAME%%IlaImpl(%%NAME%%Ila%%TEMPLATE%% ila, %%NAME%%Filter%%TEMPLATE%% filter, %%TYPE_OR_TEMPLATE%%[] buffer) {
+            this.ila = ila;
+            this.filter = filter;
+            this.buffer = buffer;
+        }
+
+        @Override
+        protected long lengthImpl() throws IOException {
+            long length = ila.length();
+            %%NAME%%IlaIterator%%TEMPLATE%% oii = new %%NAME%%IlaIterator%%DIAMOND%%(ila, buffer.clone());
+
+            while (oii.hasNext()) {
+                if (filter.matches(oii.next())) {
+                    length--;
+                }
+            }
+
+            return length;
+        }
+
+        @Override
+        public void getImpl(%%TYPE_OR_TEMPLATE%%[] array, int offset, long start, int length) throws IOException {
+            %%NAME%%IlaIterator%%TEMPLATE%% oii = new %%NAME%%IlaIterator%%DIAMOND%%(%%NAME%%IlaSegment.create(ila, start), buffer.clone());
+
+            // left off here
+            for (int i = offset; oii.hasNext(); i++) {
+                %%TYPE_OR_TEMPLATE%% node = oii.next();
+
+                if (!filter.matches(node)) {
+                    array[i] = node;
+                }
+            }
+        }
+    }
+}

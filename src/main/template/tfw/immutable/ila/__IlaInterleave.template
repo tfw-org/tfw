@@ -1,0 +1,74 @@
+// booleanila,byteila,charila,doubleila,floatila,intila,longila,objectila,shortila
+package %%PACKAGE%%;
+
+import java.io.IOException;
+import tfw.check.Argument;
+
+public final class %%NAME%%IlaInterleave {
+    private %%NAME%%IlaInterleave() {
+        // non-instantiable class
+    }
+
+    public static %%TEMPLATE_SPACE%%%%NAME%%Ila%%TEMPLATE%% create(%%NAME%%Ila%%TEMPLATE%%[] ilas, final %%TYPE_OR_TEMPLATE%%[] buffer) throws IOException {
+        Argument.assertNotNull(ilas, "ilas");
+        Argument.assertNotLessThan(ilas.length, 1, "ilas.length");
+        Argument.assertNotNull(ilas[0], "ilas[0]");
+        Argument.assertNotNull(buffer, "buffer");
+
+        final long firstLength = ilas[0].length();
+        for (int ii = 1; ii < ilas.length; ++ii) {
+            Argument.assertNotNull(ilas[ii], "ilas[" + ii + "]");
+            Argument.assertEquals(ilas[ii].length(), firstLength, "ilas[0].length()", "ilas[" + ii + "].length()");
+        }
+
+        return new %%NAME%%IlaImpl%%DIAMOND%%(ilas, buffer);
+    }
+
+    private static class %%NAME%%IlaImpl%%TEMPLATE%% extends Abstract%%NAME%%Ila%%TEMPLATE%% {
+        private final Strided%%NAME%%Ila%%TEMPLATE%%[] strided%%NAME%%Ilas;
+        private final int ilasLength;
+
+        private %%NAME%%IlaImpl(%%NAME%%Ila%%TEMPLATE%%[] ilas, final %%TYPE_OR_TEMPLATE%%[] buffer) {
+            strided%%NAME%%Ilas = new Strided%%NAME%%Ila[ilas.length];
+            ilasLength = ilas.length;
+
+            for (int i = 0; i < ilas.length; i++) {
+                strided%%NAME%%Ilas[i] = Strided%%NAME%%IlaFrom%%NAME%%Ila.create(ilas[i], buffer.clone());
+            }
+        }
+
+        @Override
+        protected long lengthImpl() throws IOException {
+            return strided%%NAME%%Ilas[0].length() * strided%%NAME%%Ilas.length;
+        }
+
+        @Override
+        protected void getImpl(%%TYPE_OR_TEMPLATE%%[] array, int offset, long start, int length) throws IOException {
+            int currentIla = (int) (start % ilasLength);
+            long ilaStart = start / ilasLength;
+            final int ilaStride = ilasLength;
+            int ilaLength = (length + ilasLength - 1) / ilasLength;
+            int lengthIndex = length % ilasLength;
+            if (lengthIndex == 0) {
+                // invalidate lengthIndex so we don't decrement ilaLength
+                // at index 0
+                --lengthIndex;
+            }
+
+            for (int ii = 0; ii < ilasLength; ++ii) {
+                if (ii == lengthIndex) {
+                    --ilaLength;
+                }
+                if (ilaLength > 0) {
+                    strided%%NAME%%Ilas[currentIla].get(array, offset, ilaStride, ilaStart, ilaLength);
+                }
+                offset++;
+                ++currentIla;
+                if (currentIla == ilasLength) {
+                    currentIla = 0;
+                    ++ilaStart;
+                }
+            }
+        }
+    }
+}

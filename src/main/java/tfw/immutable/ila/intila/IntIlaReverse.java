@@ -1,57 +1,39 @@
 package tfw.immutable.ila.intila;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.ImmutableProxy;
-import tfw.immutable.DataInvalidException;
 
-/**
- *
- * @immutables.types=all
- */
-public final class IntIlaReverse
-{
-    private IntIlaReverse()
-    {
+public final class IntIlaReverse {
+    private IntIlaReverse() {
         // non-instantiable class
     }
 
-    public static IntIla create(IntIla ila)
-    {
+    public static IntIla create(IntIla ila, final int[] buffer) {
         Argument.assertNotNull(ila, "ila");
+        Argument.assertNotNull(buffer, "buffer");
 
-        return new MyIntIla(ila);
+        return new IntIlaImpl(ila, buffer);
     }
 
-    private static class MyIntIla extends AbstractIntIla
-        implements ImmutableProxy
-    {
+    private static class IntIlaImpl extends AbstractIntIla {
         private final IntIla ila;
+        private final int[] buffer;
 
-        MyIntIla(IntIla ila)
-        {
-            super(ila.length());
+        private IntIlaImpl(IntIla ila, final int[] buffer) {
             this.ila = ila;
+            this.buffer = buffer;
         }
 
-        protected void toArrayImpl(int[] array, int offset,
-                                   int stride, long start, int length)
-            throws DataInvalidException
-        {
-            ila.toArray(array, offset + (length - 1) * stride,
-                        -stride, length() - (start + length), length);
+        @Override
+        protected long lengthImpl() throws IOException {
+            return ila.length();
         }
-                
-        public Map<String, Object> getParameters()
-        {
-            HashMap<String, Object> map = new HashMap<String, Object>();
-                        
-            map.put("name", "IntIlaReverse");
-            map.put("length", new Long(length()));
-            map.put("ila", getImmutableInfo(ila));
-                        
-            return(map);
+
+        @Override
+        protected void getImpl(int[] array, int offset, long start, int length) throws IOException {
+            final StridedIntIla stridedIntIla = StridedIntIlaFromIntIla.create(ila, buffer.clone());
+
+            stridedIntIla.get(array, offset + length - 1, -1, length() - (start + length), length);
         }
     }
 }

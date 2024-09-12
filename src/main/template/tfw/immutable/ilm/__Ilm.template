@@ -1,0 +1,10 @@
+// booleanilm,byteilm,charilm,doubleilm,floatilm,intilm,longilm,objectilm,shortilm
+package %%PACKAGE%%;
+
+import java.io.IOException;
+import tfw.immutable.ilm.ImmutableLongMatrix;
+
+public interface %%NAME%%Ilm%%TEMPLATE%% extends ImmutableLongMatrix {
+    void get(final %%TYPE_OR_TEMPLATE%%[] array, int offset, long rowStart, long columnStart, int rowCount, int colCount)
+            throws IOException;
+}

@@ -1,0 +1,20 @@
+// booleanila,byteila,charila,doubleila,floatila,intila,longila,objectila,shortila
+package %%PACKAGE%%;
+
+import java.io.IOException;
+import tfw.immutable.ila.AbstractIla;
+import tfw.immutable.ila.AbstractStridedIlaCheck;
+
+public abstract class AbstractStrided%%NAME%%Ila%%TEMPLATE%% extends AbstractIla implements Strided%%NAME%%Ila%%TEMPLATE%% {
+    protected abstract void getImpl(final %%TYPE_OR_TEMPLATE%%[] array, final int offset, final int stride, long start, int length)
+            throws IOException;
+
+    protected AbstractStrided%%NAME%%Ila() {}
+
+    @Override
+    public void get(final %%TYPE_OR_TEMPLATE%%[] array, final int offset, final int stride, final long start, int length)
+            throws IOException {
+        AbstractStridedIlaCheck.boundsCheck(length(), array.length, offset, stride, start, length);
+        getImpl(array, offset, stride, start, length);
+    }
+}

@@ -1,0 +1,11 @@
+%%TYPE%% = float
+%%NAME%% = Float
+%%PACKAGE%% = tfw.immutable.ilm.floatilm
+%%RANDOM_VALUE%% = random.nextFloat()
+%%ASSERT_EQUALS_DELTA%% = , 0f
+%%CREATE_IMMUTABLE_START%% = new Float(
+%%CREATE_IMMUTABLE_END%% = )
+%%DIAMOND%% = 
+%%TEMPLATE%% =
+%%TEMPLATE_SPACE%% =
+%%TYPE_OR_TEMPLATE%% = float

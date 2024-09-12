@@ -1,0 +1,20 @@
+// booleanila,byteila,charila,doubleila,floatila,intila,longila,shortila
+package %%PACKAGE%%;
+
+import java.io.IOException;
+
+public final class %%NAME%%IlaUtil {
+    private %%NAME%%IlaUtil() {}
+
+    public static %%TYPE%%[] toArray(final %%NAME%%Ila %%TYPE%%Ila) throws IOException {
+        return toArray(%%TYPE%%Ila, 0, (int) Math.min(%%TYPE%%Ila.length(), Integer.MAX_VALUE));
+    }
+
+    public static %%TYPE%%[] toArray(final %%NAME%%Ila %%TYPE%%Ila, final long ilaStart, int length) throws IOException {
+        %%TYPE%%[] result = new %%TYPE%%[length];
+
+        %%TYPE%%Ila.get(result, 0, ilaStart, length);
+
+        return result;
+    }
+}

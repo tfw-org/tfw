@@ -1,70 +1,33 @@
 package tfw.immutable.ila.objectila;
 
-import java.util.HashMap;
-import java.util.Map;
 import tfw.check.Argument;
-import tfw.immutable.ImmutableProxy;
 
-/**
- *
- * @immutables.types=all
- */
-public final class ObjectIlaFromArray
-{
-    private ObjectIlaFromArray()
-    {
+public final class ObjectIlaFromArray {
+    private ObjectIlaFromArray() {
         // non-instantiable class
     }
 
-    public static ObjectIla create(Object[] array)
-    {
-        return create(array, true);
-    }
-
-    public static ObjectIla create(Object[] array, boolean cloneArray)
-    {
+    public static <T> ObjectIla<T> create(T[] array) {
         Argument.assertNotNull(array, "array");
 
-        return new MyObjectIla(array, cloneArray);
+        return new ObjectIlaImpl<>(array);
     }
 
-    private static class MyObjectIla extends AbstractObjectIla
-        implements ImmutableProxy
-    {
-        private final Object[] array;
+    private static class ObjectIlaImpl<T> extends AbstractObjectIla<T> {
+        private final T[] array;
 
-        MyObjectIla(Object[] array, boolean cloneArray)
-        {
-            super(array.length);
-
-            if (cloneArray)
-            {
-                this.array = (Object[])array.clone();
-            } else {
-                this.array = array;
-            }
+        private ObjectIlaImpl(T[] array) {
+            this.array = array;
         }
 
-        protected void toArrayImpl(Object[] array, int offset,
-                                   int stride, long start, int length)
-        {
-            final int startPlusLength = (int) (start + length);
-            for(int startInt = (int) start;
-                startInt != startPlusLength;
-                ++startInt, offset += stride)
-            {
-                array[offset] = this.array[startInt];
-            }
+        @Override
+        protected long lengthImpl() {
+            return array.length;
         }
-                
-        public Map<String, Object> getParameters()
-        {
-            HashMap<String, Object> map = new HashMap<String, Object>();
-                        
-            map.put("name", "ObjectIlaFromArray");
-            map.put("length", new Long(length()));
-                        
-            return(map);
+
+        @Override
+        protected void getImpl(T[] array, int offset, long start, int length) {
+            System.arraycopy(this.array, (int) start, array, offset, length);
         }
     }
 }

@@ -1,0 +1,33 @@
+// booleanila,byteila,charila,doubleila,floatila,intila,longila,objectila,shortila
+package %%PACKAGE%%;
+
+import java.io.IOException;
+import tfw.check.Argument;
+
+public final class %%NAME%%IlaFromStrided%%NAME%%Ila%%TEMPLATE%% {
+    private %%NAME%%IlaFromStrided%%NAME%%Ila() {}
+
+    public static %%TEMPLATE_SPACE%%%%NAME%%Ila%%TEMPLATE%% create(final Strided%%NAME%%Ila%%TEMPLATE%% stridedIla) {
+        Argument.assertNotNull(stridedIla, "stridedIla");
+
+        return new %%NAME%%IlaImpl%%DIAMOND%%(stridedIla);
+    }
+
+    private static class %%NAME%%IlaImpl%%TEMPLATE%% extends Abstract%%NAME%%Ila%%TEMPLATE%% {
+        private final Strided%%NAME%%Ila%%TEMPLATE%% stridedIla;
+
+        private %%NAME%%IlaImpl(final Strided%%NAME%%Ila%%TEMPLATE%% stridedIla) {
+            this.stridedIla = stridedIla;
+        }
+
+        @Override
+        protected long lengthImpl() throws IOException {
+            return stridedIla.length();
+        }
+
+        @Override
+        public void getImpl(final %%TYPE_OR_TEMPLATE%%[] array, final int offset, final long start, int length) throws IOException {
+            stridedIla.get(array, offset, 1, start, length);
+        }
+    }
+}

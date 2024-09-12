@@ -1,40 +1,38 @@
 package tfw.immutable.ila.booleanila;
 
-import java.util.Random;
-import junit.framework.TestCase;
-import tfw.immutable.ila.IlaTestDimensions;
-import tfw.immutable.ila.booleanila.BooleanIla;
-import tfw.immutable.ila.booleanila.BooleanIlaFromArray;
-import tfw.immutable.ila.booleanila.BooleanIlaReverse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-/**
- *
- * @immutables.types=all
- */
-public class BooleanIlaReverseTest extends TestCase
-{
-    public void testAll() throws Exception
-    {
+import java.util.Random;
+import org.junit.jupiter.api.Test;
+import tfw.immutable.ila.IlaTestDimensions;
+
+class BooleanIlaReverseTest {
+    @Test
+    void testArguments() throws Exception {
+        final BooleanIla ila = BooleanIlaFromArray.create(new boolean[10]);
+        final boolean[] buffer = new boolean[10];
+
+        assertThrows(IllegalArgumentException.class, () -> BooleanIlaReverse.create(null, buffer));
+        assertThrows(IllegalArgumentException.class, () -> BooleanIlaReverse.create(ila, null));
+    }
+
+    @Test
+    void testAll() throws Exception {
         final Random random = new Random(0);
         final int length = IlaTestDimensions.defaultIlaLength();
         final boolean[] array = new boolean[length];
         final boolean[] reversed = new boolean[length];
-        for(int ii = 0; ii < array.length; ++ii)
-        {
+        for (int ii = 0; ii < array.length; ++ii) {
             array[ii] = random.nextBoolean();
         }
-        for(int ii = 0; ii < reversed.length; ++ii)
-        {
+        for (int ii = 0; ii < reversed.length; ++ii) {
             reversed[ii] = array[length - 1 - ii];
         }
         BooleanIla origIla = BooleanIlaFromArray.create(array);
         BooleanIla targetIla = BooleanIlaFromArray.create(reversed);
-        BooleanIla actualIla = BooleanIlaReverse.create(origIla);
-        final boolean epsilon = false;
-        BooleanIlaCheck.checkAll(targetIla, actualIla,
-                                IlaTestDimensions.defaultOffsetLength(),
-                                IlaTestDimensions.defaultMaxStride(),
-                                epsilon);
+        BooleanIla actualIla = BooleanIlaReverse.create(origIla, new boolean[1000]);
+
+        BooleanIlaCheck.check(targetIla, actualIla);
     }
 }
 // AUTO GENERATED FROM TEMPLATE

@@ -1,43 +1,41 @@
 package tfw.immutable.ila.shortila;
 
-import java.util.Random;
-import junit.framework.TestCase;
-import tfw.immutable.ila.IlaTestDimensions;
-import tfw.immutable.ila.shortila.ShortIla;
-import tfw.immutable.ila.shortila.ShortIlaFromArray;
-import tfw.immutable.ila.shortila.ShortIlaRemove;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-/**
- *
- * @immutables.types=all
- */
-public class ShortIlaRemoveTest extends TestCase
-{
-    public void testAll() throws Exception
-    {
+import java.util.Random;
+import org.junit.jupiter.api.Test;
+import tfw.immutable.ila.IlaTestDimensions;
+
+class ShortIlaRemoveTest {
+    @Test
+    void testArguments() throws Exception {
+        final ShortIla ila = ShortIlaFromArray.create(new short[10]);
+        final long ilaLength = ila.length();
+
+        assertThrows(IllegalArgumentException.class, () -> ShortIlaRemove.create(null, 0));
+        assertThrows(IllegalArgumentException.class, () -> ShortIlaRemove.create(ila, -1));
+        assertThrows(IllegalArgumentException.class, () -> ShortIlaRemove.create(ila, ilaLength));
+    }
+
+    @Test
+    void testAll() throws Exception {
         final Random random = new Random(0);
         final int length = IlaTestDimensions.defaultIlaLength();
         final short[] array = new short[length];
-        final short[] target = new short[length-1];
-        for(int index = 0; index < length; ++index)
-        {
+        final short[] target = new short[length - 1];
+        for (int index = 0; index < length; ++index) {
             int targetii = 0;
-            for(int ii = 0; ii < array.length; ++ii)
-            {
-                array[ii] = (short)random.nextInt();
-                if(ii != index)
-                {
+            for (int ii = 0; ii < array.length; ++ii) {
+                array[ii] = (short) random.nextInt();
+                if (ii != index) {
                     target[targetii++] = array[ii];
                 }
             }
             ShortIla origIla = ShortIlaFromArray.create(array);
             ShortIla targetIla = ShortIlaFromArray.create(target);
             ShortIla actualIla = ShortIlaRemove.create(origIla, index);
-            final short epsilon = (short)0;
-            ShortIlaCheck.checkAll(targetIla, actualIla,
-                                      IlaTestDimensions.defaultOffsetLength(),
-                                      IlaTestDimensions.defaultMaxStride(),
-                                      epsilon);
+
+            ShortIlaCheck.check(targetIla, actualIla);
         }
     }
 }

@@ -1,0 +1,59 @@
+// booleanila,byteila,charila,doubleila,floatila,intila,longila,objectila,shortila
+package %%PACKAGE%%;
+
+import java.io.IOException;
+import tfw.check.Argument;
+
+public final class %%NAME%%IlaConcatenate {
+    private %%NAME%%IlaConcatenate() {
+        // non-instantiable class
+    }
+
+    public static %%TEMPLATE_SPACE%%%%NAME%%Ila%%TEMPLATE%% create(%%NAME%%Ila%%TEMPLATE%% leftIla, %%NAME%%Ila%%TEMPLATE%% rightIla) {
+        Argument.assertNotNull(leftIla, "leftIla");
+        Argument.assertNotNull(rightIla, "rightIla");
+
+        /*
+          // this efficiency step would help out in a number
+          // of situations, but could be confusing when the
+          // immutable proxy getParameters() is called and you
+          // don't see your concatenation!
+        if(leftIla.length() == 0)
+            return rightIla;
+        if(rightIla.length() == 0)
+            return leftIla;
+        */
+        return new %%NAME%%IlaImpl%%DIAMOND%%(leftIla, rightIla);
+    }
+
+    private static class %%NAME%%IlaImpl%%TEMPLATE%% extends Abstract%%NAME%%Ila%%TEMPLATE%% {
+        private final %%NAME%%Ila%%TEMPLATE%% leftIla;
+        private final %%NAME%%Ila%%TEMPLATE%% rightIla;
+
+        private %%NAME%%IlaImpl(%%NAME%%Ila%%TEMPLATE%% leftIla, %%NAME%%Ila%%TEMPLATE%% rightIla) {
+            this.leftIla = leftIla;
+            this.rightIla = rightIla;
+        }
+
+        @Override
+        protected long lengthImpl() throws IOException {
+            return leftIla.length() + rightIla.length();
+        }
+
+        @Override
+        protected void getImpl(%%TYPE_OR_TEMPLATE%%[] array, int offset, long start, int length) throws IOException {
+            final long leftIlaLength = leftIla.length();
+            final long leftIlaLastIndex = leftIlaLength - 1;
+
+            if (start + length <= leftIlaLastIndex) {
+                leftIla.get(array, offset, start, length);
+            } else if (start > leftIlaLastIndex) {
+                rightIla.get(array, offset, start - leftIlaLength, length);
+            } else {
+                final int leftAmount = (int) (leftIlaLength - start);
+                leftIla.get(array, offset, start, leftAmount);
+                rightIla.get(array, offset + leftAmount, 0, length - leftAmount);
+            }
+        }
+    }
+}

@@ -10,35 +10,28 @@ import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.ila.IntIlaECD;
 import tfw.tsm.ecd.ila.ObjectIlaECD;
 
-public class SelectionInitiator extends Initiator
-	implements ListSelectionListener
-{
-	private final ObjectIlaECD selectedItemsECD;
-	private final IntIlaECD selectedIndexesECD;
-	private final JList list;
-	
-	public SelectionInitiator(String name, ObjectIlaECD selectedItemsECD,
-		IntIlaECD selectedIndexesECD, JList list)
-	{
-		super("SelectionInitiator["+name+"]",
-			new ObjectECD[] {selectedItemsECD, selectedIndexesECD});
-		
-		this.selectedItemsECD = selectedItemsECD;
-		this.selectedIndexesECD = selectedIndexesECD;
-		this.list = list;
-	}
-	
-	public void valueChanged(ListSelectionEvent e)
-	{
-		if (selectedItemsECD != null)
-		{
-			set(selectedItemsECD,
-				ObjectIlaFromArray.create(list.getSelectedValues()));
-		}
-		if (selectedIndexesECD != null)
-		{
-			set(selectedIndexesECD,
-				IntIlaFromArray.create(list.getSelectedIndices()));
-		}
-	}
+public class SelectionInitiator extends Initiator implements ListSelectionListener {
+    private final ObjectIlaECD selectedItemsECD;
+    private final IntIlaECD selectedIndexesECD;
+    private final JList<Object> list;
+
+    public SelectionInitiator(
+            String name, ObjectIlaECD selectedItemsECD, IntIlaECD selectedIndexesECD, JList<Object> list) {
+        super("SelectionInitiator[" + name + "]", new ObjectECD[] {selectedItemsECD, selectedIndexesECD});
+
+        this.selectedItemsECD = selectedItemsECD;
+        this.selectedIndexesECD = selectedIndexesECD;
+        this.list = list;
+    }
+
+    public void valueChanged(ListSelectionEvent e) {
+        if (selectedItemsECD != null) {
+            set(
+                    selectedItemsECD,
+                    ObjectIlaFromArray.create(list.getSelectedValuesList().toArray()));
+        }
+        if (selectedIndexesECD != null) {
+            set(selectedIndexesECD, IntIlaFromArray.create(list.getSelectedIndices()));
+        }
+    }
 }

@@ -1,60 +1,38 @@
 package tfw.immutable.ila.shortila;
 
-import java.util.HashMap;
-import java.util.Map;
 import tfw.check.Argument;
-import tfw.immutable.ImmutableProxy;
 
-/**
- *
- * @immutables.types=all
- */
-public final class ShortIlaFill
-{
-    private ShortIlaFill()
-    {
+public final class ShortIlaFill {
+    private ShortIlaFill() {
         // non-instantiable class
     }
 
-    public static ShortIla create(short value, long length)
-    {
+    public static ShortIla create(short value, long length) {
         Argument.assertNotLessThan(length, 0, "length");
 
-        return new MyShortIla(value, length);
+        return new ShortIlaImpl(value, length);
     }
 
-    private static class MyShortIla extends AbstractShortIla
-        implements ImmutableProxy
-    {
+    private static class ShortIlaImpl extends AbstractShortIla {
         private final short value;
+        private final long length;
 
-        MyShortIla(short value, long length)
-        {
-            super(length);
+        private ShortIlaImpl(short value, long length) {
             this.value = value;
+            this.length = length;
         }
 
-        protected void toArrayImpl(short[] array, int offset,
-                                   int stride, long start, int length)
-        {
+        @Override
+        protected long lengthImpl() {
+            return length;
+        }
+
+        @Override
+        protected void getImpl(short[] array, int offset, long start, int length) {
             final int startPlusLength = (int) (start + length);
-            for(int startInt = (int) start;
-                startInt != startPlusLength;
-                ++startInt, offset += stride)
-            {
+            for (int startInt = (int) start; startInt != startPlusLength; ++startInt, offset++) {
                 array[offset] = value;
             }
-        }
-                
-        public Map<String, Object> getParameters()
-        {
-            HashMap<String, Object> map = new HashMap<String, Object>();
-                        
-            map.put("name", "ShortIlaFill");
-            map.put("length", new Long(length()));
-            map.put("value", new Short(value));
-
-            return(map);
         }
     }
 }
