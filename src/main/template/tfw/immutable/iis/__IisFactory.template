@@ -1,0 +1,14 @@
+// booleaniis,byteiis,chariis,doubleiis,floatiis,intiis,longiis,objectiis,shortiis
+package %%PACKAGE%%;
+
+/**
+ * This interface defines a factory that creates %%NAME%%Iis objects.
+ */
+public interface %%NAME%%IisFactory%%TEMPLATE%% {
+    /**
+     * Create a %%NAME%%Iis object.
+     *
+     * @return the %%NAME%%Iis object.
+     */
+    %%NAME%%Iis%%TEMPLATE%% create();
+}

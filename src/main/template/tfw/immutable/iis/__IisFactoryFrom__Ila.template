@@ -1,0 +1,23 @@
+// booleaniis,byteiis,chariis,doubleiis,floatiis,intiis,longiis,objectiis,shortiis
+package %%PACKAGE%%;
+
+import tfw.immutable.ila.%%LOWERCASE%%ila.%%NAME%%Ila;
+
+public final class %%NAME%%IisFactoryFrom%%NAME%%Ila {
+    public static %%TEMPLATE_SPACE%%%%NAME%%IisFactory%%TEMPLATE%% create(final %%NAME%%Ila%%TEMPLATE%% ila) {
+        return new %%NAME%%IisFactoryImpl%%DIAMOND%%(ila);
+    }
+
+    private static class %%NAME%%IisFactoryImpl%%TEMPLATE%% implements %%NAME%%IisFactory%%TEMPLATE%% {
+        private final %%NAME%%Ila%%TEMPLATE%% ila;
+
+        public %%NAME%%IisFactoryImpl(final %%NAME%%Ila%%TEMPLATE%% ila) {
+            this.ila = ila;
+        }
+
+        @Override
+        public %%NAME%%Iis%%TEMPLATE%% create() {
+            return %%NAME%%IisFrom%%NAME%%Ila.create(ila);
+        }
+    }
+}

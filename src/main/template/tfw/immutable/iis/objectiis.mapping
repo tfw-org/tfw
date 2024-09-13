@@ -1,0 +1,12 @@
+%%TYPE%% = Object
+%%NAME%% = Object
+%%LOWERCASE%% = object
+%%PACKAGE%% = tfw.immutable.iis.objectiis
+%%RANDOM_VALUE%% = new Object()
+%%ASSERT_EQUALS_DELTA%% =
+%%CREATE_IMMUTABLE_START%% =
+%%CREATE_IMMUTABLE_END%% =
+%%DIAMOND%% = <>
+%%TEMPLATE%% = <T>
+%%TEMPLATE_SPACE%% = <T>\ 
+%%TYPE_OR_TEMPLATE%% = T

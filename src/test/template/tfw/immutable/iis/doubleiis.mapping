@@ -1,0 +1,19 @@
+%%TYPE%% = double
+%%NAME%% = Double
+%%PACKAGE%% = tfw.immutable.iis.doubleiis
+%%RANDOM_VALUE%% = random.nextDouble()
+%%RANDOM_INCLUDE%%=import java.util.Random;\n
+%%RANDOM_INIT_0%%=final Random random = new Random(0);\n
+%%RANDOM_INIT%%=final Random random = new Random(0);\n\ \ \ \ \ \ \ \ 
+%%DEFAULT_VALUE%%=0.0
+%%ASSERT_EQUALS_DELTA%% = , 0
+%%CREATE_IMMUTABLE_START%% = new Double(
+%%CREATE_IMMUTABLE_END%% = )
+%%CAST_FROM_INT%% =
+%%CAST_FROM_INT_PAREN%% =
+%%CAST_FROM_INT_PAREN_END%% =
+%%CAST_FROM_DOUBLE%% =
+%%TEMPLATE%% = 
+%%SUPPRESS%% =
+%%FULL_CAST%% =
+%%DIAMOND%% =
