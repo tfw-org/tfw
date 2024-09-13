@@ -1,0 +1,46 @@
+// booleaniis,byteiis,chariis,doubleiis,floatiis,intiis,longiis,objectiis,shortiis
+package %%PACKAGE%%;
+
+import java.io.IOException;
+import tfw.immutable.ila.%%LOWERCASE%%ila.%%NAME%%Ila;
+
+public final class %%NAME%%IisFrom%%NAME%%Ila {
+    private %%NAME%%IisFrom%%NAME%%Ila() {}
+
+    public static %%TEMPLATE_SPACE%%%%NAME%%Iis%%TEMPLATE%% create(final %%NAME%%Ila%%TEMPLATE%% ila) {
+        return new %%NAME%%IisImpl%%DIAMOND%%(ila);
+    }
+
+    private static class %%NAME%%IisImpl%%TEMPLATE%% extends Abstract%%NAME%%Iis%%TEMPLATE%% {
+        private final %%NAME%%Ila%%TEMPLATE%% ila;
+
+        private long index = 0;
+
+        public %%NAME%%IisImpl(final %%NAME%%Ila%%TEMPLATE%% ila) {
+            this.ila = ila;
+        }
+
+        @Override
+        public void closeImpl() throws IOException {
+            index = ila.length();
+        }
+
+        @Override
+        protected int readImpl(%%TYPE_OR_TEMPLATE%%[] array, int offset, int length) throws IOException {
+            final int elementsToGet = (int) Math.min(ila.length() - index, length);
+
+            ila.get(array, offset, index, elementsToGet);
+
+            return elementsToGet;
+        }
+
+        @Override
+        protected long skipImpl(long n) throws IOException {
+            final long originalIndex = index;
+
+            index = Math.min(ila.length(), index + n);
+
+            return index - originalIndex;
+        }
+    }
+}
