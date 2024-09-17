@@ -201,7 +201,7 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>${plugin.maven-surefire-plugin.version}</version>
                 <configuration>
-                    <argLine>${argLine} --illegal-access=permit</argLine>
+                    <argLine>@{argLine} --illegal-access=permit</argLine>
                     <statelessTestsetInfoReporter implementation="org.apache.maven.plugin.surefire.extensions.junit5.JUnit5StatelessTestsetInfoTreeReporter">
                         <theme>UNICODE</theme>
                     </statelessTestsetInfoReporter>
