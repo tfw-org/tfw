@@ -184,7 +184,7 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.5.0</version>
                 <configuration>
-                    <argLine>--illegal-access=permit</argLine>
+                    <argLine>${argLine} --illegal-access=permit</argLine>
                     <statelessTestsetInfoReporter implementation="org.apache.maven.plugin.surefire.extensions.junit5.JUnit5StatelessTestsetInfoTreeReporter">
                         <theme>UNICODE</theme>
                     </statelessTestsetInfoReporter>
@@ -333,6 +333,19 @@
                         <groupId>org.jacoco</groupId>
                         <artifactId>jacoco-maven-plugin</artifactId>
                         <version>0.8.12</version>
+                        <configuration>
+                            <excludes>
+                                <exclude>tfw/math/BigDecimal*.class</exclude>
+                                <exclude>tfw/math/BigInteger*.class</exclude>
+                                <exclude>tfw/math/BitSieve.class</exclude>
+                                <exclude>tfw/math/DoubleConsts.class</exclude>
+                                <exclude>tfw/math/FloatConsts.class</exclude>
+                                <exclude>tfw/math/MathContext.class</exclude>
+                                <exclude>tfw/math/MutableBigInteger.class</exclude>
+                                <exclude>tfw/math/RoundingMode.class</exclude>
+                                <exclude>tfw/math/SignedMutableBigInteger.class</exclude>
+                            </excludes>
+                        </configuration>
                         <executions>
                             <execution>
                                 <id>prepare-agent</id>
