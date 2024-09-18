@@ -11,7 +11,7 @@ jobs:
     strategy:
       matrix:
         distribution: [ 'zulu', 'temurin', 'corretto' ]
-        java: [ '11', '17', '19' ]
+        java: [ '17', '21' ]
     runs-on: ubuntu-latest
 
     steps:

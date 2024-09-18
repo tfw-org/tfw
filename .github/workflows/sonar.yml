@@ -18,7 +18,7 @@ jobs:
     - name: Set up Java ${{ matrix.java }}-${{ matrix.distribution }}
       uses: actions/setup-java@v4
       with:
-        java-version: 19
+        java-version: 21
         distribution: corretto
         cache: maven
     - name: Cache SonarCloud packages
