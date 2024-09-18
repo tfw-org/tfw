@@ -10,7 +10,7 @@ jobs:
       - name: Configure java
         uses: actions/setup-java@v4
         with:
-          java-version: 19
+          java-version: 21
           distribution: corretto
           server-id: ossrh
           server-username: MVN_USERNAME
