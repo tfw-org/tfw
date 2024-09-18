@@ -62,36 +62,50 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>${plugin.maven-javadoc-plugin.version}</version>
+                <groupId>com.diffplug.spotless</groupId>
+                <artifactId>spotless-maven-plugin</artifactId>
+                <version>${plugin.spotless-maven-plugin.version}</version>
                 <configuration>
-                    <quiet>true</quiet>
-                    <doclint>all</doclint>
-                    <failOnWarnings>true</failOnWarnings>
-                    <failOnError>true</failOnError>
+                    <java>
+                        <includes>
+                            <include>src/main/java/**/*.java</include>
+                            <include>src/test/java/**/*.java</include>
+                        </includes>
+                        <excludes>
+                            <exclude>src/main/java/tfw/math/BigDecimal.java</exclude>
+                            <exclude>src/main/java/tfw/math/BigInteger.java</exclude>
+                            <exclude>src/main/java/tfw/math/BitSieve.java</exclude>
+                            <exclude>src/main/java/tfw/math/DoubleConsts.java</exclude>
+                            <exclude>src/main/java/tfw/math/FloatConsts.java</exclude>
+                            <exclude>src/main/java/tfw/math/MathContext.java</exclude>
+                            <exclude>src/main/java/tfw/math/MutableBigInteger.java</exclude>
+                            <exclude>src/main/java/tfw/math/RoundingMode.java</exclude>
+                            <exclude>src/main/java/tfw/math/SignedMutableBigInteger.java</exclude>
+                        </excludes>
+                        <palantirJavaFormat>
+                            <version>${plugin.spotless-palantirJavaFormat.version}</version>
+                            <style>PALANTIR</style>
+                        </palantirJavaFormat>
+                    </java>
+                    <pom>
+                        <includes>
+                            <include>pom.xml</include>
+                        </includes>
+                        <sortPom>
+                            <encoding>${project.build.sourceEncoding}</encoding>
+                            <lineSeparator>\n</lineSeparator>
+                            <nrOfIndentSpace>4</nrOfIndentSpace>
+                            <predefinedSortOrder>custom_1</predefinedSortOrder>
+                            <sortDependencies>scope,groupId,artifactId</sortDependencies>
+                            <sortPlugins>groupId,artifactId</sortPlugins>
+                            <sortProperties>true</sortProperties>
+                        </sortPom>
+                    </pom>
                 </configuration>
                 <executions>
                     <execution>
-                        <id>attach-javadocs</id>
                         <goals>
-                            <goal>jar</goal>
-                        </goals>
-                        <configuration>
-                            <doclint>none</doclint>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-source-plugin</artifactId>
-                <version>${plugin.maven-source-plugin.version}</version>
-                <executions>
-                    <execution>
-                        <id>attach-sources</id>
-                        <goals>
-                            <goal>jar-no-fork</goal>
+                            <goal>check</goal>
                         </goals>
                     </execution>
                 </executions>
@@ -127,93 +141,26 @@
                 <version>${plugin.maven-gpg-plugin.version}</version>
             </plugin>
             <plugin>
-                <groupId>org.sonatype.plugins</groupId>
-                <artifactId>nexus-staging-maven-plugin</artifactId>
-                <version>${plugin.nexus-staging-maven-plugin.version}</version>
-                <extensions>true</extensions>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>${plugin.maven-javadoc-plugin.version}</version>
                 <configuration>
-                    <serverId>ossrh</serverId>
-                    <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
-                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>com.diffplug.spotless</groupId>
-                <artifactId>spotless-maven-plugin</artifactId>
-                <version>${plugin.spotless-maven-plugin.version}</version>
-                <configuration>
-                    <java>
-                        <includes>
-                            <include>src/main/java/**/*.java</include>
-                            <include>src/test/java/**/*.java</include>
-                        </includes>
-                        <excludes>
-                            <exclude>src/main/java/tfw/math/BigDecimal.java</exclude>
-                            <exclude>src/main/java/tfw/math/BigInteger.java</exclude>
-                            <exclude>src/main/java/tfw/math/BitSieve.java</exclude>
-                            <exclude>src/main/java/tfw/math/DoubleConsts.java</exclude>
-                            <exclude>src/main/java/tfw/math/FloatConsts.java</exclude>
-                            <exclude>src/main/java/tfw/math/MathContext.java</exclude>
-                            <exclude>src/main/java/tfw/math/MutableBigInteger.java</exclude>
-                            <exclude>src/main/java/tfw/math/RoundingMode.java</exclude>
-                            <exclude>src/main/java/tfw/math/SignedMutableBigInteger.java</exclude>
-                        </excludes>
-                        <palantirJavaFormat>
-                            <version>${plugin.spotless-palantirJavaFormat.version}</version>
-                            <style>PALANTIR</style>
-                        </palantirJavaFormat>
-                    </java>
-                    <pom>
-                        <includes>
-                            <include>pom.xml</include>
-                        </includes>
-                        <sortPom>
-                            <encoding>${project.build.sourceEncoding}</encoding>
-                            <lineSeparator>\n</lineSeparator>
-                            <nrOfIndentSpace>4</nrOfIndentSpace>
-                            <predefinedSortOrder>custom_1</predefinedSortOrder>
-                            <sortDependencies>scope</sortDependencies>
-                            <sortProperties>true</sortProperties>
-                        </sortPom>
-                    </pom>
+                    <quiet>true</quiet>
+                    <doclint>all</doclint>
+                    <failOnWarnings>true</failOnWarnings>
+                    <failOnError>true</failOnError>
                 </configuration>
                 <executions>
                     <execution>
+                        <id>attach-javadocs</id>
                         <goals>
-                            <goal>check</goal>
+                            <goal>jar</goal>
                         </goals>
+                        <configuration>
+                            <doclint>none</doclint>
+                        </configuration>
                     </execution>
                 </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>exec-maven-plugin</artifactId>
-                <version>${plugin.exec-maven-plugin.version}</version>
-                <configuration>
-                    <mainClass>tfw.build.SearchAndReplace</mainClass>
-                    <arguments>
-                        <argument>./src/main/template</argument>
-                        <argument>./src/test/template</argument>
-                    </arguments>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>${plugin.maven-surefire-plugin.version}</version>
-                <configuration>
-                    <argLine>@{argLine} --illegal-access=permit</argLine>
-                    <statelessTestsetInfoReporter implementation="org.apache.maven.plugin.surefire.extensions.junit5.JUnit5StatelessTestsetInfoTreeReporter">
-                        <theme>UNICODE</theme>
-                    </statelessTestsetInfoReporter>
-                </configuration>
-                <dependencies>
-                    <dependency>
-                        <groupId>me.fabriciorby</groupId>
-                        <artifactId>maven-surefire-junit5-tree-reporter</artifactId>
-                        <version>${plugin.maven-surefire-junit5-tree-reporter.version}</version>
-                    </dependency>
-                </dependencies>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -251,6 +198,49 @@
                 </executions>
             </plugin>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>${plugin.maven-source-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${plugin.maven-surefire-plugin.version}</version>
+                <configuration>
+                    <argLine>@{argLine} --illegal-access=permit</argLine>
+                    <statelessTestsetInfoReporter implementation="org.apache.maven.plugin.surefire.extensions.junit5.JUnit5StatelessTestsetInfoTreeReporter">
+                        <theme>UNICODE</theme>
+                    </statelessTestsetInfoReporter>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>me.fabriciorby</groupId>
+                        <artifactId>maven-surefire-junit5-tree-reporter</artifactId>
+                        <version>${plugin.maven-surefire-junit5-tree-reporter.version}</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>${plugin.exec-maven-plugin.version}</version>
+                <configuration>
+                    <mainClass>tfw.build.SearchAndReplace</mainClass>
+                    <arguments>
+                        <argument>./src/main/template</argument>
+                        <argument>./src/test/template</argument>
+                    </arguments>
+                </configuration>
+            </plugin>
+            <plugin>
                 <groupId>org.pitest</groupId>
                 <artifactId>pitest-maven</artifactId>
                 <version>${plugin.pitest-maven.version}</version>
@@ -275,6 +265,17 @@
                         <version>${plugin.pitest-junit5-plugin.version}</version>
                     </dependency>
                 </dependencies>
+            </plugin>
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <version>${plugin.nexus-staging-maven-plugin.version}</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <serverId>ossrh</serverId>
+                    <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
+                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                </configuration>
             </plugin>
         </plugins>
     </build>
