@@ -109,7 +109,7 @@ public final class Au {
      * Constructs a newly allocated Au object from a ByteIla.
      *
      * @param byteIla the byteIla containing the AU formatted bytes.
-     * @throws DataInvalidException if the byteIla has invalid data.
+     * @throws IOException if the byteIla has invalid data.
      * @throws IOException if a valid AU header is not found.
      */
     public Au(ByteIla byteIla) throws IOException {
