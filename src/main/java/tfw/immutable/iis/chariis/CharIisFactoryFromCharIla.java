@@ -3,6 +3,8 @@ package tfw.immutable.iis.chariis;
 import tfw.immutable.ila.charila.CharIla;
 
 public final class CharIisFactoryFromCharIla {
+    private CharIisFactoryFromCharIla() {}
+
     public static CharIisFactory create(final CharIla ila) {
         return new CharIisFactoryImpl(ila);
     }

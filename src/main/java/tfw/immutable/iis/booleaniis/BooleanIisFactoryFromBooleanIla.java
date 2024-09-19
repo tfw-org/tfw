@@ -3,6 +3,8 @@ package tfw.immutable.iis.booleaniis;
 import tfw.immutable.ila.booleanila.BooleanIla;
 
 public final class BooleanIisFactoryFromBooleanIla {
+    private BooleanIisFactoryFromBooleanIla() {}
+
     public static BooleanIisFactory create(final BooleanIla ila) {
         return new BooleanIisFactoryImpl(ila);
     }

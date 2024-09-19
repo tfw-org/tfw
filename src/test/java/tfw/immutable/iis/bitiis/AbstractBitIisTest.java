@@ -1,4 +1,4 @@
-package tfw.immutable.iis.longiis;
+package tfw.immutable.iis.bitiis;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -8,10 +8,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.io.IOException;
 import org.junit.jupiter.api.Test;
 
-class AbstractLongIisTest {
+class AbstractBitIisTest {
     @Test
     void testArguments() throws IOException {
-        try (final TestLongIis ti = new TestLongIis()) {
+        try (final TestBitIis ti = new TestBitIis()) {
             final long[] array = new long[11];
 
             assertThrows(IllegalArgumentException.class, () -> ti.read(null, 0, 1));
@@ -27,7 +27,7 @@ class AbstractLongIisTest {
 
     @Test
     void testClosed() throws IOException {
-        final TestLongIis ti = new TestLongIis();
+        final TestBitIis ti = new TestBitIis();
         final long[] array = new long[11];
 
         ti.close();
@@ -42,7 +42,7 @@ class AbstractLongIisTest {
         assertFalse(ti.closeCalled);
     }
 
-    private class TestLongIis extends AbstractLongIis {
+    private class TestBitIis extends AbstractBitIis {
         public boolean closeCalled = false;
 
         @Override
@@ -61,4 +61,3 @@ class AbstractLongIisTest {
         }
     }
 }
-// AUTO GENERATED FROM TEMPLATE

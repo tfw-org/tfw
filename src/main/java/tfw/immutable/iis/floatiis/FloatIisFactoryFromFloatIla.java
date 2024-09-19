@@ -3,6 +3,8 @@ package tfw.immutable.iis.floatiis;
 import tfw.immutable.ila.floatila.FloatIla;
 
 public final class FloatIisFactoryFromFloatIla {
+    private FloatIisFactoryFromFloatIla() {}
+
     public static FloatIisFactory create(final FloatIla ila) {
         return new FloatIisFactoryImpl(ila);
     }

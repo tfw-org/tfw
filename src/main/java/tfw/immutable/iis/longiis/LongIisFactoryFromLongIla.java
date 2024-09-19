@@ -3,6 +3,8 @@ package tfw.immutable.iis.longiis;
 import tfw.immutable.ila.longila.LongIla;
 
 public final class LongIisFactoryFromLongIla {
+    private LongIisFactoryFromLongIla() {}
+
     public static LongIisFactory create(final LongIla ila) {
         return new LongIisFactoryImpl(ila);
     }

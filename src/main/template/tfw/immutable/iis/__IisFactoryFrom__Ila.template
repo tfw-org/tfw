@@ -4,6 +4,8 @@ package %%PACKAGE%%;
 import tfw.immutable.ila.%%LOWERCASE%%ila.%%NAME%%Ila;
 
 public final class %%NAME%%IisFactoryFrom%%NAME%%Ila {
+    private %%NAME%%IisFactoryFrom%%NAME%%Ila() {}
+
     public static %%TEMPLATE_SPACE%%%%NAME%%IisFactory%%TEMPLATE%% create(final %%NAME%%Ila%%TEMPLATE%% ila) {
         return new %%NAME%%IisFactoryImpl%%DIAMOND%%(ila);
     }

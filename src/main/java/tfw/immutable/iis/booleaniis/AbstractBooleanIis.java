@@ -51,7 +51,7 @@ public abstract class AbstractBooleanIis implements BooleanIis {
         Argument.assertNotNull(array, "array");
         Argument.assertNotLessThan(offset, 0, "offset");
         Argument.assertNotLessThan(length, 0, "length");
-        Argument.assertNotGreaterThan(length, array.length - offset, "length", "array.length - offset");
+        Argument.assertNotGreaterThan(length, array.length - (long) offset, "length", "array.length - offset");
 
         if (closed) {
             return -1;

@@ -3,6 +3,8 @@ package tfw.immutable.iis.bitiis;
 import tfw.immutable.ila.bitila.BitIla;
 
 public final class BitIisFactoryFromBitIla {
+    private BitIisFactoryFromBitIla() {}
+
     public static BitIisFactory create(final BitIla ila) {
         return new BitIisFactoryImpl(ila);
     }

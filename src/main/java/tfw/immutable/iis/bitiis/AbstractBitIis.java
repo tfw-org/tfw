@@ -9,6 +9,13 @@ import tfw.check.Argument;
  */
 public abstract class AbstractBitIis implements BitIis {
     /**
+     * This method replaces the actual close method.
+     *
+     * @throws IOException if something happens while trying to read the bits.
+     */
+    protected abstract void closeImpl() throws IOException;
+
+    /**
      * This method replaces the actual read method and is called after parameter validation.
      *
      * @param array that will hold the bits.
@@ -28,13 +35,27 @@ public abstract class AbstractBitIis implements BitIis {
      */
     protected abstract long skipImpl(long n) throws IOException;
 
+    private boolean closed = false;
+
+    @Override
+    public void close() throws IOException {
+        if (!closed) {
+            closed = true;
+
+            closeImpl();
+        }
+    }
+
     @Override
     public final int read(final long[] array, final int offset, final int length) throws IOException {
         Argument.assertNotNull(array, "array");
         Argument.assertNotLessThan(offset, 0, "offset");
         Argument.assertNotLessThan(length, 0, "length");
-        Argument.assertNotGreaterThan(length, array.length - offset, "length", "array.length - offset");
+        Argument.assertNotGreaterThan(length, array.length - (long) offset, "length", "array.length - offset");
 
+        if (closed) {
+            return -1;
+        }
         if (length == 0) {
             return 0;
         }
@@ -44,7 +65,10 @@ public abstract class AbstractBitIis implements BitIis {
 
     @Override
     public final long skip(final long n) throws IOException {
-        if (n < 0) {
+        if (closed) {
+            return -1;
+        }
+        if (n < 1) {
             return 0;
         }
 

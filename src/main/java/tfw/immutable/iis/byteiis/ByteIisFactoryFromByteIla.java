@@ -3,6 +3,8 @@ package tfw.immutable.iis.byteiis;
 import tfw.immutable.ila.byteila.ByteIla;
 
 public final class ByteIisFactoryFromByteIla {
+    private ByteIisFactoryFromByteIla() {}
+
     public static ByteIisFactory create(final ByteIla ila) {
         return new ByteIisFactoryImpl(ila);
     }

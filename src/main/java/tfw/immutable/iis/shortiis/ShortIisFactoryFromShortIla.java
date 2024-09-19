@@ -3,6 +3,8 @@ package tfw.immutable.iis.shortiis;
 import tfw.immutable.ila.shortila.ShortIla;
 
 public final class ShortIisFactoryFromShortIla {
+    private ShortIisFactoryFromShortIla() {}
+
     public static ShortIisFactory create(final ShortIla ila) {
         return new ShortIisFactoryImpl(ila);
     }
