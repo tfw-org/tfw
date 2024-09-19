@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.io.IOException;
 import org.junit.jupiter.api.Test;
 
-public class AbstractByteIisTest {
+class AbstractByteIisTest {
     @Test
     void testArguments() throws IOException {
         try (final TestByteIis ti = new TestByteIis()) {

@@ -15,7 +15,7 @@ class ByteIisFromInputStreamTest {
     }
 
     @Test
-    void testExceptions() throws IOException {
+    void testExceptions() {
         final ExceptionInputStream eis = new ExceptionInputStream();
         final ByteIis byteIis = ByteIisFromInputStream.create(eis);
 

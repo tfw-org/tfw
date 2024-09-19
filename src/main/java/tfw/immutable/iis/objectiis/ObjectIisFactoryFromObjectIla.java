@@ -3,6 +3,8 @@ package tfw.immutable.iis.objectiis;
 import tfw.immutable.ila.objectila.ObjectIla;
 
 public final class ObjectIisFactoryFromObjectIla {
+    private ObjectIisFactoryFromObjectIla() {}
+
     public static <T> ObjectIisFactory<T> create(final ObjectIla<T> ila) {
         return new ObjectIisFactoryImpl<>(ila);
     }

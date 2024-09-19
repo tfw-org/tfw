@@ -20,7 +20,7 @@ public final class BitIisFromBitIla {
         }
 
         @Override
-        public void close() throws IOException {
+        public void closeImpl() throws IOException {
             index = ila.length();
         }
 

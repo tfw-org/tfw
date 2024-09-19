@@ -3,6 +3,8 @@ package tfw.immutable.iis.intiis;
 import tfw.immutable.ila.intila.IntIla;
 
 public final class IntIisFactoryFromIntIla {
+    private IntIisFactoryFromIntIla() {}
+
     public static IntIisFactory create(final IntIla ila) {
         return new IntIisFactoryImpl(ila);
     }
