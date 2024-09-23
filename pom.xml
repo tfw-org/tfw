@@ -28,7 +28,7 @@
         <plugin.maven-surefire-plugin.version>3.5.0</plugin.maven-surefire-plugin.version>
         <plugin.nexus-staging-maven-plugin.version>1.7.0</plugin.nexus-staging-maven-plugin.version>
         <plugin.pitest-junit5-plugin.version>1.2.1</plugin.pitest-junit5-plugin.version>
-        <plugin.pitest-maven.version>1.16.3</plugin.pitest-maven.version>
+        <plugin.pitest-maven.version>1.17.0</plugin.pitest-maven.version>
         <plugin.spotless-maven-plugin.version>2.43.0</plugin.spotless-maven-plugin.version>
         <plugin.spotless-palantirJavaFormat.version>2.50.0</plugin.spotless-palantirJavaFormat.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
