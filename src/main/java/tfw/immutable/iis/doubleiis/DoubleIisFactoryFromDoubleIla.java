@@ -1,5 +1,6 @@
 package tfw.immutable.iis.doubleiis;
 
+import tfw.check.Argument;
 import tfw.immutable.ila.doubleila.DoubleIla;
 
 public final class DoubleIisFactoryFromDoubleIla {
@@ -13,6 +14,8 @@ public final class DoubleIisFactoryFromDoubleIla {
         private final DoubleIla ila;
 
         public DoubleIisFactoryImpl(final DoubleIla ila) {
+            Argument.assertNotNull(ila, "ila");
+
             this.ila = ila;
         }
 

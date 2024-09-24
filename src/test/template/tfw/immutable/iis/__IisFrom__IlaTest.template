@@ -1,0 +1,72 @@
+// booleaniis,byteiis,chariis,doubleiis,floatiis,intiis,longiis,objectiis,shortiis
+package %%PACKAGE%%;
+
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import java.io.IOException;
+import java.util.Arrays;
+import org.junit.jupiter.api.Test;
+import tfw.immutable.ila.%%LOWERCASE%%ila.%%NAME%%Ila;
+import tfw.immutable.ila.%%LOWERCASE%%ila.%%NAME%%IlaFromArray;
+
+class %%NAME%%IisFrom%%NAME%%IlaTest {
+    @Test
+    void testArguments() {
+        assertThrows(IllegalArgumentException.class, () -> %%NAME%%IisFrom%%NAME%%Ila.create(null));
+    }
+
+    @Test
+    void testRead() throws IOException {
+        final %%TYPE%%[] expectedArray = new %%TYPE%%[12];
+        final %%NAME%%Ila%%TEMPLATE%% ila = %%NAME%%IlaFromArray.create(expectedArray);
+
+        try (%%NAME%%Iis%%TEMPLATE%% iis = %%NAME%%IisFrom%%NAME%%Ila.create(ila)) {
+            final %%TYPE%%[] actualArray = new %%TYPE%%[expectedArray.length];
+
+            for (int i = 0; i < actualArray.length; i += actualArray.length / 4) {
+                assertEquals(actualArray.length / 4, iis.read(actualArray, i, actualArray.length / 4));
+            }
+
+            assertEquals(-1, iis.read(new %%TYPE%%[1], 0, 1));
+            assertArrayEquals(expectedArray, actualArray);
+        }
+    }
+
+    @Test
+    void testRead2() throws IOException {
+        final %%TYPE%%[] array = new %%TYPE%%[12];
+        final %%TYPE%%[] expectedArray = new %%TYPE%%[array.length];
+
+        Arrays.fill(array, %%DEFAULT_VALUE_2%%);
+        Arrays.fill(expectedArray, 0, expectedArray.length, %%DEFAULT_VALUE%%);
+        Arrays.fill(expectedArray, 0, expectedArray.length - 1, %%DEFAULT_VALUE_2%%);
+
+        final %%NAME%%Ila%%TEMPLATE%% ila = %%NAME%%IlaFromArray.create(array);
+
+        try (%%NAME%%Iis%%TEMPLATE%% iis = %%NAME%%IisFrom%%NAME%%Ila.create(ila)) {
+            final %%TYPE%%[] actualArray = new %%TYPE%%[expectedArray.length];
+
+            Arrays.fill(actualArray, %%DEFAULT_VALUE%%);
+
+            assertEquals(1, iis.skip(1));
+            assertEquals(expectedArray.length - 1, iis.read(actualArray, 0, actualArray.length));
+            assertArrayEquals(expectedArray, actualArray);
+        }
+    }
+
+    @Test
+    void testSkip() throws IOException {
+        final %%TYPE%%[] expectedArray = new %%TYPE%%[12];
+        final %%NAME%%Ila%%TEMPLATE%% ila = %%NAME%%IlaFromArray.create(expectedArray);
+
+        try (%%NAME%%Iis%%TEMPLATE%% iis = %%NAME%%IisFrom%%NAME%%Ila.create(ila)) {
+            for (int i = 0; i < 4; i++) {
+                assertEquals(expectedArray.length / 4, iis.skip(expectedArray.length / 4));
+            }
+
+            assertEquals(-1, iis.skip(1));
+        }
+    }
+}

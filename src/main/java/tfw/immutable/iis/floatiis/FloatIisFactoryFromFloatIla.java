@@ -1,5 +1,6 @@
 package tfw.immutable.iis.floatiis;
 
+import tfw.check.Argument;
 import tfw.immutable.ila.floatila.FloatIla;
 
 public final class FloatIisFactoryFromFloatIla {
@@ -13,6 +14,8 @@ public final class FloatIisFactoryFromFloatIla {
         private final FloatIla ila;
 
         public FloatIisFactoryImpl(final FloatIla ila) {
+            Argument.assertNotNull(ila, "ila");
+
             this.ila = ila;
         }
 

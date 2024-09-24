@@ -1,5 +1,6 @@
 package tfw.immutable.iis.byteiis;
 
+import tfw.check.Argument;
 import tfw.immutable.ila.byteila.ByteIla;
 
 public final class ByteIisFactoryFromByteIla {
@@ -13,6 +14,8 @@ public final class ByteIisFactoryFromByteIla {
         private final ByteIla ila;
 
         public ByteIisFactoryImpl(final ByteIla ila) {
+            Argument.assertNotNull(ila, "ila");
+
             this.ila = ila;
         }
 
