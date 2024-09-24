@@ -1,5 +1,6 @@
 package tfw.immutable.iis.intiis;
 
+import tfw.check.Argument;
 import tfw.immutable.ila.intila.IntIla;
 
 public final class IntIisFactoryFromIntIla {
@@ -13,6 +14,8 @@ public final class IntIisFactoryFromIntIla {
         private final IntIla ila;
 
         public IntIisFactoryImpl(final IntIla ila) {
+            Argument.assertNotNull(ila, "ila");
+
             this.ila = ila;
         }
 

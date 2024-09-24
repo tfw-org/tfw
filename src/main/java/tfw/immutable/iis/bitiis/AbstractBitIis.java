@@ -24,7 +24,7 @@ public abstract class AbstractBitIis implements BitIis {
      * @return the number of bits put into the array.
      * @throws IOException if something happens while trying to read the bits.
      */
-    protected abstract int readImpl(long[] array, int offset, int length) throws IOException;
+    protected abstract long readImpl(long[] array, long offset, long length) throws IOException;
 
     /**
      * This method replaces the actual skip method and is called after parameter validation.
@@ -47,31 +47,35 @@ public abstract class AbstractBitIis implements BitIis {
     }
 
     @Override
-    public final int read(final long[] array, final int offset, final int length) throws IOException {
+    public final long read(final long[] array, final long arrayOffsetInBits, final long lengthInBits)
+            throws IOException {
         Argument.assertNotNull(array, "array");
-        Argument.assertNotLessThan(offset, 0, "offset");
-        Argument.assertNotLessThan(length, 0, "length");
-        Argument.assertNotGreaterThan(length, array.length - (long) offset, "length", "array.length - offset");
+        Argument.assertNotLessThan(arrayOffsetInBits, 0, "arrayOffsetInBits");
+        Argument.assertNotGreaterThanOrEquals(
+                arrayOffsetInBits, MAX_BITS_IN_ARRAY, "arrayOffsetInBits", "BitIis.MAX_BITS_IN_ARRAY");
+        Argument.assertNotLessThan(lengthInBits, 0, "lengthInBits");
+        Argument.assertNotGreaterThanOrEquals(
+                lengthInBits, MAX_BITS_IN_ARRAY, "lengthInBits", "BitsIis.MAX_BITS_IN_ARRAY");
 
         if (closed) {
             return -1;
         }
-        if (length == 0) {
+        if (lengthInBits == 0) {
             return 0;
         }
 
-        return readImpl(array, offset, length);
+        return readImpl(array, arrayOffsetInBits, lengthInBits);
     }
 
     @Override
-    public final long skip(final long n) throws IOException {
+    public final long skip(final long numberOfBIts) throws IOException {
         if (closed) {
             return -1;
         }
-        if (n < 1) {
+        if (numberOfBIts < 1) {
             return 0;
         }
 
-        return skipImpl(n);
+        return skipImpl(numberOfBIts);
     }
 }

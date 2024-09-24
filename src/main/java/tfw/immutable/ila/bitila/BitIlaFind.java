@@ -89,7 +89,7 @@ public final class BitIlaFind {
                             while ((frag >> j & 1L) == 0) {
                                 j--;
                             }
-                            position = offset + (Long.SIZE - 1 - j);
+                            position = offset + Long.SIZE - 1 - j;
                         }
                         offset += len;
                         newLen += len;

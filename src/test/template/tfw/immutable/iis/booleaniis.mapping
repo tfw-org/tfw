@@ -1,6 +1,7 @@
 %%UTIL%% = BooleanIlaUtilCheck.checkAll(actual, epsilon);\n\ \ \ \ \ \ \ \ 
 %%TYPE%% = boolean
 %%NAME%% = Boolean
+%%LOWERCASE%% = boolean
 %%PACKAGE%% = tfw.immutable.iis.booleaniis
 %%RANDOM_VALUE%% = random.nextBoolean()
 %%RANDOM_INCLUDE%%=import java.util.Random;\n
@@ -9,6 +10,7 @@
 %%RANDOM_INIT%%=final Random random = new Random(0);\n\ \ \ \ \ \ \ \ 
 %%RANDOM_INIT_12%%=final Random random = new Random(0);\n\ \ \ \ \ \ \ \ \ \ \ \ 
 %%DEFAULT_VALUE%%=false
+%%DEFAULT_VALUE_2%% = true
 %%ASSERT_EQUALS_DELTA%% =
 %%CREATE_IMMUTABLE_START%% = new Boolean(
 %%CREATE_IMMUTABLE_END%% = )

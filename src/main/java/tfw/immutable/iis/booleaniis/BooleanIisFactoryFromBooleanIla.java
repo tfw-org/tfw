@@ -1,5 +1,6 @@
 package tfw.immutable.iis.booleaniis;
 
+import tfw.check.Argument;
 import tfw.immutable.ila.booleanila.BooleanIla;
 
 public final class BooleanIisFactoryFromBooleanIla {
@@ -13,6 +14,8 @@ public final class BooleanIisFactoryFromBooleanIla {
         private final BooleanIla ila;
 
         public BooleanIisFactoryImpl(final BooleanIla ila) {
+            Argument.assertNotNull(ila, "ila");
+
             this.ila = ila;
         }
 

@@ -1,11 +1,13 @@
 %%TYPE%% = short
 %%NAME%% = Short
+%%LOWERCASE%% = short
 %%PACKAGE%% = tfw.immutable.iis.shortiis
 %%RANDOM_VALUE%% = (short) random.nextInt()
 %%RANDOM_INCLUDE%%=import java.util.Random;\n
 %%RANDOM_INIT_0%%=final Random random = new Random(0);\n
 %%RANDOM_INIT%%=final Random random = new Random(0);\n\ \ \ \ \ \ \ \ 
 %%DEFAULT_VALUE%%=(short) 0
+%%DEFAULT_VALUE_2%%=(short) 1
 %%ASSERT_EQUALS_DELTA%% =
 %%CREATE_IMMUTABLE_START%% = new Short(
 %%CREATE_IMMUTABLE_END%% = )

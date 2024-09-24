@@ -7,23 +7,25 @@ import java.io.IOException;
  * This interface defines a bit Input Stream (BitIis).
  */
 public interface BitIis extends Closeable {
+    long MAX_BITS_IN_ARRAY = (Integer.MAX_VALUE - 8) * (long) Long.SIZE;
+
     /**
      * This method is analogous to InputStream.read(byte[], int, int).
      *
      * @param array to put the bits.
-     * @param offset into the array to put the first bit.
-     * @param length the number of bits to put into the array.
+     * @param arrayOffsetInBits into the array to put the first bit.
+     * @param lengthInBits the number of bits to put into the array.
      * @return the number of bits read or -1 if at end of stream.
      * @throws IOException if there is a problem reading the bits.
      */
-    int read(long[] array, int offset, int length) throws IOException;
+    long read(long[] array, long arrayOffsetInBits, long lengthInBits) throws IOException;
 
     /**
      * This method is analogous to InputStream.skip(long).
      *
-     * @param n the number of bits to skip.
+     * @param numberOfBits the number of bits to skip.
      * @return the number of bits skipped or -1 if at end of stream.
      * @throws IOException if there is a problem skipping the bits.
      */
-    long skip(long n) throws IOException;
+    long skip(long numberOfBits) throws IOException;
 }

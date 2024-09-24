@@ -1,11 +1,13 @@
 %%TYPE%% = char
 %%NAME%% = Char
+%%LOWERCASE%% = char
 %%PACKAGE%% = tfw.immutable.iis.chariis
 %%RANDOM_VALUE%% = (char) random.nextInt()
 %%RANDOM_INCLUDE%%=import java.util.Random;\n
 %%RANDOM_INIT_0%%=final Random random = new Random(0);\n
 %%RANDOM_INIT%%=final Random random = new Random(0);\n\ \ \ \ \ \ \ \ 
 %%DEFAULT_VALUE%%=(char) 0
+%%DEFAULT_VALUE_2%% = (char) 1
 %%ASSERT_EQUALS_DELTA%% =
 %%CREATE_IMMUTABLE_START%% = new Character(
 %%CREATE_IMMUTABLE_END%% = )

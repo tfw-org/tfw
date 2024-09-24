@@ -1,5 +1,6 @@
 package tfw.immutable.iis.shortiis;
 
+import tfw.check.Argument;
 import tfw.immutable.ila.shortila.ShortIla;
 
 public final class ShortIisFactoryFromShortIla {
@@ -13,6 +14,8 @@ public final class ShortIisFactoryFromShortIla {
         private final ShortIla ila;
 
         public ShortIisFactoryImpl(final ShortIla ila) {
+            Argument.assertNotNull(ila, "ila");
+
             this.ila = ila;
         }
 

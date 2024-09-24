@@ -11,13 +11,14 @@ import org.junit.jupiter.api.Test;
 class AbstractBitIisTest {
     @Test
     void testArguments() throws IOException {
-        try (final TestBitIis ti = new TestBitIis()) {
+        try (TestBitIis ti = new TestBitIis()) {
             final long[] array = new long[11];
 
             assertThrows(IllegalArgumentException.class, () -> ti.read(null, 0, 1));
             assertThrows(IllegalArgumentException.class, () -> ti.read(array, -1, 1));
             assertThrows(IllegalArgumentException.class, () -> ti.read(array, 0, -1));
-            assertThrows(IllegalArgumentException.class, () -> ti.read(array, array.length, 1));
+            assertThrows(IllegalArgumentException.class, () -> ti.read(array, BitIis.MAX_BITS_IN_ARRAY, 1));
+            assertThrows(IllegalArgumentException.class, () -> ti.read(array, 0, BitIis.MAX_BITS_IN_ARRAY));
             assertEquals(0, ti.read(array, 0, 0));
             assertEquals(1, ti.read(array, 0, 1));
             assertEquals(0, ti.skip(0));
@@ -51,8 +52,8 @@ class AbstractBitIisTest {
         }
 
         @Override
-        protected int readImpl(long[] array, int offset, int length) throws IOException {
-            return length;
+        protected long readImpl(long[] array, long arrayOffsetInBits, long lengthInBits) throws IOException {
+            return lengthInBits;
         }
 
         @Override

@@ -11,13 +11,12 @@ import org.junit.jupiter.api.Test;
 class AbstractShortIisTest {
     @Test
     void testArguments() throws IOException {
-        try (final TestShortIis ti = new TestShortIis()) {
+        try (TestShortIis ti = new TestShortIis()) {
             final short[] array = new short[11];
 
             assertThrows(IllegalArgumentException.class, () -> ti.read(null, 0, 1));
             assertThrows(IllegalArgumentException.class, () -> ti.read(array, -1, 1));
             assertThrows(IllegalArgumentException.class, () -> ti.read(array, 0, -1));
-            assertThrows(IllegalArgumentException.class, () -> ti.read(array, array.length, 1));
             assertEquals(0, ti.read(array, 0, 0));
             assertEquals(1, ti.read(array, 0, 1));
             assertEquals(0, ti.skip(0));

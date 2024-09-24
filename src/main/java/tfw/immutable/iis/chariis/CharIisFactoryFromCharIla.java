@@ -1,5 +1,6 @@
 package tfw.immutable.iis.chariis;
 
+import tfw.check.Argument;
 import tfw.immutable.ila.charila.CharIla;
 
 public final class CharIisFactoryFromCharIla {
@@ -13,6 +14,8 @@ public final class CharIisFactoryFromCharIla {
         private final CharIla ila;
 
         public CharIisFactoryImpl(final CharIla ila) {
+            Argument.assertNotNull(ila, "ila");
+
             this.ila = ila;
         }
 

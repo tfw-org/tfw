@@ -8,9 +8,9 @@ public final class BitIlaUtil {
         @Override
         public void partialLong(
                 long[] left, long leftOffsetInBits, long[] right, long rightOffsetInBits, long lengthInBits) {
-            final long partial = BitIlaUtil.getPartialLong(right, rightOffsetInBits, lengthInBits);
+            final long partial = getPartialLong(right, rightOffsetInBits, lengthInBits);
 
-            BitIlaUtil.setPartialLong(left, leftOffsetInBits, partial, lengthInBits);
+            setPartialLong(left, leftOffsetInBits, partial, lengthInBits);
         }
 
         @Override

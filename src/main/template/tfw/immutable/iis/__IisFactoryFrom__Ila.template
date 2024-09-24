@@ -1,6 +1,7 @@
 // booleaniis,byteiis,chariis,doubleiis,floatiis,intiis,longiis,objectiis,shortiis
 package %%PACKAGE%%;
 
+import tfw.check.Argument;
 import tfw.immutable.ila.%%LOWERCASE%%ila.%%NAME%%Ila;
 
 public final class %%NAME%%IisFactoryFrom%%NAME%%Ila {
@@ -14,6 +15,8 @@ public final class %%NAME%%IisFactoryFrom%%NAME%%Ila {
         private final %%NAME%%Ila%%TEMPLATE%% ila;
 
         public %%NAME%%IisFactoryImpl(final %%NAME%%Ila%%TEMPLATE%% ila) {
+            Argument.assertNotNull(ila, "ila");
+
             this.ila = ila;
         }
 

@@ -1,6 +1,7 @@
 package tfw.immutable.iis.bitiis;
 
 import java.io.IOException;
+import tfw.check.Argument;
 import tfw.immutable.ila.bitila.BitIla;
 
 public final class BitIisFromBitIla {
@@ -16,6 +17,8 @@ public final class BitIisFromBitIla {
         private long index = 0;
 
         public BitIisImpl(final BitIla ila) {
+            Argument.assertNotNull(ila, "ila");
+
             this.ila = ila;
         }
 
@@ -25,16 +28,26 @@ public final class BitIisFromBitIla {
         }
 
         @Override
-        protected int readImpl(long[] array, int offset, int length) throws IOException {
-            final int elementsToGet = (int) Math.min(ila.length() - index, length);
+        protected long readImpl(long[] array, long offsetInBits, long lengthInBits) throws IOException {
+            if (index == ila.length()) {
+                return -1;
+            }
 
-            ila.get(array, offset, index, elementsToGet);
+            final int elementsToGet = (int) Math.min(ila.length() - index, lengthInBits);
+
+            ila.get(array, (int) offsetInBits, index, elementsToGet);
+
+            index += elementsToGet;
 
             return elementsToGet;
         }
 
         @Override
         protected long skipImpl(long n) throws IOException {
+            if (index == ila.length()) {
+                return -1;
+            }
+
             final long originalIndex = index;
 
             index = Math.min(ila.length(), index + n);
