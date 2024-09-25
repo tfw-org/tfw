@@ -86,14 +86,14 @@ public final class BitIlaXor {
         }
 
         @Override
-        protected long lengthImpl() throws IOException {
-            return leftIla.length();
+        protected long lengthInBitsImpl() throws IOException {
+            return leftIla.lengthInBits();
         }
 
         @Override
-        protected void getImpl(long[] array, int arrayOffsetInBits, long ilaStartInBits, long lengthInBits)
+        protected void getImpl(long[] array, long arrayOffsetInBits, long ilaStartInBits, long lengthInBits)
                 throws IOException {
-            final int rightOffsetInBits = arrayOffsetInBits % Long.SIZE;
+            final long rightOffsetInBits = arrayOffsetInBits % Long.SIZE;
             final long[] rightArray = new long[(int) ((rightOffsetInBits + lengthInBits) / Long.SIZE + 1)];
 
             leftIla.get(array, arrayOffsetInBits, ilaStartInBits, lengthInBits);

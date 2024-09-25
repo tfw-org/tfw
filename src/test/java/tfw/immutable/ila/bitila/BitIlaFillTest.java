@@ -24,7 +24,7 @@ class BitIlaFillTest {
         final long length = 64;
         final BitIla bitIla = BitIlaFill.create(true, length);
 
-        assertEquals(length, bitIla.length());
+        assertEquals(length, bitIla.lengthInBits());
     }
 
     @Test

@@ -23,13 +23,13 @@ public final class LongIlaFromBitIla {
 
         @Override
         protected long lengthImpl() throws IOException {
-            return bitIla.length() / Long.SIZE + bitIla.length() % Long.SIZE == 0 ? 0 : 1;
+            return bitIla.lengthInBits() / Long.SIZE + bitIla.lengthInBits() % Long.SIZE == 0 ? 0 : 1;
         }
 
         @Override
         protected void getImpl(long[] array, int offset, long start, int length) throws IOException {
             final long startInBits = start * Long.SIZE;
-            final long lengthInBits = Math.min(length * (long) Long.SIZE, startInBits + bitIla.length());
+            final long lengthInBits = Math.min(length * (long) Long.SIZE, startInBits + bitIla.lengthInBits());
 
             bitIla.get(array, offset, startInBits, lengthInBits);
         }

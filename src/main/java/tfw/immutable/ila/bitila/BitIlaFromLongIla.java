@@ -28,13 +28,13 @@ public final class BitIlaFromLongIla {
         }
 
         @Override
-        protected long lengthImpl() throws IOException {
+        protected long lengthInBitsImpl() throws IOException {
             return lengthInBits;
         }
 
         @Override
         protected void getImpl(
-                final long[] array, final int arrayOffsetInBits, final long ilaStartInBits, final long lengthInBits)
+                final long[] array, final long arrayOffsetInBits, final long ilaStartInBits, final long lengthInBits)
                 throws IOException {
             final long ilaStartInLongs = ilaStartInBits / Long.SIZE;
             final long ilaEndInLongs = (ilaStartInBits + lengthInBits) / Long.SIZE;

@@ -26,12 +26,12 @@ public final class BitIlaSegment {
         }
 
         @Override
-        protected long lengthImpl() throws IOException {
+        protected long lengthInBitsImpl() throws IOException {
             return ilaLengthInBits;
         }
 
         @Override
-        protected void getImpl(long[] array, int arrayOffsetInBits, long ilaStartInBits, long lengthInBits)
+        protected void getImpl(long[] array, long arrayOffsetInBits, long ilaStartInBits, long lengthInBits)
                 throws IOException {
             bitIla.get(array, arrayOffsetInBits, ilaOffsetInBits + ilaStartInBits, lengthInBits);
         }

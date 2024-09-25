@@ -23,19 +23,19 @@ public final class BitIlaConcatenate {
         }
 
         @Override
-        protected long lengthImpl() throws IOException {
-            return leftIla.length() + rightIla.length();
+        protected long lengthInBitsImpl() throws IOException {
+            return leftIla.lengthInBits() + rightIla.lengthInBits();
         }
 
         @Override
-        protected void getImpl(long[] array, int arrayOffsetInBits, long ilaStartInBits, long lengthInBits)
+        protected void getImpl(long[] array, long arrayOffsetInBits, long ilaStartInBits, long lengthInBits)
                 throws IOException {
-            if (ilaStartInBits + lengthInBits <= leftIla.length()) {
+            if (ilaStartInBits + lengthInBits <= leftIla.lengthInBits()) {
                 leftIla.get(array, arrayOffsetInBits, ilaStartInBits, lengthInBits);
-            } else if (ilaStartInBits >= leftIla.length()) {
-                rightIla.get(array, arrayOffsetInBits, ilaStartInBits - leftIla.length(), lengthInBits);
+            } else if (ilaStartInBits >= leftIla.lengthInBits()) {
+                rightIla.get(array, arrayOffsetInBits, ilaStartInBits - leftIla.lengthInBits(), lengthInBits);
             } else {
-                final int leftAmount = (int) (leftIla.length() - ilaStartInBits);
+                final int leftAmount = (int) (leftIla.lengthInBits() - ilaStartInBits);
 
                 leftIla.get(array, arrayOffsetInBits, ilaStartInBits, leftAmount);
                 rightIla.get(array, arrayOffsetInBits + leftAmount, 0, lengthInBits - leftAmount);

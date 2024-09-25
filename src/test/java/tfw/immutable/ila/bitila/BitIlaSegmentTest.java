@@ -23,7 +23,7 @@ class BitIlaSegmentTest {
         final BitIla bitIla1 = BitIlaFromLongIla.create(LongIlaFromArray.create(new long[2]), 0, length);
         final BitIla bitIla = BitIlaSegment.create(bitIla1, 32, 64);
 
-        assertEquals(length / 2, bitIla.length());
+        assertEquals(length / 2, bitIla.lengthInBits());
     }
 
     @Test

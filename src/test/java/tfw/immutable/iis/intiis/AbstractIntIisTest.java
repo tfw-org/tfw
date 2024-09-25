@@ -51,6 +51,10 @@ class AbstractIntIisTest {
 
         @Override
         protected int readImpl(int[] array, int offset, int length) throws IOException {
+            if (length == 0) {
+                throw new IOException("length == 0 should have been detected!");
+            }
+
             return length;
         }
 

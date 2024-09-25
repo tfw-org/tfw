@@ -24,16 +24,16 @@ public final class BitIisFromBitIla {
 
         @Override
         public void closeImpl() throws IOException {
-            index = ila.length();
+            index = ila.lengthInBits();
         }
 
         @Override
         protected long readImpl(long[] array, long offsetInBits, long lengthInBits) throws IOException {
-            if (index == ila.length()) {
+            if (index == ila.lengthInBits()) {
                 return -1;
             }
 
-            final int elementsToGet = (int) Math.min(ila.length() - index, lengthInBits);
+            final int elementsToGet = (int) Math.min(ila.lengthInBits() - index, lengthInBits);
 
             ila.get(array, (int) offsetInBits, index, elementsToGet);
 
@@ -44,13 +44,13 @@ public final class BitIisFromBitIla {
 
         @Override
         protected long skipImpl(long n) throws IOException {
-            if (index == ila.length()) {
+            if (index == ila.lengthInBits()) {
                 return -1;
             }
 
             final long originalIndex = index;
 
-            index = Math.min(ila.length(), index + n);
+            index = Math.min(ila.lengthInBits(), index + n);
 
             return index - originalIndex;
         }

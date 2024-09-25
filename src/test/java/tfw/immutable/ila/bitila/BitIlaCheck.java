@@ -8,7 +8,7 @@ public final class BitIlaCheck {
     private BitIlaCheck() {}
 
     public static void checkGetArguments(final BitIla ila) throws IOException {
-        final long ilaLength = ila.length();
+        final long ilaLength = ila.lengthInBits();
         final long[] array = new long[1];
 
         assertThrows(IllegalArgumentException.class, () -> ila.get(null, 0, 0, 1));

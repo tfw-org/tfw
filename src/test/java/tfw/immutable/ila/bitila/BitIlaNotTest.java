@@ -26,7 +26,7 @@ class BitIlaNotTest {
         final BitIla bitIla = BitIlaFromLongIla.create(LongIlaFromArray.create(new long[1]), 0, length);
         final BitIla bitIlaNot = BitIlaNot.create(bitIla);
 
-        assertEquals(length, bitIlaNot.length());
+        assertEquals(length, bitIlaNot.lengthInBits());
     }
 
     @Test

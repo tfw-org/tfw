@@ -34,7 +34,7 @@ class BitIlaXorTest {
         final BitIla bitIla2 = BitIlaFromLongIla.create(LongIlaFromArray.create(new long[1]), 0, length);
         final BitIla bitIla = BitIlaXor.create(bitIla1, bitIla2);
 
-        assertEquals(length, bitIla.length());
+        assertEquals(length, bitIla.lengthInBits());
     }
 
     @Test
