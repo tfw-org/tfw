@@ -90,12 +90,12 @@ public final class BitIlaFill {
         }
 
         @Override
-        protected long lengthImpl() throws IOException {
+        protected long lengthInBitsImpl() throws IOException {
             return lengthInBits;
         }
 
         @Override
-        protected void getImpl(long[] array, int arrayOffsetInBits, long ilaStartInBits, long lengthInBits)
+        protected void getImpl(long[] array, long arrayOffsetInBits, long ilaStartInBits, long lengthInBits)
                 throws IOException {
             fill(array, arrayOffsetInBits, lengthInBits, value);
         }

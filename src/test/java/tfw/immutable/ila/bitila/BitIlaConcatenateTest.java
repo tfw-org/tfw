@@ -23,7 +23,7 @@ class BitIlaConcatenateTest {
         final BitIla bitIla2 = BitIlaFromLongIla.create(LongIlaFromArray.create(new long[1]), 0, length);
         final BitIla bitIla = BitIlaConcatenate.create(bitIla1, bitIla2);
 
-        assertEquals(2 * length, bitIla.length());
+        assertEquals(2 * length, bitIla.lengthInBits());
     }
 
     @Test

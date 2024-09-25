@@ -47,14 +47,14 @@ class BitIlaFromLongIlaTest {
                 final LongIla longIla = LongIlaFromArray.create(originalLongs);
                 final BitIla bitIla = BitIlaFromLongIla.create(longIla, start, length);
 
-                assertEquals(length, bitIla.length());
+                assertEquals(length, bitIla.lengthInBits());
 
                 final long[] actualLongs = new long[numberOfLongs + 1];
                 final long[] modExpectedLongs = new long[numberOfLongs + 1];
 
                 for (int getLength = 1; getLength <= length; getLength++) {
                     for (int getOffset = 0; getOffset < Long.SIZE; getOffset++) {
-                        for (int getStart = 0; getStart < bitIla.length() - getLength; getStart++) {
+                        for (int getStart = 0; getStart < bitIla.lengthInBits() - getLength; getStart++) {
                             Arrays.fill(modExpectedLongs, 0);
                             Arrays.fill(actualLongs, 0);
 

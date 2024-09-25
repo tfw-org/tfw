@@ -26,7 +26,7 @@ class BitIlaReverseTest {
         final BitIla bitIla1 = BitIlaFromLongIla.create(LongIlaFromArray.create(new long[1]), 0, length);
         final BitIla bitIla = BitIlaReverse.create(bitIla1);
 
-        assertEquals(length, bitIla.length());
+        assertEquals(length, bitIla.lengthInBits());
     }
 
     @Test

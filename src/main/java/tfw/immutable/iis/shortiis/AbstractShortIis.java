@@ -1,20 +1,14 @@
 package tfw.immutable.iis.shortiis;
 
 import java.io.IOException;
-import tfw.check.Argument;
+import java.math.BigInteger;
+import tfw.immutable.iis.AbstractIis;
 
 /**
  * This class is an optional abstract class that implements ShortIis and provides
  * some common parameter validation.
  */
-public abstract class AbstractShortIis implements ShortIis {
-    /**
-     * This method replaces the actual close method.
-     *
-     * @throws IOException if something happens while trying to read the shorts.
-     */
-    protected abstract void closeImpl() throws IOException;
-
+public abstract class AbstractShortIis extends AbstractIis implements ShortIis {
     /**
      * This method replaces the actual read method and is called after parameter validation.
      *
@@ -26,52 +20,11 @@ public abstract class AbstractShortIis implements ShortIis {
      */
     protected abstract int readImpl(short[] array, int offset, int length) throws IOException;
 
-    /**
-     * This method replaces the actual skip method and is called after parameter validation.
-     *
-     * @param n the number of shorts to skip.
-     * @return the number of shorts skipped.
-     * @throws IOException if something happens while trying to skip the shorts.
-     */
-    protected abstract long skipImpl(long n) throws IOException;
-
-    private boolean closed = false;
-
-    @Override
-    public void close() throws IOException {
-        if (!closed) {
-            closed = true;
-
-            closeImpl();
-        }
-    }
-
     @Override
     public final int read(final short[] array, final int offset, final int length) throws IOException {
-        Argument.assertNotNull(array, "array");
-        Argument.assertNotLessThan(offset, 0, "offset");
-        Argument.assertNotLessThan(length, 0, "length");
+        final BigInteger r = readCheck(array, offset, length);
 
-        if (closed) {
-            return -1;
-        }
-        if (length == 0) {
-            return 0;
-        }
-
-        return readImpl(array, offset, length);
-    }
-
-    @Override
-    public final long skip(final long n) throws IOException {
-        if (closed) {
-            return -1;
-        }
-        if (n < 1) {
-            return 0;
-        }
-
-        return skipImpl(n);
+        return r == null ? readImpl(array, offset, length) : r.intValue();
     }
 }
 // AUTO GENERATED FROM TEMPLATE
