@@ -187,7 +187,7 @@ public class TreeComponent {
     }
 
     public final String getFullyQualifiedName() {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
         if (parent != null) {
             parent.getName(sb);
@@ -199,7 +199,7 @@ public class TreeComponent {
         return sb.toString();
     }
 
-    private void getName(StringBuffer sb) {
+    private void getName(StringBuilder sb) {
         if (parent != null) {
             parent.getName(sb);
             sb.append('.');

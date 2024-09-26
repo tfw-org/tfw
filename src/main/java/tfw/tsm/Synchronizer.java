@@ -193,7 +193,7 @@ public abstract class Synchronizer extends Processor {
     }
 
     private void throwBothSetsChangedException() {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         sb.append(getFullyQualifiedName());
         sb.append(" - Cannot convert AToB and BToA in the same transaction!\n");
         sb.append("A changes:\n");

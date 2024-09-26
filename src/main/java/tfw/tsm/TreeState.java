@@ -114,7 +114,7 @@ public class TreeState implements Serializable {
      */
     @Override
     public String toString() {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         sb.append("TreeState[");
         sb.append("name = ").append(this.name);
         sb.append(", state = {");
