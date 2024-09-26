@@ -64,7 +64,7 @@ public class RangeConstraint extends ClassValueConstraint {
             return str;
         }
 
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         sb.append("value = '").append(value).append("' is out of range, ");
 
         int minCompare = this.min.compareTo(value);
@@ -168,7 +168,7 @@ public class RangeConstraint extends ClassValueConstraint {
      * @return a string representation of the constraint.
      */
     public String toString() {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         sb.append("RangeConstraint[type = ").append(valueType.getName());
         sb.append(", min = ").append(min);
         sb.append(", max = ").append(max);

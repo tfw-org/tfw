@@ -638,7 +638,7 @@ public final class TransactionMgr {
      */
     void addStateChange(ProcessorSource source) {
         if (!queue.isDispatchThread()) {
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
             sb.append("A Processor attempted to change state of event channel '");
             sb.append(source.ecd.getEventChannelName());
             sb.append("' outside of the transaction thread.");
@@ -648,7 +648,7 @@ public final class TransactionMgr {
         }
 
         if (!inTransaction) {
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
             sb.append("A Processor attempted to change state of event channel '");
             sb.append(source.ecd.getEventChannelName());
             sb.append("' outside of an active transaction.");

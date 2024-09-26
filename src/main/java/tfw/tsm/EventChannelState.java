@@ -81,7 +81,7 @@ public class EventChannelState {
      * @return a string representation of this event channel state.
      */
     public String toString() {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         sb.append("EventChannelState[");
         sb.append(eventChannelName).append(" = ").append(state);
         sb.append("]");

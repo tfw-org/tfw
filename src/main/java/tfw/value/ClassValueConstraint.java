@@ -123,7 +123,7 @@ public class ClassValueConstraint extends ValueConstraint {
             return "value == null does not meet the constraints on this value";
         }
 
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         sb.append("The value, of type '");
         sb.append(value.getClass().getName());
         sb.append("', is not assignable to type '");
@@ -156,7 +156,7 @@ public class ClassValueConstraint extends ValueConstraint {
      * @return a string representation of this constraint.
      */
     public String toString() {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         sb.append("ValueConstraint[");
         sb.append("type = ").append(valueType.getName());
         sb.append("]");

@@ -294,7 +294,7 @@ public abstract class BranchComponent extends TreeComponent {
         if (containsAdd && immediateChildren == null) {
             immediateChildren = new HashSet<TreeComponent>();
         }
-        List<Runnable> runnables = new LinkedList<Runnable>();
+        List<Runnable> runnables = new ArrayList<>();
         for (AddRemoveOperation operation : operations) {
             TreeComponent child = operation.getTreeComponent();
             if (operation.getOperation() == Operation.ADD) {

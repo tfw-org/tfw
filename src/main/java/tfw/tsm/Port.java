@@ -34,7 +34,7 @@ abstract class Port {
      * @return this ports name.
      */
     String getFullyQualifiedName() {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
         if (this.component != null) {
             sb.append(this.component.getFullyQualifiedName());
