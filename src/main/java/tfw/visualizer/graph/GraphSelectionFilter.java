@@ -21,14 +21,17 @@ public class GraphSelectionFilter {
             this.selectedNodes = selectedNodes;
         }
 
+        @Override
         public long nodesLength() {
             return graph.nodesLength();
         }
 
+        @Override
         public long edgesLength() {
             return graph.edgesLength();
         }
 
+        @Override
         public void get(
                 Object[] nodes,
                 int nodesOffset,

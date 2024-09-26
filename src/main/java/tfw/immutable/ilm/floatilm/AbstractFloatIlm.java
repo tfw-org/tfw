@@ -12,6 +12,7 @@ public abstract class AbstractFloatIlm extends AbstractIlm implements FloatIlm {
 
     protected AbstractFloatIlm() {}
 
+    @Override
     public final void get(float[] array, int offset, long rowStart, long colStart, int rowCount, int colCount)
             throws IOException {
         Argument.assertNotNull(array, "array");

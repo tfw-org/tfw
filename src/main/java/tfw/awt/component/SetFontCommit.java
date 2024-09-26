@@ -19,10 +19,12 @@ public class SetFontCommit extends Commit {
         this.component = component;
     }
 
+    @Override
     protected void commit() {
         final Font font = (Font) get(fontECD);
 
         EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 component.setFont(font);
             }

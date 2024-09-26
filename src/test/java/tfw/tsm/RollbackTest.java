@@ -48,6 +48,7 @@ class RollbackTest {
 
     private final Validator aValidator =
             new Validator("A Validator", new StringECD[] {aECD}, new StringRollbackECD[] {error1ECD}) {
+                @Override
                 protected void validateState() {
                     String state = (String) get(aECD);
 
@@ -60,6 +61,7 @@ class RollbackTest {
 
     private Validator bValidator =
             new Validator("B Validator", new StringECD[] {bECD}, new StringRollbackECD[] {error1ECD}) {
+                @Override
                 protected void validateState() {
                     String state = (String) get(bECD);
 
@@ -76,6 +78,7 @@ class RollbackTest {
 
     private Validator cValidator =
             new Validator("C Validator", new StringECD[] {cECD}, new StringRollbackECD[] {error1ECD}) {
+                @Override
                 protected void validateState() {
                     String state = (String) get(cECD);
 
@@ -87,6 +90,7 @@ class RollbackTest {
             };
 
     private Commit commit = new Commit("Commit", new ObjectECD[] {aECD, bECD, cECD}) {
+        @Override
         protected void commit() {
             // System.out.println("commit.commit() reached");
             aCommitState = (String) get(aECD);
@@ -94,17 +98,20 @@ class RollbackTest {
             cCommitState = (String) get(cECD);
         }
 
+        @Override
         protected void debugCommit() {
             //            System.out.println("commit.debugCommit() called" + get());
         }
     };
 
     private Commit errorHandler1 = new Commit("Error Handler 1", new ObjectECD[] {error1ECD}) {
+        @Override
         protected void commit() {
             //            System.out.println("errorHandler1.commit()");
             errorState1 = (String) get(error1ECD);
         }
 
+        @Override
         protected void debugCommit() {
             // System.out.println("errorHandler1.debugCommit()");
         }
@@ -349,6 +356,7 @@ class RollbackTest {
             this.rollbackState = null;
         }
 
+        @Override
         public void validateState() {
             String state = (String) get(triggerECD);
 
@@ -374,6 +382,7 @@ class RollbackTest {
             this.trigger = trigger;
         }
 
+        @Override
         public void commit() {
             stateMap = this.get();
             commitValue = (String) get(trigger);
@@ -385,6 +394,7 @@ class RollbackTest {
             super("Test", new ObjectECD[] {aECD}, new RollbackECD[] {error1ECD});
         }
 
+        @Override
         public void validateState() {}
 
         public void testRollback(RollbackECD sourceECD, Object state) {
@@ -409,6 +419,7 @@ class RollbackTest {
             this.output = output;
         }
 
+        @Override
         protected void convert() {
             this.inValue = (String) get(input);
             set(output, this.inValue);

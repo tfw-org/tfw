@@ -26,6 +26,7 @@ public abstract class Sink extends Port {
         return isTriggering;
     }
 
+    @Override
     public String toString() {
         return "dew.ui.frmwrk.Sink[name = " + getFullyQualifiedName() + ", eventChannelName = "
                 + ecd.getEventChannelName()

@@ -25,6 +25,7 @@ public class EventChannelCopyConverter extends Converter {
         this.outputECDs = outputECDs;
     }
 
+    @Override
     protected void convert() {
         for (int i = 0; i < inputECDs.length; i++) {
             set(outputECDs[i], get(inputECDs[i]));

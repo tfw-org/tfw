@@ -50,6 +50,7 @@ public class ClusterRectangleConverter extends Converter {
         this.clusterHeightsECD = clusterHeightsECD;
     }
 
+    @Override
     protected void convert() {
         int x = ((Integer) get(xECD)).intValue();
         int y = ((Integer) get(yECD)).intValue();

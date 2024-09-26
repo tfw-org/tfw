@@ -39,6 +39,7 @@ class TriggerRelayTest {
             super("CommitImpl", relayedTriggerECD);
         }
 
+        @Override
         protected void commit() {
             this.executed = true;
         }

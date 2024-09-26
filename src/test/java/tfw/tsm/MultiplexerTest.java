@@ -333,6 +333,7 @@ class MultiplexerTest {
          *
          * @see tfw.tsm.TriggeredConverter#convert()
          */
+        @Override
         protected void convert() {
             set(outputECD, value);
         }
@@ -348,6 +349,7 @@ class MultiplexerTest {
             this.valueECD = valueECD;
         }
 
+        @Override
         public void commit() {
             value = (String) get(valueECD);
         }
@@ -363,6 +365,7 @@ class MultiplexerTest {
             this.valueECD = valueECD;
         }
 
+        @Override
         @SuppressWarnings("unchecked")
         public void commit() {
             value = (ObjectIla<Object>) get(valueECD);

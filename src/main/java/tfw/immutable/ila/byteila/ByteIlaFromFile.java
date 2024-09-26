@@ -88,6 +88,7 @@ public final class ByteIlaFromFile {
             this.byteIlaImpl = byteIlaImpl;
         }
 
+        @Override
         public synchronized void run() {
             while (resetTimer) {
                 resetTimer = false;

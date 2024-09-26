@@ -33,6 +33,7 @@ public final class %%NAME%%IlaFromCastByteIla {
             return byteIla.length();
         }
 
+        @Override
         protected void getImpl(%%TYPE%%[] array, int offset, long start, int length) throws IOException {
             ByteIlaIterator fi =
                     new ByteIlaIterator(ByteIlaSegment.create(byteIla, start, length), new byte[bufferSize]);

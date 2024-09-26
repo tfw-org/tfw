@@ -12,6 +12,7 @@ public final class EventChannelProxy implements Proxy {
         this.eventChannel = eventChannel;
     }
 
+    @Override
     public String getName() {
         return eventChannel.getECD().getEventChannelName();
     }
@@ -25,6 +26,7 @@ public final class EventChannelProxy implements Proxy {
                 + eventChannel.getState().toString();
     }
 
+    @Override
     public boolean equals(Object obj) {
         if (obj instanceof EventChannelProxy) {
             EventChannelProxy tp = (EventChannelProxy) obj;
@@ -35,6 +37,7 @@ public final class EventChannelProxy implements Proxy {
         return false;
     }
 
+    @Override
     public int hashCode() {
         return eventChannel.hashCode();
     }

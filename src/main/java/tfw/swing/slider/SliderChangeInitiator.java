@@ -24,6 +24,7 @@ public class SliderChangeInitiator extends Initiator implements ChangeListener {
         this.slider = slider;
     }
 
+    @Override
     public void stateChanged(ChangeEvent changeEvent) {
         EventChannelStateBuffer ecsb = new EventChannelStateBuffer();
 

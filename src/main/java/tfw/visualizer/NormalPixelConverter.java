@@ -53,6 +53,7 @@ public class NormalPixelConverter extends Converter {
         this.pixelNodeTLBRECD = pixelNodeTLBRECD;
     }
 
+    @Override
     protected void convert() {
         Graph graph = (Graph) get(graphECD);
         DoubleIlm normalizedXYs = (DoubleIlm) get(normalizedXYsECD);

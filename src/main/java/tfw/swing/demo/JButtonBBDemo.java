@@ -33,6 +33,7 @@ public class JButtonBBDemo {
         l.setText(PREFIX + buttonPresses);
 
         final TriggeredCommit commit = new TriggeredCommit("JBttonBBTest", TRIGGER_ECD, null, null) {
+            @Override
             protected void commit() {
                 l.setText(PREFIX + ++buttonPresses);
             }
@@ -43,6 +44,7 @@ public class JButtonBBDemo {
         final JCheckBox cb = new JCheckBox();
         cb.setText("Enable Button");
         cb.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 initiator.set(ENABLE_ECD, cb.isSelected() ? Boolean.TRUE : Boolean.FALSE);
             }
@@ -68,6 +70,7 @@ public class JButtonBBDemo {
         f.getContentPane().add(b, BorderLayout.NORTH);
         f.getContentPane().add(p, BorderLayout.SOUTH);
         f.addWindowListener(new WindowAdapter() {
+            @Override
             public void windowClosing(WindowEvent e) {
                 System.exit(0);
             }

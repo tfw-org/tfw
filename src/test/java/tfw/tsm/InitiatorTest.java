@@ -78,6 +78,7 @@ class InitiatorTest {
 
         RootFactory rf = new RootFactory();
         rf.setTransactionExceptionHandler(new TransactionExceptionHandler() {
+            @Override
             public void handle(Exception exception) {
                 exception.printStackTrace();
                 fail("Exception: " + exception.getMessage());
@@ -188,6 +189,7 @@ class InitiatorTest {
         assertNull(commit.debugCommitState, "debugCommit() was called");
         rf = new RootFactory();
         rf.setTransactionExceptionHandler(new TransactionExceptionHandler() {
+            @Override
             public void handle(Exception exception) {
                 exception.printStackTrace();
                 fail("Exception: " + exception.getMessage());
@@ -224,12 +226,14 @@ class InitiatorTest {
             super(name, ecds);
         }
 
+        @Override
         public void commit() {
             commitState = this.get();
 
             // System.out.println("commit() - " + commitState);
         }
 
+        @Override
         public void debugCommit() {
             debugCommitState = this.get();
 

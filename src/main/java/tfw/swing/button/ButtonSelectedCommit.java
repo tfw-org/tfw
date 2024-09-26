@@ -31,10 +31,12 @@ public final class ButtonSelectedCommit extends Commit {
         this.abstractButton = abstractButton;
     }
 
+    @Override
     protected void commit() {
         final boolean selected = ((Boolean) get(selectedECD)).booleanValue();
 
         EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 if (itemListeners != null) {
                     for (int i = 0; i < itemListeners.length; i++) {

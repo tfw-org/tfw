@@ -49,10 +49,12 @@ class NormalXYDoubleIlmFromGraphTest {
         Branch branch = branchFactory.create("branch");
 
         Commit commit = new Commit("commit", new ObjectECD[] {integer2ECD}, null, null) {
+            @Override
             protected void commit() {}
         };
 
         Converter converter = new Converter("converter", new ObjectECD[] {integer2ECD}, null, null) {
+            @Override
             protected void convert() {}
         };
 
@@ -70,20 +72,25 @@ class NormalXYDoubleIlmFromGraphTest {
         Synchronizer synchronizer =
                 new Synchronizer(
                         "synchronizer", new ObjectECD[] {integer1ECD}, new ObjectECD[] {integer2ECD}, null, null) {
+                    @Override
                     protected void convertAToB() {}
 
+                    @Override
                     protected void convertBToA() {}
                 };
 
         TriggeredCommit triggeredCommit = new TriggeredCommit("triggeredCommit", triggerECD, null, null) {
+            @Override
             protected void commit() {}
         };
 
         TriggeredConverter triggeredConverter = new TriggeredConverter("triggeredConverter", triggerECD, null, null) {
+            @Override
             protected void convert() {}
         };
 
         Validator validator = new Validator("validator", new ObjectECD[] {integer1ECD, integer2ECD}, null, null) {
+            @Override
             protected void validateState() {}
         };
 

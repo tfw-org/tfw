@@ -39,6 +39,7 @@ public class SetModelCommit extends Commit {
         this.slider = slider;
     }
 
+    @Override
     protected void commit() {
         final int value = ((Integer) get(valueECD)).intValue();
         final int extent = ((Integer) get(extentECD)).intValue();
@@ -46,6 +47,7 @@ public class SetModelCommit extends Commit {
         final int maximum = ((Integer) get(maximumECD)).intValue();
 
         EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 for (int i = 0; i < initiators.length; i++) {
                     slider.removeChangeListener((ChangeListener) initiators[i]);

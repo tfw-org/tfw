@@ -29,8 +29,10 @@ public class ShowPanelInNonModalDialog extends Branch {
             super("ShowPanelInMocalDialogCommit", triggerECD, null, null);
         }
 
+        @Override
         protected void commit() {
             EventQueue.invokeLater(new Runnable() {
+                @Override
                 public void run() {
                     if (dialog != null) {
                         remove(dialog.getBranch());
@@ -57,8 +59,10 @@ public class ShowPanelInNonModalDialog extends Branch {
             this.jPanelBBClass = jPanelBBClass;
         }
 
+        @Override
         protected void convert() {
             EventQueue.invokeLater(new Runnable() {
+                @Override
                 public void run() {
                     if (dialog == null) {
                         JPanelBB contentPane;

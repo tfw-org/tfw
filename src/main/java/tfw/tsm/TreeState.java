@@ -86,6 +86,7 @@ public class TreeState implements Serializable {
      * @return true if the specified object is a TreeState and is equivalent to
      *         this one.
      */
+    @Override
     public boolean equals(Object object) {
         if (!(object instanceof TreeState)) {
             return false;
@@ -103,6 +104,7 @@ public class TreeState implements Serializable {
      *
      * @return a hash code for this TreeState.
      */
+    @Override
     public int hashCode() {
         return name.hashCode();
     }
@@ -110,6 +112,7 @@ public class TreeState implements Serializable {
     /**
      * Creates a string representation of this treestate.
      */
+    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("TreeState[");

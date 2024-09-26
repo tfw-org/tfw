@@ -15,6 +15,7 @@ public class ActionInitiator extends Initiator implements ActionListener {
         this.triggerECD = triggerECD;
     }
 
+    @Override
     public final void actionPerformed(ActionEvent e) {
         trigger(triggerECD);
     }

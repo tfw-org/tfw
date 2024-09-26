@@ -31,6 +31,7 @@ public class JLabelBBDemo {
         JButton b = new JButton("Set Label");
 
         ActionListener al = new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 initiator.set(TEXT_ECD, tf.getText());
             }
@@ -57,6 +58,7 @@ public class JLabelBBDemo {
         final JFrame f = new JFrame();
         f.getContentPane().add(p, BorderLayout.CENTER);
         f.addWindowListener(new WindowAdapter() {
+            @Override
             public void windowClosing(WindowEvent e) {
                 System.exit(0);
             }

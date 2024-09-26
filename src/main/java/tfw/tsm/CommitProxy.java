@@ -11,6 +11,7 @@ public final class CommitProxy implements Proxy {
         this.commit = commit;
     }
 
+    @Override
     public String getName() {
         return commit.getName();
     }
@@ -25,6 +26,7 @@ public final class CommitProxy implements Proxy {
         return sp;
     }
 
+    @Override
     public boolean equals(Object obj) {
         if (obj instanceof CommitProxy) {
             CommitProxy ip = (CommitProxy) obj;
@@ -35,6 +37,7 @@ public final class CommitProxy implements Proxy {
         return false;
     }
 
+    @Override
     public int hashCode() {
         return commit.hashCode();
     }

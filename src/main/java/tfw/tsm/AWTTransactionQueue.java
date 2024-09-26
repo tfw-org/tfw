@@ -20,11 +20,13 @@ public class AWTTransactionQueue implements TransactionQueue {
      *
      * @param runnable to be added to the queue.
      */
+    @Override
     public void invokeLater(Runnable runnable) {
         Argument.assertNotNull(runnable, "runnable");
         EventQueue.invokeLater(runnable);
     }
 
+    @Override
     public void invokeAndWait(Runnable runnable) throws InvocationTargetException, InterruptedException {
         Argument.assertNotNull(runnable, "runnable");
         EventQueue.invokeAndWait(runnable);
@@ -37,6 +39,7 @@ public class AWTTransactionQueue implements TransactionQueue {
      * @return true if the calling thread is the current AWT
      *         <code>EventQueue's</code> dispatch thread.
      */
+    @Override
     public boolean isDispatchThread() {
         return EventQueue.isDispatchThread();
     }

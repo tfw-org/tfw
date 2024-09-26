@@ -18,6 +18,7 @@ public abstract class Processor extends RollbackHandler {
         super(name, triggeringSinks, nonTriggeringSinks, sources);
     }
 
+    @Override
     void stateChange(EventChannel eventChannel) {
         getTransactionManager().addProcessor(this);
     }

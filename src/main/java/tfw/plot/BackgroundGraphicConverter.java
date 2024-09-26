@@ -30,6 +30,7 @@ public class BackgroundGraphicConverter extends Converter {
         this.graphicECD = graphicECD;
     }
 
+    @Override
     protected void convert() {
         Color color = (Color) get(colorECD);
         int width = ((Integer) get(widthECD)).intValue();

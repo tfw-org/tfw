@@ -15,18 +15,21 @@ public class ByteIlaOutputStream extends OutputStream {
         this.outputStream = outputStream;
     }
 
+    @Override
     public void write(byte[] b) throws IOException {
         checkClosed();
 
         outputStream.write(b);
     }
 
+    @Override
     public void write(int i) throws IOException {
         checkClosed();
 
         outputStream.write(i);
     }
 
+    @Override
     public void write(byte[] b, int offset, int length) throws IOException {
         outputStream.write(b, offset, length);
     }
@@ -46,12 +49,14 @@ public class ByteIlaOutputStream extends OutputStream {
         }
     }
 
+    @Override
     public void flush() throws IOException {
         checkClosed();
 
         outputStream.flush();
     }
 
+    @Override
     public void close() throws IOException {
         checkClosed();
 

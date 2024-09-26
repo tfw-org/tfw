@@ -27,6 +27,7 @@ public class TriggerRelay extends Converter {
         this.outputTriggerECD = outputTriggerECD;
     }
 
+    @Override
     protected void convert() {
         trigger(outputTriggerECD);
     }

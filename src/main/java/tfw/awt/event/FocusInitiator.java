@@ -15,10 +15,12 @@ public class FocusInitiator extends Initiator implements FocusListener {
         this.hasFocusECD = hasFocusECD;
     }
 
+    @Override
     public void focusGained(FocusEvent e) {
         set(hasFocusECD, Boolean.TRUE);
     }
 
+    @Override
     public void focusLost(FocusEvent e) {
         set(hasFocusECD, Boolean.FALSE);
     }

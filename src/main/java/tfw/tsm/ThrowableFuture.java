@@ -12,10 +12,12 @@ class ThrowableFuture implements Future<Object> {
         this.baseFuture = baseFuture;
     }
 
+    @Override
     public boolean cancel(boolean mayInterruptIfRunning) {
         return baseFuture.cancel(mayInterruptIfRunning);
     }
 
+    @Override
     public Object get() throws InterruptedException, ExecutionException {
         Throwable result = baseFuture.get();
 
@@ -26,6 +28,7 @@ class ThrowableFuture implements Future<Object> {
         return null;
     }
 
+    @Override
     public Object get(long timeout, TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException {
         Throwable result = baseFuture.get(timeout, unit);
 
@@ -36,10 +39,12 @@ class ThrowableFuture implements Future<Object> {
         return null;
     }
 
+    @Override
     public boolean isCancelled() {
         return baseFuture.isCancelled();
     }
 
+    @Override
     public boolean isDone() {
         return baseFuture.isDone();
     }

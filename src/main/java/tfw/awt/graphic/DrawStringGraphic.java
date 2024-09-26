@@ -22,6 +22,7 @@ public final class DrawStringGraphic {
             this.y = y;
         }
 
+        @Override
         public void paint(Graphics2D graphics2D) {
             if (graphic != null) {
                 graphic.paint(graphics2D);
@@ -48,6 +49,7 @@ public final class DrawStringGraphic {
             this.ys = ys;
         }
 
+        @Override
         public void paint(Graphics2D graphics2D) {
             if (graphic != null) {
                 graphic.paint(graphics2D);
