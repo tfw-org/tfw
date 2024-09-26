@@ -106,6 +106,7 @@ public abstract class EventChannelDescription {
     /**
      * Returns a hash value for this ecd.
      */
+    @Override
     public int hashCode() {
         return this.eventChannelName.hashCode();
     }
@@ -117,6 +118,7 @@ public abstract class EventChannelDescription {
      *            The object to be tested.
      * @return true if the object is equivalent otherwise returns false.
      */
+    @Override
     public boolean equals(Object object) {
         if (!(object instanceof EventChannelDescription)) {
             return false;
@@ -133,6 +135,7 @@ public abstract class EventChannelDescription {
     /**
      * Returns a string representation of the event channel description.
      */
+    @Override
     public String toString() {
         return super.toString() + "[eventChannelName = " + this.eventChannelName + "]";
     }

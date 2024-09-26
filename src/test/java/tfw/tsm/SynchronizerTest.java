@@ -28,6 +28,8 @@ class SynchronizerTest {
     private Synchronizer converter =
             new Synchronizer(
                     "TwoWay", new ObjectECD[] {a1Port, a2Port}, new ObjectECD[] {b1Port, b2Port}, sinks, sources) {
+
+                @Override
                 protected void convertAToB() {
                     // System.out.println("convertAToB");
                     aToBFired = true;
@@ -47,6 +49,7 @@ class SynchronizerTest {
                     set(source, "cause an error");
                 }
 
+                @Override
                 protected void convertBToA() {
                     // System.out.println("convertBToA");
                     bToAFired = true;
@@ -68,6 +71,7 @@ class SynchronizerTest {
             };
 
     private Commit commit = new Commit("Commit", new ObjectECD[] {a1Port, a2Port, b1Port, b2Port}) {
+        @Override
         protected void commit() {
             Character ch = (Character) get(a1Port);
             commitA1 = ((Character) get(a1Port)).charValue();
@@ -79,6 +83,7 @@ class SynchronizerTest {
             commitB2 = ((Character) get(b2Port)).charValue();
         }
 
+        @Override
         protected void debugCommit() {
             Character ch = (Character) get(a1Port);
 
@@ -107,6 +112,7 @@ class SynchronizerTest {
     };
 
     private Converter rollback = new Converter("rollback", new ObjectECD[] {a1Port}, new ObjectECD[] {b1Port}) {
+        @Override
         protected void convert() {
             // System.out.println("Executing Rollback");
             initiator.set(b1Port, new Character('b'));
@@ -118,6 +124,7 @@ class SynchronizerTest {
     private boolean fired = false;
     private Converter causeAtoBtoAError =
             new Converter("causeAtoBToAerror", new ObjectECD[] {source}, new ObjectECD[] {b1Port}) {
+                @Override
                 protected void convert() {
                     if (fired) {
                         return;
@@ -132,6 +139,7 @@ class SynchronizerTest {
 
     private Converter causeBtoAtoBError =
             new Converter("causeAtoBToAerror", new ObjectECD[] {source}, new ObjectECD[] {a1Port}) {
+                @Override
                 protected void convert() {
                     if (fired) {
                         return;
@@ -423,8 +431,10 @@ class SynchronizerTest {
             super(name, aChans, bChans, sinks, sources);
         }
 
+        @Override
         public void convertAToB() {}
 
+        @Override
         public void convertBToA() {}
     }
 }

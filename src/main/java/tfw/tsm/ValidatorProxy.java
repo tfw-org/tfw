@@ -11,6 +11,7 @@ public final class ValidatorProxy implements Proxy {
         this.validator = validator;
     }
 
+    @Override
     public String getName() {
         return validator.getName();
     }
@@ -25,6 +26,7 @@ public final class ValidatorProxy implements Proxy {
         return sp;
     }
 
+    @Override
     public boolean equals(Object obj) {
         if (obj instanceof ValidatorProxy) {
             ValidatorProxy ip = (ValidatorProxy) obj;
@@ -35,6 +37,7 @@ public final class ValidatorProxy implements Proxy {
         return false;
     }
 
+    @Override
     public int hashCode() {
         return validator.hashCode();
     }

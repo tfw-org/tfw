@@ -16,8 +16,9 @@ public abstract class Source extends Port {
         return eventChannel.getCurrentStateSource() == this;
     }
 
+    @Override
     public String toString() {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         sb.append(super.toString());
         sb.append("[name = ").append(getFullyQualifiedName());
         sb.append(", eventChannelName = ").append(ecd.getEventChannelName());

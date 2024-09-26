@@ -23,6 +23,7 @@ class InitiatorSource extends Source {
      * @param eventChannel
      *            the event channel for this <code>Source</code>.
      */
+    @Override
     public synchronized void setEventChannel(EventChannel eventChannel) {
         /*
          * TODO: This needs to be re-thought. It was put here to make sure the
@@ -43,6 +44,7 @@ class InitiatorSource extends Source {
      * @param state
      *            the new event channel value.
      */
+    @Override
     synchronized void setState(Object state) throws ValueException {
         if (!this.getTreeComponent().isRooted()) {
             throw new IllegalStateException(
@@ -56,6 +58,7 @@ class InitiatorSource extends Source {
      * Sets the state of the event channel. This method should only be called by
      * {@link TransactionMgr}.
      */
+    @Override
     synchronized Object fire() {
         if (!stateQueue.isEmpty()) {
             EventChannelNState ecs = (EventChannelNState) stateQueue.pop();

@@ -109,6 +109,7 @@ class ValidatorTest {
         Initiator initiator = new Initiator("Initiator", new EventChannelDescription[] {trigger, minECD, maxECD});
         root.add(initiator);
         root.add(new Validator("TestValidator", trigger, new ObjectECD[] {minECD, maxECD}, new RollbackECD[] {error}) {
+            @Override
             protected void validateState() {
                 int min = ((Integer) get(minECD)).intValue();
                 int max = ((Integer) get(maxECD)).intValue();
@@ -147,6 +148,7 @@ class ValidatorTest {
             this.errorECD = errorECD;
         }
 
+        @Override
         protected void commit() {
             this.errorMsg = (String) get(this.errorECD);
         }
@@ -166,11 +168,13 @@ class ValidatorTest {
             super(name, triggeringSinks, nonTriggeringSinks, initiators);
         }
 
+        @Override
         protected void validateState() {
             channelA = (String) get(eventChannelAECD);
             channelB = (String) get(eventChannelBECD);
         }
 
+        @Override
         protected void debugValidateState() {
             debugChannelA = (String) get(eventChannelAECD);
             debugChannelB = (String) get(eventChannelBECD);

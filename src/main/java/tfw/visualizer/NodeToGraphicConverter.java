@@ -110,6 +110,7 @@ public class NodeToGraphicConverter extends Converter {
         this.graphicOutECD = graphicOutECD;
     }
 
+    @Override
     protected void convert() {
         Graph graph = (Graph) get(graphECD);
         Color backgroundColor = (Color) get(backgroundColorECD);

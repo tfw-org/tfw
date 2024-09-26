@@ -12,6 +12,7 @@ public class EmptyGraphic {
     private static class GraphicImpl implements Graphic {
         private GraphicImpl() {}
 
+        @Override
         public void paint(Graphics2D graphics2D) {}
     }
 }

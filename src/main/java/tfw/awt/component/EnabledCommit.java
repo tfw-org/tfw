@@ -18,10 +18,12 @@ public class EnabledCommit extends Commit {
         this.component = component;
     }
 
+    @Override
     protected final void commit() {
         final boolean enabled = ((Boolean) get(enabledECD)).booleanValue();
 
         EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 component.setEnabled(enabled);
             }

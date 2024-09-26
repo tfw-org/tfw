@@ -36,6 +36,7 @@ class SetStateTest {
             this.ecd = ecd;
         }
 
+        @Override
         protected void convert() {
             set(ecd, "value");
             // Attempt to set the same event channel twice...

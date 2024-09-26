@@ -23,6 +23,7 @@ public class JMenuBarBB extends JMenuBar implements BranchBox {
         return add(menu);
     }
 
+    @Override
     public final Branch getBranch() {
         return branch;
     }

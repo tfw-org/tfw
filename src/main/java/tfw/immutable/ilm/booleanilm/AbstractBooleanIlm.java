@@ -12,6 +12,7 @@ public abstract class AbstractBooleanIlm extends AbstractIlm implements BooleanI
 
     protected AbstractBooleanIlm() {}
 
+    @Override
     public final void get(boolean[] array, int offset, long rowStart, long colStart, int rowCount, int colCount)
             throws IOException {
         Argument.assertNotNull(array, "array");

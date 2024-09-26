@@ -20,6 +20,7 @@ class InfiniteLoopTest {
     private boolean loop = true;
     private boolean transactionStarted = false;
     private final Converter trigger = new Converter("TriggeredConverter", new StringECD[] {portc}, null, null) {
+        @Override
         protected void convert() {
             cvalue = (String) get(portc);
         }
@@ -27,6 +28,7 @@ class InfiniteLoopTest {
 
     private Converter convertAtoB =
             new Converter("A to B Converter", new ObjectECD[] {porta}, new ObjectECD[] {portb}) {
+                @Override
                 protected void convert() {
                     transactionStarted = true;
                     // System.out.println("a to b " + count++);
@@ -39,6 +41,7 @@ class InfiniteLoopTest {
 
     private Converter convertBtoA =
             new Converter("B to A Converter", new ObjectECD[] {portb}, new ObjectECD[] {porta}) {
+                @Override
                 protected void convert() {
                     // System.out.println("b to a " + count++);
 
@@ -54,12 +57,14 @@ class InfiniteLoopTest {
     String avalue = null;
     String bvalue = null;
     private final Commit commit = new Commit("Infinite loop commit", new ObjectECD[] {porta, portb}) {
+        @Override
         protected void commit() {
             isCommit = true;
             avalue = (String) get(porta);
             bvalue = (String) get(portb);
         }
 
+        @Override
         protected void debugCommit() {
             isDebugCommit = true;
             avalue = (String) get(porta);

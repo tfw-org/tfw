@@ -47,10 +47,12 @@ public final class PixelNodeBoundsFromNormalizedXYs {
             this.fontMetrics = fontMetrics;
         }
 
+        @Override
         public long width() throws IOException {
             return normalizedXYs.width();
         }
 
+        @Override
         public long height() {
             return 4;
         }

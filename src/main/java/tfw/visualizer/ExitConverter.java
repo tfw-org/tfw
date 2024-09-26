@@ -8,6 +8,7 @@ public class ExitConverter extends TriggeredConverter {
         super("ExitConverter", triggerECD, null, null);
     }
 
+    @Override
     protected void convert() {
         System.exit(0);
     }

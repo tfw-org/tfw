@@ -67,6 +67,7 @@ class MultiplexerConstructionTest {
             super(name, new StringECD[] {VALUE_ECD});
         }
 
+        @Override
         protected void commit() {
             this.value = (String) get(VALUE_ECD);
         }
@@ -80,6 +81,7 @@ class MultiplexerConstructionTest {
             this.mb = mb;
         }
 
+        @Override
         protected void commit() {
             mb.remove(vc1);
             mb.add(vc2, 0);

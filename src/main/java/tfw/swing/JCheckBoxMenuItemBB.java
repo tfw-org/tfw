@@ -37,6 +37,7 @@ public class JCheckBoxMenuItemBB extends JCheckBoxMenuItem implements BranchBox 
                 this));
     }
 
+    @Override
     public final Branch getBranch() {
         return branch;
     }

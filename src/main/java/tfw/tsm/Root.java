@@ -25,6 +25,7 @@ public class Root extends Branch {
      * Returns the {@link TransactionMgr} for this tree.
      * @return the {@link TransactionMgr} for this tree.
      */
+    @Override
     TransactionMgr getTransactionManager() {
         return transactionMgr;
     }
@@ -33,6 +34,7 @@ public class Root extends Branch {
      * Returns true.
      * @return true.
      */
+    @Override
     public final boolean isRooted() {
         return true;
     }

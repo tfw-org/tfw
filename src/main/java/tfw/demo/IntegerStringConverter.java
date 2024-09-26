@@ -30,10 +30,12 @@ public class IntegerStringConverter extends Synchronizer {
         this.integerConstraint = integerECD.getConstraint();
     }
 
+    @Override
     public void convertBToA() {
         set(stringECD, ((Integer) get(integerECD)).toString());
     }
 
+    @Override
     public void convertAToB() {
         Integer intValue = null;
 

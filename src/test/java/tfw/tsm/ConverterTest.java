@@ -21,12 +21,14 @@ class ConverterTest {
     private ObjectECD[] triggeringSinks = new ObjectECD[] {porta, portb};
     private ObjectECD[] sources = new ObjectECD[] {porta, portb};
     private Converter converter = new Converter("Commit", triggeringSinks, nonTriggeringSinks, sources) {
+        @Override
         protected void convert() {
             state = get();
             convertA = (String) get(porta);
             convertB = (String) get(portb);
         }
 
+        @Override
         protected void debugConvert() {
             state = get();
             debugConvertA = (String) get(porta);
@@ -145,6 +147,7 @@ class ConverterTest {
             super(name, triggeringSinks, nonTriggeringSinks, sources);
         }
 
+        @Override
         protected void convert() {}
     }
 }

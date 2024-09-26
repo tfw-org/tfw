@@ -37,6 +37,7 @@ public class JCheckBoxBB extends JCheckBox implements BranchBox {
                 this));
     }
 
+    @Override
     public final Branch getBranch() {
         return branch;
     }

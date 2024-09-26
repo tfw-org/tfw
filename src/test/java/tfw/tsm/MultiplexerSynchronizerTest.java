@@ -18,6 +18,7 @@ class MultiplexerSynchronizerTest {
             this.objectIlaECD = objectIlaECD;
         }
 
+        @Override
         @SuppressWarnings("unchecked")
         protected void commit() {
             this.objectIla = (ObjectIla<Object>) get(this.objectIlaECD);

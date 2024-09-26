@@ -142,6 +142,7 @@ public class AdditionDemo {
             this.errorECD = errorECD;
         }
 
+        @Override
         protected void convertAToB() {
             int i = ((Integer) get(integerECD)).intValue();
 
@@ -152,6 +153,7 @@ public class AdditionDemo {
             }
         }
 
+        @Override
         protected void convertBToA() {
             String s = (String) get(textECD);
 
@@ -180,6 +182,7 @@ public class AdditionDemo {
             this.sumECD = sumECD;
         }
 
+        @Override
         protected void convert() {
             int v1 = ((Integer) get(valueOneECD)).intValue();
             int v2 = ((Integer) get(valueTwoECD)).intValue();
@@ -199,6 +202,7 @@ public class AdditionDemo {
             this.errorMessageECD = errorMessageECD;
         }
 
+        @Override
         protected void commit() {
             JOptionPane.showMessageDialog(component, get(errorMessageECD), "Error", JOptionPane.ERROR_MESSAGE);
         }

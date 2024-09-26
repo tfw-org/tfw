@@ -193,6 +193,7 @@ class StateChangeCycleDelayTest {
     private static class TestHandler implements TransactionExceptionHandler {
         private Exception exception = null;
 
+        @Override
         public void handle(Exception exception) {
             this.exception = exception;
         }
@@ -228,6 +229,7 @@ class StateChangeCycleDelayTest {
             globalOrder = 0;
         }
 
+        @Override
         public void convert() {
             count++;
             order = ++globalOrder;

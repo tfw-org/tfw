@@ -70,6 +70,7 @@ public final class TransactionMgr {
     private boolean executingStateChanges = false;
 
     private TransactionExceptionHandler exceptionHandler = new TransactionExceptionHandler() {
+        @Override
         public void handle(Exception exception) {
             logger.log(Level.INFO, "Unexpected Exception!", exception);
 
@@ -638,7 +639,7 @@ public final class TransactionMgr {
      */
     void addStateChange(ProcessorSource source) {
         if (!queue.isDispatchThread()) {
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
             sb.append("A Processor attempted to change state of event channel '");
             sb.append(source.ecd.getEventChannelName());
             sb.append("' outside of the transaction thread.");
@@ -648,7 +649,7 @@ public final class TransactionMgr {
         }
 
         if (!inTransaction) {
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
             sb.append("A Processor attempted to change state of event channel '");
             sb.append(source.ecd.getEventChannelName());
             sb.append("' outside of an active transaction.");
@@ -814,6 +815,7 @@ public final class TransactionMgr {
             this.addRemoveLocation = addRemoveLocation;
         }
 
+        @Override
         public void run() {
             componentChange = change;
 
@@ -839,6 +841,7 @@ public final class TransactionMgr {
             this.setLocation = setLocation;
         }
 
+        @Override
         public void run() {
             for (int i = 0; i < sources.length; i++) {
                 if (sources[i].isConnected()) {
@@ -869,6 +872,7 @@ public final class TransactionMgr {
             this.eventChannelLocation = eventChannelLocation;
         }
 
+        @Override
         public void run() {
             eventChannelFires.add(eventChannel);
             executeTransaction(null, eventChannelLocation);
@@ -885,6 +889,7 @@ public final class TransactionMgr {
             this.child = child;
         }
 
+        @Override
         public void run() {
             parent.addToChildren(child);
             if (child instanceof BranchComponent) {
@@ -906,6 +911,7 @@ public final class TransactionMgr {
             this.transactionMgr = transactionMgr;
         }
 
+        @Override
         public String toString() {
             return "add Component " + child.getName() + " to " + parent.getName();
         }
@@ -929,6 +935,7 @@ public final class TransactionMgr {
             this.children = children;
         }
 
+        @Override
         public void run() {
             Logger logger = transactionMgr.getLogger();
             if (logger != null) {
@@ -974,6 +981,7 @@ public final class TransactionMgr {
             this.transactionMgr = transactionMgr;
         }
 
+        @Override
         public String toString() {
             return "remove Component " + child.getName() + " from " + parent.getName();
         }

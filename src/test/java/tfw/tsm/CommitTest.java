@@ -120,6 +120,7 @@ class CommitTest {
             this.portA = portA;
         }
 
+        @Override
         public void convert() {
             String value = (String) get(portA);
 
@@ -137,6 +138,7 @@ class CommitTest {
             this.portA = portA;
         }
 
+        @Override
         public void convert() {
             set(portA, "false");
         }
@@ -170,11 +172,13 @@ class CommitTest {
             portDState = null;
         }
 
+        @Override
         public void commit() {
             commitFired = true;
             setState();
         }
 
+        @Override
         public void debugCommit() {
             debugCommitFired = true;
             setState();

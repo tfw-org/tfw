@@ -40,6 +40,7 @@ public class ResizePlotConverter extends Converter {
         this.graphHeightECD = graphHeightECD;
     }
 
+    @Override
     protected void convert() {
         if (((Boolean) get(selectedECD)).booleanValue()) {
             boolean button1 = ((Boolean) get(button1ECD)).booleanValue();

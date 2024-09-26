@@ -96,6 +96,7 @@ public abstract class Validator extends RollbackHandler {
         return sink.eventChannel.getPreviousCycleState();
     }
 
+    @Override
     final void stateChange(EventChannel eventChannel) {
         getTransactionManager().addValidator(this);
     }

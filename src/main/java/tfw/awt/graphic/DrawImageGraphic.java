@@ -26,6 +26,7 @@ public final class DrawImageGraphic {
             this.observer = observer;
         }
 
+        @Override
         public void paint(Graphics2D graphics2D) {
             if (graphic != null) {
                 graphic.paint(graphics2D);

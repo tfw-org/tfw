@@ -16,6 +16,7 @@ class GetPreviousStateTest {
         final String stateChangeTwo = "StateTwo";
         RootFactory rf = new RootFactory();
         rf.setTransactionExceptionHandler(new TransactionExceptionHandler() {
+            @Override
             public void handle(Exception e) {
                 e.printStackTrace();
                 fail("Test failed with an exception: " + e.getMessage());
@@ -57,6 +58,7 @@ class GetPreviousStateTest {
             super("TestConverter", new StringECD[] {channel}, new StringECD[] {});
         }
 
+        @Override
         protected void convert() {
             value = (String) this.getPreviousCycleState(channel);
         }
@@ -69,6 +71,7 @@ class GetPreviousStateTest {
             super("TestCommit", new StringECD[] {channel});
         }
 
+        @Override
         protected void commit() {
             value = (String) this.getPreviousTransactionState(channel);
         }

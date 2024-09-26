@@ -15,6 +15,7 @@ public class BranchFactory extends BaseBranchFactory {
     /** The set of translators. */
     private final HashMap<String, Translator> translators = new HashMap<String, Translator>();
 
+    @Override
     EventChannel[] getTerminators() {
         ArrayList<EventChannel> list = new ArrayList<EventChannel>();
         list.addAll(Arrays.asList(super.getTerminators()));
@@ -109,6 +110,7 @@ public class BranchFactory extends BaseBranchFactory {
      * @param exportTags
      *            The list of export tags for this event channel.
      */
+    @Override
     public void addEventChannel(
             EventChannelDescription eventChannelDescription,
             Object initialState,
@@ -131,6 +133,7 @@ public class BranchFactory extends BaseBranchFactory {
     /**
      * Removes all previously specified translators and terminators.
      */
+    @Override
     public void clear() {
         this.translators.clear();
         super.clear();

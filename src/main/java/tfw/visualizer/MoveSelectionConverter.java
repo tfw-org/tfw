@@ -47,6 +47,7 @@ public class MoveSelectionConverter extends Converter {
         this.buttonThreePressedECD = buttonThreePressedECD;
     }
 
+    @Override
     protected void convert() {
         if (((Boolean) get(selectedECD)).booleanValue()
                 && ((Boolean) get(buttonOnePressedECD)).booleanValue()
