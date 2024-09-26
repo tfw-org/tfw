@@ -17,6 +17,7 @@ public class NormalizedXYConverter extends Converter {
         this.normalizedXYsECD = normalizedXYsECD;
     }
 
+    @Override
     protected void convert() {
         Graph graph = (Graph) get(graphECD);
 

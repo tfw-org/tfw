@@ -13,6 +13,7 @@ public class NullConstraint extends ValueConstraint {
     /* (non-Javadoc)
      * @see co2.value.Constraint#isCompatable(co2.value.Constraint)
      */
+    @Override
     public boolean isCompatible(ValueConstraint constraint) {
         Argument.assertNotNull(constraint, "constraint");
 
@@ -22,6 +23,7 @@ public class NullConstraint extends ValueConstraint {
     /* (non-Javadoc)
      * @see co2.value.Constraint#getValueCompliance(java.lang.Object)
      */
+    @Override
     public String getValueCompliance(Object value) {
         if (value == null) {
             return VALID;

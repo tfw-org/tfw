@@ -10,6 +10,7 @@ class DefaultStateQueueFactory implements StateQueueFactory {
     /**
      * @see co2.ui.fw.StateQueueFactory#create()
      */
+    @Override
     public StateQueue create() {
         return new BasicStateQueue();
     }
@@ -23,6 +24,7 @@ class DefaultStateQueueFactory implements StateQueueFactory {
         /**
          * @see co2.ui.fw.StateQueue#isEmpty()
          */
+        @Override
         public boolean isEmpty() {
             return queue.size() == 0;
         }
@@ -30,6 +32,7 @@ class DefaultStateQueueFactory implements StateQueueFactory {
         /**
          * @see co2.ui.fw.StateQueue#pop()
          */
+        @Override
         public Object pop() throws NoSuchElementException {
             if (isEmpty()) {
                 throw new NoSuchElementException("Queue is empty.");
@@ -41,6 +44,7 @@ class DefaultStateQueueFactory implements StateQueueFactory {
         /**
          * @see co2.ui.fw.StateQueue#push(java.lang.Object)
          */
+        @Override
         public void push(Object state) {
             queue.add(state);
         }

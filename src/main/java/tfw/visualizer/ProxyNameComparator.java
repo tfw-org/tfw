@@ -6,6 +6,7 @@ import tfw.tsm.Proxy;
 public class ProxyNameComparator implements Comparator<Object> {
     public static final ProxyNameComparator INSTANCE = new ProxyNameComparator();
 
+    @Override
     public int compare(Object obj1, Object obj2) {
         Proxy proxy1 = (Proxy) obj1;
         Proxy proxy2 = (Proxy) obj2;

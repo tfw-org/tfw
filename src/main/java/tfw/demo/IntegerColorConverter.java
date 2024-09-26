@@ -59,6 +59,7 @@ public class IntegerColorConverter extends Synchronizer {
         return new ObjectECD[] {color};
     }
 
+    @Override
     protected final void convertAToB() {
         //		System.out.println("IntegerColorConverter.convertAToB() = " + get());
         int red = ((Integer) get(redInteger)).intValue();
@@ -67,14 +68,17 @@ public class IntegerColorConverter extends Synchronizer {
         set(color, new Color(red, green, blue));
     }
 
+    @Override
     protected void debugConvertAToB() {
         //		System.out.println("IntegerColorConverter.debugConvertAToB() = " + get());
     }
 
+    @Override
     protected void debugConvertBToA() {
         //		System.out.println("IntegerColorConverter.debugConvertBToA() = " + get());
     }
 
+    @Override
     protected final void convertBToA() {
         //		System.out.println("IntegerColorConverter.convertBToA() = " + get());
         Color c = (Color) get(color);

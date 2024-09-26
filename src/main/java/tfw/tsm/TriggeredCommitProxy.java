@@ -11,6 +11,7 @@ public final class TriggeredCommitProxy implements Proxy {
         this.triggeredCommit = triggeredCommit;
     }
 
+    @Override
     public String getName() {
         return triggeredCommit.getName();
     }
@@ -25,6 +26,7 @@ public final class TriggeredCommitProxy implements Proxy {
         return sp;
     }
 
+    @Override
     public boolean equals(Object obj) {
         if (obj instanceof TriggeredCommitProxy) {
             TriggeredCommitProxy ip = (TriggeredCommitProxy) obj;
@@ -35,6 +37,7 @@ public final class TriggeredCommitProxy implements Proxy {
         return false;
     }
 
+    @Override
     public int hashCode() {
         return triggeredCommit.hashCode();
     }

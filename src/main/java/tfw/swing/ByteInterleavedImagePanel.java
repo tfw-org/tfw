@@ -47,6 +47,7 @@ public class ByteInterleavedImagePanel extends JPanelBB {
             this.colorModelECD = colorModelECD;
         }
 
+        @Override
         protected void commit() {
             ByteIlm byteIlm = (ByteIlm) get(byteIlmECD);
             int width;
@@ -80,6 +81,7 @@ public class ByteInterleavedImagePanel extends JPanelBB {
         }
     }
 
+    @Override
     public final void paint(Graphics g) {
         synchronized (this) {
             g.drawImage(image, x, y, this);

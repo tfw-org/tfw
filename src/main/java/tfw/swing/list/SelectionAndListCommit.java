@@ -38,6 +38,7 @@ public class SelectionAndListCommit extends Commit {
         this.list = list;
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     protected void commit() {
         if (isStateChanged(listECD)) {
@@ -48,6 +49,7 @@ public class SelectionAndListCommit extends Commit {
                 elementsIla.get(elements, 0, 0, elements.length);
 
                 EventQueue.invokeLater(new Runnable() {
+                    @Override
                     public void run() {
                         DefaultListModel<Object> defaultListModel = new DefaultListModel<>();
 
@@ -67,6 +69,7 @@ public class SelectionAndListCommit extends Commit {
                 selectedItemsIla.get(selectedItems, 0, 0, selectedItems.length);
 
                 EventQueue.invokeLater(new Runnable() {
+                    @Override
                     public void run() {
                         list.clearSelection();
 
@@ -84,6 +87,7 @@ public class SelectionAndListCommit extends Commit {
                 final int[] selectedIndex = IntIlaUtil.toArray((IntIla) get(selectedIndexesECD));
 
                 EventQueue.invokeLater(new Runnable() {
+                    @Override
                     public void run() {
                         list.setSelectedIndices(selectedIndex);
                     }

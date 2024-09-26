@@ -19,10 +19,12 @@ public class SetForegroundCommit extends Commit {
         this.component = component;
     }
 
+    @Override
     protected void commit() {
         final Color color = (Color) get(colorECD);
 
         EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 component.setForeground(color);
             }

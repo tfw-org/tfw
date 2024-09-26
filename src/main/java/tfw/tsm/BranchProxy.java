@@ -13,6 +13,7 @@ public final class BranchProxy implements Proxy {
         this.branch = branch;
     }
 
+    @Override
     public String getName() {
         return branch.getName();
     }
@@ -79,6 +80,7 @@ public final class BranchProxy implements Proxy {
         throw new IllegalStateException("Parent is not a branch/multiplexedBranch");
     }
 
+    @Override
     public boolean equals(Object obj) {
         if (obj instanceof BranchProxy) {
             BranchProxy bp = (BranchProxy) obj;
@@ -89,6 +91,7 @@ public final class BranchProxy implements Proxy {
         return false;
     }
 
+    @Override
     public int hashCode() {
         return branch.hashCode();
     }

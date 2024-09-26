@@ -34,6 +34,7 @@ public class SelectionToGraphicConverter extends Converter {
         this.graphicECD = graphicECD;
     }
 
+    @Override
     protected void convert() {
         boolean[] selectedNodes = null;
         int[] tlbr = null;

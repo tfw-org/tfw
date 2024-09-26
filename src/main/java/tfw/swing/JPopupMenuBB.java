@@ -23,6 +23,7 @@ public class JPopupMenuBB extends JPopupMenu implements BranchBox {
         return add(menuItem);
     }
 
+    @Override
     public final Branch getBranch() {
         return branch;
     }

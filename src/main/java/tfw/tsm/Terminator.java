@@ -100,8 +100,10 @@ public class Terminator implements EventChannel, CommitRollbackListener {
         }
     }
 
+    @Override
     public void commit() {}
 
+    @Override
     public void rollback() {
         previousState = rollbackState;
         state = rollbackState;
@@ -114,6 +116,7 @@ public class Terminator implements EventChannel, CommitRollbackListener {
      *
      * @return the description of this event channel.
      */
+    @Override
     public EventChannelDescription getECD() {
         return ecd;
     }
@@ -124,6 +127,7 @@ public class Terminator implements EventChannel, CommitRollbackListener {
      * @param branch
      *            the branch for this terminator
      */
+    @Override
     public void setTreeComponent(TreeComponent branch) {
         if (this.component != null) {
             throw new IllegalStateException("Terminator is already initialized!");
@@ -137,10 +141,12 @@ public class Terminator implements EventChannel, CommitRollbackListener {
      *
      * @return the current branch associated with this terminator.
      */
+    @Override
     public TreeComponent getParent() {
         return component;
     }
 
+    @Override
     public synchronized void add(Port port) {
         Argument.assertNotNull(port, "port");
 
@@ -151,6 +157,7 @@ public class Terminator implements EventChannel, CommitRollbackListener {
         }
     }
 
+    @Override
     public synchronized void remove(Port port) {
         if (port instanceof Sink) {
             removeSink((Sink) port);
@@ -233,6 +240,7 @@ public class Terminator implements EventChannel, CommitRollbackListener {
     /**
      * Returns the current state of the event channel.
      */
+    @Override
     public Object getState() {
         return state;
     }
@@ -241,6 +249,7 @@ public class Terminator implements EventChannel, CommitRollbackListener {
      * Returns the state of this event channel prior to the current state change
      * cycle.
      */
+    @Override
     public Object getPreviousCycleState() {
         return previousState;
     }
@@ -248,6 +257,7 @@ public class Terminator implements EventChannel, CommitRollbackListener {
     /**
      * Returns the state of this event channel prior to the current transaction.
      */
+    @Override
     public Object getPreviousTransactionState() {
         return rollbackState;
     }
@@ -257,6 +267,7 @@ public class Terminator implements EventChannel, CommitRollbackListener {
      *         transaction. Otherwise, false if the state has not changed or if
      *         no transaction is in progress.
      */
+    @Override
     public boolean isStateChanged() {
         return this.isStateChanged;
     }
@@ -269,6 +280,7 @@ public class Terminator implements EventChannel, CommitRollbackListener {
      *
      * TODO Add error handler for value compliance errors.
      */
+    @Override
     public void setState(Source source, Object state, EventChannel forwardingEventChannel) {
         if (ecd.isRollBackParticipant()) {
             component.getTransactionManager().addCommitRollbackListener(this);
@@ -325,6 +337,7 @@ public class Terminator implements EventChannel, CommitRollbackListener {
      *         if the state has not been set by a <code>Source
      * </code>.
      */
+    @Override
     public Source getCurrentStateSource() {
         return stateSource;
     }
@@ -332,6 +345,7 @@ public class Terminator implements EventChannel, CommitRollbackListener {
     /**
      * Sets the previous cycle state to the current state.
      */
+    @Override
     public void synchronizeCycleState() {
         previousState = state;
     }
@@ -339,6 +353,7 @@ public class Terminator implements EventChannel, CommitRollbackListener {
     /**
      * Sets the previous transaction state to the current state.
      */
+    @Override
     public void synchronizeTransactionState() {
         rollbackState = state;
         rollbackSource = stateSource;
@@ -360,19 +375,23 @@ public class Terminator implements EventChannel, CommitRollbackListener {
         return temp;
     }
 
+    @Override
     public Object fire() {
         updateSinks(resetUninitializedSinks());
         return state;
     }
 
+    @Override
     public boolean isFireOnConnect() {
         return ecd.isFireOnConnect();
     }
 
+    @Override
     public boolean isRollbackParticipant() {
         return ecd.isRollBackParticipant();
     }
 
+    @Override
     public void addDeferredStateChange(ProcessorSource source) {
         this.component.getTransactionManager().addStateChange(source);
     }
@@ -449,6 +468,7 @@ public class Terminator implements EventChannel, CommitRollbackListener {
         return false;
     }
 
+    @Override
     public String getName() {
         return "EventChannel: " + ecd.getEventChannelName();
     }

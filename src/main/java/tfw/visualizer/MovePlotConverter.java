@@ -40,6 +40,7 @@ public class MovePlotConverter extends Converter {
         this.yOffsetECD = yOffsetECD;
     }
 
+    @Override
     protected void convert() {
         if (((Boolean) get(selectedECD)).booleanValue()) {
             boolean button1 = ((Boolean) get(button1ECD)).booleanValue();

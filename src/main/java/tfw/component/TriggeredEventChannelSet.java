@@ -22,6 +22,7 @@ public class TriggeredEventChannelSet extends TriggeredConverter {
         System.arraycopy(constants, 0, this.constants, 0, constants.length);
     }
 
+    @Override
     protected void convert() {
         for (int i = 0; i < outputECDs.length; i++) {
             set(outputECDs[i], constants[i]);

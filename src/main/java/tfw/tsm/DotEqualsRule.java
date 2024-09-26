@@ -30,6 +30,7 @@ public class DotEqualsRule implements StateChangeRule {
      * @return <code>!newState.equals(currentState)</code>.
      * @throws IllegalArgumentException if <code>newState == null</code>
      */
+    @Override
     public boolean isChange(Object currentState, Object newState) {
         Argument.assertNotNull(newState, "newState");
         return !newState.equals(currentState);

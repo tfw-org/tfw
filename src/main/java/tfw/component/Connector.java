@@ -30,6 +30,7 @@ public class Connector {
             triggeredCommit =
                     new TriggeredCommit(
                             "Connector[" + name + "]", (StatelessTriggerECD) eventChannelDescription, null, null) {
+                        @Override
                         public void commit() {
                             initiator.trigger((StatelessTriggerECD) eventChannelDescription);
                         }
@@ -43,6 +44,7 @@ public class Connector {
                             new ObjectECD[] {(ObjectECD) eventChannelDescription},
                             null,
                             null) {
+                        @Override
                         public void commit() {
                             initiator.set(
                                     (ObjectECD) eventChannelDescription, get((ObjectECD) eventChannelDescription));

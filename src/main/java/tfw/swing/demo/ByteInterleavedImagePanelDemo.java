@@ -65,6 +65,7 @@ public class ByteInterleavedImagePanelDemo {
                 true,
                 cc,
                 new ActionListener() {
+                    @Override
                     public void actionPerformed(ActionEvent e) {
                         Color color = cc.getColor();
                         initiator.set(
@@ -85,6 +86,7 @@ public class ByteInterleavedImagePanelDemo {
 
         JButton b = new JButton("Change Color");
         b.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 d.setVisible(true);
             }
@@ -103,6 +105,7 @@ public class ByteInterleavedImagePanelDemo {
         final JTextField hTF = new JTextField("200");
 
         ActionListener al = new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 try {
                     int w = Integer.parseInt(wTF.getText());
@@ -144,6 +147,7 @@ public class ByteInterleavedImagePanelDemo {
         cp.add(sp, BorderLayout.SOUTH);
 
         f.addWindowListener(new WindowAdapter() {
+            @Override
             public void windowClosing(WindowEvent e) {
                 System.exit(0);
             }

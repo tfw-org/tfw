@@ -29,6 +29,7 @@ public class JButtonBB extends JButton implements BranchBox {
         branch.add(actionInitiator);
     }
 
+    @Override
     public final Branch getBranch() {
         return branch;
     }

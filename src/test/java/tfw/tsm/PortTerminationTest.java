@@ -17,6 +17,7 @@ class PortTerminationTest {
         ObjectECD ecd = new StringECD("Test");
         RootFactory rf = new RootFactory();
         rf.setTransactionExceptionHandler(new TransactionExceptionHandler() {
+            @Override
             public void handle(Exception exception) {
                 PortTerminationTest.expected = exception;
             }
@@ -27,6 +28,7 @@ class PortTerminationTest {
         Root root = rf.create("test", queue);
 
         Commit commit = new Commit("test", new ObjectECD[] {ecd}) {
+            @Override
             public void commit() {}
         };
 

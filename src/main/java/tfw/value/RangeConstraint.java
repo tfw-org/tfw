@@ -57,6 +57,7 @@ public class RangeConstraint extends ClassValueConstraint {
      * @return {@link #VALID} if the value complies with the constraint,
      * otherwise it returns a string indicating why the value does not comply.
      */
+    @Override
     public String getValueCompliance(Object value) {
         String str = super.getValueCompliance(value);
 
@@ -109,6 +110,7 @@ public class RangeConstraint extends ClassValueConstraint {
      * @return true if every value which meets the specified constraint
      * also meets this constraint, otherwise returns false.
      */
+    @Override
     public boolean isCompatible(ValueConstraint constraint) {
         if (constraint == this) {
             // if we use a factory to create constraints
@@ -167,6 +169,7 @@ public class RangeConstraint extends ClassValueConstraint {
      * Returns a string representation of the constraint.
      * @return a string representation of the constraint.
      */
+    @Override
     public String toString() {
         StringBuffer sb = new StringBuffer();
         sb.append("RangeConstraint[type = ").append(valueType.getName());

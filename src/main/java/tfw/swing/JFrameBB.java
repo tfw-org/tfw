@@ -45,6 +45,7 @@ public class JFrameBB extends JFrame implements BranchBox {
         }
     }
 
+    @Override
     public final Branch getBranch() {
         return branch;
     }

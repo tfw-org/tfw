@@ -50,6 +50,7 @@ public class SelectionConverter extends Converter {
         this.selectedNodesECD = selectedNodesECD;
     }
 
+    @Override
     protected void convert() {
         if (((Boolean) get(selectedECD)).booleanValue()
                 && ((Boolean) get(buttonOneECD)).booleanValue()

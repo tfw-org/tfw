@@ -20,6 +20,7 @@ public class JLabelBB extends JLabel implements BranchBox {
         branch.add(new SetTextCommit("JLabelBB", textECD, this, null));
     }
 
+    @Override
     public final Branch getBranch() {
         return branch;
     }

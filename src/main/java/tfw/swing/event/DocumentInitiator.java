@@ -16,6 +16,7 @@ public class DocumentInitiator extends Initiator implements DocumentListener {
         this.textECD = textECD;
     }
 
+    @Override
     public void changedUpdate(DocumentEvent e) {
         try {
             set(textECD, e.getDocument().getText(0, e.getDocument().getLength()));
@@ -23,6 +24,7 @@ public class DocumentInitiator extends Initiator implements DocumentListener {
         }
     }
 
+    @Override
     public void insertUpdate(DocumentEvent e) {
         try {
             set(textECD, e.getDocument().getText(0, e.getDocument().getLength()));
@@ -30,6 +32,7 @@ public class DocumentInitiator extends Initiator implements DocumentListener {
         }
     }
 
+    @Override
     public void removeUpdate(DocumentEvent e) {
         try {
             set(textECD, e.getDocument().getText(0, e.getDocument().getLength()));

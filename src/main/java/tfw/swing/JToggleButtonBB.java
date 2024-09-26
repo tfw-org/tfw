@@ -39,6 +39,7 @@ public class JToggleButtonBB extends JToggleButton implements BranchBox {
         branch.add(buttonSelectedCommit);
     }
 
+    @Override
     public final Branch getBranch() {
         return branch;
     }

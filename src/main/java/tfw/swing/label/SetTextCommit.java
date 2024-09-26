@@ -18,10 +18,12 @@ public class SetTextCommit extends Commit {
         this.label = label;
     }
 
+    @Override
     protected void commit() {
         final String text = (String) get(textECD);
 
         EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 label.setText(text);
             }

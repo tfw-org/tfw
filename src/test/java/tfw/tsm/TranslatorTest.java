@@ -24,6 +24,7 @@ class TranslatorTest {
     private Initiator initiator = new Initiator("Initiator", eventChannels);
 
     private Commit commit = new Commit("Commit", eventChannels) {
+        @Override
         protected void commit() {
             result = (String) get(portA);
         }
@@ -132,6 +133,7 @@ class TranslatorTest {
     private class TestExceptionHandler implements TransactionExceptionHandler {
         Exception exception = null;
 
+        @Override
         public void handle(Exception exception) {
             // exception.printStackTrace();
             this.exception = exception;

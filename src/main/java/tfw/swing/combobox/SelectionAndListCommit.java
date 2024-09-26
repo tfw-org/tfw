@@ -64,6 +64,7 @@ public class SelectionAndListCommit extends Commit {
         return list.toArray(new ObjectECD[list.size()]);
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     protected void commit() {
         try {
@@ -73,6 +74,7 @@ public class SelectionAndListCommit extends Commit {
             listIla.get(list, 0, 0, list.length);
 
             EventQueue.invokeLater(new Runnable() {
+                @Override
                 public void run() {
                     ComboBoxModel<Object> cbm = comboBox.getModel();
                     if (cbm.getSize() == list.length) {
@@ -114,6 +116,7 @@ public class SelectionAndListCommit extends Commit {
             final Object selectedItem = get(selectedItemECD);
 
             EventQueue.invokeLater(new Runnable() {
+                @Override
                 public void run() {
                     if (selectedItem != comboBox.getSelectedItem()) {
                         if (actionListeners != null) {
@@ -137,6 +140,7 @@ public class SelectionAndListCommit extends Commit {
             final int selectedIndex = ((Integer) get(selectedIndexECD)).intValue();
 
             EventQueue.invokeLater(new Runnable() {
+                @Override
                 public void run() {
                     if (selectedIndex != comboBox.getSelectedIndex()) {
 

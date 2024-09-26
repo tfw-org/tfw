@@ -38,6 +38,7 @@ public class SelectionInitiator extends Initiator implements ActionListener {
         return list.toArray(new ObjectECD[list.size()]);
     }
 
+    @Override
     public void actionPerformed(ActionEvent e) {
         if (selectedItemECD != null && comboBox.getSelectedItem() != null) {
             set(selectedItemECD, comboBox.getSelectedItem());

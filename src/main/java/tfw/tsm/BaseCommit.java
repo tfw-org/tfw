@@ -13,8 +13,10 @@ abstract class BaseCommit extends EventHandler {
     private final HashSet<String> triggers;
     private final Initiator[] initiators;
     private CommitRollbackListener crListener = new CommitRollbackListener() {
+        @Override
         public void rollback() {}
 
+        @Override
         public void commit() {
             if (isStateNonNull()) {
                 BaseCommit.this.commit();
@@ -23,6 +25,7 @@ abstract class BaseCommit extends EventHandler {
             }
         }
 
+        @Override
         public String getName() {
             return BaseCommit.this.getName();
         }
@@ -91,6 +94,7 @@ abstract class BaseCommit extends EventHandler {
      * of the state change is not one of this commit's initiator and the event
      * channel is one of this commit's trigger ports.
      */
+    @Override
     void stateChange(EventChannel eventChannel) {
         for (int i = 0; i < initiators.length; i++) {
             Source source = initiators[i].getSource(eventChannel.getECD().getEventChannelName());

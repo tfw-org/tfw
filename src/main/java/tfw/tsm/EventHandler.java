@@ -249,6 +249,7 @@ abstract class EventHandler extends Leaf {
             super(name, description, isTriggering);
         }
 
+        @Override
         void stateChange() {
             Source source = handler.getSource(ecd.getEventChannelName());
 

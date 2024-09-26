@@ -56,6 +56,7 @@ public class Branch extends BranchComponent {
         addChild(branchBox.getBranch());
     }
 
+    @Override
     public final void remove(TreeComponent child) {
         Argument.assertNotNull(child, "child");
 

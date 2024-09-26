@@ -101,6 +101,7 @@ public class NodeEdgeFilterConverter extends Converter {
         this.filteredGraphECD = filteredGraphECD;
     }
 
+    @Override
     protected void convert() {
         boolean showBowTie = ((Boolean) get(showBowTieECD)).booleanValue();
 

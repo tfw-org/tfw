@@ -72,6 +72,7 @@ public class JComboBoxBB extends JComboBox<Object> implements BranchBox {
         branch.add(selectionAndListCommit);
     }
 
+    @Override
     public final Branch getBranch() {
         return branch;
     }

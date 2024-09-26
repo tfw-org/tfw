@@ -41,6 +41,7 @@ public class TriggeredEventChannelCopy extends TriggeredConverter {
         this.outputECD = outputECD;
     }
 
+    @Override
     protected void convert() {
         set(outputECD, get(inputECD));
     }

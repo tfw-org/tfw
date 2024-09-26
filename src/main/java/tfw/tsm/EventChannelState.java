@@ -53,6 +53,7 @@ public class EventChannelState {
      *
      * @return a hash code value for this event channel state.
      */
+    @Override
     public int hashCode() {
         return state.hashCode() + eventChannelName.hashCode();
     }
@@ -66,6 +67,7 @@ public class EventChannelState {
      *         <code>EventChannelState</code> and each of its attributes are
      *         equal to the attributes of this object.
      */
+    @Override
     public boolean equals(Object object) {
         if (!(object instanceof EventChannelState)) {
             return false;
@@ -80,6 +82,7 @@ public class EventChannelState {
      *
      * @return a string representation of this event channel state.
      */
+    @Override
     public String toString() {
         StringBuffer sb = new StringBuffer();
         sb.append("EventChannelState[");

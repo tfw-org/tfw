@@ -39,18 +39,21 @@ public class GraphFromRootProxy {
             this.rootProxy = rootProxy;
         }
 
+        @Override
         public long nodesLength() {
             calculateArrays();
 
             return nodes.length;
         }
 
+        @Override
         public long edgesLength() {
             calculateArrays();
 
             return edgeFroms.length;
         }
 
+        @Override
         public void get(
                 Object[] nodes,
                 int nodesOffset,

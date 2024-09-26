@@ -22,12 +22,14 @@ class CascadeTest {
     private Initiator initiator = new Initiator("Initiator", new ObjectECD[] {portA});
 
     private Validator aValidator = new Validator("A Validator", new ObjectECD[] {portA}, null) {
+        @Override
         protected void validateState() {
             validateAValue = value++;
         }
     };
 
     private Converter converterAB = new Converter("converterAB", new ObjectECD[] {portA}, new ObjectECD[] {portB}) {
+        @Override
         protected void convert() {
             convertABValue = value++;
             set(portB, "");
@@ -35,12 +37,14 @@ class CascadeTest {
     };
 
     private Validator bValidator = new Validator("B Validator", new ObjectECD[] {portB}, null) {
+        @Override
         protected void validateState() {
             validateBValue = value++;
         }
     };
 
     private Converter converterBC = new Converter("converterBC", new ObjectECD[] {portB}, new ObjectECD[] {portC}) {
+        @Override
         protected void convert() {
             set(portC, "");
             convertBCValue = value++;
@@ -48,12 +52,14 @@ class CascadeTest {
     };
 
     private Validator cValidator = new Validator("C Validator", new ObjectECD[] {portC}, null) {
+        @Override
         protected void validateState() {
             validateCValue = value++;
         }
     };
 
     private Commit commit = new Commit("Commit", new ObjectECD[] {portC}) {
+        @Override
         protected void commit() {
             commitValue = value;
         }

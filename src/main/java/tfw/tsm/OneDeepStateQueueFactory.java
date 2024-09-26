@@ -9,6 +9,7 @@ public class OneDeepStateQueueFactory implements StateQueueFactory {
     /**
      * Returns a new instance of a queue
      */
+    @Override
     public StateQueue create() {
         return new OneDeepStateQueue();
     }
@@ -28,6 +29,7 @@ public class OneDeepStateQueueFactory implements StateQueueFactory {
          * @throws NoSuchElementException
          *             if the queue is empty.
          */
+        @Override
         public Object pop() throws NoSuchElementException {
             if (empty) {
                 throw new NoSuchElementException("Queue is empty");
@@ -40,11 +42,13 @@ public class OneDeepStateQueueFactory implements StateQueueFactory {
          * Puts the specified value on the queue, over writing any previously
          * pushed state that hasn't been removed.
          */
+        @Override
         public void push(Object state) {
             this.state = state;
             this.empty = false;
         }
 
+        @Override
         public boolean isEmpty() {
             return empty;
         }

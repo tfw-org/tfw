@@ -77,6 +77,7 @@ public class JTextFieldModifiableBB extends JTextFieldBB {
             this.enableName = enableSink;
         }
 
+        @Override
         protected void commit() {
             String text = (String) get(textName);
             String textAdj = (String) get(textAdjName);

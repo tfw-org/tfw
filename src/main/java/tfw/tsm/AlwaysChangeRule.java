@@ -31,6 +31,7 @@ public class AlwaysChangeRule implements StateChangeRule {
      *            the new state value for the event channel.
      * @return <code>true</code> reqardless of the specified values.
      */
+    @Override
     public boolean isChange(Object currentState, Object newState) {
         return true;
     }
