@@ -18,6 +18,7 @@ public class ButtonSelectedInitiator extends Initiator implements ItemListener {
         this.abstractButton = abstractButton;
     }
 
+    @Override
     public void itemStateChanged(ItemEvent e) {
         set(selectedECD, abstractButton.isSelected());
     }

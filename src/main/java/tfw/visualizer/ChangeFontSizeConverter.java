@@ -17,6 +17,7 @@ public class ChangeFontSizeConverter extends TriggeredConverter {
         this.scale = scale;
     }
 
+    @Override
     protected void convert() {
         Font font = (Font) get(fontECD);
         float newSize = font.getSize2D() + scale;

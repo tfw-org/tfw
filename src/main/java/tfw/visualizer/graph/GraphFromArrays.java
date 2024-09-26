@@ -20,14 +20,17 @@ public class GraphFromArrays {
             this.tos = tos.clone();
         }
 
+        @Override
         public long nodesLength() {
             return nodes.length;
         }
 
+        @Override
         public long edgesLength() {
             return froms.length;
         }
 
+        @Override
         public void get(
                 Object[] nodes,
                 int nodesOffset,

@@ -49,6 +49,7 @@ public class DemultiplexedEventChannel extends Terminator {
      * Overrides the Terminator method in order to propogate the state up
      * through the multiplexer.
      */
+    @Override
     public void setState(Source source, Object state, EventChannel forwardingEventChannel) {
         super.setState(source, state, forwardingEventChannel);
         if (this.component != source.getTreeComponent()) {
@@ -59,6 +60,7 @@ public class DemultiplexedEventChannel extends Terminator {
     /**
      * Overrides the Terminator method inorder to count connections.
      */
+    @Override
     public void add(Port port) {
         super.add(port);
         connectionCount++;
@@ -68,6 +70,7 @@ public class DemultiplexedEventChannel extends Terminator {
      * Overrides the Terminator method in order to count connections and remove
      * this demultiplexer event channel when connections reach zero.
      */
+    @Override
     public void remove(Port port) {
         super.remove(port);
         connectionCount--;
@@ -106,11 +109,13 @@ public class DemultiplexedEventChannel extends Terminator {
             super(name, ecd);
         }
 
+        @Override
         Object getState() {
             Object state = super.getState();
             return state;
         }
 
+        @Override
         void setState(Object state) throws ValueException {
             Argument.assertNotNull(state, "state");
             if (this.getState() != null) {
@@ -125,6 +130,7 @@ public class DemultiplexedEventChannel extends Terminator {
             return DemultiplexedEventChannel.this;
         }
 
+        @Override
         Object fire() {
             this.fireCount++;
             if (getState() == null) {

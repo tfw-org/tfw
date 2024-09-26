@@ -17,6 +17,7 @@ class ProcessorSource extends Source {
         return state;
     }
 
+    @Override
     void setState(Object state) throws ValueException {
         setState(state, true);
     }
@@ -46,6 +47,7 @@ class ProcessorSource extends Source {
     /**
      * @see co2.ui.fw.Source#fire()
      */
+    @Override
     Object fire() {
         Object temp = state;
         state = null;

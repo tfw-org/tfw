@@ -39,6 +39,7 @@ public class DrawImageConverter extends TriggeredConverter {
         this.graphicECD = graphicECD;
     }
 
+    @Override
     protected void convert() {
         Image image = (Image) get(imageECD);
         int x = ((Integer) get(xECD)).intValue();

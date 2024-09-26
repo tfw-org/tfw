@@ -34,12 +34,14 @@ public class ComponentInitiator extends Initiator implements ComponentListener {
         this.heightECD = heightECD;
     }
 
+    @Override
     public final void componentHidden(ComponentEvent e) {
         if (visibleECD != null) {
             set(visibleECD, Boolean.FALSE);
         }
     }
 
+    @Override
     public final void componentMoved(ComponentEvent e) {
         if (xECD == null) {
             if (yECD != null) {
@@ -59,6 +61,7 @@ public class ComponentInitiator extends Initiator implements ComponentListener {
         }
     }
 
+    @Override
     public final void componentResized(ComponentEvent e) {
         if (widthECD == null) {
             if (heightECD != null) {
@@ -78,6 +81,7 @@ public class ComponentInitiator extends Initiator implements ComponentListener {
         }
     }
 
+    @Override
     public final void componentShown(ComponentEvent e) {
         if (visibleECD != null) {
             set(visibleECD, Boolean.TRUE);

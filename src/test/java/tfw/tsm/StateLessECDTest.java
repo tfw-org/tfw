@@ -43,6 +43,7 @@ class StateLessECDTest {
             this.trigger = trigger;
         }
 
+        @Override
         public void convert() {
             try {
                 set(trigger, new Object());

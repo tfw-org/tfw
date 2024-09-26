@@ -41,42 +41,49 @@ public class WindowInitiator extends Initiator implements WindowListener {
         this.windowOpenedTriggerECD = windowOpenedTriggerECD;
     }
 
+    @Override
     public final void windowActivated(WindowEvent e) {
         if (windowActivatedTriggerECD != null) {
             trigger(windowActivatedTriggerECD);
         }
     }
 
+    @Override
     public final void windowClosed(WindowEvent e) {
         if (windowClosedTriggerECD != null) {
             trigger(windowClosedTriggerECD);
         }
     }
 
+    @Override
     public final void windowClosing(WindowEvent e) {
         if (windowClosingTriggerECD != null) {
             trigger(windowClosingTriggerECD);
         }
     }
 
+    @Override
     public final void windowDeactivated(WindowEvent e) {
         if (windowDeactivatedTriggerECD != null) {
             trigger(windowDeactivatedTriggerECD);
         }
     }
 
+    @Override
     public final void windowDeiconified(WindowEvent e) {
         if (windowDeiconifiedTriggerECD != null) {
             trigger(windowDeiconifiedTriggerECD);
         }
     }
 
+    @Override
     public final void windowIconified(WindowEvent e) {
         if (windowIconifiedTriggerECD != null) {
             trigger(windowIconifiedTriggerECD);
         }
     }
 
+    @Override
     public final void windowOpened(WindowEvent e) {
         if (windowOpenedTriggerECD != null) {
             trigger(windowOpenedTriggerECD);

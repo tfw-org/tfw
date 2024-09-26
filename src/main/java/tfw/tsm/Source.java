@@ -16,6 +16,7 @@ public abstract class Source extends Port {
         return eventChannel.getCurrentStateSource() == this;
     }
 
+    @Override
     public String toString() {
         StringBuffer sb = new StringBuffer();
         sb.append(super.toString());

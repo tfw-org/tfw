@@ -28,10 +28,12 @@ public class SetTextCommit extends Commit {
         this.documentListener = documentListener;
     }
 
+    @Override
     protected void commit() {
         final String text = (String) get(textECD);
 
         EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 if (documentListener != null) {
                     textComponent.getDocument().removeDocumentListener(documentListener);

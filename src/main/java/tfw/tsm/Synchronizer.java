@@ -26,13 +26,16 @@ public abstract class Synchronizer extends Processor {
     private HashSet<EventChannel> aToBConvert = new HashSet<EventChannel>();
     private HashSet<EventChannel> bToAConvert = new HashSet<EventChannel>();
     private CommitRollbackListener crListener = new CommitRollbackListener() {
+        @Override
         public void rollback() {
             aToBConvert.clear();
             bToAConvert.clear();
         }
 
+        @Override
         public void commit() {}
 
+        @Override
         public String getName() {
             return Synchronizer.this.getName();
         }
@@ -104,6 +107,7 @@ public abstract class Synchronizer extends Processor {
      */
     protected void debugConvertBToA() {}
 
+    @Override
     void process() {
         if (!aToBConvert.isEmpty()) {
             //        	if (bToAConvert.isEmpty() ||
@@ -138,6 +142,7 @@ public abstract class Synchronizer extends Processor {
         bToAConvert.clear();
     }
 
+    @Override
     void stateChange(EventChannel eventChannel) {
         getTransactionManager().addCommitRollbackListener(crListener);
         // call super to get added to the transaction processors...

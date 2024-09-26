@@ -14,6 +14,7 @@ public final class TriggeredConverterProxy implements Proxy {
         this.triggeredConverter = triggeredConverter;
     }
 
+    @Override
     public String getName() {
         return triggeredConverter.getName();
     }
@@ -40,6 +41,7 @@ public final class TriggeredConverterProxy implements Proxy {
         return sp;
     }
 
+    @Override
     public boolean equals(Object obj) {
         if (obj instanceof TriggeredConverterProxy) {
             TriggeredConverterProxy ip = (TriggeredConverterProxy) obj;
@@ -50,6 +52,7 @@ public final class TriggeredConverterProxy implements Proxy {
         return false;
     }
 
+    @Override
     public int hashCode() {
         return triggeredConverter.hashCode();
     }

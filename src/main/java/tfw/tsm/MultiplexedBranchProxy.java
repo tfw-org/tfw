@@ -15,6 +15,7 @@ public final class MultiplexedBranchProxy implements Proxy {
         this.multiplexedBranch = multiplexedBranch;
     }
 
+    @Override
     public String getName() {
         return multiplexedBranch.getName();
     }
@@ -59,6 +60,7 @@ public final class MultiplexedBranchProxy implements Proxy {
         return map;
     }
 
+    @Override
     public boolean equals(Object obj) {
         if (obj instanceof MultiplexedBranchProxy) {
             MultiplexedBranchProxy ip = (MultiplexedBranchProxy) obj;
@@ -69,6 +71,7 @@ public final class MultiplexedBranchProxy implements Proxy {
         return false;
     }
 
+    @Override
     public int hashCode() {
         return multiplexedBranch.hashCode();
     }

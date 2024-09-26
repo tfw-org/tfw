@@ -32,6 +32,7 @@ public class ZoomConverter extends TriggeredConverter {
         this.scale = scale;
     }
 
+    @Override
     protected void convert() {
         Font font = (Font) get(fontECD);
         float newSize = (float) Math.floor(font.getSize2D() * scale);

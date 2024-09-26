@@ -34,6 +34,7 @@ class BasicTransactionQueueTest {
             this.sleepTime = sleepTime;
         }
 
+        @Override
         public void run() {
             try {
                 Thread.sleep(this.sleepTime);

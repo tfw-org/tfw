@@ -13,6 +13,7 @@ public final class RootProxy implements Proxy {
         this.root = root;
     }
 
+    @Override
     public String getName() {
         return root.getName();
     }
@@ -63,6 +64,7 @@ public final class RootProxy implements Proxy {
         return proxies;
     }
 
+    @Override
     public boolean equals(Object obj) {
         if (obj instanceof RootProxy) {
             RootProxy rp = (RootProxy) obj;
@@ -73,6 +75,7 @@ public final class RootProxy implements Proxy {
         return false;
     }
 
+    @Override
     public int hashCode() {
         return root.hashCode();
     }

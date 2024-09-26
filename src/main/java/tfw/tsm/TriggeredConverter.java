@@ -34,12 +34,14 @@ public abstract class TriggeredConverter extends Processor {
 
     // Override Processor's stateChanged() method to filter on the
     // triggerEventChannel.
+    @Override
     void stateChange(EventChannel eventChannel) {
         if (eventChannel.getECD().getEventChannelName().equals(triggerDescription.getEventChannelName())) {
             getTransactionManager().addProcessor(this);
         }
     }
 
+    @Override
     void process() {
         if (isStateNonNull()) {
             convert();

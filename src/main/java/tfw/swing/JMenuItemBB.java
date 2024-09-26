@@ -29,6 +29,7 @@ public class JMenuItemBB extends JMenuItem implements BranchBox {
         }
     }
 
+    @Override
     public final Branch getBranch() {
         return branch;
     }

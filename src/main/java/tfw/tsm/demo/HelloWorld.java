@@ -19,6 +19,7 @@ public class HelloWorld {
         Initiator i = new Initiator("Hello World Initiator", new EventChannelDescription[] {triggerECD});
 
         TriggeredCommit c = new TriggeredCommit("Hello World Commit", triggerECD, null, null) {
+            @Override
             protected void commit() {
                 System.out.println("HelloWorld");
             }

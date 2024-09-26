@@ -7,6 +7,7 @@ public abstract class AbstractIla implements ImmutableLongArray {
 
     protected AbstractIla() {}
 
+    @Override
     public final long length() throws IOException {
         return lengthImpl();
     }

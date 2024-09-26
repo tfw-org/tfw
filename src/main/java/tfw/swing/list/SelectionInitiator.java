@@ -24,6 +24,7 @@ public class SelectionInitiator extends Initiator implements ListSelectionListen
         this.list = list;
     }
 
+    @Override
     public void valueChanged(ListSelectionEvent e) {
         if (selectedItemsECD != null) {
             set(

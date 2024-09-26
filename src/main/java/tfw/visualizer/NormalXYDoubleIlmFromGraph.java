@@ -24,10 +24,12 @@ public class NormalXYDoubleIlmFromGraph {
             this.graph = graph;
         }
 
+        @Override
         public long width() {
             return graph.nodesLength();
         }
 
+        @Override
         public long height() {
             return 2;
         }

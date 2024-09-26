@@ -114,6 +114,7 @@ public class ClassValueConstraint extends ValueConstraint {
      * @return {@link #VALID} if the value complies with the constraint,
      * otherwise it returns a string indicating why the value does not comply.
      */
+    @Override
     public String getValueCompliance(Object value) {
         if (valueType.isInstance(value)) {
             return VALID;
@@ -143,6 +144,7 @@ public class ClassValueConstraint extends ValueConstraint {
      * @return true if every value which meets the specified constraint
      * also meets this constraint, otherwise returns false.
      */
+    @Override
     public boolean isCompatible(ValueConstraint constraint) {
         if (constraint instanceof ClassValueConstraint) {
             return valueType.equals(((ClassValueConstraint) constraint).valueType);
@@ -155,6 +157,7 @@ public class ClassValueConstraint extends ValueConstraint {
      * Returns a string representation of this constraint.
      * @return a string representation of this constraint.
      */
+    @Override
     public String toString() {
         StringBuffer sb = new StringBuffer();
         sb.append("ValueConstraint[");

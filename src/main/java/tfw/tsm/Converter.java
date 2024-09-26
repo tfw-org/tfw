@@ -44,6 +44,7 @@ public abstract class Converter extends Processor {
         super(name, checkTriggeringSinks(triggeringSinks), nonTriggeringSinks, sources);
     }
 
+    @Override
     void process() {
         if (isStateNonNull()) {
             convert();

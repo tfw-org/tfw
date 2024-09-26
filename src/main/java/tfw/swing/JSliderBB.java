@@ -63,6 +63,7 @@ public class JSliderBB extends JSlider implements BranchBox {
         setEnabled(false);
     }
 
+    @Override
     public final Branch getBranch() {
         return branch;
     }

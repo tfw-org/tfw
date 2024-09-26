@@ -33,6 +33,7 @@ public class FitToScreenConverter extends TriggeredConverter {
         this.graphHeightECD = graphHeightECD;
     }
 
+    @Override
     protected void convert() {
         set(xECD, 0);
         set(yECD, 0);

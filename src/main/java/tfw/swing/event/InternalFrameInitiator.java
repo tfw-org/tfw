@@ -44,42 +44,49 @@ public class InternalFrameInitiator extends Initiator implements InternalFrameLi
         this.internalFrameOpenedTriggerECD = internalFrameOpenedTriggerECD;
     }
 
+    @Override
     public final void internalFrameActivated(InternalFrameEvent e) {
         if (internalFrameActivatedTriggerECD != null) {
             trigger(internalFrameActivatedTriggerECD);
         }
     }
 
+    @Override
     public final void internalFrameClosed(InternalFrameEvent e) {
         if (internalFrameClosedTriggerECD != null) {
             trigger(internalFrameClosedTriggerECD);
         }
     }
 
+    @Override
     public final void internalFrameClosing(InternalFrameEvent e) {
         if (internalFrameClosingTriggerECD != null) {
             trigger(internalFrameClosingTriggerECD);
         }
     }
 
+    @Override
     public final void internalFrameDeactivated(InternalFrameEvent e) {
         if (internalFrameDeactivatedTriggerECD != null) {
             trigger(internalFrameDeactivatedTriggerECD);
         }
     }
 
+    @Override
     public final void internalFrameDeiconified(InternalFrameEvent e) {
         if (internalFrameDeiconifiedTriggerECD != null) {
             trigger(internalFrameDeiconifiedTriggerECD);
         }
     }
 
+    @Override
     public final void internalFrameIconified(InternalFrameEvent e) {
         if (internalFrameIconifiedTriggerECD != null) {
             trigger(internalFrameIconifiedTriggerECD);
         }
     }
 
+    @Override
     public final void internalFrameOpened(InternalFrameEvent e) {
         if (internalFrameOpenedTriggerECD != null) {
             trigger(internalFrameOpenedTriggerECD);

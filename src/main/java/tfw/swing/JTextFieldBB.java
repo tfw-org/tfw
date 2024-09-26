@@ -61,6 +61,7 @@ public class JTextFieldBB extends JTextField implements BranchBox {
         }
     }
 
+    @Override
     public final Branch getBranch() {
         return branch;
     }

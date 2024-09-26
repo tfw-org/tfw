@@ -80,6 +80,7 @@ public class JPanelBB extends JPanel implements BranchBox {
         branch.remove((Leaf) listener);
     }
 
+    @Override
     public final Branch getBranch() {
         return branch;
     }

@@ -22,12 +22,14 @@ class TriggeredConverterTest {
     private Initiator initiator = new Initiator("Initiator", sources);
     private TriggeredConverter triggeredConverter =
             new TriggeredConverter("TriggeredConverter", trigger, sinks, sources) {
+                @Override
                 protected void convert() {
                     // System.out.println("triggerAction");
                     triggerA = (String) get(channel1);
                     triggerB = (String) get(channel2);
                 }
 
+                @Override
                 protected void debugConvert() {
                     // System.out.println("debugTriggerAction");
                     debugTriggerA = (String) get(channel1);

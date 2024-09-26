@@ -43,6 +43,7 @@ public class JListBB extends JList<Object> implements BranchBox {
         branch.add(selectionAndListCommit);
     }
 
+    @Override
     public final Branch getBranch() {
         return branch;
     }

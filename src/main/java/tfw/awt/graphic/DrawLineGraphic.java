@@ -24,6 +24,7 @@ public final class DrawLineGraphic {
             this.y2 = y2;
         }
 
+        @Override
         public void paint(Graphics2D graphics2D) {
             if (graphic != null) {
                 graphic.paint(graphics2D);
@@ -52,6 +53,7 @@ public final class DrawLineGraphic {
             this.y2s = y2s;
         }
 
+        @Override
         public void paint(Graphics2D graphics2D) {
             if (graphic != null) {
                 graphic.paint(graphics2D);

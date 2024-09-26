@@ -25,6 +25,7 @@ public class EdgeToGraphicConverter extends Converter {
         this.graphicECD = graphicECD;
     }
 
+    @Override
     protected void convert() {
         Graph graph = (Graph) get(graphECD);
 

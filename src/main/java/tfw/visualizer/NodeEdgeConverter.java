@@ -20,6 +20,7 @@ public class NodeEdgeConverter extends TriggeredConverter {
         this.graphECD = graphECD;
     }
 
+    @Override
     protected void convert() {
         Graph graphFromRootProxy = GraphFromRootProxy.create(new RootProxy(root));
 

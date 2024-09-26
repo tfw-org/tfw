@@ -12,6 +12,7 @@ public abstract class AbstractByteIlm extends AbstractIlm implements ByteIlm {
 
     protected AbstractByteIlm() {}
 
+    @Override
     public final void get(byte[] array, int offset, long rowStart, long colStart, int rowCount, int colCount)
             throws IOException {
         Argument.assertNotNull(array, "array");

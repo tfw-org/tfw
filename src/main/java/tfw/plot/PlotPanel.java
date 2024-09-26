@@ -54,6 +54,7 @@ public class PlotPanel extends JPanel implements BranchBox {
             this.plotPanel = plotPanel;
         }
 
+        @Override
         @SuppressWarnings("unchecked")
         protected void commit() {
             synchronized (plotPanel) {
@@ -63,6 +64,7 @@ public class PlotPanel extends JPanel implements BranchBox {
         }
     }
 
+    @Override
     public final void paint(Graphics graphics) {
         Object[] mg = null;
 
@@ -125,6 +127,7 @@ public class PlotPanel extends JPanel implements BranchBox {
         multiplexedBranch.remove(treeComponent);
     }
 
+    @Override
     public final Branch getBranch() {
         return branch;
     }

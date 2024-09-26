@@ -33,6 +33,7 @@ public class MultiplexedBranch extends BranchComponent {
     /**
      * Over-ride the super method so we can add the special multiplexer ports.
      */
+    @Override
     Set<Port> terminateLocally(Set<Port> connections) {
         for (int i = 0; i < this.multiplexers.length; i++) {
             connections.add(multiplexers[i].processorMultiSource);
@@ -84,6 +85,7 @@ public class MultiplexedBranch extends BranchComponent {
      *
      * @link child The child component to remove.
      */
+    @Override
     public final synchronized void remove(TreeComponent child) {
         Argument.assertNotNull(child, "child");
 

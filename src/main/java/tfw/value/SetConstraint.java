@@ -41,6 +41,7 @@ public class SetConstraint extends ValueConstraint {
      *         <code>SetConstraint</code> and its set of values is a sub-set
      *         of this constraints values, otherwise returns false.
      */
+    @Override
     public boolean isCompatible(ValueConstraint constraint) {
         if (constraint instanceof SetConstraint) {
             SetConstraint sc = (SetConstraint) constraint;
@@ -61,6 +62,7 @@ public class SetConstraint extends ValueConstraint {
      *         valid values, otherwise it returns a string indicated that value
      *         is not a member of the valid set of values.
      */
+    @Override
     public String getValueCompliance(Object value) {
         if (this.validValues.contains(value)) {
             return ValueConstraint.VALID;
