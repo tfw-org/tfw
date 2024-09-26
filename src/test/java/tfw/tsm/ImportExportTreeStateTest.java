@@ -180,7 +180,7 @@ class ImportExportTreeStateTest {
         assertEquals(2, ecs.length, "The wrong number of event channel state returned");
     }
 
-    private class GetTreeStateRunnable implements Runnable {
+    private static class GetTreeStateRunnable implements Runnable {
         public TreeState treeState = null;
 
         public RuntimeException exception = null;
@@ -208,7 +208,7 @@ class ImportExportTreeStateTest {
         }
     }
 
-    private class SetTreeStateRunnable implements Runnable {
+    private static class SetTreeStateRunnable implements Runnable {
         public TreeState treeState = null;
 
         public RuntimeException exception = null;

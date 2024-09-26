@@ -32,7 +32,7 @@ class StateLessECDTest {
         // System.out.println(commit.setException);
     }
 
-    private class TestTriggeredCommit extends TriggeredConverter {
+    private static class TestTriggeredCommit extends TriggeredConverter {
         final StatelessTriggerECD trigger;
         IllegalArgumentException getException = null;
         IllegalArgumentException setException = null;

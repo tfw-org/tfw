@@ -67,7 +67,7 @@ class EventChannelDescriptionTest {
         //		assertFalse("different rollback participant equal",ecd1.equals(ecd2));
     }
 
-    private class TestECD extends ObjectECD {
+    private static class TestECD extends ObjectECD {
         public TestECD(String eventChannelName, ValueConstraint constraint) {
             super(eventChannelName, constraint);
         }

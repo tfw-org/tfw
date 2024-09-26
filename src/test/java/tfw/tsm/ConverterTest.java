@@ -141,7 +141,7 @@ class ConverterTest {
         }
     }
 
-    private class TestConverter extends Converter {
+    private static class TestConverter extends Converter {
         public TestConverter(
                 String name, ObjectECD[] triggeringSinks, ObjectECD[] nonTriggeringSinks, ObjectECD[] sources) {
             super(name, triggeringSinks, nonTriggeringSinks, sources);

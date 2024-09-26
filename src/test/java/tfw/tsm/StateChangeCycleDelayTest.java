@@ -190,7 +190,7 @@ class StateChangeCycleDelayTest {
         assertEquals(3, converterC.getOrder(), "Converter C was called in the wrong order");
     }
 
-    private class TestHandler implements TransactionExceptionHandler {
+    private static class TestHandler implements TransactionExceptionHandler {
         private Exception exception = null;
 
         @Override
@@ -199,7 +199,7 @@ class StateChangeCycleDelayTest {
         }
     }
 
-    public class TestConverter extends Converter {
+    public static class TestConverter extends Converter {
         private int count = 0;
         private int order = -1;
         private final StringECD output;

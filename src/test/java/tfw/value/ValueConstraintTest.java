@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test;
  *
  */
 class ValueConstraintTest {
-    private final class TestConstraint extends ClassValueConstraint {
+    private static final class TestConstraint extends ClassValueConstraint {
         public TestConstraint(Class<?> valueType) {
             super(valueType);
         }

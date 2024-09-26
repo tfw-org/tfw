@@ -60,7 +60,7 @@ class MultiplexerConstructionTest {
         assertEquals(value1, vc1.value);
     }
 
-    private class ValueCommit extends Commit {
+    private static class ValueCommit extends Commit {
         String value = null;
 
         public ValueCommit(String name) {

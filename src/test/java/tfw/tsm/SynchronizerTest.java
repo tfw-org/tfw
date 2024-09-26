@@ -426,7 +426,7 @@ class SynchronizerTest {
     //            }
     //    */
 
-    private class TestTwoWay extends Synchronizer {
+    private static class TestTwoWay extends Synchronizer {
         public TestTwoWay(String name, ObjectECD[] aChans, ObjectECD[] bChans, ObjectECD[] sinks, ObjectECD[] sources) {
             super(name, aChans, bChans, sinks, sources);
         }

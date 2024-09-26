@@ -317,7 +317,7 @@ class MultiplexerTest {
         return mmArray;
     }
 
-    private class TestTriggeredConverter extends TriggeredConverter {
+    private static class TestTriggeredConverter extends TriggeredConverter {
         private String value;
 
         private final StringECD outputECD;
@@ -339,7 +339,7 @@ class MultiplexerTest {
         }
     }
 
-    private class ValueCommit extends Commit {
+    private static class ValueCommit extends Commit {
         public String value;
 
         public final ObjectECD valueECD;
@@ -355,7 +355,7 @@ class MultiplexerTest {
         }
     }
 
-    private class MultiValueCommit extends Commit {
+    private static class MultiValueCommit extends Commit {
         public ObjectIla<Object> value;
 
         public final ObjectECD valueECD;

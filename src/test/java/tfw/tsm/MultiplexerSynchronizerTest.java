@@ -7,7 +7,7 @@ import tfw.tsm.ecd.ila.ObjectIlaECD;
 
 class MultiplexerSynchronizerTest {
 
-    private class MultiCommit extends Commit {
+    private static class MultiCommit extends Commit {
 
         ObjectIla<Object> objectIla = null;
 

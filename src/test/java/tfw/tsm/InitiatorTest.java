@@ -218,7 +218,7 @@ class InitiatorTest {
         //        assertNull("debugCommit() was called", commit.debugCommitState);
     }
 
-    private class TestCommit extends Commit {
+    private static class TestCommit extends Commit {
         public Map<ObjectECD, Object> commitState = null;
         public Map<ObjectECD, Object> debugCommitState = null;
 

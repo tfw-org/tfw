@@ -23,7 +23,7 @@ public class ObjectIlaMultiplexerStrategy implements MultiplexerStrategy {
         return null;
     }
 
-    private class MultiStateAccessorImpl implements MultiStateAccessor {
+    private static class MultiStateAccessorImpl implements MultiStateAccessor {
 
         private final Object[] objs;
 

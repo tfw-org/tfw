@@ -78,7 +78,7 @@ class InitiatorSource extends Source {
         return null;
     }
 
-    private class EventChannelNState {
+    private static class EventChannelNState {
         private final EventChannel ec;
 
         private final Object state;

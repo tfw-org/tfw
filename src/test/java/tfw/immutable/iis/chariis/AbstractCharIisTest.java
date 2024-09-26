@@ -41,7 +41,7 @@ class AbstractCharIisTest {
         assertFalse(ti.closeCalled);
     }
 
-    private class TestCharIis extends AbstractCharIis {
+    private static class TestCharIis extends AbstractCharIis {
         public boolean closeCalled = false;
 
         @Override
