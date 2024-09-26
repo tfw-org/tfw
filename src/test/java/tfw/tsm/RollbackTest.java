@@ -321,7 +321,7 @@ class RollbackTest {
         assertEquals(error2msg, errorCommit2.commitValue, "errorCommit2 received wrong value on invalid input");
     }
 
-    private class TestValidator extends Validator {
+    private static class TestValidator extends Validator {
         private final StringECD triggerECD;
 
         private final StringRollbackECD rollbackECD;
@@ -362,7 +362,7 @@ class RollbackTest {
         }
     }
 
-    private class TestCommit extends Commit {
+    private static class TestCommit extends Commit {
         String commitValue = null;
 
         Map<ObjectECD, Object> stateMap = null;
@@ -396,7 +396,7 @@ class RollbackTest {
         }
     }
 
-    private class TestConverter extends Converter {
+    private static class TestConverter extends Converter {
         private final StringECD input;
 
         private final StringECD output;

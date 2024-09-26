@@ -51,7 +51,7 @@ public final class BasicTransactionQueue implements TransactionQueue {
         checkThread();
     }
 
-    private class InvokeAndWaitRunnable implements Runnable {
+    private static class InvokeAndWaitRunnable implements Runnable {
         private final Runnable runnable;
 
         private final Object lock;

@@ -28,7 +28,7 @@ class SetStateTest {
         assertNotNull(exceptionHandler.exp, "Double set failed to throw exception");
     }
 
-    private class DoubleSetConverter extends Converter {
+    private static class DoubleSetConverter extends Converter {
         private final StringECD ecd;
 
         public DoubleSetConverter(StringECD ecd) {

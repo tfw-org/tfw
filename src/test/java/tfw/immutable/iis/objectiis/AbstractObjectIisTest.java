@@ -41,7 +41,7 @@ class AbstractObjectIisTest {
         assertFalse(ti.closeCalled);
     }
 
-    private class TestObjectIis extends AbstractObjectIis<Object> {
+    private static class TestObjectIis extends AbstractObjectIis<Object> {
         public boolean closeCalled = false;
 
         @Override

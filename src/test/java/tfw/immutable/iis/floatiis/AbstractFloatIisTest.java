@@ -41,7 +41,7 @@ class AbstractFloatIisTest {
         assertFalse(ti.closeCalled);
     }
 
-    private class TestFloatIis extends AbstractFloatIis {
+    private static class TestFloatIis extends AbstractFloatIis {
         public boolean closeCalled = false;
 
         @Override

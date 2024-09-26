@@ -41,7 +41,7 @@ class AbstractByteIisTest {
         assertFalse(ti.closeCalled);
     }
 
-    private class TestByteIis extends AbstractByteIis {
+    private static class TestByteIis extends AbstractByteIis {
         public boolean closeCalled = false;
 
         @Override

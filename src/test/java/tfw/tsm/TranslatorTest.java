@@ -129,7 +129,7 @@ class TranslatorTest {
         assertNull(handler.exception, "Exception - " + message);
     }
 
-    private class TestExceptionHandler implements TransactionExceptionHandler {
+    private static class TestExceptionHandler implements TransactionExceptionHandler {
         Exception exception = null;
 
         public void handle(Exception exception) {

@@ -112,7 +112,7 @@ class CommitTest {
         assertEquals("false", testCommit.portAState, "portA value wrong!");
     }
 
-    private class SetAOnA extends Converter {
+    private static class SetAOnA extends Converter {
         private final ObjectECD portA;
 
         public SetAOnA(String name, ObjectECD portA) {
@@ -129,7 +129,7 @@ class CommitTest {
         }
     }
 
-    private class SetAOnC extends Converter {
+    private static class SetAOnC extends Converter {
         private final ObjectECD portA;
 
         public SetAOnC(String name, ObjectECD portC, ObjectECD portA) {

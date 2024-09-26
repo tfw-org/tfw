@@ -42,7 +42,7 @@ class Abstract%%NAME%%IisTest {
         assertFalse(ti.closeCalled);
     }
 
-    private class Test%%NAME%%Iis extends Abstract%%NAME%%Iis%%TEMPLATE%% {
+    private static class Test%%NAME%%Iis extends Abstract%%NAME%%Iis%%TEMPLATE%% {
         public boolean closeCalled = false;
 
         @Override

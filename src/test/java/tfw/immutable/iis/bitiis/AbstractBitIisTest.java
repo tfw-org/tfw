@@ -43,7 +43,7 @@ class AbstractBitIisTest {
         assertFalse(ti.closeCalled);
     }
 
-    private class TestBitIis extends AbstractBitIis {
+    private static class TestBitIis extends AbstractBitIis {
         public boolean closeCalled = false;
 
         @Override

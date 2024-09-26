@@ -137,7 +137,7 @@ class ValidatorTest {
         assertNull(errorHandler.errorMsg, "Non triggered event cause validation");
     }
 
-    private class ErrorHandler extends Commit {
+    private static class ErrorHandler extends Commit {
         private final StringRollbackECD errorECD;
 
         String errorMsg = null;
