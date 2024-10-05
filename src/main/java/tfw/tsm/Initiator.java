@@ -37,6 +37,16 @@ import tfw.value.ValueException;
  * </ol>
  */
 public class Initiator extends Leaf {
+    public interface Builder {
+        Builder setName(final String name);
+
+        Builder addEventChannelDescription(final EventChannelDescription eventChannelDescription);
+
+        Builder setStateQueueFactory(final StateQueueFactory stateQueueFactory);
+
+        Initiator create();
+    }
+
     /**
      * The list of state changes which occur while the component is not
      * connected.
@@ -90,6 +100,48 @@ public class Initiator extends Leaf {
 
         if (sources.length == 0) {
             throw new IllegalArgumentException("sources.length == 0 not allowed");
+        }
+    }
+
+    public static Builder builder() {
+        return new BuilderImpl();
+    }
+
+    private static class BuilderImpl implements Builder {
+        private String name = null;
+        private List<EventChannelDescription> eventChannelDescriptions = new ArrayList<>();
+        private StateQueueFactory stateQueueFactory = new DefaultStateQueueFactory();
+
+        @Override
+        public Builder setName(final String name) {
+            this.name = name;
+
+            return this;
+        }
+
+        @Override
+        public Builder addEventChannelDescription(final EventChannelDescription eventChannelDescription) {
+            eventChannelDescriptions.add(eventChannelDescription);
+
+            return this;
+        }
+
+        @Override
+        public Builder setStateQueueFactory(final StateQueueFactory stateQueueFactory) {
+            this.stateQueueFactory = stateQueueFactory;
+
+            return this;
+        }
+
+        @Override
+        public Initiator create() {
+            Argument.assertNotNull(name, "name");
+            Argument.assertGreaterThan(eventChannelDescriptions.size(), 0, "eventChannelDescriptions.size()");
+
+            final EventChannelDescription[] ecds =
+                    eventChannelDescriptions.toArray(new EventChannelDescription[eventChannelDescriptions.size()]);
+
+            return new Initiator(name, ecds, stateQueueFactory);
         }
     }
 

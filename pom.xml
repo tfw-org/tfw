@@ -11,7 +11,8 @@
 
     <properties>
         <argLine></argLine>
-        <dependency.junit-jupiter.version>5.11.1</dependency.junit-jupiter.version>
+        <dependency.assertj-swing-junit.version>3.17.1</dependency.assertj-swing-junit.version>
+        <dependency.junit-jupiter.version>5.11.0</dependency.junit-jupiter.version>
         <dependency.slf4j-jdk14.version>2.0.16</dependency.slf4j-jdk14.version>
         <maven.compiler.release>8</maven.compiler.release>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -20,7 +21,7 @@
         <plugin.exec-maven-plugin.version>3.4.1</plugin.exec-maven-plugin.version>
         <plugin.jacoco-maven-plugin.version>0.8.12</plugin.jacoco-maven-plugin.version>
         <plugin.maven-compiler-plugin.version>3.13.0</plugin.maven-compiler-plugin.version>
-        <plugin.maven-gpg-plugin.version>3.2.7</plugin.maven-gpg-plugin.version>
+        <plugin.maven-gpg-plugin.version>3.2.6</plugin.maven-gpg-plugin.version>
         <plugin.maven-javadoc-plugin.version>3.10.0</plugin.maven-javadoc-plugin.version>
         <plugin.maven-pmd-plugin.version>3.25.0</plugin.maven-pmd-plugin.version>
         <plugin.maven-source-plugin.version>3.3.1</plugin.maven-source-plugin.version>
@@ -50,6 +51,12 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-jdk14</artifactId>
             <version>${dependency.slf4j-jdk14.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-swing-junit</artifactId>
+            <version>${dependency.assertj-swing-junit.version}</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -190,7 +197,7 @@
                     <format>txt</format>
                     <includeTests>true</includeTests>
                     <minimumTokens>100</minimumTokens>
-                    <sourceEncoding>${project.build.sourceEncoding}</sourceEncoding>
+                    <inputEncoding>${project.build.sourceEncoding}</inputEncoding>
                     <targetJdk>${maven.compiler.target}</targetJdk>
                 </configuration>
                 <executions>
