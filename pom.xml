@@ -11,6 +11,7 @@
 
     <properties>
         <argLine></argLine>
+        <dependency.assertj-swing-junit.version>3.17.1</dependency.assertj-swing-junit.version>
         <dependency.junit-jupiter.version>5.11.0</dependency.junit-jupiter.version>
         <dependency.slf4j-jdk14.version>2.0.16</dependency.slf4j-jdk14.version>
         <maven.compiler.release>8</maven.compiler.release>
@@ -50,6 +51,12 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-jdk14</artifactId>
             <version>${dependency.slf4j-jdk14.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-swing-junit</artifactId>
+            <version>${dependency.assertj-swing-junit.version}</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -190,7 +197,7 @@
                     <format>txt</format>
                     <includeTests>true</includeTests>
                     <minimumTokens>100</minimumTokens>
-                    <sourceEncoding>${project.build.sourceEncoding}</sourceEncoding>
+                    <inputEncoding>${project.build.sourceEncoding}</inputEncoding>
                     <targetJdk>${maven.compiler.target}</targetJdk>
                 </configuration>
                 <executions>
