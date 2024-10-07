@@ -17,7 +17,7 @@
         <maven.compiler.release>8</maven.compiler.release>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <plugin.error_prone_core.version>2.32.0</plugin.error_prone_core.version>
+        <plugin.error_prone_core.version>2.33.0</plugin.error_prone_core.version>
         <plugin.exec-maven-plugin.version>3.4.1</plugin.exec-maven-plugin.version>
         <plugin.jacoco-maven-plugin.version>0.8.12</plugin.jacoco-maven-plugin.version>
         <plugin.maven-compiler-plugin.version>3.13.0</plugin.maven-compiler-plugin.version>
