@@ -11,7 +11,7 @@
 
     <properties>
         <argLine></argLine>
-        <dependency.assertj-swing-junit.version>3.17.1</dependency.assertj-swing-junit.version>
+        <dependency.assertj-swing.version>3.17.1</dependency.assertj-swing.version>
         <dependency.junit-jupiter.version>5.11.2</dependency.junit-jupiter.version>
         <dependency.slf4j-jdk14.version>2.0.16</dependency.slf4j-jdk14.version>
         <maven.compiler.release>8</maven.compiler.release>
@@ -54,8 +54,8 @@
         </dependency>
         <dependency>
             <groupId>org.assertj</groupId>
-            <artifactId>assertj-swing-junit</artifactId>
-            <version>${dependency.assertj-swing-junit.version}</version>
+            <artifactId>assertj-swing</artifactId>
+            <version>${dependency.assertj-swing.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
