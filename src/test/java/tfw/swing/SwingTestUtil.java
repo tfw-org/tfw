@@ -16,5 +16,12 @@ public final class SwingTestUtil {
                 // Nothing to do.
             }
         });
+        basicTransactionQueue.waitTilEmpty();
+        SwingUtilities.invokeAndWait(new Runnable() {
+            @Override
+            public void run() {
+                // Nothing to do.
+            }
+        });
     }
 }
