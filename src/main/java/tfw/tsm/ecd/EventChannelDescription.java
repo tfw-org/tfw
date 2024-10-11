@@ -12,7 +12,7 @@ public abstract class EventChannelDescription {
     private final String eventChannelName;
 
     /** The value constraint for this event channel. */
-    private final ValueConstraint constraint;
+    private final ValueConstraint<? extends Object> constraint;
 
     /** A flag indicating whether the event channel fires on connection. */
     private final boolean fireOnConnect;
@@ -28,7 +28,7 @@ public abstract class EventChannelDescription {
      * @param constraint
      *            the value constraint for the event channel.
      */
-    EventChannelDescription(String eventChannelName, ValueConstraint constraint) {
+    EventChannelDescription(String eventChannelName, ValueConstraint<? extends Object> constraint) {
         this(eventChannelName, constraint, true, true);
     }
 
@@ -50,7 +50,10 @@ public abstract class EventChannelDescription {
      *            transaction rollbacks.
      */
     EventChannelDescription(
-            String eventChannelName, ValueConstraint constraint, boolean fireOnConnect, boolean rollbackParticipant) {
+            String eventChannelName,
+            ValueConstraint<? extends Object> constraint,
+            boolean fireOnConnect,
+            boolean rollbackParticipant) {
         Argument.assertNotNull(eventChannelName, "eventChannelName");
         Argument.assertNotNull(constraint, "constraint");
         // CheckArgument.checkNull(codec, "codec");
@@ -79,7 +82,7 @@ public abstract class EventChannelDescription {
      *
      * @return the value constraint.
      */
-    public final ValueConstraint getConstraint() {
+    public final ValueConstraint<? extends Object> getConstraint() {
         return constraint;
     }
 

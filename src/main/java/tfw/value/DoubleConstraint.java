@@ -3,7 +3,7 @@ package tfw.value;
 /**
  * An double value constraint.
  */
-public class DoubleConstraint extends RangeConstraint {
+public class DoubleConstraint extends RangeConstraint<Double> {
     /**
      * Creates a constraint with the specified attributes.
      * @param min the minimum legal value.
@@ -14,6 +14,11 @@ public class DoubleConstraint extends RangeConstraint {
      * otherwise it is not valid.
      */
     public DoubleConstraint(double min, double max, boolean minInclusive, boolean maxInclusive) {
-        super(Double.class, new Double(min), new Double(max), minInclusive, maxInclusive);
+        super(Double.class, Double.valueOf(min), Double.valueOf(max), minInclusive, maxInclusive);
+    }
+
+    @Override
+    protected int compareTo(Double left, Double right) {
+        return left.compareTo(right);
     }
 }

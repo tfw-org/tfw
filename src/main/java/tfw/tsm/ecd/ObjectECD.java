@@ -27,7 +27,7 @@ public class ObjectECD extends EventChannelDescription {
      * @param constraint
      *            the value constraint for the event channel.
      */
-    protected ObjectECD(String eventChannelName, ValueConstraint constraint) {
+    protected ObjectECD(String eventChannelName, ValueConstraint<? extends Object> constraint) {
         super(eventChannelName, constraint, true, true);
     }
 
@@ -46,7 +46,11 @@ public class ObjectECD extends EventChannelDescription {
      *            flag indicating whether the event channel participates in
      *            transaction rollbacks.
      */
-    ObjectECD(String eventChannelName, ValueConstraint constraint, boolean fireOnConnect, boolean rollbackParticipant) {
+    ObjectECD(
+            String eventChannelName,
+            ValueConstraint<Object> constraint,
+            boolean fireOnConnect,
+            boolean rollbackParticipant) {
         super(eventChannelName, constraint, fireOnConnect, rollbackParticipant);
     }
 }

@@ -3,7 +3,6 @@ package tfw.value;
 import java.util.HashMap;
 import java.util.Map;
 import tfw.check.Argument;
-import tfw.immutable.ila.objectila.ObjectIla;
 
 /**
  * The base class for a constraint where the value must be of a specifid type.
@@ -11,59 +10,56 @@ import tfw.immutable.ila.objectila.ObjectIla;
  * <code>ClassValueConstraint</code> then it is valid, otherwise it is
  * not valid.
  */
-public class ClassValueConstraint extends ValueConstraint {
+public class ClassValueConstraint<T> extends ValueConstraint<T> {
     /** A value constraint which allows any object. */
-    public static final ClassValueConstraint OBJECT = new ClassValueConstraint(Object.class);
-
-    /** A value constraint which allows an {@link ObjectIla} value. */
-    public static final ClassValueConstraint OBJECTILA = new ClassValueConstraint(ObjectIla.class);
+    public static final ClassValueConstraint<Object> OBJECT = new ClassValueConstraint<>(Object.class);
 
     /** A String value constraint which allows any string. */
-    public static final ClassValueConstraint STRING = new ClassValueConstraint(String.class);
+    public static final ClassValueConstraint<String> STRING = new ClassValueConstraint<>(String.class);
 
     /** A Boolean value constraint. */
-    public static final ClassValueConstraint BOOLEAN = new ClassValueConstraint(Boolean.class);
+    public static final ClassValueConstraint<Boolean> BOOLEAN = new ClassValueConstraint<>(Boolean.class);
 
     /** An Integer value constraint that allows any integer value. */
-    public static final ClassValueConstraint INTEGER = new ClassValueConstraint(Integer.class);
+    public static final ClassValueConstraint<Integer> INTEGER = new ClassValueConstraint<>(Integer.class);
 
     /** An Float value constraint that allows any float value. */
-    public static final ClassValueConstraint FLOAT = new ClassValueConstraint(Float.class);
+    public static final ClassValueConstraint<Float> FLOAT = new ClassValueConstraint<>(Float.class);
 
     /** An Double value constraint that allows any double value. */
-    public static final ClassValueConstraint DOUBLE = new ClassValueConstraint(Double.class);
+    public static final ClassValueConstraint<Double> DOUBLE = new ClassValueConstraint<>(Double.class);
 
     /** A Long value constraint that allows any long value. */
-    public static final ClassValueConstraint LONG = new ClassValueConstraint(Long.class);
+    public static final ClassValueConstraint<Long> LONG = new ClassValueConstraint<>(Long.class);
 
     /** An Character value constraint that allows any character value. */
-    public static final ClassValueConstraint CHARACTER = new ClassValueConstraint(Character.class);
+    public static final ClassValueConstraint<Character> CHARACTER = new ClassValueConstraint<>(Character.class);
 
     /** An Short value constraint that allows any short value. */
-    public static final ClassValueConstraint SHORT = new ClassValueConstraint(Short.class);
+    public static final ClassValueConstraint<Short> SHORT = new ClassValueConstraint<>(Short.class);
 
     /** An Byte value constraint that allows any short value. */
-    public static final ClassValueConstraint BYTE = new ClassValueConstraint(Byte.class);
+    public static final ClassValueConstraint<Byte> BYTE = new ClassValueConstraint<>(Byte.class);
 
     /** The string used to represent a value which complies with the constraint. */
     public static final String VALID = "Valid";
 
-    private static final Map<Class<?>, ClassValueConstraint> constraints = getInitialConstraints();
+    private static final Map<Class<?>, ClassValueConstraint<?>> constraints = getInitialConstraints();
 
     /** The class of the value. */
-    protected final Class<?> valueType;
+    protected final Class<T> valueType;
 
     /**
      * Constructs a constraint
      * @param valueType the type for this constraint.
      */
-    protected ClassValueConstraint(Class<?> valueType) {
+    protected ClassValueConstraint(Class<T> valueType) {
         Argument.assertNotNull(valueType, "valueType");
         this.valueType = valueType;
     }
 
-    private static Map<Class<?>, ClassValueConstraint> getInitialConstraints() {
-        HashMap<Class<?>, ClassValueConstraint> map = new HashMap<Class<?>, ClassValueConstraint>();
+    private static Map<Class<?>, ClassValueConstraint<?>> getInitialConstraints() {
+        HashMap<Class<?>, ClassValueConstraint<?>> map = new HashMap<>();
 
         map.put(BOOLEAN.valueType, BOOLEAN);
         map.put(OBJECT.valueType, OBJECT);
@@ -77,11 +73,12 @@ public class ClassValueConstraint extends ValueConstraint {
      * @param valueType the class for the value constraint.
      * @return an instance of a value constraint based on the specified class.
      */
-    public static ClassValueConstraint getInstance(Class<?> valueType) {
-        ClassValueConstraint constraint = constraints.get(valueType);
+    @SuppressWarnings("unchecked")
+    public static <T> ClassValueConstraint<T> getInstance(Class<T> valueType) {
+        ClassValueConstraint<T> constraint = (ClassValueConstraint<T>) constraints.get(valueType);
 
         if (constraint == null) {
-            constraint = new ClassValueConstraint(valueType);
+            constraint = new ClassValueConstraint<>(valueType);
             constraints.put(valueType, constraint);
         }
 
@@ -96,14 +93,10 @@ public class ClassValueConstraint extends ValueConstraint {
      * @return <code>true</code> if the specified value complies with the
      * constraint, otherwise returns <code>false</code>.
      */
-    public boolean isValid(Object value) {
+    public boolean isValid(T value) {
         String valueCompliance = getValueCompliance(value);
 
-        if (valueCompliance != VALID) {
-            return false;
-        }
-
-        return true;
+        return VALID.equals(valueCompliance);
     }
 
     /**
@@ -145,9 +138,9 @@ public class ClassValueConstraint extends ValueConstraint {
      * also meets this constraint, otherwise returns false.
      */
     @Override
-    public boolean isCompatible(ValueConstraint constraint) {
+    public boolean isCompatible(ValueConstraint<?> constraint) {
         if (constraint instanceof ClassValueConstraint) {
-            return valueType.equals(((ClassValueConstraint) constraint).valueType);
+            return valueType.equals(((ClassValueConstraint<?>) constraint).valueType);
         }
 
         return false;
