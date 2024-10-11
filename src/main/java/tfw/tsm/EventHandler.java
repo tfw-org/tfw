@@ -14,7 +14,7 @@ import tfw.tsm.ecd.StatelessTriggerECD;
 /**
  * The base class for event handling leaf components.
  */
-abstract class EventHandler extends Leaf {
+abstract class EventHandler extends TreeComponent {
     /**
      * Creates an event handler with the specified attributes.
      *
@@ -32,7 +32,7 @@ abstract class EventHandler extends Leaf {
             EventChannelDescription[] triggeringSinks,
             EventChannelDescription[] nonTriggeringSinks,
             EventChannelDescription[] sources) {
-        super(name, createSinks(name, triggeringSinks, nonTriggeringSinks), createSources(name, sources));
+        super(name, createSinks(name, triggeringSinks, nonTriggeringSinks), createSources(name, sources), null);
 
         int portCount = (sources == null) ? 0 : sources.length;
 

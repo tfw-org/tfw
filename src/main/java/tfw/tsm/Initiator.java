@@ -36,7 +36,7 @@ import tfw.value.ValueException;
  * channel is rooted when the state change transaction is executed. </li>
  * </ol>
  */
-public class Initiator extends Leaf {
+public class Initiator extends TreeComponent {
     /**
      * The list of state changes which occur while the component is not
      * connected.
@@ -84,7 +84,7 @@ public class Initiator extends Leaf {
      *            channel.
      */
     public Initiator(String name, EventChannelDescription[] sources, StateQueueFactory queueFactory) {
-        super(name, null, createSources(name, sources, queueFactory));
+        super(name, null, createSources(name, sources, queueFactory), null);
 
         Argument.assertNotNull(name, "name");
 
