@@ -50,7 +50,11 @@ public class JButtonBBDemo {
             }
         });
 
-        JButtonBB b = new JButtonBB("JButtonBBTest", ENABLE_ECD, TRIGGER_ECD);
+        JButtonBB b = JButtonBB.builder()
+                .setName("JButtonBBTest")
+                .setEnabledInput(ENABLE_ECD)
+                .setActionOutput(TRIGGER_ECD)
+                .build();
         b.setText("Press Me!");
 
         final JPanel p = new JPanel();

@@ -58,7 +58,6 @@ class JButtonBBTest {
     public static final String BUTTON_ICON_NAME = "Icon";
     public static final Icon BUTTON_ICON_TEST = UIManager.getIcon("FileView.fileIcon");
     public static final String BUTTON_NAME = "TestButton";
-    public static final String EMPTY_BUTTON_NAME = "EmptyTestButton";
     public static final String FRAME_NAME = "Frame";
     public static final String INITIATOR_NAME = "Initiator[" + BUTTON_NAME + "]";
 
@@ -92,7 +91,7 @@ class JButtonBBTest {
                 .addEventChannel(BUTTON_TEXT_ECD, BUTTON_TEXT_DEFAULT)
                 .addEventChannel(BUTTON_ICON_ECD, BUTTON_ICON_DEFAULT)
                 .setTransactionQueue(basicTransactionQueue)
-                .create();
+                .build();
         final Initiator initiator = Initiator.builder()
                 .setName(INITIATOR_NAME)
                 .addEventChannelDescription(BUTTON_ENABLED_ECD)
@@ -101,7 +100,7 @@ class JButtonBBTest {
                 .addEventChannelDescription(BUTTON_FONT_ECD)
                 .addEventChannelDescription(BUTTON_TEXT_ECD)
                 .addEventChannelDescription(BUTTON_ICON_ECD)
-                .create();
+                .build();
         final TestCommit testCommit = TestCommit.builder()
                 .setName(BUTTON_NAME)
                 .addTriggeringEcd(BUTTON_ENABLED_ECD)
@@ -110,11 +109,11 @@ class JButtonBBTest {
                 .addTriggeringEcd(BUTTON_FONT_ECD)
                 .addTriggeringEcd(BUTTON_TEXT_ECD)
                 .addTriggeringEcd(BUTTON_ICON_ECD)
-                .create();
+                .build();
         final TestTriggeredCommit testTriggeredCommit = TestTriggeredCommit.builder()
                 .setName(BUTTON_NAME)
                 .setTriggeringEcd(BUTTON_ACTION_ECD)
-                .create();
+                .build();
 
         root.add(branch);
         root.add(initiator);
@@ -122,28 +121,12 @@ class JButtonBBTest {
         root.add(testTriggeredCommit);
         SwingTestUtil.waitForTfwAndSwing(basicTransactionQueue);
 
-        final JButtonBB emptyButton =
-                (JButtonBB) window.button(EMPTY_BUTTON_NAME).target();
-        assertEquals(1, new BranchProxy(emptyButton.getBranch()).getChildProxies().length);
-
-        final TestActionListenerBranchBox testActionListenerBranchBox = new TestActionListenerBranchBox();
-        emptyButton.addActionListenerToBoth(testActionListenerBranchBox);
-        emptyButton.removeActionListenerFromBoth(testActionListenerBranchBox);
-        final TestActionListenerTreeComponent testActionListenerTreeComponent =
-                new TestActionListenerTreeComponent(BUTTON_ACTION_ECD);
-        emptyButton.addActionListenerToBoth(testActionListenerTreeComponent);
-        emptyButton.removeActionListenerFromBoth(testActionListenerTreeComponent);
-        final TestActionListener testActionListener = new TestActionListener();
-        assertThrows(IllegalArgumentException.class, () -> emptyButton.addActionListenerToBoth(testActionListener));
-        assertThrows(
-                IllegalArgumentException.class, () -> emptyButton.removeActionListenerFromBoth(testActionListener));
-
-        assertEquals(0, testTriggeredCommit.count);
+        assertEquals(0, testTriggeredCommit.getCount());
 
         window.button(BUTTON_NAME).click();
 
         SwingTestUtil.waitForTfwAndSwing(basicTransactionQueue);
-        assertEquals(1, testTriggeredCommit.count);
+        assertEquals(1, testTriggeredCommit.getCount());
 
         initiator.set(BUTTON_BACKGROUND_ECD, BUTTON_BACKGROUND_TEST);
         check(BUTTON_BACKGROUND_NAME, basicTransactionQueue, window, testCommit);
@@ -162,6 +145,30 @@ class JButtonBBTest {
 
         initiator.set(BUTTON_ICON_ECD, BUTTON_ICON_TEST);
         check(BUTTON_ICON_NAME, basicTransactionQueue, window, testCommit);
+    }
+
+    @Test
+    void testEmptyJButtonBuilder() {
+        final JButtonBB jButtonBB = GuiActionRunner.execute(
+                () -> JButtonBB.builder().setName(BUTTON_NAME).build());
+
+        assertEquals(0, new BranchProxy(jButtonBB.getBranch()).getChildProxies().length);
+
+        final TestActionListenerBranchBox testActionListenerBranchBox = new TestActionListenerBranchBox();
+
+        jButtonBB.addActionListenerToBoth(testActionListenerBranchBox);
+        jButtonBB.removeActionListenerFromBoth(testActionListenerBranchBox);
+
+        final TestActionListenerTreeComponent testActionListenerTreeComponent =
+                new TestActionListenerTreeComponent(BUTTON_ACTION_ECD);
+
+        jButtonBB.addActionListenerToBoth(testActionListenerTreeComponent);
+        jButtonBB.removeActionListenerFromBoth(testActionListenerTreeComponent);
+
+        final TestActionListener testActionListener = new TestActionListener();
+
+        assertThrows(IllegalArgumentException.class, () -> jButtonBB.addActionListenerToBoth(testActionListener));
+        assertThrows(IllegalArgumentException.class, () -> jButtonBB.removeActionListenerFromBoth(testActionListener));
     }
 
     @AfterEach

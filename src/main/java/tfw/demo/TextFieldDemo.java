@@ -89,11 +89,19 @@ public class TextFieldDemo extends JPanelBB {
 
         ObjectECD[] colorText = new ObjectECD[] {RED_STRING, BLUE_STRING, GREEN_STRING};
         ObjectECD[] colorTextAdj = new ObjectECD[] {RED_STRING_ADJ, BLUE_STRING_ADJ, GREEN_STRING_ADJ};
-        JButtonBB applyButton = new JButtonBB("Apply", APPLY_ENABLE, APPLY_TRIGGER);
+        JButtonBB applyButton = JButtonBB.builder()
+                .setName("Apply")
+                .setEnabledInput(APPLY_ENABLE)
+                .setActionOutput(APPLY_TRIGGER)
+                .build();
         applyButton.setText("Apply");
         applyButton.getBranch().add(new ButtonEnableHandler("Apply", colorText, colorTextAdj, applyButton));
 
-        JButtonBB resetButton = new JButtonBB("Reset", RESET_ENABLE, RESET_TRIGGER);
+        JButtonBB resetButton = JButtonBB.builder()
+                .setName("Reset")
+                .setEnabledInput(RESET_ENABLE)
+                .setActionOutput(RESET_TRIGGER)
+                .build();
         resetButton.setText("Reset");
         resetButton.getBranch().add(new ButtonEnableHandler("ResetButton", colorText, colorTextAdj, resetButton));
 
