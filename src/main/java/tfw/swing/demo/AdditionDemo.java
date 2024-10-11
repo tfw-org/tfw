@@ -94,7 +94,11 @@ public class AdditionDemo {
         centerPanel.add(labelPanel, BorderLayout.WEST);
         centerPanel.addToBoth(textFieldPanel, BorderLayout.EAST);
 
-        JButtonBB calculateB = new JButtonBB("calculate", CALCULATE_ENABLED_ECD, CALCULATE_TRIGGER_ECD);
+        JButtonBB calculateB = JButtonBB.builder()
+                .setName("calculate")
+                .setEnabledInput(CALCULATE_ENABLED_ECD)
+                .setActionOutput(CALCULATE_TRIGGER_ECD)
+                .build();
         calculateB.setText("Calculate");
 
         JPanelBB southPanel = new JPanelBB("south");

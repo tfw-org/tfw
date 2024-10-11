@@ -2,6 +2,7 @@ package tfw.swing.event;
 
 import java.awt.Component;
 import java.awt.EventQueue;
+import tfw.check.Argument;
 import tfw.tsm.Commit;
 import tfw.tsm.Initiator;
 import tfw.tsm.ecd.BooleanECD;
@@ -11,6 +12,10 @@ public class SetEnabledFactory {
     private SetEnabledFactory() {}
 
     public static Commit create(String name, BooleanECD enabledECD, Component component, Initiator[] initiators) {
+        Argument.assertNotNull(name, "name");
+        Argument.assertNotNull(enabledECD, "enabledECD");
+        Argument.assertNotNull(component, "component");
+
         return new ComponentSetEnabledCommit(name, enabledECD, component, initiators);
     }
 

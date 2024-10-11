@@ -197,7 +197,6 @@
                     <format>txt</format>
                     <includeTests>true</includeTests>
                     <minimumTokens>100</minimumTokens>
-                    <inputEncoding>${project.build.sourceEncoding}</inputEncoding>
                     <targetJdk>${maven.compiler.target}</targetJdk>
                 </configuration>
                 <executions>

@@ -1,9 +1,9 @@
 package tfw.swing.event;
 
-import java.awt.Component;
 import java.awt.EventQueue;
 import javax.swing.AbstractButton;
 import javax.swing.Icon;
+import tfw.check.Argument;
 import tfw.swing.ecd.IconECD;
 import tfw.tsm.Commit;
 import tfw.tsm.Initiator;
@@ -12,12 +12,12 @@ import tfw.tsm.ecd.ObjectECD;
 public class SetIconFactory {
     private SetIconFactory() {}
 
-    public static Commit create(String name, IconECD iconECD, Component component, Initiator[] initiators) {
-        if (component instanceof AbstractButton) {
-            return new AbstractButtonSetIconCommit(name, iconECD, (AbstractButton) component, initiators);
-        }
+    public static Commit create(String name, IconECD iconECD, AbstractButton abstractButton, Initiator[] initiators) {
+        Argument.assertNotNull(name, "name");
+        Argument.assertNotNull(iconECD, "iconECD");
+        Argument.assertNotNull(abstractButton, "abstractButton");
 
-        return null;
+        return new AbstractButtonSetIconCommit(name, iconECD, abstractButton, initiators);
     }
 
     private static class AbstractButtonSetIconCommit extends Commit {

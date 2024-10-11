@@ -1,10 +1,10 @@
 package tfw.swing.event;
 
-import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.Font;
 import javax.swing.JComponent;
 import tfw.awt.ecd.FontECD;
+import tfw.check.Argument;
 import tfw.tsm.Commit;
 import tfw.tsm.Initiator;
 import tfw.tsm.ecd.ObjectECD;
@@ -12,12 +12,12 @@ import tfw.tsm.ecd.ObjectECD;
 public class SetFontFactory {
     private SetFontFactory() {}
 
-    public static Commit create(String name, FontECD fontECD, Component component, Initiator[] initiators) {
-        if (component instanceof JComponent) {
-            return new JComponentSetFontCommit(name, fontECD, (JComponent) component, initiators);
-        }
+    public static Commit create(String name, FontECD fontECD, JComponent jComponent, Initiator[] initiators) {
+        Argument.assertNotNull(name, "name");
+        Argument.assertNotNull(fontECD, "fontECD");
+        Argument.assertNotNull(jComponent, "jComponent");
 
-        return null;
+        return new JComponentSetFontCommit(name, fontECD, jComponent, initiators);
     }
 
     private static class JComponentSetFontCommit extends Commit {

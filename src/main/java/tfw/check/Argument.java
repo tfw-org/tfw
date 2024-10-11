@@ -218,4 +218,10 @@ public class Argument {
             throw new IllegalArgumentException(
                     leftName + " (=" + left + ") > " + rightName + " (=" + right + ") not allowed!");
     }
+
+    public static final void assertInstanceOf(Class<?> clazz, Object object, String objectName) {
+        if (!clazz.isInstance(object)) {
+            throw new IllegalArgumentException(objectName + " is not an instance of " + clazz.getName());
+        }
+    }
 }
