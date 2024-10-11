@@ -3,6 +3,7 @@ package tfw.swing.event;
 import java.awt.Component;
 import java.awt.EventQueue;
 import javax.swing.AbstractButton;
+import tfw.check.Argument;
 import tfw.tsm.Commit;
 import tfw.tsm.Initiator;
 import tfw.tsm.ecd.ObjectECD;
@@ -12,11 +13,11 @@ public class SetTextFactory {
     private SetTextFactory() {}
 
     public static Commit create(String name, StringECD textECD, Component component, Initiator[] initiators) {
-        if (component instanceof AbstractButton) {
-            return new AbstractButtonSetTextCommit(name, textECD, (AbstractButton) component, initiators);
-        }
+        Argument.assertNotNull(name, "name");
+        Argument.assertNotNull(textECD, "textECD");
+        Argument.assertNotNull(component, "component");
 
-        return null;
+        return new AbstractButtonSetTextCommit(name, textECD, (AbstractButton) component, initiators);
     }
 
     private static class AbstractButtonSetTextCommit extends Commit {

@@ -3,14 +3,10 @@ package tfw.swing;
 import java.awt.BorderLayout;
 import javax.swing.JFrame;
 import tfw.tsm.Branch;
+import tfw.tsm.OneDeepStateQueueFactory;
 
 public class JButtonBBTestApplication extends JFrame {
     public JButtonBBTestApplication(final Branch branch) {
-        final JButtonBB emptyJButtonBB = JButtonBB.builder()
-                .setName(JButtonBBTest.EMPTY_BUTTON_NAME)
-                .setActionOutput(JButtonBBTest.BUTTON_ACTION_ECD)
-                .create();
-
         final JButtonBB jButtonBB = JButtonBB.builder()
                 .setName(JButtonBBTest.BUTTON_NAME)
                 .setActionOutput(JButtonBBTest.BUTTON_ACTION_ECD)
@@ -20,17 +16,15 @@ public class JButtonBBTestApplication extends JFrame {
                 .setFontInput(JButtonBBTest.BUTTON_FONT_ECD)
                 .setTextInput(JButtonBBTest.BUTTON_TEXT_ECD)
                 .setIconInput(JButtonBBTest.BUTTON_ICON_ECD)
-                .create();
+                .setActionOutputStateQueueFactory(new OneDeepStateQueueFactory())
+                .build();
 
         jButtonBB.setName(JButtonBBTest.BUTTON_NAME);
-        emptyJButtonBB.setName(JButtonBBTest.EMPTY_BUTTON_NAME);
 
         getContentPane().setLayout(new BorderLayout());
         getContentPane().add(jButtonBB, BorderLayout.CENTER);
-        getContentPane().add(emptyJButtonBB, BorderLayout.SOUTH);
 
         branch.add(jButtonBB);
-        branch.add(emptyJButtonBB);
 
         setSize(100, 50);
     }
