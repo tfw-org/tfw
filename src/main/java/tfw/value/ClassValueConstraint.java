@@ -75,14 +75,8 @@ public class ClassValueConstraint<T> extends ValueConstraint<T> {
      */
     @SuppressWarnings("unchecked")
     public static <T> ClassValueConstraint<T> getInstance(Class<T> valueType) {
-        ClassValueConstraint<T> constraint = (ClassValueConstraint<T>) constraints.get(valueType);
-
-        if (constraint == null) {
-            constraint = new ClassValueConstraint<>(valueType);
-            constraints.put(valueType, constraint);
-        }
-
-        return constraint;
+        return (ClassValueConstraint<T>)
+                constraints.computeIfAbsent(valueType, k -> new ClassValueConstraint<>(valueType));
     }
 
     /**

@@ -51,20 +51,6 @@ class EventChannelDescriptionTest {
 
         ecd2 = new TestECD("different", ClassValueConstraint.STRING);
         assertNotEquals(ecd2, ecd1, "different names equal");
-
-        // ecd2 = new TestECD("A", ClassValueConstraint.BOOLEAN);
-        // assertFalse(ecd1.equals(ecd2), "different constraints equal");
-
-        //		ecd2 = new TestECD("A", ClassValueConstraint.STRING);
-        //		assertFalse("different codecs equal",ecd1.equals(ecd2));
-
-        //		ecd2 = new TestECD("A", ClassValueConstraint.STRING,
-        //						StringCodec.INSTANCE, true, false);
-        //		assertFalse("different fire-on-connect equal",ecd1.equals(ecd2));
-
-        //		ecd2 = new TestECD("A", ClassValueConstraint.STRING,
-        //						StringCodec.INSTANCE, false, true);
-        //		assertFalse("different rollback participant equal",ecd1.equals(ecd2));
     }
 
     private static class TestECD extends ObjectECD {
