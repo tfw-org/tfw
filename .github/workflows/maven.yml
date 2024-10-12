@@ -22,10 +22,12 @@ jobs:
         java-version: ${{ matrix.java }}
         distribution: ${{ matrix.distribution }}
         cache: maven
+    - name: Install tightvncserver
+        run: sudo apt-get install -y tightvncserver
     - name: Build with Maven
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: mvn -B verify
+      run: ../execute-on-vnc.sh mvn -B verify
     - name: Update dependency graph when on master
       uses: advanced-security/maven-dependency-submission-action@v4
       if: ${{ github.ref == 'refs/heads/master' }}
