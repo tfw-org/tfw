@@ -3,6 +3,7 @@ package tfw.visualizer.graph;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import tfw.check.Argument;
 import tfw.tsm.BranchProxy;
@@ -90,11 +91,7 @@ public class GraphFromRootProxy {
         }
 
         private static void addStructuralNode(
-                Set<Object> nodes,
-                ArrayList<Object> edgeFroms,
-                ArrayList<Object> edgeTos,
-                Object proxy,
-                Object parent) {
+                Set<Object> nodes, List<Object> edgeFroms, List<Object> edgeTos, Object proxy, Object parent) {
             nodes.add(proxy);
 
             if (parent != null) {
@@ -169,7 +166,7 @@ public class GraphFromRootProxy {
         }
 
         private static void addSourceEdges(
-                SourceProxy[] sourceProxies, Object proxy, ArrayList<Object> edgeFroms, ArrayList<Object> edgeTos) {
+                SourceProxy[] sourceProxies, Object proxy, List<Object> edgeFroms, List<Object> edgeTos) {
             Arrays.sort(sourceProxies, ProxyNameComparator.INSTANCE);
 
             for (int i = 0; i < sourceProxies.length; i++) {
@@ -179,7 +176,7 @@ public class GraphFromRootProxy {
         }
 
         private static void addSinkEdges(
-                SinkProxy[] sinkProxies, Object proxy, ArrayList<Object> edgeFroms, ArrayList<Object> edgeTos) {
+                SinkProxy[] sinkProxies, Object proxy, List<Object> edgeFroms, List<Object> edgeTos) {
             Arrays.sort(sinkProxies, ProxyNameComparator.INSTANCE);
 
             for (int i = 0; i < sinkProxies.length; i++) {

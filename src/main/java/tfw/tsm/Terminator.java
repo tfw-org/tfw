@@ -2,6 +2,7 @@ package tfw.tsm;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import tfw.check.Argument;
 import tfw.tsm.DemultiplexedEventChannel.DemultiSource;
@@ -84,7 +85,7 @@ public class Terminator implements EventChannel, CommitRollbackListener {
     private int updateSinksArrayLength = 0;
     private Sink[] updateSinksArray = new Sink[updateSinksArrayLength];
 
-    private void updateSinks(ArrayList<Sink> set) {
+    private void updateSinks(List<Sink> set) {
         updateSinksArrayLength = set.size();
         if (updateSinksArray.length < updateSinksArrayLength) {
             updateSinksArray = new Sink[updateSinksArrayLength];
@@ -360,7 +361,7 @@ public class Terminator implements EventChannel, CommitRollbackListener {
         isStateChanged = false;
     }
 
-    private ArrayList<Sink> resetUninitializedSinks() {
+    private List<Sink> resetUninitializedSinks() {
         ArrayList<Sink> temp = null;
 
         synchronized (this) {

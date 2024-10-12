@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import tfw.check.Argument;
 import tfw.immutable.ilm.doubleilm.DoubleIlm;
 import tfw.visualizer.graph.Graph;
@@ -80,9 +82,9 @@ public class NormalXYDoubleIlmFromGraph {
                 // node cluster number.
                 //	    		int depth = calculateXandYs(0, clusterNumber, new Object[] {rootNodes.remove(0)},
                 //	    			nodes, froms, tos, normalXs, normalYs, nodeClusterNumbers);
-                ArrayList<ArrayList<Object>> levels = new ArrayList<>();
-                ArrayList<Object> rootMinusOneLevel = new ArrayList<>();
-                ArrayList<Object> rootLevel = new ArrayList<>();
+                List<List<Object>> levels = new ArrayList<>();
+                List<Object> rootMinusOneLevel = new ArrayList<>();
+                List<Object> rootLevel = new ArrayList<>();
 
                 rootLevel.add(rootNodes.remove(0));
                 levels.add(rootMinusOneLevel);
@@ -102,7 +104,7 @@ public class NormalXYDoubleIlmFromGraph {
                 levels.remove(0);
 
                 for (int i = 0; i < levels.size(); i++) {
-                    ArrayList<Object> level = levels.get(i);
+                    List<Object> level = levels.get(i);
                     // System.out.println("level="+level);
 
                     for (int j = 0; j < level.size(); j++) {
@@ -156,12 +158,11 @@ public class NormalXYDoubleIlmFromGraph {
             return new double[0];
         }
 
-        private static void xxx(
-                ArrayList<ArrayList<Object>> levels, HashSet<Object> nodes, Object[] froms, Object[] tos) {
+        private static void xxx(List<List<Object>> levels, Set<Object> nodes, Object[] froms, Object[] tos) {
             // System.out.println("Entering xxx");
-            ArrayList<Object> previousLevelNodes = levels.get(levels.size() - 2);
-            ArrayList<Object> currentLevelNodes = levels.get(levels.size() - 1);
-            ArrayList<Object> nextLevelNodes = new ArrayList<>();
+            List<Object> previousLevelNodes = levels.get(levels.size() - 2);
+            List<Object> currentLevelNodes = levels.get(levels.size() - 1);
+            List<Object> nextLevelNodes = new ArrayList<>();
 
             // System.out.println("pLN="+previousLevelNodes);
             // System.out.println("cLN="+currentLevelNodes);
