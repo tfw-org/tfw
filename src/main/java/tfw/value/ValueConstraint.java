@@ -3,7 +3,7 @@ package tfw.value;
 /**
  *
  */
-public abstract class ValueConstraint {
+public abstract class ValueConstraint<T> {
     /** The string used to represent a value which complies with the constraint. */
     public static final String VALID = "Valid";
 
@@ -35,7 +35,7 @@ public abstract class ValueConstraint {
      * @return true if every value which meets the specified constraint also
      *         meets this constraint, otherwise returns false.
      */
-    public abstract boolean isCompatible(ValueConstraint constraint);
+    public abstract boolean isCompatible(ValueConstraint<?> constraint);
 
     /**
      * Returns {@link #VALID} if the value complies with the constraint,

@@ -5,7 +5,7 @@ import tfw.check.Argument;
 /**
  * A constaint where the only legal value is <code>null</code>.
  */
-public class NullConstraint extends ValueConstraint {
+public class NullConstraint extends ValueConstraint<Object> {
     public static final NullConstraint INSTANCE = new NullConstraint();
 
     private NullConstraint() {}
@@ -14,10 +14,10 @@ public class NullConstraint extends ValueConstraint {
      * @see co2.value.Constraint#isCompatable(co2.value.Constraint)
      */
     @Override
-    public boolean isCompatible(ValueConstraint constraint) {
+    public boolean isCompatible(ValueConstraint<?> constraint) {
         Argument.assertNotNull(constraint, "constraint");
 
-        return (constraint instanceof NullConstraint);
+        return constraint instanceof NullConstraint;
     }
 
     /* (non-Javadoc)

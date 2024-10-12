@@ -1,8 +1,8 @@
 package tfw.value;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -13,25 +13,20 @@ import org.junit.jupiter.api.Test;
  *
  */
 class ValueConstraintTest {
-    private static final class TestConstraint extends ClassValueConstraint {
-        public TestConstraint(Class<?> valueType) {
+    private static final class TestConstraint extends ClassValueConstraint<Object> {
+        public TestConstraint(Class<Object> valueType) {
             super(valueType);
         }
     }
 
     @Test
     void testNullValueType() {
-        try {
-            new TestConstraint(null);
-            fail("Constructor accepted null valueConstraint");
-        } catch (IllegalArgumentException expected) {
-            // System.out.println(expected);
-        }
+        assertThrows(IllegalArgumentException.class, () -> new TestConstraint(null));
     }
 
     @Test
     void testGetValueCompliance() {
-        ClassValueConstraint vc = ClassValueConstraint.getInstance(Integer.class);
+        ClassValueConstraint<Integer> vc = ClassValueConstraint.getInstance(Integer.class);
         String result = vc.getValueCompliance(0);
         assertEquals(ClassValueConstraint.VALID, result, "Valid class type rejected!");
         result = vc.getValueCompliance(null);
@@ -42,21 +37,17 @@ class ValueConstraintTest {
 
     @Test
     void testIsValid() {
-        ClassValueConstraint vc = ClassValueConstraint.getInstance(Integer.class);
+        ClassValueConstraint<Integer> vc = ClassValueConstraint.getInstance(Integer.class);
         assertTrue(vc.isValid(1), "rejected valid value!");
-        assertFalse(vc.isValid(new Object()), "accepted an invalid value!");
     }
 
     @Test
     void testCheckValue() {
-        ClassValueConstraint vc = ClassValueConstraint.getInstance(Integer.class);
+        ClassValueConstraint<Integer> vc = ClassValueConstraint.getInstance(Integer.class);
 
-        try {
-            vc.checkValue(new Object());
-            fail("checkValue() accepted invalid value");
-        } catch (ValueException expected) {
-            // System.out.println(expected);
-        }
+        final Object v = new Object();
+
+        assertThrows(ValueException.class, () -> vc.checkValue(v));
 
         try {
             vc.checkValue(0);

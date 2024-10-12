@@ -41,8 +41,8 @@ class Translator extends Terminator {
         Argument.assertNotNull(childPort, "childPort");
         Argument.assertNotNull(parentPort, "parentPort");
 
-        ValueConstraint pvc = parentPort.getConstraint();
-        ValueConstraint cvc = childPort.getConstraint();
+        ValueConstraint<? extends Object> pvc = parentPort.getConstraint();
+        ValueConstraint<? extends Object> cvc = childPort.getConstraint();
 
         if (!cvc.isCompatible(pvc)) {
             throw new IllegalArgumentException(
