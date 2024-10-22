@@ -7,8 +7,8 @@ import tfw.immutable.ila.IlaTestDimensions;
 
 class ObjectIlaReverseTest {
     @Test
-    void testArguments() throws Exception {
-        final ObjectIla ila = ObjectIlaFromArray.create(new Object[10]);
+    void testArguments() {
+        final ObjectIla<Object> ila = ObjectIlaFromArray.create(new Object[10]);
         final Object[] buffer = new Object[10];
 
         assertThrows(IllegalArgumentException.class, () -> ObjectIlaReverse.create(null, buffer));

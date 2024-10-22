@@ -9,7 +9,7 @@ import tfw.immutable.ila.IlaTestDimensions;
 class %%NAME%%IlaRemoveTest {
     @Test
     void testArguments() throws Exception {
-        final %%NAME%%Ila ila = %%NAME%%IlaFromArray.create(new %%TYPE%%[10]);
+        final %%NAME%%Ila%%TEMPLATE%% ila = %%NAME%%IlaFromArray.create(new %%TYPE%%[10]);
         final long ilaLength = ila.length();
 
         assertThrows(IllegalArgumentException.class, () -> %%NAME%%IlaRemove.create(null, 0));

@@ -46,7 +46,7 @@ import java.io.IOException;
         }
     }
 
-    public static void check(final %%NAME%%Ila expectedIla, final %%NAME%%Ila actualIla) throws IOException {
+    public static void check(final %%NAME%%Ila%%TEMPLATE%% expectedIla, %%NAME%%Ila%%TEMPLATE%% actualIla) throws IOException {
         checkGetArguments(actualIla);
         checkGetExhaustively(expectedIla, actualIla);
     }

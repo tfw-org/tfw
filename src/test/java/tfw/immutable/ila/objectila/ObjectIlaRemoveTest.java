@@ -8,7 +8,7 @@ import tfw.immutable.ila.IlaTestDimensions;
 class ObjectIlaRemoveTest {
     @Test
     void testArguments() throws Exception {
-        final ObjectIla ila = ObjectIlaFromArray.create(new Object[10]);
+        final ObjectIla<Object> ila = ObjectIlaFromArray.create(new Object[10]);
         final long ilaLength = ila.length();
 
         assertThrows(IllegalArgumentException.class, () -> ObjectIlaRemove.create(null, 0));

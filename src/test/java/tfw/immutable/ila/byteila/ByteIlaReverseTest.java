@@ -8,7 +8,7 @@ import tfw.immutable.ila.IlaTestDimensions;
 
 class ByteIlaReverseTest {
     @Test
-    void testArguments() throws Exception {
+    void testArguments() {
         final ByteIla ila = ByteIlaFromArray.create(new byte[10]);
         final byte[] buffer = new byte[10];
 

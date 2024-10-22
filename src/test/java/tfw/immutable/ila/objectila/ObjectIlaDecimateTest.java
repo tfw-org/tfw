@@ -8,7 +8,7 @@ import tfw.immutable.ila.IlaTestDimensions;
 class ObjectIlaDecimateTest {
     @Test
     void testArguments() {
-        final ObjectIla ila = ObjectIlaFromArray.create(new Object[10]);
+        final ObjectIla<Object> ila = ObjectIlaFromArray.create(new Object[10]);
         final Object[] buffer = new Object[10];
 
         assertThrows(IllegalArgumentException.class, () -> ObjectIlaDecimate.create(null, 2, buffer));

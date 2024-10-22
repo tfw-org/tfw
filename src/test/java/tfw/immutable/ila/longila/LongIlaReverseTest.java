@@ -8,7 +8,7 @@ import tfw.immutable.ila.IlaTestDimensions;
 
 class LongIlaReverseTest {
     @Test
-    void testArguments() throws Exception {
+    void testArguments() {
         final LongIla ila = LongIlaFromArray.create(new long[10]);
         final long[] buffer = new long[10];
 

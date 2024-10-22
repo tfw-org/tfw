@@ -8,7 +8,7 @@ import tfw.immutable.ila.IlaTestDimensions;
 
 class ByteIlaInterleaveTest {
     @Test
-    void testArguments() throws Exception {
+    void testArguments() {
         final ByteIla ila1 = ByteIlaFromArray.create(new byte[10]);
         final ByteIla ila2 = ByteIlaFromArray.create(new byte[20]);
         final ByteIla[] ilas1 = new ByteIla[] {};

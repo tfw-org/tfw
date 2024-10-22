@@ -9,7 +9,7 @@ import tfw.immutable.ila.IlaTestDimensions;
 class %%NAME%%IlaMutateTest {
     @Test
     void testArguments() throws Exception {
-        %%RANDOM_INIT%%final %%NAME%%Ila ila = %%NAME%%IlaFromArray.create(new %%TYPE%%[10]);
+        %%RANDOM_INIT%%final %%NAME%%Ila%%TEMPLATE%% ila = %%NAME%%IlaFromArray.create(new %%TYPE%%[10]);
         final long ilaLength = ila.length();
         final %%TYPE%% value = %%RANDOM_VALUE%%;
 

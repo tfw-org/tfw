@@ -46,7 +46,7 @@ public final class ObjectIlaCheck {
         }
     }
 
-    public static void check(final ObjectIla expectedIla, final ObjectIla actualIla) throws IOException {
+    public static void check(final ObjectIla<Object> expectedIla, ObjectIla<Object> actualIla) throws IOException {
         checkGetArguments(actualIla);
         checkGetExhaustively(expectedIla, actualIla);
     }

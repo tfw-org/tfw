@@ -8,7 +8,7 @@ import tfw.immutable.ila.IlaTestDimensions;
 
 class CharIlaReverseTest {
     @Test
-    void testArguments() throws Exception {
+    void testArguments() {
         final CharIla ila = CharIlaFromArray.create(new char[10]);
         final char[] buffer = new char[10];
 
