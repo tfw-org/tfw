@@ -35,19 +35,10 @@ public abstract class EventChannelDescription {
     /**
      * Creates an event channel description with the specified attributes.
      *
-     * @param eventChannelName
-     *            the name of the event channel.
-     * @param constraint
-     *            the value constraint for the evnet channel.
-     * @param codec
-     *            the codec for the event channel values. <code>null</code> is
-     *            a valid value.
-     * @param fireOnConnect
-     *            flag indicating whether the event channel fires state when a
-     *            new sink is connected.
-     * @param rollbackParticipant
-     *            flag indicating whether the event channel participates in
-     *            transaction rollbacks.
+     * @param eventChannelName the name of the event channel.
+     * @param constraint the value constraint for the evnet channel.
+     * @param fireOnConnect flag indicating whether the event channel fires state when a new sink is connected.
+     * @param rollbackParticipant flag indicating whether the event channel participates in transaction rollbacks.
      */
     EventChannelDescription(
             String eventChannelName,

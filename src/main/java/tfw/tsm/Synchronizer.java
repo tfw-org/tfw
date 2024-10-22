@@ -165,12 +165,8 @@ public abstract class Synchronizer extends Processor {
     /**
      * Validates the arguments and returns a concatinated list of sinks.
      *
-     * @param sinks
-     *            non-triggering sinks.
-     * @param aPortDescriptions
-     *            the 'setA' list of event channels.
-     * @param bPortDescriptions
-     *            the 'setB' list of event channels.
+     * @param aPortDescriptions the 'setA' list of event channels.
+     * @param bPortDescriptions the 'setB' list of event channels.
      * @return an aggregation of <code>sinks</code>,
      *         <code>aPortDescriptions</code> and
      *         <code>bPortDescriptions</code>

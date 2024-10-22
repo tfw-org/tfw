@@ -18,14 +18,10 @@ abstract class EventHandler extends TreeComponent {
     /**
      * Creates an event handler with the specified attributes.
      *
-     * @param name
-     *            the name of the event handler.
-     * @param sinkDescriptions
-     *            the set of sink event channels.
-     * @param sourceEventChannels
-     *            the set of source event channels.
-     * @throws IllegalArgumentException
-     *             if there are no sources or sinks specified.
+     * @param name the name of the event handler.
+     * @param triggeringSinks the set of triggering input event channels.
+     * @param nonTriggeringSinks the set of non-triggering input event channels.
+     * @param sources the set of output event channels.
      */
     EventHandler(
             String name,

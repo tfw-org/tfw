@@ -23,16 +23,10 @@ public class Branch extends BranchComponent {
     /**
      * Constructs a branch with the specified event channels and ports.
      *
-     * @param name
-     *            the name of the branch.
-     * @param eventChannels
-     *            the set of event channels positioned at this branch.
-     * @param isMultiplexed
-     *            boolean indicating whether the event channels are to be
-     *            multiplexed.
-     * @param ports
-     *            the set of ports for this branch. These are the multiplexer
-     *            and translator ports which are local to this branch.
+     * @param name the name of the branch.
+     * @param sinks the set of sinks associated with this branch.
+     * @param sources the set of sources associated with this branch.
+     * @param eventChannels the set of event channels associated with this branch.
      */
     Branch(String name, Sink[] sinks, Source[] sources, EventChannel[] eventChannels) {
         super(name, sinks, sources, eventChannels);
