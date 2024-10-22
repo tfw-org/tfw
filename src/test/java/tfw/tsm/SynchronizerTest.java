@@ -37,13 +37,13 @@ class SynchronizerTest {
                     Character ch = (Character) get(a1Port);
 
                     if (ch != null) {
-                        set(b1Port, new Character(Character.toUpperCase(ch.charValue())));
+                        set(b1Port, Character.toUpperCase(ch.charValue()));
                     }
 
                     ch = (Character) get(a2Port);
 
                     if (ch != null) {
-                        set(b2Port, new Character(Character.toUpperCase(ch.charValue())));
+                        set(b2Port, Character.toUpperCase(ch.charValue()));
                     }
 
                     set(source, "cause an error");
@@ -57,13 +57,13 @@ class SynchronizerTest {
                     Character ch = (Character) get(b1Port);
 
                     if (ch != null) {
-                        set(a1Port, new Character(Character.toLowerCase(ch.charValue())));
+                        set(a1Port, Character.toLowerCase(ch.charValue()));
                     }
 
                     ch = (Character) get(b2Port);
 
                     if (ch != null) {
-                        set(a2Port, new Character(Character.toLowerCase(ch.charValue())));
+                        set(a2Port, Character.toLowerCase(ch.charValue()));
                     }
 
                     set(source, "cause an error");
@@ -115,7 +115,7 @@ class SynchronizerTest {
         @Override
         protected void convert() {
             // System.out.println("Executing Rollback");
-            initiator.set(b1Port, new Character('b'));
+            initiator.set(b1Port, 'b');
             rollback();
         }
     };
@@ -133,7 +133,7 @@ class SynchronizerTest {
                     fired = true;
 
                     // System.err.println("\nset b1 to cause error\n");
-                    set(b1Port, new Character('E'));
+                    set(b1Port, 'E');
                 }
             };
 
@@ -148,7 +148,7 @@ class SynchronizerTest {
                     fired = true;
 
                     // System.out.println("set a1 to cause error");
-                    set(a1Port, new Character('e'));
+                    set(a1Port, 'e');
                 }
             };
 
