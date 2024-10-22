@@ -8,7 +8,7 @@ import tfw.immutable.ila.IlaTestDimensions;
 
 class %%NAME%%IlaInterleaveTest {
     @Test%%SUPPRESS%%
-    void testArguments() throws Exception {
+    void testArguments() {
         final %%NAME%%Ila%%TEMPLATE%% ila1 = %%NAME%%IlaFromArray.create(new %%TYPE%%[10]);
         final %%NAME%%Ila%%TEMPLATE%% ila2 = %%NAME%%IlaFromArray.create(new %%TYPE%%[20]);
         final %%NAME%%Ila%%TEMPLATE%%[] ilas1 = %%FULL_CAST%%new %%NAME%%Ila[] {};

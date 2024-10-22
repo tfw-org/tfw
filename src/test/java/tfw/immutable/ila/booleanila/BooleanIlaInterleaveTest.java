@@ -8,7 +8,7 @@ import tfw.immutable.ila.IlaTestDimensions;
 
 class BooleanIlaInterleaveTest {
     @Test
-    void testArguments() throws Exception {
+    void testArguments() {
         final BooleanIla ila1 = BooleanIlaFromArray.create(new boolean[10]);
         final BooleanIla ila2 = BooleanIlaFromArray.create(new boolean[20]);
         final BooleanIla[] ilas1 = new BooleanIla[] {};

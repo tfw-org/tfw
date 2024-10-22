@@ -8,7 +8,7 @@ import tfw.immutable.ila.IlaTestDimensions;
 
 class LongIlaInterleaveTest {
     @Test
-    void testArguments() throws Exception {
+    void testArguments() {
         final LongIla ila1 = LongIlaFromArray.create(new long[10]);
         final LongIla ila2 = LongIlaFromArray.create(new long[20]);
         final LongIla[] ilas1 = new LongIla[] {};

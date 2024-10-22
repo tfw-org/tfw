@@ -8,7 +8,7 @@ import tfw.immutable.ila.IlaTestDimensions;
 
 class BooleanIlaReverseTest {
     @Test
-    void testArguments() throws Exception {
+    void testArguments() {
         final BooleanIla ila = BooleanIlaFromArray.create(new boolean[10]);
         final boolean[] buffer = new boolean[10];
 

@@ -8,7 +8,7 @@ import tfw.immutable.ila.IlaTestDimensions;
 
 class FloatIlaReverseTest {
     @Test
-    void testArguments() throws Exception {
+    void testArguments() {
         final FloatIla ila = FloatIlaFromArray.create(new float[10]);
         final float[] buffer = new float[10];
 

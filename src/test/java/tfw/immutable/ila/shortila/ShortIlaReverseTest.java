@@ -8,7 +8,7 @@ import tfw.immutable.ila.IlaTestDimensions;
 
 class ShortIlaReverseTest {
     @Test
-    void testArguments() throws Exception {
+    void testArguments() {
         final ShortIla ila = ShortIlaFromArray.create(new short[10]);
         final short[] buffer = new short[10];
 
