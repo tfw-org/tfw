@@ -16,9 +16,10 @@ public class Root extends Branch {
 
     /**
      * Creates a root with the specified event channels and ports.
-     * @param name
-     * @param terminator
-     * @param ports
+     *
+     * @param name the name of the root branch.
+     * @param eventChannels the list of event channels this root branch will have.
+     * @param transactionMgr the transaction manager this root branch will use.
      */
     Root(String name, EventChannel[] eventChannels, TransactionMgr transactionMgr) {
         super(name, null, null, eventChannels);

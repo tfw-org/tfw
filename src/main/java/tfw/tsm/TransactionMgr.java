@@ -716,10 +716,8 @@ public final class TransactionMgr {
      * Creates an adds component change. This is called by {@link TreeComponent}.
      * It can be called at any time from any thread.
      *
-     * @param parent
-     *            the parent to which a child component is to be added.
-     * @param child
-     *            the child component to be added.
+     * @param addComponentRunnable the runnable that will add the component.
+     * @param addLocation the location where the add occurred or null.
      */
     void addComponent(AddComponentRunnable addComponentRunnable, Throwable addLocation) {
         invokeLater(new ComponentChangeTransaction(addComponentRunnable, addLocation));
@@ -729,10 +727,8 @@ public final class TransactionMgr {
      * Creates remove component change. This is called by {@link TreeComponent}.
      * It can be called at any time from any thread.
      *
-     * @param parent
-     *            the parent to which a component is to be added.
-     * @param child
-     *            the child component to be added.
+     * @param removeComponentRunnable the runnable that will remove the component.
+     * @param removeLocation the location where the remove occurred or null.
      */
     void removeComponent(RemoveComponentRunnable removeComponentRunnable, Throwable removeLocation) {
         invokeLater(new ComponentChangeTransaction(removeComponentRunnable, removeLocation));
