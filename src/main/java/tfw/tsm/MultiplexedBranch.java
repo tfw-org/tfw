@@ -18,11 +18,8 @@ public class MultiplexedBranch extends BranchComponent {
     /**
      * Creates a multiplexed branch.
      *
-     * @param name
-     *            the name of the branch.
-     * @param multiplexers
-     * @param ports
-     *            the multiplexing ports.
+     * @param name the name of the multiplexed branch.
+     * @param multiplexers the multiplexers associated with this multiplexed branch.
      */
     MultiplexedBranch(String name, Multiplexer[] multiplexers) {
         super(name, null, null, multiplexers);

@@ -407,16 +407,11 @@ public final class TransactionMgr {
     /**
      * Checks to see if any processors are dependent on the specified processor.
      *
-     * @param processor
-     *            The processor to checked
-     * @param processors
-     * @param delayedProcessors
-     * @param processorCrumbs
-     *            Processors that have already been visit in the recursive
-     *            descent algorithm.
-     * @param terminatorCrumbs
-     *            Terminators that have already been visited in the recursive
-     *            descent algorithm.
+     * @param processor The processor to checked
+     * @param processors The list of processors to run.
+     * @param delayedProcessors The list of delayed processors to run later.
+     * @param processorCrumbs Processors that have already been visit in the recursive descent algorithm.
+     * @param terminatorCrumbs Terminators that have already been visited in the recursive descent algorithm.
      */
     private static void checkDependencies(
             TreeComponent processor,
