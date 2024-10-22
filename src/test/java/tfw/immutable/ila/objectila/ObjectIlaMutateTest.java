@@ -8,7 +8,7 @@ import tfw.immutable.ila.IlaTestDimensions;
 class ObjectIlaMutateTest {
     @Test
     void testArguments() throws Exception {
-        final ObjectIla ila = ObjectIlaFromArray.create(new Object[10]);
+        final ObjectIla<Object> ila = ObjectIlaFromArray.create(new Object[10]);
         final long ilaLength = ila.length();
         final Object value = new Object();
 

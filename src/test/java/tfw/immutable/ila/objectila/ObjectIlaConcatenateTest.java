@@ -9,7 +9,7 @@ import tfw.immutable.ila.IlaTestDimensions;
 class ObjectIlaConcatenateTest {
     @Test
     void testArguments() {
-        final ObjectIla ila = ObjectIlaFromArray.create(new Object[10]);
+        final ObjectIla<Object> ila = ObjectIlaFromArray.create(new Object[10]);
 
         assertThrows(IllegalArgumentException.class, () -> ObjectIlaConcatenate.create(ila, null));
         assertThrows(IllegalArgumentException.class, () -> ObjectIlaConcatenate.create(null, ila));

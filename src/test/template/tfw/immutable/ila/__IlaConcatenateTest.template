@@ -10,7 +10,7 @@ import tfw.immutable.ila.IlaTestDimensions;
 class %%NAME%%IlaConcatenateTest {
     @Test
     void testArguments() {
-        final %%NAME%%Ila ila = %%NAME%%IlaFromArray.create(new %%TYPE%%[10]);
+        final %%NAME%%Ila%%TEMPLATE%% ila = %%NAME%%IlaFromArray.create(new %%TYPE%%[10]);
 
         assertThrows(IllegalArgumentException.class, () -> %%NAME%%IlaConcatenate.create(ila, null));
         assertThrows(IllegalArgumentException.class, () -> %%NAME%%IlaConcatenate.create(null, ila));

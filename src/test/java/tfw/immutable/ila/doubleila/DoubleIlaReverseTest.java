@@ -8,7 +8,7 @@ import tfw.immutable.ila.IlaTestDimensions;
 
 class DoubleIlaReverseTest {
     @Test
-    void testArguments() throws Exception {
+    void testArguments() {
         final DoubleIla ila = DoubleIlaFromArray.create(new double[10]);
         final double[] buffer = new double[10];
 

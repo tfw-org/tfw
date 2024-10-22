@@ -19,7 +19,7 @@ public class MultiplexedBranch extends BranchComponent {
      * Creates a multiplexed branch.
      *
      * @param name the name of the multiplexed branch.
-     * @param multiplexers the set of multiplexers for this multiplexed branch
+     * @param multiplexers the multiplexers associated with this multiplexed branch.
      */
     MultiplexedBranch(String name, Multiplexer[] multiplexers) {
         super(name, null, null, multiplexers);
@@ -80,7 +80,7 @@ public class MultiplexedBranch extends BranchComponent {
     /**
      * Removes the specified child component.
      *
-     * @link child The child component to remove.
+     * @param child The child component to remove.
      */
     @Override
     public final synchronized void remove(TreeComponent child) {

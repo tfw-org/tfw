@@ -24,10 +24,10 @@ import tfw.check.Argument;
  * <LI>State Change - any call to (@link #addStateChange(InitiatorSource[], Object[]))
  * causes a new transaction to be create.</LI>
  * <LI>Component Change - consecutive calls to
- * @link #addComponent(AddComponentRunnable, Throwable) and
- * @link #removeComponent(RemoveComponentRunnable, Throwable) may or may not be
+ * (@link #addComponent(AddComponentRunnable, Throwable)) and
+ * (@link #removeComponent(RemoveComponentRunnable, Throwable)) may or may not be
  * coalesced into one or more transactions. A call to
- * @link #addStateChange(InitiatorSource[], Object[]) will cause the coalescing of
+ * (@link #addStateChange(InitiatorSource[], Object[])) will cause the coalescing of
  * component changes in order to insure the correct ordering of transactions.
  * </LI>
  * <LI>Event channelfiring (Need to verify the validity of this type).</LI>
@@ -407,16 +407,11 @@ public final class TransactionMgr {
     /**
      * Checks to see if any processors are dependent on the specified processor.
      *
-     * @param processor
-     *            The processor to checked
-     * @param processors
-     * @param delayedProcessors
-     * @param processorCrumbs
-     *            Processors that have already been visit in the recursive
-     *            descent algorithm.
-     * @param terminatorCrumbs
-     *            Terminators that have already been visited in the recursive
-     *            descent algorithm.
+     * @param processor The processor to checked
+     * @param processors The list of processors to run.
+     * @param delayedProcessors The list of delayed processors to run later.
+     * @param processorCrumbs Processors that have already been visit in the recursive descent algorithm.
+     * @param terminatorCrumbs Terminators that have already been visited in the recursive descent algorithm.
      */
     private static void checkDependencies(
             TreeComponent processor,

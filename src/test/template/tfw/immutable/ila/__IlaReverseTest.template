@@ -8,8 +8,8 @@ import tfw.immutable.ila.IlaTestDimensions;
 
 class %%NAME%%IlaReverseTest {
     @Test
-    void testArguments() throws Exception {
-        final %%NAME%%Ila ila = %%NAME%%IlaFromArray.create(new %%TYPE%%[10]);
+    void testArguments() {
+        final %%NAME%%Ila%%TEMPLATE%% ila = %%NAME%%IlaFromArray.create(new %%TYPE%%[10]);
         final %%TYPE%%[] buffer = new %%TYPE%%[10];
 
         assertThrows(IllegalArgumentException.class, () -> %%NAME%%IlaReverse.create(null, buffer));

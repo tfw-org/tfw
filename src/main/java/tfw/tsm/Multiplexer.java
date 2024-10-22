@@ -32,12 +32,13 @@ public class Multiplexer implements EventChannel {
             new HashMap<Object, DemultiplexedEventChannel>();
 
     /**
-     * Creates a multiplexer with the specified value and multi-value event
-     * channels.
+     * Creates a multiplexer with the specified value and multi-value event channels.
      *
-     * @param multiplexerBranchName
-     * @param valueECD
-     * @param multiValueECD
+     * @param multiplexerBranchName the name of the multiplexer branch this multiplexer is associated with.
+     * @param valueECD the event channel description of the individual multiplexed elements.
+     * @param multiValueECD the event channel description of the entire multiplexed element.
+     * @param stateChangeRule the state change rule that determines when state has changed.
+     * @param multiStrategy the strategy responsible for managing the multiplexed elements.
      */
     Multiplexer(
             String multiplexerBranchName,

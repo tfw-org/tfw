@@ -8,7 +8,7 @@ import tfw.immutable.ila.IlaTestDimensions;
 class ObjectIlaInterleaveTest {
     @Test
     @SuppressWarnings("unchecked")
-    void testArguments() throws Exception {
+    void testArguments() {
         final ObjectIla<Object> ila1 = ObjectIlaFromArray.create(new Object[10]);
         final ObjectIla<Object> ila2 = ObjectIlaFromArray.create(new Object[20]);
         final ObjectIla<Object>[] ilas1 = (ObjectIla<Object>[]) new ObjectIla[] {};

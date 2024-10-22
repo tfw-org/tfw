@@ -9,7 +9,7 @@ import tfw.immutable.ila.IlaTestDimensions;
 class %%NAME%%IlaDecimateTest {
     @Test
     void testArguments() {
-        final %%NAME%%Ila ila = %%NAME%%IlaFromArray.create(new %%TYPE%%[10]);
+        final %%NAME%%Ila%%TEMPLATE%% ila = %%NAME%%IlaFromArray.create(new %%TYPE%%[10]);
         final %%TYPE%%[] buffer = new %%TYPE%%[10];
 
         assertThrows(IllegalArgumentException.class, () -> %%NAME%%IlaDecimate.create(null, 2, buffer));

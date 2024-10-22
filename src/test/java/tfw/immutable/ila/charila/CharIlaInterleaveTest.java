@@ -8,7 +8,7 @@ import tfw.immutable.ila.IlaTestDimensions;
 
 class CharIlaInterleaveTest {
     @Test
-    void testArguments() throws Exception {
+    void testArguments() {
         final CharIla ila1 = CharIlaFromArray.create(new char[10]);
         final CharIla ila2 = CharIlaFromArray.create(new char[20]);
         final CharIla[] ilas1 = new CharIla[] {};

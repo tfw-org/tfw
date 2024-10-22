@@ -47,7 +47,7 @@ public final class BooleanIlaCheck {
         }
     }
 
-    public static void check(final BooleanIla expectedIla, final BooleanIla actualIla) throws IOException {
+    public static void check(final BooleanIla expectedIla, BooleanIla actualIla) throws IOException {
         checkGetArguments(actualIla);
         checkGetExhaustively(expectedIla, actualIla);
     }
