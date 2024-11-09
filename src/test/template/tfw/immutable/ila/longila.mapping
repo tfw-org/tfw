@@ -15,5 +15,5 @@
 %%CAST_FROM_DOUBLE%% = (long)\ 
 %%TEMPLATE%% = 
 %%SUPPRESS%% =
-%%FULL_CAST%% =
+%%FULL_CAST%% = (LongIla[])\ 
 %%DIAMOND%% =

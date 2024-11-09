@@ -15,5 +15,5 @@
 %%CAST_FROM_DOUBLE%% = (int)\ 
 %%TEMPLATE%% = 
 %%SUPPRESS%% =
-%%FULL_CAST%% =
+%%FULL_CAST%% = (IntIla[])\ 
 %%DIAMOND%% =

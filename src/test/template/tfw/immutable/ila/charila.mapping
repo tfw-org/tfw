@@ -15,5 +15,5 @@
 %%CAST_FROM_DOUBLE%% = (char)\ 
 %%TEMPLATE%% = 
 %%SUPPRESS%% =
-%%FULL_CAST%% =
+%%FULL_CAST%% = (CharIla[])\ 
 %%DIAMOND%% =

@@ -3,6 +3,7 @@ package %%PACKAGE%%;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.lang.reflect.Array;
 %%RANDOM_INCLUDE%%import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 
@@ -11,13 +12,22 @@ class %%NAME%%IlaInterleaveTest {
     void testArguments() {
         final %%NAME%%Ila%%TEMPLATE%% ila1 = %%NAME%%IlaFromArray.create(new %%TYPE%%[10]);
         final %%NAME%%Ila%%TEMPLATE%% ila2 = %%NAME%%IlaFromArray.create(new %%TYPE%%[20]);
-        final %%NAME%%Ila%%TEMPLATE%%[] ilas1 = %%FULL_CAST%%new %%NAME%%Ila[] {};
-        final %%NAME%%Ila%%TEMPLATE%%[] ilas2 = %%FULL_CAST%%new %%NAME%%Ila[] {null, null};
-        final %%NAME%%Ila%%TEMPLATE%%[] ilas3 = %%FULL_CAST%%new %%NAME%%Ila[] {null, ila1};
-        final %%NAME%%Ila%%TEMPLATE%%[] ilas4 = %%FULL_CAST%%new %%NAME%%Ila[] {ila1, null};
-        final %%NAME%%Ila%%TEMPLATE%%[] ilas5 = %%FULL_CAST%%new %%NAME%%Ila[] {ila1, ila1};
-        final %%NAME%%Ila%%TEMPLATE%%[] ilas6 = %%FULL_CAST%%new %%NAME%%Ila[] {ila1, ila2};
+        final %%NAME%%Ila%%TEMPLATE%%[] ilas1 = %%FULL_CAST%%Array.newInstance(%%NAME%%Ila.class, 0);
+        final %%NAME%%Ila%%TEMPLATE%%[] ilas2 = %%FULL_CAST%%Array.newInstance(%%NAME%%Ila.class, 2);
+        final %%NAME%%Ila%%TEMPLATE%%[] ilas3 = %%FULL_CAST%%Array.newInstance(%%NAME%%Ila.class, 2);
+        final %%NAME%%Ila%%TEMPLATE%%[] ilas4 = %%FULL_CAST%%Array.newInstance(%%NAME%%Ila.class, 2);
+        final %%NAME%%Ila%%TEMPLATE%%[] ilas5 = %%FULL_CAST%%Array.newInstance(%%NAME%%Ila.class, 2);
+        final %%NAME%%Ila%%TEMPLATE%%[] ilas6 = %%FULL_CAST%%Array.newInstance(%%NAME%%Ila.class, 2);
         final %%TYPE%%[] buffer = new %%TYPE%%[10];
+
+        ilas3[0] = null;
+        ilas3[1] = ila1;
+        ilas4[0] = ila1;
+        ilas4[1] = null;
+        ilas5[0] = ila1;
+        ilas5[1] = ila1;
+        ilas6[0] = ila1;
+        ilas6[1] = ila2;
 
         assertThrows(IllegalArgumentException.class, () -> %%NAME%%IlaInterleave.create(null, buffer));
         assertThrows(IllegalArgumentException.class, () -> %%NAME%%IlaInterleave.create(ilas5, null));
@@ -37,7 +47,7 @@ class %%NAME%%IlaInterleaveTest {
             for (int ii = 0; ii < jj * length; ++ii) {
                 array[ii] = target[ii % jj][ii / jj] = %%RANDOM_VALUE%%;
             }
-            %%NAME%%Ila%%TEMPLATE%%[] ilas = %%FULL_CAST%%new %%NAME%%Ila[jj];
+            %%NAME%%Ila%%TEMPLATE%%[] ilas = %%FULL_CAST%%Array.newInstance(%%NAME%%Ila.class, jj);
             for (int ii = 0; ii < jj; ++ii) {
                 ilas[ii] = %%NAME%%IlaFromArray.create(target[ii]);
             }

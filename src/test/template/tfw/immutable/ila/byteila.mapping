@@ -15,5 +15,5 @@
 %%CAST_FROM_DOUBLE%% = (byte)\ 
 %%TEMPLATE%% = 
 %%SUPPRESS%% =
-%%FULL_CAST%% =
+%%FULL_CAST%% = (ByteIla[])\ 
 %%DIAMOND%% =

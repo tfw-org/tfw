@@ -2,6 +2,7 @@ package tfw.immutable.ila.shortila;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.lang.reflect.Array;
 import java.util.Random;
 import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
@@ -11,13 +12,22 @@ class ShortIlaInterleaveTest {
     void testArguments() {
         final ShortIla ila1 = ShortIlaFromArray.create(new short[10]);
         final ShortIla ila2 = ShortIlaFromArray.create(new short[20]);
-        final ShortIla[] ilas1 = new ShortIla[] {};
-        final ShortIla[] ilas2 = new ShortIla[] {null, null};
-        final ShortIla[] ilas3 = new ShortIla[] {null, ila1};
-        final ShortIla[] ilas4 = new ShortIla[] {ila1, null};
-        final ShortIla[] ilas5 = new ShortIla[] {ila1, ila1};
-        final ShortIla[] ilas6 = new ShortIla[] {ila1, ila2};
+        final ShortIla[] ilas1 = (ShortIla[]) Array.newInstance(ShortIla.class, 0);
+        final ShortIla[] ilas2 = (ShortIla[]) Array.newInstance(ShortIla.class, 2);
+        final ShortIla[] ilas3 = (ShortIla[]) Array.newInstance(ShortIla.class, 2);
+        final ShortIla[] ilas4 = (ShortIla[]) Array.newInstance(ShortIla.class, 2);
+        final ShortIla[] ilas5 = (ShortIla[]) Array.newInstance(ShortIla.class, 2);
+        final ShortIla[] ilas6 = (ShortIla[]) Array.newInstance(ShortIla.class, 2);
         final short[] buffer = new short[10];
+
+        ilas3[0] = null;
+        ilas3[1] = ila1;
+        ilas4[0] = ila1;
+        ilas4[1] = null;
+        ilas5[0] = ila1;
+        ilas5[1] = ila1;
+        ilas6[0] = ila1;
+        ilas6[1] = ila2;
 
         assertThrows(IllegalArgumentException.class, () -> ShortIlaInterleave.create(null, buffer));
         assertThrows(IllegalArgumentException.class, () -> ShortIlaInterleave.create(ilas5, null));
@@ -38,7 +48,7 @@ class ShortIlaInterleaveTest {
             for (int ii = 0; ii < jj * length; ++ii) {
                 array[ii] = target[ii % jj][ii / jj] = (short) random.nextInt();
             }
-            ShortIla[] ilas = new ShortIla[jj];
+            ShortIla[] ilas = (ShortIla[]) Array.newInstance(ShortIla.class, jj);
             for (int ii = 0; ii < jj; ++ii) {
                 ilas[ii] = ShortIlaFromArray.create(target[ii]);
             }

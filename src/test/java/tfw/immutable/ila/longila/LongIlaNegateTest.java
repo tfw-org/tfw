@@ -8,7 +8,7 @@ import tfw.immutable.ila.IlaTestDimensions;
 
 class LongIlaNegateTest {
     @Test
-    void testArguments() throws Exception {
+    void testArguments() {
         assertThrows(IllegalArgumentException.class, () -> LongIlaNegate.create(null));
     }
 

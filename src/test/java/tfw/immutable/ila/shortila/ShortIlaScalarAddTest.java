@@ -8,7 +8,7 @@ import tfw.immutable.ila.IlaTestDimensions;
 
 class ShortIlaScalarAddTest {
     @Test
-    void testArguments() throws Exception {
+    void testArguments() {
         final Random random = new Random(0);
         final short value = (short) random.nextInt();
 
