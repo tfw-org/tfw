@@ -47,14 +47,14 @@ public final class BitIlaReverse {
         }
 
         long trailPartialSize = (length - leadPartialSize) % Long.SIZE;
-        long trailOffset = offset + leadPartialSize + numLongs * Long.SIZE;
+        long trailOffset = offset + leadPartialSize + numLongs * (long) Long.SIZE;
         long trailPartial = BitIlaUtil.getPartialLong(array, trailOffset, trailPartialSize);
         long revTrailFrag = reverseLong(trailPartial);
 
         if (numLongs > 0 && leadPartialSize != trailPartialSize) {
             BitIlaUtil.copy(
                     array,
-                    longsOffset * Long.SIZE + trailPartialSize - leadPartialSize,
+                    longsOffset * (long) Long.SIZE + trailPartialSize - leadPartialSize,
                     array,
                     longsOffset * (long) Long.SIZE,
                     numLongs * (long) Long.SIZE);

@@ -27,7 +27,7 @@ public class RealFftDoubleIlm {
             this.fftSize = fftSize;
             this.dataWidth = (int) doubleIlm.width();
             this.buffer = new double[fftSize];
-            this.ip = new int[2 + (int) Math.ceil(Math.sqrt(fftSize / 2))];
+            this.ip = new int[2 + (int) Math.ceil(Math.sqrt(fftSize / 2.0))];
             this.w = new double[fftSize / 2];
         }
 

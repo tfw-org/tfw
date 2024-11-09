@@ -165,8 +165,8 @@ public final class BitIlaUtil {
                         left, leftOffsetInLongs, right, rightOffsetInLongs, lengthInLongs, (int) rightOffsetMod64);
             }
 
-            rightOffsetInBits -= Long.SIZE * lengthInLongs;
-            leftOffsetInBits -= Long.SIZE * lengthInLongs;
+            rightOffsetInBits -= lengthInLongs * (long) Long.SIZE;
+            leftOffsetInBits -= lengthInLongs * (long) Long.SIZE;
         }
 
         final long leadingPartialSize = lengthInBits % Long.SIZE;
@@ -209,8 +209,8 @@ public final class BitIlaUtil {
                     left, leftOffsetInLongs, right, rightOffsetInLongs, lengthInLongs, (int) rightOffsetMod64);
         }
 
-        rightOffsetInBits += Long.SIZE * lengthInLongs;
-        leftOffsetInBits += Long.SIZE * lengthInLongs;
+        rightOffsetInBits += lengthInLongs * (long) Long.SIZE;
+        leftOffsetInBits += lengthInLongs * (long) Long.SIZE;
 
         final long trailingPartialSize = lengthInBits % Long.SIZE;
 

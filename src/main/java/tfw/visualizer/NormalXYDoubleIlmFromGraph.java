@@ -140,17 +140,17 @@ public class NormalXYDoubleIlmFromGraph {
             // for (int i=0 ; i < normalXs.length ; i++)
             // System.out.println(i+" nX="+normalXs[i]+" nY="+normalYs[i]);
 
-            int dimension = (int) Math.ceil(Math.sqrt(clusterNumber));
+            double dimension = Math.ceil(Math.sqrt(clusterNumber));
             // System.out.println("dimension="+dimension+" cN"+clusterNumber);
 
             // Position each normalized cluster into a
             // "dimension" x "dimension" grid.
-            if (dimension > 0) {
+            if (dimension > 0.0) {
                 for (int i = 0; i < normalXs.length; i++) {
                     // System.out.println("normalYs["+i+"]="+normalYs[i]+" nCN["+i+"]="+nodeClusterNumbers[i]+"
                     // d="+dimension);
-                    normalXs[i] = normalXs[i] / dimension + (nodeClusterNumbers[i] % dimension) / (double) dimension;
-                    normalYs[i] = normalYs[i] / dimension + nodeClusterNumbers[i] / dimension / (double) dimension;
+                    normalXs[i] = normalXs[i] / dimension + (nodeClusterNumbers[i] % dimension) / dimension;
+                    normalYs[i] = normalYs[i] / dimension + nodeClusterNumbers[i] / dimension / dimension;
                 }
             }
 
