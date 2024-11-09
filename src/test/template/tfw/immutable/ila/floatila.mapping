@@ -15,5 +15,5 @@
 %%CAST_FROM_DOUBLE%% = (float)\ 
 %%TEMPLATE%% = 
 %%SUPPRESS%% =
-%%FULL_CAST%% =
+%%FULL_CAST%% = (FloatIla[])\ 
 %%DIAMOND%% =

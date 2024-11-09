@@ -8,7 +8,7 @@ import tfw.immutable.ila.IlaTestDimensions;
 
 class %%NAME%%IlaRampTest {
     @Test
-    void testArguments() throws Exception {
+    void testArguments() {
         %%RANDOM_INIT%%final %%TYPE%% start = %%RANDOM_VALUE%%;
         final %%TYPE%% increment = %%RANDOM_VALUE%%;
 

@@ -8,7 +8,7 @@ import tfw.immutable.ila.IlaTestDimensions;
 
 class LongIlaRampTest {
     @Test
-    void testArguments() throws Exception {
+    void testArguments() {
         final Random random = new Random(0);
         final long start = random.nextLong();
         final long increment = random.nextLong();

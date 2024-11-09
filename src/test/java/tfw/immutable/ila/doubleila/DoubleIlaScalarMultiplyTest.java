@@ -8,7 +8,7 @@ import tfw.immutable.ila.IlaTestDimensions;
 
 class DoubleIlaScalarMultiplyTest {
     @Test
-    void testArguments() throws Exception {
+    void testArguments() {
         final Random random = new Random(0);
         final double value = random.nextDouble();
 

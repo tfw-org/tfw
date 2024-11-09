@@ -16,5 +16,5 @@
 %%IS_EQUALS_END%% = 
 %%TEMPLATE%% = 
 %%SUPPRESS%% =
-%%FULL_CAST%% =
+%%FULL_CAST%% = (BooleanIla[])\ 
 %%DIAMOND%% =

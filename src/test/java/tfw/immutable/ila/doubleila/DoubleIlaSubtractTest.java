@@ -8,7 +8,7 @@ import tfw.immutable.ila.IlaTestDimensions;
 
 class DoubleIlaSubtractTest {
     @Test
-    void testArguments() throws Exception {
+    void testArguments() {
         final DoubleIla ila1 = DoubleIlaFromArray.create(new double[10]);
         final DoubleIla ila2 = DoubleIlaFromArray.create(new double[20]);
 

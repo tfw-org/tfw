@@ -8,7 +8,7 @@ import tfw.immutable.ila.IlaTestDimensions;
 
 class ShortIlaSubtractTest {
     @Test
-    void testArguments() throws Exception {
+    void testArguments() {
         final ShortIla ila1 = ShortIlaFromArray.create(new short[10]);
         final ShortIla ila2 = ShortIlaFromArray.create(new short[20]);
 

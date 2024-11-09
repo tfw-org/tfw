@@ -8,7 +8,7 @@ import tfw.immutable.ila.IlaTestDimensions;
 
 class %%NAME%%IlaScalarAddTest {
     @Test
-    void testArguments() throws Exception {
+    void testArguments() {
         %%RANDOM_INIT%%final %%TYPE%% value = %%RANDOM_VALUE%%;
 
         assertThrows(IllegalArgumentException.class, () -> %%NAME%%IlaScalarAdd.create(null, value));
