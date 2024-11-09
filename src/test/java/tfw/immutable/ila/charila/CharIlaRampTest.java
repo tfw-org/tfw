@@ -8,7 +8,7 @@ import tfw.immutable.ila.IlaTestDimensions;
 
 class CharIlaRampTest {
     @Test
-    void testArguments() throws Exception {
+    void testArguments() {
         final Random random = new Random(0);
         final char start = (char) random.nextInt();
         final char increment = (char) random.nextInt();

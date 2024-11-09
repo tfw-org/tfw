@@ -71,7 +71,7 @@ public final class ByteIlaCheck {
         if (offsetLength < 0) throw new Exception("offsetLength < 0 not allowed");
 
         final StridedByteIla stridedByteIla = StridedByteIlaFromByteIla.create(ila, new byte[1000]);
-        final byte eps = epsilon < 0.0 ? (byte) -epsilon : (byte) epsilon;
+        final byte eps = epsilon < 0.0 ? (byte) -epsilon : epsilon;
         final byte neps = (byte) -eps;
         final Random random = new Random(0);
         final int ilaLength = ila.length() + offsetLength <= Integer.MAX_VALUE
@@ -113,7 +113,7 @@ public final class ByteIlaCheck {
 
         final StridedByteIla stridedTarget = StridedByteIlaFromByteIla.create(target, new byte[1000]);
         final StridedByteIla stridedActual = StridedByteIlaFromByteIla.create(target, new byte[1000]);
-        final byte eps = epsilon < 0.0 ? (byte) -epsilon : (byte) epsilon;
+        final byte eps = epsilon < 0.0 ? (byte) -epsilon : epsilon;
         final byte neps = (byte) -eps;
         final Random random = new Random(0);
         final int ilaLength = stridedTarget.length() + addlOffsetLength <= Integer.MAX_VALUE

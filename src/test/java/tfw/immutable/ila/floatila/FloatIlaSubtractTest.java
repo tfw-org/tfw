@@ -8,7 +8,7 @@ import tfw.immutable.ila.IlaTestDimensions;
 
 class FloatIlaSubtractTest {
     @Test
-    void testArguments() throws Exception {
+    void testArguments() {
         final FloatIla ila1 = FloatIlaFromArray.create(new float[10]);
         final FloatIla ila2 = FloatIlaFromArray.create(new float[20]);
 

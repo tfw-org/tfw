@@ -8,7 +8,7 @@ import tfw.immutable.ila.IlaTestDimensions;
 
 class %%NAME%%IlaSubtractTest {
     @Test
-    void testArguments() throws Exception {
+    void testArguments() {
         final %%NAME%%Ila ila1 = %%NAME%%IlaFromArray.create(new %%TYPE%%[10]);
         final %%NAME%%Ila ila2 = %%NAME%%IlaFromArray.create(new %%TYPE%%[20]);
 
