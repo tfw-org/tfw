@@ -144,7 +144,7 @@ public class OctalDump {
                 for (int i = 0; i < length; i++) {
                     StringBuilder sb = new StringBuilder();
 
-                    sb.append(Long.toOctalString(start + i * 16));
+                    sb.append(Long.toOctalString(start + i * 16L));
                     for (int j = 0; j < 16 && bii.hasNext(); j++) {
                         sb.append(" ");
                         switch (type) {
@@ -204,7 +204,7 @@ public class OctalDump {
                 for (int i = 0; i < length; i++) {
                     StringBuilder sb = new StringBuilder();
 
-                    sb.append(Long.toOctalString(start + i * 16));
+                    sb.append(Long.toOctalString(start + i * 16L));
                     for (int j = 0; j < 8 && sii.hasNext(); j++) {
                         sb.append(" ");
                         switch (type) {
@@ -263,7 +263,7 @@ public class OctalDump {
                 for (int i = 0; i < length; i++) {
                     StringBuilder sb = new StringBuilder();
 
-                    sb.append(Long.toOctalString(start + i * 16));
+                    sb.append(Long.toOctalString(start + i * 16L));
                     for (int j = 0; j < 4 && iii.hasNext(); j++) {
                         sb.append(" ");
                         switch (type) {
@@ -320,7 +320,7 @@ public class OctalDump {
                 for (int i = 0; i < length; i++) {
                     StringBuilder sb = new StringBuilder();
 
-                    sb.append(Long.toOctalString(start + i * 16));
+                    sb.append(Long.toOctalString(start + i * 16L));
                     for (int j = 0; j < 2 && lii.hasNext(); j++) {
                         sb.append(" ");
                         switch (type) {
@@ -376,7 +376,7 @@ public class OctalDump {
                 for (int i = 0; i < length; i++) {
                     StringBuilder sb = new StringBuilder();
 
-                    sb.append(Long.toOctalString(start + i * 16));
+                    sb.append(Long.toOctalString(start + i * 16L));
                     for (int j = 0; j < 4 && fii.hasNext(); j++) {
                         sb.append(" ");
                         sb.append(Float.toString(fii.next()));
@@ -422,7 +422,7 @@ public class OctalDump {
                 for (int i = 0; i < length; i++) {
                     StringBuilder sb = new StringBuilder();
 
-                    sb.append(Long.toOctalString(start + i * 16));
+                    sb.append(Long.toOctalString(start + i * 16L));
                     for (int j = 0; j < 2 && dii.hasNext(); j++) {
                         sb.append(" ");
                         sb.append(Double.toString(dii.next()));
