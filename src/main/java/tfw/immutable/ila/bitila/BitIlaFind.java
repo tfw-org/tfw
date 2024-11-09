@@ -73,7 +73,7 @@ public final class BitIlaFind {
                             long temp = array[idx] << offsetMod64;
 
                             if (offsetMod64 + len > Long.SIZE) {
-                                temp |= array[idx + 1] >>> Long.SIZE - offsetMod64;
+                                temp |= array[idx + 1] >>> (Long.SIZE - offsetMod64);
                             }
                             temp = temp >>> invLen;
                             temp = temp << invLen;

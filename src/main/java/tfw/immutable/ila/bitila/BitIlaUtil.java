@@ -28,7 +28,7 @@ public final class BitIlaUtil {
                 int lengthInLongs,
                 int rightOffsetMod64) {
             for (int i = rightOffsetInLongs, j = leftOffsetInLongs; i < rightOffsetInLongs + lengthInLongs; i++, j++) {
-                left[j] = right[i] << rightOffsetMod64 | right[i + 1] >>> Long.SIZE - rightOffsetMod64;
+                left[j] = right[i] << rightOffsetMod64 | right[i + 1] >>> (Long.SIZE - rightOffsetMod64);
             }
         }
 
@@ -52,7 +52,7 @@ public final class BitIlaUtil {
                 int lengthInLongs,
                 int rightOffsetMod64) {
             for (int i = rightOffsetInLongs, j = leftOffsetInLongs; i > rightOffsetInLongs - lengthInLongs; i--, j--) {
-                left[j] = right[i] << rightOffsetMod64 | right[i + 1] >>> Long.SIZE - rightOffsetMod64;
+                left[j] = right[i] << rightOffsetMod64 | right[i + 1] >>> (Long.SIZE - rightOffsetMod64);
             }
         }
     };
@@ -237,10 +237,10 @@ public final class BitIlaUtil {
         long full = array[offsetInLongs] << offsetMod64;
 
         if (offsetMod64 + lengthInBits > Long.SIZE) {
-            full |= array[offsetInLongs + 1] >>> Long.SIZE - offsetMod64;
+            full |= array[offsetInLongs + 1] >>> (Long.SIZE - offsetMod64);
         }
 
-        return full >>> Long.SIZE - lengthInBits;
+        return full >>> (Long.SIZE - lengthInBits);
     }
 
     public static void setPartialLong(
@@ -265,12 +265,12 @@ public final class BitIlaUtil {
         partialLong <<= (int) (Long.SIZE - lengthInBits);
 
         if (offsetMod64 + lengthInBits <= Long.SIZE) {
-            long mask = 1L << Long.SIZE - 1L;
+            long mask = 1L << (Long.SIZE - 1L);
 
             mask >>= (int) (lengthInBits - 1L);
             partialLong >>>= offsetMod64;
             mask >>>= offsetMod64;
-            array[offsetInLongs] = first & ~mask | partialLong;
+            array[offsetInLongs] = (first & ~mask) | partialLong;
         } else {
             final long second = array[offsetInLongs + 1];
             final int firstLengthInBits = Long.SIZE - offsetMod64;
@@ -284,7 +284,7 @@ public final class BitIlaUtil {
 
     public static void setLeftJustifiedPartialLong(
             final long[] array, final long offset, final long partialLong, final long lengthInBits) {
-        setPartialLong(array, offset, partialLong >>> Long.SIZE - lengthInBits, lengthInBits);
+        setPartialLong(array, offset, partialLong >>> (Long.SIZE - lengthInBits), lengthInBits);
     }
 
     public static long getBit(final long[] array, long offset) {

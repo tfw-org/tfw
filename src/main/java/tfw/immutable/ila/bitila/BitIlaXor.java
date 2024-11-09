@@ -32,7 +32,7 @@ public final class BitIlaXor {
                 int lengthInLongs,
                 int rightOffsetMod64) {
             for (int i = rightOffsetInLongs, j = leftOffsetInLongs; i < rightOffsetInLongs + lengthInLongs; i++, j++) {
-                left[j] ^= right[i] << rightOffsetMod64 | right[i + 1] >>> Long.SIZE - rightOffsetMod64;
+                left[j] ^= right[i] << rightOffsetMod64 | right[i + 1] >>> (Long.SIZE - rightOffsetMod64);
             }
         }
 
@@ -53,7 +53,7 @@ public final class BitIlaXor {
                 int lengthInLongs,
                 int rightOffsetMod64) {
             for (int i = rightOffsetInLongs, j = leftOffsetInLongs; i > rightOffsetInLongs - lengthInLongs; i--, j--) {
-                left[j] ^= right[i] << rightOffsetMod64 | right[i + 1] >>> Long.SIZE - rightOffsetMod64;
+                left[j] ^= right[i] << rightOffsetMod64 | right[i + 1] >>> (Long.SIZE - rightOffsetMod64);
             }
         }
     };
