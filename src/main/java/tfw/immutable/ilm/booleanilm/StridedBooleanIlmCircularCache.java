@@ -56,7 +56,7 @@ public class StridedBooleanIlmCircularCache {
                 int rowCount,
                 int colCount)
                 throws IOException {
-            if (cacheStart == 0 && cacheEnd == 0 || rowStart > cacheEnd || rowStart + rowCount < cacheStart) {
+            if ((cacheStart == 0 && cacheEnd == 0) || rowStart > cacheEnd || (rowStart + rowCount) < cacheStart) {
                 if (buffer.length == 0) {
                     buffer = Arrays.copyOf(buffer, cacheLength);
                 }
