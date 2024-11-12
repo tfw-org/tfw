@@ -28,3 +28,5 @@
 27. Change commit message to "Prepare for next development iteration".
 28. Make sure "Commit directly to master branch" is selected.
 29. Press "Commit Changes" button.
+
+NOTE: sonatype 401 error : https://central.sonatype.org/publish/generate-token/#deployment
