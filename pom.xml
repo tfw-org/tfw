@@ -129,6 +129,7 @@
                         <arg>-1</arg>
                         <arg>-Xlint:all,-options,-path</arg>
                         <arg>-XDcompilePolicy=simple</arg>
+                        <arg>--should-stop=ifError=FLOW</arg>
                         <arg>-Xplugin:ErrorProne \
                         -XepAllErrorsAsWarnings \
                         -XepExcludedPaths:.*/tfw/math/BigDecimal.java|.*/tfw/math/BigInteger.java|.*/tfw/math/BitSieve.java|.*/tfw/math/DoubleConsts.java|.*/tfw/math/FloatConsts.java|.*/tfw/math/MathContext.java|.*/tfw/math/MutableBigInteger.java|.*/tfw/math/RoundingMode.java|.*/tfw/math/SignedMutableBigInteger.java</arg>
