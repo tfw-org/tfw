@@ -17,6 +17,7 @@
         <maven.compiler.release>8</maven.compiler.release>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
+        <plugin.error-prone-contrib.version>0.19.1</plugin.error-prone-contrib.version>
         <plugin.error_prone_core.version>2.36.0</plugin.error_prone_core.version>
         <plugin.errorprone-slf4j.version>0.1.28</plugin.errorprone-slf4j.version>
         <plugin.exec-maven-plugin.version>3.5.0</plugin.exec-maven-plugin.version>
@@ -31,6 +32,7 @@
         <plugin.nexus-staging-maven-plugin.version>1.7.0</plugin.nexus-staging-maven-plugin.version>
         <plugin.pitest-junit5-plugin.version>1.2.1</plugin.pitest-junit5-plugin.version>
         <plugin.pitest-maven.version>1.17.1</plugin.pitest-maven.version>
+        <plugin.refaster-runner.version>0.19.1</plugin.refaster-runner.version>
         <plugin.spotless-maven-plugin.version>2.43.0</plugin.spotless-maven-plugin.version>
         <plugin.spotless-palantirJavaFormat.version>2.50.0</plugin.spotless-palantirJavaFormat.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -150,6 +152,17 @@
                             <groupId>jp.skypencil.errorprone.slf4j</groupId>
                             <artifactId>errorprone-slf4j</artifactId>
                             <version>${plugin.errorprone-slf4j.version}</version>
+                        </path>
+                        <path>
+                            <groupId>tech.picnic.error-prone-support</groupId>
+                            <artifactId>error-prone-contrib</artifactId>
+                            <version>${plugin.error-prone-contrib.version}</version>
+                        </path>
+                        <!-- Error Prone Support's Refaster rules. -->
+                        <path>
+                            <groupId>tech.picnic.error-prone-support</groupId>
+                            <artifactId>refaster-runner</artifactId>
+                            <version>${plugin.refaster-runner.version}</version>
                         </path>
                     </annotationProcessorPaths>
                 </configuration>
