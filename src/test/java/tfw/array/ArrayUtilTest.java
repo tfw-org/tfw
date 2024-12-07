@@ -1,38 +1,58 @@
 package tfw.array;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
 
-/**
- *
- */
-class ArrayUtilTest {
+final class ArrayUtilTest {
     @Test
-    void testUnorderedEquals() {
+    void unorderedEqualsTest() {
         Object[] array1 = new Object[0];
         Object[] array2 = new Object[0];
 
-        assertTrue(ArrayUtil.unorderedEquals(array1, array2), "empty arrays");
-        assertFalse(ArrayUtil.unorderedEquals(array1, null), "empty & null");
-        assertFalse(ArrayUtil.unorderedEquals(null, array2), "null & empty");
+        assertThat(ArrayUtil.unorderedEquals(array1, array2))
+                .withFailMessage("empty arrays")
+                .isTrue();
+        assertThat(ArrayUtil.unorderedEquals(array1, null))
+                .withFailMessage("empty & null")
+                .isFalse();
+        assertThat(ArrayUtil.unorderedEquals(null, array2))
+                .withFailMessage("null & empty")
+                .isFalse();
 
         array1 = new Object[] {null};
-        assertFalse(ArrayUtil.unorderedEquals(array1, array2), "null element & empty");
-        array2 = new Object[] {new Object()};
-        assertFalse(ArrayUtil.unorderedEquals(array1, array2), "null element & object element");
 
-        Object o1 = new Object();
-        Object o2 = new Object();
+        assertThat(ArrayUtil.unorderedEquals(array1, array2))
+                .withFailMessage("null element & empty")
+                .isFalse();
+
+        array2 = new Object[] {new Object()};
+
+        assertThat(ArrayUtil.unorderedEquals(array1, array2))
+                .withFailMessage("null element & object element")
+                .isFalse();
+
+        final Object o1 = new Object();
+        final Object o2 = new Object();
         array1 = new Object[] {o1, o2};
         array2 = new Object[] {o2, o1};
-        assertTrue(ArrayUtil.unorderedEquals(array1, array2), "same elements different order");
+
+        assertThat(ArrayUtil.unorderedEquals(array1, array2))
+                .withFailMessage("same elements different order")
+                .isTrue();
+
         array1 = new Object[] {o1, o2, o1};
         array2 = new Object[] {o2, o1, o2};
-        assertFalse(ArrayUtil.unorderedEquals(array1, array2), "different numbers of different elements");
+
+        assertThat(ArrayUtil.unorderedEquals(array1, array2))
+                .withFailMessage("different numbers of different elements")
+                .isFalse();
+
         array1 = new Object[] {o1, o2, o1};
         array2 = new Object[] {o2, o1, o1};
-        assertTrue(ArrayUtil.unorderedEquals(array1, array2), "redunant elements in different orders");
+
+        assertThat(ArrayUtil.unorderedEquals(array1, array2))
+                .withFailMessage("redunant elements in different orders")
+                .isTrue();
     }
 }
