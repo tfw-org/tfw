@@ -1,6 +1,7 @@
 package tfw.swing;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import tfw.check.Argument;
@@ -39,7 +40,7 @@ public class TestTriggeredCommit extends TriggeredCommit {
 
     public Map<ObjectECD, Object> getState() {
         synchronized (lock) {
-            return state;
+            return new HashMap<>(state);
         }
     }
 

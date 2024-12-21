@@ -67,7 +67,7 @@ public class Initiator extends TreeComponent {
      *            <code>Initiator</code>.
      */
     public Initiator(String name, EventChannelDescription[] sources) {
-        this(name, sources, new DefaultStateQueueFactory());
+        this(name, sources, null);
     }
 
     /**
@@ -84,7 +84,11 @@ public class Initiator extends TreeComponent {
      *            channel.
      */
     public Initiator(String name, EventChannelDescription[] sources, StateQueueFactory queueFactory) {
-        super(name, null, createSources(name, sources, queueFactory), null);
+        super(
+                name,
+                null,
+                createSources(name, sources, queueFactory == null ? new DefaultStateQueueFactory() : queueFactory),
+                null);
 
         Argument.assertNotNull(name, "name");
 

@@ -76,11 +76,23 @@ public class AdditionDemo {
         labelPanel.add(valueTwoL);
         labelPanel.add(sumL);
 
-        JTextFieldBB valueOneTF = new JTextFieldBB("valueOne", VALUE_ONE_TEXT_ADJ_ECD, VALUE_ONE_ENABLED_ECD);
+        JTextFieldBB valueOneTF = JTextFieldBB.builder()
+                .setName("valueOne")
+                .setTextInputOutputECD(VALUE_ONE_TEXT_ADJ_ECD)
+                .setEnabledInputECD(VALUE_ONE_ENABLED_ECD)
+                .build();
         valueOneTF.setColumns(10);
-        JTextFieldBB valueTwoTF = new JTextFieldBB("valueTwo", VALUE_TWO_TEXT_ADJ_ECD, VALUE_TWO_ENABLED_ECD);
+        JTextFieldBB valueTwoTF = JTextFieldBB.builder()
+                .setName("valueTwo")
+                .setTextInputOutputECD(VALUE_TWO_TEXT_ADJ_ECD)
+                .setEnabledInputECD(VALUE_TWO_ENABLED_ECD)
+                .build();
         valueTwoTF.setColumns(10);
-        JTextFieldBB sumTF = new JTextFieldBB("sum", SUM_TEXT_ECD, SUM_ENABLED_ECD);
+        JTextFieldBB sumTF = JTextFieldBB.builder()
+                .setName("sum")
+                .setTextInputOutputECD(SUM_TEXT_ECD)
+                .setEnabledInputECD(SUM_ENABLED_ECD)
+                .build();
         sumTF.setColumns(10);
 
         JPanelBB textFieldPanel = new JPanelBB("textField");

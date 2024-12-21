@@ -51,7 +51,11 @@ public class JTextFieldBBDemo {
             }
         });
 
-        JTextFieldBB tfb = new JTextFieldBB("JTextFieldBBTest", textECD, enabledECD);
+        JTextFieldBB tfb = JTextFieldBB.builder()
+                .setName("JTextFieldBBTest")
+                .setTextInputOutputECD(textECD)
+                .setEnabledInputECD(enabledECD)
+                .build();
         root.add(tfb);
         root.add(new Commit("JTextFieldBBTestCommit", new ObjectECD[] {textECD}, null, null) {
             @Override

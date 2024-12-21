@@ -1,6 +1,7 @@
 package tfw.swing;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import tfw.check.Argument;
@@ -9,8 +10,10 @@ import tfw.tsm.Initiator;
 import tfw.tsm.ecd.ObjectECD;
 
 public class TestCommit extends Commit {
-    public int count = 0;
-    public Map<ObjectECD, Object> state = null;
+    private final Object lock = new Object();
+
+    private int count = 0;
+    private Map<ObjectECD, Object> state = null;
 
     public TestCommit(
             final String name,
@@ -22,8 +25,22 @@ public class TestCommit extends Commit {
 
     @Override
     protected void commit() {
-        count++;
-        state = get();
+        synchronized (lock) {
+            count++;
+            state = get();
+        }
+    }
+
+    public int getCount() {
+        synchronized (lock) {
+            return count;
+        }
+    }
+
+    public Map<ObjectECD, Object> getState() {
+        synchronized (lock) {
+            return new HashMap<>(state);
+        }
     }
 
     public static TestCommitBuilder builder() {
