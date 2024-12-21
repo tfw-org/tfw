@@ -10,6 +10,7 @@ import java.util.Map;
 import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.UIManager;
+import org.assertj.swing.core.BasicRobot;
 import org.assertj.swing.edt.FailOnThreadViolationRepaintManager;
 import org.assertj.swing.edt.GuiActionRunner;
 import org.assertj.swing.fixture.FrameFixture;
@@ -37,19 +38,15 @@ class JButtonBBTest {
     public static final StatelessTriggerECD BUTTON_ACTION_ECD = new StatelessTriggerECD("ButtonAction");
     public static final BooleanECD BUTTON_ENABLED_ECD = new BooleanECD("ButtonEnabled");
     public static final String BUTTON_ENABLED_NAME = "Enabled";
-    public static final Color BUTTON_BACKGROUND_DEFAULT = new JButton().getBackground();
     public static final ColorECD BUTTON_BACKGROUND_ECD = new ColorECD("ButtonBackground");
     public static final String BUTTON_BACKGROUND_NAME = "Background";
     public static final Color BUTTON_BACKGROUND_TEST = new Color(255, 254, 253);
-    public static final Color BUTTON_FOREGROUND_DEFAULT = new JButton().getForeground();
     public static final ColorECD BUTTON_FOREGROUND_ECD = new ColorECD("ButtonForeground");
     public static final String BUTTON_FOREGROUND_NAME = "Foreground";
     public static final Color BUTTON_FOREGROUND_TEST = new Color(0, 1, 2);
-    public static final Font BUTTON_FONT_DEFAULT = new JButton().getFont();
     public static final FontECD BUTTON_FONT_ECD = new FontECD("ButtonFont");
     public static final String BUTTON_FONT_NAME = "Font";
     public static final Font BUTTON_FONT_TEST = new Font("Helvetica", Font.PLAIN, 12);
-    public static final String BUTTON_TEXT_DEFAULT = new JButton().getText();
     public static final StringECD BUTTON_TEXT_ECD = new StringECD("ButtonText");
     public static final String BUTTON_TEXT_NAME = "Text";
     public static final String BUTTON_TEXT_TEST = "ButtonText";
@@ -61,34 +58,48 @@ class JButtonBBTest {
     public static final String FRAME_NAME = "Frame";
     public static final String INITIATOR_NAME = "Initiator[" + BUTTON_NAME + "]";
 
+    private static Color buttonBackgroundDefault;
+    private static Color buttonForegroundDefault;
+    private static Font buttonFontDefault;
+    private static String buttonTextDefault;
+
     private Branch branch;
     private JButtonBBTestApplication frame;
     private FrameFixture window;
 
     @BeforeAll
-    public static void setUpOnce() {
+    public static void beforeAll() {
         FailOnThreadViolationRepaintManager.install();
+
+        final JButton jb = GuiActionRunner.execute(() -> new JButton());
+        final JButtonFixture jbf = new JButtonFixture(BasicRobot.robotWithCurrentAwtHierarchyWithoutScreenLock(), jb);
+
+        buttonBackgroundDefault = jbf.background().target();
+        buttonForegroundDefault = jbf.foreground().target();
+        buttonFontDefault = jbf.font().target();
+        buttonTextDefault = jbf.text();
     }
 
     @BeforeEach
-    public void setUp() {
+    public void beforeEach() {
         branch = new Branch(FRAME_NAME);
         frame = GuiActionRunner.execute(() -> new JButtonBBTestApplication(branch));
-        window = new FrameFixture(frame);
+        window = new FrameFixture(BasicRobot.robotWithCurrentAwtHierarchyWithoutScreenLock(), frame);
         window.show();
     }
 
     @Test
     void testJButtonBB() throws Exception {
         final BasicTransactionQueue basicTransactionQueue = new BasicTransactionQueue();
+        final JButtonFixture jButton = window.button(BUTTON_NAME);
         final Root root = Root.builder()
                 .setName(this.getClass().getSimpleName())
                 .addEventChannel(BUTTON_ACTION_ECD, null)
                 .addEventChannel(BUTTON_ENABLED_ECD, Boolean.TRUE)
-                .addEventChannel(BUTTON_BACKGROUND_ECD, BUTTON_BACKGROUND_DEFAULT)
-                .addEventChannel(BUTTON_FOREGROUND_ECD, BUTTON_FOREGROUND_DEFAULT)
-                .addEventChannel(BUTTON_FONT_ECD, BUTTON_FONT_DEFAULT)
-                .addEventChannel(BUTTON_TEXT_ECD, BUTTON_TEXT_DEFAULT)
+                .addEventChannel(BUTTON_BACKGROUND_ECD, buttonBackgroundDefault)
+                .addEventChannel(BUTTON_FOREGROUND_ECD, buttonForegroundDefault)
+                .addEventChannel(BUTTON_FONT_ECD, buttonFontDefault)
+                .addEventChannel(BUTTON_TEXT_ECD, buttonTextDefault)
                 .addEventChannel(BUTTON_ICON_ECD, BUTTON_ICON_DEFAULT)
                 .setTransactionQueue(basicTransactionQueue)
                 .build();
@@ -119,32 +130,45 @@ class JButtonBBTest {
         root.add(initiator);
         root.add(testCommit);
         root.add(testTriggeredCommit);
-        SwingTestUtil.waitForTfwAndSwing(basicTransactionQueue);
+
+        compareWidgetAndTfwState(jButton, testCommit, 1, basicTransactionQueue);
 
         assertEquals(0, testTriggeredCommit.getCount());
 
         window.button(BUTTON_NAME).click();
 
-        SwingTestUtil.waitForTfwAndSwing(basicTransactionQueue);
+        compareWidgetAndTfwState(jButton, testCommit, 1, basicTransactionQueue);
         assertEquals(1, testTriggeredCommit.getCount());
 
         initiator.set(BUTTON_BACKGROUND_ECD, BUTTON_BACKGROUND_TEST);
-        check(BUTTON_BACKGROUND_NAME, basicTransactionQueue, window, testCommit);
+
+        compareWidgetAndTfwState(jButton, testCommit, 2, basicTransactionQueue);
+        assertEquals(1, testTriggeredCommit.getCount());
 
         initiator.set(BUTTON_FOREGROUND_ECD, BUTTON_FOREGROUND_TEST);
-        check(BUTTON_FOREGROUND_NAME, basicTransactionQueue, window, testCommit);
+
+        compareWidgetAndTfwState(jButton, testCommit, 3, basicTransactionQueue);
+        assertEquals(1, testTriggeredCommit.getCount());
 
         initiator.set(BUTTON_ENABLED_ECD, Boolean.FALSE);
-        check(BUTTON_ENABLED_NAME, basicTransactionQueue, window, testCommit);
+
+        compareWidgetAndTfwState(jButton, testCommit, 4, basicTransactionQueue);
+        assertEquals(1, testTriggeredCommit.getCount());
 
         initiator.set(BUTTON_FONT_ECD, BUTTON_FONT_TEST);
-        check(BUTTON_FONT_NAME, basicTransactionQueue, window, testCommit);
+
+        compareWidgetAndTfwState(jButton, testCommit, 5, basicTransactionQueue);
+        assertEquals(1, testTriggeredCommit.getCount());
 
         initiator.set(BUTTON_TEXT_ECD, BUTTON_TEXT_TEST);
-        check(BUTTON_TEXT_NAME, basicTransactionQueue, window, testCommit);
+
+        compareWidgetAndTfwState(jButton, testCommit, 6, basicTransactionQueue);
+        assertEquals(1, testTriggeredCommit.getCount());
 
         initiator.set(BUTTON_ICON_ECD, BUTTON_ICON_TEST);
-        check(BUTTON_ICON_NAME, basicTransactionQueue, window, testCommit);
+
+        compareWidgetAndTfwState(jButton, testCommit, 7, basicTransactionQueue);
+        assertEquals(1, testTriggeredCommit.getCount());
     }
 
     @Test
@@ -156,19 +180,23 @@ class JButtonBBTest {
 
         final TestActionListenerBranchBox testActionListenerBranchBox = new TestActionListenerBranchBox();
 
-        jButtonBB.addActionListenerToBoth(testActionListenerBranchBox);
-        jButtonBB.removeActionListenerFromBoth(testActionListenerBranchBox);
+        GuiActionRunner.execute(() -> jButtonBB.addActionListenerToBoth(testActionListenerBranchBox));
+        GuiActionRunner.execute(() -> jButtonBB.removeActionListenerFromBoth(testActionListenerBranchBox));
 
         final TestActionListenerTreeComponent testActionListenerTreeComponent =
                 new TestActionListenerTreeComponent(BUTTON_ACTION_ECD);
 
-        jButtonBB.addActionListenerToBoth(testActionListenerTreeComponent);
-        jButtonBB.removeActionListenerFromBoth(testActionListenerTreeComponent);
+        GuiActionRunner.execute(() -> jButtonBB.addActionListenerToBoth(testActionListenerTreeComponent));
+        GuiActionRunner.execute(() -> jButtonBB.removeActionListenerFromBoth(testActionListenerTreeComponent));
 
         final TestActionListener testActionListener = new TestActionListener();
 
-        assertThrows(IllegalArgumentException.class, () -> jButtonBB.addActionListenerToBoth(testActionListener));
-        assertThrows(IllegalArgumentException.class, () -> jButtonBB.removeActionListenerFromBoth(testActionListener));
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> GuiActionRunner.execute(() -> jButtonBB.addActionListenerToBoth(testActionListener)));
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> GuiActionRunner.execute(() -> jButtonBB.removeActionListenerFromBoth(testActionListener)));
     }
 
     @AfterEach
@@ -176,22 +204,36 @@ class JButtonBBTest {
         window.cleanUp();
     }
 
-    private static void check(
-            final String testDescription,
-            final BasicTransactionQueue basicTransactionQueue,
-            final FrameFixture window,
-            final TestCommit testCommit)
+    private static void compareWidgetAndTfwState(
+            final JButtonFixture jButtonFixture,
+            final TestCommit testCommit,
+            final int expectedTestCommitCount,
+            final BasicTransactionQueue basicTransactionQueue)
             throws InvocationTargetException, InterruptedException {
         SwingTestUtil.waitForTfwAndSwing(basicTransactionQueue);
 
-        final JButtonFixture jButtonFixture = window.button(BUTTON_NAME);
-        final Map<ObjectECD, Object> tfwState = testCommit.state;
+        final Color widgetBackground = jButtonFixture.background().target();
+        final boolean widgetEnabled = jButtonFixture.isEnabled();
+        final Font widgetFont = jButtonFixture.font().target();
+        final Color widgetForeground = jButtonFixture.foreground().target();
+        final Icon widgetIcon =
+                GuiActionRunner.execute(() -> jButtonFixture.target().getIcon());
+        final String widgetText = jButtonFixture.text();
+        final Map<ObjectECD, Object> tfwState = testCommit.getState();
+        final Color tfwBackground = (Color) tfwState.get(BUTTON_BACKGROUND_ECD);
+        final boolean tfwEnabled = (Boolean) tfwState.get(BUTTON_ENABLED_ECD);
+        final Font tfwFont = (Font) tfwState.get(BUTTON_FONT_ECD);
+        final Color tfwForeground = (Color) tfwState.get(BUTTON_FOREGROUND_ECD);
+        final Icon tfwIcon = (Icon) tfwState.get(BUTTON_ICON_ECD);
+        final String tfwText = (String) tfwState.get(BUTTON_TEXT_ECD);
 
-        assertEquals(jButtonFixture.isEnabled(), tfwState.get(BUTTON_ENABLED_ECD), testDescription);
-        assertEquals(jButtonFixture.background().target(), tfwState.get(BUTTON_BACKGROUND_ECD), testDescription);
-        assertEquals(jButtonFixture.foreground().target(), tfwState.get(BUTTON_FOREGROUND_ECD), testDescription);
-        assertEquals(jButtonFixture.font().target(), tfwState.get(BUTTON_FONT_ECD), testDescription);
-        assertEquals(jButtonFixture.text(), tfwState.get(BUTTON_TEXT_ECD), testDescription);
-        assertEquals(jButtonFixture.target().getIcon(), tfwState.get(BUTTON_ICON_ECD), testDescription);
+        assertEquals(expectedTestCommitCount, testCommit.getCount());
+
+        assertEquals(widgetBackground, tfwBackground);
+        assertEquals(widgetEnabled, tfwEnabled);
+        assertEquals(widgetFont, tfwFont);
+        assertEquals(widgetForeground, tfwForeground);
+        assertEquals(widgetIcon, tfwIcon);
+        assertEquals(widgetText, tfwText);
     }
 }
