@@ -1,30 +1,31 @@
 package tfw.immutable.iis.floatiis;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.io.IOException;
 import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.floatila.FloatIla;
 import tfw.immutable.ila.floatila.FloatIlaFromArray;
 
-class FloatIisFactoryFromFloatIlaTest {
+final class FloatIisFactoryFromFloatIlaTest {
     @Test
-    void testArguments() {
-        assertThrows(IllegalArgumentException.class, () -> FloatIisFactoryFromFloatIla.create(null));
+    void argumentsTest() {
+        assertThatThrownBy(() -> FloatIisFactoryFromFloatIla.create(null))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("ila == null not allowed");
     }
 
     @Test
-    void testFactory() throws IOException {
+    void factoryTest() throws IOException {
         final float[] expectedArray = new float[11];
         final FloatIla ila = FloatIlaFromArray.create(expectedArray);
         final FloatIisFactory iisf = FloatIisFactoryFromFloatIla.create(ila);
         final FloatIis iis = iisf.create();
         final float[] actualArray = new float[expectedArray.length];
 
-        assertEquals(actualArray.length, iis.read(actualArray, 0, actualArray.length));
-        assertArrayEquals(expectedArray, actualArray);
+        assertThat(iis.read(actualArray, 0, actualArray.length)).isEqualTo(actualArray.length);
+        assertThat(actualArray).isEqualTo(expectedArray);
     }
 }
 // AUTO GENERATED FROM TEMPLATE

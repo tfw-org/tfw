@@ -1,8 +1,7 @@
 package tfw.immutable.iis.longiis;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -10,14 +9,14 @@ import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.longila.LongIla;
 import tfw.immutable.ila.longila.LongIlaFromArray;
 
-class LongIisFromLongIlaTest {
+final class LongIisFromLongIlaTest {
     @Test
-    void testArguments() {
-        assertThrows(IllegalArgumentException.class, () -> LongIisFromLongIla.create(null));
+    void argumentsTest() {
+        assertThatThrownBy(() -> LongIisFromLongIla.create(null)).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
-    void testRead() throws IOException {
+    void readTest() throws IOException {
         final long[] expectedArray = new long[12];
         final LongIla ila = LongIlaFromArray.create(expectedArray);
 
@@ -25,16 +24,16 @@ class LongIisFromLongIlaTest {
             final long[] actualArray = new long[expectedArray.length];
 
             for (int i = 0; i < actualArray.length; i += actualArray.length / 4) {
-                assertEquals(actualArray.length / 4, iis.read(actualArray, i, actualArray.length / 4));
+                assertThat(iis.read(actualArray, i, actualArray.length / 4)).isEqualTo(actualArray.length / 4);
             }
 
-            assertEquals(-1, iis.read(new long[1], 0, 1));
-            assertArrayEquals(expectedArray, actualArray);
+            assertThat(iis.read(new long[1], 0, 1)).isEqualTo(-1);
+            assertThat(actualArray).isEqualTo(expectedArray);
         }
     }
 
     @Test
-    void testRead2() throws IOException {
+    void read2Test() throws IOException {
         final long[] array = new long[12];
         final long[] expectedArray = new long[array.length];
 
@@ -49,23 +48,23 @@ class LongIisFromLongIlaTest {
 
             Arrays.fill(actualArray, 0L);
 
-            assertEquals(1, iis.skip(1));
-            assertEquals(expectedArray.length - 1, iis.read(actualArray, 0, actualArray.length));
-            assertArrayEquals(expectedArray, actualArray);
+            assertThat(iis.skip(1)).isEqualTo(1);
+            assertThat(iis.read(actualArray, 0, actualArray.length)).isEqualTo(expectedArray.length - 1);
+            assertThat(actualArray).isEqualTo(expectedArray);
         }
     }
 
     @Test
-    void testSkip() throws IOException {
+    void skipTest() throws IOException {
         final long[] expectedArray = new long[12];
         final LongIla ila = LongIlaFromArray.create(expectedArray);
 
         try (LongIis iis = LongIisFromLongIla.create(ila)) {
             for (int i = 0; i < 4; i++) {
-                assertEquals(expectedArray.length / 4, iis.skip(expectedArray.length / 4));
+                assertThat(iis.skip(expectedArray.length / 4)).isEqualTo(expectedArray.length / 4);
             }
 
-            assertEquals(-1, iis.skip(1));
+            assertThat(iis.skip(1)).isEqualTo(-1);
         }
     }
 }

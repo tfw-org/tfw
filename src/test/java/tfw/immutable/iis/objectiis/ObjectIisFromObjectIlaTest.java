@@ -1,8 +1,7 @@
 package tfw.immutable.iis.objectiis;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -10,14 +9,14 @@ import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.objectila.ObjectIla;
 import tfw.immutable.ila.objectila.ObjectIlaFromArray;
 
-class ObjectIisFromObjectIlaTest {
+final class ObjectIisFromObjectIlaTest {
     @Test
-    void testArguments() {
-        assertThrows(IllegalArgumentException.class, () -> ObjectIisFromObjectIla.create(null));
+    void argumentsTest() {
+        assertThatThrownBy(() -> ObjectIisFromObjectIla.create(null)).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
-    void testRead() throws IOException {
+    void readTest() throws IOException {
         final Object[] expectedArray = new Object[12];
         final ObjectIla<Object> ila = ObjectIlaFromArray.create(expectedArray);
 
@@ -25,16 +24,16 @@ class ObjectIisFromObjectIlaTest {
             final Object[] actualArray = new Object[expectedArray.length];
 
             for (int i = 0; i < actualArray.length; i += actualArray.length / 4) {
-                assertEquals(actualArray.length / 4, iis.read(actualArray, i, actualArray.length / 4));
+                assertThat(iis.read(actualArray, i, actualArray.length / 4)).isEqualTo(actualArray.length / 4);
             }
 
-            assertEquals(-1, iis.read(new Object[1], 0, 1));
-            assertArrayEquals(expectedArray, actualArray);
+            assertThat(iis.read(new Object[1], 0, 1)).isEqualTo(-1);
+            assertThat(actualArray).isEqualTo(expectedArray);
         }
     }
 
     @Test
-    void testRead2() throws IOException {
+    void read2Test() throws IOException {
         final Object[] array = new Object[12];
         final Object[] expectedArray = new Object[array.length];
 
@@ -49,23 +48,23 @@ class ObjectIisFromObjectIlaTest {
 
             Arrays.fill(actualArray, Object.class);
 
-            assertEquals(1, iis.skip(1));
-            assertEquals(expectedArray.length - 1, iis.read(actualArray, 0, actualArray.length));
-            assertArrayEquals(expectedArray, actualArray);
+            assertThat(iis.skip(1)).isEqualTo(1);
+            assertThat(iis.read(actualArray, 0, actualArray.length)).isEqualTo(expectedArray.length - 1);
+            assertThat(actualArray).isEqualTo(expectedArray);
         }
     }
 
     @Test
-    void testSkip() throws IOException {
+    void skipTest() throws IOException {
         final Object[] expectedArray = new Object[12];
         final ObjectIla<Object> ila = ObjectIlaFromArray.create(expectedArray);
 
         try (ObjectIis<Object> iis = ObjectIisFromObjectIla.create(ila)) {
             for (int i = 0; i < 4; i++) {
-                assertEquals(expectedArray.length / 4, iis.skip(expectedArray.length / 4));
+                assertThat(iis.skip(expectedArray.length / 4)).isEqualTo(expectedArray.length / 4);
             }
 
-            assertEquals(-1, iis.skip(1));
+            assertThat(iis.skip(1)).isEqualTo(-1);
         }
     }
 }
