@@ -1,30 +1,31 @@
 package tfw.immutable.iis.chariis;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.io.IOException;
 import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.charila.CharIla;
 import tfw.immutable.ila.charila.CharIlaFromArray;
 
-class CharIisFactoryFromCharIlaTest {
+final class CharIisFactoryFromCharIlaTest {
     @Test
-    void testArguments() {
-        assertThrows(IllegalArgumentException.class, () -> CharIisFactoryFromCharIla.create(null));
+    void argumentsTest() {
+        assertThatThrownBy(() -> CharIisFactoryFromCharIla.create(null))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("ila == null not allowed");
     }
 
     @Test
-    void testFactory() throws IOException {
+    void factoryTest() throws IOException {
         final char[] expectedArray = new char[11];
         final CharIla ila = CharIlaFromArray.create(expectedArray);
         final CharIisFactory iisf = CharIisFactoryFromCharIla.create(ila);
         final CharIis iis = iisf.create();
         final char[] actualArray = new char[expectedArray.length];
 
-        assertEquals(actualArray.length, iis.read(actualArray, 0, actualArray.length));
-        assertArrayEquals(expectedArray, actualArray);
+        assertThat(iis.read(actualArray, 0, actualArray.length)).isEqualTo(actualArray.length);
+        assertThat(actualArray).isEqualTo(expectedArray);
     }
 }
 // AUTO GENERATED FROM TEMPLATE
