@@ -221,7 +221,7 @@ public final class BitIlaUtil {
         Argument.assertNotNull(array, "array");
         Argument.assertNotLessThan(offsetInBits, 0, "offsetInBits");
         Argument.assertNotLessThan(lengthInBits, 0, "lengthInBits");
-        Argument.assertNotGreaterThan(
+        Argument.assertNotGreaterThanOrEquals(
                 offsetInBits + lengthInBits,
                 array.length * (long) Long.SIZE,
                 "offsetInBits + lengthInBits",

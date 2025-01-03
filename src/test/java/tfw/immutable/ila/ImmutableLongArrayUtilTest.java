@@ -1,12 +1,12 @@
 package tfw.immutable.ila;
 
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
-final class ImmutableLongArrayUtilTest {
+class ImmutableLongArrayUtilTest {
     @Test
-    void argumentsTest() {
+    void boundsCheckTest() {
         assertThatThrownBy(() -> ImmutableLongArrayUtil.boundsCheck(-1, 0, 0, 0, 0))
                 .isInstanceOf(IllegalArgumentException.class);
         assertThatThrownBy(() -> ImmutableLongArrayUtil.boundsCheck(0, -1, 0, 0, 0))
