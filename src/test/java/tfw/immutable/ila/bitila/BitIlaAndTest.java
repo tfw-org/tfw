@@ -1,44 +1,51 @@
 package tfw.immutable.ila.bitila;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.io.IOException;
 import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.longila.LongIlaFromArray;
 
-class BitIlaAndTest {
+final class BitIlaAndTest {
     @Test
-    void testAndArguments() {
-        assertThrows(IllegalArgumentException.class, () -> BitIlaAnd.and(null, 0, new long[1], 0, 0));
-        assertThrows(IllegalArgumentException.class, () -> BitIlaAnd.and(new long[1], -1, new long[1], 0, 0));
-        assertThrows(IllegalArgumentException.class, () -> BitIlaAnd.and(new long[1], 0, new long[1], 0, 0));
-        assertThrows(IllegalArgumentException.class, () -> BitIlaAnd.and(new long[1], 0, new long[1], -1, 0));
-        assertThrows(IllegalArgumentException.class, () -> BitIlaAnd.and(new long[1], 0, new long[1], 0, -1));
-        assertThrows(IllegalArgumentException.class, () -> BitIlaAnd.and(new long[1], 60, new long[1], 0, 5));
-        assertThrows(IllegalArgumentException.class, () -> BitIlaAnd.and(new long[1], 0, new long[1], 60, 5));
+    void andArgumentsTest() {
+        assertThatThrownBy(() -> BitIlaAnd.and(null, 0, new long[1], 0, 0))
+                .isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> BitIlaAnd.and(new long[1], -1, new long[1], 0, 0))
+                .isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> BitIlaAnd.and(new long[1], 0, new long[1], 0, 0))
+                .isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> BitIlaAnd.and(new long[1], 0, new long[1], -1, 0))
+                .isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> BitIlaAnd.and(new long[1], 0, new long[1], 0, -1))
+                .isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> BitIlaAnd.and(new long[1], 60, new long[1], 0, 5))
+                .isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> BitIlaAnd.and(new long[1], 0, new long[1], 60, 5))
+                .isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
-    void testCreateArguments() {
+    void createArgumentsTest() {
         final BitIla bitIla = BitIlaFromLongIla.create(LongIlaFromArray.create(new long[1]), 0, 64);
 
-        assertThrows(IllegalArgumentException.class, () -> BitIlaAnd.create(null, bitIla));
-        assertThrows(IllegalArgumentException.class, () -> BitIlaAnd.create(bitIla, null));
+        assertThatThrownBy(() -> BitIlaAnd.create(null, bitIla)).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> BitIlaAnd.create(bitIla, null)).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
-    void testLength() throws IOException {
+    void lengthTest() throws IOException {
         final long length = 64;
         final BitIla bitIla1 = BitIlaFromLongIla.create(LongIlaFromArray.create(new long[1]), 0, length);
         final BitIla bitIla2 = BitIlaFromLongIla.create(LongIlaFromArray.create(new long[1]), 0, length);
         final BitIla bitIla = BitIlaAnd.create(bitIla1, bitIla2);
 
-        assertEquals(length, bitIla.lengthInBits());
+        assertThat(bitIla.lengthInBits()).isEqualTo(length);
     }
 
     @Test
-    void testGetArguments() throws IOException {
+    void getArgumentsTest() throws IOException {
         final BitIla bitIla1 = BitIlaFromLongIla.create(LongIlaFromArray.create(new long[1]), 0, 64);
         final BitIla bitIla2 = BitIlaFromLongIla.create(LongIlaFromArray.create(new long[1]), 0, 64);
 
@@ -46,7 +53,7 @@ class BitIlaAndTest {
     }
 
     @Test
-    void testOne() {
+    void oneTest() {
         final int numberOfLongs = 3;
         final long[] zeroBitLongs = new long[numberOfLongs];
         final long[] oneBitLongs = new long[numberOfLongs];

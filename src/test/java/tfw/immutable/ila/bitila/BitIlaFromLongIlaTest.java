@@ -1,8 +1,7 @@
 package tfw.immutable.ila.bitila;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -10,26 +9,26 @@ import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.longila.LongIla;
 import tfw.immutable.ila.longila.LongIlaFromArray;
 
-class BitIlaFromLongIlaTest {
+final class BitIlaFromLongIlaTest {
     @Test
-    void testInvalidParameters() {
+    void createArgumentsTest() {
         final LongIla longIla = LongIlaFromArray.create(new long[0]);
 
-        assertThrows(IllegalArgumentException.class, () -> BitIlaFromLongIla.create(null, 0, 0));
-        assertThrows(IllegalArgumentException.class, () -> BitIlaFromLongIla.create(longIla, -1, 0));
-        assertThrows(IllegalArgumentException.class, () -> BitIlaFromLongIla.create(longIla, 64, 0));
-        assertThrows(IllegalArgumentException.class, () -> BitIlaFromLongIla.create(longIla, 0, -1));
+        assertThatThrownBy(() -> BitIlaFromLongIla.create(null, 0, 0)).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> BitIlaFromLongIla.create(longIla, -1, 0)).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> BitIlaFromLongIla.create(longIla, 64, 0)).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> BitIlaFromLongIla.create(longIla, 0, -1)).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
-    void testGetArguments() throws IOException {
+    void getArgumentsTest() throws IOException {
         final LongIla longIla = LongIlaFromArray.create(new long[1]);
 
         BitIlaCheck.checkGetArguments(BitIlaFromLongIla.create(longIla, 0, 64));
     }
 
     @Test
-    void testExhaustive() throws IOException {
+    void exhaustiveTest() throws IOException {
         final int numberOfLongs = 3;
         final long[] originalLongs = new long[numberOfLongs];
         final long[] expectedLongs = new long[numberOfLongs];
@@ -47,7 +46,7 @@ class BitIlaFromLongIlaTest {
                 final LongIla longIla = LongIlaFromArray.create(originalLongs);
                 final BitIla bitIla = BitIlaFromLongIla.create(longIla, start, length);
 
-                assertEquals(length, bitIla.lengthInBits());
+                assertThat(bitIla.lengthInBits()).isEqualTo(length);
 
                 final long[] actualLongs = new long[numberOfLongs + 1];
                 final long[] modExpectedLongs = new long[numberOfLongs + 1];
@@ -61,7 +60,7 @@ class BitIlaFromLongIlaTest {
                             BitIlaUtil.copy(modExpectedLongs, getOffset, expectedLongs, getStart, getLength);
                             bitIla.get(actualLongs, getOffset, getStart, getLength);
 
-                            assertArrayEquals(modExpectedLongs, actualLongs);
+                            assertThat(actualLongs).isEqualTo(modExpectedLongs);
                         }
                     }
                 }
