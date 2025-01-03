@@ -13,7 +13,7 @@ final class LongIisFactoryFromLongIlaTest {
     void argumentsTest() {
         assertThatThrownBy(() -> LongIisFactoryFromLongIla.create(null))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("ila == null not allowed");
+                .hasMessage("ila == null not allowed!");
     }
 
     @Test

@@ -1,15 +1,15 @@
 package tfw.immutable.ila.charila;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.lang.reflect.Array;
 import java.util.Random;
 import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 
-class CharIlaInterleaveTest {
+final class CharIlaInterleaveTest {
     @Test
-    void testArguments() {
+    void argumentsTest() {
         final CharIla ila1 = CharIlaFromArray.create(new char[10]);
         final CharIla ila2 = CharIlaFromArray.create(new char[20]);
         final CharIla[] ilas1 = (CharIla[]) Array.newInstance(CharIla.class, 0);
@@ -29,17 +29,31 @@ class CharIlaInterleaveTest {
         ilas6[0] = ila1;
         ilas6[1] = ila2;
 
-        assertThrows(IllegalArgumentException.class, () -> CharIlaInterleave.create(null, buffer));
-        assertThrows(IllegalArgumentException.class, () -> CharIlaInterleave.create(ilas5, null));
-        assertThrows(IllegalArgumentException.class, () -> CharIlaInterleave.create(ilas1, buffer));
-        assertThrows(IllegalArgumentException.class, () -> CharIlaInterleave.create(ilas2, buffer));
-        assertThrows(IllegalArgumentException.class, () -> CharIlaInterleave.create(ilas3, buffer));
-        assertThrows(IllegalArgumentException.class, () -> CharIlaInterleave.create(ilas4, buffer));
-        assertThrows(IllegalArgumentException.class, () -> CharIlaInterleave.create(ilas6, buffer));
+        assertThatThrownBy(() -> CharIlaInterleave.create(null, buffer))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("ilas == null not allowed!");
+        assertThatThrownBy(() -> CharIlaInterleave.create(ilas5, null))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("buffer == null not allowed!");
+        assertThatThrownBy(() -> CharIlaInterleave.create(ilas1, buffer))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("ilas.length (=0) < 1 not allowed!");
+        assertThatThrownBy(() -> CharIlaInterleave.create(ilas2, buffer))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("ilas[0] == null not allowed!");
+        assertThatThrownBy(() -> CharIlaInterleave.create(ilas3, buffer))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("ilas[0] == null not allowed!");
+        assertThatThrownBy(() -> CharIlaInterleave.create(ilas4, buffer))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("ilas[1] == null not allowed!");
+        assertThatThrownBy(() -> CharIlaInterleave.create(ilas6, buffer))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("ilas[0].length() (=20) != ilas[1].length() (=10) not allowed!");
     }
 
     @Test
-    void testAll() throws Exception {
+    void allTest() throws Exception {
         final Random random = new Random(0);
         final int length = IlaTestDimensions.defaultIlaLength();
         for (int jj = 2; jj < 6; ++jj) {

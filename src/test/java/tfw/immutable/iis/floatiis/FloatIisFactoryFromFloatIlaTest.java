@@ -13,7 +13,7 @@ final class FloatIisFactoryFromFloatIlaTest {
     void argumentsTest() {
         assertThatThrownBy(() -> FloatIisFactoryFromFloatIla.create(null))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("ila == null not allowed");
+                .hasMessage("ila == null not allowed!");
     }
 
     @Test

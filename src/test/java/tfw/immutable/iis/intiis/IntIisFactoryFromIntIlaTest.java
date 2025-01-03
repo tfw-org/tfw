@@ -13,7 +13,7 @@ final class IntIisFactoryFromIntIlaTest {
     void argumentsTest() {
         assertThatThrownBy(() -> IntIisFactoryFromIntIla.create(null))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("ila == null not allowed");
+                .hasMessage("ila == null not allowed!");
     }
 
     @Test

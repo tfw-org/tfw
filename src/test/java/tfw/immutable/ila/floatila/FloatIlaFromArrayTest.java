@@ -1,19 +1,21 @@
 package tfw.immutable.ila.floatila;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.Random;
 import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 
-class FloatIlaFromArrayTest {
+final class FloatIlaFromArrayTest {
     @Test
-    void testArguments() {
-        assertThrows(IllegalArgumentException.class, () -> FloatIlaFromArray.create(null));
+    void argumentsTest() {
+        assertThatThrownBy(() -> FloatIlaFromArray.create(null))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("array == null not allowed!");
     }
 
     @Test
-    void testImmutabilityCheck() throws Exception {
+    void immutabililtyTest() throws Exception {
         final int ilaLength = IlaTestDimensions.defaultIlaLength();
         final Random random = new Random(0);
         final float[] creation = new float[ilaLength];
@@ -27,7 +29,7 @@ class FloatIlaFromArrayTest {
     }
 
     @Test
-    void testValueCorrectness() throws Exception {
+    void valueCorrectnessTest() throws Exception {
         final int ilaLength = IlaTestDimensions.defaultIlaLength();
         final int addlOffsetLength = IlaTestDimensions.defaultOffsetLength();
         final int maxAbsStride = IlaTestDimensions.defaultMaxStride();

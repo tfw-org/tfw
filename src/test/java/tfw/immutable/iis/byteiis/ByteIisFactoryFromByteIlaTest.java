@@ -13,7 +13,7 @@ final class ByteIisFactoryFromByteIlaTest {
     void argumentsTest() {
         assertThatThrownBy(() -> ByteIisFactoryFromByteIla.create(null))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("ila == null not allowed");
+                .hasMessage("ila == null not allowed!");
     }
 
     @Test

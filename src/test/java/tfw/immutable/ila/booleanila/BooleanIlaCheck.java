@@ -1,8 +1,7 @@
 package tfw.immutable.ila.booleanila;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.io.IOException;
 import java.util.Random;
@@ -16,21 +15,21 @@ public final class BooleanIlaCheck {
         final long ilaLength = ila.length();
         final boolean[] array = new boolean[10];
 
-        assertThrows(NullPointerException.class, () -> ila.get(null, 0, 0, 1));
-        assertThrows(IllegalArgumentException.class, () -> ila.get(array, -1, 0, 1));
-        assertThrows(IllegalArgumentException.class, () -> ila.get(array, 0, -1, 1));
-        assertThrows(IllegalArgumentException.class, () -> ila.get(array, 0, 0, -1));
-        assertThrows(IllegalArgumentException.class, () -> ila.get(array, array.length, 0, 1));
-        assertThrows(IllegalArgumentException.class, () -> ila.get(array, 0, ilaLength, 1));
-        assertThrows(IllegalArgumentException.class, () -> ila.get(array, array.length - 1, 0, 2));
-        assertThrows(IllegalArgumentException.class, () -> ila.get(array, 0, ilaLength - 1, 2));
+        assertThatThrownBy(() -> ila.get(null, 0, 0, 1)).isInstanceOf(NullPointerException.class);
+        assertThatThrownBy(() -> ila.get(array, -1, 0, 1)).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> ila.get(array, 0, -1, 1)).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> ila.get(array, 0, 0, -1)).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> ila.get(array, array.length, 0, 1)).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> ila.get(array, 0, ilaLength, 1)).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> ila.get(array, array.length - 1, 0, 2)).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> ila.get(array, 0, ilaLength - 1, 2)).isInstanceOf(IllegalArgumentException.class);
     }
 
     public static void checkGetExhaustively(BooleanIla ila1, BooleanIla ila2) throws IOException {
         final int length1 = (int) Math.min(ila1.length(), Integer.MAX_VALUE);
         final int length2 = (int) Math.min(ila2.length(), Integer.MAX_VALUE);
 
-        assertEquals(length1, length2);
+        assertThat(length2).isEqualTo(length1);
 
         final boolean[] a1 = new boolean[length1];
         final boolean[] a2 = new boolean[length1];
@@ -41,7 +40,7 @@ public final class BooleanIlaCheck {
                     ila1.get(a1, o, s, l);
                     ila2.get(a2, o, s, l);
 
-                    assertArrayEquals(a1, a2);
+                    assertThat(a2).isEqualTo(a1);
                 }
             }
         }

@@ -1,25 +1,33 @@
 package tfw.immutable.ila.charila;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.Random;
 import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 
-class CharIlaDecimateTest {
+final class CharIlaDecimateTest {
     @Test
-    void testArguments() {
+    void argumentsTest() {
         final CharIla ila = CharIlaFromArray.create(new char[10]);
         final char[] buffer = new char[10];
 
-        assertThrows(IllegalArgumentException.class, () -> CharIlaDecimate.create(null, 2, buffer));
-        assertThrows(IllegalArgumentException.class, () -> CharIlaDecimate.create(ila, 2, null));
-        assertThrows(IllegalArgumentException.class, () -> CharIlaDecimate.create(ila, 1, buffer));
-        assertThrows(IllegalArgumentException.class, () -> CharIlaDecimate.create(ila, 2, new char[0]));
+        assertThatThrownBy(() -> CharIlaDecimate.create(null, 2, buffer))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("ila == null not allowed!");
+        assertThatThrownBy(() -> CharIlaDecimate.create(ila, 2, null))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("buffer == null not allowed!");
+        assertThatThrownBy(() -> CharIlaDecimate.create(ila, 1, buffer))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("factor (=1) < 2 not allowed!");
+        assertThatThrownBy(() -> CharIlaDecimate.create(ila, 2, new char[0]))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("buffer.length (=0) < 1 not allowed!");
     }
 
     @Test
-    void testAll() throws Exception {
+    void allTest() throws Exception {
         final Random random = new Random(0);
         final int length = IlaTestDimensions.defaultIlaLength();
         final char[] array = new char[length];
