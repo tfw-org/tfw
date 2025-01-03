@@ -5,6 +5,8 @@ package tfw.check;
  *
  */
 public class Argument {
+    private Argument() {}
+
     /**
      * Checks the argument for a null value.
      *
@@ -18,7 +20,7 @@ public class Argument {
      */
     public static void assertNotNull(Object argument, String argumentName) {
         if (argument == null) {
-            throw new IllegalArgumentException(argumentName + " == null not allowed");
+            throw new IllegalArgumentException(argumentName + " == null not allowed!");
         }
     }
 
@@ -39,7 +41,7 @@ public class Argument {
         assertNotNull(argument, argumentName);
 
         if (argument.length == 0) {
-            throw new IllegalArgumentException(argumentName + ".length == 0 not allowed");
+            throw new IllegalArgumentException(argumentName + ".length == 0 not allowed!");
         }
     }
 
@@ -61,7 +63,7 @@ public class Argument {
         assertNotNull(argument, argumentName);
 
         if (argument.length() == 0) {
-            throw new IllegalArgumentException(argumentName + ".length() == 0 not allowed");
+            throw new IllegalArgumentException(argumentName + ".length() == 0 not allowed!");
         }
     }
 
@@ -83,7 +85,7 @@ public class Argument {
 
         for (int i = 0; i < argument.length; i++) {
             if (argument[i] == null) {
-                throw new IllegalArgumentException(argumentName + "[" + i + "]" + "== null not allowed");
+                throw new IllegalArgumentException(argumentName + "[" + i + "]" + "== null not allowed!");
             }
         }
     }
@@ -102,7 +104,7 @@ public class Argument {
      */
     public static final void assertGreaterThan(int argument, int constant, String argumentName) {
         if (argument <= constant) {
-            throw new IllegalArgumentException(argumentName + " (=" + argument + ") <= " + constant + " not allowed.");
+            throw new IllegalArgumentException(argumentName + " (=" + argument + ") <= " + constant + " not allowed!");
         }
     }
 
@@ -120,7 +122,7 @@ public class Argument {
      */
     public static final void assertGreaterThanOrEqualTo(int argument, int constant, String argumentName) {
         if (argument < constant) {
-            throw new IllegalArgumentException(argumentName + " (=" + argument + ") < " + constant + " not allowed.");
+            throw new IllegalArgumentException(argumentName + " (=" + argument + ") < " + constant + " not allowed!");
         }
     }
 
@@ -138,7 +140,7 @@ public class Argument {
      */
     public static final void assertGreaterThanOrEqualTo(long argument, long constant, String argumentName) {
         if (argument < constant) {
-            throw new IllegalArgumentException(argumentName + " (=" + argument + ") < " + constant + " not allowed.");
+            throw new IllegalArgumentException(argumentName + " (=" + argument + ") < " + constant + " not allowed!");
         }
     }
 

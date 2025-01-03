@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.junit.jupiter.api.Test;
 
-final class ImmutableLongArrayUtilTest {
+class ImmutableLongArrayUtilTest {
     @Test
     void boundsCheckTest() {
         assertThatThrownBy(() -> ImmutableLongArrayUtil.boundsCheck(-1, 0, 0, 0, 0))

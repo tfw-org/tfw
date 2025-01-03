@@ -13,7 +13,7 @@ final class DoubleIisFactoryFromDoubleIlaTest {
     void argumentsTest() {
         assertThatThrownBy(() -> DoubleIisFactoryFromDoubleIla.create(null))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("ila == null not allowed");
+                .hasMessage("ila == null not allowed!");
     }
 
     @Test

@@ -14,7 +14,7 @@ final class %%NAME%%IisFactoryFrom%%NAME%%IlaTest {
     void argumentsTest() {
         assertThatThrownBy(() -> %%NAME%%IisFactoryFrom%%NAME%%Ila.create(null))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("ila == null not allowed");
+                .hasMessage("ila == null not allowed!");
     }
 
     @Test

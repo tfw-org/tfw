@@ -1,15 +1,15 @@
 package tfw.immutable.ila.objectila;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.lang.reflect.Array;
 import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 
-class ObjectIlaInterleaveTest {
+final class ObjectIlaInterleaveTest {
     @Test
     @SuppressWarnings("unchecked")
-    void testArguments() {
+    void argumentsTest() {
         final ObjectIla<Object> ila1 = ObjectIlaFromArray.create(new Object[10]);
         final ObjectIla<Object> ila2 = ObjectIlaFromArray.create(new Object[20]);
         final ObjectIla<Object>[] ilas1 = (ObjectIla<Object>[]) Array.newInstance(ObjectIla.class, 0);
@@ -29,18 +29,32 @@ class ObjectIlaInterleaveTest {
         ilas6[0] = ila1;
         ilas6[1] = ila2;
 
-        assertThrows(IllegalArgumentException.class, () -> ObjectIlaInterleave.create(null, buffer));
-        assertThrows(IllegalArgumentException.class, () -> ObjectIlaInterleave.create(ilas5, null));
-        assertThrows(IllegalArgumentException.class, () -> ObjectIlaInterleave.create(ilas1, buffer));
-        assertThrows(IllegalArgumentException.class, () -> ObjectIlaInterleave.create(ilas2, buffer));
-        assertThrows(IllegalArgumentException.class, () -> ObjectIlaInterleave.create(ilas3, buffer));
-        assertThrows(IllegalArgumentException.class, () -> ObjectIlaInterleave.create(ilas4, buffer));
-        assertThrows(IllegalArgumentException.class, () -> ObjectIlaInterleave.create(ilas6, buffer));
+        assertThatThrownBy(() -> ObjectIlaInterleave.create(null, buffer))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("ilas == null not allowed!");
+        assertThatThrownBy(() -> ObjectIlaInterleave.create(ilas5, null))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("buffer == null not allowed!");
+        assertThatThrownBy(() -> ObjectIlaInterleave.create(ilas1, buffer))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("ilas.length (=0) < 1 not allowed!");
+        assertThatThrownBy(() -> ObjectIlaInterleave.create(ilas2, buffer))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("ilas[0] == null not allowed!");
+        assertThatThrownBy(() -> ObjectIlaInterleave.create(ilas3, buffer))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("ilas[0] == null not allowed!");
+        assertThatThrownBy(() -> ObjectIlaInterleave.create(ilas4, buffer))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("ilas[1] == null not allowed!");
+        assertThatThrownBy(() -> ObjectIlaInterleave.create(ilas6, buffer))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("ilas[0].length() (=20) != ilas[1].length() (=10) not allowed!");
     }
 
     @Test
     @SuppressWarnings("unchecked")
-    void testAll() throws Exception {
+    void allTest() throws Exception {
         final int length = IlaTestDimensions.defaultIlaLength();
         for (int jj = 2; jj < 6; ++jj) {
             final Object[][] target = new Object[jj][length];

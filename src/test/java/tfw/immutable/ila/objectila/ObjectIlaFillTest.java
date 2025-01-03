@@ -1,20 +1,22 @@
 package tfw.immutable.ila.objectila;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 
-class ObjectIlaFillTest {
+final class ObjectIlaFillTest {
     @Test
-    void testArguments() {
+    void argumentsTest() {
         final Object value = new Object();
 
-        assertThrows(IllegalArgumentException.class, () -> ObjectIlaFill.create(value, -1));
+        assertThatThrownBy(() -> ObjectIlaFill.create(value, -1))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("length (=-1) < 0 not allowed!");
     }
 
     @Test
-    void testAll() throws Exception {
+    void allTest() throws Exception {
         final Object value = new Object();
         final int length = IlaTestDimensions.defaultIlaLength();
         final Object[] array = new Object[length];
