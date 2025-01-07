@@ -1,23 +1,27 @@
 package tfw.immutable.ila.booleanila;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.Random;
 import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 
-class BooleanIlaReverseTest {
+final class BooleanIlaReverseTest {
     @Test
-    void testArguments() {
+    void argumentsTest() {
         final BooleanIla ila = BooleanIlaFromArray.create(new boolean[10]);
         final boolean[] buffer = new boolean[10];
 
-        assertThrows(IllegalArgumentException.class, () -> BooleanIlaReverse.create(null, buffer));
-        assertThrows(IllegalArgumentException.class, () -> BooleanIlaReverse.create(ila, null));
+        assertThatThrownBy(() -> BooleanIlaReverse.create(null, buffer))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("ila == null not allowed!");
+        assertThatThrownBy(() -> BooleanIlaReverse.create(ila, null))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("buffer == null not allowed!");
     }
 
     @Test
-    void testAll() throws Exception {
+    void allTest() throws Exception {
         final Random random = new Random(0);
         final int length = IlaTestDimensions.defaultIlaLength();
         final boolean[] array = new boolean[length];

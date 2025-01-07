@@ -1,23 +1,27 @@
 package tfw.immutable.ila.floatila;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.Random;
 import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 
-class FloatIlaReverseTest {
+final class FloatIlaReverseTest {
     @Test
-    void testArguments() {
+    void argumentsTest() {
         final FloatIla ila = FloatIlaFromArray.create(new float[10]);
         final float[] buffer = new float[10];
 
-        assertThrows(IllegalArgumentException.class, () -> FloatIlaReverse.create(null, buffer));
-        assertThrows(IllegalArgumentException.class, () -> FloatIlaReverse.create(ila, null));
+        assertThatThrownBy(() -> FloatIlaReverse.create(null, buffer))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("ila == null not allowed!");
+        assertThatThrownBy(() -> FloatIlaReverse.create(ila, null))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("buffer == null not allowed!");
     }
 
     @Test
-    void testAll() throws Exception {
+    void allTest() throws Exception {
         final Random random = new Random(0);
         final int length = IlaTestDimensions.defaultIlaLength();
         final float[] array = new float[length];

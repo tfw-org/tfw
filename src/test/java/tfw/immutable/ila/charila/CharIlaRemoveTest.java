@@ -1,24 +1,30 @@
 package tfw.immutable.ila.charila;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.Random;
 import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 
-class CharIlaRemoveTest {
+final class CharIlaRemoveTest {
     @Test
-    void testArguments() throws Exception {
+    void argumentsTest() throws Exception {
         final CharIla ila = CharIlaFromArray.create(new char[10]);
         final long ilaLength = ila.length();
 
-        assertThrows(IllegalArgumentException.class, () -> CharIlaRemove.create(null, 0));
-        assertThrows(IllegalArgumentException.class, () -> CharIlaRemove.create(ila, -1));
-        assertThrows(IllegalArgumentException.class, () -> CharIlaRemove.create(ila, ilaLength));
+        assertThatThrownBy(() -> CharIlaRemove.create(null, 0))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("ila == null not allowed!");
+        assertThatThrownBy(() -> CharIlaRemove.create(ila, -1))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("index (=-1) < 0 not allowed!");
+        assertThatThrownBy(() -> CharIlaRemove.create(ila, ilaLength))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("index (=10) >= ila.length() (=10) not allowed!");
     }
 
     @Test
-    void testAll() throws Exception {
+    void allTest() throws Exception {
         final Random random = new Random(0);
         final int length = IlaTestDimensions.defaultIlaLength();
         final char[] array = new char[length];
