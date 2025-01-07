@@ -1,22 +1,28 @@
 package tfw.immutable.ila.longila;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.Random;
 import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 
-class LongIlaBoundTest {
+final class LongIlaBoundTest {
     @Test
-    void testArguments() {
+    void argumentsTest() {
+        final long low = 5;
+        final long high = 10;
         final LongIla ila = LongIlaFromArray.create(new long[10]);
 
-        assertThrows(IllegalArgumentException.class, () -> LongIlaBound.create(null, 5, 10));
-        assertThrows(IllegalArgumentException.class, () -> LongIlaBound.create(ila, 10, 5));
+        assertThatThrownBy(() -> LongIlaBound.create(null, low, high))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("ila == null not allowed!");
+        assertThatThrownBy(() -> LongIlaBound.create(ila, high, low))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("minimum (=" + high + ") > maximum (=" + low + ") not allowed!");
     }
 
     @Test
-    void testAll() throws Exception {
+    void allTest() throws Exception {
         final Random random = new Random(0);
         final int length = IlaTestDimensions.defaultIlaLength();
         final long[] array = new long[length];

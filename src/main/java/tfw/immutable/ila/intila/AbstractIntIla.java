@@ -1,6 +1,7 @@
 package tfw.immutable.ila.intila;
 
 import java.io.IOException;
+import tfw.check.Argument;
 import tfw.immutable.ila.AbstractIla;
 
 public abstract class AbstractIntIla extends AbstractIla implements IntIla {
@@ -14,6 +15,7 @@ public abstract class AbstractIntIla extends AbstractIla implements IntIla {
             return;
         }
 
+        Argument.assertNotNull(array, "array");
         boundsCheck(array.length, offset, start, length);
         getImpl(array, offset, start, length);
     }

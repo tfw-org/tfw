@@ -14,14 +14,30 @@ public final class ObjectIlaCheck {
         final long ilaLength = ila.length();
         final Object[] array = new Object[10];
 
-        assertThatThrownBy(() -> ila.get(null, 0, 0, 1)).isInstanceOf(NullPointerException.class);
-        assertThatThrownBy(() -> ila.get(array, -1, 0, 1)).isInstanceOf(IllegalArgumentException.class);
-        assertThatThrownBy(() -> ila.get(array, 0, -1, 1)).isInstanceOf(IllegalArgumentException.class);
-        assertThatThrownBy(() -> ila.get(array, 0, 0, -1)).isInstanceOf(IllegalArgumentException.class);
-        assertThatThrownBy(() -> ila.get(array, array.length, 0, 1)).isInstanceOf(IllegalArgumentException.class);
-        assertThatThrownBy(() -> ila.get(array, 0, ilaLength, 1)).isInstanceOf(IllegalArgumentException.class);
-        assertThatThrownBy(() -> ila.get(array, array.length - 1, 0, 2)).isInstanceOf(IllegalArgumentException.class);
-        assertThatThrownBy(() -> ila.get(array, 0, ilaLength - 1, 2)).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> ila.get(null, 0, 0, 1))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("array == null not allowed!");
+        assertThatThrownBy(() -> ila.get(array, -1, 0, 1))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("offset (=-1) < 0 not allowed!");
+        assertThatThrownBy(() -> ila.get(array, 0, -1, 1))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("start (=-1) < 0 not allowed!");
+        assertThatThrownBy(() -> ila.get(array, 0, 0, -1))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("length (=-1) < 0 not allowed!");
+        assertThatThrownBy(() -> ila.get(array, array.length, 0, 1))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("offset (=10) >= array.length (=10) not allowed!");
+        assertThatThrownBy(() -> ila.get(array, 0, ilaLength, 1))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("start (=" + ilaLength + ") >= ila.length() (=" + ilaLength + ") not allowed!");
+        assertThatThrownBy(() -> ila.get(array, array.length - 1, 0, 2))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("offset+length (=11) > array.length (=10) not allowed!");
+        assertThatThrownBy(() -> ila.get(array, 0, ilaLength - 1, 2))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("start+length (=" + (ilaLength + 1) + ") > ila.length() (=" + ilaLength + ") not allowed!");
     }
 
     public static void checkGetExhaustively(ObjectIla<Object> ila1, ObjectIla<Object> ila2) throws IOException {

@@ -1,25 +1,33 @@
 package tfw.immutable.ila.doubleila;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.Random;
 import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 
-class DoubleIlaAddTest {
+final class DoubleIlaAddTest {
     @Test
-    void testArguments() {
+    void argumentsTest() {
         final DoubleIla ila1 = DoubleIlaFromArray.create(new double[10]);
         final DoubleIla ila2 = DoubleIlaFromArray.create(new double[20]);
 
-        assertThrows(IllegalArgumentException.class, () -> DoubleIlaAdd.create(null, ila1, 10));
-        assertThrows(IllegalArgumentException.class, () -> DoubleIlaAdd.create(ila1, null, 10));
-        assertThrows(IllegalArgumentException.class, () -> DoubleIlaAdd.create(ila1, ila1, 0));
-        assertThrows(IllegalArgumentException.class, () -> DoubleIlaAdd.create(ila1, ila2, 10));
+        assertThatThrownBy(() -> DoubleIlaAdd.create(null, ila1, 10))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("leftIla == null not allowed!");
+        assertThatThrownBy(() -> DoubleIlaAdd.create(ila1, null, 10))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("rightIla == null not allowed!");
+        assertThatThrownBy(() -> DoubleIlaAdd.create(ila1, ila1, 0))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("bufferSize (=0) < 1 not allowed!");
+        assertThatThrownBy(() -> DoubleIlaAdd.create(ila1, ila2, 10))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("leftIla.length() (=10) != rightIla.length() (=20) not allowed!");
     }
 
     @Test
-    void testAll() throws Exception {
+    void allTest() throws Exception {
         final Random random = new Random(0);
         final int length = IlaTestDimensions.defaultIlaLength();
         final double[] leftArray = new double[length];

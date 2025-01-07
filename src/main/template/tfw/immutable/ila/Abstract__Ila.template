@@ -2,6 +2,7 @@
 package %%PACKAGE%%;
 
 import java.io.IOException;
+import tfw.check.Argument;
 import tfw.immutable.ila.AbstractIla;
 
 public abstract class Abstract%%NAME%%Ila%%TEMPLATE%% extends AbstractIla implements %%NAME%%Ila%%TEMPLATE%% {
@@ -15,6 +16,7 @@ public abstract class Abstract%%NAME%%Ila%%TEMPLATE%% extends AbstractIla implem
             return;
         }
 
+        Argument.assertNotNull(array, "array");
         boundsCheck(array.length, offset, start, length);
         getImpl(array, offset, start, length);
     }
