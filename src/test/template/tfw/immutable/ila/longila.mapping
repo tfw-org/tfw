@@ -17,3 +17,4 @@
 %%SUPPRESS%% =
 %%FULL_CAST%% = (LongIla[])\ 
 %%DIAMOND%% =
+%%CHAR_CAST_TO_INT%% =

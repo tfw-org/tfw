@@ -17,3 +17,4 @@
 %%SUPPRESS%% =
 %%FULL_CAST%% = (FloatIla[])\ 
 %%DIAMOND%% =
+%%CHAR_CAST_TO_INT%% =

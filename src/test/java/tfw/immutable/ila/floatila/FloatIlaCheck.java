@@ -1,8 +1,7 @@
 package tfw.immutable.ila.floatila;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.io.IOException;
 import java.util.Random;
@@ -16,21 +15,37 @@ public final class FloatIlaCheck {
         final long ilaLength = ila.length();
         final float[] array = new float[10];
 
-        assertThrows(NullPointerException.class, () -> ila.get(null, 0, 0, 1));
-        assertThrows(IllegalArgumentException.class, () -> ila.get(array, -1, 0, 1));
-        assertThrows(IllegalArgumentException.class, () -> ila.get(array, 0, -1, 1));
-        assertThrows(IllegalArgumentException.class, () -> ila.get(array, 0, 0, -1));
-        assertThrows(IllegalArgumentException.class, () -> ila.get(array, array.length, 0, 1));
-        assertThrows(IllegalArgumentException.class, () -> ila.get(array, 0, ilaLength, 1));
-        assertThrows(IllegalArgumentException.class, () -> ila.get(array, array.length - 1, 0, 2));
-        assertThrows(IllegalArgumentException.class, () -> ila.get(array, 0, ilaLength - 1, 2));
+        assertThatThrownBy(() -> ila.get(null, 0, 0, 1))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("array == null not allowed!");
+        assertThatThrownBy(() -> ila.get(array, -1, 0, 1))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("offset (=-1) < 0 not allowed!");
+        assertThatThrownBy(() -> ila.get(array, 0, -1, 1))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("start (=-1) < 0 not allowed!");
+        assertThatThrownBy(() -> ila.get(array, 0, 0, -1))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("length (=-1) < 0 not allowed!");
+        assertThatThrownBy(() -> ila.get(array, array.length, 0, 1))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("offset (=10) >= array.length (=10) not allowed!");
+        assertThatThrownBy(() -> ila.get(array, 0, ilaLength, 1))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("start (=" + ilaLength + ") >= ila.length() (=" + ilaLength + ") not allowed!");
+        assertThatThrownBy(() -> ila.get(array, array.length - 1, 0, 2))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("offset+length (=11) > array.length (=10) not allowed!");
+        assertThatThrownBy(() -> ila.get(array, 0, ilaLength - 1, 2))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("start+length (=" + (ilaLength + 1) + ") > ila.length() (=" + ilaLength + ") not allowed!");
     }
 
     public static void checkGetExhaustively(final FloatIla ila1, final FloatIla ila2) throws IOException {
         final int length1 = (int) Math.min(ila1.length(), Integer.MAX_VALUE);
         final int length2 = (int) Math.min(ila2.length(), Integer.MAX_VALUE);
 
-        assertEquals(length1, length2);
+        assertThat(length2).isEqualTo(length1);
 
         final float[] a1 = new float[length1];
         final float[] a2 = new float[length1];
@@ -41,7 +56,7 @@ public final class FloatIlaCheck {
                     ila1.get(a1, o, s, l);
                     ila2.get(a2, o, s, l);
 
-                    assertArrayEquals(a1, a2);
+                    assertThat(a2).isEqualTo(a1);
                 }
             }
         }

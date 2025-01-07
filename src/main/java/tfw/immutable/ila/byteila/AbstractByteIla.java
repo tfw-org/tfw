@@ -1,6 +1,7 @@
 package tfw.immutable.ila.byteila;
 
 import java.io.IOException;
+import tfw.check.Argument;
 import tfw.immutable.ila.AbstractIla;
 
 public abstract class AbstractByteIla extends AbstractIla implements ByteIla {
@@ -14,6 +15,7 @@ public abstract class AbstractByteIla extends AbstractIla implements ByteIla {
             return;
         }
 
+        Argument.assertNotNull(array, "array");
         boundsCheck(array.length, offset, start, length);
         getImpl(array, offset, start, length);
     }
