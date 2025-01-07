@@ -1,29 +1,45 @@
 package tfw.immutable.ila.booleanila;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.Random;
 import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 
-class BooleanIlaSegmentTest {
+final class BooleanIlaSegmentTest {
     @Test
-    void testArguments() throws Exception {
+    void argumentsTest() throws Exception {
         final BooleanIla ila = BooleanIlaFromArray.create(new boolean[10]);
         final long ilaLength = ila.length();
 
-        assertThrows(IllegalArgumentException.class, () -> BooleanIlaSegment.create(null, 0));
-        assertThrows(IllegalArgumentException.class, () -> BooleanIlaSegment.create(ila, -1));
-        assertThrows(IllegalArgumentException.class, () -> BooleanIlaSegment.create(ila, ilaLength + 1));
-        assertThrows(IllegalArgumentException.class, () -> BooleanIlaSegment.create(null, 0, 0));
-        assertThrows(IllegalArgumentException.class, () -> BooleanIlaSegment.create(ila, -1, 0));
-        assertThrows(IllegalArgumentException.class, () -> BooleanIlaSegment.create(ila, 0, -1));
-        assertThrows(IllegalArgumentException.class, () -> BooleanIlaSegment.create(ila, ilaLength + 1, 0));
-        assertThrows(IllegalArgumentException.class, () -> BooleanIlaSegment.create(ila, 0, ilaLength + 1));
+        assertThatThrownBy(() -> BooleanIlaSegment.create(null, 0))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("ila == null not allowed!");
+        assertThatThrownBy(() -> BooleanIlaSegment.create(ila, -1))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("start (=-1) < 0 not allowed!");
+        assertThatThrownBy(() -> BooleanIlaSegment.create(ila, ilaLength + 1))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("length (=-1) < 0 not allowed!");
+        assertThatThrownBy(() -> BooleanIlaSegment.create(null, 0, 0))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("ila == null not allowed!");
+        assertThatThrownBy(() -> BooleanIlaSegment.create(ila, -1, 0))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("start (=-1) < 0 not allowed!");
+        assertThatThrownBy(() -> BooleanIlaSegment.create(ila, 0, -1))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("length (=-1) < 0 not allowed!");
+        assertThatThrownBy(() -> BooleanIlaSegment.create(ila, ilaLength + 1, 0))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("start + length (=11) > ila.length() (=10) not allowed!");
+        assertThatThrownBy(() -> BooleanIlaSegment.create(ila, 0, ilaLength + 1))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("start + length (=11) > ila.length() (=10) not allowed!");
     }
 
     @Test
-    void testAll() throws Exception {
+    void allTest() throws Exception {
         final Random random = new Random(0);
         final int length = IlaTestDimensions.defaultIlaLength();
         final boolean[] master = new boolean[length];

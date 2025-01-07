@@ -1,23 +1,27 @@
 package tfw.immutable.ila.doubleila;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.Random;
 import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 
-class DoubleIlaReverseTest {
+final class DoubleIlaReverseTest {
     @Test
-    void testArguments() {
+    void argumentsTest() {
         final DoubleIla ila = DoubleIlaFromArray.create(new double[10]);
         final double[] buffer = new double[10];
 
-        assertThrows(IllegalArgumentException.class, () -> DoubleIlaReverse.create(null, buffer));
-        assertThrows(IllegalArgumentException.class, () -> DoubleIlaReverse.create(ila, null));
+        assertThatThrownBy(() -> DoubleIlaReverse.create(null, buffer))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("ila == null not allowed!");
+        assertThatThrownBy(() -> DoubleIlaReverse.create(ila, null))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("buffer == null not allowed!");
     }
 
     @Test
-    void testAll() throws Exception {
+    void allTest() throws Exception {
         final Random random = new Random(0);
         final int length = IlaTestDimensions.defaultIlaLength();
         final double[] array = new double[length];

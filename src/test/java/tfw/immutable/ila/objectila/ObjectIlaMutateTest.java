@@ -1,24 +1,30 @@
 package tfw.immutable.ila.objectila;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 
-class ObjectIlaMutateTest {
+final class ObjectIlaMutateTest {
     @Test
-    void testArguments() throws Exception {
+    void argumentsTest() throws Exception {
         final ObjectIla<Object> ila = ObjectIlaFromArray.create(new Object[10]);
         final long ilaLength = ila.length();
         final Object value = new Object();
 
-        assertThrows(IllegalArgumentException.class, () -> ObjectIlaMutate.create(null, 0, value));
-        assertThrows(IllegalArgumentException.class, () -> ObjectIlaMutate.create(ila, -1, value));
-        assertThrows(IllegalArgumentException.class, () -> ObjectIlaMutate.create(ila, ilaLength, value));
+        assertThatThrownBy(() -> ObjectIlaMutate.create(null, 0, value))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("ila == null not allowed!");
+        assertThatThrownBy(() -> ObjectIlaMutate.create(ila, -1, value))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("index (=-1) < 0 not allowed!");
+        assertThatThrownBy(() -> ObjectIlaMutate.create(ila, ilaLength, value))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("index (=10) >= ila.length() (=10) not allowed!");
     }
 
     @Test
-    void testAll() throws Exception {
+    void allTest() throws Exception {
         final int length = IlaTestDimensions.defaultIlaLength();
         final Object[] array = new Object[length];
         final Object[] target = new Object[length];
