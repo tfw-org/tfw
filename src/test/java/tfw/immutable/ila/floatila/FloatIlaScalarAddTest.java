@@ -1,22 +1,24 @@
 package tfw.immutable.ila.floatila;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.Random;
 import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 
-class FloatIlaScalarAddTest {
+final class FloatIlaScalarAddTest {
     @Test
-    void testArguments() {
+    void argumentsTest() {
         final Random random = new Random(0);
         final float value = random.nextFloat();
 
-        assertThrows(IllegalArgumentException.class, () -> FloatIlaScalarAdd.create(null, value));
+        assertThatThrownBy(() -> FloatIlaScalarAdd.create(null, value))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("ila == null not allowed!");
     }
 
     @Test
-    void testAll() throws Exception {
+    void allTest() throws Exception {
         final Random random = new Random(0);
         final int length = IlaTestDimensions.defaultIlaLength();
         final float scalar = random.nextFloat();

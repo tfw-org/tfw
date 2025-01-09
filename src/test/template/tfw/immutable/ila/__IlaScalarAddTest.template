@@ -1,21 +1,23 @@
 // byteila,charila,doubleila,floatila,intila,longila,shortila
 package %%PACKAGE%%;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 %%RANDOM_INCLUDE%%import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 
-class %%NAME%%IlaScalarAddTest {
+final class %%NAME%%IlaScalarAddTest {
     @Test
-    void testArguments() {
+    void argumentsTest() {
         %%RANDOM_INIT%%final %%TYPE%% value = %%RANDOM_VALUE%%;
 
-        assertThrows(IllegalArgumentException.class, () -> %%NAME%%IlaScalarAdd.create(null, value));
+        assertThatThrownBy(() -> %%NAME%%IlaScalarAdd.create(null, value))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("ila == null not allowed!");
     }
 
     @Test
-    void testAll() throws Exception {
+    void allTest() throws Exception {
         %%RANDOM_INIT%%final int length = IlaTestDimensions.defaultIlaLength();
         final %%TYPE%% scalar = %%RANDOM_VALUE%%;
         final %%TYPE%%[] array = new %%TYPE%%[length];
