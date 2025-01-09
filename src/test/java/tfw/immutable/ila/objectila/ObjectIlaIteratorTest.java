@@ -1,14 +1,13 @@
 package tfw.immutable.ila.objectila;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.IOException;
 import org.junit.jupiter.api.Test;
 
-class ObjectIlaIteratorTest {
+final class ObjectIlaIteratorTest {
     @Test
-    void testObjectIlaFill() throws IOException {
+    void objectIlaIteratorTest() throws IOException {
         final int LENGTH = 29;
         Object[] array = new Object[LENGTH];
 
@@ -21,14 +20,10 @@ class ObjectIlaIteratorTest {
 
         int i = 0;
         for (; ii.hasNext(); i++) {
-            if (i == array.length) {
-                fail("Iterator did not stop correctly");
-            }
-            assertEquals(ii.next(), array[i], "element " + i + " not equal!");
+            assertThat(i).isNotEqualTo(array.length);
+            assertThat(ii.next()).isEqualTo(array[i]);
         }
 
-        if (i != array.length) {
-            fail("Iterator stopped at " + i + " not " + array.length);
-        }
+        assertThat(i).isEqualTo(array.length);
     }
 }

@@ -1,19 +1,21 @@
 // doubleila,floatila
 package %%PACKAGE%%;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 %%RANDOM_INCLUDE%%import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 
-class %%NAME%%IlaRoundTest {
+final class %%NAME%%IlaRoundTest {
     @Test
-    void testArguments() throws Exception {
-        assertThrows(IllegalArgumentException.class, () -> %%NAME%%IlaRound.create(null));
+    void argumentsTest() throws Exception {
+        assertThatThrownBy(() -> %%NAME%%IlaRound.create(null))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("ila == null not allowed!");
     }
 
     @Test
-    void testAll() throws Exception {
+    void allTest() throws Exception {
         %%RANDOM_INIT%%final int length = IlaTestDimensions.defaultIlaLength();
         final %%TYPE%%[] array = new %%TYPE%%[length];
         final %%TYPE%%[] target = new %%TYPE%%[length];

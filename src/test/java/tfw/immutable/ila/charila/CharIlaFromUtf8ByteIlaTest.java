@@ -1,16 +1,15 @@
 package tfw.immutable.ila.charila;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.assertj.core.api.Assertions.assertThat;
 
-import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.byteila.ByteIla;
 import tfw.immutable.ila.byteila.ByteIlaFromArray;
 
-class CharIlaFromUtf8ByteIlaTest {
+final class CharIlaFromUtf8ByteIlaTest {
     @Test
-    void testCharIlaFromUTF8ByteIla() throws Exception {
+    void charIlaFromUTF8ByteIlaTest() throws Exception {
         // Create all unicode characters, valid and invalid.
         final int unicodeSpace = 1 << 21;
         final char[] characters = new char[unicodeSpace];
@@ -21,10 +20,10 @@ class CharIlaFromUtf8ByteIlaTest {
 
         // Create UTF-8 bytes from full unicode character space.
         final String string = new String(characters);
-        final byte[] utf8Bytes = string.getBytes(StandardCharsets.UTF_8);
+        final byte[] utf8Bytes = string.getBytes(UTF_8);
 
         // Create characters from UTF-8 bytes using java.lang.String.
-        final String stringFromUtf8Bytes = new String(utf8Bytes, StandardCharsets.UTF_8);
+        final String stringFromUtf8Bytes = new String(utf8Bytes, UTF_8);
         final char[] charactersFromString = stringFromUtf8Bytes.toCharArray();
 
         // Create characters from UTF-8 bytes using CharIlaFromUTF8Bytes.
@@ -36,6 +35,6 @@ class CharIlaFromUtf8ByteIlaTest {
         charIlaFromUtf8ByteIla.get(charactersFromCharIla, 0, 0, charIlaLength);
 
         // Compare the two arrays.
-        assertTrue(Arrays.equals(charactersFromString, charactersFromCharIla));
+        assertThat(charactersFromString).isEqualTo(charactersFromCharIla);
     }
 }

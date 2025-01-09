@@ -1,15 +1,14 @@
 package tfw.immutable.ila.doubleila;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.IOException;
 import java.util.Random;
 import org.junit.jupiter.api.Test;
 
-class DoubleIlaIteratorTest {
+final class DoubleIlaIteratorTest {
     @Test
-    void testDoubleIlaFill() throws IOException {
+    void doubleIlaIteratorTest() throws IOException {
         final Random random = new Random();
         final int LENGTH = 29;
         double[] array = new double[LENGTH];
@@ -23,14 +22,10 @@ class DoubleIlaIteratorTest {
 
         int i = 0;
         for (; ii.hasNext(); i++) {
-            if (i == array.length) {
-                fail("Iterator did not stop correctly");
-            }
-            assertEquals(ii.next(), array[i], 0, "element " + i + " not equal!");
+            assertThat(i).isNotEqualTo(array.length);
+            assertThat(ii.next()).isEqualTo(array[i]);
         }
 
-        if (i != array.length) {
-            fail("Iterator stopped at " + i + " not " + array.length);
-        }
+        assertThat(i).isEqualTo(array.length);
     }
 }
