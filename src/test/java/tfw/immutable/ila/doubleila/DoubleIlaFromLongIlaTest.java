@@ -2,9 +2,9 @@ package tfw.immutable.ila.doubleila;
 
 import org.junit.jupiter.api.Test;
 
-class DoubleIlaFromLongIlaTest {
+final class DoubleIlaFromLongIlaTest {
     @Test
-    void testDoubleIlaFromLongIla() throws Exception {
+    void doubleIlaFromLongIlaTest() throws Exception {
         /*
         		final int LENGTH = 64;
         		final long SKIP = Long.MAX_VALUE / LENGTH * 2;

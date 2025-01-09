@@ -15,7 +15,7 @@
 %%IS_EQUALS_START%% = .equals(
 %%IS_EQUALS_END%% = )
 %%TEMPLATE%% = <Object>
-%%SUPPRESS%% = \n\ \ \ \ @SuppressWarnings("unchecked")
+%%SUPPRESS%% = @SuppressWarnings("unchecked")\n\ \ \ \ 
 %%FULL_CAST%% = (ObjectIla<Object>[])\ 
 %%DIAMOND%% = <>
 %%CHAR_CAST_TO_INT%% =

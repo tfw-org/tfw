@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.io.IOException;
+import tfw.check.Argument;
 
 public final class ObjectIlaCheck {
     private ObjectIlaCheck() {
@@ -82,36 +83,32 @@ public final class ObjectIlaCheck {
 
     public static void checkFourFiveEquivalence(final ObjectIla<Object> ila, final int offsetLength, Object epsilon)
             throws Exception {
-        if (epsilon != Object.class) {
-            throw new IllegalArgumentException("epsilon != " + Object.class + " not allowed");
-        } else {
-            if (offsetLength < 0) throw new Exception("offsetLength < 0 not allowed");
+        Argument.assertNotLessThan(offsetLength, 0, "offsetLength");
 
-            final StridedObjectIla<Object> stridedObjectIla = StridedObjectIlaFromObjectIla.create(ila, new Object[10]);
-            final int ilaLength = ila.length() + offsetLength <= Integer.MAX_VALUE
-                    ? (int) ila.length()
-                    : Integer.MAX_VALUE - offsetLength;
-            for (int offset = 0; offset < offsetLength; ++offset) {
-                final Object[] four = new Object[ilaLength + offsetLength];
-                final Object[] five = new Object[ilaLength + offsetLength];
-                for (int length = 1; length <= ilaLength; ++length) {
-                    for (long start = 0; start < ilaLength - length + 1; ++start) {
-                        for (int ii = 0; ii < four.length; ++ii) {
-                            five[ii] = four[ii] = new Object();
-                        }
-                        ila.get(four, offset, start, length);
-                        stridedObjectIla.get(five, offset, 1, start, length);
-                        for (int ii = 0; ii < length; ++ii) {
-                            if (!(four[ii].equals(five[ii])))
-                                throw new Exception("four[" + ii + "] ("
-                                        + four[ii] + ") !~ five["
-                                        + ii + "] ("
-                                        + five[ii]
-                                        + ") {length=" + length
-                                        + ",start=" + start
-                                        + ",offset=" + offset
-                                        + "}");
-                        }
+        final StridedObjectIla<Object> stridedObjectIla = StridedObjectIlaFromObjectIla.create(ila, new Object[10]);
+        final int ilaLength = ila.length() + offsetLength <= Integer.MAX_VALUE
+                ? (int) ila.length()
+                : Integer.MAX_VALUE - offsetLength;
+        for (int offset = 0; offset < offsetLength; ++offset) {
+            final Object[] four = new Object[ilaLength + offsetLength];
+            final Object[] five = new Object[ilaLength + offsetLength];
+            for (int length = 1; length <= ilaLength; ++length) {
+                for (long start = 0; start < ilaLength - length + 1; ++start) {
+                    for (int ii = 0; ii < four.length; ++ii) {
+                        five[ii] = four[ii] = new Object();
+                    }
+                    ila.get(four, offset, start, length);
+                    stridedObjectIla.get(five, offset, 1, start, length);
+                    for (int ii = 0; ii < length; ++ii) {
+                        if (!(four[ii].equals(five[ii])))
+                            throw new Exception("four[" + ii + "] ("
+                                    + four[ii] + ") !~ five["
+                                    + ii + "] ("
+                                    + five[ii]
+                                    + ") {length=" + length
+                                    + ",start=" + start
+                                    + ",offset=" + offset
+                                    + "}");
                     }
                 }
             }
@@ -121,51 +118,47 @@ public final class ObjectIlaCheck {
     public static void checkCorrectness(
             ObjectIla<Object> target, ObjectIla<Object> actual, int addlOffsetLength, int maxAbsStride, Object epsilon)
             throws Exception {
-        if (epsilon != Object.class) {
-            throw new IllegalArgumentException("epsilon != " + Object.class + " not allowed");
-        } else {
-            if (addlOffsetLength < 0) throw new Exception("addlOffsetLength < 0 not allowed");
-            if (maxAbsStride < 1) throw new Exception("maxAbsStride < 1 not allowed");
-            if (target.length() != actual.length()) throw new Exception("target.length() != actual.length()");
+        Argument.assertNotLessThan(addlOffsetLength, 0, "addlOffsetLength");
+        Argument.assertNotLessThan(maxAbsStride, 1, "maxAbsStride");
+        Argument.assertEquals(target.length(), actual.length(), "target.length()", "actual.length()");
 
-            final StridedObjectIla<Object> stridedTarget = StridedObjectIlaFromObjectIla.create(target, new Object[10]);
-            final StridedObjectIla<Object> stridedActual = StridedObjectIlaFromObjectIla.create(target, new Object[10]);
-            final int ilaLength = target.length() + addlOffsetLength <= Integer.MAX_VALUE
-                    ? (int) target.length()
-                    : Integer.MAX_VALUE - addlOffsetLength;
-            for (int stride = -maxAbsStride; stride <= maxAbsStride; ++stride) {
-                if (stride != 0) {
-                    int absStride = stride < 0 ? -stride : stride;
-                    int offsetStart = stride < 0 ? (ilaLength - 1) * absStride : 0;
-                    int offsetEnd = offsetStart + addlOffsetLength;
-                    for (int offset = offsetStart; offset < offsetEnd; ++offset) {
-                        final int arraySize = (ilaLength - 1) * absStride + 1 + addlOffsetLength;
-                        final Object[] targetBase = new Object[arraySize];
-                        final Object[] actualBase = new Object[arraySize];
-                        for (int length = 1; length <= ilaLength; ++length) {
-                            for (long start = 0; start < ilaLength - length + 1; ++start) {
-                                for (int ii = 0; ii < targetBase.length; ++ii) {
-                                    targetBase[ii] = actualBase[ii] = new Object();
-                                }
-                                stridedTarget.get(targetBase, offset, stride, start, length);
-                                stridedActual.get(actualBase, offset, stride, start, length);
-                                for (int ii = 0; ii < arraySize; ++ii) {
-                                    if (!(actualBase[ii].equals(targetBase[ii])))
-                                        throw new Exception("actual[" + ii
-                                                + "] ("
-                                                + actualBase[ii]
-                                                + ") !~ target["
-                                                + ii + "] ("
-                                                + targetBase[ii]
-                                                + ") {length="
-                                                + length
-                                                + ",start=" + start
-                                                + ",offset="
-                                                + offset
-                                                + ",stride="
-                                                + stride
-                                                + "}");
-                                }
+        final StridedObjectIla<Object> stridedTarget = StridedObjectIlaFromObjectIla.create(target, new Object[10]);
+        final StridedObjectIla<Object> stridedActual = StridedObjectIlaFromObjectIla.create(target, new Object[10]);
+        final int ilaLength = target.length() + addlOffsetLength <= Integer.MAX_VALUE
+                ? (int) target.length()
+                : Integer.MAX_VALUE - addlOffsetLength;
+        for (int stride = -maxAbsStride; stride <= maxAbsStride; ++stride) {
+            if (stride != 0) {
+                int absStride = stride < 0 ? -stride : stride;
+                int offsetStart = stride < 0 ? (ilaLength - 1) * absStride : 0;
+                int offsetEnd = offsetStart + addlOffsetLength;
+                for (int offset = offsetStart; offset < offsetEnd; ++offset) {
+                    final int arraySize = (ilaLength - 1) * absStride + 1 + addlOffsetLength;
+                    final Object[] targetBase = new Object[arraySize];
+                    final Object[] actualBase = new Object[arraySize];
+                    for (int length = 1; length <= ilaLength; ++length) {
+                        for (long start = 0; start < ilaLength - length + 1; ++start) {
+                            for (int ii = 0; ii < targetBase.length; ++ii) {
+                                targetBase[ii] = actualBase[ii] = new Object();
+                            }
+                            stridedTarget.get(targetBase, offset, stride, start, length);
+                            stridedActual.get(actualBase, offset, stride, start, length);
+                            for (int ii = 0; ii < arraySize; ++ii) {
+                                if (!(actualBase[ii].equals(targetBase[ii])))
+                                    throw new Exception("actual[" + ii
+                                            + "] ("
+                                            + actualBase[ii]
+                                            + ") !~ target["
+                                            + ii + "] ("
+                                            + targetBase[ii]
+                                            + ") {length="
+                                            + length
+                                            + ",start=" + start
+                                            + ",offset="
+                                            + offset
+                                            + ",stride="
+                                            + stride
+                                            + "}");
                             }
                         }
                     }

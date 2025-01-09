@@ -1,15 +1,14 @@
 package tfw.immutable.ila.shortila;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.IOException;
 import java.util.Random;
 import org.junit.jupiter.api.Test;
 
-class ShortIlaIteratorTest {
+final class ShortIlaIteratorTest {
     @Test
-    void testShortIlaFill() throws IOException {
+    void shortIlaIteratorTest() throws IOException {
         final Random random = new Random();
         final int LENGTH = 29;
         short[] array = new short[LENGTH];
@@ -23,14 +22,10 @@ class ShortIlaIteratorTest {
 
         int i = 0;
         for (; ii.hasNext(); i++) {
-            if (i == array.length) {
-                fail("Iterator did not stop correctly");
-            }
-            assertEquals(ii.next(), array[i], "element " + i + " not equal!");
+            assertThat(i).isNotEqualTo(array.length);
+            assertThat(ii.next()).isEqualTo(array[i]);
         }
 
-        if (i != array.length) {
-            fail("Iterator stopped at " + i + " not " + array.length);
-        }
+        assertThat(i).isEqualTo(array.length);
     }
 }

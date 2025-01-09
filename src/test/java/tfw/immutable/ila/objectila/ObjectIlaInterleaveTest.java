@@ -7,8 +7,8 @@ import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 
 final class ObjectIlaInterleaveTest {
-    @Test
     @SuppressWarnings("unchecked")
+    @Test
     void argumentsTest() {
         final ObjectIla<Object> ila1 = ObjectIlaFromArray.create(new Object[10]);
         final ObjectIla<Object> ila2 = ObjectIlaFromArray.create(new Object[20]);
@@ -52,8 +52,8 @@ final class ObjectIlaInterleaveTest {
                 .hasMessage("ilas[0].length() (=20) != ilas[1].length() (=10) not allowed!");
     }
 
-    @Test
     @SuppressWarnings("unchecked")
+    @Test
     void allTest() throws Exception {
         final int length = IlaTestDimensions.defaultIlaLength();
         for (int jj = 2; jj < 6; ++jj) {

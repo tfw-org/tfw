@@ -8,7 +8,7 @@ import java.lang.reflect.Array;
 import tfw.immutable.ila.IlaTestDimensions;
 
 final class %%NAME%%IlaInterleaveTest {
-    @Test%%SUPPRESS%%
+    %%SUPPRESS%%@Test
     void argumentsTest() {
         final %%NAME%%Ila%%TEMPLATE%% ila1 = %%NAME%%IlaFromArray.create(new %%TYPE%%[10]);
         final %%NAME%%Ila%%TEMPLATE%% ila2 = %%NAME%%IlaFromArray.create(new %%TYPE%%[20]);
@@ -52,7 +52,7 @@ final class %%NAME%%IlaInterleaveTest {
                 .hasMessage("ilas[0].length() (=20) != ilas[1].length() (=10) not allowed!");
     }
 
-    @Test%%SUPPRESS%%
+    %%SUPPRESS%%@Test
     void allTest() throws Exception {
         %%RANDOM_INIT%%final int length = IlaTestDimensions.defaultIlaLength();
         for (int jj = 2; jj < 6; ++jj) {
