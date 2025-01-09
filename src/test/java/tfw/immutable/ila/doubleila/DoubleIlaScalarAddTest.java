@@ -1,22 +1,24 @@
 package tfw.immutable.ila.doubleila;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.Random;
 import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 
-class DoubleIlaScalarAddTest {
+final class DoubleIlaScalarAddTest {
     @Test
-    void testArguments() {
+    void argumentsTest() {
         final Random random = new Random(0);
         final double value = random.nextDouble();
 
-        assertThrows(IllegalArgumentException.class, () -> DoubleIlaScalarAdd.create(null, value));
+        assertThatThrownBy(() -> DoubleIlaScalarAdd.create(null, value))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("ila == null not allowed!");
     }
 
     @Test
-    void testAll() throws Exception {
+    void allTest() throws Exception {
         final Random random = new Random(0);
         final int length = IlaTestDimensions.defaultIlaLength();
         final double scalar = random.nextDouble();

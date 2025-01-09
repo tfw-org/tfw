@@ -1,22 +1,24 @@
 package tfw.immutable.ila.charila;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.Random;
 import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 
-class CharIlaScalarMultiplyTest {
+final class CharIlaScalarMultiplyTest {
     @Test
-    void testArguments() {
+    void argumentsTest() {
         final Random random = new Random(0);
         final char value = (char) random.nextInt();
 
-        assertThrows(IllegalArgumentException.class, () -> CharIlaScalarMultiply.create(null, value));
+        assertThatThrownBy(() -> CharIlaScalarMultiply.create(null, value))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("ila == null not allowed!");
     }
 
     @Test
-    void testAll() throws Exception {
+    void allTest() throws Exception {
         final Random random = new Random(0);
         final int length = IlaTestDimensions.defaultIlaLength();
         final char scalar = (char) random.nextInt();

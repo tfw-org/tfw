@@ -1,6 +1,6 @@
 package tfw.immutable.ila.floatila;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.Random;
 import org.junit.jupiter.api.Test;
@@ -8,17 +8,21 @@ import tfw.immutable.ila.IlaTestDimensions;
 import tfw.immutable.ila.longila.LongIla;
 import tfw.immutable.ila.longila.LongIlaFromArray;
 
-class FloatIlaFromCastLongIlaTest {
+final class FloatIlaFromCastLongIlaTest {
     @Test
-    void testArguments() {
+    void argumentsTest() {
         final LongIla ila = LongIlaFromArray.create(new long[10]);
 
-        assertThrows(IllegalArgumentException.class, () -> FloatIlaFromCastLongIla.create(null, 1));
-        assertThrows(IllegalArgumentException.class, () -> FloatIlaFromCastLongIla.create(ila, 0));
+        assertThatThrownBy(() -> FloatIlaFromCastLongIla.create(null, 1))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("longIla == null not allowed!");
+        assertThatThrownBy(() -> FloatIlaFromCastLongIla.create(ila, 0))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("bufferSize (=0) < 1 not allowed!");
     }
 
     @Test
-    void testAll() throws Exception {
+    void allTest() throws Exception {
         final Random random = new Random(0);
         final int length = IlaTestDimensions.defaultIlaLength();
         final long[] array = new long[length];

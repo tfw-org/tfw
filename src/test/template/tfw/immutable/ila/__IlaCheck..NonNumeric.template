@@ -31,13 +31,13 @@ import java.io.IOException;
                 .hasMessage("offset (=10) >= array.length (=10) not allowed!");
         assertThatThrownBy(() -> ila.get(array, 0, ilaLength, 1))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("start (=" + ilaLength + ") >= ila.length() (=" + ilaLength + ") not allowed!");
+                .hasMessage("start (=%s) >= ila.length() (=%s) not allowed!", ilaLength, ilaLength);
         assertThatThrownBy(() -> ila.get(array, array.length - 1, 0, 2))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("offset+length (=11) > array.length (=10) not allowed!");
         assertThatThrownBy(() -> ila.get(array, 0, ilaLength - 1, 2))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("start+length (=" + (ilaLength + 1) + ") > ila.length() (=" + ilaLength + ") not allowed!");
+                .hasMessage("start+length (=%s) > ila.length() (=%s) not allowed!", ilaLength + 1, ilaLength);
     }
 
     public static void checkGetExhaustively(%%NAME%%Ila%%TEMPLATE%% ila1, %%NAME%%Ila%%TEMPLATE%% ila2) throws IOException {

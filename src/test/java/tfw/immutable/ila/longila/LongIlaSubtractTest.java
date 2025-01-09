@@ -1,25 +1,33 @@
 package tfw.immutable.ila.longila;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.Random;
 import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 
-class LongIlaSubtractTest {
+final class LongIlaSubtractTest {
     @Test
-    void testArguments() {
+    void argumentsTest() {
         final LongIla ila1 = LongIlaFromArray.create(new long[10]);
         final LongIla ila2 = LongIlaFromArray.create(new long[20]);
 
-        assertThrows(IllegalArgumentException.class, () -> LongIlaSubtract.create(null, ila1, 1));
-        assertThrows(IllegalArgumentException.class, () -> LongIlaSubtract.create(ila1, null, 1));
-        assertThrows(IllegalArgumentException.class, () -> LongIlaSubtract.create(ila1, ila2, 1));
-        assertThrows(IllegalArgumentException.class, () -> LongIlaSubtract.create(ila1, ila1, 0));
+        assertThatThrownBy(() -> LongIlaSubtract.create(null, ila1, 1))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("leftIla == null not allowed!");
+        assertThatThrownBy(() -> LongIlaSubtract.create(ila1, null, 1))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("rightIla == null not allowed!");
+        assertThatThrownBy(() -> LongIlaSubtract.create(ila1, ila2, 1))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("leftIla.length() (=10) != rightIla.length() (=20) not allowed!");
+        assertThatThrownBy(() -> LongIlaSubtract.create(ila1, ila1, 0))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("bufferSize (=0) < 1 not allowed!");
     }
 
     @Test
-    void testAll() throws Exception {
+    void allTest() throws Exception {
         final Random random = new Random(0);
         final int length = IlaTestDimensions.defaultIlaLength();
         final long[] leftArray = new long[length];
