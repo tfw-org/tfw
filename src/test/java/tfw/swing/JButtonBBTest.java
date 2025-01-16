@@ -1,7 +1,7 @@
 package tfw.swing;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -34,7 +34,7 @@ import tfw.tsm.ecd.StatelessTriggerECD;
 import tfw.tsm.ecd.StringECD;
 
 @DisabledIf(value = "java.awt.GraphicsEnvironment#isHeadless", disabledReason = "headless environment")
-class JButtonBBTest {
+final class JButtonBBTest {
     public static final StatelessTriggerECD BUTTON_ACTION_ECD = new StatelessTriggerECD("ButtonAction");
     public static final BooleanECD BUTTON_ENABLED_ECD = new BooleanECD("ButtonEnabled");
     public static final String BUTTON_ENABLED_NAME = "Enabled";
@@ -68,7 +68,7 @@ class JButtonBBTest {
     private FrameFixture window;
 
     @BeforeAll
-    public static void beforeAll() {
+    static void beforeAll() {
         FailOnThreadViolationRepaintManager.install();
 
         final JButton jb = GuiActionRunner.execute(() -> new JButton());
@@ -81,7 +81,7 @@ class JButtonBBTest {
     }
 
     @BeforeEach
-    public void beforeEach() {
+    void beforeEach() {
         branch = new Branch(FRAME_NAME);
         frame = GuiActionRunner.execute(() -> new JButtonBBTestApplication(branch));
         window = new FrameFixture(BasicRobot.robotWithCurrentAwtHierarchyWithoutScreenLock(), frame);
@@ -89,7 +89,7 @@ class JButtonBBTest {
     }
 
     @Test
-    void testJButtonBB() throws Exception {
+    void jButtonBBTest() throws Exception {
         final BasicTransactionQueue basicTransactionQueue = new BasicTransactionQueue();
         final JButtonFixture jButton = window.button(BUTTON_NAME);
         final Root root = Root.builder()
@@ -133,50 +133,50 @@ class JButtonBBTest {
 
         compareWidgetAndTfwState(jButton, testCommit, 1, basicTransactionQueue);
 
-        assertEquals(0, testTriggeredCommit.getCount());
+        assertThat(0).isEqualTo(testTriggeredCommit.getCount());
 
         window.button(BUTTON_NAME).click();
 
         compareWidgetAndTfwState(jButton, testCommit, 1, basicTransactionQueue);
-        assertEquals(1, testTriggeredCommit.getCount());
+        assertThat(1).isEqualTo(testTriggeredCommit.getCount());
 
         initiator.set(BUTTON_BACKGROUND_ECD, BUTTON_BACKGROUND_TEST);
 
         compareWidgetAndTfwState(jButton, testCommit, 2, basicTransactionQueue);
-        assertEquals(1, testTriggeredCommit.getCount());
+        assertThat(1).isEqualTo(testTriggeredCommit.getCount());
 
         initiator.set(BUTTON_FOREGROUND_ECD, BUTTON_FOREGROUND_TEST);
 
         compareWidgetAndTfwState(jButton, testCommit, 3, basicTransactionQueue);
-        assertEquals(1, testTriggeredCommit.getCount());
+        assertThat(1).isEqualTo(testTriggeredCommit.getCount());
 
         initiator.set(BUTTON_ENABLED_ECD, Boolean.FALSE);
 
         compareWidgetAndTfwState(jButton, testCommit, 4, basicTransactionQueue);
-        assertEquals(1, testTriggeredCommit.getCount());
+        assertThat(1).isEqualTo(testTriggeredCommit.getCount());
 
         initiator.set(BUTTON_FONT_ECD, BUTTON_FONT_TEST);
 
         compareWidgetAndTfwState(jButton, testCommit, 5, basicTransactionQueue);
-        assertEquals(1, testTriggeredCommit.getCount());
+        assertThat(1).isEqualTo(testTriggeredCommit.getCount());
 
         initiator.set(BUTTON_TEXT_ECD, BUTTON_TEXT_TEST);
 
         compareWidgetAndTfwState(jButton, testCommit, 6, basicTransactionQueue);
-        assertEquals(1, testTriggeredCommit.getCount());
+        assertThat(1).isEqualTo(testTriggeredCommit.getCount());
 
         initiator.set(BUTTON_ICON_ECD, BUTTON_ICON_TEST);
 
         compareWidgetAndTfwState(jButton, testCommit, 7, basicTransactionQueue);
-        assertEquals(1, testTriggeredCommit.getCount());
+        assertThat(1).isEqualTo(testTriggeredCommit.getCount());
     }
 
     @Test
-    void testEmptyJButtonBuilder() {
+    void emptyJButtonBuilderTest() {
         final JButtonBB jButtonBB = GuiActionRunner.execute(
                 () -> JButtonBB.builder().setName(BUTTON_NAME).build());
 
-        assertEquals(0, new BranchProxy(jButtonBB.getBranch()).getChildProxies().length);
+        assertThat(0).isEqualTo(new BranchProxy(jButtonBB.getBranch()).getChildProxies().length);
 
         final TestActionListenerBranchBox testActionListenerBranchBox = new TestActionListenerBranchBox();
 
@@ -191,16 +191,18 @@ class JButtonBBTest {
 
         final TestActionListener testActionListener = new TestActionListener();
 
-        assertThrows(
-                IllegalArgumentException.class,
-                () -> GuiActionRunner.execute(() -> jButtonBB.addActionListenerToBoth(testActionListener)));
-        assertThrows(
-                IllegalArgumentException.class,
-                () -> GuiActionRunner.execute(() -> jButtonBB.removeActionListenerFromBoth(testActionListener)));
+        assertThatThrownBy(() -> GuiActionRunner.execute(() -> jButtonBB.addActionListenerToBoth(testActionListener)))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("object != (BranchBox || TreeComponent) not allowed!");
+
+        assertThatThrownBy(
+                        () -> GuiActionRunner.execute(() -> jButtonBB.removeActionListenerFromBoth(testActionListener)))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("object != (BranchBox || TreeComponent) not allowed!");
     }
 
     @AfterEach
-    public void tearDown() {
+    void tearDown() {
         window.cleanUp();
     }
 
@@ -227,13 +229,13 @@ class JButtonBBTest {
         final Icon tfwIcon = (Icon) tfwState.get(BUTTON_ICON_ECD);
         final String tfwText = (String) tfwState.get(BUTTON_TEXT_ECD);
 
-        assertEquals(expectedTestCommitCount, testCommit.getCount());
+        assertThat(expectedTestCommitCount).isEqualTo(testCommit.getCount());
 
-        assertEquals(widgetBackground, tfwBackground);
-        assertEquals(widgetEnabled, tfwEnabled);
-        assertEquals(widgetFont, tfwFont);
-        assertEquals(widgetForeground, tfwForeground);
-        assertEquals(widgetIcon, tfwIcon);
-        assertEquals(widgetText, tfwText);
+        assertThat(widgetBackground).isEqualTo(tfwBackground);
+        assertThat(widgetEnabled).isEqualTo(tfwEnabled);
+        assertThat(widgetFont).isEqualTo(tfwFont);
+        assertThat(widgetForeground).isEqualTo(tfwForeground);
+        assertThat(widgetIcon).isEqualTo(tfwIcon);
+        assertThat(widgetText).isEqualTo(tfwText);
     }
 }

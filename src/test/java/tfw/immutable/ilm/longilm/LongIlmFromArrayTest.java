@@ -1,14 +1,13 @@
 package tfw.immutable.ilm.longilm;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.Arrays;
 import java.util.Random;
 import org.junit.jupiter.api.Test;
 
-class LongIlmFromArrayTest {
+final class LongIlmFromArrayTest {
     @Test
-    void testLongIlmFromArray() throws Exception {
+    void longIlmFromArrayTest() throws Exception {
         final Random random = new Random(0);
         long[] array = new long[6];
 
@@ -18,7 +17,7 @@ class LongIlmFromArrayTest {
 
         LongIlm longIlm = LongIlmFromArray.create(array, array.length / 2);
 
-        assertTrue(Arrays.equals(array, LongIlmUtil.toArray(longIlm)));
+        assertThat(array).isEqualTo(LongIlmUtil.toArray(longIlm));
     }
 }
 // AUTO GENERATED FROM TEMPLATE

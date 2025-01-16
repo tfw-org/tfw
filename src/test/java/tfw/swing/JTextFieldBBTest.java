@@ -1,7 +1,7 @@
 package tfw.swing;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.Map;
 import org.assertj.swing.core.BasicRobot;
@@ -22,7 +22,7 @@ import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.StatelessTriggerECD;
 import tfw.tsm.ecd.StringECD;
 
-public class JTextFieldBBTest {
+final class JTextFieldBBTest {
     public static final StatelessTriggerECD TEXTFIELD_ACTION_ECD = new StatelessTriggerECD("TextfieldAction");
     public static final BooleanECD TEXTFIELD_ENABLED_ECD = new BooleanECD("TextFieldEnabled");
     public static final String TEXTFIELD_TEXT_DEFAULT = "";
@@ -38,12 +38,12 @@ public class JTextFieldBBTest {
     private FrameFixture window;
 
     @BeforeAll
-    public static void setUpOnce() {
+    static void setUpOnce() {
         FailOnThreadViolationRepaintManager.install();
     }
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         branch = new Branch(FRAME_NAME);
         frame = GuiActionRunner.execute(() -> new JTextFieldBBTestApplication(branch));
         window = new FrameFixture(BasicRobot.robotWithCurrentAwtHierarchyWithoutScreenLock(), frame);
@@ -51,7 +51,7 @@ public class JTextFieldBBTest {
     }
 
     @Test
-    void testJTextFieldBB() throws Exception {
+    void jTextFieldBBTest() throws Exception {
         final BasicTransactionQueue basicTransactionQueue = new BasicTransactionQueue();
         final JTextComponentFixture textField = window.textBox(TEXTFIELD_NAME);
         final Root root = Root.builder()
@@ -92,11 +92,11 @@ public class JTextFieldBBTest {
     }
 
     @Test
-    void testActionListener() {
+    void actionListenerTest() {
         final JTextFieldBB jTextFieldBB = GuiActionRunner.execute(
                 () -> JTextFieldBB.builder().setName(TEXTFIELD_NAME).build());
 
-        assertEquals(0, new BranchProxy(jTextFieldBB.getBranch()).getChildProxies().length);
+        assertThat(0).isEqualTo(new BranchProxy(jTextFieldBB.getBranch()).getChildProxies().length);
 
         final TestActionListenerBranchBox testActionListenerBranchBox = new TestActionListenerBranchBox();
 
@@ -111,20 +111,23 @@ public class JTextFieldBBTest {
 
         final TestActionListener testActionListener = new TestActionListener();
 
-        assertThrows(
-                IllegalArgumentException.class,
-                () -> GuiActionRunner.execute(() -> jTextFieldBB.addActionListenerToBoth(testActionListener)));
-        assertThrows(
-                IllegalArgumentException.class,
-                () -> GuiActionRunner.execute(() -> jTextFieldBB.removeActionListenerFromBoth(testActionListener)));
+        assertThatThrownBy(
+                        () -> GuiActionRunner.execute(() -> jTextFieldBB.addActionListenerToBoth(testActionListener)))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("object != (BranchBox || TreeComponent) not allowed!");
+
+        assertThatThrownBy(() ->
+                        GuiActionRunner.execute(() -> jTextFieldBB.removeActionListenerFromBoth(testActionListener)))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("object != (BranchBox || TreeComponent) not allowed!");
     }
 
     @Test
-    void testDocumentListener() {
+    void documentListenerTest() {
         final JTextFieldBB jTextFieldBB = GuiActionRunner.execute(
                 () -> JTextFieldBB.builder().setName(TEXTFIELD_NAME).build());
 
-        assertEquals(0, new BranchProxy(jTextFieldBB.getBranch()).getChildProxies().length);
+        assertThat(0).isEqualTo(new BranchProxy(jTextFieldBB.getBranch()).getChildProxies().length);
 
         final TestDocumentListenerBranchBox testDocumentListenerBranchBox = new TestDocumentListenerBranchBox();
 
@@ -139,12 +142,15 @@ public class JTextFieldBBTest {
 
         final TestDocumentListener testDocumentListener = new TestDocumentListener();
 
-        assertThrows(
-                IllegalArgumentException.class,
-                () -> GuiActionRunner.execute(() -> jTextFieldBB.addDocumentListenerToBoth(testDocumentListener)));
-        assertThrows(
-                IllegalArgumentException.class,
-                () -> GuiActionRunner.execute(() -> jTextFieldBB.removeDocumentListenerFromBoth(testDocumentListener)));
+        assertThatThrownBy(() ->
+                        GuiActionRunner.execute(() -> jTextFieldBB.addDocumentListenerToBoth(testDocumentListener)))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("object != (BranchBox || TreeComponent) not allowed!");
+
+        assertThatThrownBy(() -> GuiActionRunner.execute(
+                        () -> jTextFieldBB.removeDocumentListenerFromBoth(testDocumentListener)))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("object != (BranchBox || TreeComponent) not allowed!");
     }
 
     private static void compareWidgetTfwState(
@@ -161,9 +167,9 @@ public class JTextFieldBBTest {
         final boolean tfwEnabled = (Boolean) tfwState.get(TEXTFIELD_ENABLED_ECD);
         final String tfwText = (String) tfwState.get(TEXTFIELD_TEXT_ECD);
 
-        assertEquals(expectedTestCommitCount, testCommit.getCount());
+        assertThat(expectedTestCommitCount).isEqualTo(testCommit.getCount());
 
-        assertEquals(widgetText, tfwText);
-        assertEquals(widgetEnabled, tfwEnabled);
+        assertThat(widgetText).isEqualTo(tfwText);
+        assertThat(widgetEnabled).isEqualTo(tfwEnabled);
     }
 }

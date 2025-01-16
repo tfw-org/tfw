@@ -1,15 +1,14 @@
 package tfw.immutable.ilm.doubleilm;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.Arrays;
 import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.doubleila.DoubleIla;
 import tfw.immutable.ila.doubleila.DoubleIlaFromArray;
 
-class MultiplyDoubleIlmTest {
+final class MultiplyDoubleIlmTest {
     @Test
-    void testMultiplyDoubleIlm() throws Exception {
+    void multiplyDoubleIlmTest() throws Exception {
         DoubleIla leftIla = DoubleIlaFromArray.create(new double[] {0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0});
         DoubleIlm leftIlm = TakeSkipDoubleIlm.create(leftIla, 5, 1);
 
@@ -24,7 +23,7 @@ class MultiplyDoubleIlmTest {
             18.0, 14.0, 20.0, 20.0, 18.0, 14.0, 8.0
         };
         double[] test1Array = DoubleIlmUtil.toArray(multiplyIlm);
-        assertTrue(Arrays.equals(test1Check, test1Array));
+        assertThat(test1Check).isEqualTo(test1Array);
 
         double[] test2Check = new double[] {
             20.0, 20.0, 18.0, 0.0, 0.0, 20.0, 18.0, 14.0, 0.0, 0.0, 18.0, 14.0, 8.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
@@ -32,7 +31,7 @@ class MultiplyDoubleIlmTest {
         };
         double[] test2Array = new double[25];
         stridedMultiplyIlm.get(test2Array, 0, 5, 1, 2, 2, 3, 3);
-        assertTrue(Arrays.equals(test2Check, test2Array));
+        assertThat(test2Check).isEqualTo(test2Array);
 
         double[] test3Check = new double[] {
             0.0, 0.0, 0.0, 0.0, 0.0,
@@ -43,7 +42,7 @@ class MultiplyDoubleIlmTest {
         };
         double[] test3Array = new double[25];
         stridedMultiplyIlm.get(test3Array, 12, 5, 1, 0, 0, 3, 3);
-        assertTrue(Arrays.equals(test3Check, test3Array));
+        assertThat(test3Check).isEqualTo(test3Array);
 
         double[] test4Check = new double[] {
             0.0, 0.0, 0.0, 0.0, 0.0,
@@ -54,6 +53,6 @@ class MultiplyDoubleIlmTest {
         };
         double[] test4Array = new double[25];
         stridedMultiplyIlm.get(test4Array, 6, 10, 2, 1, 1, 2, 2);
-        assertTrue(Arrays.equals(test4Check, test4Array));
+        assertThat(test4Check).isEqualTo(test4Array);
     }
 }

@@ -1,34 +1,34 @@
 package tfw.math;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
 
-class SMBigIntegerTest {
+final class SMBigIntegerTest {
     @Test
-    void testSMBigIntegerValue() {
+    void smBigIntegerValueTest() {
         final SMBigInteger smBigInteger = new SMBigInteger();
 
         smBigInteger.setValue(Long.MIN_VALUE);
-        assertEquals(Long.MIN_VALUE, smBigInteger.longValue());
-        assertEquals(Long.MIN_VALUE, smBigInteger.boundedLongValue());
+        assertThat(Long.MIN_VALUE).isEqualTo(smBigInteger.longValue());
+        assertThat(Long.MIN_VALUE).isEqualTo(smBigInteger.boundedLongValue());
         smBigInteger.setValue(0);
-        assertEquals(0L, smBigInteger.longValue());
-        assertEquals(0L, smBigInteger.boundedLongValue());
+        assertThat(0L).isEqualTo(smBigInteger.longValue());
+        assertThat(0L).isEqualTo(smBigInteger.boundedLongValue());
         smBigInteger.setValue(Long.MAX_VALUE);
-        assertEquals(Long.MAX_VALUE, smBigInteger.longValue());
-        assertEquals(Long.MAX_VALUE, smBigInteger.boundedLongValue());
+        assertThat(Long.MAX_VALUE).isEqualTo(smBigInteger.longValue());
+        assertThat(Long.MAX_VALUE).isEqualTo(smBigInteger.boundedLongValue());
 
         for (int i = 0; i < 63; i++) {
             long l = 1L << i;
 
             smBigInteger.setValue(l);
-            assertEquals(l, smBigInteger.longValue());
-            assertEquals(l, smBigInteger.boundedLongValue());
+            assertThat(l).isEqualTo(smBigInteger.longValue());
+            assertThat(l).isEqualTo(smBigInteger.boundedLongValue());
 
             smBigInteger.setValue(-l);
-            assertEquals(l, smBigInteger.longValue());
-            assertEquals(-l, smBigInteger.boundedLongValue());
+            assertThat(l).isEqualTo(smBigInteger.longValue());
+            assertThat(-l).isEqualTo(smBigInteger.boundedLongValue());
         }
     }
 }
