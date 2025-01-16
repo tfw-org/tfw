@@ -1,7 +1,7 @@
 package tfw.swing.event;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.awt.event.ActionListener;
 import org.junit.jupiter.api.Test;
@@ -13,28 +13,32 @@ import tfw.tsm.OneDeepStateQueueFactory;
 import tfw.tsm.Root;
 import tfw.tsm.ecd.StatelessTriggerECD;
 
-class ActionListenerFactoryTest {
+final class ActionListenerFactoryTest {
     private static final String ROOT_NAME = "Root";
     private static final String TEST_NAME = "TestName";
     private static final String TEST_TRIGGERED_COMMIT_NAME = "TestTriggeredCommit";
     private static final StatelessTriggerECD STATELESS_TRIGGER_ECD = new StatelessTriggerECD("TestTrigger");
 
     @Test
-    void testArguments() {
+    void argumentsTest() {
         final OneDeepStateQueueFactory stateQueueFactory = new OneDeepStateQueueFactory();
 
-        assertThrows(
-                IllegalArgumentException.class, () -> ActionListenerFactory.create(null, STATELESS_TRIGGER_ECD, null));
-        assertThrows(
-                IllegalArgumentException.class,
-                () -> ActionListenerFactory.create(null, STATELESS_TRIGGER_ECD, stateQueueFactory));
-        assertThrows(IllegalArgumentException.class, () -> ActionListenerFactory.create(TEST_NAME, null, null));
-        assertThrows(
-                IllegalArgumentException.class, () -> ActionListenerFactory.create(TEST_NAME, null, stateQueueFactory));
+        assertThatThrownBy(() -> ActionListenerFactory.create(null, STATELESS_TRIGGER_ECD, null))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("name == null not allowed!");
+        assertThatThrownBy(() -> ActionListenerFactory.create(null, STATELESS_TRIGGER_ECD, stateQueueFactory))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("name == null not allowed!");
+        assertThatThrownBy(() -> ActionListenerFactory.create(TEST_NAME, null, null))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("sources[0]== null not allowed!");
+        assertThatThrownBy(() -> ActionListenerFactory.create(TEST_NAME, null, stateQueueFactory))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("sources[0]== null not allowed!");
     }
 
     @Test
-    void testStateQueueFactoryNull() throws Exception {
+    void stateQueueFactoryNullTest() throws Exception {
         final BasicTransactionQueue basicTransactionQueue = new BasicTransactionQueue();
         final Root root = Root.builder()
                 .setName(ROOT_NAME)
@@ -54,11 +58,11 @@ class ActionListenerFactoryTest {
 
         SwingTestUtil.waitForTfwAndSwing(basicTransactionQueue);
 
-        assertEquals(1, testTriggeredCommit.getCount());
+        assertThat(1).isEqualTo(testTriggeredCommit.getCount());
     }
 
     @Test
-    void testStateQueueFactoryNonNull() throws Exception {
+    void stateQueueFactoryNonNullTest() throws Exception {
         final OneDeepStateQueueFactory stateQueueFactory = new OneDeepStateQueueFactory();
         final BasicTransactionQueue basicTransactionQueue = new BasicTransactionQueue();
         final Root root = Root.builder()
@@ -80,6 +84,6 @@ class ActionListenerFactoryTest {
 
         SwingTestUtil.waitForTfwAndSwing(basicTransactionQueue);
 
-        assertEquals(1, testTriggeredCommit.getCount());
+        assertThat(1).isEqualTo(testTriggeredCommit.getCount());
     }
 }

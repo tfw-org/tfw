@@ -1,14 +1,13 @@
 package tfw.immutable.ilm.booleanilm;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.Arrays;
 import java.util.Random;
 import org.junit.jupiter.api.Test;
 
-class BooleanIlmFromArrayTest {
+final class BooleanIlmFromArrayTest {
     @Test
-    void testBooleanIlmFromArray() throws Exception {
+    void booleanIlmFromArrayTest() throws Exception {
         final Random random = new Random(0);
         boolean[] array = new boolean[6];
 
@@ -18,7 +17,7 @@ class BooleanIlmFromArrayTest {
 
         BooleanIlm booleanIlm = BooleanIlmFromArray.create(array, array.length / 2);
 
-        assertTrue(Arrays.equals(array, BooleanIlmUtil.toArray(booleanIlm)));
+        assertThat(array).isEqualTo(BooleanIlmUtil.toArray(booleanIlm));
     }
 }
 // AUTO GENERATED FROM TEMPLATE

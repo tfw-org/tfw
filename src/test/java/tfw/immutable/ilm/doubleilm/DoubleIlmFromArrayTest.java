@@ -1,14 +1,13 @@
 package tfw.immutable.ilm.doubleilm;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.Arrays;
 import java.util.Random;
 import org.junit.jupiter.api.Test;
 
-class DoubleIlmFromArrayTest {
+final class DoubleIlmFromArrayTest {
     @Test
-    void testDoubleIlmFromArray() throws Exception {
+    void doubleIlmFromArrayTest() throws Exception {
         final Random random = new Random(0);
         double[] array = new double[6];
 
@@ -18,7 +17,7 @@ class DoubleIlmFromArrayTest {
 
         DoubleIlm doubleIlm = DoubleIlmFromArray.create(array, array.length / 2);
 
-        assertTrue(Arrays.equals(array, DoubleIlmUtil.toArray(doubleIlm)));
+        assertThat(array).isEqualTo(DoubleIlmUtil.toArray(doubleIlm));
     }
 }
 // AUTO GENERATED FROM TEMPLATE

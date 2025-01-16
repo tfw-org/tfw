@@ -4,9 +4,9 @@ import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.doubleila.DoubleIla;
 import tfw.immutable.ila.doubleila.DoubleIlaFromArray;
 
-class RealFftDoubleIlmTest {
+final class RealFftDoubleIlmTest {
     @Test
-    void testRealFftDoubleIlm() throws Exception {
+    void realFftDoubleIlmTest() throws Exception {
         double[] input = new double[32];
 
         for (int i = 0; i < input.length; i++) {

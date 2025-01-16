@@ -1,14 +1,13 @@
 package tfw.immutable.ilm.byteilm;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.Arrays;
 import java.util.Random;
 import org.junit.jupiter.api.Test;
 
-class ByteIlmFromArrayTest {
+final class ByteIlmFromArrayTest {
     @Test
-    void testByteIlmFromArray() throws Exception {
+    void byteIlmFromArrayTest() throws Exception {
         final Random random = new Random(0);
         byte[] array = new byte[6];
 
@@ -18,7 +17,7 @@ class ByteIlmFromArrayTest {
 
         ByteIlm byteIlm = ByteIlmFromArray.create(array, array.length / 2);
 
-        assertTrue(Arrays.equals(array, ByteIlmUtil.toArray(byteIlm)));
+        assertThat(array).isEqualTo(ByteIlmUtil.toArray(byteIlm));
     }
 }
 // AUTO GENERATED FROM TEMPLATE
