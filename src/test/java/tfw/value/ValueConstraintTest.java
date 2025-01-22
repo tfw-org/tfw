@@ -1,18 +1,11 @@
 package tfw.value;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.junit.jupiter.api.Test;
 
-/**
- *
- *
- */
-class ValueConstraintTest {
+final class ValueConstraintTest {
     private static final class TestConstraint extends ClassValueConstraint<Object> {
         public TestConstraint(Class<Object> valueType) {
             super(valueType);
@@ -20,39 +13,39 @@ class ValueConstraintTest {
     }
 
     @Test
-    void testNullValueType() {
-        assertThrows(IllegalArgumentException.class, () -> new TestConstraint(null));
+    void nullValueTypeTest() {
+        assertThatThrownBy(() -> new TestConstraint(null))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("valueType == null not allowed!");
     }
 
     @Test
-    void testGetValueCompliance() {
+    void getValueComplianceTest() {
         ClassValueConstraint<Integer> vc = ClassValueConstraint.getInstance(Integer.class);
         String result = vc.getValueCompliance(0);
-        assertEquals(ClassValueConstraint.VALID, result, "Valid class type rejected!");
+        assertThat(result).isEqualTo(ClassValueConstraint.VALID);
         result = vc.getValueCompliance(null);
-        assertNotEquals(ClassValueConstraint.VALID, result, "null accepted!");
+        assertThat(result).isNotEqualTo(ClassValueConstraint.VALID);
         result = vc.getValueCompliance(new Object());
-        assertNotEquals(ClassValueConstraint.VALID, result, "accepted invalid type!");
+        assertThat(result).isNotEqualTo(ClassValueConstraint.VALID);
     }
 
     @Test
-    void testIsValid() {
+    void isValidTest() {
         ClassValueConstraint<Integer> vc = ClassValueConstraint.getInstance(Integer.class);
-        assertTrue(vc.isValid(1), "rejected valid value!");
+        assertThat(vc.isValid(1)).isTrue();
     }
 
     @Test
-    void testCheckValue() {
+    void checkValueTest() {
         ClassValueConstraint<Integer> vc = ClassValueConstraint.getInstance(Integer.class);
 
         final Object v = new Object();
 
-        assertThrows(ValueException.class, () -> vc.checkValue(v));
+        assertThatThrownBy(() -> vc.checkValue(v))
+                .isInstanceOf(ValueException.class)
+                .hasMessage("The value, of type 'java.lang.Object', is not assignable to type 'java.lang.Integer'.");
 
-        try {
-            vc.checkValue(0);
-        } catch (ValueException unexpected) {
-            fail("checkValue() threw exception on valid value");
-        }
+        vc.checkValue(0);
     }
 }

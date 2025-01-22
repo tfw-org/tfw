@@ -1,6 +1,6 @@
 package tfw.tsm;
 
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.junit.jupiter.api.Test;
 import tfw.tsm.ecd.IntegerECD;
@@ -8,124 +8,77 @@ import tfw.tsm.ecd.StatelessTriggerECD;
 import tfw.tsm.ecd.StringECD;
 import tfw.value.ValueException;
 
-/**
- *
- */
-class BranchFactoryTest {
+final class BranchFactoryTest {
     @Test
-    void testFactory() {
+    void factoryTest() {
         BranchFactory bf = new BranchFactory();
 
-        try {
-            bf.addEventChannel(null);
-            fail("addTerminator() accepted null event channel description");
-        } catch (IllegalArgumentException expected) {
-            // System.out.println(expected);
-        }
+        assertThatThrownBy(() -> bf.addEventChannel(null))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("eventChannelDescription == null not allowed!");
 
         StringECD stringECD = new StringECD("myString");
+        Object object = new Object();
 
-        try {
-            bf.addEventChannel(null, new Object());
-            fail("addTerminator() accepted null event channel description");
-        } catch (IllegalArgumentException expected) {
-            // System.out.println(expected);
-        }
-
-        try {
-            bf.addEventChannel(stringECD, new Object());
-            fail("addTerminator() accepted null event channel description");
-        } catch (ValueException expected) {
-            // System.out.println(expected);
-        }
-
-        try {
-            bf.addEventChannel(stringECD, "myString", null, null);
-            fail("addTerminator() accepted null state change rule");
-        } catch (IllegalArgumentException expected) {
-            // System.out.println(expected);
-        }
+        assertThatThrownBy(() -> bf.addEventChannel(null, object))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("eventChannelDescription == null not allowed!");
+        assertThatThrownBy(() -> bf.addEventChannel(stringECD, object))
+                .isInstanceOf(ValueException.class)
+                .hasMessage("The value, of type 'java.lang.Object', is not assignable to type 'java.lang.String'.");
+        assertThatThrownBy(() -> bf.addEventChannel(stringECD, "myString", null, null))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("rule == null not allowed!");
 
         bf.addEventChannel(stringECD);
 
         StatelessTriggerECD memoryLessECD = new StatelessTriggerECD("memoryLess");
-        try {
-            bf.addEventChannel(memoryLessECD, "non-null state");
-            fail("addEventChannel() accepted non-null state on memory less event channel");
-        } catch (IllegalArgumentException expected) {
-            // System.out.println(expected);
-        }
 
-        try {
-            bf.addEventChannel(stringECD);
-            fail("addTerminator() accepted duplicate terminator");
-        } catch (IllegalArgumentException expected) {
-            // System.out.println(expected);
-        }
+        assertThatThrownBy(() -> bf.addEventChannel(memoryLessECD, "non-null state"))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage(
+                        "Non-null 'initialState' is not permitted given eventChannelDescription.isFireOnConnect() == false");
+        assertThatThrownBy(() -> bf.addEventChannel(stringECD))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("The event channel 'myString' is already exists");
 
         StringECD childECD = new StringECD("child");
         StringECD parentECD = new StringECD("parent");
 
-        try {
-            bf.addTranslation(null, parentECD);
-            fail("addTranslator() accepted null child event channel");
-        } catch (IllegalArgumentException expected) {
-            // System.out.println(expected);
-        }
-
-        try {
-            bf.addTranslation(childECD, null);
-            fail("addTranslator() accepted null parent event channel");
-        } catch (IllegalArgumentException expected) {
-            // System.out.println(expected);
-        }
-
-        try {
-            bf.addTranslation(stringECD, parentECD);
-            fail("addTranslator() accepted terminated event channel");
-        } catch (IllegalStateException expected) {
-            // System.out.println(expected);
-        }
+        assertThatThrownBy(() -> bf.addTranslation(null, parentECD))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("childEventChannel == null not allowed!");
+        assertThatThrownBy(() -> bf.addTranslation(childECD, null))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("parentEventChannel == null not allowed!");
+        assertThatThrownBy(() -> bf.addTranslation(stringECD, parentECD))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessage("Attempt to translate the event channel 'myString' which is already terminated.");
 
         bf.addTranslation(childECD, parentECD);
 
-        try {
-            bf.addTranslation(childECD, parentECD);
-            fail("addTranslator() accepted duplicate translation");
-        } catch (IllegalStateException expected) {
-            // System.out.println(expected);
-        }
-
-        try {
-            bf.addEventChannel(childECD);
-            fail("addEventChannel() accepted translated event channel");
-        } catch (IllegalStateException expected) {
-            // System.out.println(expected);
-        }
-
-        try {
-            bf.create(null);
-            fail("create() accepted null name");
-        } catch (IllegalArgumentException expected) {
-            // System.out.println(expected);
-        }
+        assertThatThrownBy(() -> bf.addTranslation(childECD, parentECD))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessage("Attempt to translate the event channel 'child' which is already translated.");
+        assertThatThrownBy(() -> bf.addEventChannel(childECD))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessage("Attemp to terminate an event channel, 'child', which is already transalated.");
+        assertThatThrownBy(() -> bf.create(null))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("name == null not allowed!");
 
         bf.clear();
 
         IntegerECD integerECD = new IntegerECD("Full Range Integer");
-        IntegerECD int0_1ECD = new IntegerECD("constrained integer", 0, 1);
+        IntegerECD constrainedIntECD = new IntegerECD("constrained integer", 0, 1);
 
-        try {
-            bf.addTranslation(integerECD, int0_1ECD);
-            fail("addTranslator() parent un-assignable to child");
-        } catch (IllegalArgumentException expected) {
-            // System.out.println(expected);
-        }
-        try {
-            bf.addTranslation(int0_1ECD, integerECD);
-            fail("addTranslator() child un-assignable to parent");
-        } catch (IllegalArgumentException expected) {
-            // System.out.println(expected);
-        }
+        assertThatThrownBy(() -> bf.addTranslation(integerECD, constrainedIntECD))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage(
+                        "Incompatible event channels values from the child event channel 'Full Range Integer' are not assignable to the parent event channel 'constrained integer'");
+        assertThatThrownBy(() -> bf.addTranslation(constrainedIntECD, integerECD))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage(
+                        "Incompatible event channels, values from the parent event channel 'Full Range Integer' are not assignable to the child event channel 'constrained integer'");
     }
 }

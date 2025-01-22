@@ -1,19 +1,15 @@
 package tfw.tsm;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.junit.jupiter.api.Test;
 import tfw.tsm.ecd.IntegerECD;
 import tfw.tsm.ecd.StringECD;
 
-/**
- *
- */
-class ImportExportTreeStateTest {
+final class ImportExportTreeStateTest {
     @Test
-    void testDefaultExportTreeState() throws Exception {
+    void defaultExportTreeStateTest() throws Exception {
         String rootName = "Root";
         String childName = "Child Tree";
         StringECD stringECD = new StringECD("ecd1");
@@ -27,33 +23,30 @@ class ImportExportTreeStateTest {
 
         final Root root = rf.create(rootName, queue);
 
-        try {
-            root.getTreeState();
-            fail("getTreeState() accepted call outside transaction thread");
-        } catch (IllegalStateException expected) {
-            // System.out.println(expected);
-        }
+        assertThatThrownBy(root::getTreeState)
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessage("This method can not be called from outside the transaction queue thread");
 
         GetTreeStateRunnable getStateRunnable = new GetTreeStateRunnable(root);
 
         queue.invokeLater(getStateRunnable);
         queue.waitTilEmpty();
 
-        assertNotNull(getStateRunnable.treeState, "getTreeState() returned null");
-        assertEquals(rootName, getStateRunnable.treeState.getName(), "getTreeState() returned state with wrong name");
+        assertThat(getStateRunnable.treeState).isNotNull();
+        assertThat(rootName).isEqualTo(getStateRunnable.treeState.getName());
 
         EventChannelState[] ecds = getStateRunnable.treeState.getState();
-        assertNotNull(ecds, "ecds == null");
+        assertThat(ecds).isNotNull();
         /*
          * We should only get the state from stringECD because the other two
          * have no state.
          */
-        assertEquals(1, ecds.length, "Wrong number of event channels");
-        assertEquals(state, ecds[0], "Wrong event channel state returned");
+        assertThat(1).isEqualTo(ecds.length);
+        assertThat(state).isEqualTo(ecds[0]);
 
         TreeState[] children = getStateRunnable.treeState.getChildren();
-        assertNotNull(children, "children == null");
-        assertEquals(0, children.length, "Wrong number of children");
+        assertThat(children).isNotNull();
+        assertThat(0).isEqualTo(children.length);
 
         IntegerECD integerECD = new IntegerECD("integer");
         Integer integerState = 123456;
@@ -66,18 +59,16 @@ class ImportExportTreeStateTest {
         queue.waitTilEmpty();
 
         children = getStateRunnable.treeState.getChildren();
-        assertNotNull(children, "children == null");
-        assertEquals(1, children.length, "Wrong number of children");
+        assertThat(children).isNotNull();
+        assertThat(children.length).isEqualTo(1);
 
         SetTreeStateRunnable setStateRunnable = new SetTreeStateRunnable(root, null);
         queue.invokeLater(setStateRunnable);
         queue.waitTilEmpty();
-        assertNotNull("setTreeState() accepted null value");
 
         setStateRunnable = new SetTreeStateRunnable(root, new TreeState("wrongname", null, null));
         queue.invokeLater(setStateRunnable);
         queue.waitTilEmpty();
-        assertNotNull("setTreeState() accepted wrong event channel state");
 
         EventChannelStateBuffer buff = new EventChannelStateBuffer();
         buff.put(integerECD, 654321);
@@ -91,7 +82,6 @@ class ImportExportTreeStateTest {
         setStateRunnable = new SetTreeStateRunnable(root, rootTS);
         queue.invokeLater(setStateRunnable);
         queue.waitTilEmpty();
-        assertNotNull("setTreeState() accepted wrong child tree state name");
 
         buff.clear();
         buff.put(integerECD, 654321);
@@ -107,13 +97,11 @@ class ImportExportTreeStateTest {
         queue.waitTilEmpty();
         queue.invokeLater(getStateRunnable);
         queue.waitTilEmpty();
-        // System.out.println(rootTS);
-        // System.out.println(runnable.treeState);
-        assertEquals(rootTS, getStateRunnable.treeState, "TreeState not equal");
+        assertThat(rootTS).isEqualTo(getStateRunnable.treeState);
     }
 
     @Test
-    void testCustomTagExportImportTreeState() {
+    void customTagExportImportTreeStateTest() {
         RootFactory rf = new RootFactory();
         String tag1 = "tag1";
         String tag2 = "tag2";
@@ -122,30 +110,20 @@ class ImportExportTreeStateTest {
         EventChannelState state1 = new EventChannelState(ecd1, "hello");
         EventChannelState state2 = new EventChannelState(ecd2, 123);
         rf.addEventChannel(ecd1, state1.getState());
-        try {
-            rf.addExportTag(null, tag1);
-            fail("addExportTag() accepted null ECD");
-        } catch (IllegalArgumentException expected) {
-            // System.out.println(expected);
-        }
-        try {
-            rf.addExportTag(ecd1, null);
-            fail("addExportTag() accepted null tag");
-        } catch (IllegalArgumentException expected) {
-            // System.out.println(expected);
-        }
-        try {
-            rf.addExportTag(ecd1, "");
-            fail("addExportTag() accepted empty tag");
-        } catch (IllegalArgumentException expected) {
-            // System.out.println(expected);
-        }
-        try {
-            rf.addExportTag(ecd2, tag1);
-            fail("addExportTag() accepted unknown ECD");
-        } catch (IllegalArgumentException expected) {
-            // System.out.println(expected);
-        }
+
+        assertThatThrownBy(() -> rf.addExportTag(null, tag1))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("ecd == null not allowed!");
+        assertThatThrownBy(() -> rf.addExportTag(ecd1, null))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("tag == null not allowed!");
+        assertThatThrownBy(() -> rf.addExportTag(ecd1, ""))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("tag.length() == 0 not allowed!");
+        assertThatThrownBy(() -> rf.addExportTag(ecd2, tag1))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage(
+                        "The event channel 'int_ecd_1' has not been added to this factory and therefore can not be tagged.");
 
         rf.addExportTag(ecd1, tag1);
         rf.addEventChannel(ecd2, state2.getState());
@@ -156,28 +134,25 @@ class ImportExportTreeStateTest {
         GetTreeStateRunnable tsr = new GetTreeStateRunnable(root, null);
         queue.invokeLater(tsr);
         queue.waitTilEmpty();
-        assertNotNull(tsr.exception, "getTreeState() accepted null tag");
+        assertThat(tsr.exception).isNotNull();
 
         tsr = new GetTreeStateRunnable(root, tag1);
         queue.invokeLater(tsr);
         queue.waitTilEmpty();
 
-        assertNotNull(tsr.treeState, "getTreeState() returned null");
+        assertThat(tsr.treeState).isNotNull();
         EventChannelState[] ecs = tsr.treeState.getState();
-        assertEquals(1, ecs.length, "The wrong number of event channel state returned");
-        assertEquals(
-                state1.getEventChannelName(),
-                ecs[0].getEventChannelName(),
-                "The wrong event channel description was returned");
-        assertEquals(state1.getState(), ecs[0].getState(), "The wrong event channel state was returned");
+        assertThat(ecs.length).isEqualTo(1);
+        assertThat(state1.getEventChannelName()).isEqualTo(ecs[0].getEventChannelName());
+        assertThat(state1.getState()).isEqualTo(ecs[0].getState());
 
         tsr = new GetTreeStateRunnable(root, tag2);
         queue.invokeLater(tsr);
         queue.waitTilEmpty();
 
-        assertNotNull(tsr.treeState, "getTreeState() returned null");
+        assertThat(tsr.treeState).isNotNull();
         ecs = tsr.treeState.getState();
-        assertEquals(2, ecs.length, "The wrong number of event channel state returned");
+        assertThat(ecs.length).isEqualTo(2);
     }
 
     private static class GetTreeStateRunnable implements Runnable {

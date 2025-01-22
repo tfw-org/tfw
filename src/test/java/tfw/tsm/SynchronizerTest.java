@@ -1,13 +1,13 @@
 package tfw.tsm;
 
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.junit.jupiter.api.Test;
 import tfw.tsm.ecd.CharacterECD;
 import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.StringECD;
 
-class SynchronizerTest {
+final class SynchronizerTest {
     private ObjectECD source = new StringECD("source");
     private ObjectECD sink = new StringECD("sink");
     private ObjectECD a1Port = new CharacterECD("a1");
@@ -31,7 +31,6 @@ class SynchronizerTest {
 
                 @Override
                 protected void convertAToB() {
-                    // System.out.println("convertAToB");
                     aToBFired = true;
 
                     Character ch = (Character) get(a1Port);
@@ -51,7 +50,6 @@ class SynchronizerTest {
 
                 @Override
                 protected void convertBToA() {
-                    // System.out.println("convertBToA");
                     bToAFired = true;
 
                     Character ch = (Character) get(b1Port);
@@ -73,13 +71,9 @@ class SynchronizerTest {
     private Commit commit = new Commit("Commit", new ObjectECD[] {a1Port, a2Port, b1Port, b2Port}) {
         @Override
         protected void commit() {
-            Character ch = (Character) get(a1Port);
             commitA1 = ((Character) get(a1Port)).charValue();
-            ch = (Character) get(a2Port);
             commitA2 = ((Character) get(a2Port)).charValue();
-            ch = (Character) get(b1Port);
             commitB1 = ((Character) get(b1Port)).charValue();
-            ch = (Character) get(b2Port);
             commitB2 = ((Character) get(b2Port)).charValue();
         }
 
@@ -114,7 +108,6 @@ class SynchronizerTest {
     private Converter rollback = new Converter("rollback", new ObjectECD[] {a1Port}, new ObjectECD[] {b1Port}) {
         @Override
         protected void convert() {
-            // System.out.println("Executing Rollback");
             initiator.set(b1Port, 'b');
             rollback();
         }
@@ -132,7 +125,6 @@ class SynchronizerTest {
 
                     fired = true;
 
-                    // System.err.println("\nset b1 to cause error\n");
                     set(b1Port, 'E');
                 }
             };
@@ -147,7 +139,6 @@ class SynchronizerTest {
 
                     fired = true;
 
-                    // System.out.println("set a1 to cause error");
                     set(a1Port, 'e');
                 }
             };
@@ -157,7 +148,6 @@ class SynchronizerTest {
     public Root initializeRoot(TransactionExceptionHandler handler) {
         RootFactory rf = new RootFactory();
 
-        // rf.setLogging(true);
         rf.addEventChannel(a1Port, null, AlwaysChangeRule.RULE, null);
         rf.addEventChannel(a2Port, null, AlwaysChangeRule.RULE, null);
         rf.addEventChannel(b1Port, null, AlwaysChangeRule.RULE, null);
@@ -178,69 +168,34 @@ class SynchronizerTest {
     }
 
     @Test
-    void testConstruction() {
-        try {
-            new TestTwoWay(null, aChans, bChans, sinks, sources);
-            fail("Constructor accepted null name");
-        } catch (IllegalArgumentException expected) {
-            // System.out.println(expected);
-        }
-
-        try {
-            new TestTwoWay("Test", null, bChans, sinks, sources);
-            fail("Constructor accepted null 'A' channels");
-        } catch (IllegalArgumentException expected) {
-            // System.out.println(expected);
-        }
-
-        try {
-            new TestTwoWay("Test", new ObjectECD[0], bChans, sinks, sources);
-            fail("Constructor accepted empty 'A' channels");
-        } catch (IllegalArgumentException expected) {
-            // System.out.println(expected);
-        }
-
-        try {
-            new TestTwoWay("Test", new ObjectECD[] {null}, bChans, sinks, sources);
-            fail("Constructor accepted 'A' channel array with null value");
-        } catch (IllegalArgumentException expected) {
-            // System.out.println(expected);
-        }
-
-        try {
-            new TestTwoWay("Test", aChans, null, sinks, sources);
-            fail("Constructor accepted null 'B' channels");
-        } catch (IllegalArgumentException expected) {
-            // System.out.println(expected);
-        }
-
-        try {
-            new TestTwoWay("Test", aChans, new ObjectECD[0], sinks, sources);
-            fail("Constructor accepted empty 'B' channels");
-        } catch (IllegalArgumentException expected) {
-            // System.out.println(expected);
-        }
-
-        try {
-            new TestTwoWay("Test", aChans, new ObjectECD[] {null}, sinks, sources);
-            fail("Constructor accepted 'B' channel array with null value");
-        } catch (IllegalArgumentException expected) {
-            // System.out.println(expected);
-        }
-
-        try {
-            new TestTwoWay("Test", aChans, bChans, new ObjectECD[] {null}, sources);
-            fail("Constructor accepted sinks channel array with null value");
-        } catch (IllegalArgumentException expected) {
-            // System.out.println(expected);
-        }
-
-        try {
-            new TestTwoWay("Test", aChans, bChans, sinks, new ObjectECD[] {null});
-            fail("Constructor accepted sources channel array with null value");
-        } catch (IllegalArgumentException expected) {
-            // System.out.println(expected);
-        }
+    void constructionTest() {
+        assertThatThrownBy(() -> new TestTwoWay(null, aChans, bChans, sinks, sources))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("name == null not allowed!");
+        assertThatThrownBy(() -> new TestTwoWay("Test", null, bChans, sinks, sources))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("aPortDescriptions == null not allowed!");
+        assertThatThrownBy(() -> new TestTwoWay("Test", new ObjectECD[0], bChans, sinks, sources))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("aPortDescriptions.length == 0 not allowed");
+        assertThatThrownBy(() -> new TestTwoWay("Test", new ObjectECD[] {null}, bChans, sinks, sources))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("aPortDescription[0]== null not allowed!");
+        assertThatThrownBy(() -> new TestTwoWay("Test", aChans, null, sinks, sources))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("bPortDescriptions == null not allowed!");
+        assertThatThrownBy(() -> new TestTwoWay("Test", aChans, new ObjectECD[0], sinks, sources))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("bPortDescriptions.length == 0 not allowed");
+        assertThatThrownBy(() -> new TestTwoWay("Test", aChans, new ObjectECD[] {null}, sinks, sources))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("bPortDescription[0]== null not allowed!");
+        assertThatThrownBy(() -> new TestTwoWay("Test", aChans, bChans, new ObjectECD[] {null}, sources))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("sinkEventChannels[0]== null not allowed!");
+        assertThatThrownBy(() -> new TestTwoWay("Test", aChans, bChans, sinks, new ObjectECD[] {null}))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("sources[4]== null not allowed!");
     }
 
     /*

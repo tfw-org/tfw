@@ -1,6 +1,6 @@
 package tfw.tsm;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.objectila.ObjectIlaFromArray;
@@ -8,19 +8,16 @@ import tfw.tsm.ecd.StatelessTriggerECD;
 import tfw.tsm.ecd.StringECD;
 import tfw.tsm.ecd.ila.ObjectIlaECD;
 
-class MultiplexerConstructionTest {
+final class MultiplexerConstructionTest {
     private static final StringECD VALUE_ECD = new StringECD("value");
-
     private static final ObjectIlaECD MULTIVALUE_ECD = new ObjectIlaECD("multiValue");
-
     private static final StatelessTriggerECD TRIGGER_ECD = new StatelessTriggerECD("trigger");
 
     private final ValueCommit vc1 = new ValueCommit("vc1");
-
     private final ValueCommit vc2 = new ValueCommit("vc2");
 
     @Test
-    void testDynamicConstruction() {
+    void dynamicConstructionTest() {
         String value = "bob";
         MultiplexedBranchFactory mbf = new MultiplexedBranchFactory();
         mbf.addMultiplexer(VALUE_ECD, MULTIVALUE_ECD);
@@ -38,7 +35,7 @@ class MultiplexerConstructionTest {
     }
 
     @Test
-    void testNameSpaceSeparation() {
+    void nameSpaceSeparationTest() {
         String value0 = "bob";
         String value1 = "sally";
         MultiplexedBranchFactory mbf = new MultiplexedBranchFactory();
@@ -51,13 +48,12 @@ class MultiplexerConstructionTest {
 
         BasicTransactionQueue queue = new BasicTransactionQueue();
         RootFactory rf = new RootFactory();
-        // rf.setLogging(true);
         rf.addEventChannel(MULTIVALUE_ECD, ObjectIlaFromArray.create(new String[] {value0, value1}));
         Root root = rf.create("Test", queue);
         root.add(multiBranch);
         queue.waitTilEmpty();
-        assertEquals(value0, vc0.value);
-        assertEquals(value1, vc1.value);
+        assertThat(value0).isEqualTo(vc0.value);
+        assertThat(value1).isEqualTo(vc1.value);
     }
 
     private static class ValueCommit extends Commit {

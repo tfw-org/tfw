@@ -1,84 +1,74 @@
 package tfw.tsm;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
 import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.StringECD;
 
-/**
- *
- */
-class InfiniteLoopTest {
-    private static int count = 0;
-    private static final StringECD porta = new StringECD("a");
-    private static final StringECD portb = new StringECD("b");
-    private static final StringECD portc = new StringECD("c");
+final class InfiniteLoopTest {
+    private static final StringECD PORT_A = new StringECD("a");
+    private static final StringECD PORT_B = new StringECD("b");
+    private static final StringECD PORT_C = new StringECD("c");
     String cvalue = null;
     private boolean loop = true;
     private boolean transactionStarted = false;
-    private final Converter trigger = new Converter("TriggeredConverter", new StringECD[] {portc}, null, null) {
+    private final Converter trigger = new Converter("TriggeredConverter", new StringECD[] {PORT_C}, null, null) {
         @Override
         protected void convert() {
-            cvalue = (String) get(portc);
+            cvalue = (String) get(PORT_C);
         }
     };
 
     private Converter convertAtoB =
-            new Converter("A to B Converter", new ObjectECD[] {porta}, new ObjectECD[] {portb}) {
+            new Converter("A to B Converter", new ObjectECD[] {PORT_A}, new ObjectECD[] {PORT_B}) {
                 @Override
                 protected void convert() {
                     transactionStarted = true;
-                    // System.out.println("a to b " + count++);
-
                     if (loop) {
-                        set(portb, "from a to b");
+                        set(PORT_B, "from a to b");
                     }
                 }
             };
 
     private Converter convertBtoA =
-            new Converter("B to A Converter", new ObjectECD[] {portb}, new ObjectECD[] {porta}) {
+            new Converter("B to A Converter", new ObjectECD[] {PORT_B}, new ObjectECD[] {PORT_A}) {
                 @Override
                 protected void convert() {
-                    // System.out.println("b to a " + count++);
-
                     if (loop) {
-                        set(porta, "from b to a");
+                        set(PORT_A, "from b to a");
                     }
                 }
             };
 
-    private Initiator initiator = new Initiator("Infinite loop initiator", new ObjectECD[] {porta, portc});
+    private Initiator initiator = new Initiator("Infinite loop initiator", new ObjectECD[] {PORT_A, PORT_C});
     public boolean isCommit = false;
     boolean isDebugCommit = false;
     String avalue = null;
     String bvalue = null;
-    private final Commit commit = new Commit("Infinite loop commit", new ObjectECD[] {porta, portb}) {
+    private final Commit commit = new Commit("Infinite loop commit", new ObjectECD[] {PORT_A, PORT_B}) {
         @Override
         protected void commit() {
             isCommit = true;
-            avalue = (String) get(porta);
-            bvalue = (String) get(portb);
+            avalue = (String) get(PORT_A);
+            bvalue = (String) get(PORT_B);
         }
 
         @Override
         protected void debugCommit() {
             isDebugCommit = true;
-            avalue = (String) get(porta);
-            bvalue = (String) get(portb);
+            avalue = (String) get(PORT_A);
+            bvalue = (String) get(PORT_B);
         }
     };
 
     @Test
-    void testInfiniteLoop() throws Exception {
+    void infiniteLoopTest() throws Exception {
         RootFactory rf = new RootFactory();
         BasicTransactionQueue queue = new BasicTransactionQueue();
-        rf.addEventChannel(porta, null, AlwaysChangeRule.RULE, null);
-        rf.addEventChannel(portb, null, AlwaysChangeRule.RULE, null);
-        rf.addEventChannel(portc, null, AlwaysChangeRule.RULE, null);
+        rf.addEventChannel(PORT_A, null, AlwaysChangeRule.RULE, null);
+        rf.addEventChannel(PORT_B, null, AlwaysChangeRule.RULE, null);
+        rf.addEventChannel(PORT_C, null, AlwaysChangeRule.RULE, null);
 
         Root root = rf.create("Infinite loop test", queue);
         root.add(initiator);
@@ -87,10 +77,9 @@ class InfiniteLoopTest {
         root.add(convertBtoA);
         root.add(trigger);
         root.add(commit);
-        initiator.set(porta, "kick off value");
-        // queue.waitTilEmpty();
-        assertFalse(isCommit, "commit was called");
-        assertFalse(isDebugCommit, "debugCommit was called");
+        initiator.set(PORT_A, "kick off value");
+        assertThat(isCommit).isFalse();
+        assertThat(isDebugCommit).isFalse();
 
         String newTransaction = "generating new transaction";
 
@@ -98,14 +87,14 @@ class InfiniteLoopTest {
             Thread.sleep(10);
         }
 
-        initiator.set(portc, newTransaction);
+        initiator.set(PORT_C, newTransaction);
 
         // Give it a chance to break through
         // Note that there is no guarantee that we
         // sleep long enough...
         Thread.sleep(50);
 
-        assertNull(cvalue, "initiator broke into the infinite transaction.");
+        assertThat(cvalue).isNull();
 
         // terminate the infinite loop transaction...
         loop = false;
@@ -113,6 +102,6 @@ class InfiniteLoopTest {
         // Give the follow on transaction a chance to
         // to execute...
         queue.waitTilEmpty();
-        assertEquals(newTransaction, cvalue, "intiator did cause value to set after loop was broken");
+        assertThat(newTransaction).isEqualTo(cvalue);
     }
 }

@@ -1,30 +1,30 @@
 package tfw.value;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.junit.jupiter.api.Test;
 
-/**
- *
- */
-class NullConstraintTest {
+final class NullConstraintTest {
     @Test
-    void testIsCompatable() {
+    void isCompatableTest() {
         NullConstraint nc = NullConstraint.INSTANCE;
 
-        assertThrows(IllegalArgumentException.class, () -> nc.isCompatible(null));
+        assertThatThrownBy(() -> nc.isCompatible(null))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("constraint == null not allowed!");
 
-        assertTrue(nc.isCompatible(nc), "isCompatible() rejected itself");
+        assertThat(nc.isCompatible(nc)).isTrue();
     }
 
     @Test
-    void testgetValueCompliance() {
-        NullConstraint nc = NullConstraint.INSTANCE;
-
+    void getValueComplianceTest() {
+        final NullConstraint nc = NullConstraint.INSTANCE;
         final Object v = new Object();
 
-        assertThrows(ValueException.class, () -> nc.checkValue(v));
+        assertThatThrownBy(() -> nc.checkValue(v))
+                .isInstanceOf(ValueException.class)
+                .hasMessage("Trigger event channels have no values, so no value complies with this constraint");
 
         nc.checkValue(null);
     }

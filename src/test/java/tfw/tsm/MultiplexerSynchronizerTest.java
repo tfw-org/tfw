@@ -1,11 +1,10 @@
 package tfw.tsm;
 
 import org.junit.jupiter.api.Test;
-// import tfw.component.ObjectStringSynchronizer;
 import tfw.immutable.ila.objectila.ObjectIla;
 import tfw.tsm.ecd.ila.ObjectIlaECD;
 
-class MultiplexerSynchronizerTest {
+final class MultiplexerSynchronizerTest {
 
     private static class MultiCommit extends Commit {
 
@@ -26,7 +25,7 @@ class MultiplexerSynchronizerTest {
     }
 
     @Test
-    void testMultiplexedSynchronizer() throws Exception {
+    void multiplexedSynchronizerTest() throws Exception {
         /*
                 StringECD stringECD = new StringECD("string");
                 IntegerECD integerECD = new IntegerECD("integer");

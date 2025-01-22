@@ -1,17 +1,13 @@
 package tfw.tsm;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
 import tfw.tsm.ecd.StringECD;
 
-/**
- *
- */
-class TreeStateTest {
+final class TreeStateTest {
     @Test
-    void testEquals() throws Exception {
+    void equalsTest() throws Exception {
         String name = "my tree";
         EventChannelState state = new EventChannelState(new StringECD("xyz"), "Hello");
         EventChannelState[] stateArray = new EventChannelState[] {};
@@ -19,19 +15,15 @@ class TreeStateTest {
         TreeState[] children = new TreeState[] {child};
         TreeState ts1 = new TreeState(name, stateArray, children);
         TreeState ts2 = new TreeState(name, stateArray, children);
-        assertEquals(ts1, ts2, "Equivalent tree state not equal");
-        assertEquals(ts1.hashCode(), ts2.hashCode(), "Equivalent tree state has different hash code");
-
-        assertNotEquals(ts1, null, "null is equal");
-        assertNotEquals(ts1, new Object(), "wrong type is equal");
+        assertThat(ts1).isEqualTo(ts2).hasSameHashCodeAs(ts2).isNotNull().isNotEqualTo(new Object());
 
         ts2 = new TreeState("different", stateArray, children);
-        assertNotEquals(ts1, ts2, "different name equal");
+        assertThat(ts1).isNotEqualTo(ts2);
 
         ts2 = new TreeState(name, new EventChannelState[] {state}, children);
-        assertNotEquals(ts1, ts2, "different event channel state equal");
+        assertThat(ts1).isNotEqualTo(ts2);
 
         ts2 = new TreeState(name, stateArray, new TreeState[0]);
-        assertNotEquals(ts1, ts2, "different children equal");
+        assertThat(ts1).isNotEqualTo(ts2);
     }
 }
