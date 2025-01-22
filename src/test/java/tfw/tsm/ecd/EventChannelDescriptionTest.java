@@ -1,56 +1,35 @@
 package tfw.tsm.ecd;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.junit.jupiter.api.Test;
 import tfw.value.ClassValueConstraint;
 import tfw.value.ValueConstraint;
 
-/**
- *
- */
-class EventChannelDescriptionTest {
+final class EventChannelDescriptionTest {
     @Test
-    void testConstruction() {
-        try {
-            new TestECD(null, ClassValueConstraint.STRING);
-            fail("constructor accepted null name");
-        } catch (IllegalArgumentException expected) {
-            // System.out.println(expected);
-        }
-
-        try {
-            new TestECD(" ", ClassValueConstraint.STRING);
-            fail("constructor accepted empty name");
-        } catch (IllegalArgumentException expected) {
-            // System.out.println(expected);
-        }
-
-        try {
-            new TestECD("A", null);
-            fail("constructor accepted constraint");
-        } catch (IllegalArgumentException expected) {
-            // System.out.println(expected);
-        }
-
-        try {
-            new TestECD("A", ClassValueConstraint.STRING);
-        } catch (IllegalArgumentException expected) {
-            fail("constructor did not accept a null codec");
-        }
+    void constructionTest() {
+        assertThatThrownBy(() -> new TestECD(null, ClassValueConstraint.STRING))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("eventChannelName == null not allowed!");
+        assertThatThrownBy(() -> new TestECD(" ", ClassValueConstraint.STRING))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("eventChannelName.trim().length() == 0 not allowed!");
+        assertThatThrownBy(() -> new TestECD("A", null))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("constraint == null not allowed!");
     }
 
     @Test
-    void testEquals() {
+    void equalsTest() {
         TestECD ecd1 = new TestECD("A", ClassValueConstraint.STRING);
         TestECD ecd2 = new TestECD("A", ClassValueConstraint.STRING);
-        assertEquals(ecd1, ecd2, "Equivalent instances not equal");
-        assertNotEquals(null, ecd1, "equal to null.");
+
+        assertThat(ecd1).isEqualTo(ecd2).isNotNull();
 
         ecd2 = new TestECD("different", ClassValueConstraint.STRING);
-        assertNotEquals(ecd2, ecd1, "different names equal");
+        assertThat(ecd2).isNotEqualTo(ecd1);
     }
 
     private static class TestECD extends ObjectECD {

@@ -1,15 +1,11 @@
 package tfw.tsm;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
 import tfw.tsm.ecd.StringECD;
 
-/**
- *
- */
-class StateChangeCycleDelayTest {
+final class StateChangeCycleDelayTest {
     private static int globalOrder = 0;
     StringECD ecI = new StringECD("ecI");
     StringECD ecA = new StringECD("ecA");
@@ -18,7 +14,7 @@ class StateChangeCycleDelayTest {
     StringECD ecD = new StringECD("ecD");
 
     @Test
-    void testTwoStage() {
+    void twoStageTest() {
         RootFactory rf = new RootFactory();
         BasicTransactionQueue queue = new BasicTransactionQueue();
         Initiator initiator = new Initiator("Test", ecI);
@@ -39,14 +35,14 @@ class StateChangeCycleDelayTest {
         initiator.set(ecI, "Start");
         queue.waitTilEmpty();
 
-        assertEquals(1, converterA.getCount(), "Converter A was called the wrong number of times");
-        assertEquals(1, converterA.getOrder(), "Converter A was called in the wrong order");
-        assertEquals(1, converterB.getCount(), "Converter B was called the wrong number of times");
-        assertEquals(2, converterB.getOrder(), "Converter B was called in the wrong order");
+        assertThat(converterA.getCount()).isEqualTo(1);
+        assertThat(converterA.getOrder()).isEqualTo(1);
+        assertThat(converterB.getCount()).isEqualTo(1);
+        assertThat(converterB.getOrder()).isEqualTo(2);
     }
 
     @Test
-    void testIndirectDependency() {
+    void indirectDependencyTest() {
         RootFactory rf = new RootFactory();
         BasicTransactionQueue queue = new BasicTransactionQueue();
         Initiator initiator = new Initiator("Test", ecI);
@@ -58,7 +54,6 @@ class StateChangeCycleDelayTest {
         rf.addEventChannel(ecB, "B initial");
         rf.addEventChannel(ecC, "C initial");
 
-        // rf.setLogging(true);
         Root root = rf.create("Test", queue);
         root.add(converterA);
         root.add(converterB);
@@ -72,16 +67,16 @@ class StateChangeCycleDelayTest {
         initiator.set(ecI, "Start");
         queue.waitTilEmpty();
 
-        assertEquals(1, converterA.getCount(), "Converter A was called the wrong number of times");
-        assertEquals(1, converterA.getOrder(), "Converter A was called in the wrong order");
-        assertEquals(1, converterB.getCount(), "Converter B was called the wrong number of times");
-        assertEquals(2, converterB.getOrder(), "Converter B was called in the wrong order");
-        assertEquals(1, converterC.getCount(), "Converter C was called the wrong number of times");
-        assertEquals(3, converterC.getOrder(), "Converter C was called in the wrong order");
+        assertThat(converterA.getCount()).isEqualTo(1);
+        assertThat(converterA.getOrder()).isEqualTo(1);
+        assertThat(converterB.getCount()).isEqualTo(1);
+        assertThat(converterB.getOrder()).isEqualTo(2);
+        assertThat(converterC.getCount()).isEqualTo(1);
+        assertThat(converterC.getOrder()).isEqualTo(3);
     }
 
     @Test
-    void testDirectIndirectDependency() {
+    void directIndirectDependencyTest() {
         RootFactory rf = new RootFactory();
         BasicTransactionQueue queue = new BasicTransactionQueue();
         Initiator initiator = new Initiator("Test", ecI);
@@ -95,7 +90,6 @@ class StateChangeCycleDelayTest {
         rf.addEventChannel(ecC, "C initial");
         rf.addEventChannel(ecD, "D initial");
 
-        // rf.setLogging(true);
         Root root = rf.create("Test", queue);
         root.add(converterA);
         root.add(converterB);
@@ -111,18 +105,18 @@ class StateChangeCycleDelayTest {
         initiator.set(ecI, "Start");
         queue.waitTilEmpty();
 
-        assertEquals(1, converterA.getCount(), "Converter A was called the wrong number of times");
-        assertEquals(1, converterA.getOrder(), "Converter A was called in the wrong order");
-        assertEquals(1, converterB.getCount(), "Converter B was called the wrong number of times");
-        assertEquals(2, converterB.getOrder(), "Converter B was called in the wrong order");
-        assertEquals(1, converterC.getCount(), "Converter C was called the wrong number of times");
-        assertEquals(3, converterC.getOrder(), "Converter C was called in the wrong order");
-        assertEquals(1, converterD.getCount(), "Converter D was called the wrong number of times");
-        assertEquals(4, converterD.getOrder(), "Converter D was called in the wrong order");
+        assertThat(converterA.getCount()).isEqualTo(1);
+        assertThat(converterA.getOrder()).isEqualTo(1);
+        assertThat(converterB.getCount()).isEqualTo(1);
+        assertThat(converterB.getOrder()).isEqualTo(2);
+        assertThat(converterC.getCount()).isEqualTo(1);
+        assertThat(converterC.getOrder()).isEqualTo(3);
+        assertThat(converterD.getCount()).isEqualTo(1);
+        assertThat(converterD.getOrder()).isEqualTo(4);
     }
 
     @Test
-    void testCircularDependency() {
+    void circularDependencyTest() {
         RootFactory rf = new RootFactory();
         BasicTransactionQueue queue = new BasicTransactionQueue();
         Initiator initiator = new Initiator("Test", ecI);
@@ -150,13 +144,11 @@ class StateChangeCycleDelayTest {
         initiator.set(ecI, "Start");
         queue.waitTilEmpty();
 
-        if (handler.exception != null) {
-            fail("Unexpected exception: " + handler.exception.getMessage());
-        }
+        assertThat(handler.exception).isNull();
     }
 
     @Test
-    void testThreeWayDependency() {
+    void threeWayDependencyTest() {
         RootFactory rf = new RootFactory();
         BasicTransactionQueue queue = new BasicTransactionQueue();
         Initiator initiator = new Initiator("Test", ecI);
@@ -168,7 +160,6 @@ class StateChangeCycleDelayTest {
         rf.addEventChannel(ecB, "B initial");
         rf.addEventChannel(ecC, "C initial");
 
-        // rf.setLogging(true);
         Root root = rf.create("Test", queue);
         root.add(converterA);
         root.add(converterB);
@@ -182,12 +173,12 @@ class StateChangeCycleDelayTest {
         initiator.set(ecI, "Start");
         queue.waitTilEmpty();
 
-        assertEquals(1, converterA.getCount(), "Converter A was called the wrong number of times");
-        assertEquals(1, converterA.getOrder(), "Converter A was called in the wrong order");
-        assertEquals(1, converterB.getCount(), "Converter B was called the wrong number of times");
-        assertEquals(2, converterB.getOrder(), "Converter B was called in the wrong order");
-        assertEquals(1, converterC.getCount(), "Converter C was called the wrong number of times");
-        assertEquals(3, converterC.getOrder(), "Converter C was called in the wrong order");
+        assertThat(converterA.getCount()).isEqualTo(1);
+        assertThat(converterA.getOrder()).isEqualTo(1);
+        assertThat(converterB.getCount()).isEqualTo(1);
+        assertThat(converterB.getOrder()).isEqualTo(2);
+        assertThat(converterC.getCount()).isEqualTo(1);
+        assertThat(converterC.getOrder()).isEqualTo(3);
     }
 
     private static class TestHandler implements TransactionExceptionHandler {

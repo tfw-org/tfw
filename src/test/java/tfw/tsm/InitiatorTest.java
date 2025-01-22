@@ -1,87 +1,57 @@
 package tfw.tsm;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.Map;
 import org.junit.jupiter.api.Test;
 import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.StringECD;
 
-/**
- *
- */
-class InitiatorTest {
+final class InitiatorTest {
     ObjectECD channel1 = new StringECD("aaa");
-
     ObjectECD channel2 = new StringECD("bbb");
-
     ObjectECD[] channels = new ObjectECD[] {channel1, channel2};
 
     @Test
-    void testInitiatorConstruction() {
-        try {
-            new Initiator(null, channel1);
-            fail("Constructor accepted null name");
-        } catch (IllegalArgumentException expected) {
-            // System.out.println(expected);
-        }
-
-        try {
-            new Initiator("test", (ObjectECD) null);
-            fail("Constructor accepted null source");
-        } catch (IllegalArgumentException expected) {
-            // System.out.println(expected);
-        }
-
-        try {
-            new Initiator("test", (ObjectECD[]) null);
-            fail("Constructor accepted null sources");
-        } catch (IllegalArgumentException expected) {
-            // System.out.println(expected);
-        }
+    void initiatorConstructionTest() {
+        assertThatThrownBy(() -> new Initiator(null, channel1))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("name == null not allowed!");
+        assertThatThrownBy(() -> new Initiator("test", (ObjectECD) null))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("sources[0]== null not allowed!");
+        assertThatThrownBy(() -> new Initiator("test", (ObjectECD[]) null))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("sources == null not allowed!");
     }
 
     @Test
-    void testInitatorSetMehtods() {
+    void initatorSetMehtodsTest() {
         Initiator initiator = new Initiator("test", channels);
+        Object object = new Object();
 
-        try {
-            initiator.set((ObjectECD) null, new Object());
-            fail("set(channel, state) accepted null channel");
-        } catch (IllegalArgumentException expected) {
-            // System.out.println(expected);
-        }
+        assertThatThrownBy(() -> initiator.set((ObjectECD) null, object))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("sourceEventChannel == null not allowed!");
 
-        try {
-            initiator.set((StringECD) null, new Object());
-            fail("set(eventChannelName, state) accepted null eventChannelName");
-        } catch (IllegalArgumentException expected) {
-            // System.out.println(expected);
-        }
+        assertThatThrownBy(() -> initiator.set((StringECD) null, object))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("sourceEventChannel == null not allowed!");
 
-        try {
-            initiator.set(channel1, null);
-            fail("set(channel, state) accepted null state");
-        } catch (IllegalArgumentException expected) {
-            // System.out.println(expected);
-        }
+        assertThatThrownBy(() -> initiator.set(channel1, null))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("value == null does not meet the constraints on this value");
 
-        try {
-            initiator.set(null);
-            fail("set(state) accepted null state");
-        } catch (IllegalArgumentException expected) {
-            // System.out.println(expected);
-        }
+        assertThatThrownBy(() -> initiator.set(null))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("state == null not allowed!");
 
         RootFactory rf = new RootFactory();
         rf.setTransactionExceptionHandler(new TransactionExceptionHandler() {
             @Override
             public void handle(Exception exception) {
-                exception.printStackTrace();
-                fail("Exception: " + exception.getMessage());
+                assertThat(exception).isNull();
             }
         });
         rf.addEventChannel(channel1, null, AlwaysChangeRule.RULE, null);
@@ -100,16 +70,16 @@ class InitiatorTest {
 
         initiator.set(channel1, state1);
         queue.waitTilEmpty();
-        assertNotNull(commit.debugCommitState, "debugCommit() was not called");
-        assertEquals(state1, commit.debugCommitState.get(channel1), "debugCommit() received wrong state");
+        assertThat(commit.debugCommitState).isNotNull();
+        assertThat(state1).isEqualTo(commit.debugCommitState.get(channel1));
         commit.debugCommitState = null;
         initiator.set(channel2, state2);
         queue.waitTilEmpty();
-        assertNotNull(commit.commitState, "commit() not called");
-        assertEquals(state1, commit.commitState.get(channel1), "commit() received wrong state1");
-        assertEquals(state2, commit.commitState.get(channel2), "commit() received wrong state2");
+        assertThat(commit.commitState).isNotNull();
+        assertThat(state1).isEqualTo(commit.commitState.get(channel1));
+        assertThat(state2).isEqualTo(commit.commitState.get(channel2));
 
-        assertNull(commit.debugCommitState, "debugCommit() was called");
+        assertThat(commit.debugCommitState).isNull();
 
         // reset all of the infrastructure...
         root.remove(initiator);
@@ -128,11 +98,12 @@ class InitiatorTest {
         queue.waitTilEmpty();
         initiator.set(stateBuff.toArray());
         queue.waitTilEmpty();
-        assertNotNull(commit.commitState, "commit() not called");
-        assertEquals(state1, commit.commitState.get(channel1), "commit() received wrong state1");
-        assertEquals(state2, commit.commitState.get(channel2), "commit() received wrong state2");
+        assertThat(commit.commitState).isNotNull();
+        assertThat(state1).isEqualTo(commit.commitState.get(channel1));
+        assertThat(state2).isEqualTo(commit.commitState.get(channel2));
 
-        assertNull(commit.debugCommitState, "debugCommit() was called");
+        assertThat(commit.debugCommitState).isNull();
+        ;
 
         // Test set(Map) before connection...
         //        commit.commitState = null;
@@ -149,7 +120,7 @@ class InitiatorTest {
         //        assertEquals("commit() received wrong state2", state2,
         //                commit.commitState.get(channel2));
 
-        assertNull(commit.debugCommitState, "debugCommit() was called");
+        assertThat(commit.debugCommitState).isNull();
 
         // Test set(EventChannelName, State) before connection...
         // This tests the delay fire requirement for an intiator.
@@ -182,17 +153,16 @@ class InitiatorTest {
         initiator.set(channel2, state2);
         root.remove(initiator);
         queue.waitTilEmpty();
-        assertNotNull(commit.commitState, "commit() not called");
-        assertEquals(state1, commit.commitState.get(channel1), "commit() received wrong state1");
-        assertEquals(state2, commit.commitState.get(channel2), "commit() received wrong state2");
+        assertThat(commit.commitState).isNotNull();
+        assertThat(state1).isEqualTo(commit.commitState.get(channel1));
+        assertThat(state2).isEqualTo(commit.commitState.get(channel2));
 
-        assertNull(commit.debugCommitState, "debugCommit() was called");
+        assertThat(commit.debugCommitState).isNull();
         rf = new RootFactory();
         rf.setTransactionExceptionHandler(new TransactionExceptionHandler() {
             @Override
             public void handle(Exception exception) {
-                exception.printStackTrace();
-                fail("Exception: " + exception.getMessage());
+                assertThat(exception).isNull();
             }
         });
         rf.addEventChannel(channel1, null, AlwaysChangeRule.RULE, null);
@@ -229,15 +199,11 @@ class InitiatorTest {
         @Override
         public void commit() {
             commitState = this.get();
-
-            // System.out.println("commit() - " + commitState);
         }
 
         @Override
         public void debugCommit() {
             debugCommitState = this.get();
-
-            // System.out.println("debugCommit() - " + debugCommitState);
         }
     }
 }

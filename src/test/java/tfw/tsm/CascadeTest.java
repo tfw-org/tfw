@@ -1,13 +1,12 @@
 package tfw.tsm;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
-import java.lang.reflect.InvocationTargetException;
 import org.junit.jupiter.api.Test;
 import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.StringECD;
 
-class CascadeTest {
+final class CascadeTest {
     private int value = 0;
     private int convertABValue = -1;
     private int convertBCValue = -1;
@@ -66,7 +65,7 @@ class CascadeTest {
     };
 
     @Test
-    void testConverter() throws InterruptedException, InvocationTargetException {
+    void converterTest() {
         RootFactory rf = new RootFactory();
         rf.addEventChannel(portA);
         rf.addEventChannel(portB);
@@ -82,14 +81,13 @@ class CascadeTest {
         branch.add(cValidator);
         branch.add(commit);
 
-        // Visualize.print(branch);
         initiator.set(portA, "Hello");
         queue.waitTilEmpty();
-        assertEquals(0, validateAValue, "validateA");
-        assertEquals(1, convertABValue, "convertAB");
-        assertEquals(2, validateBValue, "validateB");
-        assertEquals(3, convertBCValue, "convertBC");
-        assertEquals(4, validateCValue, "validateC");
-        assertEquals(5, commitValue, "commit");
+        assertThat(validateAValue).isEqualTo(0);
+        assertThat(convertABValue).isEqualTo(1);
+        assertThat(validateBValue).isEqualTo(2);
+        assertThat(convertBCValue).isEqualTo(3);
+        assertThat(validateCValue).isEqualTo(4);
+        assertThat(commitValue).isEqualTo(5);
     }
 }
