@@ -1,0 +1,16 @@
+// booleanilaf,byteilaf,charilaf,doubleilaf,floatilaf,intilaf,longilaf,objectilaf,shortilaf
+package %%PACKAGE%%;
+
+import tfw.immutable.ila.%%LOWER_NAME%%ila.%%NAME%%Ila;
+
+/**
+ * This interface defines a factory that creates %%NAME%%Ila objects.
+ */
+public interface %%NAME%%IlaFactory%%TEMPLATE%% {
+    /**
+     * Create a %%NAME%%Ila object.
+     *
+     * @return the %%NAME%%Ila object.
+     */
+    %%NAME%%Ila%%TEMPLATE%% create();
+}
