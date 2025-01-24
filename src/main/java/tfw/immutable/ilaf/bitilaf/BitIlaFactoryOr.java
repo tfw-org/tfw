@@ -21,7 +21,7 @@ public class BitIlaFactoryOr {
 
         public BitIlaFactoryImpl(final BitIlaFactory leftBitIlaFactory, final BitIlaFactory rightBitIlaFactory) {
             Argument.assertNotNull(leftBitIlaFactory, "leftBitIlaFactory");
-            Argument.assertNotNull(rightBitIlaFactory, "righttBitIlaFactory");
+            Argument.assertNotNull(rightBitIlaFactory, "rightBitIlaFactory");
 
             this.leftBitIlaFactory = leftBitIlaFactory;
             this.rightBitIlaFactory = rightBitIlaFactory;
