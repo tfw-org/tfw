@@ -1,0 +1,13 @@
+// booleanilaf,byteilaf,charilaf,doubleilaf,floatilaf,intilaf,longilaf,objectilaf,shortilaf
+package %%PACKAGE%%;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+import org.junit.jupiter.api.Test;
+
+final class %%NAME%%IlaFactoryArrayTest {
+    @Test
+    void createTest() {
+        assertThat(%%NAME%%IlaFactoryFromArray.create(new %%TYPE%%[10]).create()).isNotNull();
+    }
+}

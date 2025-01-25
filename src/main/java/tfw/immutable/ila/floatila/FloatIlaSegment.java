@@ -8,18 +8,17 @@ public final class FloatIlaSegment {
         // non-instantiable class
     }
 
-    public static FloatIla create(FloatIla ila, long start) throws IOException {
+    public static FloatIla create(FloatIla ila, long start) {
         Argument.assertNotNull(ila, "ila");
 
-        return create(ila, start, ila.length() - start);
+        try {
+            return create(ila, start, ila.length() - start);
+        } catch (IOException e) {
+            throw new IllegalArgumentException("Could not get ila length!", e);
+        }
     }
 
-    public static FloatIla create(FloatIla ila, long start, long length) throws IOException {
-        Argument.assertNotNull(ila, "ila");
-        Argument.assertNotLessThan(start, 0, "start");
-        Argument.assertNotLessThan(length, 0, "length");
-        Argument.assertNotGreaterThan(start + length, ila.length(), "start + length", "ila.length()");
-
+    public static FloatIla create(FloatIla ila, long start, long length) {
         return new FloatIlaImpl(ila, start, length);
     }
 
@@ -29,6 +28,15 @@ public final class FloatIlaSegment {
         private final long length;
 
         private FloatIlaImpl(FloatIla ila, long start, long length) {
+            Argument.assertNotNull(ila, "ila");
+            Argument.assertNotLessThan(start, 0, "start");
+            Argument.assertNotLessThan(length, 0, "length");
+            try {
+                Argument.assertNotGreaterThan(start + length, ila.length(), "start + length", "ila.length()");
+            } catch (IOException e) {
+                throw new IllegalArgumentException("Could not get ila length!", e);
+            }
+
             this.ila = ila;
             this.start = start;
             this.length = length;

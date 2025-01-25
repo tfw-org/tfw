@@ -9,7 +9,6 @@ public class BitIlaFactoryXor {
 
     public static BitIlaFactory create(final BitIlaFactory leftBitIlaFactory, final BitIlaFactory rightBitIlaFactory) {
         final BitIlaFactory bitIlaFactoryImpl = new BitIlaFactoryImpl(leftBitIlaFactory, rightBitIlaFactory);
-        ;
 
         bitIlaFactoryImpl.create();
 
