@@ -15,7 +15,7 @@ final class BitIlaFactoryOrTest {
                 .hasMessage("leftBitIlaFactory == null not allowed!");
         assertThatThrownBy(() -> BitIlaFactoryOr.create(bitIlaFactory, null))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("righttBitIlaFactory == null not allowed!");
+                .hasMessage("rightBitIlaFactory == null not allowed!");
     }
 
     @Test
