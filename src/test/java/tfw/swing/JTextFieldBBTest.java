@@ -12,6 +12,7 @@ import org.assertj.swing.fixture.JTextComponentFixture;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledIf;
 import tfw.tsm.BasicTransactionQueue;
 import tfw.tsm.Branch;
 import tfw.tsm.BranchProxy;
@@ -22,6 +23,7 @@ import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.StatelessTriggerECD;
 import tfw.tsm.ecd.StringECD;
 
+@DisabledIf(value = "java.awt.GraphicsEnvironment#isHeadless", disabledReason = "headless environment")
 final class JTextFieldBBTest {
     public static final StatelessTriggerECD TEXTFIELD_ACTION_ECD = new StatelessTriggerECD("TextfieldAction");
     public static final BooleanECD TEXTFIELD_ENABLED_ECD = new BooleanECD("TextFieldEnabled");
