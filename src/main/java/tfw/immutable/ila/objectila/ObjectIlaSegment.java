@@ -8,18 +8,17 @@ public final class ObjectIlaSegment {
         // non-instantiable class
     }
 
-    public static <T> ObjectIla<T> create(ObjectIla<T> ila, long start) throws IOException {
+    public static <T> ObjectIla<T> create(ObjectIla<T> ila, long start) {
         Argument.assertNotNull(ila, "ila");
 
-        return create(ila, start, ila.length() - start);
+        try {
+            return create(ila, start, ila.length() - start);
+        } catch (IOException e) {
+            throw new IllegalArgumentException("Could not get ila length!", e);
+        }
     }
 
-    public static <T> ObjectIla<T> create(ObjectIla<T> ila, long start, long length) throws IOException {
-        Argument.assertNotNull(ila, "ila");
-        Argument.assertNotLessThan(start, 0, "start");
-        Argument.assertNotLessThan(length, 0, "length");
-        Argument.assertNotGreaterThan(start + length, ila.length(), "start + length", "ila.length()");
-
+    public static <T> ObjectIla<T> create(ObjectIla<T> ila, long start, long length) {
         return new ObjectIlaImpl<>(ila, start, length);
     }
 
@@ -29,6 +28,15 @@ public final class ObjectIlaSegment {
         private final long length;
 
         private ObjectIlaImpl(ObjectIla<T> ila, long start, long length) {
+            Argument.assertNotNull(ila, "ila");
+            Argument.assertNotLessThan(start, 0, "start");
+            Argument.assertNotLessThan(length, 0, "length");
+            try {
+                Argument.assertNotGreaterThan(start + length, ila.length(), "start + length", "ila.length()");
+            } catch (IOException e) {
+                throw new IllegalArgumentException("Could not get ila length!", e);
+            }
+
             this.ila = ila;
             this.start = start;
             this.length = length;
