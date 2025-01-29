@@ -7,6 +7,7 @@
 %%RANDOM_INIT_0%%=final Random random = new Random(0);\n
 %%RANDOM_INIT%%=final Random random = new Random(0);\n\ \ \ \ \ \ \ \ 
 %%DEFAULT_VALUE%%=0.0
+%%DEFAULT_VALUE_2%%=1.0
 %%ASSERT_EQUALS_DELTA%% = , 0
 %%CREATE_IMMUTABLE_START%% = new Double(
 %%CREATE_IMMUTABLE_END%% = )

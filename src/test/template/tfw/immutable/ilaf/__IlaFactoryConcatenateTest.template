@@ -21,10 +21,8 @@ final class %%NAME%%IlaFactoryConcatenateTest {
 
     @Test
     void createTest() {
-        final %%NAME%%IlaFactory%%TEMPLATE%% %%LOWER_NAME%%IlaFactory = %%NAME%%IlaFactoryFill.create(%%DEFAULT_VALUE%%, 10);
+        final %%NAME%%IlaFactory%%TEMPLATE%% f = %%NAME%%IlaFactoryFill.create(%%DEFAULT_VALUE%%, 10);
 
-        assertThat(%%NAME%%IlaFactoryConcatenate.create(%%LOWER_NAME%%IlaFactory, %%LOWER_NAME%%IlaFactory)
-                        .create())
-                .isNotNull();
+        assertThat(%%NAME%%IlaFactoryConcatenate.create(f, f).create()).isNotNull();
     }
 }

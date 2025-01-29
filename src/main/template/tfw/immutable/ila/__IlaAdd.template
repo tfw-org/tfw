@@ -9,12 +9,7 @@ public final class %%NAME%%IlaAdd {
         // non-instantiable class
     }
 
-    public static %%NAME%%Ila create(%%NAME%%Ila leftIla, %%NAME%%Ila rightIla, int bufferSize) throws IOException {
-        Argument.assertNotNull(leftIla, "leftIla");
-        Argument.assertNotNull(rightIla, "rightIla");
-        Argument.assertEquals(leftIla.length(), rightIla.length(), "leftIla.length()", "rightIla.length()");
-        Argument.assertNotLessThan(bufferSize, 1, "bufferSize");
-
+    public static %%NAME%%Ila create(%%NAME%%Ila leftIla, %%NAME%%Ila rightIla, int bufferSize) {
         return new %%NAME%%IlaImpl(leftIla, rightIla, bufferSize);
     }
 
@@ -24,6 +19,15 @@ public final class %%NAME%%IlaAdd {
         private final int bufferSize;
 
         private %%NAME%%IlaImpl(%%NAME%%Ila leftIla, %%NAME%%Ila rightIla, int bufferSize) {
+            Argument.assertNotNull(leftIla, "leftIla");
+            Argument.assertNotNull(rightIla, "rightIla");
+            Argument.assertNotLessThan(bufferSize, 1, "bufferSize");
+            try {
+                Argument.assertEquals(leftIla.length(), rightIla.length(), "leftIla.length()", "rightIla.length()");
+            } catch (IOException e) {
+                throw new IllegalArgumentException("Could not get length(s)!", e);
+            }
+
             this.leftIla = leftIla;
             this.rightIla = rightIla;
             this.bufferSize = bufferSize;

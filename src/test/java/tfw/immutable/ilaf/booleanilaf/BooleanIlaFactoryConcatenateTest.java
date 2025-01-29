@@ -20,11 +20,9 @@ final class BooleanIlaFactoryConcatenateTest {
 
     @Test
     void createTest() {
-        final BooleanIlaFactory booleanIlaFactory = BooleanIlaFactoryFill.create(false, 10);
+        final BooleanIlaFactory f = BooleanIlaFactoryFill.create(false, 10);
 
-        assertThat(BooleanIlaFactoryConcatenate.create(booleanIlaFactory, booleanIlaFactory)
-                        .create())
-                .isNotNull();
+        assertThat(BooleanIlaFactoryConcatenate.create(f, f).create()).isNotNull();
     }
 }
 // AUTO GENERATED FROM TEMPLATE

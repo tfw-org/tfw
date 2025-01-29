@@ -20,11 +20,9 @@ final class LongIlaFactoryConcatenateTest {
 
     @Test
     void createTest() {
-        final LongIlaFactory longIlaFactory = LongIlaFactoryFill.create(0L, 10);
+        final LongIlaFactory f = LongIlaFactoryFill.create(0L, 10);
 
-        assertThat(LongIlaFactoryConcatenate.create(longIlaFactory, longIlaFactory)
-                        .create())
-                .isNotNull();
+        assertThat(LongIlaFactoryConcatenate.create(f, f).create()).isNotNull();
     }
 }
 // AUTO GENERATED FROM TEMPLATE

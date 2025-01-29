@@ -20,11 +20,9 @@ final class ObjectIlaFactoryConcatenateTest {
 
     @Test
     void createTest() {
-        final ObjectIlaFactory<Object> objectIlaFactory = ObjectIlaFactoryFill.create(Object.class, 10);
+        final ObjectIlaFactory<Object> f = ObjectIlaFactoryFill.create(Object.class, 10);
 
-        assertThat(ObjectIlaFactoryConcatenate.create(objectIlaFactory, objectIlaFactory)
-                        .create())
-                .isNotNull();
+        assertThat(ObjectIlaFactoryConcatenate.create(f, f).create()).isNotNull();
     }
 }
 // AUTO GENERATED FROM TEMPLATE
