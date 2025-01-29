@@ -20,11 +20,9 @@ final class CharIlaFactoryConcatenateTest {
 
     @Test
     void createTest() {
-        final CharIlaFactory charIlaFactory = CharIlaFactoryFill.create((char) 0, 10);
+        final CharIlaFactory f = CharIlaFactoryFill.create((char) 0, 10);
 
-        assertThat(CharIlaFactoryConcatenate.create(charIlaFactory, charIlaFactory)
-                        .create())
-                .isNotNull();
+        assertThat(CharIlaFactoryConcatenate.create(f, f).create()).isNotNull();
     }
 }
 // AUTO GENERATED FROM TEMPLATE

@@ -3,7 +3,7 @@ package tfw.immutable.ila.objectila;
 import java.io.IOException;
 import tfw.check.Argument;
 
-public final class ObjectIlaFiltered<T> {
+public final class ObjectIlaFiltered {
     private ObjectIlaFiltered() {
         // non-instantiable class
     }

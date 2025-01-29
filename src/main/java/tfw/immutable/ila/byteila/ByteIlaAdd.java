@@ -8,12 +8,7 @@ public final class ByteIlaAdd {
         // non-instantiable class
     }
 
-    public static ByteIla create(ByteIla leftIla, ByteIla rightIla, int bufferSize) throws IOException {
-        Argument.assertNotNull(leftIla, "leftIla");
-        Argument.assertNotNull(rightIla, "rightIla");
-        Argument.assertEquals(leftIla.length(), rightIla.length(), "leftIla.length()", "rightIla.length()");
-        Argument.assertNotLessThan(bufferSize, 1, "bufferSize");
-
+    public static ByteIla create(ByteIla leftIla, ByteIla rightIla, int bufferSize) {
         return new ByteIlaImpl(leftIla, rightIla, bufferSize);
     }
 
@@ -23,6 +18,15 @@ public final class ByteIlaAdd {
         private final int bufferSize;
 
         private ByteIlaImpl(ByteIla leftIla, ByteIla rightIla, int bufferSize) {
+            Argument.assertNotNull(leftIla, "leftIla");
+            Argument.assertNotNull(rightIla, "rightIla");
+            Argument.assertNotLessThan(bufferSize, 1, "bufferSize");
+            try {
+                Argument.assertEquals(leftIla.length(), rightIla.length(), "leftIla.length()", "rightIla.length()");
+            } catch (IOException e) {
+                throw new IllegalArgumentException("Could not get length(s)!", e);
+            }
+
             this.leftIla = leftIla;
             this.rightIla = rightIla;
             this.bufferSize = bufferSize;

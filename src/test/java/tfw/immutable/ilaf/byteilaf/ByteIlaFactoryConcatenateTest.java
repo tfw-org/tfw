@@ -20,11 +20,9 @@ final class ByteIlaFactoryConcatenateTest {
 
     @Test
     void createTest() {
-        final ByteIlaFactory byteIlaFactory = ByteIlaFactoryFill.create((byte) 0, 10);
+        final ByteIlaFactory f = ByteIlaFactoryFill.create((byte) 0, 10);
 
-        assertThat(ByteIlaFactoryConcatenate.create(byteIlaFactory, byteIlaFactory)
-                        .create())
-                .isNotNull();
+        assertThat(ByteIlaFactoryConcatenate.create(f, f).create()).isNotNull();
     }
 }
 // AUTO GENERATED FROM TEMPLATE
