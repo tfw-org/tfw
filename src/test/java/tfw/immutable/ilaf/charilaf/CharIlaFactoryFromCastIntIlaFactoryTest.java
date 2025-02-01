@@ -1,0 +1,26 @@
+package tfw.immutable.ilaf.charilaf;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
+import org.junit.jupiter.api.Test;
+import tfw.immutable.ilaf.intilaf.IntIlaFactory;
+import tfw.immutable.ilaf.intilaf.IntIlaFactoryFill;
+
+final class CharIlaFactoryFromCastIntIlaFactoryTest {
+    @Test
+    void argumentTest() {
+        assertThatThrownBy(() -> CharIlaFactoryFromCastIntIlaFactory.create(null, 10))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("intIlaFactory == null not allowed!");
+    }
+
+    @Test
+    void createTest() {
+        final IntIlaFactory ilaFactory = IntIlaFactoryFill.create(0, 10);
+
+        assertThat(CharIlaFactoryFromCastIntIlaFactory.create(ilaFactory, 10).create())
+                .isNotNull();
+    }
+}
+// AUTO GENERATED FROM TEMPLATE

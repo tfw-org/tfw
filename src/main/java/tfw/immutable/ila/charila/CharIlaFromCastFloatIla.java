@@ -12,9 +12,6 @@ public final class CharIlaFromCastFloatIla {
     }
 
     public static CharIla create(FloatIla floatIla, int bufferSize) {
-        Argument.assertNotNull(floatIla, "floatIla");
-        Argument.assertNotLessThan(bufferSize, 1, "bufferSize");
-
         return new CharIlaImpl(floatIla, bufferSize);
     }
 
@@ -23,6 +20,9 @@ public final class CharIlaFromCastFloatIla {
         private final int bufferSize;
 
         private CharIlaImpl(FloatIla floatIla, int bufferSize) {
+            Argument.assertNotNull(floatIla, "floatIla");
+            Argument.assertNotLessThan(bufferSize, 1, "bufferSize");
+
             this.floatIla = floatIla;
             this.bufferSize = bufferSize;
         }
