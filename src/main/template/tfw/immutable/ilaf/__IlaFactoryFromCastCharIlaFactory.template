@@ -1,0 +1,32 @@
+// byteilaf,doubleilaf,floatilaf,intilaf,longilaf,shortilaf
+package %%PACKAGE%%;
+
+import tfw.check.Argument;
+import tfw.immutable.ila.%%LOWER_NAME%%ila.%%NAME%%Ila;
+import tfw.immutable.ila.%%LOWER_NAME%%ila.%%NAME%%IlaFromCastCharIla;
+import tfw.immutable.ilaf.charilaf.CharIlaFactory;
+
+public class %%NAME%%IlaFactoryFromCastCharIlaFactory {
+    private %%NAME%%IlaFactoryFromCastCharIlaFactory() {}
+
+    public static %%NAME%%IlaFactory create(CharIlaFactory charIlaFactory, final int bufferSize) {
+        return new %%NAME%%IlaFactoryImpl(charIlaFactory, bufferSize);
+    }
+
+    private static class %%NAME%%IlaFactoryImpl implements %%NAME%%IlaFactory {
+        private final CharIlaFactory charIlaFactory;
+        private final int bufferSize;
+
+        public %%NAME%%IlaFactoryImpl(final CharIlaFactory charIlaFactory, final int bufferSize) {
+            Argument.assertNotNull(charIlaFactory, "charIlaFactory");
+
+            this.charIlaFactory = charIlaFactory;
+            this.bufferSize = bufferSize;
+        }
+
+        @Override
+        public %%NAME%%Ila create() {
+            return %%NAME%%IlaFromCastCharIla.create(charIlaFactory.create(), bufferSize);
+        }
+    }
+}

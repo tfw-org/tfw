@@ -1,0 +1,27 @@
+// byteilaf,doubleilaf,floatilaf,intilaf,longilaf,shortilaf
+package %%PACKAGE%%;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
+import org.junit.jupiter.api.Test;
+import tfw.immutable.ilaf.charilaf.CharIlaFactory;
+import tfw.immutable.ilaf.charilaf.CharIlaFactoryFill;
+
+final class %%NAME%%IlaFactoryFromCastCharIlaFactoryTest {
+    @Test
+    void argumentTest() {
+        assertThatThrownBy(() -> %%NAME%%IlaFactoryFromCastCharIlaFactory.create(null, 10))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("charIlaFactory == null not allowed!");
+    }
+
+    @Test
+    void createTest() {
+        final CharIlaFactory charIlaFactory = CharIlaFactoryFill.create((char) 0, 10);
+
+        assertThat(%%NAME%%IlaFactoryFromCastCharIlaFactory.create(charIlaFactory, 10)
+                        .create())
+                .isNotNull();
+    }
+}

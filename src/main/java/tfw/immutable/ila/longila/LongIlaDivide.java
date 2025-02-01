@@ -8,12 +8,7 @@ public final class LongIlaDivide {
         // non-instantiable class
     }
 
-    public static LongIla create(LongIla leftIla, LongIla rightIla, int bufferSize) throws IOException {
-        Argument.assertNotNull(leftIla, "leftIla");
-        Argument.assertNotNull(rightIla, "rightIla");
-        Argument.assertEquals(leftIla.length(), rightIla.length(), "leftIla.length()", "rightIla.length()");
-        Argument.assertNotLessThan(bufferSize, 1, "bufferSize");
-
+    public static LongIla create(LongIla leftIla, LongIla rightIla, int bufferSize) {
         return new LongIlaImpl(leftIla, rightIla, bufferSize);
     }
 
@@ -23,6 +18,15 @@ public final class LongIlaDivide {
         private final int bufferSize;
 
         private LongIlaImpl(LongIla leftIla, LongIla rightIla, int bufferSize) {
+            Argument.assertNotNull(leftIla, "leftIla");
+            Argument.assertNotNull(rightIla, "rightIla");
+            Argument.assertNotLessThan(bufferSize, 1, "bufferSize");
+            try {
+                Argument.assertEquals(leftIla.length(), rightIla.length(), "leftIla.length()", "rightIla.length()");
+            } catch (IOException e) {
+                throw new IllegalArgumentException("Could not get ila length!", e);
+            }
+
             this.leftIla = leftIla;
             this.rightIla = rightIla;
             this.bufferSize = bufferSize;

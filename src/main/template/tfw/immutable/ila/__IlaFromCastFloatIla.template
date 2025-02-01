@@ -13,9 +13,6 @@ public final class %%NAME%%IlaFromCastFloatIla {
     }
 
     public static %%NAME%%Ila create(FloatIla floatIla, int bufferSize) {
-        Argument.assertNotNull(floatIla, "floatIla");
-        Argument.assertNotLessThan(bufferSize, 1, "bufferSize");
-
         return new %%NAME%%IlaImpl(floatIla, bufferSize);
     }
 
@@ -24,6 +21,9 @@ public final class %%NAME%%IlaFromCastFloatIla {
         private final int bufferSize;
 
         private %%NAME%%IlaImpl(FloatIla floatIla, int bufferSize) {
+            Argument.assertNotNull(floatIla, "floatIla");
+            Argument.assertNotLessThan(bufferSize, 1, "bufferSize");
+
             this.floatIla = floatIla;
             this.bufferSize = bufferSize;
         }
