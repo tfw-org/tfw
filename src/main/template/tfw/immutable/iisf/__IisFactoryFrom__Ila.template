@@ -1,0 +1,31 @@
+// booleaniisf,byteiisf,chariisf,doubleiisf,floatiisf,intiisf,longiisf,objectiisf,shortiisf
+package %%PACKAGE%%;
+
+import java.io.IOException;
+import tfw.check.Argument;
+import tfw.immutable.iis.%%LOWERCASE%%iis.%%NAME%%Iis;
+import tfw.immutable.iis.%%LOWERCASE%%iis.%%NAME%%IisFrom%%NAME%%Ila;
+import tfw.immutable.ila.%%LOWERCASE%%ila.%%NAME%%Ila;
+
+public final class %%NAME%%IisFactoryFrom%%NAME%%Ila {
+    private %%NAME%%IisFactoryFrom%%NAME%%Ila() {}
+
+    public static %%TEMPLATE_SPACE%%%%NAME%%IisFactory%%TEMPLATE%% create(final %%NAME%%Ila%%TEMPLATE%% ila) {
+        return new %%NAME%%IisFactoryImpl%%DIAMOND%%(ila);
+    }
+
+    private static class %%NAME%%IisFactoryImpl%%TEMPLATE%% implements %%NAME%%IisFactory%%TEMPLATE%% {
+        private final %%NAME%%Ila%%TEMPLATE%% ila;
+
+        public %%NAME%%IisFactoryImpl(final %%NAME%%Ila%%TEMPLATE%% ila) {
+            Argument.assertNotNull(ila, "ila");
+
+            this.ila = ila;
+        }
+
+        @Override
+        public %%NAME%%Iis%%TEMPLATE%% create() throws IOException {
+            return %%NAME%%IisFrom%%NAME%%Ila.create(ila);
+        }
+    }
+}

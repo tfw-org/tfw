@@ -1,0 +1,17 @@
+// booleaniisf,byteiisf,chariisf,doubleiisf,floatiisf,intiisf,longiisf,objectiisf,shortiisf
+package %%PACKAGE%%;
+
+import java.io.IOException;
+import tfw.immutable.iis.%%LOWERCASE%%iis.%%NAME%%Iis;
+
+/**
+ * This interface defines a factory that creates %%NAME%%Iis objects.
+ */
+public interface %%NAME%%IisFactory%%TEMPLATE%% {
+    /**
+     * Create a %%NAME%%Iis object.
+     *
+     * @return the %%NAME%%Iis object.
+     */
+    %%NAME%%Iis%%TEMPLATE%% create() throws IOException;
+}
