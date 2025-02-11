@@ -98,7 +98,7 @@ final class JTextFieldBBTest {
         final JTextFieldBB jTextFieldBB = GuiActionRunner.execute(
                 () -> JTextFieldBB.builder().setName(TEXTFIELD_NAME).build());
 
-        assertThat(0).isEqualTo(new BranchProxy(jTextFieldBB.getBranch()).getChildProxies().length);
+        assertThat(new BranchProxy(jTextFieldBB.getBranch()).getChildProxies()).isEmpty();
 
         final TestActionListenerBranchBox testActionListenerBranchBox = new TestActionListenerBranchBox();
 
@@ -129,7 +129,7 @@ final class JTextFieldBBTest {
         final JTextFieldBB jTextFieldBB = GuiActionRunner.execute(
                 () -> JTextFieldBB.builder().setName(TEXTFIELD_NAME).build());
 
-        assertThat(0).isEqualTo(new BranchProxy(jTextFieldBB.getBranch()).getChildProxies().length);
+        assertThat(new BranchProxy(jTextFieldBB.getBranch()).getChildProxies()).isEmpty();
 
         final TestDocumentListenerBranchBox testDocumentListenerBranchBox = new TestDocumentListenerBranchBox();
 

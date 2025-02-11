@@ -2,6 +2,7 @@ package tfw.swing.event;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import java.util.concurrent.Callable;
 import javax.swing.AbstractButton;
 import javax.swing.JButton;
 import javax.swing.JTextField;
@@ -25,8 +26,8 @@ final class SetTextFactoryTest {
 
     @Test
     void argumentsTest() {
-        final JButton jButton = GuiActionRunner.execute(() -> new JButton());
-        final JTextField jTextField = GuiActionRunner.execute(() -> new JTextField());
+        final JButton jButton = GuiActionRunner.execute((Callable<JButton>) JButton::new);
+        final JTextField jTextField = GuiActionRunner.execute((Callable<JTextField>) JTextField::new);
 
         assertThatThrownBy(() -> SetTextFactory.create(null, TEXT_ECD, jButton, null))
                 .isInstanceOf(IllegalArgumentException.class)

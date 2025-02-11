@@ -20,7 +20,7 @@ final class ByteIisFromInputStreamTest {
 
         assertThatThrownBy(() -> byteIis.skip(10)).isInstanceOf(IOException.class);
         assertThatThrownBy(() -> byteIis.read(new byte[10], 0, 10)).isInstanceOf(IOException.class);
-        assertThatThrownBy(() -> byteIis.close()).isInstanceOf(IOException.class);
+        assertThatThrownBy(byteIis::close).isInstanceOf(IOException.class);
     }
 
     @Test

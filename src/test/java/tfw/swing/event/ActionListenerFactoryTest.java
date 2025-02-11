@@ -58,7 +58,7 @@ final class ActionListenerFactoryTest {
 
         SwingTestUtil.waitForTfwAndSwing(basicTransactionQueue);
 
-        assertThat(1).isEqualTo(testTriggeredCommit.getCount());
+        assertThat(testTriggeredCommit.getCount()).isEqualTo(1);
     }
 
     @Test
@@ -84,6 +84,6 @@ final class ActionListenerFactoryTest {
 
         SwingTestUtil.waitForTfwAndSwing(basicTransactionQueue);
 
-        assertThat(1).isEqualTo(testTriggeredCommit.getCount());
+        assertThat(testTriggeredCommit.getCount()).isEqualTo(1);
     }
 }

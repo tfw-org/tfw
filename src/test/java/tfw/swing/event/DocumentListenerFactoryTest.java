@@ -65,19 +65,19 @@ final class DocumentListenerFactoryTest {
 
         SwingTestUtil.waitForTfwAndSwing(basicTransactionQueue);
 
-        assertThat(STRING_ONE).isEqualTo(testCommit.getState().get(TEXT_ECD));
+        assertThat(testCommit.getState()).containsEntry(TEXT_ECD, STRING_ONE);
 
         testDocument.remove(STRING_ONE.length() / 4 * 3, STRING_ONE.length() / 4);
 
         SwingTestUtil.waitForTfwAndSwing(basicTransactionQueue);
 
-        assertThat(STRING_ONE_AND_TWO).isEqualTo(testCommit.getState().get(TEXT_ECD));
+        assertThat(testCommit.getState()).containsEntry(TEXT_ECD, STRING_ONE_AND_TWO);
 
         testDocument.fireChangedUpdate(STRING_ONE.length() / 3, STRING_ONE.length() / 3);
 
         SwingTestUtil.waitForTfwAndSwing(basicTransactionQueue);
 
-        assertThat(STRING_ONE_AND_TWO).isEqualTo(testCommit.getState().get(TEXT_ECD));
+        assertThat(testCommit.getState()).containsEntry(TEXT_ECD, STRING_ONE_AND_TWO);
 
         final ExceptionDocument exceptionDocument = new ExceptionDocument();
 
