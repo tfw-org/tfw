@@ -2,6 +2,7 @@ package tfw.swing.event;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import java.util.concurrent.Callable;
 import javax.swing.JButton;
 import org.assertj.swing.edt.FailOnThreadViolationRepaintManager;
 import org.assertj.swing.edt.GuiActionRunner;
@@ -22,7 +23,7 @@ final class SetBackgroundFactoryTest {
 
     @Test
     void argumentsTest() {
-        final JButton jButton = GuiActionRunner.execute(() -> new JButton());
+        final JButton jButton = GuiActionRunner.execute((Callable<JButton>) JButton::new);
 
         assertThatThrownBy(() -> SetBackgroundFactory.create(null, COLOR_ECD, jButton, null))
                 .isInstanceOf(IllegalArgumentException.class)

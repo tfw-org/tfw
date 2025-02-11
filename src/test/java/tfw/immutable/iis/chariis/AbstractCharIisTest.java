@@ -15,9 +15,9 @@ final class AbstractCharIisTest {
             assertThatThrownBy(() -> ti.read(null, 0, 1)).isInstanceOf(IllegalArgumentException.class);
             assertThatThrownBy(() -> ti.read(array, -1, 1)).isInstanceOf(IllegalArgumentException.class);
             assertThatThrownBy(() -> ti.read(array, 0, -1)).isInstanceOf(IllegalArgumentException.class);
-            assertThat(ti.read(array, 0, 0)).isEqualTo(0);
+            assertThat(ti.read(array, 0, 0)).isZero();
             assertThat(ti.read(array, 0, 1)).isEqualTo(1);
-            assertThat(ti.skip(0)).isEqualTo(0);
+            assertThat(ti.skip(0)).isZero();
             assertThat(ti.skip(1)).isEqualTo(1);
         }
     }

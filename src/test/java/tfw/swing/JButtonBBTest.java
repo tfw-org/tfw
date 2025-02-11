@@ -7,6 +7,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
+import java.util.concurrent.Callable;
 import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.UIManager;
@@ -71,7 +72,7 @@ final class JButtonBBTest {
     static void beforeAll() {
         FailOnThreadViolationRepaintManager.install();
 
-        final JButton jb = GuiActionRunner.execute(() -> new JButton());
+        final JButton jb = GuiActionRunner.execute((Callable<JButton>) JButton::new);
         final JButtonFixture jbf = new JButtonFixture(BasicRobot.robotWithCurrentAwtHierarchyWithoutScreenLock(), jb);
 
         buttonBackgroundDefault = jbf.background().target();
@@ -133,42 +134,42 @@ final class JButtonBBTest {
 
         compareWidgetAndTfwState(jButton, testCommit, 1, basicTransactionQueue);
 
-        assertThat(0).isEqualTo(testTriggeredCommit.getCount());
+        assertThat(testTriggeredCommit.getCount()).isZero();
 
         window.button(BUTTON_NAME).click();
 
         compareWidgetAndTfwState(jButton, testCommit, 1, basicTransactionQueue);
-        assertThat(1).isEqualTo(testTriggeredCommit.getCount());
+        assertThat(testTriggeredCommit.getCount()).isEqualTo(1);
 
         initiator.set(BUTTON_BACKGROUND_ECD, BUTTON_BACKGROUND_TEST);
 
         compareWidgetAndTfwState(jButton, testCommit, 2, basicTransactionQueue);
-        assertThat(1).isEqualTo(testTriggeredCommit.getCount());
+        assertThat(testTriggeredCommit.getCount()).isEqualTo(1);
 
         initiator.set(BUTTON_FOREGROUND_ECD, BUTTON_FOREGROUND_TEST);
 
         compareWidgetAndTfwState(jButton, testCommit, 3, basicTransactionQueue);
-        assertThat(1).isEqualTo(testTriggeredCommit.getCount());
+        assertThat(testTriggeredCommit.getCount()).isEqualTo(1);
 
         initiator.set(BUTTON_ENABLED_ECD, Boolean.FALSE);
 
         compareWidgetAndTfwState(jButton, testCommit, 4, basicTransactionQueue);
-        assertThat(1).isEqualTo(testTriggeredCommit.getCount());
+        assertThat(testTriggeredCommit.getCount()).isEqualTo(1);
 
         initiator.set(BUTTON_FONT_ECD, BUTTON_FONT_TEST);
 
         compareWidgetAndTfwState(jButton, testCommit, 5, basicTransactionQueue);
-        assertThat(1).isEqualTo(testTriggeredCommit.getCount());
+        assertThat(testTriggeredCommit.getCount()).isEqualTo(1);
 
         initiator.set(BUTTON_TEXT_ECD, BUTTON_TEXT_TEST);
 
         compareWidgetAndTfwState(jButton, testCommit, 6, basicTransactionQueue);
-        assertThat(1).isEqualTo(testTriggeredCommit.getCount());
+        assertThat(testTriggeredCommit.getCount()).isEqualTo(1);
 
         initiator.set(BUTTON_ICON_ECD, BUTTON_ICON_TEST);
 
         compareWidgetAndTfwState(jButton, testCommit, 7, basicTransactionQueue);
-        assertThat(1).isEqualTo(testTriggeredCommit.getCount());
+        assertThat(testTriggeredCommit.getCount()).isEqualTo(1);
     }
 
     @Test
@@ -176,7 +177,7 @@ final class JButtonBBTest {
         final JButtonBB jButtonBB = GuiActionRunner.execute(
                 () -> JButtonBB.builder().setName(BUTTON_NAME).build());
 
-        assertThat(0).isEqualTo(new BranchProxy(jButtonBB.getBranch()).getChildProxies().length);
+        assertThat(new BranchProxy(jButtonBB.getBranch()).getChildProxies()).isEmpty();
 
         final TestActionListenerBranchBox testActionListenerBranchBox = new TestActionListenerBranchBox();
 
