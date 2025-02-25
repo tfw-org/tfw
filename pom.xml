@@ -30,7 +30,7 @@
         <plugin.maven-surefire-junit5-tree-reporter.version>1.4.0</plugin.maven-surefire-junit5-tree-reporter.version>
         <plugin.maven-surefire-plugin.version>3.5.2</plugin.maven-surefire-plugin.version>
         <plugin.nexus-staging-maven-plugin.version>1.7.0</plugin.nexus-staging-maven-plugin.version>
-        <plugin.pitest-junit5-plugin.version>1.2.1</plugin.pitest-junit5-plugin.version>
+        <plugin.pitest-junit5-plugin.version>1.2.2</plugin.pitest-junit5-plugin.version>
         <plugin.pitest-maven.version>1.18.2</plugin.pitest-maven.version>
         <plugin.refaster-runner.version>0.20.0</plugin.refaster-runner.version>
         <plugin.spotless-maven-plugin.version>2.44.2</plugin.spotless-maven-plugin.version>
