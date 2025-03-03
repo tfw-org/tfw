@@ -13,7 +13,7 @@
         <argLine></argLine>
         <dependency.assertj-swing.version>3.17.1</dependency.assertj-swing.version>
         <dependency.junit-jupiter.version>5.12.0</dependency.junit-jupiter.version>
-        <dependency.slf4j-jdk14.version>2.0.16</dependency.slf4j-jdk14.version>
+        <dependency.slf4j-jdk14.version>2.0.17</dependency.slf4j-jdk14.version>
         <maven.compiler.release>8</maven.compiler.release>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
