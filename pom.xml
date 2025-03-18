@@ -11,9 +11,10 @@
 
     <properties>
         <argLine></argLine>
+        <dependency.assertj-core.version>3.17.2</dependency.assertj-core.version>
         <dependency.assertj-swing.version>3.17.1</dependency.assertj-swing.version>
-        <dependency.junit-jupiter.version>5.12.1</dependency.junit-jupiter.version>
-        <dependency.slf4j-jdk14.version>2.0.17</dependency.slf4j-jdk14.version>
+        <dependency.junit-jupiter-api.version>5.12.1</dependency.junit-jupiter-api.version>
+        <dependency.slf4j-api.version>2.0.17</dependency.slf4j-api.version>
         <maven.compiler.release>8</maven.compiler.release>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
@@ -23,6 +24,7 @@
         <plugin.exec-maven-plugin.version>3.5.0</plugin.exec-maven-plugin.version>
         <plugin.jacoco-maven-plugin.version>0.8.12</plugin.jacoco-maven-plugin.version>
         <plugin.maven-compiler-plugin.version>3.14.0</plugin.maven-compiler-plugin.version>
+        <plugin.maven-dependency-plugin.version>3.8.1</plugin.maven-dependency-plugin.version>
         <plugin.maven-gpg-plugin.version>3.2.7</plugin.maven-gpg-plugin.version>
         <plugin.maven-javadoc-plugin.version>3.11.2</plugin.maven-javadoc-plugin.version>
         <plugin.maven-pmd-plugin.version>3.26.0</plugin.maven-pmd-plugin.version>
@@ -52,8 +54,14 @@
     <dependencies>
         <dependency>
             <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-jdk14</artifactId>
-            <version>${dependency.slf4j-jdk14.version}</version>
+            <artifactId>slf4j-api</artifactId>
+            <version>${dependency.slf4j-api.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>${dependency.assertj-core.version}</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.assertj</groupId>
@@ -63,8 +71,8 @@
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <version>${dependency.junit-jupiter.version}</version>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>${dependency.junit-jupiter-api.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -166,6 +174,22 @@
                         </path>
                     </annotationProcessorPaths>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>${plugin.maven-dependency-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>analyze</id>
+                        <goals>
+                            <goal>analyze-only</goal>
+                        </goals>
+                        <configuration>
+                            <failOnWarning>false</failOnWarning>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
