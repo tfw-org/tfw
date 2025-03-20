@@ -1,0 +1,32 @@
+// booleanilaf,byteilaf,charilaf,doubleilaf,floatilaf,intilaf,longilaf,objectilaf,shortilaf
+package %%PACKAGE%%;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
+import org.junit.jupiter.api.Test;
+
+final class %%NAME%%IlaFactoryInterleaveTest {
+    %%SUPPRESS%%@Test
+    void argumentTest() {
+        final %%NAME%%IlaFactory%%TEMPLATE%% %%LOWER_NAME%%IlaFactory = %%NAME%%IlaFactoryFill.create(%%DEFAULT_VALUE%%, 10);
+        final %%NAME%%IlaFactory%%TEMPLATE%%[] factories = new %%NAME%%IlaFactory[] {%%LOWER_NAME%%IlaFactory, %%LOWER_NAME%%IlaFactory};
+        final %%TYPE%%[] buffer = new %%TYPE%%[10];
+
+        assertThatThrownBy(() -> %%NAME%%IlaFactoryInterleave.create(null, buffer))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("ilaFactories == null not allowed!");
+        assertThatThrownBy(() -> %%NAME%%IlaFactoryInterleave.create(factories, null))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("buffers == null not allowed!");
+    }
+
+    %%SUPPRESS%%@Test
+    void createTest() {
+        final %%NAME%%IlaFactory%%TEMPLATE%% %%LOWER_NAME%%IlaFactory = %%NAME%%IlaFactoryFill.create(%%DEFAULT_VALUE%%, 10);
+        final %%NAME%%IlaFactory%%TEMPLATE%%[] f = new %%NAME%%IlaFactory[] {%%LOWER_NAME%%IlaFactory, %%LOWER_NAME%%IlaFactory};
+        final %%TYPE%%[] b = new %%TYPE%%[10];
+
+        assertThat(%%NAME%%IlaFactoryInterleave.create(f, b).create()).isNotNull();
+    }
+}

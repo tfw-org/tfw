@@ -9,11 +9,7 @@ public final class %%NAME%%IlaInsert {
         // non-instantiable class
     }
 
-    public static %%TEMPLATE_SPACE%%%%NAME%%Ila%%TEMPLATE%% create(%%NAME%%Ila%%TEMPLATE%% ila, long index, %%TYPE_OR_TEMPLATE%% value) throws IOException {
-        Argument.assertNotNull(ila, "ila");
-        Argument.assertNotLessThan(index, 0, "index");
-        Argument.assertNotGreaterThan(index, ila.length(), "index", "ila.length()");
-
+    public static %%TEMPLATE_SPACE%%%%NAME%%Ila%%TEMPLATE%% create(%%NAME%%Ila%%TEMPLATE%% ila, long index, %%TYPE_OR_TEMPLATE%% value) {
         return new %%NAME%%IlaImpl%%DIAMOND%%(ila, index, value);
     }
 
@@ -23,6 +19,14 @@ public final class %%NAME%%IlaInsert {
         private final %%TYPE_OR_TEMPLATE%% value;
 
         private %%NAME%%IlaImpl(%%NAME%%Ila%%TEMPLATE%% ila, long index, %%TYPE_OR_TEMPLATE%% value) {
+            Argument.assertNotNull(ila, "ila");
+            Argument.assertNotLessThan(index, 0, "index");
+            try {
+                Argument.assertNotGreaterThan(index, ila.length(), "index", "ila.length()");
+            } catch (IOException e) {
+                throw new IllegalArgumentException("Could not get ila length()!", e);
+            }
+
             this.ila = ila;
             this.index = index;
             this.value = value;

@@ -1,0 +1,23 @@
+// doubleilaf,floatilaf
+package %%PACKAGE%%;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
+import org.junit.jupiter.api.Test;
+
+final class %%NAME%%IlaFactoryInvertTest {
+    @Test
+    void argumentTest() {
+        assertThatThrownBy(() -> %%NAME%%IlaFactoryInvert.create(null))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("ilaFactory == null not allowed!");
+    }
+
+    @Test
+    void createTest() {
+        final %%NAME%%IlaFactory%%TEMPLATE%% f = %%NAME%%IlaFactoryFill.create(%%DEFAULT_VALUE%%, 10);
+
+        assertThat(%%NAME%%IlaFactoryInvert.create(f).create()).isNotNull();
+    }
+}

@@ -8,11 +8,7 @@ public final class FloatIlaInsert {
         // non-instantiable class
     }
 
-    public static FloatIla create(FloatIla ila, long index, float value) throws IOException {
-        Argument.assertNotNull(ila, "ila");
-        Argument.assertNotLessThan(index, 0, "index");
-        Argument.assertNotGreaterThan(index, ila.length(), "index", "ila.length()");
-
+    public static FloatIla create(FloatIla ila, long index, float value) {
         return new FloatIlaImpl(ila, index, value);
     }
 
@@ -22,6 +18,14 @@ public final class FloatIlaInsert {
         private final float value;
 
         private FloatIlaImpl(FloatIla ila, long index, float value) {
+            Argument.assertNotNull(ila, "ila");
+            Argument.assertNotLessThan(index, 0, "index");
+            try {
+                Argument.assertNotGreaterThan(index, ila.length(), "index", "ila.length()");
+            } catch (IOException e) {
+                throw new IllegalArgumentException("Could not get ila length()!", e);
+            }
+
             this.ila = ila;
             this.index = index;
             this.value = value;

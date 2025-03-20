@@ -8,11 +8,7 @@ public final class CharIlaInsert {
         // non-instantiable class
     }
 
-    public static CharIla create(CharIla ila, long index, char value) throws IOException {
-        Argument.assertNotNull(ila, "ila");
-        Argument.assertNotLessThan(index, 0, "index");
-        Argument.assertNotGreaterThan(index, ila.length(), "index", "ila.length()");
-
+    public static CharIla create(CharIla ila, long index, char value) {
         return new CharIlaImpl(ila, index, value);
     }
 
@@ -22,6 +18,14 @@ public final class CharIlaInsert {
         private final char value;
 
         private CharIlaImpl(CharIla ila, long index, char value) {
+            Argument.assertNotNull(ila, "ila");
+            Argument.assertNotLessThan(index, 0, "index");
+            try {
+                Argument.assertNotGreaterThan(index, ila.length(), "index", "ila.length()");
+            } catch (IOException e) {
+                throw new IllegalArgumentException("Could not get ila length()!", e);
+            }
+
             this.ila = ila;
             this.index = index;
             this.value = value;
