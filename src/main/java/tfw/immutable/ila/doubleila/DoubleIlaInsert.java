@@ -8,11 +8,7 @@ public final class DoubleIlaInsert {
         // non-instantiable class
     }
 
-    public static DoubleIla create(DoubleIla ila, long index, double value) throws IOException {
-        Argument.assertNotNull(ila, "ila");
-        Argument.assertNotLessThan(index, 0, "index");
-        Argument.assertNotGreaterThan(index, ila.length(), "index", "ila.length()");
-
+    public static DoubleIla create(DoubleIla ila, long index, double value) {
         return new DoubleIlaImpl(ila, index, value);
     }
 
@@ -22,6 +18,14 @@ public final class DoubleIlaInsert {
         private final double value;
 
         private DoubleIlaImpl(DoubleIla ila, long index, double value) {
+            Argument.assertNotNull(ila, "ila");
+            Argument.assertNotLessThan(index, 0, "index");
+            try {
+                Argument.assertNotGreaterThan(index, ila.length(), "index", "ila.length()");
+            } catch (IOException e) {
+                throw new IllegalArgumentException("Could not get ila length()!", e);
+            }
+
             this.ila = ila;
             this.index = index;
             this.value = value;

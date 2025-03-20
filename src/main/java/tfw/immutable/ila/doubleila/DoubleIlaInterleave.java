@@ -8,18 +8,7 @@ public final class DoubleIlaInterleave {
         // non-instantiable class
     }
 
-    public static DoubleIla create(DoubleIla[] ilas, final double[] buffer) throws IOException {
-        Argument.assertNotNull(ilas, "ilas");
-        Argument.assertNotLessThan(ilas.length, 1, "ilas.length");
-        Argument.assertNotNull(ilas[0], "ilas[0]");
-        Argument.assertNotNull(buffer, "buffer");
-
-        final long firstLength = ilas[0].length();
-        for (int ii = 1; ii < ilas.length; ++ii) {
-            Argument.assertNotNull(ilas[ii], "ilas[" + ii + "]");
-            Argument.assertEquals(ilas[ii].length(), firstLength, "ilas[0].length()", "ilas[" + ii + "].length()");
-        }
-
+    public static DoubleIla create(DoubleIla[] ilas, final double[] buffer) {
         return new DoubleIlaImpl(ilas, buffer);
     }
 
@@ -28,6 +17,22 @@ public final class DoubleIlaInterleave {
         private final int ilasLength;
 
         private DoubleIlaImpl(DoubleIla[] ilas, final double[] buffer) {
+            Argument.assertNotNull(ilas, "ilas");
+            Argument.assertNotLessThan(ilas.length, 1, "ilas.length");
+            Argument.assertNotNull(ilas[0], "ilas[0]");
+            Argument.assertNotNull(buffer, "buffer");
+
+            try {
+                final long firstLength = ilas[0].length();
+                for (int ii = 1; ii < ilas.length; ++ii) {
+                    Argument.assertNotNull(ilas[ii], "ilas[" + ii + "]");
+                    Argument.assertEquals(
+                            ilas[ii].length(), firstLength, "ilas[0].length()", "ilas[" + ii + "].length()");
+                }
+            } catch (IOException e) {
+                throw new IllegalArgumentException("Could not get ila length()!", e);
+            }
+
             stridedDoubleIlas = new StridedDoubleIla[ilas.length];
             ilasLength = ilas.length;
 

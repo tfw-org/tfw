@@ -13,6 +13,7 @@
 %%CAST_FROM_LONG_PRE%% = (char)\ (
 %%CAST_FROM_LONG_POST%% = )
 %%DIAMOND%% = 
+%%SUPPRESS%% =
 %%TEMPLATE%% =
 %%TEMPLATE_SPACE%% =
 %%TYPE_OR_TEMPLATE%% = char

@@ -9,18 +9,7 @@ public final class %%NAME%%IlaInterleave {
         // non-instantiable class
     }
 
-    public static %%TEMPLATE_SPACE%%%%NAME%%Ila%%TEMPLATE%% create(%%NAME%%Ila%%TEMPLATE%%[] ilas, final %%TYPE_OR_TEMPLATE%%[] buffer) throws IOException {
-        Argument.assertNotNull(ilas, "ilas");
-        Argument.assertNotLessThan(ilas.length, 1, "ilas.length");
-        Argument.assertNotNull(ilas[0], "ilas[0]");
-        Argument.assertNotNull(buffer, "buffer");
-
-        final long firstLength = ilas[0].length();
-        for (int ii = 1; ii < ilas.length; ++ii) {
-            Argument.assertNotNull(ilas[ii], "ilas[" + ii + "]");
-            Argument.assertEquals(ilas[ii].length(), firstLength, "ilas[0].length()", "ilas[" + ii + "].length()");
-        }
-
+    public static %%TEMPLATE_SPACE%%%%NAME%%Ila%%TEMPLATE%% create(%%NAME%%Ila%%TEMPLATE%%[] ilas, final %%TYPE_OR_TEMPLATE%%[] buffer) {
         return new %%NAME%%IlaImpl%%DIAMOND%%(ilas, buffer);
     }
 
@@ -29,6 +18,22 @@ public final class %%NAME%%IlaInterleave {
         private final int ilasLength;
 
         private %%NAME%%IlaImpl(%%NAME%%Ila%%TEMPLATE%%[] ilas, final %%TYPE_OR_TEMPLATE%%[] buffer) {
+            Argument.assertNotNull(ilas, "ilas");
+            Argument.assertNotLessThan(ilas.length, 1, "ilas.length");
+            Argument.assertNotNull(ilas[0], "ilas[0]");
+            Argument.assertNotNull(buffer, "buffer");
+
+            try {
+                final long firstLength = ilas[0].length();
+                for (int ii = 1; ii < ilas.length; ++ii) {
+                    Argument.assertNotNull(ilas[ii], "ilas[" + ii + "]");
+                    Argument.assertEquals(
+                            ilas[ii].length(), firstLength, "ilas[0].length()", "ilas[" + ii + "].length()");
+                }
+            } catch (IOException e) {
+                throw new IllegalArgumentException("Could not get ila length()!", e);
+            }
+
             strided%%NAME%%Ilas = new Strided%%NAME%%Ila[ilas.length];
             ilasLength = ilas.length;
 

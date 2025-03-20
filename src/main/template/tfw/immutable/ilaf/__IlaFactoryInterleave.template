@@ -1,0 +1,41 @@
+// booleanilaf,byteilaf,charilaf,doubleilaf,floatilaf,intilaf,longilaf,objectilaf,shortilaf
+package %%PACKAGE%%;
+
+import tfw.check.Argument;
+import tfw.immutable.ila.%%LOWER_NAME%%ila.%%NAME%%Ila;
+import tfw.immutable.ila.%%LOWER_NAME%%ila.%%NAME%%IlaInterleave;
+
+public class %%NAME%%IlaFactoryInterleave {
+    private %%NAME%%IlaFactoryInterleave() {}
+
+    public static %%TEMPLATE_SPACE%%%%NAME%%IlaFactory%%TEMPLATE%% create(final %%NAME%%IlaFactory%%TEMPLATE%%[] ilaFactories, final %%TYPE_OR_TEMPLATE%%[] buffers) {
+        return new %%NAME%%IlaFactoryImpl%%DIAMOND%%(ilaFactories, buffers);
+    }
+
+    private static class %%NAME%%IlaFactoryImpl%%TEMPLATE%% implements %%NAME%%IlaFactory%%TEMPLATE%% {
+        private final %%NAME%%IlaFactory%%TEMPLATE%%[] ilaFactories;
+        private final %%TYPE_OR_TEMPLATE%%[] buffers;
+
+        public %%NAME%%IlaFactoryImpl(final %%NAME%%IlaFactory%%TEMPLATE%%[] ilaFactories, final %%TYPE_OR_TEMPLATE%%[] buffers) {
+            Argument.assertNotNull(ilaFactories, "ilaFactories");
+            for (int i = 0; i < ilaFactories.length; i++) {
+                Argument.assertNotNull(ilaFactories[i], "ilaFactoryies[" + i + "]");
+            }
+            Argument.assertNotNull(buffers, "buffers");
+
+            this.ilaFactories = ilaFactories.clone();
+            this.buffers = buffers;
+        }
+
+        @Override
+        %%SUPPRESS%%public %%NAME%%Ila%%TEMPLATE%% create() {
+            final %%NAME%%Ila%%TEMPLATE%%[] ilas = new %%NAME%%Ila[ilaFactories.length];
+
+            for (int i = 0; i < ilas.length; i++) {
+                ilas[i] = ilaFactories[i].create();
+            }
+
+            return %%NAME%%IlaInterleave.create(ilas, buffers);
+        }
+    }
+}
