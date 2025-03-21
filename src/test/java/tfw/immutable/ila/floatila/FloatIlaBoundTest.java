@@ -18,7 +18,7 @@ final class FloatIlaBoundTest {
                 .hasMessage("ila == null not allowed!");
         assertThatThrownBy(() -> FloatIlaBound.create(ila, high, low))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("minimum (=" + high + ") > maximum (=" + low + ") not allowed!");
+                .hasMessage("minimum (=" + high + "00000) > maximum (=" + low + "00000) not allowed!");
     }
 
     @Test

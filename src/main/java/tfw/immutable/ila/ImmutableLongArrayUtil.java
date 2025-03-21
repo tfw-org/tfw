@@ -19,8 +19,8 @@ public final class ImmutableLongArrayUtil {
         Argument.assertNotLessThan(offset, 0, OFFSET_LABEL);
         Argument.assertNotLessThan(start, 0, START_LABEL);
         Argument.assertNotLessThan(length, 0, LENGTH_LABEL);
-        Argument.assertNotGreaterThanOrEquals(offset, arrayLength, OFFSET_LABEL, ARRAY_LENGTH_LABEL);
-        Argument.assertNotGreaterThanOrEquals(start, ilaLength, START_LABEL, ILA_LENGTH_LABEL);
+        Argument.assertLessThan(offset, arrayLength, OFFSET_LABEL, ARRAY_LENGTH_LABEL);
+        Argument.assertLessThan(start, ilaLength, START_LABEL, ILA_LENGTH_LABEL);
         Argument.assertNotGreaterThan(
                 (long) offset + length, arrayLength, OFFSET_PLUS_LENGTH_LABEL, ARRAY_LENGTH_LABEL);
         Argument.assertNotGreaterThan(start + length, ilaLength, START_PLUS_LENGTH_LABEL, ILA_LENGTH_LABEL);

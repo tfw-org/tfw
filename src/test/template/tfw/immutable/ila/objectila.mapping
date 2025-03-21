@@ -19,3 +19,5 @@
 %%FULL_CAST%% = (ObjectIla<Object>[])\ 
 %%DIAMOND%% = <>
 %%CHAR_CAST_TO_INT%% =
+%%FP_ZEROS%% =
+

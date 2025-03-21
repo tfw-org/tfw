@@ -19,3 +19,5 @@
 %%FULL_CAST%% = (BooleanIla[])\ 
 %%DIAMOND%% =
 %%CHAR_CAST_TO_INT%% =
+%%FP_ZEROS%% =
+
