@@ -4,6 +4,7 @@ package %%PACKAGE%%;
 import tfw.check.Argument;
 import tfw.immutable.ila.%%LOWER_NAME%%ila.%%NAME%%Ila;
 import tfw.immutable.ila.%%LOWER_NAME%%ila.%%NAME%%IlaInterleave;
+import tfw.immutable.ilaf.ImmutableLongArrayFactoryUtil;
 
 public class %%NAME%%IlaFactoryInterleave {
     private %%NAME%%IlaFactoryInterleave() {}
@@ -17,13 +18,9 @@ public class %%NAME%%IlaFactoryInterleave {
         private final %%TYPE_OR_TEMPLATE%%[] buffers;
 
         public %%NAME%%IlaFactoryImpl(final %%NAME%%IlaFactory%%TEMPLATE%%[] ilaFactories, final %%TYPE_OR_TEMPLATE%%[] buffers) {
-            Argument.assertNotNull(ilaFactories, "ilaFactories");
-            for (int i = 0; i < ilaFactories.length; i++) {
-                Argument.assertNotNull(ilaFactories[i], "ilaFactoryies[" + i + "]");
-            }
             Argument.assertNotNull(buffers, "buffers");
 
-            this.ilaFactories = ilaFactories.clone();
+            this.ilaFactories = ImmutableLongArrayFactoryUtil.assertNotNullAndClone(ilaFactories, "ilaFactories");
             this.buffers = buffers;
         }
 

@@ -2,32 +2,14 @@
 package %%PACKAGE%%;
 
 import tfw.check.Argument;
-import tfw.immutable.ila.%%LOWER_NAME%%ila.%%NAME%%Ila;
 import tfw.immutable.ila.%%LOWER_NAME%%ila.%%NAME%%IlaInsert;
 
 public class %%NAME%%IlaFactoryInsert {
     private %%NAME%%IlaFactoryInsert() {}
 
     public static %%TEMPLATE_SPACE%%%%NAME%%IlaFactory%%TEMPLATE%% create(%%NAME%%IlaFactory%%TEMPLATE%% ilaFactory, long index, %%TYPE_OR_TEMPLATE%% value) {
-        return new %%NAME%%IlaFactoryImpl%%DIAMOND%%(ilaFactory, index, value);
-    }
+        Argument.assertNotNull(ilaFactory, "ilaFactory");
 
-    private static class %%NAME%%IlaFactoryImpl%%TEMPLATE%% implements %%NAME%%IlaFactory%%TEMPLATE%% {
-        private final %%NAME%%IlaFactory%%TEMPLATE%% ilaFactory;
-        private final long index;
-        private final %%TYPE_OR_TEMPLATE%% value;
-
-        public %%NAME%%IlaFactoryImpl(final %%NAME%%IlaFactory%%TEMPLATE%% ilaFactory, long index, %%TYPE_OR_TEMPLATE%% value) {
-            Argument.assertNotNull(ilaFactory, "ilaFactory");
-
-            this.ilaFactory = ilaFactory;
-            this.index = index;
-            this.value = value;
-        }
-
-        @Override
-        public %%NAME%%Ila%%TEMPLATE%% create() {
-            return %%NAME%%IlaInsert.create(ilaFactory.create(), index, value);
-        }
+        return () -> %%NAME%%IlaInsert.create(ilaFactory.create(), index, value);
     }
 }

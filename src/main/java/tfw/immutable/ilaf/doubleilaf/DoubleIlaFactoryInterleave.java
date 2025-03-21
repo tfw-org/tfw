@@ -3,6 +3,7 @@ package tfw.immutable.ilaf.doubleilaf;
 import tfw.check.Argument;
 import tfw.immutable.ila.doubleila.DoubleIla;
 import tfw.immutable.ila.doubleila.DoubleIlaInterleave;
+import tfw.immutable.ilaf.ImmutableLongArrayFactoryUtil;
 
 public class DoubleIlaFactoryInterleave {
     private DoubleIlaFactoryInterleave() {}
@@ -16,13 +17,9 @@ public class DoubleIlaFactoryInterleave {
         private final double[] buffers;
 
         public DoubleIlaFactoryImpl(final DoubleIlaFactory[] ilaFactories, final double[] buffers) {
-            Argument.assertNotNull(ilaFactories, "ilaFactories");
-            for (int i = 0; i < ilaFactories.length; i++) {
-                Argument.assertNotNull(ilaFactories[i], "ilaFactoryies[" + i + "]");
-            }
             Argument.assertNotNull(buffers, "buffers");
 
-            this.ilaFactories = ilaFactories.clone();
+            this.ilaFactories = ImmutableLongArrayFactoryUtil.assertNotNullAndClone(ilaFactories, "ilaFactories");
             this.buffers = buffers;
         }
 

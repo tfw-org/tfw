@@ -3,6 +3,7 @@ package tfw.immutable.ilaf.booleanilaf;
 import tfw.check.Argument;
 import tfw.immutable.ila.booleanila.BooleanIla;
 import tfw.immutable.ila.booleanila.BooleanIlaInterleave;
+import tfw.immutable.ilaf.ImmutableLongArrayFactoryUtil;
 
 public class BooleanIlaFactoryInterleave {
     private BooleanIlaFactoryInterleave() {}
@@ -16,13 +17,9 @@ public class BooleanIlaFactoryInterleave {
         private final boolean[] buffers;
 
         public BooleanIlaFactoryImpl(final BooleanIlaFactory[] ilaFactories, final boolean[] buffers) {
-            Argument.assertNotNull(ilaFactories, "ilaFactories");
-            for (int i = 0; i < ilaFactories.length; i++) {
-                Argument.assertNotNull(ilaFactories[i], "ilaFactoryies[" + i + "]");
-            }
             Argument.assertNotNull(buffers, "buffers");
 
-            this.ilaFactories = ilaFactories.clone();
+            this.ilaFactories = ImmutableLongArrayFactoryUtil.assertNotNullAndClone(ilaFactories, "ilaFactories");
             this.buffers = buffers;
         }
 

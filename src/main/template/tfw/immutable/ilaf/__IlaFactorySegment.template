@@ -2,32 +2,14 @@
 package %%PACKAGE%%;
 
 import tfw.check.Argument;
-import tfw.immutable.ila.%%LOWER_NAME%%ila.%%NAME%%Ila;
 import tfw.immutable.ila.%%LOWER_NAME%%ila.%%NAME%%IlaSegment;
 
 public class %%NAME%%IlaFactorySegment {
     private %%NAME%%IlaFactorySegment() {}
 
     public static %%TEMPLATE_SPACE%%%%NAME%%IlaFactory%%TEMPLATE%% create(%%NAME%%IlaFactory%%TEMPLATE%% factory, final long start, final long length) {
-        return new %%NAME%%IlaFactoryImpl%%DIAMOND%%(factory, start, length);
-    }
+        Argument.assertNotNull(factory, "factory");
 
-    private static class %%NAME%%IlaFactoryImpl%%TEMPLATE%% implements %%NAME%%IlaFactory%%TEMPLATE%% {
-        private final %%NAME%%IlaFactory%%TEMPLATE%% factory;
-        private final long start;
-        private final long length;
-
-        public %%NAME%%IlaFactoryImpl(final %%NAME%%IlaFactory%%TEMPLATE%% factory, final long start, final long length) {
-            Argument.assertNotNull(factory, "factory");
-
-            this.factory = factory;
-            this.start = start;
-            this.length = length;
-        }
-
-        @Override
-        public %%NAME%%Ila%%TEMPLATE%% create() {
-            return %%NAME%%IlaSegment.create(factory.create(), start, length);
-        }
+        return () -> %%NAME%%IlaSegment.create(factory.create(), start, length);
     }
 }
