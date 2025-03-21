@@ -18,7 +18,7 @@ final class %%NAME%%IlaBoundTest {
                 .hasMessage("ila == null not allowed!");
         assertThatThrownBy(() -> %%NAME%%IlaBound.create(ila, high, low))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("minimum (=" + %%CHAR_CAST_TO_INT%%high + ") > maximum (=" + %%CHAR_CAST_TO_INT%%low + ") not allowed!");
+                .hasMessage("minimum (=" + %%CHAR_CAST_TO_INT%%high + "%%FP_ZEROS%%) > maximum (=" + %%CHAR_CAST_TO_INT%%low + "%%FP_ZEROS%%) not allowed!");
     }
 
     @Test

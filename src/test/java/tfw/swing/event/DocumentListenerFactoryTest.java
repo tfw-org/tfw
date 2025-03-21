@@ -36,10 +36,10 @@ final class DocumentListenerFactoryTest {
                 .hasMessage("name == null not allowed!");
         assertThatThrownBy(() -> DocumentListenerFactory.create(TEST_NAME, null, null))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("sources[0]== null not allowed!");
+                .hasMessage("sources[0] == null not allowed!");
         assertThatThrownBy(() -> DocumentListenerFactory.create(TEST_NAME, null, stateQueueFactory))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("sources[0]== null not allowed!");
+                .hasMessage("sources[0] == null not allowed!");
     }
 
     @Test

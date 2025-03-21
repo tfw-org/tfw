@@ -20,7 +20,7 @@ final class InitiatorTest {
                 .hasMessage("name == null not allowed!");
         assertThatThrownBy(() -> new Initiator("test", (ObjectECD) null))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("sources[0]== null not allowed!");
+                .hasMessage("sources[0] == null not allowed!");
         assertThatThrownBy(() -> new Initiator("test", (ObjectECD[]) null))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("sources == null not allowed!");

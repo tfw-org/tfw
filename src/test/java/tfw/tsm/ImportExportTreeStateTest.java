@@ -119,7 +119,7 @@ final class ImportExportTreeStateTest {
                 .hasMessage("tag == null not allowed!");
         assertThatThrownBy(() -> rf.addExportTag(ecd1, ""))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("tag.length() == 0 not allowed!");
+                .hasMessage("tag.isEmpty() not allowed!");
         assertThatThrownBy(() -> rf.addExportTag(ecd2, tag1))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage(

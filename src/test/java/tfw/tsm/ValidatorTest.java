@@ -22,10 +22,10 @@ final class ValidatorTest {
                 .hasMessage("name == null not allowed!");
         assertThatThrownBy(() -> new TestValidator("Test", new ObjectECD[] {null}, null, null))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("triggeringSinks[0]== null not allowed!");
+                .hasMessage("triggeringSinks[0] == null not allowed!");
         assertThatThrownBy(() -> new TestValidator("Test", sinks, new ObjectECD[] {null}, null))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("nonTriggeringSinks[0]== null not allowed!");
+                .hasMessage("nonTriggeringSinks[0] == null not allowed!");
         assertThatThrownBy(() -> new TestValidator("Test", null, null, null))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("triggeringSinks == null not allowed!");

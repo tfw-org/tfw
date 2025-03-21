@@ -51,11 +51,9 @@ public abstract class AbstractBitIis implements BitIis {
             throws IOException {
         Argument.assertNotNull(array, "array");
         Argument.assertNotLessThan(arrayOffsetInBits, 0, "arrayOffsetInBits");
-        Argument.assertNotGreaterThanOrEquals(
-                arrayOffsetInBits, MAX_BITS_IN_ARRAY, "arrayOffsetInBits", "BitIis.MAX_BITS_IN_ARRAY");
+        Argument.assertLessThan(arrayOffsetInBits, MAX_BITS_IN_ARRAY, "arrayOffsetInBits", "BitIis.MAX_BITS_IN_ARRAY");
         Argument.assertNotLessThan(lengthInBits, 0, "lengthInBits");
-        Argument.assertNotGreaterThanOrEquals(
-                lengthInBits, MAX_BITS_IN_ARRAY, "lengthInBits", "BitsIis.MAX_BITS_IN_ARRAY");
+        Argument.assertLessThan(lengthInBits, MAX_BITS_IN_ARRAY, "lengthInBits", "BitsIis.MAX_BITS_IN_ARRAY");
 
         if (closed) {
             return -1;
