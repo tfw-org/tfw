@@ -3,6 +3,7 @@ package tfw.immutable.ilaf.byteilaf;
 import tfw.check.Argument;
 import tfw.immutable.ila.byteila.ByteIla;
 import tfw.immutable.ila.byteila.ByteIlaInterleave;
+import tfw.immutable.ilaf.ImmutableLongArrayFactoryUtil;
 
 public class ByteIlaFactoryInterleave {
     private ByteIlaFactoryInterleave() {}
@@ -16,13 +17,9 @@ public class ByteIlaFactoryInterleave {
         private final byte[] buffers;
 
         public ByteIlaFactoryImpl(final ByteIlaFactory[] ilaFactories, final byte[] buffers) {
-            Argument.assertNotNull(ilaFactories, "ilaFactories");
-            for (int i = 0; i < ilaFactories.length; i++) {
-                Argument.assertNotNull(ilaFactories[i], "ilaFactoryies[" + i + "]");
-            }
             Argument.assertNotNull(buffers, "buffers");
 
-            this.ilaFactories = ilaFactories.clone();
+            this.ilaFactories = ImmutableLongArrayFactoryUtil.assertNotNullAndClone(ilaFactories, "ilaFactories");
             this.buffers = buffers;
         }
 
