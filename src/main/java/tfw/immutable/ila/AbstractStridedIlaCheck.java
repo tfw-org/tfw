@@ -13,7 +13,7 @@ public class AbstractStridedIlaCheck {
             final long start,
             final int length) {
         Argument.assertNotLessThan(offset, 0, "offset");
-        Argument.assertNotGreaterThanOrEquals(offset, arrayLength, "offset", "array.length");
+        Argument.assertLessThan(offset, arrayLength, "offset", "array.length");
         Argument.assertNotEquals(stride, 0, "stride");
         Argument.assertNotLessThan(start, 0, "start");
         Argument.assertNotLessThan(length, 0, "length");

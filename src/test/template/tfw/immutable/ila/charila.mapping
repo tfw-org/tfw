@@ -18,3 +18,5 @@
 %%FULL_CAST%% = (CharIla[])\ 
 %%DIAMOND%% =
 %%CHAR_CAST_TO_INT%% = (int)\ 
+%%FP_ZEROS%% =
+

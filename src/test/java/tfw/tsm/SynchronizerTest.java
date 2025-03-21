@@ -180,7 +180,7 @@ final class SynchronizerTest {
                 .hasMessage("aPortDescriptions.length == 0 not allowed");
         assertThatThrownBy(() -> new TestTwoWay("Test", new ObjectECD[] {null}, bChans, sinks, sources))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("aPortDescription[0]== null not allowed!");
+                .hasMessage("aPortDescription[0] == null not allowed!");
         assertThatThrownBy(() -> new TestTwoWay("Test", aChans, null, sinks, sources))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("bPortDescriptions == null not allowed!");
@@ -189,13 +189,13 @@ final class SynchronizerTest {
                 .hasMessage("bPortDescriptions.length == 0 not allowed");
         assertThatThrownBy(() -> new TestTwoWay("Test", aChans, new ObjectECD[] {null}, sinks, sources))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("bPortDescription[0]== null not allowed!");
+                .hasMessage("bPortDescription[0] == null not allowed!");
         assertThatThrownBy(() -> new TestTwoWay("Test", aChans, bChans, new ObjectECD[] {null}, sources))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("sinkEventChannels[0]== null not allowed!");
+                .hasMessage("sinkEventChannels[0] == null not allowed!");
         assertThatThrownBy(() -> new TestTwoWay("Test", aChans, bChans, sinks, new ObjectECD[] {null}))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("sources[4]== null not allowed!");
+                .hasMessage("sources[4] == null not allowed!");
     }
 
     /*

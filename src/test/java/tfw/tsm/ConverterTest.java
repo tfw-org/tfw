@@ -100,13 +100,13 @@ final class ConverterTest {
                 .hasMessage("triggeringSinks == null not allowed!");
         assertThatThrownBy(() -> new TestConverter("test", new ObjectECD[] {null}, nonTriggeringSinks, sources))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("triggeringSinks[0]== null not allowed!");
+                .hasMessage("triggeringSinks[0] == null not allowed!");
         assertThatThrownBy(() -> new TestConverter("test", triggeringSinks, new ObjectECD[] {null}, sources))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("nonTriggeringSinks[0]== null not allowed!");
+                .hasMessage("nonTriggeringSinks[0] == null not allowed!");
         assertThatThrownBy(() -> new TestConverter("test", triggeringSinks, nonTriggeringSinks, new ObjectECD[] {null}))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("sources[0]== null not allowed!");
+                .hasMessage("sources[0] == null not allowed!");
         assertThatThrownBy(() -> new TestConverter("test", triggeringSinks, triggeringSinks, sources))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Multiple sinks detected for event channel 'a'");

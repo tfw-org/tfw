@@ -118,7 +118,7 @@ final class RollbackTest {
                 .hasMessage("eventChannelState == null not allowed!");
         assertThatThrownBy(() -> handler.testRollback(new EventChannelState[] {null}))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("eventChannelState[0]== null not allowed!");
+                .hasMessage("eventChannelState[0] == null not allowed!");
     }
 
     @Test
