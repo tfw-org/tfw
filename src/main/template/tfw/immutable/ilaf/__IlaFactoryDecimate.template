@@ -2,32 +2,14 @@
 package %%PACKAGE%%;
 
 import tfw.check.Argument;
-import tfw.immutable.ila.%%LOWER_NAME%%ila.%%NAME%%Ila;
 import tfw.immutable.ila.%%LOWER_NAME%%ila.%%NAME%%IlaDecimate;
 
 public class %%NAME%%IlaFactoryDecimate {
     private %%NAME%%IlaFactoryDecimate() {}
 
     public static %%TEMPLATE_SPACE%%%%NAME%%IlaFactory%%TEMPLATE%% create(%%NAME%%IlaFactory%%TEMPLATE%% ilaFactory, long factor, %%TYPE_OR_TEMPLATE%%[] buffer) {
-        return new %%NAME%%IlaFactoryImpl%%DIAMOND%%(ilaFactory, factor, buffer);
-    }
+        Argument.assertNotNull(ilaFactory, "ilaFactory");
 
-    private static class %%NAME%%IlaFactoryImpl%%TEMPLATE%% implements %%NAME%%IlaFactory%%TEMPLATE%% {
-        private final %%NAME%%IlaFactory%%TEMPLATE%% ilaFactory;
-        private final long factor;
-        private final %%TYPE_OR_TEMPLATE%%[] buffer;
-
-        public %%NAME%%IlaFactoryImpl(final %%NAME%%IlaFactory%%TEMPLATE%% ilaFactory, long factor, %%TYPE_OR_TEMPLATE%%[] buffer) {
-            Argument.assertNotNull(ilaFactory, "ilaFactory");
-
-            this.ilaFactory = ilaFactory;
-            this.factor = factor;
-            this.buffer = buffer;
-        }
-
-        @Override
-        public %%NAME%%Ila%%TEMPLATE%% create() {
-            return %%NAME%%IlaDecimate.create(ilaFactory.create(), factor, buffer.clone());
-        }
+        return () -> %%NAME%%IlaDecimate.create(ilaFactory.create(), factor, buffer.clone());
     }
 }

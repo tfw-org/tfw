@@ -2,32 +2,14 @@
 package %%PACKAGE%%;
 
 import tfw.check.Argument;
-import tfw.immutable.ila.%%LOWER_NAME%%ila.%%NAME%%Ila;
 import tfw.immutable.ila.%%LOWER_NAME%%ila.%%NAME%%IlaBound;
 
 public class %%NAME%%IlaFactoryBound {
     private %%NAME%%IlaFactoryBound() {}
 
     public static %%TEMPLATE_SPACE%%%%NAME%%IlaFactory%%TEMPLATE%% create(%%NAME%%IlaFactory%%TEMPLATE%% ilaFactory, %%TYPE%% minimum, %%TYPE%% maximum) {
-        return new %%NAME%%IlaFactoryImpl%%DIAMOND%%(ilaFactory, minimum, maximum);
-    }
+        Argument.assertNotNull(ilaFactory, "ilaFactory");
 
-    private static class %%NAME%%IlaFactoryImpl%%TEMPLATE%% implements %%NAME%%IlaFactory%%TEMPLATE%% {
-        private final %%NAME%%IlaFactory%%TEMPLATE%% ilaFactory;
-        private final %%TYPE%% minimum;
-        private final %%TYPE%% maximum;
-
-        public %%NAME%%IlaFactoryImpl(final %%NAME%%IlaFactory%%TEMPLATE%% ilaFactory, %%TYPE%% minimum, %%TYPE%% maximum) {
-            Argument.assertNotNull(ilaFactory, "ilaFactory");
-
-            this.ilaFactory = ilaFactory;
-            this.minimum = minimum;
-            this.maximum = maximum;
-        }
-
-        @Override
-        public %%NAME%%Ila%%TEMPLATE%% create() {
-            return %%NAME%%IlaBound.create(ilaFactory.create(), minimum, maximum);
-        }
+        return () -> %%NAME%%IlaBound.create(ilaFactory.create(), minimum, maximum);
     }
 }

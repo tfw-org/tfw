@@ -29,8 +29,6 @@ final class BitIlaFactoryEcdTest {
 
         initiator.set(bitIlaFactoryEcd, bitIlaFactory);
         assertThatThrownBy(() -> initiator.set(bitIlaFactoryEcd, byteIlaFactory))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage(
-                        "The value, of type 'tfw.immutable.ilaf.byteilaf.ByteIlaFactoryFill$ByteIlaFactoryImpl', is not assignable to type 'tfw.immutable.ilaf.bitilaf.BitIlaFactory'.");
+                .isInstanceOf(IllegalArgumentException.class);
     }
 }
