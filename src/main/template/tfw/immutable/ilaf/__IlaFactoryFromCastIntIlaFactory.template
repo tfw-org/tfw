@@ -2,7 +2,6 @@
 package %%PACKAGE%%;
 
 import tfw.check.Argument;
-import tfw.immutable.ila.%%LOWER_NAME%%ila.%%NAME%%Ila;
 import tfw.immutable.ila.%%LOWER_NAME%%ila.%%NAME%%IlaFromCastIntIla;
 import tfw.immutable.ilaf.intilaf.IntIlaFactory;
 
@@ -10,23 +9,8 @@ public class %%NAME%%IlaFactoryFromCastIntIlaFactory {
     private %%NAME%%IlaFactoryFromCastIntIlaFactory() {}
 
     public static %%NAME%%IlaFactory create(IntIlaFactory intIlaFactory, final int bufferSize) {
-        return new %%NAME%%IlaFactoryImpl(intIlaFactory, bufferSize);
-    }
+        Argument.assertNotNull(intIlaFactory, "intIlaFactory");
 
-    private static class %%NAME%%IlaFactoryImpl implements %%NAME%%IlaFactory {
-        private final IntIlaFactory intIlaFactory;
-        private final int bufferSize;
-
-        public %%NAME%%IlaFactoryImpl(final IntIlaFactory intIlaFactory, final int bufferSize) {
-            Argument.assertNotNull(intIlaFactory, "intIlaFactory");
-
-            this.intIlaFactory = intIlaFactory;
-            this.bufferSize = bufferSize;
-        }
-
-        @Override
-        public %%NAME%%Ila create() {
-            return %%NAME%%IlaFromCastIntIla.create(intIlaFactory.create(), bufferSize);
-        }
+        return () -> %%NAME%%IlaFromCastIntIla.create(intIlaFactory.create(), bufferSize);
     }
 }

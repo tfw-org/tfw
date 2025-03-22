@@ -1,26 +1,12 @@
 // booleanilaf,byteilaf,charilaf,doubleilaf,floatilaf,intilaf,longilaf,objectilaf,shortilaf
 package %%PACKAGE%%;
 
-import tfw.immutable.ila.%%LOWER_NAME%%ila.%%NAME%%Ila;
 import tfw.immutable.ila.%%LOWER_NAME%%ila.%%NAME%%IlaFromArray;
 
 public class %%NAME%%IlaFactoryFromArray {
     private %%NAME%%IlaFactoryFromArray() {}
 
     public static %%TEMPLATE_SPACE%%%%NAME%%IlaFactory%%TEMPLATE%% create(final %%TYPE_OR_TEMPLATE%%[] array) {
-        return new %%NAME%%IlaFactoryImpl%%DIAMOND%%(array);
-    }
-
-    private static class %%NAME%%IlaFactoryImpl%%TEMPLATE%% implements %%NAME%%IlaFactory%%TEMPLATE%% {
-        private final %%TYPE_OR_TEMPLATE%%[] array;
-
-        public %%NAME%%IlaFactoryImpl(final %%TYPE_OR_TEMPLATE%%[] array) {
-            this.array = array;
-        }
-
-        @Override
-        public %%NAME%%Ila%%TEMPLATE%% create() {
-            return %%NAME%%IlaFromArray.create(array);
-        }
+        return () -> %%NAME%%IlaFromArray.create(array);
     }
 }

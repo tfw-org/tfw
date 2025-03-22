@@ -2,31 +2,15 @@
 package %%PACKAGE%%;
 
 import tfw.check.Argument;
-import tfw.immutable.ila.%%LOWER_NAME%%ila.%%NAME%%Ila;
 import tfw.immutable.ila.%%LOWER_NAME%%ila.%%NAME%%IlaConcatenate;
 
 public class %%NAME%%IlaFactoryConcatenate {
     private %%NAME%%IlaFactoryConcatenate() {}
 
     public static %%TEMPLATE_SPACE%%%%NAME%%IlaFactory%%TEMPLATE%% create(%%NAME%%IlaFactory%%TEMPLATE%% leftFactory, %%NAME%%IlaFactory%%TEMPLATE%% rightFactory) {
-        return new %%NAME%%IlaFactoryImpl%%DIAMOND%%(leftFactory, rightFactory);
-    }
+        Argument.assertNotNull(leftFactory, "leftFactory");
+        Argument.assertNotNull(rightFactory, "rightFactory");
 
-    private static class %%NAME%%IlaFactoryImpl%%TEMPLATE%% implements %%NAME%%IlaFactory%%TEMPLATE%% {
-        private final %%NAME%%IlaFactory%%TEMPLATE%% leftFactory;
-        private final %%NAME%%IlaFactory%%TEMPLATE%% rightFactory;
-
-        public %%NAME%%IlaFactoryImpl(final %%NAME%%IlaFactory%%TEMPLATE%% leftFactory, %%NAME%%IlaFactory%%TEMPLATE%% rightFactory) {
-            Argument.assertNotNull(leftFactory, "leftFactory");
-            Argument.assertNotNull(rightFactory, "rightFactory");
-
-            this.leftFactory = leftFactory;
-            this.rightFactory = rightFactory;
-        }
-
-        @Override
-        public %%NAME%%Ila%%TEMPLATE%% create() {
-            return %%NAME%%IlaConcatenate.create(leftFactory.create(), rightFactory.create());
-        }
+        return () -> %%NAME%%IlaConcatenate.create(leftFactory.create(), rightFactory.create());
     }
 }

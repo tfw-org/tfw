@@ -2,7 +2,6 @@
 package %%PACKAGE%%;
 
 import tfw.check.Argument;
-import tfw.immutable.ila.%%LOWER_NAME%%ila.%%NAME%%Ila;
 import tfw.immutable.ila.%%LOWER_NAME%%ila.%%NAME%%IlaDivide;
 
 public class %%NAME%%IlaFactoryDivide {
@@ -10,27 +9,9 @@ public class %%NAME%%IlaFactoryDivide {
 
     public static %%TEMPLATE_SPACE%%%%NAME%%IlaFactory%%TEMPLATE%% create(
             final %%NAME%%IlaFactory%%TEMPLATE%% leftFactory, final %%NAME%%IlaFactory%%TEMPLATE%% rightFactory, final int bufferSize) {
-        return new %%NAME%%IlaFactoryImpl%%DIAMOND%%(leftFactory, rightFactory, bufferSize);
-    }
+        Argument.assertNotNull(leftFactory, "leftFactory");
+        Argument.assertNotNull(rightFactory, "rightFactory");
 
-    private static class %%NAME%%IlaFactoryImpl%%TEMPLATE%% implements %%NAME%%IlaFactory%%TEMPLATE%% {
-        private final %%NAME%%IlaFactory%%TEMPLATE%% leftFactory;
-        private final %%NAME%%IlaFactory%%TEMPLATE%% rightFactory;
-        private final int bufferSize;
-
-        public %%NAME%%IlaFactoryImpl(
-                final %%NAME%%IlaFactory%%TEMPLATE%% leftFactory, final %%NAME%%IlaFactory%%TEMPLATE%% rightFactory, final int bufferSize) {
-            Argument.assertNotNull(leftFactory, "leftFactory");
-            Argument.assertNotNull(rightFactory, "rightFactory");
-
-            this.leftFactory = leftFactory;
-            this.rightFactory = rightFactory;
-            this.bufferSize = bufferSize;
-        }
-
-        @Override
-        public %%NAME%%Ila%%TEMPLATE%% create() {
-            return %%NAME%%IlaDivide.create(leftFactory.create(), rightFactory.create(), bufferSize);
-        }
+        return () -> %%NAME%%IlaDivide.create(leftFactory.create(), rightFactory.create(), bufferSize);
     }
 }
