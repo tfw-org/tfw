@@ -34,7 +34,7 @@
         <plugin.nexus-staging-maven-plugin.version>1.7.0</plugin.nexus-staging-maven-plugin.version>
         <plugin.pitest-junit5-plugin.version>1.2.2</plugin.pitest-junit5-plugin.version>
         <plugin.pitest-maven.version>1.19.0</plugin.pitest-maven.version>
-        <plugin.refaster-runner.version>0.20.0</plugin.refaster-runner.version>
+        <plugin.refaster-runner.version>0.21.0</plugin.refaster-runner.version>
         <plugin.spotless-maven-plugin.version>2.44.3</plugin.spotless-maven-plugin.version>
         <plugin.spotless-palantirJavaFormat.version>2.50.0</plugin.spotless-palantirJavaFormat.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
