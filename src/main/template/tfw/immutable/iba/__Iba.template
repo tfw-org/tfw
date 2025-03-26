@@ -1,0 +1,10 @@
+// booleaniba,byteiba,chariba,doubleiba,floatiba,intiba,longiba,objectiba,shortiba
+package %%PACKAGE%%;
+
+import java.io.IOException;
+import java.math.BigInteger;
+import tfw.immutable.iba.ImmutableBigIntegerArray;
+
+public interface %%NAME%%Iba%%TEMPLATE%% extends ImmutableBigIntegerArray {
+    void get(final %%TYPE_OR_TEMPLATE%%[] array, final int arrayOffset, final BigInteger ibaStart, int length) throws IOException;
+}
