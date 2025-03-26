@@ -1,0 +1,17 @@
+%%TYPE%% = byte
+%%NAME%% = Byte
+%%PACKAGE%% = tfw.immutable.iba.byteiba
+%%RANDOM_VALUE%% = (byte)random.nextInt()
+%%ASSERT_EQUALS_DELTA%% =
+%%CREATE_IMMUTABLE_START%% = new Byte(
+%%CREATE_IMMUTABLE_END%% = )
+%%CAST_FROM_INT%% = \ (byte)
+%%CAST_FROM_INT_PRE%% = (byte)\ (
+%%CAST_FROM_INT_POST%% = )
+%%CAST_FROM_LONG%% = \ (byte)
+%%CAST_FROM_LONG_PRE%% = (byte)\ (
+%%CAST_FROM_LONG_POST%% = )
+%%DIAMOND%% = 
+%%TEMPLATE%% =
+%%TEMPLATE_SPACE%% =
+%%TYPE_OR_TEMPLATE%% = byte

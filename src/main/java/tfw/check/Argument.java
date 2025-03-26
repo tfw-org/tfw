@@ -1,5 +1,7 @@
 package tfw.check;
 
+import java.math.BigInteger;
+
 /**
  * A utility for checking arguements to methods and constructors.
  *
@@ -12,10 +14,12 @@ public class Argument {
     private static final String ASSERT_GREATER_THAN_FORMAT = "%s (=%d) <= %d not allowed!";
     private static final String ASSERT_GREATER_THAN_OR_EQUAL_TO_I_FORMAT = "%s (=%d) < %d not allowed!";
     private static final String ASSERT_GREATER_THAN_OR_EQUAL_TO_F_FORMAT = "%s (=%f) < %f not allowed!";
+    private static final String ASSERT_GREATER_THAN_OR_EQUAL_TO_S_FORMAT = "%s (=%s) < %s not allowed!";
     private static final String ASSERT_EQUALS_FORMAT = "%s (=%d) != %s (=%d) not allowed!";
     private static final String ASSERT_NOT_EQUALS_FORMAT = "%s (=%d) == %d not allowed!";
     private static final String ASSERT_NOT_GREATER_THAN_ILR_FORMAT = "%s (=%d) > %s (=%d) not allowed!";
     private static final String ASSERT_NOT_GREATER_THAN_FLR_FORMAT = "%s (=%f) > %s (=%f) not allowed!";
+    private static final String ASSERT_NOT_GREATER_THAN_SLR_FORMAT = "%s (=%s) > %s (=%s) not allowed!";
     private static final String ASSERT_NOT_GREATER_THAN_IVC_FORMAT = "%s (=%d) > %d not allowed!";
     private static final String ASSERT_NOT_GREATER_THAN_FVC_FORMAT = "%s (=%f) > %f not allowed!";
     private static final String ASSERT_LESS_THAN_I_FORMAT = "%s (=%d) >= %s (=%d) not allowed!";
@@ -194,6 +198,24 @@ public class Argument {
     }
 
     /**
+     * Checks that the left argument is less than or equal to right argument.
+     *
+     * @param left argument to compare.
+     * @param right argument to compare.
+     * @param leftName name of left argument being compared.
+     * @param rightName name of right argument being compared.
+     */
+    public static final void assertNotGreaterThan(
+            BigInteger left, BigInteger right, String leftName, String rightName) {
+        if (left.compareTo(right) > 0) {
+            final String msg = String.format(
+                    ASSERT_NOT_GREATER_THAN_SLR_FORMAT, leftName, left.toString(), rightName, right.toString());
+
+            throw new IllegalArgumentException(msg);
+        }
+    }
+
+    /**
      * Checks that the value is less than or equal to a constant.
      *
      * @param value The value to compare
@@ -268,6 +290,23 @@ public class Argument {
     public static final void assertGreaterThanOrEqualTo(double value, double constant, String valueName) {
         if (value < constant) {
             final String msg = String.format(ASSERT_GREATER_THAN_OR_EQUAL_TO_F_FORMAT, valueName, value, constant);
+
+            throw new IllegalArgumentException(msg);
+        }
+    }
+
+    /**
+     * Checks that the value is greater than or equal to a constant.
+     *
+     * @param value The value to compare
+     * @param constant The constant to compare
+     * @param valueName The name of the value.
+     * @throws IllegalArgumentException if <code>value &lt; constant</code>
+     */
+    public static final void assertGreaterThanOrEqualTo(BigInteger value, BigInteger constant, String valueName) {
+        if (value.compareTo(constant) < 0) {
+            final String msg = String.format(
+                    ASSERT_GREATER_THAN_OR_EQUAL_TO_S_FORMAT, valueName, value.toString(), constant.toString());
 
             throw new IllegalArgumentException(msg);
         }

@@ -1,0 +1,42 @@
+// booleaniba,byteiba,chariba,doubleiba,floatiba,intiba,longiba,objectiba,shortiba
+package %%PACKAGE%%;
+
+import java.math.BigInteger;
+import tfw.check.Argument;
+
+public final class %%NAME%%IbaFromArray {
+    private %%NAME%%IbaFromArray() {
+        // non-instantiable class
+    }
+
+    public static %%TEMPLATE_SPACE%%%%NAME%%Iba%%TEMPLATE%% create(%%TYPE_OR_TEMPLATE%%[] array) {
+        return new %%NAME%%IbaImpl%%DIAMOND%%(array);
+    }
+
+    private static class %%NAME%%IbaImpl%%TEMPLATE%% extends Abstract%%NAME%%Iba%%TEMPLATE%% {
+        private final %%TYPE_OR_TEMPLATE%%[] array;
+        private final BigInteger arrayLength;
+
+        private %%NAME%%IbaImpl(%%TYPE_OR_TEMPLATE%%[] array) {
+            Argument.assertNotNull(array, "array");
+
+            this.array = array;
+            this.arrayLength = BigInteger.valueOf(array.length);
+        }
+
+        @Override
+        protected void closeImpl() {
+            // Nothing to do.
+        }
+
+        @Override
+        protected BigInteger lengthImpl() {
+            return arrayLength;
+        }
+
+        @Override
+        protected void getImpl(%%TYPE_OR_TEMPLATE%%[] array, int offset, BigInteger start, int length) {
+            System.arraycopy(this.array, (int) start.longValue(), array, offset, length);
+        }
+    }
+}
