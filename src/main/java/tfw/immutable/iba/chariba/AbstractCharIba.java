@@ -3,6 +3,8 @@ package tfw.immutable.iba.chariba;
 import java.io.IOException;
 import java.math.BigInteger;
 import tfw.check.Argument;
+import tfw.check.ClosedManager;
+import tfw.immutable.iba.ImmutableBigIntegerArrayUtil;
 
 public abstract class AbstractCharIba implements CharIba {
     protected abstract void closeImpl() throws IOException;
@@ -12,40 +14,28 @@ public abstract class AbstractCharIba implements CharIba {
     protected abstract void getImpl(final char[] array, int arrayOffset, BigInteger ibaStart, int length)
             throws IOException;
 
-    private boolean closed = false;
+    private final ClosedManager closedManager = new ClosedManager();
 
     @Override
     public final void close() throws IOException {
-        if (!closed) {
-            closed = true;
+        if (closedManager.close()) {
             closeImpl();
         }
     }
 
     @Override
     public final BigInteger length() throws IOException {
-        if (closed) {
-            throw new IllegalStateException("This CharIba is closed!");
-        }
+        closedManager.checkClosed("CharIba");
 
         return lengthImpl();
     }
 
     @Override
     public final void get(char[] array, int arrayOffset, BigInteger ibaStart, int length) throws IOException {
-        if (closed) {
-            throw new IllegalStateException("This CharIba is closed!");
-        }
+        closedManager.checkClosed("CharIba");
 
         Argument.assertNotNull(array, "array");
-        Argument.assertNotLessThan(arrayOffset, 0, "offset");
-        Argument.assertLessThan(arrayOffset, MAX_BITS_IN_ARRAY, "arrayOffset", "MAX_BITS_IN_ARRAY");
-        Argument.assertLessThan(arrayOffset + (long) length, array.length * (long) Long.SIZE, "offset", "array.length");
-        Argument.assertGreaterThanOrEqualTo(ibaStart, BigInteger.ZERO, "ibaStart");
-        Argument.assertNotLessThan(length, 0, "length");
-        Argument.assertLessThan(length, MAX_BITS_IN_ARRAY, "length", "MAX_BITS_IN_ARRAY");
-        Argument.assertNotGreaterThan(
-                ibaStart.add(BigInteger.valueOf(length)), length(), "start+length", "Iba.length()");
+        ImmutableBigIntegerArrayUtil.validateGetParameters(array.length, arrayOffset, ibaStart, length(), length);
 
         if (length == 0) {
             return;

@@ -46,14 +46,17 @@ public final class BitIbaFromLongIba {
         protected void getImpl(
                 final long[] array,
                 final long arrayOffsetInBits,
-                final BigInteger ilaStartInBits,
+                final BigInteger ibaStartInBits,
                 final long lengthInBits)
                 throws IOException {
-            final BigInteger ibaStartInLongs = ilaStartInBits.divide(LONG_SIZE);
+            final BigInteger ibaStartInLongs = ibaStartInBits.divide(LONG_SIZE);
             final BigInteger ibaEndInLongs =
-                    ilaStartInBits.add(BigInteger.valueOf(lengthInBits)).divide(LONG_SIZE);
-            final int lengthInLongs =
-                    (int) (ibaEndInLongs.subtract(ibaStartInLongs).longValue() + 1);
+                    ibaStartInBits.add(BigInteger.valueOf(lengthInBits)).divide(LONG_SIZE);
+            final int lengthInLongs = ibaEndInLongs
+                    .subtract(ibaStartInLongs)
+                    .add(BigInteger.ONE)
+                    .min(BigInteger.valueOf(Integer.MAX_VALUE))
+                    .intValue();
             final long[] tempArray = new long[lengthInLongs];
 
             longIba.get(tempArray, 0, ibaStartInLongs, lengthInLongs);
