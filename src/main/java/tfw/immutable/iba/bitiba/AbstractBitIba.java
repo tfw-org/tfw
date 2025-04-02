@@ -25,7 +25,7 @@ public abstract class AbstractBitIba implements BitIba {
 
     @Override
     public final BigInteger lengthInBits() throws IOException {
-        closedManager.checkClosed("BitIba");
+        closedManager.checkClosed();
 
         return lengthInBitsImpl();
     }
@@ -33,7 +33,7 @@ public abstract class AbstractBitIba implements BitIba {
     @Override
     public final void get(long[] array, long arrayOffsetInBits, BigInteger ibaStartInBits, long lengthInBits)
             throws IOException {
-        closedManager.checkClosed("BitIba");
+        closedManager.checkClosed();
 
         Argument.assertNotNull(array, "array");
         ImmutableBigIntegerArrayUtil.validateGetParameters(

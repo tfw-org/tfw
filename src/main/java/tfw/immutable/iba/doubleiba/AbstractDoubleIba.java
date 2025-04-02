@@ -3,36 +3,16 @@ package tfw.immutable.iba.doubleiba;
 import java.io.IOException;
 import java.math.BigInteger;
 import tfw.check.Argument;
-import tfw.check.ClosedManager;
+import tfw.immutable.iba.AbstractIba;
 import tfw.immutable.iba.ImmutableBigIntegerArrayUtil;
 
-public abstract class AbstractDoubleIba implements DoubleIba {
-    protected abstract void closeImpl() throws IOException;
-
-    protected abstract BigInteger lengthImpl() throws IOException;
-
+public abstract class AbstractDoubleIba extends AbstractIba implements DoubleIba {
     protected abstract void getImpl(final double[] array, int arrayOffset, BigInteger ibaStart, int length)
             throws IOException;
 
-    private final ClosedManager closedManager = new ClosedManager();
-
-    @Override
-    public final void close() throws IOException {
-        if (closedManager.close()) {
-            closeImpl();
-        }
-    }
-
-    @Override
-    public final BigInteger length() throws IOException {
-        closedManager.checkClosed("DoubleIba");
-
-        return lengthImpl();
-    }
-
     @Override
     public final void get(double[] array, int arrayOffset, BigInteger ibaStart, int length) throws IOException {
-        closedManager.checkClosed("DoubleIba");
+        checkClosed();
 
         Argument.assertNotNull(array, "array");
         ImmutableBigIntegerArrayUtil.validateGetParameters(array.length, arrayOffset, ibaStart, length(), length);

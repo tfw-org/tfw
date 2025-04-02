@@ -2,6 +2,7 @@ package tfw.immutable.iba.chariba;
 
 import java.math.BigInteger;
 import tfw.check.Argument;
+import tfw.immutable.iba.AbstractIbaFromArray;
 
 public final class CharIbaFromArray {
     private CharIbaFromArray() {
@@ -12,30 +13,24 @@ public final class CharIbaFromArray {
         return new CharIbaImpl(array);
     }
 
-    private static class CharIbaImpl extends AbstractCharIba {
+    private static class CharIbaImpl extends AbstractIbaFromArray implements CharIba {
         private final char[] array;
-        private final BigInteger arrayLength;
 
         private CharIbaImpl(char[] array) {
-            Argument.assertNotNull(array, "array");
+            super(checkAndReturnLength(array));
 
             this.array = array;
-            this.arrayLength = BigInteger.valueOf(array.length);
         }
 
         @Override
-        protected void closeImpl() {
-            // Nothing to do.
-        }
-
-        @Override
-        protected BigInteger lengthImpl() {
-            return arrayLength;
-        }
-
-        @Override
-        protected void getImpl(char[] array, int offset, BigInteger start, int length) {
+        public void get(char[] array, int offset, BigInteger start, int length) {
             System.arraycopy(this.array, (int) start.longValue(), array, offset, length);
+        }
+
+        private static BigInteger checkAndReturnLength(char[] array) {
+            Argument.assertNotNull(array, "array");
+
+            return BigInteger.valueOf(array.length);
         }
     }
 }

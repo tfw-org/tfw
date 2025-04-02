@@ -2,6 +2,7 @@ package tfw.immutable.iba.booleaniba;
 
 import java.math.BigInteger;
 import tfw.check.Argument;
+import tfw.immutable.iba.AbstractIbaFromArray;
 
 public final class BooleanIbaFromArray {
     private BooleanIbaFromArray() {
@@ -12,30 +13,24 @@ public final class BooleanIbaFromArray {
         return new BooleanIbaImpl(array);
     }
 
-    private static class BooleanIbaImpl extends AbstractBooleanIba {
+    private static class BooleanIbaImpl extends AbstractIbaFromArray implements BooleanIba {
         private final boolean[] array;
-        private final BigInteger arrayLength;
 
         private BooleanIbaImpl(boolean[] array) {
-            Argument.assertNotNull(array, "array");
+            super(checkAndReturnLength(array));
 
             this.array = array;
-            this.arrayLength = BigInteger.valueOf(array.length);
         }
 
         @Override
-        protected void closeImpl() {
-            // Nothing to do.
-        }
-
-        @Override
-        protected BigInteger lengthImpl() {
-            return arrayLength;
-        }
-
-        @Override
-        protected void getImpl(boolean[] array, int offset, BigInteger start, int length) {
+        public void get(boolean[] array, int offset, BigInteger start, int length) {
             System.arraycopy(this.array, (int) start.longValue(), array, offset, length);
+        }
+
+        private static BigInteger checkAndReturnLength(boolean[] array) {
+            Argument.assertNotNull(array, "array");
+
+            return BigInteger.valueOf(array.length);
         }
     }
 }

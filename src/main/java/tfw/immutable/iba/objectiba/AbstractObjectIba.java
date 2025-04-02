@@ -3,36 +3,16 @@ package tfw.immutable.iba.objectiba;
 import java.io.IOException;
 import java.math.BigInteger;
 import tfw.check.Argument;
-import tfw.check.ClosedManager;
+import tfw.immutable.iba.AbstractIba;
 import tfw.immutable.iba.ImmutableBigIntegerArrayUtil;
 
-public abstract class AbstractObjectIba<T> implements ObjectIba<T> {
-    protected abstract void closeImpl() throws IOException;
-
-    protected abstract BigInteger lengthImpl() throws IOException;
-
+public abstract class AbstractObjectIba<T> extends AbstractIba implements ObjectIba<T> {
     protected abstract void getImpl(final T[] array, int arrayOffset, BigInteger ibaStart, int length)
             throws IOException;
 
-    private final ClosedManager closedManager = new ClosedManager();
-
-    @Override
-    public final void close() throws IOException {
-        if (closedManager.close()) {
-            closeImpl();
-        }
-    }
-
-    @Override
-    public final BigInteger length() throws IOException {
-        closedManager.checkClosed("ObjectIba");
-
-        return lengthImpl();
-    }
-
     @Override
     public final void get(T[] array, int arrayOffset, BigInteger ibaStart, int length) throws IOException {
-        closedManager.checkClosed("ObjectIba");
+        checkClosed();
 
         Argument.assertNotNull(array, "array");
         ImmutableBigIntegerArrayUtil.validateGetParameters(array.length, arrayOffset, ibaStart, length(), length);

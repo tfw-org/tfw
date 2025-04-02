@@ -24,20 +24,20 @@ class AbstractBitIbaTest {
             assertThat(tabi.getCloseImplCalls()).isEqualTo(1);
             assertThatThrownBy(tabi::lengthInBits)
                     .isInstanceOf(IllegalStateException.class)
-                    .hasMessage("This BitIba is closed!");
+                    .hasMessage("This object is closed!");
             assertThatThrownBy(() -> tabi.get(array, 0, BIG_INTEGER_ZERO, 5))
                     .isInstanceOf(IllegalStateException.class)
-                    .hasMessage("This BitIba is closed!");
+                    .hasMessage("This object is closed!");
 
             tabi.close();
 
             assertThat(tabi.getCloseImplCalls()).isEqualTo(1);
             assertThatThrownBy(tabi::lengthInBits)
                     .isInstanceOf(IllegalStateException.class)
-                    .hasMessage("This BitIba is closed!");
+                    .hasMessage("This object is closed!");
             assertThatThrownBy(() -> tabi.get(array, 0, BIG_INTEGER_ZERO, 5))
                     .isInstanceOf(IllegalStateException.class)
-                    .hasMessage("This BitIba is closed!");
+                    .hasMessage("This object is closed!");
         }
     }
 

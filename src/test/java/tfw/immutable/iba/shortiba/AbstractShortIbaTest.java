@@ -24,20 +24,20 @@ class AbstractShortIbaTest {
             assertThat(tabi.getCloseImplCalls()).isEqualTo(1);
             assertThatThrownBy(tabi::length)
                     .isInstanceOf(IllegalStateException.class)
-                    .hasMessage("This ShortIba is closed!");
+                    .hasMessage("This object is closed!");
             assertThatThrownBy(() -> tabi.get(array, 0, BIG_INTEGER_ZERO, 5))
                     .isInstanceOf(IllegalStateException.class)
-                    .hasMessage("This ShortIba is closed!");
+                    .hasMessage("This object is closed!");
 
             tabi.close();
 
             assertThat(tabi.getCloseImplCalls()).isEqualTo(1);
             assertThatThrownBy(tabi::length)
                     .isInstanceOf(IllegalStateException.class)
-                    .hasMessage("This ShortIba is closed!");
+                    .hasMessage("This object is closed!");
             assertThatThrownBy(() -> tabi.get(array, 0, BIG_INTEGER_ZERO, 5))
                     .isInstanceOf(IllegalStateException.class)
-                    .hasMessage("This ShortIba is closed!");
+                    .hasMessage("This object is closed!");
         }
     }
 

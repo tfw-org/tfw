@@ -13,9 +13,9 @@ public class ClosedManager {
         return false;
     }
 
-    public void checkClosed(final String name) {
+    public void checkClosed() {
         if (closed) {
-            throw new IllegalStateException(String.format("This %s is closed!", name));
+            throw new IllegalStateException("This object is closed!");
         }
     }
 }
