@@ -2,6 +2,7 @@ package tfw.immutable.iba.objectiba;
 
 import java.math.BigInteger;
 import tfw.check.Argument;
+import tfw.immutable.iba.AbstractIbaFromArray;
 
 public final class ObjectIbaFromArray {
     private ObjectIbaFromArray() {
@@ -12,30 +13,24 @@ public final class ObjectIbaFromArray {
         return new ObjectIbaImpl<>(array);
     }
 
-    private static class ObjectIbaImpl<T> extends AbstractObjectIba<T> {
+    private static class ObjectIbaImpl<T> extends AbstractIbaFromArray implements ObjectIba<T> {
         private final T[] array;
-        private final BigInteger arrayLength;
 
         private ObjectIbaImpl(T[] array) {
-            Argument.assertNotNull(array, "array");
+            super(checkAndReturnLength(array));
 
             this.array = array;
-            this.arrayLength = BigInteger.valueOf(array.length);
         }
 
         @Override
-        protected void closeImpl() {
-            // Nothing to do.
-        }
-
-        @Override
-        protected BigInteger lengthImpl() {
-            return arrayLength;
-        }
-
-        @Override
-        protected void getImpl(T[] array, int offset, BigInteger start, int length) {
+        public void get(T[] array, int offset, BigInteger start, int length) {
             System.arraycopy(this.array, (int) start.longValue(), array, offset, length);
+        }
+
+        private static <T> BigInteger checkAndReturnLength(T[] array) {
+            Argument.assertNotNull(array, "array");
+
+            return BigInteger.valueOf(array.length);
         }
     }
 }

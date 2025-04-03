@@ -3,36 +3,16 @@ package tfw.immutable.iba.booleaniba;
 import java.io.IOException;
 import java.math.BigInteger;
 import tfw.check.Argument;
-import tfw.check.ClosedManager;
+import tfw.immutable.iba.AbstractIba;
 import tfw.immutable.iba.ImmutableBigIntegerArrayUtil;
 
-public abstract class AbstractBooleanIba implements BooleanIba {
-    protected abstract void closeImpl() throws IOException;
-
-    protected abstract BigInteger lengthImpl() throws IOException;
-
+public abstract class AbstractBooleanIba extends AbstractIba implements BooleanIba {
     protected abstract void getImpl(final boolean[] array, int arrayOffset, BigInteger ibaStart, int length)
             throws IOException;
 
-    private final ClosedManager closedManager = new ClosedManager();
-
-    @Override
-    public final void close() throws IOException {
-        if (closedManager.close()) {
-            closeImpl();
-        }
-    }
-
-    @Override
-    public final BigInteger length() throws IOException {
-        closedManager.checkClosed("BooleanIba");
-
-        return lengthImpl();
-    }
-
     @Override
     public final void get(boolean[] array, int arrayOffset, BigInteger ibaStart, int length) throws IOException {
-        closedManager.checkClosed("BooleanIba");
+        checkClosed();
 
         Argument.assertNotNull(array, "array");
         ImmutableBigIntegerArrayUtil.validateGetParameters(array.length, arrayOffset, ibaStart, length(), length);
