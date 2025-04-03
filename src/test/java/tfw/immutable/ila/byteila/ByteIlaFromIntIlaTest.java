@@ -1,15 +1,15 @@
 package tfw.immutable.ila.byteila;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 import tfw.immutable.ila.intila.IntIla;
 import tfw.immutable.ila.intila.IntIlaFromArray;
 
-class ByteIlaFromIntIlaTest {
+final class ByteIlaFromIntIlaTest {
     @Test
-    void testByteIlaFromIntIla() throws Exception {
+    void byteIlaFromIntIlaTest() throws Exception {
         byte[] byteArray = new byte[] {
             (byte) 0x00, (byte) 0x01, (byte) 0x02, (byte) 0x03,
             (byte) 0x04, (byte) 0x05, (byte) 0x06, (byte) 0x07,
@@ -33,10 +33,9 @@ class ByteIlaFromIntIlaTest {
         ByteIla targetIla = ByteIlaFromArray.create(byteArray);
         IntIla intIla = IntIlaFromArray.create(intArray);
 
-        assertThrows(
-                IllegalArgumentException.class,
-                () -> ByteIlaFromIntIla.create(null, 100),
-                "ilm == null not checked for!");
+        assertThatThrownBy(() -> ByteIlaFromIntIla.create(null, 100))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("intIla == null not allowed!");
 
         ByteIla actualIla = ByteIlaFromIntIla.create(intIla, 100);
         final byte epsilon = (byte) 0;

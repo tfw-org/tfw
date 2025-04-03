@@ -16,12 +16,8 @@ abstract class Port {
     /**
      * Construct a port with the specified attributes.
      *
-     * @param name
-     *            the name of the port.
-     * @param eventChannelName
-     *            the name of the event channel.
-     * @param constraint
-     *            the value constraint for the port.
+     * @param name the name of the port.
+     * @param ecd the event channel description.
      */
     Port(String name, EventChannelDescription ecd) {
         this.name = name;
@@ -34,7 +30,7 @@ abstract class Port {
      * @return this ports name.
      */
     String getFullyQualifiedName() {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
         if (this.component != null) {
             sb.append(this.component.getFullyQualifiedName());

@@ -21,13 +21,12 @@ public abstract class AbstractBitIla implements BitIla {
             throws IOException {
         Argument.assertNotNull(array, "array");
         Argument.assertNotLessThan(arrayOffsetInBits, 0, "offset");
-        Argument.assertNotGreaterThanOrEquals(
-                arrayOffsetInBits, MAX_BITS_IN_ARRAY, "arrayOffsetInBits", "MAX_BITS_IN_ARRAY");
-        Argument.assertNotGreaterThanOrEquals(
+        Argument.assertLessThan(arrayOffsetInBits, MAX_BITS_IN_ARRAY, "arrayOffsetInBits", "MAX_BITS_IN_ARRAY");
+        Argument.assertLessThan(
                 arrayOffsetInBits + lengthInBits, array.length * (long) Long.SIZE, "offset", "array.length");
         Argument.assertNotLessThan(ilaStartInBits, 0, "start");
         Argument.assertNotLessThan(lengthInBits, 0, "length");
-        Argument.assertNotGreaterThanOrEquals(lengthInBits, MAX_BITS_IN_ARRAY, "lengthInBits", "MAX_BITS_IN_ARRAY");
+        Argument.assertLessThan(lengthInBits, MAX_BITS_IN_ARRAY, "lengthInBits", "MAX_BITS_IN_ARRAY");
         Argument.assertNotGreaterThan(
                 ilaStartInBits + lengthInBits, lengthInBits(), "start+length", "Ila.lengthInBits()");
 

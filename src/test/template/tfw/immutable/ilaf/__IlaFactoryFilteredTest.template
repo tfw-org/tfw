@@ -1,0 +1,33 @@
+// booleanilaf,byteilaf,charilaf,doubleilaf,floatilaf,intilaf,longilaf,objectilaf,shortilaf
+package %%PACKAGE%%;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
+import org.junit.jupiter.api.Test;
+import tfw.immutable.ila.%%LOWER_NAME%%ila.%%NAME%%IlaFiltered.%%NAME%%Filter;
+
+final class %%NAME%%IlaFactoryFilteredTest {
+    final %%NAME%%Filter%%TEMPLATE%% filter = new %%NAME%%Filter%%TEMPLATE%%() {
+        @Override
+        public boolean matches(%%TYPE%% value) {
+            return true;
+        }
+    };
+
+    @Test
+    void argumentTest() {
+        assertThatThrownBy(() -> %%NAME%%IlaFactoryFiltered.create(null, filter, new %%TYPE%%[10]))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("ilaFactory == null not allowed!");
+    }
+
+    @Test
+    void createTest() {
+        final %%NAME%%IlaFactory%%TEMPLATE%% %%LOWER_NAME%%IlaFactory = %%NAME%%IlaFactoryFill.create(%%DEFAULT_VALUE%%, 10);
+
+        assertThat(%%NAME%%IlaFactoryFiltered.create(%%LOWER_NAME%%IlaFactory, filter, new %%TYPE%%[10])
+                        .create())
+                .isNotNull();
+    }
+}

@@ -41,6 +41,7 @@ public class ButtonEnableHandler extends Commit {
         this.button = button;
     }
 
+    @Override
     protected void commit() {
         for (int i = 0; i < eventChannels1.length; i++) {
             if (!get(eventChannels1[i]).equals(get(eventChannels2[i]))) {

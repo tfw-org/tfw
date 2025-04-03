@@ -14,6 +14,7 @@ public final class InitiatorProxy implements Proxy {
         this.initiator = initiator;
     }
 
+    @Override
     public String getName() {
         return initiator.getName();
     }
@@ -30,6 +31,7 @@ public final class InitiatorProxy implements Proxy {
         return sp;
     }
 
+    @Override
     public boolean equals(Object obj) {
         if (obj instanceof InitiatorProxy) {
             InitiatorProxy ip = (InitiatorProxy) obj;
@@ -40,6 +42,7 @@ public final class InitiatorProxy implements Proxy {
         return false;
     }
 
+    @Override
     public int hashCode() {
         return initiator.hashCode();
     }

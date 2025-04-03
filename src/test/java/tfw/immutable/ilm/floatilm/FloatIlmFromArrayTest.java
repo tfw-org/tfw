@@ -1,14 +1,13 @@
 package tfw.immutable.ilm.floatilm;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.Arrays;
 import java.util.Random;
 import org.junit.jupiter.api.Test;
 
-class FloatIlmFromArrayTest {
+final class FloatIlmFromArrayTest {
     @Test
-    void testFloatIlmFromArray() throws Exception {
+    void floatIlmFromArrayTest() throws Exception {
         final Random random = new Random(0);
         float[] array = new float[6];
 
@@ -18,7 +17,7 @@ class FloatIlmFromArrayTest {
 
         FloatIlm floatIlm = FloatIlmFromArray.create(array, array.length / 2);
 
-        assertTrue(Arrays.equals(array, FloatIlmUtil.toArray(floatIlm)));
+        assertThat(array).isEqualTo(FloatIlmUtil.toArray(floatIlm));
     }
 }
 // AUTO GENERATED FROM TEMPLATE

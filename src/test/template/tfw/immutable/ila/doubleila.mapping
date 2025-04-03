@@ -15,5 +15,8 @@
 %%CAST_FROM_DOUBLE%% =
 %%TEMPLATE%% = 
 %%SUPPRESS%% =
-%%FULL_CAST%% =
+%%FULL_CAST%% = (DoubleIla[])\ 
 %%DIAMOND%% =
+%%CHAR_CAST_TO_INT%% =
+%%FP_ZEROS%% = 00000
+

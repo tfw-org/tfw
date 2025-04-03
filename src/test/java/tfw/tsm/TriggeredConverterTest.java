@@ -1,6 +1,6 @@
 package tfw.tsm;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
 import tfw.tsm.ecd.EventChannelDescription;
@@ -8,7 +8,7 @@ import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.StatelessTriggerECD;
 import tfw.tsm.ecd.StringECD;
 
-class TriggeredConverterTest {
+final class TriggeredConverterTest {
     private final String answer = "Hello World";
     private String triggerA = null;
     private String triggerB = null;
@@ -22,21 +22,21 @@ class TriggeredConverterTest {
     private Initiator initiator = new Initiator("Initiator", sources);
     private TriggeredConverter triggeredConverter =
             new TriggeredConverter("TriggeredConverter", trigger, sinks, sources) {
+                @Override
                 protected void convert() {
-                    // System.out.println("triggerAction");
                     triggerA = (String) get(channel1);
                     triggerB = (String) get(channel2);
                 }
 
+                @Override
                 protected void debugConvert() {
-                    // System.out.println("debugTriggerAction");
                     debugTriggerA = (String) get(channel1);
                     debugTriggerB = (String) get(channel2);
                 }
             };
 
     @Test
-    void testConverter() throws Exception {
+    void converterTest() {
         RootFactory rf = new RootFactory();
         rf.addEventChannel(channel1);
         rf.addEventChannel(channel2);
@@ -50,31 +50,31 @@ class TriggeredConverterTest {
 
         initiator.set(channel1, answer);
         queue.waitTilEmpty();
-        assertEquals(null, triggerA, "send a triggerA");
-        assertEquals(null, triggerB, "send a triggerB");
-        assertEquals(null, debugTriggerA, "send a debugTriggerA");
-        assertEquals(null, debugTriggerB, "send a debugTriggerB");
+        assertThat(triggerA).isNull();
+        assertThat(triggerB).isNull();
+        assertThat(debugTriggerA).isNull();
+        assertThat(debugTriggerB).isNull();
 
         initiator.trigger(trigger);
         queue.waitTilEmpty();
-        assertEquals(null, triggerA, "send a triggerA");
-        assertEquals(null, triggerB, "send a triggerB");
-        assertEquals(answer, debugTriggerA, "send a debugTriggerA");
-        assertEquals(null, debugTriggerB, "send a debugTriggerB");
+        assertThat(triggerA).isNull();
+        assertThat(triggerB).isNull();
+        assertThat(debugTriggerA).isEqualTo(answer);
+        assertThat(debugTriggerB).isNull();
 
         debugTriggerA = null;
         initiator.set(channel2, answer);
         queue.waitTilEmpty();
-        assertEquals(null, triggerA, "send a triggerA");
-        assertEquals(null, triggerB, "send a triggerB");
-        assertEquals(null, debugTriggerA, "send a debugTriggerA");
-        assertEquals(null, debugTriggerB, "send a debugTriggerB");
+        assertThat(triggerA).isNull();
+        assertThat(triggerB).isNull();
+        assertThat(debugTriggerA).isNull();
+        assertThat(debugTriggerB).isNull();
 
         initiator.trigger(trigger);
         queue.waitTilEmpty();
-        assertEquals(answer, triggerA, "send a triggerA");
-        assertEquals(answer, triggerB, "send a triggerB");
-        assertEquals(null, debugTriggerA, "send a debugTriggerA");
-        assertEquals(null, debugTriggerB, "send a debugTriggerB");
+        assertThat(triggerA).isEqualTo(answer);
+        assertThat(triggerB).isEqualTo(answer);
+        assertThat(debugTriggerA).isNull();
+        assertThat(debugTriggerB).isNull();
     }
 }

@@ -1,0 +1,16 @@
+// booleanilaf,byteilaf,charilaf,doubleilaf,floatilaf,intilaf,longilaf,objectilaf,shortilaf
+package %%PACKAGE%%;
+
+import tfw.check.Argument;
+import tfw.immutable.ila.%%LOWER_NAME%%ila.%%NAME%%IlaFiltered;
+import tfw.immutable.ila.%%LOWER_NAME%%ila.%%NAME%%IlaFiltered.%%NAME%%Filter;
+
+public class %%NAME%%IlaFactoryFiltered {
+    private %%NAME%%IlaFactoryFiltered() {}
+
+    public static %%TEMPLATE_SPACE%%%%NAME%%IlaFactory%%TEMPLATE%% create(%%NAME%%IlaFactory%%TEMPLATE%% ilaFactory, %%NAME%%Filter%%TEMPLATE%% filter, %%TYPE_OR_TEMPLATE%%[] buffer) {
+        Argument.assertNotNull(ilaFactory, "ilaFactory");
+
+        return () -> %%NAME%%IlaFiltered.create(ilaFactory.create(), filter, buffer.clone());
+    }
+}

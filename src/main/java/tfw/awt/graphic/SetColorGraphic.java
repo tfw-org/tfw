@@ -19,6 +19,7 @@ public final class SetColorGraphic {
             this.color = color;
         }
 
+        @Override
         public void paint(Graphics2D graphics2D) {
             if (graphic != null) {
                 graphic.paint(graphics2D);

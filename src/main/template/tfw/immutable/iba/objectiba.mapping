@@ -1,0 +1,11 @@
+%%TYPE%% = Object
+%%NAME%% = Object
+%%PACKAGE%% = tfw.immutable.iba.objectiba
+%%RANDOM_VALUE%% = new Object()
+%%ASSERT_EQUALS_DELTA%% =
+%%CREATE_IMMUTABLE_START%% =
+%%CREATE_IMMUTABLE_END%% =
+%%DIAMOND%% = <>
+%%TEMPLATE%% = <T>
+%%TEMPLATE_SPACE%% = <T>\ 
+%%TYPE_OR_TEMPLATE%% = T

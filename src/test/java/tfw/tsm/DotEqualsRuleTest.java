@@ -1,28 +1,23 @@
 package tfw.tsm;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.junit.jupiter.api.Test;
 
-/**
- *
- */
-class DotEqualsRuleTest {
+final class DotEqualsRuleTest {
     @Test
-    void testIsChange() {
+    void isChangeTest() {
         StateChangeRule rule = DotEqualsRule.RULE;
         Object currentState = new Object();
         Object newState = new Object();
-        assertTrue(rule.isChange(currentState, newState), "Different state");
-        assertFalse(rule.isChange(currentState, currentState), "Same state");
-        assertTrue(rule.isChange(null, newState), "Null currentState");
-        try {
-            rule.isChange(currentState, null);
-            fail("isChange() accepted null new state");
-        } catch (IllegalArgumentException expected) {
-            // System.out.println(expected);
-        }
+
+        assertThat(rule.isChange(currentState, newState)).isTrue();
+        assertThat(rule.isChange(currentState, currentState)).isFalse();
+        assertThat(rule.isChange(null, newState)).isTrue();
+
+        assertThatThrownBy(() -> rule.isChange(currentState, null))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("newState == null not allowed!");
     }
 }

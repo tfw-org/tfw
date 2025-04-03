@@ -12,9 +12,6 @@ public final class FloatIlaFromCastByteIla {
     }
 
     public static FloatIla create(ByteIla byteIla, int bufferSize) {
-        Argument.assertNotNull(byteIla, "byteIla");
-        Argument.assertNotLessThan(bufferSize, 1, "bufferSize");
-
         return new FloatIlaImpl(byteIla, bufferSize);
     }
 
@@ -23,6 +20,9 @@ public final class FloatIlaFromCastByteIla {
         private final int bufferSize;
 
         private FloatIlaImpl(ByteIla byteIla, int bufferSize) {
+            Argument.assertNotNull(byteIla, "byteIla");
+            Argument.assertNotLessThan(bufferSize, 1, "bufferSize");
+
             this.byteIla = byteIla;
             this.bufferSize = bufferSize;
         }
@@ -32,6 +32,7 @@ public final class FloatIlaFromCastByteIla {
             return byteIla.length();
         }
 
+        @Override
         protected void getImpl(float[] array, int offset, long start, int length) throws IOException {
             ByteIlaIterator fi =
                     new ByteIlaIterator(ByteIlaSegment.create(byteIla, start, length), new byte[bufferSize]);

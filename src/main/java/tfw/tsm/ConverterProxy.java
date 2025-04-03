@@ -14,6 +14,7 @@ public final class ConverterProxy implements Proxy {
         this.converter = converter;
     }
 
+    @Override
     public String getName() {
         return converter.getName();
     }
@@ -40,6 +41,7 @@ public final class ConverterProxy implements Proxy {
         return sp;
     }
 
+    @Override
     public boolean equals(Object obj) {
         if (obj instanceof ConverterProxy) {
             ConverterProxy ip = (ConverterProxy) obj;
@@ -50,6 +52,7 @@ public final class ConverterProxy implements Proxy {
         return false;
     }
 
+    @Override
     public int hashCode() {
         return converter.hashCode();
     }

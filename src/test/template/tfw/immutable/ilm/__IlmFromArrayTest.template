@@ -1,14 +1,13 @@
 // booleanilm,byteilm,charilm,doubleilm,floatilm,intilm,longilm,shortilm
 package %%PACKAGE%%;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.Arrays;
 %%RANDOM_INCLUDE%%import org.junit.jupiter.api.Test;
 
-class %%NAME%%IlmFromArrayTest {
+final class %%NAME%%IlmFromArrayTest {
     @Test
-    void test%%NAME%%IlmFromArray() throws Exception {
+    void %%TYPE%%IlmFromArrayTest() throws Exception {
         %%RANDOM_INIT%%%%TYPE%%[] array = new %%TYPE%%[6];
 
         for (int i = 0; i < array.length; i++) {
@@ -17,6 +16,6 @@ class %%NAME%%IlmFromArrayTest {
 
         %%NAME%%Ilm %%TYPE%%Ilm = %%NAME%%IlmFromArray.create(array, array.length / 2);
 
-        assertTrue(Arrays.equals(array, %%NAME%%IlmUtil.toArray(%%TYPE%%Ilm)));
+        assertThat(array).isEqualTo(%%NAME%%IlmUtil.toArray(%%TYPE%%Ilm));
     }
 }

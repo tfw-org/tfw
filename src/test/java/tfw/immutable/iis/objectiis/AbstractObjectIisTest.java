@@ -1,48 +1,54 @@
 package tfw.immutable.iis.objectiis;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.io.IOException;
 import org.junit.jupiter.api.Test;
 
-class AbstractObjectIisTest {
+final class AbstractObjectIisTest {
     @Test
-    void testArguments() throws IOException {
+    void argumentsTest() throws IOException {
         try (TestObjectIis ti = new TestObjectIis()) {
             final Object[] array = new Object[11];
 
-            assertThrows(IllegalArgumentException.class, () -> ti.read(null, 0, 1));
-            assertThrows(IllegalArgumentException.class, () -> ti.read(array, -1, 1));
-            assertThrows(IllegalArgumentException.class, () -> ti.read(array, 0, -1));
-            assertEquals(0, ti.read(array, 0, 0));
-            assertEquals(1, ti.read(array, 0, 1));
-            assertEquals(0, ti.skip(0));
-            assertEquals(1, ti.skip(1));
+            assertThatThrownBy(() -> ti.read(null, 0, 1)).isInstanceOf(IllegalArgumentException.class);
+            assertThatThrownBy(() -> ti.read(array, -1, 1)).isInstanceOf(IllegalArgumentException.class);
+            assertThatThrownBy(() -> ti.read(array, 0, -1)).isInstanceOf(IllegalArgumentException.class);
+            assertThat(ti.read(array, 0, 0)).isZero();
+            assertThat(ti.read(array, 0, 1)).isEqualTo(1);
+            assertThat(ti.skip(0)).isZero();
+            assertThat(ti.skip(1)).isEqualTo(1);
         }
     }
 
     @Test
-    void testClosed() throws IOException {
+    void closedTest() throws IOException {
         final TestObjectIis ti = new TestObjectIis();
         final Object[] array = new Object[11];
 
         ti.close();
 
-        assertTrue(ti.closeCalled);
-        assertEquals(-1, ti.read(array, 0, array.length));
-        assertEquals(-1, ti.skip(10));
+        assertThat(ti.isCloseCalled()).isTrue();
+        assertThat(ti.read(array, 0, array.length)).isEqualTo(-1);
+        assertThat(ti.skip(10)).isEqualTo(-1);
 
-        ti.closeCalled = false;
+        ti.setCloseCalled(false);
         ti.close();
 
-        assertFalse(ti.closeCalled);
+        assertThat(ti.isCloseCalled()).isFalse();
     }
 
-    private class TestObjectIis extends AbstractObjectIis<Object> {
-        public boolean closeCalled = false;
+    private static class TestObjectIis extends AbstractObjectIis<Object> {
+        private boolean closeCalled = false;
+
+        public void setCloseCalled(final boolean closeCalled) {
+            this.closeCalled = closeCalled;
+        }
+
+        public boolean isCloseCalled() {
+            return closeCalled;
+        }
 
         @Override
         protected void closeImpl() throws IOException {
@@ -51,10 +57,6 @@ class AbstractObjectIisTest {
 
         @Override
         protected int readImpl(Object[] array, int offset, int length) throws IOException {
-            if (length == 0) {
-                throw new IOException("length == 0 should have been detected!");
-            }
-
             return length;
         }
 

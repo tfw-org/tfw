@@ -27,6 +27,6 @@ public class StringECD extends ObjectECD {
      *            This list of legal values for the event channel.
      */
     public StringECD(String name, String[] validValues) {
-        super(name, new SetConstraint(validValues));
+        super(name, new SetConstraint<>(validValues));
     }
 }

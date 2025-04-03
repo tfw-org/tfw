@@ -45,13 +45,14 @@ public final class BasicTransactionQueue implements TransactionQueue {
      * @param runnable
      *            the runnable to add to the queue.
      */
+    @Override
     public synchronized void invokeLater(Runnable runnable) {
         Argument.assertNotNull(runnable, "runnable");
         queue.add(runnable);
         checkThread();
     }
 
-    private class InvokeAndWaitRunnable implements Runnable {
+    private static class InvokeAndWaitRunnable implements Runnable {
         private final Runnable runnable;
 
         private final Object lock;
@@ -61,6 +62,7 @@ public final class BasicTransactionQueue implements TransactionQueue {
             this.lock = lock;
         }
 
+        @Override
         public void run() {
             synchronized (lock) {
                 try {
@@ -72,6 +74,7 @@ public final class BasicTransactionQueue implements TransactionQueue {
         }
     }
 
+    @Override
     public void invokeAndWait(Runnable runnable) throws InterruptedException {
         Argument.assertNotNull(runnable, "runnable");
         if (isDispatchThread()) {
@@ -120,6 +123,7 @@ public final class BasicTransactionQueue implements TransactionQueue {
      * @return <code>true</code> if the calling thread is the current
      *         transaction queue thread.
      */
+    @Override
     public synchronized boolean isDispatchThread() {
         if (thread != null && Thread.currentThread() == thread) {
             return true;
@@ -165,6 +169,7 @@ public final class BasicTransactionQueue implements TransactionQueue {
      * The runnable for executing the transaction runnables.
      */
     private class QueueThreadRunnable implements Runnable {
+        @Override
         public void run() {
             while (true) {
                 Runnable r = null;

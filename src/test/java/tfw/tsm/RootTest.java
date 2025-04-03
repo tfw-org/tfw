@@ -1,17 +1,15 @@
 package tfw.tsm;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
 
-/**
- *
- */
-class RootTest {
+final class RootTest {
     @Test
-    void testIsRooted() {
+    void isRootedTest() {
         RootFactory rootFactory = new RootFactory();
         Root root = rootFactory.create("test", new BasicTransactionQueue());
-        assertTrue(root.isRooted(), "isRooted() returned false");
+
+        assertThat(root.isRooted()).isTrue();
     }
 }

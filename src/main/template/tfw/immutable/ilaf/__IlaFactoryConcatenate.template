@@ -1,0 +1,16 @@
+// booleanilaf,byteilaf,charilaf,doubleilaf,floatilaf,intilaf,longilaf,objectilaf,shortilaf
+package %%PACKAGE%%;
+
+import tfw.check.Argument;
+import tfw.immutable.ila.%%LOWER_NAME%%ila.%%NAME%%IlaConcatenate;
+
+public class %%NAME%%IlaFactoryConcatenate {
+    private %%NAME%%IlaFactoryConcatenate() {}
+
+    public static %%TEMPLATE_SPACE%%%%NAME%%IlaFactory%%TEMPLATE%% create(%%NAME%%IlaFactory%%TEMPLATE%% leftFactory, %%NAME%%IlaFactory%%TEMPLATE%% rightFactory) {
+        Argument.assertNotNull(leftFactory, "leftFactory");
+        Argument.assertNotNull(rightFactory, "rightFactory");
+
+        return () -> %%NAME%%IlaConcatenate.create(leftFactory.create(), rightFactory.create());
+    }
+}

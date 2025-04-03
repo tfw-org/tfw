@@ -1,26 +1,32 @@
 package tfw.immutable.ila.intila;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.Random;
 import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 
-class IntIlaInsertTest {
+final class IntIlaInsertTest {
     @Test
-    void testArguments() throws Exception {
+    void argumentsTest() throws Exception {
         final Random random = new Random(0);
         final IntIla ila = IntIlaFromArray.create(new int[10]);
         final long ilaLength = ila.length();
         final int value = random.nextInt();
 
-        assertThrows(IllegalArgumentException.class, () -> IntIlaInsert.create(null, 0, value));
-        assertThrows(IllegalArgumentException.class, () -> IntIlaInsert.create(ila, -1, value));
-        assertThrows(IllegalArgumentException.class, () -> IntIlaInsert.create(ila, ilaLength + 1, value));
+        assertThatThrownBy(() -> IntIlaInsert.create(null, 0, value))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("ila == null not allowed!");
+        assertThatThrownBy(() -> IntIlaInsert.create(ila, -1, value))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("index (=-1) < 0 not allowed!");
+        assertThatThrownBy(() -> IntIlaInsert.create(ila, ilaLength + 1, value))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("index (=11) > ila.length() (=10) not allowed!");
     }
 
     @Test
-    void testAll() throws Exception {
+    void allTest() throws Exception {
         final Random random = new Random(0);
         final int length = IlaTestDimensions.defaultIlaLength();
         final int[] array = new int[length];

@@ -33,7 +33,7 @@ public final class LongIlaFromByteIla {
         @Override
         protected void getImpl(long[] array, int offset, long start, int length) throws IOException {
             ByteIlaIterator bii =
-                    new ByteIlaIterator(ByteIlaSegment.create(byteIla, 8 * start, 8 * length), new byte[bufferSize]);
+                    new ByteIlaIterator(ByteIlaSegment.create(byteIla, 8L * start, 8L * length), new byte[bufferSize]);
 
             for (int i = 0; i < length; i++) {
                 array[offset + i] = (((long) bii.next() & 0xFF) << 56)

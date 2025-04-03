@@ -1,6 +1,7 @@
 package tfw.immutable.ila.charila;
 
 import java.io.IOException;
+import tfw.check.Argument;
 import tfw.immutable.ila.AbstractIla;
 
 public abstract class AbstractCharIla extends AbstractIla implements CharIla {
@@ -14,6 +15,7 @@ public abstract class AbstractCharIla extends AbstractIla implements CharIla {
             return;
         }
 
+        Argument.assertNotNull(array, "array");
         boundsCheck(array.length, offset, start, length);
         getImpl(array, offset, start, length);
     }

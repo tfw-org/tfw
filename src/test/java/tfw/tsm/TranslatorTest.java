@@ -1,36 +1,30 @@
 package tfw.tsm;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import java.lang.reflect.InvocationTargetException;
 import org.junit.jupiter.api.Test;
 import tfw.tsm.ecd.IntegerECD;
 import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.StringECD;
 
-class TranslatorTest {
+final class TranslatorTest {
     private final String answer = "Hello World";
 
     private String result = null;
-
     private ObjectECD portA = new StringECD("a");
-
     private ObjectECD portB = new StringECD("b");
-
     private ObjectECD[] eventChannels = new ObjectECD[] {portA};
-
     private Initiator initiator = new Initiator("Initiator", eventChannels);
-
     private Commit commit = new Commit("Commit", eventChannels) {
+        @Override
         protected void commit() {
             result = (String) get(portA);
         }
     };
 
     @Test
-    void testTranslation() throws InterruptedException, InvocationTargetException {
+    void translationTest() {
         RootFactory rf = new RootFactory();
         rf.addEventChannel(portB, null, AlwaysChangeRule.RULE, null);
 
@@ -55,21 +49,20 @@ class TranslatorTest {
         topBranch.add(middleBranch1);
         topBranch.add(middleBranch2);
 
-        // Visualize.print(topBranch);
         initiator.set(portA, answer);
         queue.waitTilEmpty();
-        assertEquals(answer, result, "initial connections");
+        assertThat(answer).isEqualTo(result);
 
         String newAnswer = "Good bye world";
         initiator.set(portA, newAnswer);
         queue.waitTilEmpty();
-        assertEquals(newAnswer, result, "initial connections");
+        assertThat(newAnswer).isEqualTo(result);
 
         middleBranch1.remove(commit);
         result = null;
         initiator.set(portA, answer);
         queue.waitTilEmpty();
-        assertEquals(null, result, "disconnect sink");
+        assertThat(result).isNull();
 
         result = null;
         middleBranch1.add(commit);
@@ -78,7 +71,7 @@ class TranslatorTest {
 
         // No need to send...should fire on connect.
         // initiator.set("a", answer);
-        assertEquals(answer, result, "fire on sink reconnect");
+        assertThat(answer).isEqualTo(result);
 
         middleBranch2.remove(initiator);
         queue.waitTilEmpty();
@@ -88,7 +81,7 @@ class TranslatorTest {
         initiator.set(portA, answer);
         queue.waitTilEmpty();
 
-        assertEquals(null, result, "source removal");
+        assertThat(result).isNull();
 
         //        result = null;
         //        handler.exception = null;
@@ -104,18 +97,14 @@ class TranslatorTest {
         StringECD stringECD = new StringECD("StringECD");
         IntegerECD integerECD1 = new IntegerECD("integerECD1", 1, 5);
         IntegerECD integerECD2 = new IntegerECD("integerECD2", 0, 6);
-        try {
-            bf.addTranslation(integerECD1, integerECD2);
-            fail("addTranslation() accepted incompatible ecds");
-        } catch (IllegalArgumentException expected) {
-            // System.out.println(expected);
-        }
-        try {
-            bf.addTranslation(integerECD2, integerECD1);
-            fail("addTranslation() accepted incompatible ecds");
-        } catch (IllegalArgumentException expected) {
-            // System.out.println(expected);
-        }
+
+        assertThatThrownBy(() -> bf.addTranslation(integerECD1, integerECD2))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("runnable == null not allowed!");
+
+        assertThatThrownBy(() -> bf.addTranslation(integerECD2, integerECD1))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("runnable == null not allowed!");
     }
 
     private void checkHandler(TestExceptionHandler handler) {
@@ -126,14 +115,14 @@ class TranslatorTest {
             message = handler.exception.getMessage();
         }
 
-        assertNull(handler.exception, "Exception - " + message);
+        assertThat(handler.exception).isNull();
     }
 
-    private class TestExceptionHandler implements TransactionExceptionHandler {
+    private static class TestExceptionHandler implements TransactionExceptionHandler {
         Exception exception = null;
 
+        @Override
         public void handle(Exception exception) {
-            // exception.printStackTrace();
             this.exception = exception;
         }
     }

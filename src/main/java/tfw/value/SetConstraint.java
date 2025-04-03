@@ -12,7 +12,7 @@ import tfw.check.Argument;
  * <code>equals(Object)</code> method. Note that <code>null</code> is not a
  * valid value.
  */
-public class SetConstraint extends ValueConstraint {
+public class SetConstraint<T> extends ValueConstraint<T> {
 
     private final Set<Object> validValues;
 
@@ -23,7 +23,7 @@ public class SetConstraint extends ValueConstraint {
      *            The non-empty list of valid values. Note that
      *            <code>null</code> is not a valid value.
      */
-    public SetConstraint(Object[] validValues) {
+    public SetConstraint(T[] validValues) {
         Argument.assertNotEmpty(validValues, "validValues");
         Argument.assertElementNotNull(validValues, "validValues");
 
@@ -41,9 +41,10 @@ public class SetConstraint extends ValueConstraint {
      *         <code>SetConstraint</code> and its set of values is a sub-set
      *         of this constraints values, otherwise returns false.
      */
-    public boolean isCompatible(ValueConstraint constraint) {
+    @Override
+    public boolean isCompatible(ValueConstraint<?> constraint) {
         if (constraint instanceof SetConstraint) {
-            SetConstraint sc = (SetConstraint) constraint;
+            SetConstraint<?> sc = (SetConstraint<?>) constraint;
             return this.validValues.containsAll(sc.validValues);
         }
 
@@ -61,9 +62,10 @@ public class SetConstraint extends ValueConstraint {
      *         valid values, otherwise it returns a string indicated that value
      *         is not a member of the valid set of values.
      */
+    @Override
     public String getValueCompliance(Object value) {
         if (this.validValues.contains(value)) {
-            return ValueConstraint.VALID;
+            return VALID;
         }
         return "The specified value, '" + value
                 + "' is not a member of the set of valid values: '"

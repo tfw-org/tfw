@@ -1,0 +1,16 @@
+// charilaf,doubleilaf,floatilaf,intilaf,longilaf,shortilaf
+package %%PACKAGE%%;
+
+import tfw.check.Argument;
+import tfw.immutable.ila.%%LOWER_NAME%%ila.%%NAME%%IlaFromCastByteIla;
+import tfw.immutable.ilaf.byteilaf.ByteIlaFactory;
+
+public class %%NAME%%IlaFactoryFromCastByteIlaFactory {
+    private %%NAME%%IlaFactoryFromCastByteIlaFactory() {}
+
+    public static %%NAME%%IlaFactory create(ByteIlaFactory byteIlaFactory, final int bufferSize) {
+        Argument.assertNotNull(byteIlaFactory, "byteIlaFactory");
+
+        return () -> %%NAME%%IlaFromCastByteIla.create(byteIlaFactory.create(), bufferSize);
+    }
+}

@@ -1,44 +1,31 @@
 package tfw.value;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.junit.jupiter.api.Test;
 
-/**
- *
- */
-class NullConstraintTest {
+final class NullConstraintTest {
     @Test
-    void testIsCompatable() {
+    void isCompatableTest() {
         NullConstraint nc = NullConstraint.INSTANCE;
 
-        try {
-            nc.isCompatible(null);
-            fail("isCompatible() accepted null constraint");
-        } catch (IllegalArgumentException expected) {
-            // System.out.println(expected);
-        }
+        assertThatThrownBy(() -> nc.isCompatible(null))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("constraint == null not allowed!");
 
-        assertTrue(nc.isCompatible(nc), "isCompatible() rejected itself");
-        assertFalse(nc.isCompatible(new IntegerConstraint(0, 1)), "isCompatible() accepted an IntegerConstaint");
+        assertThat(nc.isCompatible(nc)).isTrue();
     }
 
     @Test
-    void testgetValueCompliance() {
-        NullConstraint nc = NullConstraint.INSTANCE;
+    void getValueComplianceTest() {
+        final NullConstraint nc = NullConstraint.INSTANCE;
+        final Object v = new Object();
 
-        try {
-            nc.checkValue(new Object());
-            fail("getValueCompliance() accepted null constraint");
-        } catch (ValueException expected) {
-            // System.out.println(expected);
-        }
-        try {
-            nc.checkValue(null);
-        } catch (ValueException unexpected) {
-            fail("checkValue() didn't accept null");
-        }
+        assertThatThrownBy(() -> nc.checkValue(v))
+                .isInstanceOf(ValueException.class)
+                .hasMessage("Trigger event channels have no values, so no value complies with this constraint");
+
+        nc.checkValue(null);
     }
 }

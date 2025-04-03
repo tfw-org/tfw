@@ -12,16 +12,18 @@ public class ObjectIlaMultiplexerStrategy implements MultiplexerStrategy {
     /**
      * @see tfw.tsm.MultiplexerStrategy#toMultiStateAccessor(java.lang.Object)
      */
+    @Override
     public MultiStateAccessor toMultiStateAccessor(Object multiState) {
         return new MultiStateAccessorImpl(
                 (multiState == null) ? ObjectIlaFromArray.create(new Object[0]) : (ObjectIla) multiState);
     }
 
+    @Override
     public Object getDefaultSlotState() {
         return null;
     }
 
-    private class MultiStateAccessorImpl implements MultiStateAccessor {
+    private static class MultiStateAccessorImpl implements MultiStateAccessor {
 
         private final Object[] objs;
 
@@ -38,6 +40,7 @@ public class ObjectIlaMultiplexerStrategy implements MultiplexerStrategy {
         /**
          * @see tfw.tsm.MultiplexerStrategy.MultiStateAccessor#getState(java.lang.Object)
          */
+        @Override
         public Object getState(Object key) {
             int index = ((Integer) key).intValue();
             if (index >= 0 && index < this.objs.length) {

@@ -36,7 +36,7 @@ import tfw.value.ValueException;
  * channel is rooted when the state change transaction is executed. </li>
  * </ol>
  */
-public class Initiator extends Leaf {
+public class Initiator extends TreeComponent {
     /**
      * The list of state changes which occur while the component is not
      * connected.
@@ -67,7 +67,7 @@ public class Initiator extends Leaf {
      *            <code>Initiator</code>.
      */
     public Initiator(String name, EventChannelDescription[] sources) {
-        this(name, sources, new DefaultStateQueueFactory());
+        this(name, sources, null);
     }
 
     /**
@@ -84,13 +84,21 @@ public class Initiator extends Leaf {
      *            channel.
      */
     public Initiator(String name, EventChannelDescription[] sources, StateQueueFactory queueFactory) {
-        super(name, null, createSources(name, sources, queueFactory));
+        super(
+                name,
+                null,
+                createSources(name, sources, queueFactory == null ? new DefaultStateQueueFactory() : queueFactory),
+                null);
 
         Argument.assertNotNull(name, "name");
 
         if (sources.length == 0) {
             throw new IllegalArgumentException("sources.length == 0 not allowed");
         }
+    }
+
+    public static InitiatorBuilder builder() {
+        return new InitiatorBuilder();
     }
 
     synchronized TransactionContainer[] getDeferredStateChangesAndClear() {
@@ -272,6 +280,42 @@ public class Initiator extends Leaf {
             this.state = state;
             this.transactionState = transactionState;
             this.setLocation = TransactionMgr.isTraceLogging() ? new Throwable("StateChange") : null;
+        }
+    }
+
+    public static class InitiatorBuilder {
+        private String name = null;
+        private List<EventChannelDescription> eventChannelDescriptions = new ArrayList<>();
+        private StateQueueFactory stateQueueFactory = new DefaultStateQueueFactory();
+
+        InitiatorBuilder() {}
+
+        public InitiatorBuilder setName(final String name) {
+            this.name = name;
+
+            return this;
+        }
+
+        public InitiatorBuilder addEventChannelDescription(final EventChannelDescription eventChannelDescription) {
+            eventChannelDescriptions.add(eventChannelDescription);
+
+            return this;
+        }
+
+        public InitiatorBuilder setStateQueueFactory(final StateQueueFactory stateQueueFactory) {
+            this.stateQueueFactory = stateQueueFactory;
+
+            return this;
+        }
+
+        public Initiator build() {
+            Argument.assertNotNull(name, "name");
+            Argument.assertGreaterThan(eventChannelDescriptions.size(), 0, "eventChannelDescriptions.size()");
+
+            final EventChannelDescription[] ecds =
+                    eventChannelDescriptions.toArray(new EventChannelDescription[eventChannelDescriptions.size()]);
+
+            return new Initiator(name, ecds, stateQueueFactory);
         }
     }
 }

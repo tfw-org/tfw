@@ -1,28 +1,44 @@
 package tfw.immutable.ila.objectila;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 
-class ObjectIlaSegmentTest {
+final class ObjectIlaSegmentTest {
     @Test
-    void testArguments() throws Exception {
-        final ObjectIla ila = ObjectIlaFromArray.create(new Object[10]);
+    void argumentsTest() throws Exception {
+        final ObjectIla<Object> ila = ObjectIlaFromArray.create(new Object[10]);
         final long ilaLength = ila.length();
 
-        assertThrows(IllegalArgumentException.class, () -> ObjectIlaSegment.create(null, 0));
-        assertThrows(IllegalArgumentException.class, () -> ObjectIlaSegment.create(ila, -1));
-        assertThrows(IllegalArgumentException.class, () -> ObjectIlaSegment.create(ila, ilaLength + 1));
-        assertThrows(IllegalArgumentException.class, () -> ObjectIlaSegment.create(null, 0, 0));
-        assertThrows(IllegalArgumentException.class, () -> ObjectIlaSegment.create(ila, -1, 0));
-        assertThrows(IllegalArgumentException.class, () -> ObjectIlaSegment.create(ila, 0, -1));
-        assertThrows(IllegalArgumentException.class, () -> ObjectIlaSegment.create(ila, ilaLength + 1, 0));
-        assertThrows(IllegalArgumentException.class, () -> ObjectIlaSegment.create(ila, 0, ilaLength + 1));
+        assertThatThrownBy(() -> ObjectIlaSegment.create(null, 0))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("ila == null not allowed!");
+        assertThatThrownBy(() -> ObjectIlaSegment.create(ila, -1))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("start (=-1) < 0 not allowed!");
+        assertThatThrownBy(() -> ObjectIlaSegment.create(ila, ilaLength + 1))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("length (=-1) < 0 not allowed!");
+        assertThatThrownBy(() -> ObjectIlaSegment.create(null, 0, 0))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("ila == null not allowed!");
+        assertThatThrownBy(() -> ObjectIlaSegment.create(ila, -1, 0))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("start (=-1) < 0 not allowed!");
+        assertThatThrownBy(() -> ObjectIlaSegment.create(ila, 0, -1))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("length (=-1) < 0 not allowed!");
+        assertThatThrownBy(() -> ObjectIlaSegment.create(ila, ilaLength + 1, 0))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("start + length (=11) > ila.length() (=10) not allowed!");
+        assertThatThrownBy(() -> ObjectIlaSegment.create(ila, 0, ilaLength + 1))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("start + length (=11) > ila.length() (=10) not allowed!");
     }
 
     @Test
-    void testAll() throws Exception {
+    void allTest() throws Exception {
         final int length = IlaTestDimensions.defaultIlaLength();
         final Object[] master = new Object[length];
         for (int ii = 0; ii < master.length; ++ii) {

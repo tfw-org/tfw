@@ -1,6 +1,6 @@
 package tfw.immutable.ila.intila;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.Random;
 import org.junit.jupiter.api.Test;
@@ -8,17 +8,21 @@ import tfw.immutable.ila.IlaTestDimensions;
 import tfw.immutable.ila.byteila.ByteIla;
 import tfw.immutable.ila.byteila.ByteIlaFromArray;
 
-class IntIlaFromCastByteIlaTest {
+final class IntIlaFromCastByteIlaTest {
     @Test
-    void testArguments() {
+    void argumentsTest() {
         final ByteIla ila = ByteIlaFromArray.create(new byte[10]);
 
-        assertThrows(IllegalArgumentException.class, () -> IntIlaFromCastByteIla.create(null, 1));
-        assertThrows(IllegalArgumentException.class, () -> IntIlaFromCastByteIla.create(ila, 0));
+        assertThatThrownBy(() -> IntIlaFromCastByteIla.create(null, 1))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("byteIla == null not allowed!");
+        assertThatThrownBy(() -> IntIlaFromCastByteIla.create(ila, 0))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("bufferSize (=0) < 1 not allowed!");
     }
 
     @Test
-    void testAll() throws Exception {
+    void allTest() throws Exception {
         final Random random = new Random(0);
         final int length = IlaTestDimensions.defaultIlaLength();
         final byte[] array = new byte[length];

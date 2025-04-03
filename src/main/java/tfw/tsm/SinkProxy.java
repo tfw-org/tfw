@@ -15,6 +15,7 @@ public final class SinkProxy implements Proxy {
         return new EventChannelProxy((Terminator) sink.eventChannel);
     }
 
+    @Override
     public String getName() {
         return sink.ecd.getEventChannelName();
     }
@@ -23,6 +24,7 @@ public final class SinkProxy implements Proxy {
         return sink.isTriggering();
     }
 
+    @Override
     public boolean equals(Object obj) {
         if (obj instanceof SinkProxy) {
             SinkProxy sp = (SinkProxy) obj;
@@ -33,6 +35,7 @@ public final class SinkProxy implements Proxy {
         return false;
     }
 
+    @Override
     public int hashCode() {
         return sink.hashCode();
     }

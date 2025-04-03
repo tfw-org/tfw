@@ -1,36 +1,36 @@
 package tfw.immutable.ila.bitila;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.io.IOException;
 import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.longila.LongIlaFromArray;
 
-class BitIlaNotTest {
+final class BitIlaNotTest {
     @Test
-    void testAndArguments() {
-        assertThrows(IllegalArgumentException.class, () -> BitIlaNot.not(null, 0, 0));
-        assertThrows(IllegalArgumentException.class, () -> BitIlaNot.not(new long[1], -1, 0));
-        assertThrows(IllegalArgumentException.class, () -> BitIlaNot.not(new long[1], 0, -1));
+    void notArgumentsTest() {
+        assertThatThrownBy(() -> BitIlaNot.not(null, 0, 0)).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> BitIlaNot.not(new long[1], -1, 0)).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> BitIlaNot.not(new long[1], 0, -1)).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
-    void testCreateArguments() {
-        assertThrows(IllegalArgumentException.class, () -> BitIlaNot.create(null));
+    void createArgumentsTest() {
+        assertThatThrownBy(() -> BitIlaNot.create(null));
     }
 
     @Test
-    void testLength() throws IOException {
+    void lengthTest() throws IOException {
         final long length = 64;
         final BitIla bitIla = BitIlaFromLongIla.create(LongIlaFromArray.create(new long[1]), 0, length);
         final BitIla bitIlaNot = BitIlaNot.create(bitIla);
 
-        assertEquals(length, bitIlaNot.lengthInBits());
+        assertThat(bitIlaNot.lengthInBits()).isEqualTo(length);
     }
 
     @Test
-    void testGetArguments() throws IOException {
+    void getArgumentsTest() throws IOException {
         final BitIla bitIla1 = BitIlaFromLongIla.create(LongIlaFromArray.create(new long[1]), 0, 64);
 
         BitIlaCheck.checkGetArguments(BitIlaNot.create(bitIla1));

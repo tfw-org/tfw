@@ -1,19 +1,15 @@
 package tfw.tsm;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Map;
 import org.junit.jupiter.api.Test;
 import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.StatelessTriggerECD;
 
-/**
- *
- */
-class StateLessECDTest {
+final class StateLessECDTest {
     @Test
-    void testGetState() {
+    void getStateTest() {
         RootFactory rf = new RootFactory();
         StatelessTriggerECD trigger = new StatelessTriggerECD("test");
         rf.addEventChannel(trigger);
@@ -26,15 +22,13 @@ class StateLessECDTest {
         root.add(initiator);
         initiator.trigger(trigger);
         queue.waitTilEmpty();
-        assertNotNull(commit.setException, "set() of a statelessECD didn't throw an exception");
-        assertNotNull(commit.map, "get() returned null state map");
-        assertEquals(0, commit.map.size(), "get() returned the wron number of values");
-        // System.out.println(commit.setException);
+        assertThat(commit.setException).isNotNull();
+        assertThat(commit.map).isNotNull();
+        assertThat(commit.map.size()).isEqualTo(0);
     }
 
-    private class TestTriggeredCommit extends TriggeredConverter {
+    private static class TestTriggeredCommit extends TriggeredConverter {
         final StatelessTriggerECD trigger;
-        IllegalArgumentException getException = null;
         IllegalArgumentException setException = null;
         Map<ObjectECD, Object> map = null;
 
@@ -43,6 +37,7 @@ class StateLessECDTest {
             this.trigger = trigger;
         }
 
+        @Override
         public void convert() {
             try {
                 set(trigger, new Object());

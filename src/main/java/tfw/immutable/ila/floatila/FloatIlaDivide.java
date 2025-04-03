@@ -8,12 +8,7 @@ public final class FloatIlaDivide {
         // non-instantiable class
     }
 
-    public static FloatIla create(FloatIla leftIla, FloatIla rightIla, int bufferSize) throws IOException {
-        Argument.assertNotNull(leftIla, "leftIla");
-        Argument.assertNotNull(rightIla, "rightIla");
-        Argument.assertEquals(leftIla.length(), rightIla.length(), "leftIla.length()", "rightIla.length()");
-        Argument.assertNotLessThan(bufferSize, 1, "bufferSize");
-
+    public static FloatIla create(FloatIla leftIla, FloatIla rightIla, int bufferSize) {
         return new FloatIlaImpl(leftIla, rightIla, bufferSize);
     }
 
@@ -23,6 +18,15 @@ public final class FloatIlaDivide {
         private final int bufferSize;
 
         private FloatIlaImpl(FloatIla leftIla, FloatIla rightIla, int bufferSize) {
+            Argument.assertNotNull(leftIla, "leftIla");
+            Argument.assertNotNull(rightIla, "rightIla");
+            Argument.assertNotLessThan(bufferSize, 1, "bufferSize");
+            try {
+                Argument.assertEquals(leftIla.length(), rightIla.length(), "leftIla.length()", "rightIla.length()");
+            } catch (IOException e) {
+                throw new IllegalArgumentException("Could not get ila length!", e);
+            }
+
             this.leftIla = leftIla;
             this.rightIla = rightIla;
             this.bufferSize = bufferSize;

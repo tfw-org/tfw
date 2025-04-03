@@ -12,9 +12,6 @@ public final class ByteIlaFromCastLongIla {
     }
 
     public static ByteIla create(LongIla longIla, int bufferSize) {
-        Argument.assertNotNull(longIla, "longIla");
-        Argument.assertNotLessThan(bufferSize, 1, "bufferSize");
-
         return new ByteIlaImpl(longIla, bufferSize);
     }
 
@@ -23,6 +20,9 @@ public final class ByteIlaFromCastLongIla {
         private final int bufferSize;
 
         private ByteIlaImpl(LongIla longIla, int bufferSize) {
+            Argument.assertNotNull(longIla, "longIla");
+            Argument.assertNotLessThan(bufferSize, 1, "bufferSize");
+
             this.longIla = longIla;
             this.bufferSize = bufferSize;
         }

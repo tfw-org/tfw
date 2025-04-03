@@ -1,14 +1,14 @@
 package tfw.tsm;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.Map;
 import org.junit.jupiter.api.Test;
 import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.StringECD;
 
-class ConverterTest {
+final class ConverterTest {
     private Map<ObjectECD, Object> state = null;
     private String convertA = null;
     private String convertB = null;
@@ -21,12 +21,14 @@ class ConverterTest {
     private ObjectECD[] triggeringSinks = new ObjectECD[] {porta, portb};
     private ObjectECD[] sources = new ObjectECD[] {porta, portb};
     private Converter converter = new Converter("Commit", triggeringSinks, nonTriggeringSinks, sources) {
+        @Override
         protected void convert() {
             state = get();
             convertA = (String) get(porta);
             convertB = (String) get(portb);
         }
 
+        @Override
         protected void debugConvert() {
             state = get();
             debugConvertA = (String) get(porta);
@@ -35,7 +37,7 @@ class ConverterTest {
     };
 
     @Test
-    void testConverter() {
+    void converterTest() {
         RootFactory rf = new RootFactory();
         rf.addEventChannel(porta);
         rf.addEventChannel(portb);
@@ -54,36 +56,34 @@ class ConverterTest {
         String cValue = "c";
         initiator.set(porta, aValue);
         queue.waitTilEmpty();
-        checkAndClearValues(null, null, null, aValue, null, null, aValue, null, null);
+        checkAndClearValues(null, null, aValue, null, aValue, null, null);
         initiator.set(portb, bValue);
         queue.waitTilEmpty();
-        checkAndClearValues(null, null, null, aValue, bValue, null, aValue, bValue, null);
+        checkAndClearValues(null, null, aValue, bValue, aValue, bValue, null);
         initiator.set(portc, cValue);
         queue.waitTilEmpty();
-        checkAndClearValues(null, null, null, null, null, null, aValue, bValue, null);
+        checkAndClearValues(null, null, null, null, aValue, bValue, null);
         aValue = "a2";
         initiator.set(porta, aValue);
         queue.waitTilEmpty();
-        checkAndClearValues(aValue, bValue, cValue, null, null, null, aValue, bValue, cValue);
+        checkAndClearValues(aValue, bValue, null, null, aValue, bValue, cValue);
     }
 
     private void checkAndClearValues(
             String aValue,
             String bValue,
-            String cValue,
             String aDebugValue,
             String bDebugValue,
-            String cDebugValue,
             String aState,
             String bState,
             String cState) {
-        assertEquals(aValue, convertA, "convertA has wrong value");
-        assertEquals(bValue, convertB, "convertB has wrong value");
-        assertEquals(aDebugValue, debugConvertA, "debugConvertA has wrong value");
-        assertEquals(bDebugValue, debugConvertB, "debugConvertB has wrong value");
-        assertEquals(aState, state.get(porta), "state map has wrong value for porta");
-        assertEquals(bState, state.get(portb), "state map has wrong value for portb");
-        assertEquals(cState, state.get(portc), "state map has wrong value for portc");
+        assertThat(aValue).isEqualTo(convertA);
+        assertThat(bValue).isEqualTo(convertB);
+        assertThat(aDebugValue).isEqualTo(debugConvertA);
+        assertThat(bDebugValue).isEqualTo(debugConvertB);
+        assertThat(aState).isEqualTo(state.get(porta));
+        assertThat(bState).isEqualTo(state.get(portb));
+        assertThat(cState).isEqualTo(state.get(portc));
         convertA = null;
         convertB = null;
         debugConvertA = null;
@@ -91,60 +91,34 @@ class ConverterTest {
     }
 
     @Test
-    public void testConstructor() {
-        try {
-            new TestConverter(null, triggeringSinks, nonTriggeringSinks, sources);
-            fail("Constructor accepted null name");
-        } catch (IllegalArgumentException expected) {
-            // System.out.println(expected);
-        }
-
-        try {
-            new TestConverter("test", null, nonTriggeringSinks, sources);
-            fail("Constructor accepted null triggering sinks");
-        } catch (IllegalArgumentException expected) {
-            // System.out.println(expected);
-        }
-
-        try {
-            new TestConverter("test", new ObjectECD[] {null}, nonTriggeringSinks, sources);
-
-            fail("Constructor accepted null element in triggering sinks");
-        } catch (IllegalArgumentException expected) {
-            // System.out.println(expected);
-        }
-
-        try {
-            new TestConverter("test", triggeringSinks, new ObjectECD[] {null}, sources);
-
-            fail("Constructor accepted null element in non-triggering sinks");
-        } catch (IllegalArgumentException expected) {
-            // System.out.println(expected);
-        }
-
-        try {
-            new TestConverter("test", triggeringSinks, nonTriggeringSinks, new ObjectECD[] {null});
-
-            fail("Constructor accepted null element in sources");
-        } catch (IllegalArgumentException expected) {
-            // System.out.println(expected);
-        }
-
-        try {
-            new TestConverter("test", triggeringSinks, triggeringSinks, sources);
-
-            fail("Constructor accepted duplicate sinks");
-        } catch (IllegalArgumentException expected) {
-            // System.out.println(expected);
-        }
+    void constructorTest() {
+        assertThatThrownBy(() -> new TestConverter(null, triggeringSinks, nonTriggeringSinks, sources))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("name == null not allowed!");
+        assertThatThrownBy(() -> new TestConverter("test", null, nonTriggeringSinks, sources))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("triggeringSinks == null not allowed!");
+        assertThatThrownBy(() -> new TestConverter("test", new ObjectECD[] {null}, nonTriggeringSinks, sources))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("triggeringSinks[0] == null not allowed!");
+        assertThatThrownBy(() -> new TestConverter("test", triggeringSinks, new ObjectECD[] {null}, sources))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("nonTriggeringSinks[0] == null not allowed!");
+        assertThatThrownBy(() -> new TestConverter("test", triggeringSinks, nonTriggeringSinks, new ObjectECD[] {null}))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("sources[0] == null not allowed!");
+        assertThatThrownBy(() -> new TestConverter("test", triggeringSinks, triggeringSinks, sources))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Multiple sinks detected for event channel 'a'");
     }
 
-    private class TestConverter extends Converter {
+    private static class TestConverter extends Converter {
         public TestConverter(
                 String name, ObjectECD[] triggeringSinks, ObjectECD[] nonTriggeringSinks, ObjectECD[] sources) {
             super(name, triggeringSinks, nonTriggeringSinks, sources);
         }
 
+        @Override
         protected void convert() {}
     }
 }

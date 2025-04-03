@@ -55,30 +55,37 @@ public class MouseInitiator extends Initiator implements MouseListener, MouseMot
         this.clickCountECD = clickCountECD;
     }
 
+    @Override
     public void mouseClicked(MouseEvent e) {
         send(e);
     }
 
+    @Override
     public void mouseEntered(MouseEvent e) {
         // Do Nothing...
     }
 
+    @Override
     public void mouseExited(MouseEvent e) {
         // Do Nothing...
     }
 
+    @Override
     public void mousePressed(MouseEvent e) {
         send(e);
     }
 
+    @Override
     public void mouseReleased(MouseEvent e) {
         send(e);
     }
 
+    @Override
     public void mouseDragged(MouseEvent e) {
         send(e);
     }
 
+    @Override
     public void mouseMoved(MouseEvent e) {
         send(e);
     }

@@ -31,7 +31,7 @@ public class JTextFieldModifiableBB extends JTextFieldBB {
             StringECD textAdjECD,
             BooleanECD enabledECD,
             StatelessTriggerECD applyECD) {
-        super(branch, textAdjECD, enabledECD);
+        super(branch); // Fix textAdjECD, enabledECD
 
         setEnabled(false);
         defaultDisabledBackground = getBackground();
@@ -77,6 +77,7 @@ public class JTextFieldModifiableBB extends JTextFieldBB {
             this.enableName = enableSink;
         }
 
+        @Override
         protected void commit() {
             String text = (String) get(textName);
             String textAdj = (String) get(textAdjName);

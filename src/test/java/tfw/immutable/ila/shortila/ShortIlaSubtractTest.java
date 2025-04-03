@@ -1,25 +1,33 @@
 package tfw.immutable.ila.shortila;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.Random;
 import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 
-class ShortIlaSubtractTest {
+final class ShortIlaSubtractTest {
     @Test
-    void testArguments() throws Exception {
+    void argumentsTest() {
         final ShortIla ila1 = ShortIlaFromArray.create(new short[10]);
         final ShortIla ila2 = ShortIlaFromArray.create(new short[20]);
 
-        assertThrows(IllegalArgumentException.class, () -> ShortIlaSubtract.create(null, ila1, 1));
-        assertThrows(IllegalArgumentException.class, () -> ShortIlaSubtract.create(ila1, null, 1));
-        assertThrows(IllegalArgumentException.class, () -> ShortIlaSubtract.create(ila1, ila2, 1));
-        assertThrows(IllegalArgumentException.class, () -> ShortIlaSubtract.create(ila1, ila1, 0));
+        assertThatThrownBy(() -> ShortIlaSubtract.create(null, ila1, 1))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("leftIla == null not allowed!");
+        assertThatThrownBy(() -> ShortIlaSubtract.create(ila1, null, 1))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("rightIla == null not allowed!");
+        assertThatThrownBy(() -> ShortIlaSubtract.create(ila1, ila2, 1))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("leftIla.length() (=10) != rightIla.length() (=20) not allowed!");
+        assertThatThrownBy(() -> ShortIlaSubtract.create(ila1, ila1, 0))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("bufferSize (=0) < 1 not allowed!");
     }
 
     @Test
-    void testAll() throws Exception {
+    void allTest() throws Exception {
         final Random random = new Random(0);
         final int length = IlaTestDimensions.defaultIlaLength();
         final short[] leftArray = new short[length];

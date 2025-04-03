@@ -54,7 +54,6 @@ public final class ECDUtility {
         return list.toArray(new EventChannelDescription[list.size()]);
     }
 
-    // TODO: javadoc
     public static ObjectECD[] concat(ObjectECD[] objectECDs1, ObjectECD[] objectECDs2) {
         EventChannelDescription[] ecds =
                 concat((EventChannelDescription[]) objectECDs1, (EventChannelDescription[]) objectECDs2);

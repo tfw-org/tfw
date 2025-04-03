@@ -73,7 +73,7 @@ public class ByteIlmCoreCircularCache {
                 if (buffer.length == 0) {
                     buffer = new byte[cacheLength];
                 }
-                if (cacheStart == 0 && cacheEnd == 0 || rowStart > cacheEnd || rowStart + rowCount < cacheStart) {
+                if ((cacheStart == 0 && cacheEnd == 0) || rowStart > cacheEnd || (rowStart + rowCount) < cacheStart) {
                     int rowStartOffset = (int) (rowStart % maxRows);
 
                     if (rowStart % maxRows == 0) {

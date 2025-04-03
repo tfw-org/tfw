@@ -1,19 +1,21 @@
 package tfw.immutable.ila.charila;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.Random;
 import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 
-class CharIlaFromArrayTest {
+final class CharIlaFromArrayTest {
     @Test
-    void testArguments() {
-        assertThrows(IllegalArgumentException.class, () -> CharIlaFromArray.create(null));
+    void argumentsTest() {
+        assertThatThrownBy(() -> CharIlaFromArray.create(null))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("array == null not allowed!");
     }
 
     @Test
-    void testImmutabilityCheck() throws Exception {
+    void immutabililtyTest() throws Exception {
         final int ilaLength = IlaTestDimensions.defaultIlaLength();
         final Random random = new Random(0);
         final char[] creation = new char[ilaLength];
@@ -27,7 +29,7 @@ class CharIlaFromArrayTest {
     }
 
     @Test
-    void testValueCorrectness() throws Exception {
+    void valueCorrectnessTest() throws Exception {
         final int ilaLength = IlaTestDimensions.defaultIlaLength();
         final int addlOffsetLength = IlaTestDimensions.defaultOffsetLength();
         final int maxAbsStride = IlaTestDimensions.defaultMaxStride();

@@ -76,11 +76,23 @@ public class AdditionDemo {
         labelPanel.add(valueTwoL);
         labelPanel.add(sumL);
 
-        JTextFieldBB valueOneTF = new JTextFieldBB("valueOne", VALUE_ONE_TEXT_ADJ_ECD, VALUE_ONE_ENABLED_ECD);
+        JTextFieldBB valueOneTF = JTextFieldBB.builder()
+                .setName("valueOne")
+                .setTextInputOutputECD(VALUE_ONE_TEXT_ADJ_ECD)
+                .setEnabledInputECD(VALUE_ONE_ENABLED_ECD)
+                .build();
         valueOneTF.setColumns(10);
-        JTextFieldBB valueTwoTF = new JTextFieldBB("valueTwo", VALUE_TWO_TEXT_ADJ_ECD, VALUE_TWO_ENABLED_ECD);
+        JTextFieldBB valueTwoTF = JTextFieldBB.builder()
+                .setName("valueTwo")
+                .setTextInputOutputECD(VALUE_TWO_TEXT_ADJ_ECD)
+                .setEnabledInputECD(VALUE_TWO_ENABLED_ECD)
+                .build();
         valueTwoTF.setColumns(10);
-        JTextFieldBB sumTF = new JTextFieldBB("sum", SUM_TEXT_ECD, SUM_ENABLED_ECD);
+        JTextFieldBB sumTF = JTextFieldBB.builder()
+                .setName("sum")
+                .setTextInputOutputECD(SUM_TEXT_ECD)
+                .setEnabledInputECD(SUM_ENABLED_ECD)
+                .build();
         sumTF.setColumns(10);
 
         JPanelBB textFieldPanel = new JPanelBB("textField");
@@ -94,7 +106,11 @@ public class AdditionDemo {
         centerPanel.add(labelPanel, BorderLayout.WEST);
         centerPanel.addToBoth(textFieldPanel, BorderLayout.EAST);
 
-        JButtonBB calculateB = new JButtonBB("calculate", CALCULATE_ENABLED_ECD, CALCULATE_TRIGGER_ECD);
+        JButtonBB calculateB = JButtonBB.builder()
+                .setName("calculate")
+                .setEnabledInput(CALCULATE_ENABLED_ECD)
+                .setActionOutput(CALCULATE_TRIGGER_ECD)
+                .build();
         calculateB.setText("Calculate");
 
         JPanelBB southPanel = new JPanelBB("south");
@@ -142,6 +158,7 @@ public class AdditionDemo {
             this.errorECD = errorECD;
         }
 
+        @Override
         protected void convertAToB() {
             int i = ((Integer) get(integerECD)).intValue();
 
@@ -152,6 +169,7 @@ public class AdditionDemo {
             }
         }
 
+        @Override
         protected void convertBToA() {
             String s = (String) get(textECD);
 
@@ -180,6 +198,7 @@ public class AdditionDemo {
             this.sumECD = sumECD;
         }
 
+        @Override
         protected void convert() {
             int v1 = ((Integer) get(valueOneECD)).intValue();
             int v2 = ((Integer) get(valueTwoECD)).intValue();
@@ -199,6 +218,7 @@ public class AdditionDemo {
             this.errorMessageECD = errorMessageECD;
         }
 
+        @Override
         protected void commit() {
             JOptionPane.showMessageDialog(component, get(errorMessageECD), "Error", JOptionPane.ERROR_MESSAGE);
         }

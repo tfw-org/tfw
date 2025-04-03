@@ -8,11 +8,7 @@ public final class BooleanIlaInsert {
         // non-instantiable class
     }
 
-    public static BooleanIla create(BooleanIla ila, long index, boolean value) throws IOException {
-        Argument.assertNotNull(ila, "ila");
-        Argument.assertNotLessThan(index, 0, "index");
-        Argument.assertNotGreaterThan(index, ila.length(), "index", "ila.length()");
-
+    public static BooleanIla create(BooleanIla ila, long index, boolean value) {
         return new BooleanIlaImpl(ila, index, value);
     }
 
@@ -22,6 +18,14 @@ public final class BooleanIlaInsert {
         private final boolean value;
 
         private BooleanIlaImpl(BooleanIla ila, long index, boolean value) {
+            Argument.assertNotNull(ila, "ila");
+            Argument.assertNotLessThan(index, 0, "index");
+            try {
+                Argument.assertNotGreaterThan(index, ila.length(), "index", "ila.length()");
+            } catch (IOException e) {
+                throw new IllegalArgumentException("Could not get ila length()!", e);
+            }
+
             this.ila = ila;
             this.index = index;
             this.value = value;

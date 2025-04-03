@@ -1,63 +1,45 @@
 package tfw.tsm;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.junit.jupiter.api.Test;
 import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.StringECD;
 import tfw.tsm.ecd.ila.ObjectIlaECD;
 
-// TODO: test compatibility between multiValueECD and valueECD
-
-/**
- *
- */
-class MultiplexedBranchFactoryTest {
+final class MultiplexedBranchFactoryTest {
     private ObjectECD valueECD = new StringECD("value");
     private ObjectIlaECD multiValueECD = new ObjectIlaECD("multiValue");
 
     @Test
-    void testAddMultiplexer() {
+    void addMultiplexerTest() {
         MultiplexedBranchFactory mbf = new MultiplexedBranchFactory();
 
-        try {
-            mbf.addMultiplexer(null, multiValueECD);
-            fail("addMultiplexer() accepted null valueECD");
-        } catch (IllegalArgumentException expected) {
-            // System.out.println(expected);
-        }
+        assertThatThrownBy(() -> mbf.addMultiplexer(null, multiValueECD))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("valueECD == null not allowed!");
 
-        try {
-            mbf.addMultiplexer(valueECD, null);
-            fail("addMultiplexer() accepted null multiValueECD");
-        } catch (IllegalArgumentException expected) {
-            // System.out.println(expected);
-        }
+        assertThatThrownBy(() -> mbf.addMultiplexer(valueECD, null))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("multiValueECD == null not allowed!");
 
-        ObjectECD newValueECD = new StringECD("differentValue");
         ObjectIlaECD newMultiValueECD = new ObjectIlaECD("differentMultiValue");
 
         mbf.addMultiplexer(valueECD, newMultiValueECD);
 
-        try {
-            mbf.addMultiplexer(valueECD, multiValueECD);
-            fail("addMultiplexer() accepted multiple multiplexer with the same valueECD");
-        } catch (IllegalArgumentException expected) {
-            // System.out.println(expected);
-        }
+        assertThatThrownBy(() -> mbf.addMultiplexer(valueECD, multiValueECD))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Attempt to add multiple multiplexers for value event channel 'value'");
     }
 
     @Test
-    void testCreate() {
+    void createTest() {
         MultiplexedBranchFactory mbf = new MultiplexedBranchFactory();
 
-        try {
-            mbf.create(null);
-            fail("create() accepted null value");
-        } catch (IllegalArgumentException expected) {
-            // System.out.println(expected);
-        }
+        assertThatThrownBy(() -> mbf.create(null))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("name == null not allowed!");
 
         //        try
         //        {
@@ -85,14 +67,11 @@ class MultiplexedBranchFactoryTest {
 
         mbf.addMultiplexer(valueECD, multiValueECD);
 
-        try {
-            mbf.addMultiplexer(valueECD, multiValueECD);
-            fail("addMultiplexer() accepted the same ECDs twice!");
-        } catch (IllegalArgumentException expected) {
-            // System.out.println(expected);
-        }
+        assertThatThrownBy(() -> mbf.addMultiplexer(valueECD, multiValueECD))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Attempt to add multiple multiplexers for multi event channel 'multiValue'");
 
         MultiplexedBranch branch = mbf.create("test");
-        assertNotNull(branch, "create() returned null");
+        assertThat(branch).isNotNull();
     }
 }

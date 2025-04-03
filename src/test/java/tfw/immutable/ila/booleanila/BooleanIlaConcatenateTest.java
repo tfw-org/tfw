@@ -1,22 +1,26 @@
 package tfw.immutable.ila.booleanila;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.Random;
 import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 
-class BooleanIlaConcatenateTest {
+final class BooleanIlaConcatenateTest {
     @Test
-    void testArguments() {
+    void argumentsTest() {
         final BooleanIla ila = BooleanIlaFromArray.create(new boolean[10]);
 
-        assertThrows(IllegalArgumentException.class, () -> BooleanIlaConcatenate.create(ila, null));
-        assertThrows(IllegalArgumentException.class, () -> BooleanIlaConcatenate.create(null, ila));
+        assertThatThrownBy(() -> BooleanIlaConcatenate.create(ila, null))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("rightIla == null not allowed!");
+        assertThatThrownBy(() -> BooleanIlaConcatenate.create(null, ila))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("leftIla == null not allowed!");
     }
 
     @Test
-    void testAll() throws Exception {
+    void allTest() throws Exception {
         final Random random = new Random(0);
         final int leftLength = IlaTestDimensions.defaultIlaLength();
         final int rightLength = 1 + random.nextInt(leftLength);

@@ -1,23 +1,27 @@
 // booleanila,byteila,charila,doubleila,floatila,intila,longila,objectila,shortila
 package %%PACKAGE%%;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 %%RANDOM_INCLUDE%%import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 
-class %%NAME%%IlaReverseTest {
+final class %%NAME%%IlaReverseTest {
     @Test
-    void testArguments() throws Exception {
-        final %%NAME%%Ila ila = %%NAME%%IlaFromArray.create(new %%TYPE%%[10]);
+    void argumentsTest() {
+        final %%NAME%%Ila%%TEMPLATE%% ila = %%NAME%%IlaFromArray.create(new %%TYPE%%[10]);
         final %%TYPE%%[] buffer = new %%TYPE%%[10];
 
-        assertThrows(IllegalArgumentException.class, () -> %%NAME%%IlaReverse.create(null, buffer));
-        assertThrows(IllegalArgumentException.class, () -> %%NAME%%IlaReverse.create(ila, null));
+        assertThatThrownBy(() -> %%NAME%%IlaReverse.create(null, buffer))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("ila == null not allowed!");
+        assertThatThrownBy(() -> %%NAME%%IlaReverse.create(ila, null))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("buffer == null not allowed!");
     }
 
     @Test
-    void testAll() throws Exception {
+    void allTest() throws Exception {
         %%RANDOM_INIT%%final int length = IlaTestDimensions.defaultIlaLength();
         final %%TYPE%%[] array = new %%TYPE%%[length];
         final %%TYPE%%[] reversed = new %%TYPE%%[length];

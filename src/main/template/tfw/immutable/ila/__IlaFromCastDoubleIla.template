@@ -13,9 +13,6 @@ public final class %%NAME%%IlaFromCastDoubleIla {
     }
 
     public static %%NAME%%Ila create(DoubleIla doubleIla, int bufferSize) {
-        Argument.assertNotNull(doubleIla, "doubleIla");
-        Argument.assertNotLessThan(bufferSize, 1, "bufferSize");
-
         return new %%NAME%%IlaImpl(doubleIla, bufferSize);
     }
 
@@ -24,6 +21,9 @@ public final class %%NAME%%IlaFromCastDoubleIla {
         private final int bufferSize;
 
         private %%NAME%%IlaImpl(DoubleIla doubleIla, int bufferSize) {
+            Argument.assertNotNull(doubleIla, "doubleIla");
+            Argument.assertNotLessThan(bufferSize, 1, "bufferSize");
+
             this.doubleIla = doubleIla;
             this.bufferSize = bufferSize;
         }

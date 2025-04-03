@@ -9,10 +9,12 @@ public class TransactionStateImpl implements TransactionState {
         transactionIdFuture = new CdlFuture<Long>();
     }
 
+    @Override
     public TfwFuture<Throwable> getResultFuture() {
         return resultFuture;
     }
 
+    @Override
     public TfwFuture<Long> getTransactionIdFuture() {
         return transactionIdFuture;
     }

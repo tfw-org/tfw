@@ -10,12 +10,10 @@ public abstract class Sink extends Port {
 
     /**
      * Constructs a sink with the specified attributes.
+     *
      * @param name the name of the sink.
-     * @param eventChannelName the event channel name
-     * @param constraint the value constraint for the sink
-     * @param isTriggering whether or not a state change on the event
-     * channel causes the sink's component to participate in the
-     * transaction.
+     * @param ecd the event channel description.
+     * @param isTriggering whether or not a state change on the event channel causes the sink's component to participate in the transaction.
      */
     Sink(String name, EventChannelDescription ecd, boolean isTriggering) {
         super(name, ecd);
@@ -26,6 +24,7 @@ public abstract class Sink extends Port {
         return isTriggering;
     }
 
+    @Override
     public String toString() {
         return "dew.ui.frmwrk.Sink[name = " + getFullyQualifiedName() + ", eventChannelName = "
                 + ecd.getEventChannelName()

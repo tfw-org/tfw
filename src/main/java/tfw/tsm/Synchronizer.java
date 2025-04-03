@@ -26,13 +26,16 @@ public abstract class Synchronizer extends Processor {
     private HashSet<EventChannel> aToBConvert = new HashSet<EventChannel>();
     private HashSet<EventChannel> bToAConvert = new HashSet<EventChannel>();
     private CommitRollbackListener crListener = new CommitRollbackListener() {
+        @Override
         public void rollback() {
             aToBConvert.clear();
             bToAConvert.clear();
         }
 
+        @Override
         public void commit() {}
 
+        @Override
         public String getName() {
             return Synchronizer.this.getName();
         }
@@ -104,6 +107,7 @@ public abstract class Synchronizer extends Processor {
      */
     protected void debugConvertBToA() {}
 
+    @Override
     void process() {
         if (!aToBConvert.isEmpty()) {
             //        	if (bToAConvert.isEmpty() ||
@@ -138,6 +142,7 @@ public abstract class Synchronizer extends Processor {
         bToAConvert.clear();
     }
 
+    @Override
     void stateChange(EventChannel eventChannel) {
         getTransactionManager().addCommitRollbackListener(crListener);
         // call super to get added to the transaction processors...
@@ -160,12 +165,8 @@ public abstract class Synchronizer extends Processor {
     /**
      * Validates the arguments and returns a concatinated list of sinks.
      *
-     * @param sinks
-     *            non-triggering sinks.
-     * @param aPortDescriptions
-     *            the 'setA' list of event channels.
-     * @param bPortDescriptions
-     *            the 'setB' list of event channels.
+     * @param aPortDescriptions the 'setA' list of event channels.
+     * @param bPortDescriptions the 'setB' list of event channels.
      * @return an aggregation of <code>sinks</code>,
      *         <code>aPortDescriptions</code> and
      *         <code>bPortDescriptions</code>
@@ -188,7 +189,7 @@ public abstract class Synchronizer extends Processor {
     }
 
     private void throwBothSetsChangedException() {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         sb.append(getFullyQualifiedName());
         sb.append(" - Cannot convert AToB and BToA in the same transaction!\n");
         sb.append("A changes:\n");

@@ -1,0 +1,13 @@
+%%TYPE%% = boolean
+%%NAME%% = Boolean
+%%LOWER_NAME%% = boolean
+%%PACKAGE%% = tfw.immutable.ilaf.booleanilaf
+%%RANDOM_VALUE%% = random.nextBoolean()
+%%ASSERT_EQUALS_DELTA%% =
+%%CREATE_IMMUTABLE_START%% = new Boolean(
+%%CREATE_IMMUTABLE_END%% = )
+%%DIAMOND%% = 
+%%SUPPRESS%% =
+%%TEMPLATE%% =
+%%TEMPLATE_SPACE%% =
+%%TYPE_OR_TEMPLATE%% = boolean

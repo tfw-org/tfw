@@ -1,22 +1,24 @@
 package tfw.immutable.ila.shortila;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.Random;
 import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 
-class ShortIlaScalarAddTest {
+final class ShortIlaScalarAddTest {
     @Test
-    void testArguments() throws Exception {
+    void argumentsTest() {
         final Random random = new Random(0);
         final short value = (short) random.nextInt();
 
-        assertThrows(IllegalArgumentException.class, () -> ShortIlaScalarAdd.create(null, value));
+        assertThatThrownBy(() -> ShortIlaScalarAdd.create(null, value))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("ila == null not allowed!");
     }
 
     @Test
-    void testAll() throws Exception {
+    void allTest() throws Exception {
         final Random random = new Random(0);
         final int length = IlaTestDimensions.defaultIlaLength();
         final short scalar = (short) random.nextInt();

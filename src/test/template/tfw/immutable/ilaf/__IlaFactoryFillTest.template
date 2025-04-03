@@ -1,0 +1,13 @@
+// booleanilaf,byteilaf,charilaf,doubleilaf,floatilaf,intilaf,longilaf,objectilaf,shortilaf
+package %%PACKAGE%%;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+import org.junit.jupiter.api.Test;
+
+final class %%NAME%%IlaFactoryFillTest {
+    @Test
+    void createTest() {
+        assertThat(%%NAME%%IlaFactoryFill.create(%%DEFAULT_VALUE%%, 10).create()).isNotNull();
+    }
+}

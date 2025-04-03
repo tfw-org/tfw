@@ -39,6 +39,7 @@ public class DifferentObjectRule implements StateChangeRule {
      * @throws IllegalArgumentException
      *             if <code>newSate == null</code>.
      */
+    @Override
     public boolean isChange(Object currentState, Object newState) {
         Argument.assertNotNull(newState, "newState");
         return currentState != newState;

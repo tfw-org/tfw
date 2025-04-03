@@ -1,7 +1,6 @@
 package tfw.tsm;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.objectila.ObjectIla;
@@ -12,15 +11,13 @@ import tfw.tsm.ecd.StatelessTriggerECD;
 import tfw.tsm.ecd.StringECD;
 import tfw.tsm.ecd.ila.ObjectIlaECD;
 
-class MultiplexerTest {
+final class MultiplexerTest {
     private StringECD valueECD = new StringECD("value");
-
     private ObjectIlaECD multiValueECD = new ObjectIlaECD("multiValue");
-
     private ObjectIlaECD multiMultiValueECD = new ObjectIlaECD("multiMultiValue");
 
     @Test
-    void testMultiplexerWithIntermediateBranch() throws Exception {
+    void multiplexerWithIntermediateBranchTest() throws Exception {
         StatelessTriggerECD triggerECD = new StatelessTriggerECD("trigger");
         RootFactory rf = new RootFactory();
         rf.addEventChannel(triggerECD);
@@ -31,7 +28,6 @@ class MultiplexerTest {
         rf.addEventChannel(multiValueECD, ObjectIlaFill.create(null, 2));
         TestTransactionExceptionHandler exceptionHandler = new TestTransactionExceptionHandler();
         rf.setTransactionExceptionHandler(exceptionHandler);
-        // rf.setLogging(true);
 
         BasicTransactionQueue queue = new BasicTransactionQueue();
 
@@ -57,7 +53,7 @@ class MultiplexerTest {
         root.add(multiBranch);
         initiator0.set(valueECD, "0");
         queue.waitTilEmpty();
-        assertEquals("0", valueCommit0.value, "value 0 not correct");
+        assertThat(valueCommit0.value).isEqualTo("0");
 
         Initiator initiator1 = new Initiator("InitiatorValue1", valueECD);
         ValueCommit valueCommit1 = new ValueCommit("CommitValue1", valueECD);
@@ -66,8 +62,8 @@ class MultiplexerTest {
 
         initiator1.set(valueECD, "1");
         queue.waitTilEmpty();
-        assertEquals("0", valueCommit0.value, "value 0 not correct");
-        assertEquals("1", valueCommit1.value, "value 1 not correct");
+        assertThat(valueCommit0.value).isEqualTo("0");
+        assertThat(valueCommit1.value).isEqualTo("1");
 
         Initiator multiInitiator = new Initiator("MultiValueInitiator", multiValueECD);
         root.add(multiInitiator);
@@ -78,8 +74,8 @@ class MultiplexerTest {
         multiInitiator.set(multiValueECD, obj);
         queue.waitTilEmpty();
 
-        assertEquals(strings[0], valueCommit0.value, "value 0 not correct");
-        assertEquals(strings[1], valueCommit1.value, "value 1 not correct");
+        assertThat(strings[0]).isEqualTo(valueCommit0.value);
+        assertThat(strings[1]).isEqualTo(valueCommit1.value);
 
         MultiValueCommit mvCommit = new MultiValueCommit("MultiValueCommit", multiValueECD);
         root.add(mvCommit);
@@ -90,10 +86,10 @@ class MultiplexerTest {
         final Object[] multiValueArray0 = new Object[(int) mvCommit.value.length()];
         mvCommit.value.get(multiValueArray0, 0, 0, multiValueArray0.length);
 
-        assertEquals("0", valueCommit0.value, "value 0 not correct");
-        assertEquals("one", valueCommit1.value, "value 1 not correct");
-        assertEquals("0", multiValueArray0[0], "multiValue[0] not correct");
-        assertEquals("one", multiValueArray0[1], "multiValue[1] not correct");
+        assertThat(valueCommit0.value).isEqualTo("0");
+        assertThat(valueCommit1.value).isEqualTo("one");
+        assertThat(multiValueArray0[0]).isEqualTo("0");
+        assertThat(multiValueArray0[1]).isEqualTo("one");
 
         TestTriggeredConverter tc0 = new TestTriggeredConverter("tc0", triggerECD, "tc0", valueECD);
         TestTriggeredConverter tc1 = new TestTriggeredConverter("tc1", triggerECD, "tc1", valueECD);
@@ -110,16 +106,16 @@ class MultiplexerTest {
         final Object[] multiValueArray1 = new Object[(int) mvCommit.value.length()];
         mvCommit.value.get(multiValueArray1, 0, 0, multiValueArray1.length);
 
-        assertEquals("tc0", valueCommit0.value, "value 0 not correct");
-        assertEquals("tc1", valueCommit1.value, "value 1 not correct");
-        assertEquals("tc0", multiValueArray1[0], "multiValue[0] not correct");
-        assertEquals("tc1", multiValueArray1[1], "multiValue[1] not correct");
+        assertThat(valueCommit0.value).isEqualTo("tc0");
+        assertThat(valueCommit1.value).isEqualTo("tc1");
+        assertThat(multiValueArray1[0]).isEqualTo("tc0");
+        assertThat(multiValueArray1[1]).isEqualTo("tc1");
         // We remove one of the component to cause a new transaction in order
         // to make sure that no exceptions are thrown...
         subBranch0.remove(valueCommit0);
         triggerInitiator.trigger(triggerECD);
         queue.waitTilEmpty();
-        assertNull(exceptionHandler.exp, "Unexpected exception thrown during testing");
+        assertThat(exceptionHandler.exp).isNull();
 
         subBranch0.add(valueCommit0);
         String tc0Value = "tc0-1";
@@ -132,10 +128,10 @@ class MultiplexerTest {
         final Object[] multiValueArray2 = new Object[(int) mvCommit.value.length()];
         mvCommit.value.get(multiValueArray2, 0, 0, multiValueArray2.length);
 
-        assertEquals(tc0Value, multiValueArray2[0], "multiValue[0] not correct");
-        assertEquals(tc1Value, multiValueArray2[1], "multiValue[1] not correct");
+        assertThat(tc0Value).isEqualTo(multiValueArray2[0]);
+        assertThat(tc1Value).isEqualTo(multiValueArray2[1]);
 
-        assertNull(exceptionHandler.exp, "Unexpected exception thrown during testing");
+        assertThat(exceptionHandler.exp).isNull();
         // Now we will remove the multiplexer...and make sure everything still
         // works.
         root.remove(multiBranch);
@@ -148,8 +144,8 @@ class MultiplexerTest {
         mvCommit.value.get(multiValueArray3, 0, 0, multiValueArray3.length);
         obj.get(objArray3, 0, 0, objArray3.length);
 
-        assertEquals(objArray3[0], multiValueArray3[0], "multiValue[0] not correct");
-        assertEquals(objArray3[1], multiValueArray3[1], "multiValue[1] not correct");
+        assertThat(objArray3[0]).isEqualTo(multiValueArray3[0]);
+        assertThat(objArray3[1]).isEqualTo(multiValueArray3[1]);
         // Now we put the multiplexer back and make sure it still works.
         root.add(multiBranch);
         queue.waitTilEmpty();
@@ -157,19 +153,19 @@ class MultiplexerTest {
         final Object[] objArray4 = new Object[(int) obj.length()];
         obj.get(objArray4, 0, 0, objArray4.length);
 
-        assertEquals(objArray4[0], valueCommit0.value, "value 0 not correct");
-        assertEquals(objArray4[1], valueCommit1.value, "value 1 not correct");
+        assertThat(objArray4[0]).isEqualTo(valueCommit0.value);
+        assertThat(objArray4[1]).isEqualTo(valueCommit1.value);
     }
 
     @Test
-    void testMultiLayerMultiplexing() throws Exception {
+    void multiLayerMultiplexingTest() throws Exception {
 
-        String v0_0 = "Value0.0";
-        String v0_1 = "Value0.1";
-        String v1_0 = "Value1.0";
-        String v1_1 = "Value1.1";
+        String v00 = "Value0.0";
+        String v01 = "Value0.1";
+        String v10 = "Value1.0";
+        String v11 = "Value1.1";
 
-        ObjectIla<Object> vmmo = createMultiMultiValue(v0_0, v0_1, v1_0, v1_1);
+        ObjectIla<Object> vmmo = createMultiMultiValue(v00, v01, v10, v11);
         // TODO add multiMultiInitiator and multiMultiCommit...
 
         RootFactory rf = new RootFactory();
@@ -192,23 +188,23 @@ class MultiplexerTest {
         multiMultiBranch.add(multiBranchZero, 0);
         multiMultiBranch.add(multiBranchOne, 1);
 
-        Initiator initiator0_0 = new Initiator("Value0_0", valueECD);
-        ValueCommit valueCommit0_0 = new ValueCommit("Value 0_0", valueECD);
-        Initiator initiator0_1 = new Initiator("Value0_1", valueECD);
-        ValueCommit valueCommit0_1 = new ValueCommit("Value 0_1", valueECD);
-        multiBranchZero.add(initiator0_0, 0);
-        multiBranchZero.add(valueCommit0_0, 0);
-        multiBranchZero.add(initiator0_1, 1);
-        multiBranchZero.add(valueCommit0_1, 1);
+        Initiator initiator00 = new Initiator("Value0_0", valueECD);
+        ValueCommit valueCommit00 = new ValueCommit("Value 0_0", valueECD);
+        Initiator initiator01 = new Initiator("Value0_1", valueECD);
+        ValueCommit valueCommit01 = new ValueCommit("Value 0_1", valueECD);
+        multiBranchZero.add(initiator00, 0);
+        multiBranchZero.add(valueCommit00, 0);
+        multiBranchZero.add(initiator01, 1);
+        multiBranchZero.add(valueCommit01, 1);
 
-        Initiator initiator1_0 = new Initiator("Value1_0", valueECD);
-        ValueCommit valueCommit1_0 = new ValueCommit("Value 1_0", valueECD);
-        Initiator initiator1_1 = new Initiator("Value1_1", valueECD);
-        ValueCommit valueCommit1_1 = new ValueCommit("Value 1_1", valueECD);
-        multiBranchOne.add(initiator1_0, 0);
-        multiBranchOne.add(valueCommit1_0, 0);
-        multiBranchOne.add(initiator1_1, 1);
-        multiBranchOne.add(valueCommit1_1, 1);
+        Initiator initiator10 = new Initiator("Value1_0", valueECD);
+        ValueCommit valueCommit10 = new ValueCommit("Value 1_0", valueECD);
+        Initiator initiator11 = new Initiator("Value1_1", valueECD);
+        ValueCommit valueCommit11 = new ValueCommit("Value 1_1", valueECD);
+        multiBranchOne.add(initiator10, 0);
+        multiBranchOne.add(valueCommit10, 0);
+        multiBranchOne.add(initiator11, 1);
+        multiBranchOne.add(valueCommit11, 1);
 
         MultiValueCommit mmValueCommit = new MultiValueCommit("multiMultiValueCommit", multiMultiValueECD);
 
@@ -219,26 +215,26 @@ class MultiplexerTest {
         checkState(
                 vmmo,
                 mmValueCommit.value,
-                valueCommit0_0.value,
-                valueCommit0_1.value,
-                valueCommit1_0.value,
-                valueCommit1_1.value);
+                valueCommit00.value,
+                valueCommit01.value,
+                valueCommit10.value,
+                valueCommit11.value);
 
-        v1_1 = "hello 1.1";
-        vmmo = createMultiMultiValue(v0_0, v0_1, v1_0, v1_1);
-        initiator1_1.set(valueECD, v1_1);
+        v11 = "hello 1.1";
+        vmmo = createMultiMultiValue(v00, v01, v10, v11);
+        initiator11.set(valueECD, v11);
         queue.waitTilEmpty();
         checkState(
                 vmmo,
                 mmValueCommit.value,
-                valueCommit0_0.value,
-                valueCommit0_1.value,
-                valueCommit1_0.value,
-                valueCommit1_1.value);
+                valueCommit00.value,
+                valueCommit01.value,
+                valueCommit10.value,
+                valueCommit11.value);
     }
 
     @Test
-    void testMultipleMultiplexers() {
+    void multipleMultiplexersTest() {
         String slot0 = "slot0";
 
         RootFactory rf = new RootFactory();
@@ -251,8 +247,8 @@ class MultiplexerTest {
         MultiplexedBranch multiBranch0 = mbf.create("MultiBranch0");
         ValueCommit vcMb0S0 = new ValueCommit("ValueCommitBranch0Slot0", valueECD);
         multiBranch0.add(vcMb0S0, 0);
-        Initiator initiator0_0 = new Initiator("branch0Slot0Initiator", valueECD);
-        multiBranch0.add(initiator0_0, 0);
+        Initiator initiator00 = new Initiator("branch0Slot0Initiator", valueECD);
+        multiBranch0.add(initiator00, 0);
 
         MultiplexedBranch multiBranch1 = mbf.create("MultiBranch1");
         ValueCommit vcMb1S0 = new ValueCommit("ValueCommitBranch1Slot0", valueECD);
@@ -261,41 +257,38 @@ class MultiplexerTest {
         root.add(multiBranch0);
         root.add(multiBranch1);
         queue.waitTilEmpty();
-        assertEquals(slot0, vcMb0S0.value, "branch0Slot0");
-        assertEquals(slot0, vcMb1S0.value, "branch1Slot0");
+        assertThat(slot0).isEqualTo(vcMb0S0.value).isEqualTo(vcMb1S0.value);
 
         slot0 = "xyz";
-        initiator0_0.set(valueECD, slot0);
+        initiator00.set(valueECD, slot0);
         queue.waitTilEmpty();
-        assertEquals(slot0, vcMb0S0.value, "branch0Slot0");
-        assertEquals(slot0, vcMb1S0.value, "branch1Slot0");
+        assertThat(slot0).isEqualTo(vcMb0S0.value).isEqualTo(vcMb1S0.value);
     }
 
-    private ObjectIla<Object> createMultiMultiValue(String v0_0, String v0_1, String v1_0, String v1_1) {
-        String[] vm0 = new String[] {v0_0, v0_1};
-        String[] vm1 = new String[] {v1_0, v1_1};
+    private ObjectIla<Object> createMultiMultiValue(String v00, String v01, String v10, String v11) {
+        String[] vm0 = new String[] {v00, v01};
+        String[] vm1 = new String[] {v10, v11};
 
         ObjectIla<Object> vmo0 = ObjectIlaFromArray.create(vm0);
         ObjectIla<Object> vmo1 = ObjectIlaFromArray.create(vm1);
 
-        ObjectIla<Object> vmmo = ObjectIlaFromArray.create(new Object[] {vmo0, vmo1});
-        return vmmo;
+        return ObjectIlaFromArray.create(new Object[] {vmo0, vmo1});
     }
 
     private void checkState(
-            ObjectIla<Object> mmAnswer, ObjectIla<Object> mmResult, String v0_0, String v0_1, String v1_0, String v1_1)
+            ObjectIla<Object> mmAnswer, ObjectIla<Object> mmResult, String v00, String v01, String v10, String v11)
             throws Exception {
         Object[][] mma = toArray(mmAnswer);
-        assertEquals(mma[0][0], v0_0, "[0][0]");
-        assertEquals(mma[0][1], v0_1, "[0][1]");
-        assertEquals(mma[1][0], v1_0, "[1][0]");
-        assertEquals(mma[1][1], v1_1, "[1][1]");
+        assertThat(mma[0][0]).isEqualTo(v00);
+        assertThat(mma[0][1]).isEqualTo(v01);
+        assertThat(mma[1][0]).isEqualTo(v10);
+        assertThat(mma[1][1]).isEqualTo(v11);
 
         Object[][] mmr = toArray(mmResult);
-        assertEquals(mma[0][0], mmr[0][0], "[0][0]");
-        assertEquals(mma[0][1], mmr[0][1], "[0][1]");
-        assertEquals(mma[1][0], mmr[1][0], "[1][0]");
-        assertEquals(mma[1][1], mmr[1][1], "[1][1]");
+        assertThat(mma[0][0]).isEqualTo(mmr[0][0]);
+        assertThat(mma[0][1]).isEqualTo(mmr[0][1]);
+        assertThat(mma[1][0]).isEqualTo(mmr[1][0]);
+        assertThat(mma[1][1]).isEqualTo(mmr[1][1]);
     }
 
     @SuppressWarnings("unchecked")
@@ -317,7 +310,7 @@ class MultiplexerTest {
         return mmArray;
     }
 
-    private class TestTriggeredConverter extends TriggeredConverter {
+    private static class TestTriggeredConverter extends TriggeredConverter {
         private String value;
 
         private final StringECD outputECD;
@@ -328,17 +321,13 @@ class MultiplexerTest {
             this.outputECD = outputECD;
         }
 
-        /*
-         * (non-Javadoc)
-         *
-         * @see tfw.tsm.TriggeredConverter#convert()
-         */
+        @Override
         protected void convert() {
             set(outputECD, value);
         }
     }
 
-    private class ValueCommit extends Commit {
+    private static class ValueCommit extends Commit {
         public String value;
 
         public final ObjectECD valueECD;
@@ -348,12 +337,13 @@ class MultiplexerTest {
             this.valueECD = valueECD;
         }
 
+        @Override
         public void commit() {
             value = (String) get(valueECD);
         }
     }
 
-    private class MultiValueCommit extends Commit {
+    private static class MultiValueCommit extends Commit {
         public ObjectIla<Object> value;
 
         public final ObjectECD valueECD;
@@ -363,6 +353,7 @@ class MultiplexerTest {
             this.valueECD = valueECD;
         }
 
+        @Override
         @SuppressWarnings("unchecked")
         public void commit() {
             value = (ObjectIla<Object>) get(valueECD);

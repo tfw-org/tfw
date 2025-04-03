@@ -4,32 +4,38 @@
 
     <groupId>io.github.tfw-org</groupId>
     <artifactId>tfw</artifactId>
-    <version>2024.3</version>
+    <version>2024.5-SNAPSHOT</version>
 
     <name>tfw</name>
     <description>The FrameWork for building highly scalable and maintainable applications</description>
 
     <properties>
         <argLine></argLine>
-        <dependency.junit-jupiter.version>5.11.0</dependency.junit-jupiter.version>
-        <dependency.slf4j-jdk14.version>2.0.16</dependency.slf4j-jdk14.version>
+        <dependency.assertj-core.version>3.27.3</dependency.assertj-core.version>
+        <dependency.assertj-swing.version>3.17.1</dependency.assertj-swing.version>
+        <dependency.junit-jupiter-api.version>5.12.1</dependency.junit-jupiter-api.version>
+        <dependency.slf4j-api.version>2.0.17</dependency.slf4j-api.version>
         <maven.compiler.release>8</maven.compiler.release>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <plugin.error_prone_core.version>2.32.0</plugin.error_prone_core.version>
-        <plugin.exec-maven-plugin.version>3.4.1</plugin.exec-maven-plugin.version>
+        <plugin.error-prone-contrib.version>0.21.0</plugin.error-prone-contrib.version>
+        <plugin.error_prone_core.version>2.37.0</plugin.error_prone_core.version>
+        <plugin.errorprone-slf4j.version>0.1.28</plugin.errorprone-slf4j.version>
+        <plugin.exec-maven-plugin.version>3.5.0</plugin.exec-maven-plugin.version>
         <plugin.jacoco-maven-plugin.version>0.8.12</plugin.jacoco-maven-plugin.version>
-        <plugin.maven-compiler-plugin.version>3.13.0</plugin.maven-compiler-plugin.version>
-        <plugin.maven-gpg-plugin.version>3.2.6</plugin.maven-gpg-plugin.version>
-        <plugin.maven-javadoc-plugin.version>3.10.0</plugin.maven-javadoc-plugin.version>
-        <plugin.maven-pmd-plugin.version>3.25.0</plugin.maven-pmd-plugin.version>
+        <plugin.maven-compiler-plugin.version>3.14.0</plugin.maven-compiler-plugin.version>
+        <plugin.maven-dependency-plugin.version>3.8.1</plugin.maven-dependency-plugin.version>
+        <plugin.maven-gpg-plugin.version>3.2.7</plugin.maven-gpg-plugin.version>
+        <plugin.maven-javadoc-plugin.version>3.11.2</plugin.maven-javadoc-plugin.version>
+        <plugin.maven-pmd-plugin.version>3.26.0</plugin.maven-pmd-plugin.version>
         <plugin.maven-source-plugin.version>3.3.1</plugin.maven-source-plugin.version>
-        <plugin.maven-surefire-junit5-tree-reporter.version>1.3.0</plugin.maven-surefire-junit5-tree-reporter.version>
-        <plugin.maven-surefire-plugin.version>3.5.0</plugin.maven-surefire-plugin.version>
+        <plugin.maven-surefire-junit5-tree-reporter.version>1.4.0</plugin.maven-surefire-junit5-tree-reporter.version>
+        <plugin.maven-surefire-plugin.version>3.5.3</plugin.maven-surefire-plugin.version>
         <plugin.nexus-staging-maven-plugin.version>1.7.0</plugin.nexus-staging-maven-plugin.version>
-        <plugin.pitest-junit5-plugin.version>1.2.1</plugin.pitest-junit5-plugin.version>
-        <plugin.pitest-maven.version>1.17.0</plugin.pitest-maven.version>
-        <plugin.spotless-maven-plugin.version>2.43.0</plugin.spotless-maven-plugin.version>
+        <plugin.pitest-junit5-plugin.version>1.2.2</plugin.pitest-junit5-plugin.version>
+        <plugin.pitest-maven.version>1.19.0</plugin.pitest-maven.version>
+        <plugin.refaster-runner.version>0.21.0</plugin.refaster-runner.version>
+        <plugin.spotless-maven-plugin.version>2.44.3</plugin.spotless-maven-plugin.version>
         <plugin.spotless-palantirJavaFormat.version>2.50.0</plugin.spotless-palantirJavaFormat.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <sonar.exclusions>src/main/java/tfw/math/BigDecimal.java,
@@ -48,13 +54,25 @@
     <dependencies>
         <dependency>
             <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-jdk14</artifactId>
-            <version>${dependency.slf4j-jdk14.version}</version>
+            <artifactId>slf4j-api</artifactId>
+            <version>${dependency.slf4j-api.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>${dependency.assertj-core.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-swing</artifactId>
+            <version>${dependency.assertj-swing.version}</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <version>${dependency.junit-jupiter.version}</version>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>${dependency.junit-jupiter-api.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -116,10 +134,16 @@
                 <version>${plugin.maven-compiler-plugin.version}</version>
                 <configuration>
                     <compilerArgs>
+                        <arg>-Xmaxerrs</arg>
+                        <arg>-1</arg>
+                        <arg>-Xmaxwarns</arg>
+                        <arg>-1</arg>
                         <arg>-Xlint:all,-options,-path</arg>
                         <arg>-XDcompilePolicy=simple</arg>
+                        <arg>--should-stop=ifError=FLOW</arg>
                         <arg>-Xplugin:ErrorProne \
-                        -XepAllErrorsAsWarnings</arg>
+                        -XepAllErrorsAsWarnings \
+                        -XepExcludedPaths:.*/tfw/math/BigDecimal.java|.*/tfw/math/BigInteger.java|.*/tfw/math/BitSieve.java|.*/tfw/math/DoubleConsts.java|.*/tfw/math/FloatConsts.java|.*/tfw/math/MathContext.java|.*/tfw/math/MutableBigInteger.java|.*/tfw/math/RoundingMode.java|.*/tfw/math/SignedMutableBigInteger.java</arg>
                     </compilerArgs>
                     <annotationProcessorPaths>
                         <path>
@@ -132,8 +156,40 @@
                             If 'annotationProcessorPaths' is set, processors will no longer be
                             discovered on the regular -classpath; see also 'Using Error Prone
                             together with other annotation processors' below. -->
+                        <path>
+                            <groupId>jp.skypencil.errorprone.slf4j</groupId>
+                            <artifactId>errorprone-slf4j</artifactId>
+                            <version>${plugin.errorprone-slf4j.version}</version>
+                        </path>
+                        <path>
+                            <groupId>tech.picnic.error-prone-support</groupId>
+                            <artifactId>error-prone-contrib</artifactId>
+                            <version>${plugin.error-prone-contrib.version}</version>
+                        </path>
+                        <!-- Error Prone Support's Refaster rules. -->
+                        <path>
+                            <groupId>tech.picnic.error-prone-support</groupId>
+                            <artifactId>refaster-runner</artifactId>
+                            <version>${plugin.refaster-runner.version}</version>
+                        </path>
                     </annotationProcessorPaths>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>${plugin.maven-dependency-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>analyze</id>
+                        <goals>
+                            <goal>analyze-only</goal>
+                        </goals>
+                        <configuration>
+                            <failOnWarning>false</failOnWarning>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -185,7 +241,6 @@
                     <format>txt</format>
                     <includeTests>true</includeTests>
                     <minimumTokens>100</minimumTokens>
-                    <sourceEncoding>${project.build.sourceEncoding}</sourceEncoding>
                     <targetJdk>${maven.compiler.target}</targetJdk>
                 </configuration>
                 <executions>
@@ -219,6 +274,9 @@
                     <statelessTestsetInfoReporter implementation="org.apache.maven.plugin.surefire.extensions.junit5.JUnit5StatelessTestsetInfoTreeReporter">
                         <theme>UNICODE</theme>
                     </statelessTestsetInfoReporter>
+                    <systemPropertyVariables>
+                        <java.util.logging.SimpleFormatter.format>%1$tY-%1$tm-%1$td %1$tH:%1$tM:%1$tS %4$-6s %2$-50.50s %5$s%6$s%n</java.util.logging.SimpleFormatter.format>
+                    </systemPropertyVariables>
                 </configuration>
                 <dependencies>
                     <dependency>

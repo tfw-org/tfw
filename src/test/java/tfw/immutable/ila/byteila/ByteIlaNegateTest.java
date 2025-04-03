@@ -1,19 +1,21 @@
 package tfw.immutable.ila.byteila;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.Random;
 import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 
-class ByteIlaNegateTest {
+final class ByteIlaNegateTest {
     @Test
-    void testArguments() throws Exception {
-        assertThrows(IllegalArgumentException.class, () -> ByteIlaNegate.create(null));
+    void argumentsTest() {
+        assertThatThrownBy(() -> ByteIlaNegate.create(null))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("ila == null not allowed!");
     }
 
     @Test
-    void testAll() throws Exception {
+    void allTest() throws Exception {
         final Random random = new Random(0);
         final int length = IlaTestDimensions.defaultIlaLength();
         final byte[] array = new byte[length];

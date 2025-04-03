@@ -1,8 +1,7 @@
 package tfw.audio;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.Arrays;
 import org.junit.jupiter.api.Test;
 import tfw.audio.au.Au;
 import tfw.audio.au.AuAudioDataFromNormalizedDoubleIla;
@@ -12,11 +11,11 @@ import tfw.immutable.ila.byteila.ByteIlaFromArray;
 import tfw.immutable.ila.byteila.ByteIlaUtil;
 import tfw.immutable.ila.doubleila.DoubleIla;
 
-class AuAudioDataTest {
+final class AuAudioDataTest {
     @Test
-    void testMuLawAuAudioData() throws Exception {
-        byte[] origByteArray = new byte[256];
-        byte[] finalByteArray = new byte[256];
+    void muLawAuAudioDataTest() throws Exception {
+        final byte[] origByteArray = new byte[256];
+        final byte[] finalByteArray = new byte[256];
 
         for (int i = 0; i < origByteArray.length; i++) {
             origByteArray[i] = (byte) i;
@@ -24,20 +23,19 @@ class AuAudioDataTest {
         }
         finalByteArray[127] = (byte) 255; // There are two zeros.
 
-        ByteIla origByteIla = ByteIlaFromArray.create(origByteArray);
-
-        DoubleIla doubleIla =
+        final ByteIla origByteIla = ByteIlaFromArray.create(origByteArray);
+        final DoubleIla doubleIla =
                 NormalizedDoubleIlaFromAuAudioData.create(origByteIla, Au.SUN_MAGIC_NUMBER, Au.ISDN_U_LAW_8_BIT, 1024);
-        ByteIla byteIla = AuAudioDataFromNormalizedDoubleIla.create(doubleIla, Au.ISDN_U_LAW_8_BIT, 1024);
+        final ByteIla byteIla = AuAudioDataFromNormalizedDoubleIla.create(doubleIla, Au.ISDN_U_LAW_8_BIT, 1024);
+        final byte[] b = ByteIlaUtil.toArray(byteIla);
 
-        byte[] b = ByteIlaUtil.toArray(byteIla);
-
-        assertTrue(Arrays.equals(finalByteArray, b));
+        assertThat(finalByteArray).isEqualTo(b);
     }
 
-    public void test8BitLinearAuAudioData() throws Exception {
-        byte[] origByteArray = new byte[256];
-        byte[] finalByteArray = new byte[256];
+    @Test
+    void eightBitLinearAuAudioDataTest() throws Exception {
+        final byte[] origByteArray = new byte[256];
+        final byte[] finalByteArray = new byte[256];
 
         for (int i = 0; i < origByteArray.length; i++) {
             origByteArray[i] = (byte) i;
@@ -45,33 +43,29 @@ class AuAudioDataTest {
         }
         finalByteArray[128] = (byte) 129; // -Byte.MAX_VALUE-1 = -Byte.MAX_VALUE
 
-        ByteIla origByteIla = ByteIlaFromArray.create(origByteArray);
-
-        DoubleIla doubleIla =
+        final ByteIla origByteIla = ByteIlaFromArray.create(origByteArray);
+        final DoubleIla doubleIla =
                 NormalizedDoubleIlaFromAuAudioData.create(origByteIla, Au.SUN_MAGIC_NUMBER, Au.LINEAR_8_BIT, 1024);
+        final ByteIla byteIla = AuAudioDataFromNormalizedDoubleIla.create(doubleIla, Au.LINEAR_8_BIT, 1024);
+        final byte[] b = ByteIlaUtil.toArray(byteIla);
 
-        ByteIla byteIla = AuAudioDataFromNormalizedDoubleIla.create(doubleIla, Au.LINEAR_8_BIT, 1024);
-
-        byte[] b = ByteIlaUtil.toArray(byteIla);
-
-        assertTrue(Arrays.equals(finalByteArray, b));
+        assertThat(finalByteArray).isEqualTo(b);
     }
 
-    public void testALawAuAudioData() throws Exception {
-        byte[] origByteArray = new byte[256];
+    @Test
+    void aLawAuAudioDataTest() throws Exception {
+        final byte[] origByteArray = new byte[256];
 
         for (int i = 0; i < origByteArray.length; i++) {
             origByteArray[i] = (byte) i;
         }
 
-        ByteIla origByteIla = ByteIlaFromArray.create(origByteArray);
-
-        DoubleIla doubleIla =
+        final ByteIla origByteIla = ByteIlaFromArray.create(origByteArray);
+        final DoubleIla doubleIla =
                 NormalizedDoubleIlaFromAuAudioData.create(origByteIla, Au.SUN_MAGIC_NUMBER, Au.ISDN_A_LAW_8_BIT, 1024);
-        ByteIla byteIla = AuAudioDataFromNormalizedDoubleIla.create(doubleIla, Au.ISDN_A_LAW_8_BIT, 1024);
+        final ByteIla byteIla = AuAudioDataFromNormalizedDoubleIla.create(doubleIla, Au.ISDN_A_LAW_8_BIT, 1024);
+        final byte[] b = ByteIlaUtil.toArray(byteIla);
 
-        byte[] b = ByteIlaUtil.toArray(byteIla);
-
-        assertTrue(Arrays.equals(origByteArray, b));
+        assertThat(origByteArray).isEqualTo(b);
     }
 }

@@ -3,7 +3,7 @@ package tfw.value;
 /**
  * An float value constraint.
  */
-public class FloatConstraint extends RangeConstraint {
+public class FloatConstraint extends RangeConstraint<Float> {
     /**
      * Creates a constraint with the specified attributes.
      * @param min the minimum legal value.
@@ -14,6 +14,11 @@ public class FloatConstraint extends RangeConstraint {
      * otherwise it is not valid.
      */
     public FloatConstraint(float min, float max, boolean minInclusive, boolean maxInclusive) {
-        super(Float.class, new Float(min), new Float(max), minInclusive, maxInclusive);
+        super(Float.class, Float.valueOf(min), Float.valueOf(max), minInclusive, maxInclusive);
+    }
+
+    @Override
+    protected int compareTo(Float left, Float right) {
+        return left.compareTo(right);
     }
 }

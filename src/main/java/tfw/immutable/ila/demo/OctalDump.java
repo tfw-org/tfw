@@ -142,9 +142,9 @@ public class OctalDump {
                         ByteIlaSegment.create(byteIla, start, byteIla.length() - start), new byte[bufferSize]);
 
                 for (int i = 0; i < length; i++) {
-                    StringBuffer sb = new StringBuffer();
+                    StringBuilder sb = new StringBuilder();
 
-                    sb.append(Long.toOctalString(start + i * 16));
+                    sb.append(Long.toOctalString(start + i * 16L));
                     for (int j = 0; j < 16 && bii.hasNext(); j++) {
                         sb.append(" ");
                         switch (type) {
@@ -202,9 +202,9 @@ public class OctalDump {
                         new short[bufferSize]);
 
                 for (int i = 0; i < length; i++) {
-                    StringBuffer sb = new StringBuffer();
+                    StringBuilder sb = new StringBuilder();
 
-                    sb.append(Long.toOctalString(start + i * 16));
+                    sb.append(Long.toOctalString(start + i * 16L));
                     for (int j = 0; j < 8 && sii.hasNext(); j++) {
                         sb.append(" ");
                         switch (type) {
@@ -261,9 +261,9 @@ public class OctalDump {
                         IntIlaSegment.create(intIla, start * 4, intIla.length() - start * 4), new int[bufferSize]);
 
                 for (int i = 0; i < length; i++) {
-                    StringBuffer sb = new StringBuffer();
+                    StringBuilder sb = new StringBuilder();
 
-                    sb.append(Long.toOctalString(start + i * 16));
+                    sb.append(Long.toOctalString(start + i * 16L));
                     for (int j = 0; j < 4 && iii.hasNext(); j++) {
                         sb.append(" ");
                         switch (type) {
@@ -318,9 +318,9 @@ public class OctalDump {
                         LongIlaSegment.create(longIla, start * 8, longIla.length() - start * 8), new long[bufferSize]);
 
                 for (int i = 0; i < length; i++) {
-                    StringBuffer sb = new StringBuffer();
+                    StringBuilder sb = new StringBuilder();
 
-                    sb.append(Long.toOctalString(start + i * 16));
+                    sb.append(Long.toOctalString(start + i * 16L));
                     for (int j = 0; j < 2 && lii.hasNext(); j++) {
                         sb.append(" ");
                         switch (type) {
@@ -374,9 +374,9 @@ public class OctalDump {
                         new float[bufferSize]);
 
                 for (int i = 0; i < length; i++) {
-                    StringBuffer sb = new StringBuffer();
+                    StringBuilder sb = new StringBuilder();
 
-                    sb.append(Long.toOctalString(start + i * 16));
+                    sb.append(Long.toOctalString(start + i * 16L));
                     for (int j = 0; j < 4 && fii.hasNext(); j++) {
                         sb.append(" ");
                         sb.append(Float.toString(fii.next()));
@@ -420,9 +420,9 @@ public class OctalDump {
                         new double[bufferSize]);
 
                 for (int i = 0; i < length; i++) {
-                    StringBuffer sb = new StringBuffer();
+                    StringBuilder sb = new StringBuilder();
 
-                    sb.append(Long.toOctalString(start + i * 16));
+                    sb.append(Long.toOctalString(start + i * 16L));
                     for (int j = 0; j < 2 && dii.hasNext(); j++) {
                         sb.append(" ");
                         sb.append(Double.toString(dii.next()));

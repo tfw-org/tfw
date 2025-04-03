@@ -18,11 +18,8 @@ public class MultiplexedBranch extends BranchComponent {
     /**
      * Creates a multiplexed branch.
      *
-     * @param name
-     *            the name of the branch.
-     * @param multiplexers
-     * @param ports
-     *            the multiplexing ports.
+     * @param name the name of the multiplexed branch.
+     * @param multiplexers the multiplexers associated with this multiplexed branch.
      */
     MultiplexedBranch(String name, Multiplexer[] multiplexers) {
         super(name, null, null, multiplexers);
@@ -33,6 +30,7 @@ public class MultiplexedBranch extends BranchComponent {
     /**
      * Over-ride the super method so we can add the special multiplexer ports.
      */
+    @Override
     Set<Port> terminateLocally(Set<Port> connections) {
         for (int i = 0; i < this.multiplexers.length; i++) {
             connections.add(multiplexers[i].processorMultiSource);
@@ -82,8 +80,9 @@ public class MultiplexedBranch extends BranchComponent {
     /**
      * Removes the specified child component.
      *
-     * @link child The child component to remove.
+     * @param child The child component to remove.
      */
+    @Override
     public final synchronized void remove(TreeComponent child) {
         Argument.assertNotNull(child, "child");
 

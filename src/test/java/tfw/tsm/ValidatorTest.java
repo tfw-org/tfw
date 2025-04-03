@@ -1,9 +1,7 @@
 package tfw.tsm;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.junit.jupiter.api.Test;
 import tfw.tsm.ecd.EventChannelDescription;
@@ -14,52 +12,30 @@ import tfw.tsm.ecd.StatelessTriggerECD;
 import tfw.tsm.ecd.StringECD;
 import tfw.tsm.ecd.StringRollbackECD;
 
-/**
- *
- */
-class ValidatorTest {
+final class ValidatorTest {
     @Test
-    void testConstruction() {
+    void constructionTest() {
         ObjectECD[] sinks = new ObjectECD[] {new StringECD("Test")};
 
-        try {
-            new TestValidator(null, sinks, null, null);
-
-            fail("constructor accepted null name");
-        } catch (IllegalArgumentException expected) {
-            // System.out.println(expected);
-        }
-
-        try {
-            new TestValidator("Test", new ObjectECD[] {null}, null, null);
-
-            fail("constructor accepted null element in sink event channels");
-        } catch (IllegalArgumentException expected) {
-            // System.out.println(expected);
-        }
-
-        try {
-            new TestValidator("Test", sinks, new ObjectECD[] {null}, null);
-
-            fail("constructor accepted null element in non-triggering sinks");
-        } catch (IllegalArgumentException expected) {
-            // System.out.println(expected);
-        }
-
-        try {
-            new TestValidator("Test", null, null, null);
-            fail("constructor accepted null sink event channels");
-        } catch (IllegalArgumentException expected) {
-            // System.out.println(expected);
-        }
+        assertThatThrownBy(() -> new TestValidator(null, sinks, null, null))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("name == null not allowed!");
+        assertThatThrownBy(() -> new TestValidator("Test", new ObjectECD[] {null}, null, null))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("triggeringSinks[0] == null not allowed!");
+        assertThatThrownBy(() -> new TestValidator("Test", sinks, new ObjectECD[] {null}, null))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("nonTriggeringSinks[0] == null not allowed!");
+        assertThatThrownBy(() -> new TestValidator("Test", null, null, null))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("triggeringSinks == null not allowed!");
     }
 
     private final StringECD eventChannelAECD = new StringECD("ecA");
-
     private final StringECD eventChannelBECD = new StringECD("ecB");
 
     @Test
-    void testValidator() {
+    void validatorTest() {
         RootFactory rf = new RootFactory();
         rf.addEventChannel(eventChannelAECD);
         rf.addEventChannel(eventChannelBECD);
@@ -76,10 +52,10 @@ class ValidatorTest {
         initiator.set(eventChannelAECD, valueA);
         queue.waitTilEmpty();
 
-        assertEquals(null, validator.channelA, "validateState() called with wrong channelA state");
-        assertEquals(null, validator.channelB, "validateState() called with wrong channelB state");
-        assertEquals(valueA, validator.debugChannelA, "debugValdateState() called with wrong channelA state");
-        assertEquals(null, validator.debugChannelB, "debugValdateState() called with wrong channelB state");
+        assertThat(validator.channelA).isNull();
+        assertThat(validator.channelB).isNull();
+        assertThat(valueA).isEqualTo(validator.debugChannelA);
+        assertThat(validator.debugChannelB).isNull();
 
         validator.reset();
         valueA = "newValueA";
@@ -87,14 +63,14 @@ class ValidatorTest {
         initiator.set(eventChannelBECD, valueB);
         initiator.set(eventChannelAECD, valueA);
         queue.waitTilEmpty();
-        assertEquals(valueA, validator.channelA, "validateState() called with wrong channelA state");
-        assertEquals(valueB, validator.channelB, "validateState() called with wrong channelB state");
-        assertEquals(null, validator.debugChannelA, "debugValdateState() called with wrong channelA state");
-        assertEquals(null, validator.debugChannelB, "debugValdateState() called with wrong channelB state");
+        assertThat(valueA).isEqualTo(validator.channelA);
+        assertThat(valueB).isEqualTo(validator.channelB);
+        assertThat(validator.debugChannelA).isNull();
+        assertThat(validator.debugChannelB).isNull();
     }
 
     @Test
-    void testTriggeredValidation() {
+    void triggeredValidationTest() {
         StatelessTriggerECD trigger = new StatelessTriggerECD("trigger");
         final IntegerECD minECD = new IntegerECD("min");
         final IntegerECD maxECD = new IntegerECD("max");
@@ -109,6 +85,7 @@ class ValidatorTest {
         Initiator initiator = new Initiator("Initiator", new EventChannelDescription[] {trigger, minECD, maxECD});
         root.add(initiator);
         root.add(new Validator("TestValidator", trigger, new ObjectECD[] {minECD, maxECD}, new RollbackECD[] {error}) {
+            @Override
             protected void validateState() {
                 int min = ((Integer) get(minECD)).intValue();
                 int max = ((Integer) get(maxECD)).intValue();
@@ -121,23 +98,23 @@ class ValidatorTest {
         ErrorHandler errorHandler = new ErrorHandler(error);
         root.add(errorHandler);
         queue.waitTilEmpty();
-        assertNull(errorHandler.errorMsg, "Initialization failed");
+        assertThat(errorHandler.errorMsg).isNull();
 
         initiator.set(minECD, 3);
         queue.waitTilEmpty();
-        assertNull(errorHandler.errorMsg, "Non triggered event cause validation");
+        assertThat(errorHandler.errorMsg).isNull();
 
         initiator.trigger(trigger);
         queue.waitTilEmpty();
-        assertNotNull(errorHandler.errorMsg, "Trigger failed to cause validation");
+        assertThat(errorHandler.errorMsg).isNotNull();
 
         errorHandler.errorMsg = null;
         initiator.set(maxECD, 4);
         queue.waitTilEmpty();
-        assertNull(errorHandler.errorMsg, "Non triggered event cause validation");
+        assertThat(errorHandler.errorMsg).isNull();
     }
 
-    private class ErrorHandler extends Commit {
+    private static class ErrorHandler extends Commit {
         private final StringRollbackECD errorECD;
 
         String errorMsg = null;
@@ -147,6 +124,7 @@ class ValidatorTest {
             this.errorECD = errorECD;
         }
 
+        @Override
         protected void commit() {
             this.errorMsg = (String) get(this.errorECD);
         }
@@ -154,11 +132,8 @@ class ValidatorTest {
 
     private class TestValidator extends Validator {
         private String channelA = null;
-
         private String channelB = null;
-
         private String debugChannelA = null;
-
         private String debugChannelB = null;
 
         public TestValidator(
@@ -166,11 +141,13 @@ class ValidatorTest {
             super(name, triggeringSinks, nonTriggeringSinks, initiators);
         }
 
+        @Override
         protected void validateState() {
             channelA = (String) get(eventChannelAECD);
             channelB = (String) get(eventChannelBECD);
         }
 
+        @Override
         protected void debugValidateState() {
             debugChannelA = (String) get(eventChannelAECD);
             debugChannelB = (String) get(eventChannelBECD);

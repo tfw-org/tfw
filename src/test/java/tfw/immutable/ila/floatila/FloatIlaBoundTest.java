@@ -1,22 +1,28 @@
 package tfw.immutable.ila.floatila;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.Random;
 import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 
-class FloatIlaBoundTest {
+final class FloatIlaBoundTest {
     @Test
-    void testArguments() {
+    void argumentsTest() {
+        final float low = 5;
+        final float high = 10;
         final FloatIla ila = FloatIlaFromArray.create(new float[10]);
 
-        assertThrows(IllegalArgumentException.class, () -> FloatIlaBound.create(null, 5, 10));
-        assertThrows(IllegalArgumentException.class, () -> FloatIlaBound.create(ila, 10, 5));
+        assertThatThrownBy(() -> FloatIlaBound.create(null, low, high))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("ila == null not allowed!");
+        assertThatThrownBy(() -> FloatIlaBound.create(ila, high, low))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("minimum (=" + high + "00000) > maximum (=" + low + "00000) not allowed!");
     }
 
     @Test
-    void testAll() throws Exception {
+    void allTest() throws Exception {
         final Random random = new Random(0);
         final int length = IlaTestDimensions.defaultIlaLength();
         final float[] array = new float[length];

@@ -1,11 +1,11 @@
 package tfw.immutable.ila.booleanila;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.io.IOException;
 import java.util.Random;
+import tfw.check.Argument;
 
 public final class BooleanIlaCheck {
     private BooleanIlaCheck() {
@@ -16,21 +16,37 @@ public final class BooleanIlaCheck {
         final long ilaLength = ila.length();
         final boolean[] array = new boolean[10];
 
-        assertThrows(NullPointerException.class, () -> ila.get(null, 0, 0, 1));
-        assertThrows(IllegalArgumentException.class, () -> ila.get(array, -1, 0, 1));
-        assertThrows(IllegalArgumentException.class, () -> ila.get(array, 0, -1, 1));
-        assertThrows(IllegalArgumentException.class, () -> ila.get(array, 0, 0, -1));
-        assertThrows(IllegalArgumentException.class, () -> ila.get(array, array.length, 0, 1));
-        assertThrows(IllegalArgumentException.class, () -> ila.get(array, 0, ilaLength, 1));
-        assertThrows(IllegalArgumentException.class, () -> ila.get(array, array.length - 1, 0, 2));
-        assertThrows(IllegalArgumentException.class, () -> ila.get(array, 0, ilaLength - 1, 2));
+        assertThatThrownBy(() -> ila.get(null, 0, 0, 1))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("array == null not allowed!");
+        assertThatThrownBy(() -> ila.get(array, -1, 0, 1))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("offset (=-1) < 0 not allowed!");
+        assertThatThrownBy(() -> ila.get(array, 0, -1, 1))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("start (=-1) < 0 not allowed!");
+        assertThatThrownBy(() -> ila.get(array, 0, 0, -1))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("length (=-1) < 0 not allowed!");
+        assertThatThrownBy(() -> ila.get(array, array.length, 0, 1))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("offset (=10) >= array.length (=10) not allowed!");
+        assertThatThrownBy(() -> ila.get(array, 0, ilaLength, 1))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("start (=%s) >= ila.length() (=%s) not allowed!", ilaLength, ilaLength);
+        assertThatThrownBy(() -> ila.get(array, array.length - 1, 0, 2))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("offset+length (=11) > array.length (=10) not allowed!");
+        assertThatThrownBy(() -> ila.get(array, 0, ilaLength - 1, 2))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("start+length (=%s) > ila.length() (=%s) not allowed!", ilaLength + 1, ilaLength);
     }
 
     public static void checkGetExhaustively(BooleanIla ila1, BooleanIla ila2) throws IOException {
         final int length1 = (int) Math.min(ila1.length(), Integer.MAX_VALUE);
         final int length2 = (int) Math.min(ila2.length(), Integer.MAX_VALUE);
 
-        assertEquals(length1, length2);
+        assertThat(length2).isEqualTo(length1);
 
         final boolean[] a1 = new boolean[length1];
         final boolean[] a2 = new boolean[length1];
@@ -41,13 +57,13 @@ public final class BooleanIlaCheck {
                     ila1.get(a1, o, s, l);
                     ila2.get(a2, o, s, l);
 
-                    assertArrayEquals(a1, a2);
+                    assertThat(a2).isEqualTo(a1);
                 }
             }
         }
     }
 
-    public static void check(final BooleanIla expectedIla, final BooleanIla actualIla) throws IOException {
+    public static void check(final BooleanIla expectedIla, BooleanIla actualIla) throws IOException {
         checkGetArguments(actualIla);
         checkGetExhaustively(expectedIla, actualIla);
     }
@@ -70,37 +86,33 @@ public final class BooleanIlaCheck {
 
     public static void checkFourFiveEquivalence(final BooleanIla ila, final int offsetLength, boolean epsilon)
             throws Exception {
-        if (epsilon != false) {
-            throw new IllegalArgumentException("epsilon != " + false + " not allowed");
-        } else {
-            if (offsetLength < 0) throw new Exception("offsetLength < 0 not allowed");
+        Argument.assertNotLessThan(offsetLength, 0, "offsetLength");
 
-            final StridedBooleanIla stridedBooleanIla = StridedBooleanIlaFromBooleanIla.create(ila, new boolean[10]);
-            final Random random = new Random(0);
-            final int ilaLength = ila.length() + offsetLength <= Integer.MAX_VALUE
-                    ? (int) ila.length()
-                    : Integer.MAX_VALUE - offsetLength;
-            for (int offset = 0; offset < offsetLength; ++offset) {
-                final boolean[] four = new boolean[ilaLength + offsetLength];
-                final boolean[] five = new boolean[ilaLength + offsetLength];
-                for (int length = 1; length <= ilaLength; ++length) {
-                    for (long start = 0; start < ilaLength - length + 1; ++start) {
-                        for (int ii = 0; ii < four.length; ++ii) {
-                            five[ii] = four[ii] = random.nextBoolean();
-                        }
-                        ila.get(four, offset, start, length);
-                        stridedBooleanIla.get(five, offset, 1, start, length);
-                        for (int ii = 0; ii < length; ++ii) {
-                            if (!(four[ii] == five[ii]))
-                                throw new Exception("four[" + ii + "] ("
-                                        + four[ii] + ") !~ five["
-                                        + ii + "] ("
-                                        + five[ii]
-                                        + ") {length=" + length
-                                        + ",start=" + start
-                                        + ",offset=" + offset
-                                        + "}");
-                        }
+        final StridedBooleanIla stridedBooleanIla = StridedBooleanIlaFromBooleanIla.create(ila, new boolean[10]);
+        final Random random = new Random(0);
+        final int ilaLength = ila.length() + offsetLength <= Integer.MAX_VALUE
+                ? (int) ila.length()
+                : Integer.MAX_VALUE - offsetLength;
+        for (int offset = 0; offset < offsetLength; ++offset) {
+            final boolean[] four = new boolean[ilaLength + offsetLength];
+            final boolean[] five = new boolean[ilaLength + offsetLength];
+            for (int length = 1; length <= ilaLength; ++length) {
+                for (long start = 0; start < ilaLength - length + 1; ++start) {
+                    for (int ii = 0; ii < four.length; ++ii) {
+                        five[ii] = four[ii] = random.nextBoolean();
+                    }
+                    ila.get(four, offset, start, length);
+                    stridedBooleanIla.get(five, offset, 1, start, length);
+                    for (int ii = 0; ii < length; ++ii) {
+                        if (!(four[ii] == five[ii]))
+                            throw new Exception("four[" + ii + "] ("
+                                    + four[ii] + ") !~ five["
+                                    + ii + "] ("
+                                    + five[ii]
+                                    + ") {length=" + length
+                                    + ",start=" + start
+                                    + ",offset=" + offset
+                                    + "}");
                     }
                 }
             }
@@ -110,52 +122,48 @@ public final class BooleanIlaCheck {
     public static void checkCorrectness(
             BooleanIla target, BooleanIla actual, int addlOffsetLength, int maxAbsStride, boolean epsilon)
             throws Exception {
-        if (epsilon != false) {
-            throw new IllegalArgumentException("epsilon != " + false + " not allowed");
-        } else {
-            if (addlOffsetLength < 0) throw new Exception("addlOffsetLength < 0 not allowed");
-            if (maxAbsStride < 1) throw new Exception("maxAbsStride < 1 not allowed");
-            if (target.length() != actual.length()) throw new Exception("target.length() != actual.length()");
+        Argument.assertNotLessThan(addlOffsetLength, 0, "addlOffsetLength");
+        Argument.assertNotLessThan(maxAbsStride, 1, "maxAbsStride");
+        Argument.assertEquals(target.length(), actual.length(), "target.length()", "actual.length()");
 
-            final StridedBooleanIla stridedTarget = StridedBooleanIlaFromBooleanIla.create(target, new boolean[10]);
-            final StridedBooleanIla stridedActual = StridedBooleanIlaFromBooleanIla.create(target, new boolean[10]);
-            final Random random = new Random(0);
-            final int ilaLength = target.length() + addlOffsetLength <= Integer.MAX_VALUE
-                    ? (int) target.length()
-                    : Integer.MAX_VALUE - addlOffsetLength;
-            for (int stride = -maxAbsStride; stride <= maxAbsStride; ++stride) {
-                if (stride != 0) {
-                    int absStride = stride < 0 ? -stride : stride;
-                    int offsetStart = stride < 0 ? (ilaLength - 1) * absStride : 0;
-                    int offsetEnd = offsetStart + addlOffsetLength;
-                    for (int offset = offsetStart; offset < offsetEnd; ++offset) {
-                        final int arraySize = (ilaLength - 1) * absStride + 1 + addlOffsetLength;
-                        final boolean[] targetBase = new boolean[arraySize];
-                        final boolean[] actualBase = new boolean[arraySize];
-                        for (int length = 1; length <= ilaLength; ++length) {
-                            for (long start = 0; start < ilaLength - length + 1; ++start) {
-                                for (int ii = 0; ii < targetBase.length; ++ii) {
-                                    targetBase[ii] = actualBase[ii] = random.nextBoolean();
-                                }
-                                stridedTarget.get(targetBase, offset, stride, start, length);
-                                stridedActual.get(actualBase, offset, stride, start, length);
-                                for (int ii = 0; ii < arraySize; ++ii) {
-                                    if (!(actualBase[ii] == targetBase[ii]))
-                                        throw new Exception("actual[" + ii
-                                                + "] ("
-                                                + actualBase[ii]
-                                                + ") !~ target["
-                                                + ii + "] ("
-                                                + targetBase[ii]
-                                                + ") {length="
-                                                + length
-                                                + ",start=" + start
-                                                + ",offset="
-                                                + offset
-                                                + ",stride="
-                                                + stride
-                                                + "}");
-                                }
+        final StridedBooleanIla stridedTarget = StridedBooleanIlaFromBooleanIla.create(target, new boolean[10]);
+        final StridedBooleanIla stridedActual = StridedBooleanIlaFromBooleanIla.create(target, new boolean[10]);
+        final Random random = new Random(0);
+        final int ilaLength = target.length() + addlOffsetLength <= Integer.MAX_VALUE
+                ? (int) target.length()
+                : Integer.MAX_VALUE - addlOffsetLength;
+        for (int stride = -maxAbsStride; stride <= maxAbsStride; ++stride) {
+            if (stride != 0) {
+                int absStride = stride < 0 ? -stride : stride;
+                int offsetStart = stride < 0 ? (ilaLength - 1) * absStride : 0;
+                int offsetEnd = offsetStart + addlOffsetLength;
+                for (int offset = offsetStart; offset < offsetEnd; ++offset) {
+                    final int arraySize = (ilaLength - 1) * absStride + 1 + addlOffsetLength;
+                    final boolean[] targetBase = new boolean[arraySize];
+                    final boolean[] actualBase = new boolean[arraySize];
+                    for (int length = 1; length <= ilaLength; ++length) {
+                        for (long start = 0; start < ilaLength - length + 1; ++start) {
+                            for (int ii = 0; ii < targetBase.length; ++ii) {
+                                targetBase[ii] = actualBase[ii] = random.nextBoolean();
+                            }
+                            stridedTarget.get(targetBase, offset, stride, start, length);
+                            stridedActual.get(actualBase, offset, stride, start, length);
+                            for (int ii = 0; ii < arraySize; ++ii) {
+                                if (!(actualBase[ii] == targetBase[ii]))
+                                    throw new Exception("actual[" + ii
+                                            + "] ("
+                                            + actualBase[ii]
+                                            + ") !~ target["
+                                            + ii + "] ("
+                                            + targetBase[ii]
+                                            + ") {length="
+                                            + length
+                                            + ",start=" + start
+                                            + ",offset="
+                                            + offset
+                                            + ",stride="
+                                            + stride
+                                            + "}");
                             }
                         }
                     }

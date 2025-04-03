@@ -1,0 +1,23 @@
+// booleanilaf,byteilaf,charilaf,doubleilaf,floatilaf,intilaf,longilaf,objectilaf,shortilaf
+package %%PACKAGE%%;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
+import org.junit.jupiter.api.Test;
+
+final class %%NAME%%IlaFactorySegmentTest {
+    @Test
+    void argumentTest() {
+        assertThatThrownBy(() -> %%NAME%%IlaFactorySegment.create(null, 0, 5))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("factory == null not allowed!");
+    }
+
+    @Test
+    void createTest() {
+        final %%NAME%%IlaFactory%%TEMPLATE%% factory = %%NAME%%IlaFactoryFill.create(%%DEFAULT_VALUE%%, 10);
+
+        assertThat(%%NAME%%IlaFactorySegment.create(factory, 0, 5).create()).isNotNull();
+    }
+}

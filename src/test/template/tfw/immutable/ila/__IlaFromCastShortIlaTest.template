@@ -1,24 +1,28 @@
 // byteila,charila,doubleila,floatila,intila,longila
 package %%PACKAGE%%;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 %%RANDOM_INCLUDE%%import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 import tfw.immutable.ila.shortila.ShortIla;
 import tfw.immutable.ila.shortila.ShortIlaFromArray;
 
-class %%NAME%%IlaFromCastShortIlaTest {
+final class %%NAME%%IlaFromCastShortIlaTest {
     @Test
-    void testArguments() {
+    void argumentsTest() {
         final ShortIla ila = ShortIlaFromArray.create(new short[10]);
 
-        assertThrows(IllegalArgumentException.class, () -> %%NAME%%IlaFromCastShortIla.create(null, 1));
-        assertThrows(IllegalArgumentException.class, () -> %%NAME%%IlaFromCastShortIla.create(ila, 0));
+        assertThatThrownBy(() -> %%NAME%%IlaFromCastShortIla.create(null, 1))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("shortIla == null not allowed!");
+        assertThatThrownBy(() -> %%NAME%%IlaFromCastShortIla.create(ila, 0))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("bufferSize (=0) < 1 not allowed!");
     }
 
     @Test
-    void testAll() throws Exception {
+    void allTest() throws Exception {
         %%RANDOM_INIT%%final int length = IlaTestDimensions.defaultIlaLength();
         final short[] array = new short[length];
         final %%TYPE%%[] target = new %%TYPE%%[length];

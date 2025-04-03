@@ -6,7 +6,7 @@ import java.awt.event.MouseMotionListener;
 import javax.swing.JPanel;
 import tfw.tsm.Branch;
 import tfw.tsm.BranchBox;
-import tfw.tsm.Leaf;
+import tfw.tsm.TreeComponent;
 
 public class JPanelBB extends JPanel implements BranchBox {
     private static final long serialVersionUID = 1L;
@@ -62,24 +62,25 @@ public class JPanelBB extends JPanel implements BranchBox {
 
     public final void addMouseListenerToBoth(MouseListener listener) {
         addMouseListener(listener);
-        branch.add((Leaf) listener);
+        branch.add((TreeComponent) listener);
     }
 
     public final void removeMouseListenerFromBoth(MouseListener listener) {
         removeMouseListener(listener);
-        branch.remove((Leaf) listener);
+        branch.remove((TreeComponent) listener);
     }
 
     public final void addMouseMotionListenerToBoth(MouseMotionListener listener) {
         addMouseMotionListener(listener);
-        branch.add((Leaf) listener);
+        branch.add((TreeComponent) listener);
     }
 
     public final void removeMouseMotionListenerFromBoth(MouseMotionListener listener) {
         removeMouseMotionListener(listener);
-        branch.remove((Leaf) listener);
+        branch.remove((TreeComponent) listener);
     }
 
+    @Override
     public final Branch getBranch() {
         return branch;
     }

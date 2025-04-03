@@ -32,12 +32,13 @@ public class Multiplexer implements EventChannel {
             new HashMap<Object, DemultiplexedEventChannel>();
 
     /**
-     * Creates a multiplexer with the specified value and multi-value event
-     * channels.
+     * Creates a multiplexer with the specified value and multi-value event channels.
      *
-     * @param multiplexerBranchName
-     * @param valueECD
-     * @param multiValueECD
+     * @param multiplexerBranchName the name of the multiplexer branch this multiplexer is associated with.
+     * @param valueECD the event channel description of the individual multiplexed elements.
+     * @param multiValueECD the event channel description of the entire multiplexed element.
+     * @param stateChangeRule the state change rule that determines when state has changed.
+     * @param multiStrategy the strategy responsible for managing the multiplexed elements.
      */
     Multiplexer(
             String multiplexerBranchName,
@@ -64,6 +65,7 @@ public class Multiplexer implements EventChannel {
         /**
          * @see co2.ui.fw.Sink#stateChange()
          */
+        @Override
         void stateChange() {
             if (processorMultiSource.isStateSource()) {
                 return;
@@ -102,6 +104,7 @@ public class Multiplexer implements EventChannel {
         private Object[] keys = new Object[keyValueArraySize];
         private Object[] values = new Object[keyValueArraySize];
 
+        @Override
         Object fire() {
             if (pendingStateChanges.size() == 0) {
                 throw new IllegalStateException("No pending state changes to fire.");
@@ -192,6 +195,7 @@ public class Multiplexer implements EventChannel {
     /**
      * @see tfw.tsm.EventChannel#add(tfw.tsm.Port)
      */
+    @Override
     public void add(Port port) {
         // Search for the multiplexed component...
         Object slotId = component.getSlotId(port.getTreeComponent());
@@ -216,6 +220,7 @@ public class Multiplexer implements EventChannel {
     /**
      * @see tfw.tsm.EventChannel#addDeferredStateChange(tfw.tsm.ProcessorSource)
      */
+    @Override
     public void addDeferredStateChange(ProcessorSource source) {
         throw new UnsupportedOperationException("Multiplexer does not participate directly in transactions.");
     }
@@ -223,6 +228,7 @@ public class Multiplexer implements EventChannel {
     /**
      * @see tfw.tsm.EventChannel#fire()
      */
+    @Override
     public Object fire() {
         throw new UnsupportedOperationException("Multiplexer does not participate directly in transactions.");
     }
@@ -230,6 +236,7 @@ public class Multiplexer implements EventChannel {
     /**
      * @see tfw.tsm.EventChannel#getParent()
      */
+    @Override
     public TreeComponent getParent() {
         return this.component;
     }
@@ -237,6 +244,7 @@ public class Multiplexer implements EventChannel {
     /**
      * @see tfw.tsm.EventChannel#getCurrentStateSource()
      */
+    @Override
     public Source getCurrentStateSource() {
         throw new UnsupportedOperationException("Multiplexer does not participate directly in transactions.");
     }
@@ -244,6 +252,7 @@ public class Multiplexer implements EventChannel {
     /**
      * @see tfw.tsm.EventChannel#getECD()
      */
+    @Override
     public EventChannelDescription getECD() {
         return valueECD;
     }
@@ -251,6 +260,7 @@ public class Multiplexer implements EventChannel {
     /**
      * @see tfw.tsm.EventChannel#getPreviousCycleState()
      */
+    @Override
     public Object getPreviousCycleState() {
         throw new UnsupportedOperationException("Multiplexer does not participate directly in transactions.");
     }
@@ -258,10 +268,12 @@ public class Multiplexer implements EventChannel {
     /**
      * @see tfw.tsm.EventChannel#getPreviousTransactionState()
      */
+    @Override
     public Object getPreviousTransactionState() {
         throw new UnsupportedOperationException("Multiplexer does not participate directly in transactions.");
     }
 
+    @Override
     public boolean isStateChanged() {
         return false;
     }
@@ -269,6 +281,7 @@ public class Multiplexer implements EventChannel {
     /**
      * @see tfw.tsm.EventChannel#getState()
      */
+    @Override
     public Object getState() {
         return this.multiSink.eventChannel.getState();
     }
@@ -276,6 +289,7 @@ public class Multiplexer implements EventChannel {
     /**
      * @see tfw.tsm.EventChannel#isFireOnConnect()
      */
+    @Override
     public boolean isFireOnConnect() {
         throw new UnsupportedOperationException("Multiplexer does not participate directly in transactions.");
     }
@@ -283,6 +297,7 @@ public class Multiplexer implements EventChannel {
     /**
      * @see tfw.tsm.EventChannel#isRollbackParticipant()
      */
+    @Override
     public boolean isRollbackParticipant() {
         throw new UnsupportedOperationException("Multiplexer does not participate directly in transactions.");
     }
@@ -290,6 +305,7 @@ public class Multiplexer implements EventChannel {
     /**
      * @see tfw.tsm.EventChannel#remove(tfw.tsm.Port)
      */
+    @Override
     public void remove(Port port) {
         port.eventChannel.remove(port);
     }
@@ -298,6 +314,7 @@ public class Multiplexer implements EventChannel {
      * @see tfw.tsm.EventChannel#setState(tfw.tsm.Source, java.lang.Object,
      *      tfw.tsm.EventChannel)
      */
+    @Override
     public void setState(Source source, Object state, EventChannel forwardingEventChannel) {
         throw new UnsupportedOperationException("Multiplexer does not participate directly in transactions.");
     }
@@ -305,6 +322,7 @@ public class Multiplexer implements EventChannel {
     /**
      * @see tfw.tsm.EventChannel#setTreeComponent(tfw.tsm.TreeComponent)
      */
+    @Override
     public void setTreeComponent(TreeComponent component) {
         this.component = (MultiplexedBranch) component;
         this.multiSink.setTreeComponent(component);
@@ -314,6 +332,7 @@ public class Multiplexer implements EventChannel {
     /**
      * @see tfw.tsm.EventChannel#synchronizeCycleState()
      */
+    @Override
     public void synchronizeCycleState() {
         throw new UnsupportedOperationException("Multiplexer does not participate directly in transactions.");
     }
@@ -321,6 +340,7 @@ public class Multiplexer implements EventChannel {
     /**
      * @see tfw.tsm.EventChannel#synchronizeTransactionState()
      */
+    @Override
     public void synchronizeTransactionState() {
         throw new UnsupportedOperationException("Multiplexer does not participate directly in transactions.");
     }

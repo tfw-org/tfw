@@ -15,10 +15,12 @@ public final class SourceProxy implements Proxy {
         return new EventChannelProxy((Terminator) source.eventChannel);
     }
 
+    @Override
     public String getName() {
         return source.ecd.getEventChannelName();
     }
 
+    @Override
     public boolean equals(Object obj) {
         if (obj instanceof SourceProxy) {
             SourceProxy sp = (SourceProxy) obj;
@@ -29,6 +31,7 @@ public final class SourceProxy implements Proxy {
         return false;
     }
 
+    @Override
     public int hashCode() {
         return source.hashCode();
     }

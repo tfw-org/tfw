@@ -1,8 +1,7 @@
 package tfw.immutable.iis.bitiis;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.io.IOException;
 import org.junit.jupiter.api.Test;
@@ -12,14 +11,14 @@ import tfw.immutable.ila.bitila.BitIlaUtil;
 import tfw.immutable.ila.longila.LongIla;
 import tfw.immutable.ila.longila.LongIlaFromArray;
 
-class BitIisFromBitIlaTest {
+final class BitIisFromBitIlaTest {
     @Test
-    void testArguments() {
-        assertThrows(IllegalArgumentException.class, () -> BitIisFromBitIla.create(null));
+    void argumentsTest() {
+        assertThatThrownBy(() -> BitIisFromBitIla.create(null)).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
-    void testRead() throws IOException {
+    void readTest() throws IOException {
         final int numberOfBits = 12;
         final long[] expectedArray = new long[1];
         final LongIla longIla = LongIlaFromArray.create(expectedArray);
@@ -29,16 +28,16 @@ class BitIisFromBitIlaTest {
             final long[] actualArray = new long[expectedArray.length];
 
             for (int i = 0; i < numberOfBits; i += numberOfBits / 4) {
-                assertEquals(numberOfBits / 4, iis.read(actualArray, i, numberOfBits / 4));
+                assertThat(iis.read(actualArray, i, numberOfBits / 4)).isEqualTo(numberOfBits / 4);
             }
 
-            assertEquals(-1, iis.read(new long[1], 0, 1));
-            assertArrayEquals(expectedArray, actualArray);
+            assertThat(iis.read(new long[1], 0, 1)).isEqualTo(-1);
+            assertThat(actualArray).isEqualTo(expectedArray);
         }
     }
 
     @Test
-    void testRead2() throws IOException {
+    void read2Test() throws IOException {
         final int numberOfBits = 12;
         final long[] array = new long[1];
         final long[] expectedArray = new long[array.length];
@@ -61,14 +60,14 @@ class BitIisFromBitIlaTest {
                 BitIlaUtil.setBit(actualArray, i, 0);
             }
 
-            assertEquals(1, iis.skip(1));
-            assertEquals(numberOfBits - 1, iis.read(actualArray, 0, numberOfBits));
-            assertArrayEquals(expectedArray, actualArray);
+            assertThat(iis.skip(1)).isEqualTo(1);
+            assertThat(iis.read(actualArray, 0, numberOfBits)).isEqualTo(numberOfBits - 1);
+            assertThat(actualArray).isEqualTo(expectedArray);
         }
     }
 
     @Test
-    void testSkip() throws IOException {
+    void skipTest() throws IOException {
         final int numberOfBits = 12;
         final long[] expectedArray = new long[1];
         final LongIla longIla = LongIlaFromArray.create(expectedArray);
@@ -76,10 +75,10 @@ class BitIisFromBitIlaTest {
 
         try (BitIis iis = BitIisFromBitIla.create(ila)) {
             for (int i = 0; i < 4; i++) {
-                assertEquals(numberOfBits / 4, iis.skip(numberOfBits / 4));
+                assertThat(iis.skip(numberOfBits / 4)).isEqualTo(numberOfBits / 4);
             }
 
-            assertEquals(-1, iis.skip(1));
+            assertThat(iis.skip(1)).isEqualTo(-1);
         }
     }
 }

@@ -12,9 +12,6 @@ public final class FloatIlaFromCastDoubleIla {
     }
 
     public static FloatIla create(DoubleIla doubleIla, int bufferSize) {
-        Argument.assertNotNull(doubleIla, "doubleIla");
-        Argument.assertNotLessThan(bufferSize, 1, "bufferSize");
-
         return new FloatIlaImpl(doubleIla, bufferSize);
     }
 
@@ -23,6 +20,9 @@ public final class FloatIlaFromCastDoubleIla {
         private final int bufferSize;
 
         private FloatIlaImpl(DoubleIla doubleIla, int bufferSize) {
+            Argument.assertNotNull(doubleIla, "doubleIla");
+            Argument.assertNotLessThan(bufferSize, 1, "bufferSize");
+
             this.doubleIla = doubleIla;
             this.bufferSize = bufferSize;
         }

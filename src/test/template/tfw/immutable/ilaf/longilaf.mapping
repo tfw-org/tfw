@@ -1,0 +1,22 @@
+%%TYPE%% = long
+%%NAME%% = Long
+%%LOWER_NAME%% = long
+%%PACKAGE%% = tfw.immutable.ilaf.longilaf
+%%RANDOM_VALUE%% = random.nextLong()
+%%RANDOM_INCLUDE%%=import java.util.Random;\n
+%%RANDOM_INIT_0%%=final Random random = new Random(0);\n
+%%RANDOM_INIT%%=final Random random = new Random(0);\n\ \ \ \ \ \ \ \ 
+%%DEFAULT_VALUE%%=0L
+%%DEFAULT_VALUE_2%%=1L
+%%ASSERT_EQUALS_DELTA%% =
+%%CREATE_IMMUTABLE_START%% = new Long(
+%%CREATE_IMMUTABLE_END%% = )
+%%CAST_FROM_INT%% =
+%%CAST_FROM_INT_PAREN%% =
+%%CAST_FROM_INT_PAREN_END%% =
+%%CAST_FROM_DOUBLE%% = (long)\ 
+%%TEMPLATE%% = 
+%%SUPPRESS%% =
+%%FULL_CAST%% = (LongIla[])\ 
+%%DIAMOND%% =
+%%CHAR_CAST_TO_INT%% =

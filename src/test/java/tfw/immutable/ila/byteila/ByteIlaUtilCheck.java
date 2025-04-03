@@ -46,7 +46,7 @@ public final class ByteIlaUtilCheck {
 
     // also performs zero-two equivalence
     public static void checkTwoArgImmutability(ByteIla ila, byte epsilon) throws Exception {
-        final byte eps = epsilon < 0.0 ? (byte) -epsilon : (byte) epsilon;
+        final byte eps = epsilon < 0.0 ? (byte) -epsilon : epsilon;
         final byte neps = (byte) -eps;
         final int ilaLength = ila.length() <= Integer.MAX_VALUE ? (int) ila.length() : Integer.MAX_VALUE;
         final byte[] baseline = ByteIlaUtil.toArray(ila, 0, ilaLength);
@@ -70,7 +70,7 @@ public final class ByteIlaUtilCheck {
     }
 
     public static void checkTwoFourEquivalence(ByteIla ila, byte epsilon) throws Exception {
-        final byte eps = epsilon < 0.0 ? (byte) -epsilon : (byte) epsilon;
+        final byte eps = epsilon < 0.0 ? (byte) -epsilon : epsilon;
         final byte neps = (byte) -eps;
         final int ilaLength = ila.length() <= Integer.MAX_VALUE ? (int) ila.length() : Integer.MAX_VALUE;
         final byte[] four = new byte[ilaLength];

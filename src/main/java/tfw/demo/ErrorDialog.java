@@ -16,6 +16,7 @@ public class ErrorDialog extends Converter {
         this.errorName = errorName;
     }
 
+    @Override
     protected void convert() {
         JOptionPane.showMessageDialog(parent, get(errorName), "Error Message", JOptionPane.ERROR_MESSAGE);
     }

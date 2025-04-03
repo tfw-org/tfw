@@ -12,7 +12,7 @@ public abstract class EventChannelDescription {
     private final String eventChannelName;
 
     /** The value constraint for this event channel. */
-    private final ValueConstraint constraint;
+    private final ValueConstraint<? extends Object> constraint;
 
     /** A flag indicating whether the event channel fires on connection. */
     private final boolean fireOnConnect;
@@ -28,29 +28,23 @@ public abstract class EventChannelDescription {
      * @param constraint
      *            the value constraint for the event channel.
      */
-    EventChannelDescription(String eventChannelName, ValueConstraint constraint) {
+    EventChannelDescription(String eventChannelName, ValueConstraint<? extends Object> constraint) {
         this(eventChannelName, constraint, true, true);
     }
 
     /**
      * Creates an event channel description with the specified attributes.
      *
-     * @param eventChannelName
-     *            the name of the event channel.
-     * @param constraint
-     *            the value constraint for the evnet channel.
-     * @param codec
-     *            the codec for the event channel values. <code>null</code> is
-     *            a valid value.
-     * @param fireOnConnect
-     *            flag indicating whether the event channel fires state when a
-     *            new sink is connected.
-     * @param rollbackParticipant
-     *            flag indicating whether the event channel participates in
-     *            transaction rollbacks.
+     * @param eventChannelName the name of the event channel.
+     * @param constraint the value constraint for the evnet channel.
+     * @param fireOnConnect flag indicating whether the event channel fires state when a new sink is connected.
+     * @param rollbackParticipant flag indicating whether the event channel participates in transaction rollbacks.
      */
     EventChannelDescription(
-            String eventChannelName, ValueConstraint constraint, boolean fireOnConnect, boolean rollbackParticipant) {
+            String eventChannelName,
+            ValueConstraint<? extends Object> constraint,
+            boolean fireOnConnect,
+            boolean rollbackParticipant) {
         Argument.assertNotNull(eventChannelName, "eventChannelName");
         Argument.assertNotNull(constraint, "constraint");
         // CheckArgument.checkNull(codec, "codec");
@@ -79,7 +73,7 @@ public abstract class EventChannelDescription {
      *
      * @return the value constraint.
      */
-    public final ValueConstraint getConstraint() {
+    public final ValueConstraint<? extends Object> getConstraint() {
         return constraint;
     }
 
@@ -106,6 +100,7 @@ public abstract class EventChannelDescription {
     /**
      * Returns a hash value for this ecd.
      */
+    @Override
     public int hashCode() {
         return this.eventChannelName.hashCode();
     }
@@ -117,6 +112,7 @@ public abstract class EventChannelDescription {
      *            The object to be tested.
      * @return true if the object is equivalent otherwise returns false.
      */
+    @Override
     public boolean equals(Object object) {
         if (!(object instanceof EventChannelDescription)) {
             return false;
@@ -133,6 +129,7 @@ public abstract class EventChannelDescription {
     /**
      * Returns a string representation of the event channel description.
      */
+    @Override
     public String toString() {
         return super.toString() + "[eventChannelName = " + this.eventChannelName + "]";
     }

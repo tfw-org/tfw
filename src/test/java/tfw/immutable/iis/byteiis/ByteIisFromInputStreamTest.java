@@ -1,44 +1,43 @@
 package tfw.immutable.iis.byteiis;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.io.IOException;
 import java.io.InputStream;
 import org.junit.jupiter.api.Test;
 
-class ByteIisFromInputStreamTest {
+final class ByteIisFromInputStreamTest {
     @Test
-    void testArguments() {
-        assertThrows(IllegalArgumentException.class, () -> ByteIisFromInputStream.create(null));
+    void argumentsTest() {
+        assertThatThrownBy(() -> ByteIisFromInputStream.create(null)).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
-    void testExceptions() {
+    void exceptionsTest() {
         final ExceptionInputStream eis = new ExceptionInputStream();
         final ByteIis byteIis = ByteIisFromInputStream.create(eis);
 
-        assertThrows(IOException.class, () -> byteIis.skip(10));
-        assertThrows(IOException.class, () -> byteIis.read(new byte[10], 0, 10));
-        assertThrows(IOException.class, () -> byteIis.close());
+        assertThatThrownBy(() -> byteIis.skip(10)).isInstanceOf(IOException.class);
+        assertThatThrownBy(() -> byteIis.read(new byte[10], 0, 10)).isInstanceOf(IOException.class);
+        assertThatThrownBy(byteIis::close).isInstanceOf(IOException.class);
     }
 
     @Test
-    void testMethods() throws IOException {
+    void methodsTest() throws IOException {
         final TestInputStream tis = new TestInputStream();
         final ByteIis byteIis = ByteIisFromInputStream.create(tis);
         final long skipN = 11;
         final byte[] array = new byte[13];
 
-        assertEquals(skipN, byteIis.skip(skipN));
-        assertEquals(array.length, byteIis.read(array, 0, array.length));
+        assertThat(byteIis.skip(skipN)).isEqualTo(skipN);
+        assertThat(byteIis.read(array, 0, array.length)).isEqualTo(array.length);
 
         byteIis.close();
 
-        assertTrue(tis.closeCalled);
-        assertTrue(tis.readCalled);
-        assertTrue(tis.skipCalled);
+        assertThat(tis.closeCalled).isTrue();
+        assertThat(tis.readCalled).isTrue();
+        assertThat(tis.skipCalled).isTrue();
     }
 
     private static class ExceptionInputStream extends InputStream {

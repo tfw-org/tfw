@@ -12,9 +12,6 @@ public final class IntIlaFromCastByteIla {
     }
 
     public static IntIla create(ByteIla byteIla, int bufferSize) {
-        Argument.assertNotNull(byteIla, "byteIla");
-        Argument.assertNotLessThan(bufferSize, 1, "bufferSize");
-
         return new IntIlaImpl(byteIla, bufferSize);
     }
 
@@ -23,6 +20,9 @@ public final class IntIlaFromCastByteIla {
         private final int bufferSize;
 
         private IntIlaImpl(ByteIla byteIla, int bufferSize) {
+            Argument.assertNotNull(byteIla, "byteIla");
+            Argument.assertNotLessThan(bufferSize, 1, "bufferSize");
+
             this.byteIla = byteIla;
             this.bufferSize = bufferSize;
         }
@@ -32,6 +32,7 @@ public final class IntIlaFromCastByteIla {
             return byteIla.length();
         }
 
+        @Override
         protected void getImpl(int[] array, int offset, long start, int length) throws IOException {
             ByteIlaIterator fi =
                     new ByteIlaIterator(ByteIlaSegment.create(byteIla, start, length), new byte[bufferSize]);

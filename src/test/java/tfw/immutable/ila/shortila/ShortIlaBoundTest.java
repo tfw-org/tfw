@@ -1,22 +1,28 @@
 package tfw.immutable.ila.shortila;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.Random;
 import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 
-class ShortIlaBoundTest {
+final class ShortIlaBoundTest {
     @Test
-    void testArguments() {
+    void argumentsTest() {
+        final short low = (short) 5;
+        final short high = (short) 10;
         final ShortIla ila = ShortIlaFromArray.create(new short[10]);
 
-        assertThrows(IllegalArgumentException.class, () -> ShortIlaBound.create(null, (short) 5, (short) 10));
-        assertThrows(IllegalArgumentException.class, () -> ShortIlaBound.create(ila, (short) 10, (short) 5));
+        assertThatThrownBy(() -> ShortIlaBound.create(null, low, high))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("ila == null not allowed!");
+        assertThatThrownBy(() -> ShortIlaBound.create(ila, high, low))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("minimum (=" + high + ") > maximum (=" + low + ") not allowed!");
     }
 
     @Test
-    void testAll() throws Exception {
+    void allTest() throws Exception {
         final Random random = new Random(0);
         final int length = IlaTestDimensions.defaultIlaLength();
         final short[] array = new short[length];

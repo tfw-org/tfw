@@ -1,35 +1,59 @@
 // booleanila,byteila,charila,doubleila,floatila,intila,longila,objectila,shortila
 package %%PACKAGE%%;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import java.lang.reflect.Array;
 %%RANDOM_INCLUDE%%import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 
-class %%NAME%%IlaInterleaveTest {
-    @Test%%SUPPRESS%%
-    void testArguments() throws Exception {
+final class %%NAME%%IlaInterleaveTest {
+    %%SUPPRESS%%@Test
+    void argumentsTest() {
         final %%NAME%%Ila%%TEMPLATE%% ila1 = %%NAME%%IlaFromArray.create(new %%TYPE%%[10]);
         final %%NAME%%Ila%%TEMPLATE%% ila2 = %%NAME%%IlaFromArray.create(new %%TYPE%%[20]);
-        final %%NAME%%Ila%%TEMPLATE%%[] ilas1 = %%FULL_CAST%%new %%NAME%%Ila[] {};
-        final %%NAME%%Ila%%TEMPLATE%%[] ilas2 = %%FULL_CAST%%new %%NAME%%Ila[] {null, null};
-        final %%NAME%%Ila%%TEMPLATE%%[] ilas3 = %%FULL_CAST%%new %%NAME%%Ila[] {null, ila1};
-        final %%NAME%%Ila%%TEMPLATE%%[] ilas4 = %%FULL_CAST%%new %%NAME%%Ila[] {ila1, null};
-        final %%NAME%%Ila%%TEMPLATE%%[] ilas5 = %%FULL_CAST%%new %%NAME%%Ila[] {ila1, ila1};
-        final %%NAME%%Ila%%TEMPLATE%%[] ilas6 = %%FULL_CAST%%new %%NAME%%Ila[] {ila1, ila2};
+        final %%NAME%%Ila%%TEMPLATE%%[] ilas1 = %%FULL_CAST%%Array.newInstance(%%NAME%%Ila.class, 0);
+        final %%NAME%%Ila%%TEMPLATE%%[] ilas2 = %%FULL_CAST%%Array.newInstance(%%NAME%%Ila.class, 2);
+        final %%NAME%%Ila%%TEMPLATE%%[] ilas3 = %%FULL_CAST%%Array.newInstance(%%NAME%%Ila.class, 2);
+        final %%NAME%%Ila%%TEMPLATE%%[] ilas4 = %%FULL_CAST%%Array.newInstance(%%NAME%%Ila.class, 2);
+        final %%NAME%%Ila%%TEMPLATE%%[] ilas5 = %%FULL_CAST%%Array.newInstance(%%NAME%%Ila.class, 2);
+        final %%NAME%%Ila%%TEMPLATE%%[] ilas6 = %%FULL_CAST%%Array.newInstance(%%NAME%%Ila.class, 2);
         final %%TYPE%%[] buffer = new %%TYPE%%[10];
 
-        assertThrows(IllegalArgumentException.class, () -> %%NAME%%IlaInterleave.create(null, buffer));
-        assertThrows(IllegalArgumentException.class, () -> %%NAME%%IlaInterleave.create(ilas5, null));
-        assertThrows(IllegalArgumentException.class, () -> %%NAME%%IlaInterleave.create(ilas1, buffer));
-        assertThrows(IllegalArgumentException.class, () -> %%NAME%%IlaInterleave.create(ilas2, buffer));
-        assertThrows(IllegalArgumentException.class, () -> %%NAME%%IlaInterleave.create(ilas3, buffer));
-        assertThrows(IllegalArgumentException.class, () -> %%NAME%%IlaInterleave.create(ilas4, buffer));
-        assertThrows(IllegalArgumentException.class, () -> %%NAME%%IlaInterleave.create(ilas6, buffer));
+        ilas3[0] = null;
+        ilas3[1] = ila1;
+        ilas4[0] = ila1;
+        ilas4[1] = null;
+        ilas5[0] = ila1;
+        ilas5[1] = ila1;
+        ilas6[0] = ila1;
+        ilas6[1] = ila2;
+
+        assertThatThrownBy(() -> %%NAME%%IlaInterleave.create(null, buffer))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("ilas == null not allowed!");
+        assertThatThrownBy(() -> %%NAME%%IlaInterleave.create(ilas5, null))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("buffer == null not allowed!");
+        assertThatThrownBy(() -> %%NAME%%IlaInterleave.create(ilas1, buffer))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("ilas.length (=0) < 1 not allowed!");
+        assertThatThrownBy(() -> %%NAME%%IlaInterleave.create(ilas2, buffer))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("ilas[0] == null not allowed!");
+        assertThatThrownBy(() -> %%NAME%%IlaInterleave.create(ilas3, buffer))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("ilas[0] == null not allowed!");
+        assertThatThrownBy(() -> %%NAME%%IlaInterleave.create(ilas4, buffer))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("ilas[1] == null not allowed!");
+        assertThatThrownBy(() -> %%NAME%%IlaInterleave.create(ilas6, buffer))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("ilas[0].length() (=20) != ilas[1].length() (=10) not allowed!");
     }
 
-    @Test%%SUPPRESS%%
-    void testAll() throws Exception {
+    %%SUPPRESS%%@Test
+    void allTest() throws Exception {
         %%RANDOM_INIT%%final int length = IlaTestDimensions.defaultIlaLength();
         for (int jj = 2; jj < 6; ++jj) {
             final %%TYPE%%[][] target = new %%TYPE%%[jj][length];
@@ -37,7 +61,7 @@ class %%NAME%%IlaInterleaveTest {
             for (int ii = 0; ii < jj * length; ++ii) {
                 array[ii] = target[ii % jj][ii / jj] = %%RANDOM_VALUE%%;
             }
-            %%NAME%%Ila%%TEMPLATE%%[] ilas = %%FULL_CAST%%new %%NAME%%Ila[jj];
+            %%NAME%%Ila%%TEMPLATE%%[] ilas = %%FULL_CAST%%Array.newInstance(%%NAME%%Ila.class, jj);
             for (int ii = 0; ii < jj; ++ii) {
                 ilas[ii] = %%NAME%%IlaFromArray.create(target[ii]);
             }

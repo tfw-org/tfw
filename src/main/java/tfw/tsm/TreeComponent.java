@@ -187,7 +187,7 @@ public class TreeComponent {
     }
 
     public final String getFullyQualifiedName() {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
         if (parent != null) {
             parent.getName(sb);
@@ -199,7 +199,7 @@ public class TreeComponent {
         return sb.toString();
     }
 
-    private void getName(StringBuffer sb) {
+    private void getName(StringBuilder sb) {
         if (parent != null) {
             parent.getName(sb);
             sb.append('.');
@@ -304,19 +304,16 @@ public class TreeComponent {
         return isStateNonNull(sinksECDList);
     }
 
-    /**
-     * Returns <code>true</code> if the specified set of event channels are
-     * non-null, otherwise returns <code>false</code>.
-     *
-     * @param eventSet
-     *            the set of event channels
-     * @return <code>true</code> if the specified set of event channels are
-     *         non-null, otherwise returns <code>false</code>.
-     */
     private int eventChannelArraySize = 0;
 
     private EventChannelDescription[] eventChannelArray = new EventChannelDescription[eventChannelArraySize];
 
+    /**
+     * Returns <code>true</code> if the specified set of event channels are non-null, otherwise returns <code>false</code>.
+     *
+     * @param eventSet the set of event channels
+     * @return <code>true</code> if the specified set of event channels are non-null, otherwise returns <code>false</code>.
+     */
     final boolean isStateNonNull(List<? extends EventChannelDescription> eventSet) {
         eventChannelArraySize = eventSet.size();
         if (eventChannelArray.length < eventChannelArraySize) {

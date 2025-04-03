@@ -8,11 +8,7 @@ public final class LongIlaInsert {
         // non-instantiable class
     }
 
-    public static LongIla create(LongIla ila, long index, long value) throws IOException {
-        Argument.assertNotNull(ila, "ila");
-        Argument.assertNotLessThan(index, 0, "index");
-        Argument.assertNotGreaterThan(index, ila.length(), "index", "ila.length()");
-
+    public static LongIla create(LongIla ila, long index, long value) {
         return new LongIlaImpl(ila, index, value);
     }
 
@@ -22,6 +18,14 @@ public final class LongIlaInsert {
         private final long value;
 
         private LongIlaImpl(LongIla ila, long index, long value) {
+            Argument.assertNotNull(ila, "ila");
+            Argument.assertNotLessThan(index, 0, "index");
+            try {
+                Argument.assertNotGreaterThan(index, ila.length(), "index", "ila.length()");
+            } catch (IOException e) {
+                throw new IllegalArgumentException("Could not get ila length()!", e);
+            }
+
             this.ila = ila;
             this.index = index;
             this.value = value;

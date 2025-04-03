@@ -25,6 +25,7 @@ public class FillRectGraphic {
             this.height = height;
         }
 
+        @Override
         public void paint(Graphics2D graphics2D) {
             if (graphic != null) {
                 graphic.paint(graphics2D);
@@ -57,6 +58,7 @@ public class FillRectGraphic {
             this.heights = heights;
         }
 
+        @Override
         public void paint(Graphics2D graphics2D) {
             if (graphic != null) {
                 graphic.paint(graphics2D);

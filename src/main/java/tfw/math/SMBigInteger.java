@@ -36,7 +36,7 @@ public class SMBigInteger extends SignedMutableBigInteger {
         long result = 0;
 
         for (int i = offset + intLen - 1, p = 0; i >= offset; i--, p++) {
-            result += (this.value[i] & BigInteger.LONG_MASK) << 32 * p;
+            result += (this.value[i] & BigInteger.LONG_MASK) << (32 * p);
         }
 
         return result;
@@ -127,7 +127,7 @@ public class SMBigInteger extends SignedMutableBigInteger {
                 }
                 break;
             case HALF_EVEN:
-                if (buffer2.sign == 1 || buffer2.sign == 0 && quotient.isOdd()) {
+                if ((buffer2.sign == 1 || buffer2.sign == 0) && quotient.isOdd()) {
                     quotient.setValue(quotient.boundedLongValue() + quotient.sign);
                 }
                 break;

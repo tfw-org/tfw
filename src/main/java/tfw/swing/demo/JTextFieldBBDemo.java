@@ -38,20 +38,27 @@ public class JTextFieldBBDemo {
 
         final JTextField tf = new JTextField();
         tf.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 initiator.set(textECD, tf.getText());
             }
         });
         final JCheckBox cb = new JCheckBox("Enabled");
         cb.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 initiator.set(enabledECD, cb.isSelected());
             }
         });
 
-        JTextFieldBB tfb = new JTextFieldBB("JTextFieldBBTest", textECD, enabledECD);
+        JTextFieldBB tfb = JTextFieldBB.builder()
+                .setName("JTextFieldBBTest")
+                .setTextInputOutputECD(textECD)
+                .setEnabledInputECD(enabledECD)
+                .build();
         root.add(tfb);
         root.add(new Commit("JTextFieldBBTestCommit", new ObjectECD[] {textECD}, null, null) {
+            @Override
             protected void commit() {
                 tf.setText((String) get(textECD));
             }

@@ -1,35 +1,28 @@
 package tfw.tsm;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.NoSuchElementException;
 import org.junit.jupiter.api.Test;
 
-/**
- *
- */
-class OneDeepStateQueueFactoryTest {
+final class OneDeepStateQueueFactoryTest {
     @Test
-    void testFactory() {
+    void factoryTest() {
         StateQueueFactory factory = new OneDeepStateQueueFactory();
         StateQueue queue = factory.create();
-        assertNotNull(queue, "factory return null");
-        assertTrue(queue.isEmpty(), "isEmpty() == false when empty");
-        try {
-            queue.pop();
-            fail("pop() on an empty queue didn't throw exception!");
-        } catch (NoSuchElementException expected) {
-            // System.out.println(expected);
-        }
+        assertThat(queue).isNotNull();
+        assertThat(queue.isEmpty()).isTrue();
+
+        assertThatThrownBy(queue::pop)
+                .isInstanceOf(NoSuchElementException.class)
+                .hasMessage("Queue is empty");
 
         Object state = new Object();
         queue.push(state);
-        assertFalse(queue.isEmpty(), "isEmpty() == true when empty");
-        assertEquals(state, queue.pop(), "push/pop returned the wrong value!");
-        assertTrue(queue.isEmpty(), "isEmpty() == false after pop()");
+
+        assertThat(queue.isEmpty()).isFalse();
+        assertThat(state).isEqualTo(queue.pop());
+        assertThat(queue.isEmpty()).isTrue();
     }
 }

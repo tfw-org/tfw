@@ -12,9 +12,6 @@ public final class ShortIlaFromCastByteIla {
     }
 
     public static ShortIla create(ByteIla byteIla, int bufferSize) {
-        Argument.assertNotNull(byteIla, "byteIla");
-        Argument.assertNotLessThan(bufferSize, 1, "bufferSize");
-
         return new ShortIlaImpl(byteIla, bufferSize);
     }
 
@@ -23,6 +20,9 @@ public final class ShortIlaFromCastByteIla {
         private final int bufferSize;
 
         private ShortIlaImpl(ByteIla byteIla, int bufferSize) {
+            Argument.assertNotNull(byteIla, "byteIla");
+            Argument.assertNotLessThan(bufferSize, 1, "bufferSize");
+
             this.byteIla = byteIla;
             this.bufferSize = bufferSize;
         }
@@ -32,6 +32,7 @@ public final class ShortIlaFromCastByteIla {
             return byteIla.length();
         }
 
+        @Override
         protected void getImpl(short[] array, int offset, long start, int length) throws IOException {
             ByteIlaIterator fi =
                     new ByteIlaIterator(ByteIlaSegment.create(byteIla, start, length), new byte[bufferSize]);

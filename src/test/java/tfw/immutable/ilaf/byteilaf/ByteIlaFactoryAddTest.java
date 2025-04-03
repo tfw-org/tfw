@@ -1,0 +1,28 @@
+package tfw.immutable.ilaf.byteilaf;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
+import org.junit.jupiter.api.Test;
+
+final class ByteIlaFactoryAddTest {
+    @Test
+    void argumentTest() {
+        final ByteIlaFactory byteIlaFactory = ByteIlaFactoryFill.create((byte) 0, 10);
+
+        assertThatThrownBy(() -> ByteIlaFactoryAdd.create(null, byteIlaFactory, 10))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("leftFactory == null not allowed!");
+        assertThatThrownBy(() -> ByteIlaFactoryAdd.create(byteIlaFactory, null, 10))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("rightFactory == null not allowed!");
+    }
+
+    @Test
+    void createTest() {
+        final ByteIlaFactory f = ByteIlaFactoryFill.create((byte) 0, 10);
+
+        assertThat(ByteIlaFactoryAdd.create(f, f, 10).create()).isNotNull();
+    }
+}
+// AUTO GENERATED FROM TEMPLATE

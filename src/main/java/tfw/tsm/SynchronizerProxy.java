@@ -14,6 +14,7 @@ public final class SynchronizerProxy implements Proxy {
         this.synchronizer = synchronizer;
     }
 
+    @Override
     public String getName() {
         return synchronizer.getName();
     }
@@ -40,6 +41,7 @@ public final class SynchronizerProxy implements Proxy {
         return sp;
     }
 
+    @Override
     public boolean equals(Object obj) {
         if (obj instanceof SynchronizerProxy) {
             SynchronizerProxy ip = (SynchronizerProxy) obj;
@@ -50,6 +52,7 @@ public final class SynchronizerProxy implements Proxy {
         return false;
     }
 
+    @Override
     public int hashCode() {
         return synchronizer.hashCode();
     }

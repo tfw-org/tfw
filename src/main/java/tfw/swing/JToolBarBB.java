@@ -57,6 +57,7 @@ public class JToolBarBB extends JToolBar implements BranchBox {
         removeAll();
     }
 
+    @Override
     public Branch getBranch() {
         return branch;
     }

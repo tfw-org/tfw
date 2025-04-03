@@ -1,23 +1,25 @@
 package tfw.immutable.ila.charila;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.Random;
 import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 
-class CharIlaRampTest {
+final class CharIlaRampTest {
     @Test
-    void testArguments() throws Exception {
+    void argumentsTest() {
         final Random random = new Random(0);
         final char start = (char) random.nextInt();
         final char increment = (char) random.nextInt();
 
-        assertThrows(IllegalArgumentException.class, () -> CharIlaRamp.create(start, increment, -1));
+        assertThatThrownBy(() -> CharIlaRamp.create(start, increment, -1))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("length (=-1) < 0 not allowed!");
     }
 
     @Test
-    void testAll() throws Exception {
+    void allTest() throws Exception {
         final Random random = new Random(0);
         final char startValue = (char) random.nextInt();
         final char increment = (char) random.nextInt();

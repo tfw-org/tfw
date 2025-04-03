@@ -24,10 +24,10 @@ import tfw.check.Argument;
  * <LI>State Change - any call to (@link #addStateChange(InitiatorSource[], Object[]))
  * causes a new transaction to be create.</LI>
  * <LI>Component Change - consecutive calls to
- * @link #addComponent(AddComponentRunnable, Throwable) and
- * @link #removeComponent(RemoveComponentRunnable, Throwable) may or may not be
+ * (@link #addComponent(AddComponentRunnable, Throwable)) and
+ * (@link #removeComponent(RemoveComponentRunnable, Throwable)) may or may not be
  * coalesced into one or more transactions. A call to
- * @link #addStateChange(InitiatorSource[], Object[]) will cause the coalescing of
+ * (@link #addStateChange(InitiatorSource[], Object[])) will cause the coalescing of
  * component changes in order to insure the correct ordering of transactions.
  * </LI>
  * <LI>Event channelfiring (Need to verify the validity of this type).</LI>
@@ -70,6 +70,7 @@ public final class TransactionMgr {
     private boolean executingStateChanges = false;
 
     private TransactionExceptionHandler exceptionHandler = new TransactionExceptionHandler() {
+        @Override
         public void handle(Exception exception) {
             logger.log(Level.INFO, "Unexpected Exception!", exception);
 
@@ -406,16 +407,11 @@ public final class TransactionMgr {
     /**
      * Checks to see if any processors are dependent on the specified processor.
      *
-     * @param processor
-     *            The processor to checked
-     * @param processors
-     * @param delayedProcessors
-     * @param processorCrumbs
-     *            Processors that have already been visit in the recursive
-     *            descent algorithm.
-     * @param terminatorCrumbs
-     *            Terminators that have already been visited in the recursive
-     *            descent algorithm.
+     * @param processor The processor to checked
+     * @param processors The list of processors to run.
+     * @param delayedProcessors The list of delayed processors to run later.
+     * @param processorCrumbs Processors that have already been visit in the recursive descent algorithm.
+     * @param terminatorCrumbs Terminators that have already been visited in the recursive descent algorithm.
      */
     private static void checkDependencies(
             TreeComponent processor,
@@ -638,7 +634,7 @@ public final class TransactionMgr {
      */
     void addStateChange(ProcessorSource source) {
         if (!queue.isDispatchThread()) {
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
             sb.append("A Processor attempted to change state of event channel '");
             sb.append(source.ecd.getEventChannelName());
             sb.append("' outside of the transaction thread.");
@@ -648,7 +644,7 @@ public final class TransactionMgr {
         }
 
         if (!inTransaction) {
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
             sb.append("A Processor attempted to change state of event channel '");
             sb.append(source.ecd.getEventChannelName());
             sb.append("' outside of an active transaction.");
@@ -715,10 +711,8 @@ public final class TransactionMgr {
      * Creates an adds component change. This is called by {@link TreeComponent}.
      * It can be called at any time from any thread.
      *
-     * @param parent
-     *            the parent to which a child component is to be added.
-     * @param child
-     *            the child component to be added.
+     * @param addComponentRunnable the runnable that will add the component.
+     * @param addLocation the location where the add occurred or null.
      */
     void addComponent(AddComponentRunnable addComponentRunnable, Throwable addLocation) {
         invokeLater(new ComponentChangeTransaction(addComponentRunnable, addLocation));
@@ -728,10 +722,8 @@ public final class TransactionMgr {
      * Creates remove component change. This is called by {@link TreeComponent}.
      * It can be called at any time from any thread.
      *
-     * @param parent
-     *            the parent to which a component is to be added.
-     * @param child
-     *            the child component to be added.
+     * @param removeComponentRunnable the runnable that will remove the component.
+     * @param removeLocation the location where the remove occurred or null.
      */
     void removeComponent(RemoveComponentRunnable removeComponentRunnable, Throwable removeLocation) {
         invokeLater(new ComponentChangeTransaction(removeComponentRunnable, removeLocation));
@@ -814,6 +806,7 @@ public final class TransactionMgr {
             this.addRemoveLocation = addRemoveLocation;
         }
 
+        @Override
         public void run() {
             componentChange = change;
 
@@ -839,6 +832,7 @@ public final class TransactionMgr {
             this.setLocation = setLocation;
         }
 
+        @Override
         public void run() {
             for (int i = 0; i < sources.length; i++) {
                 if (sources[i].isConnected()) {
@@ -869,6 +863,7 @@ public final class TransactionMgr {
             this.eventChannelLocation = eventChannelLocation;
         }
 
+        @Override
         public void run() {
             eventChannelFires.add(eventChannel);
             executeTransaction(null, eventChannelLocation);
@@ -885,6 +880,7 @@ public final class TransactionMgr {
             this.child = child;
         }
 
+        @Override
         public void run() {
             parent.addToChildren(child);
             if (child instanceof BranchComponent) {
@@ -906,6 +902,7 @@ public final class TransactionMgr {
             this.transactionMgr = transactionMgr;
         }
 
+        @Override
         public String toString() {
             return "add Component " + child.getName() + " to " + parent.getName();
         }
@@ -929,6 +926,7 @@ public final class TransactionMgr {
             this.children = children;
         }
 
+        @Override
         public void run() {
             Logger logger = transactionMgr.getLogger();
             if (logger != null) {
@@ -974,6 +972,7 @@ public final class TransactionMgr {
             this.transactionMgr = transactionMgr;
         }
 
+        @Override
         public String toString() {
             return "remove Component " + child.getName() + " from " + parent.getName();
         }

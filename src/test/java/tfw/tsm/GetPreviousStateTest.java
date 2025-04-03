@@ -1,24 +1,23 @@
 package tfw.tsm;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
 import tfw.tsm.ecd.StringECD;
 
-class GetPreviousStateTest {
+final class GetPreviousStateTest {
     StringECD channel = new StringECD("channel");
 
     @Test
-    void testIsStateChanged() {
+    void isStateChangedTest() {
         final String initialState = "initialState";
         final String stateChangeOne = "StateOne";
         final String stateChangeTwo = "StateTwo";
         RootFactory rf = new RootFactory();
         rf.setTransactionExceptionHandler(new TransactionExceptionHandler() {
+            @Override
             public void handle(Exception e) {
-                e.printStackTrace();
-                fail("Test failed with an exception: " + e.getMessage());
+                assertThat(e).isNull();
             }
         });
         rf.addEventChannel(channel, initialState);
@@ -30,24 +29,17 @@ class GetPreviousStateTest {
         root.add(converter);
         root.add(commit);
         queue.waitTilEmpty();
-        assertEquals(initialState, converter.value, "getPreviousCycleState() failed inital value = " + converter.value);
-        assertEquals(
-                initialState, commit.value, "getPreviousTransactionState() failed initial value = " + commit.value);
+        assertThat(initialState).isEqualTo(converter.value).isEqualTo(commit.value);
 
         Initiator initiator = new Initiator("initiator", channel);
         root.add(initiator);
         initiator.set(channel, stateChangeOne);
         queue.waitTilEmpty();
-        assertEquals(initialState, converter.value, "getPreviousCycleState() failed inital value = " + converter.value);
-        assertEquals(
-                initialState, commit.value, "getPreviousTransactionState() failed initial value = " + commit.value);
+        assertThat(initialState).isEqualTo(converter.value).isEqualTo(commit.value);
 
         initiator.set(channel, stateChangeTwo);
         queue.waitTilEmpty();
-        assertEquals(
-                stateChangeOne, converter.value, "getPreviousCycleState() failed inital value = " + converter.value);
-        assertEquals(
-                stateChangeOne, commit.value, "getPreviousTransactionState() failed initial value = " + commit.value);
+        assertThat(stateChangeOne).isEqualTo(converter.value).isEqualTo(commit.value);
     }
 
     private class TestConverter extends Converter {
@@ -57,6 +49,7 @@ class GetPreviousStateTest {
             super("TestConverter", new StringECD[] {channel}, new StringECD[] {});
         }
 
+        @Override
         protected void convert() {
             value = (String) this.getPreviousCycleState(channel);
         }
@@ -69,6 +62,7 @@ class GetPreviousStateTest {
             super("TestCommit", new StringECD[] {channel});
         }
 
+        @Override
         protected void commit() {
             value = (String) this.getPreviousTransactionState(channel);
         }

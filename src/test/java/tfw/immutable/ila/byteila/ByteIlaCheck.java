@@ -1,8 +1,7 @@
 package tfw.immutable.ila.byteila;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.io.IOException;
 import java.util.Random;
@@ -16,21 +15,37 @@ public final class ByteIlaCheck {
         final long ilaLength = ila.length();
         final byte[] array = new byte[10];
 
-        assertThrows(NullPointerException.class, () -> ila.get(null, 0, 0, 1));
-        assertThrows(IllegalArgumentException.class, () -> ila.get(array, -1, 0, 1));
-        assertThrows(IllegalArgumentException.class, () -> ila.get(array, 0, -1, 1));
-        assertThrows(IllegalArgumentException.class, () -> ila.get(array, 0, 0, -1));
-        assertThrows(IllegalArgumentException.class, () -> ila.get(array, array.length, 0, 1));
-        assertThrows(IllegalArgumentException.class, () -> ila.get(array, 0, ilaLength, 1));
-        assertThrows(IllegalArgumentException.class, () -> ila.get(array, array.length - 1, 0, 2));
-        assertThrows(IllegalArgumentException.class, () -> ila.get(array, 0, ilaLength - 1, 2));
+        assertThatThrownBy(() -> ila.get(null, 0, 0, 1))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("array == null not allowed!");
+        assertThatThrownBy(() -> ila.get(array, -1, 0, 1))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("offset (=-1) < 0 not allowed!");
+        assertThatThrownBy(() -> ila.get(array, 0, -1, 1))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("start (=-1) < 0 not allowed!");
+        assertThatThrownBy(() -> ila.get(array, 0, 0, -1))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("length (=-1) < 0 not allowed!");
+        assertThatThrownBy(() -> ila.get(array, array.length, 0, 1))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("offset (=10) >= array.length (=10) not allowed!");
+        assertThatThrownBy(() -> ila.get(array, 0, ilaLength, 1))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("start (=%s) >= ila.length() (=%s) not allowed!", ilaLength, ilaLength);
+        assertThatThrownBy(() -> ila.get(array, array.length - 1, 0, 2))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("offset+length (=11) > array.length (=10) not allowed!");
+        assertThatThrownBy(() -> ila.get(array, 0, ilaLength - 1, 2))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("start+length (=%s) > ila.length() (=%s) not allowed!", ilaLength + 1, ilaLength);
     }
 
     public static void checkGetExhaustively(final ByteIla ila1, final ByteIla ila2) throws IOException {
         final int length1 = (int) Math.min(ila1.length(), Integer.MAX_VALUE);
         final int length2 = (int) Math.min(ila2.length(), Integer.MAX_VALUE);
 
-        assertEquals(length1, length2);
+        assertThat(length2).isEqualTo(length1);
 
         final byte[] a1 = new byte[length1];
         final byte[] a2 = new byte[length1];
@@ -41,7 +56,7 @@ public final class ByteIlaCheck {
                     ila1.get(a1, o, s, l);
                     ila2.get(a2, o, s, l);
 
-                    assertArrayEquals(a1, a2);
+                    assertThat(a2).isEqualTo(a1);
                 }
             }
         }
@@ -71,7 +86,7 @@ public final class ByteIlaCheck {
         if (offsetLength < 0) throw new Exception("offsetLength < 0 not allowed");
 
         final StridedByteIla stridedByteIla = StridedByteIlaFromByteIla.create(ila, new byte[1000]);
-        final byte eps = epsilon < 0.0 ? (byte) -epsilon : (byte) epsilon;
+        final byte eps = epsilon < 0.0 ? (byte) -epsilon : epsilon;
         final byte neps = (byte) -eps;
         final Random random = new Random(0);
         final int ilaLength = ila.length() + offsetLength <= Integer.MAX_VALUE
@@ -113,7 +128,7 @@ public final class ByteIlaCheck {
 
         final StridedByteIla stridedTarget = StridedByteIlaFromByteIla.create(target, new byte[1000]);
         final StridedByteIla stridedActual = StridedByteIlaFromByteIla.create(target, new byte[1000]);
-        final byte eps = epsilon < 0.0 ? (byte) -epsilon : (byte) epsilon;
+        final byte eps = epsilon < 0.0 ? (byte) -epsilon : epsilon;
         final byte neps = (byte) -eps;
         final Random random = new Random(0);
         final int ilaLength = stridedTarget.length() + addlOffsetLength <= Integer.MAX_VALUE

@@ -1,18 +1,13 @@
 package tfw.tsm;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.junit.jupiter.api.Test;
 import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.StringECD;
 
-/**
- *
- */
-class CommitTest {
+final class CommitTest {
     private final ObjectECD portA = new StringECD("A");
     private final ObjectECD portB = new StringECD("B");
     private final ObjectECD portC = new StringECD("C");
@@ -25,52 +20,34 @@ class CommitTest {
             "Test Commit", new ObjectECD[] {portA, portB}, new ObjectECD[] {portC, portD}, new Initiator[] {initA, initB
             });
 
-    public void testConstructor() {
-        try {
-            new TestCommit(null, new ObjectECD[] {portA}, null, null);
-            fail("Constructor accepted null name");
-        } catch (IllegalArgumentException expected) {
-            // System.out.println(expected);
-        }
+    public void constructorTest() {
+        assertThatThrownBy(() -> new TestCommit(null, new ObjectECD[] {portA}, null, null))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("runnable == null not allowed!");
 
-        try {
-            new TestCommit("TestCommit", null, new ObjectECD[] {portA}, null);
-            fail("Constructor accepted null triggerSinks");
-        } catch (IllegalArgumentException expected) {
-            // System.out.println(expected);
-        }
+        assertThatThrownBy(() -> new TestCommit("TestCommit", null, new ObjectECD[] {portA}, null))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("runnable == null not allowed!");
 
-        try {
-            new TestCommit("TestCommit", new ObjectECD[] {}, new ObjectECD[] {portA}, null);
-            fail("Constructor accepted empty triggerSinks");
-        } catch (IllegalArgumentException expected) {
-            // System.out.println(expected);
-        }
+        assertThatThrownBy(() -> new TestCommit("TestCommit", new ObjectECD[] {}, new ObjectECD[] {portA}, null))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("runnable == null not allowed!");
 
-        try {
-            new TestCommit("TestCommit", new ObjectECD[] {portA, null}, null, null);
-            fail("Constructor accepted null triggerSinks element");
-        } catch (IllegalArgumentException expected) {
-            // System.out.println(expected);
-        }
+        assertThatThrownBy(() -> new TestCommit("TestCommit", new ObjectECD[] {portA, null}, null, null))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("runnable == null not allowed!");
 
-        try {
-            new TestCommit("TestCommit", new ObjectECD[] {portA}, new ObjectECD[] {null}, null);
-            fail("Constructor accepted null nonTriggerSinks element");
-        } catch (IllegalArgumentException expected) {
-            // System.out.println(expected);
-        }
+        assertThatThrownBy(() -> new TestCommit("TestCommit", new ObjectECD[] {portA}, new ObjectECD[] {null}, null))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("runnable == null not allowed!");
 
-        try {
-            new TestCommit("TestCommit", new ObjectECD[] {portA}, null, new Initiator[] {null});
-            fail("Constructor accepted null initiator element");
-        } catch (IllegalArgumentException expected) {
-            // System.out.println(expected);
-        }
+        assertThatThrownBy(() -> new TestCommit("TestCommit", new ObjectECD[] {portA}, null, new Initiator[] {null}))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("runnable == null not allowed!");
     }
 
     @Test
-    void testTriggerBehavior() throws Exception {
+    void triggerBehaviorTest() throws Exception {
         RootFactory rf = new RootFactory();
         rf.addEventChannel(portA, "avalue");
         rf.addEventChannel(portB, "bvalue");
@@ -87,32 +64,32 @@ class CommitTest {
         testCommit.clear();
         initC.set(portC, "cvalue");
         queue.waitTilEmpty();
-        assertFalse(testCommit.commitFired, "commit() was called on non-trigger sink!");
-        assertFalse(testCommit.debugCommitFired, "debugCommit() was called on non-trigger sink!");
+
+        assertThat(testCommit.commitFired).isFalse();
+        assertThat(testCommit.debugCommitFired).isFalse();
 
         initA.set(portA, "avalue");
         queue.waitTilEmpty();
-        assertFalse(testCommit.commitFired, "commit() was called on an initiator sink!");
-        assertFalse(testCommit.debugCommitFired, "debugCommit()  was called on an initiator sink!");
+        assertThat(testCommit.commitFired).isFalse();
+        assertThat(testCommit.debugCommitFired).isFalse();
 
         testCommit.clear();
         branch.add(new SetAOnA("SetAOnA", portA));
         initA.set(portA, "avalue");
         queue.waitTilEmpty();
-        assertTrue(testCommit.commitFired, "commit() was not called!");
-        assertEquals("true", testCommit.portAState, "portA value wrong!");
+        assertThat(testCommit.commitFired).isTrue();
+        assertThat(testCommit.portAState).isEqualTo("true");
 
         testCommit.clear();
         branch.add(new SetAOnC("SetAOnC", portC, portA));
 
-        // Visualize.print(branch);
         initC.set(portC, "anything");
         queue.waitTilEmpty();
-        assertTrue(testCommit.commitFired, "commit() was not called!");
-        assertEquals("false", testCommit.portAState, "portA value wrong!");
+        assertThat(testCommit.commitFired).isTrue();
+        assertThat(testCommit.portAState).isEqualTo("false");
     }
 
-    private class SetAOnA extends Converter {
+    private static class SetAOnA extends Converter {
         private final ObjectECD portA;
 
         public SetAOnA(String name, ObjectECD portA) {
@@ -120,6 +97,7 @@ class CommitTest {
             this.portA = portA;
         }
 
+        @Override
         public void convert() {
             String value = (String) get(portA);
 
@@ -129,7 +107,7 @@ class CommitTest {
         }
     }
 
-    private class SetAOnC extends Converter {
+    private static class SetAOnC extends Converter {
         private final ObjectECD portA;
 
         public SetAOnC(String name, ObjectECD portC, ObjectECD portA) {
@@ -137,6 +115,7 @@ class CommitTest {
             this.portA = portA;
         }
 
+        @Override
         public void convert() {
             set(portA, "false");
         }
@@ -146,9 +125,6 @@ class CommitTest {
         public boolean commitFired = false;
         public boolean debugCommitFired = false;
         public String portAState = null;
-        public String portBState = null;
-        public String portCState = null;
-        public String portDState = null;
 
         public TestCommit(String name, ObjectECD[] triggerSinks, ObjectECD[] nonTriggerSinks, Initiator[] initiators) {
             super(name, triggerSinks, nonTriggerSinks, initiators);
@@ -156,25 +132,21 @@ class CommitTest {
 
         private void setState() {
             portAState = (String) get(portA);
-            portBState = (String) get(portA);
-            portCState = (String) get(portA);
-            portDState = (String) get(portA);
         }
 
         public void clear() {
             commitFired = false;
             debugCommitFired = false;
             portAState = null;
-            portBState = null;
-            portCState = null;
-            portDState = null;
         }
 
+        @Override
         public void commit() {
             commitFired = true;
             setState();
         }
 
+        @Override
         public void debugCommit() {
             debugCommitFired = true;
             setState();

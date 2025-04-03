@@ -60,9 +60,9 @@ public class StateMachine {
             int i = 0;
             for (; i < transitions.size(); i++) {
                 Transition t = transitions.get(i);
-                final boolean e =
-                        t.trigger == event || t.trigger instanceof Class<?> && ((Class<?>) t.trigger).isInstance(event);
-                final boolean g = t.guard == null || t.guard != null && t.guard.isTrue(event);
+                final boolean e = t.trigger == event
+                        || (t.trigger instanceof Class<?> && ((Class<?>) t.trigger).isInstance(event));
+                final boolean g = t.guard == null || (t.guard != null && t.guard.isTrue(event));
                 final boolean s = t.fromState == state;
 
                 if (e && g && s) {

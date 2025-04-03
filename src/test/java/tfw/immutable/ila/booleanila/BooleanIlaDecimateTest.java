@@ -1,25 +1,33 @@
 package tfw.immutable.ila.booleanila;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.Random;
 import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 
-class BooleanIlaDecimateTest {
+final class BooleanIlaDecimateTest {
     @Test
-    void testArguments() {
+    void argumentsTest() {
         final BooleanIla ila = BooleanIlaFromArray.create(new boolean[10]);
         final boolean[] buffer = new boolean[10];
 
-        assertThrows(IllegalArgumentException.class, () -> BooleanIlaDecimate.create(null, 2, buffer));
-        assertThrows(IllegalArgumentException.class, () -> BooleanIlaDecimate.create(ila, 2, null));
-        assertThrows(IllegalArgumentException.class, () -> BooleanIlaDecimate.create(ila, 1, buffer));
-        assertThrows(IllegalArgumentException.class, () -> BooleanIlaDecimate.create(ila, 2, new boolean[0]));
+        assertThatThrownBy(() -> BooleanIlaDecimate.create(null, 2, buffer))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("ila == null not allowed!");
+        assertThatThrownBy(() -> BooleanIlaDecimate.create(ila, 2, null))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("buffer == null not allowed!");
+        assertThatThrownBy(() -> BooleanIlaDecimate.create(ila, 1, buffer))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("factor (=1) < 2 not allowed!");
+        assertThatThrownBy(() -> BooleanIlaDecimate.create(ila, 2, new boolean[0]))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("buffer.length (=0) < 1 not allowed!");
     }
 
     @Test
-    void testAll() throws Exception {
+    void allTest() throws Exception {
         final Random random = new Random(0);
         final int length = IlaTestDimensions.defaultIlaLength();
         final boolean[] array = new boolean[length];

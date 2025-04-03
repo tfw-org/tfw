@@ -1,0 +1,17 @@
+// byteilaf,charilaf,doubleilaf,floatilaf,intilaf,longilaf,shortilaf
+package %%PACKAGE%%;
+
+import tfw.check.Argument;
+import tfw.immutable.ila.%%LOWER_NAME%%ila.%%NAME%%IlaDivide;
+
+public class %%NAME%%IlaFactoryDivide {
+    private %%NAME%%IlaFactoryDivide() {}
+
+    public static %%TEMPLATE_SPACE%%%%NAME%%IlaFactory%%TEMPLATE%% create(
+            final %%NAME%%IlaFactory%%TEMPLATE%% leftFactory, final %%NAME%%IlaFactory%%TEMPLATE%% rightFactory, final int bufferSize) {
+        Argument.assertNotNull(leftFactory, "leftFactory");
+        Argument.assertNotNull(rightFactory, "rightFactory");
+
+        return () -> %%NAME%%IlaDivide.create(leftFactory.create(), rightFactory.create(), bufferSize);
+    }
+}

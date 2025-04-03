@@ -12,12 +12,10 @@ abstract class RollbackHandler extends EventHandler {
     /**
      * Creates a rollback event handler with the specified attributes.
      *
-     * @param name
-     *            the name of the component.
-     * @param sinkDescriptions
-     *            the descriptions of the sinks.
-     * @param sourceDescriptions
-     *            the descriptions of the sources.
+     * @param name the name of the component.
+     * @param triggeringSinks the set of triggering input event channel descriptions.
+     * @param nonTriggeringSinks the set of non-triggering input event channel descriptions.
+     * @param sourceDescriptions the set of output event channel descriptions.
      */
     RollbackHandler(
             String name,

@@ -1,19 +1,21 @@
 package tfw.immutable.ila.longila;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.Random;
 import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 
-class LongIlaNegateTest {
+final class LongIlaNegateTest {
     @Test
-    void testArguments() throws Exception {
-        assertThrows(IllegalArgumentException.class, () -> LongIlaNegate.create(null));
+    void argumentsTest() {
+        assertThatThrownBy(() -> LongIlaNegate.create(null))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("ila == null not allowed!");
     }
 
     @Test
-    void testAll() throws Exception {
+    void allTest() throws Exception {
         final Random random = new Random(0);
         final int length = IlaTestDimensions.defaultIlaLength();
         final long[] array = new long[length];

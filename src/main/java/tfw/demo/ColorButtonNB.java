@@ -47,12 +47,14 @@ public class ColorButtonNB extends JButton implements BranchBox {
         branch.add(initiator);
 
         addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 if (dialog == null) {
                     colorChooser = new JColorChooser();
                     colorChooser.addChooserPanel(new GrayScalePanel());
                     colorChooser.setColor(color);
                     colorChooser.getSelectionModel().addChangeListener(new ChangeListener() {
+                        @Override
                         public void stateChanged(ChangeEvent e) {
                             initiator.set(colorECD, colorChooser.getColor());
                         }
@@ -64,6 +66,7 @@ public class ColorButtonNB extends JButton implements BranchBox {
                             colorChooser,
                             new ActionListener() // OK action listener.
                             {
+                                @Override
                                 public void actionPerformed(ActionEvent e) {
                                     System.out.println(colorChooser.getColor());
                                     initiator.set(colorECD, colorChooser.getColor());
@@ -71,6 +74,7 @@ public class ColorButtonNB extends JButton implements BranchBox {
                             },
                             new ActionListener() // Cancel action listener
                             {
+                                @Override
                                 public void actionPerformed(ActionEvent e) {
                                     initiator.set(colorECD, originalColor);
                                 }
@@ -86,6 +90,7 @@ public class ColorButtonNB extends JButton implements BranchBox {
         setEnabled(false);
     }
 
+    @Override
     public Branch getBranch() {
         return branch;
     }
@@ -100,6 +105,7 @@ public class ColorButtonNB extends JButton implements BranchBox {
             this.enableName = enableName;
         }
 
+        @Override
         protected void commit() {
             color = (Color) get(colorName);
             setEnabled(((Boolean) get(enableName)).booleanValue());
@@ -121,6 +127,7 @@ public class ColorButtonNB extends JButton implements BranchBox {
 
         public GrayScalePanel() {
             slider.addChangeListener(new ChangeListener() {
+                @Override
                 public void stateChanged(ChangeEvent e) {
                     getColorSelectionModel().setSelectedColor(grays[slider.getValue()]);
                 }
@@ -136,20 +143,25 @@ public class ColorButtonNB extends JButton implements BranchBox {
             add(jp);
         }
 
+        @Override
         protected void buildChooser() {}
 
+        @Override
         public void updateChooser() {
             slider.setValue(getColorSelectionModel().getSelectedColor().getRed());
         }
 
+        @Override
         public String getDisplayName() {
             return "Gray Scale";
         }
 
+        @Override
         public Icon getSmallDisplayIcon() {
             return null;
         }
 
+        @Override
         public Icon getLargeDisplayIcon() {
             return null;
         }
@@ -164,15 +176,18 @@ public class ColorButtonNB extends JButton implements BranchBox {
             this.height = height;
         }
 
+        @Override
         public void paintIcon(Component c, Graphics g, int x, int y) {
             g.setColor(color);
             g.fill3DRect(x, y, width, height, true);
         }
 
+        @Override
         public int getIconWidth() {
             return width;
         }
 
+        @Override
         public int getIconHeight() {
             return height;
         }

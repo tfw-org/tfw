@@ -1,0 +1,12 @@
+// booleanilaf,byteilaf,charilaf,doubleilaf,floatilaf,intilaf,longilaf,objectilaf,shortilaf
+package %%PACKAGE%%;
+
+import tfw.immutable.ila.%%LOWER_NAME%%ila.%%NAME%%IlaFromArray;
+
+public class %%NAME%%IlaFactoryFromArray {
+    private %%NAME%%IlaFactoryFromArray() {}
+
+    public static %%TEMPLATE_SPACE%%%%NAME%%IlaFactory%%TEMPLATE%% create(final %%TYPE_OR_TEMPLATE%%[] array) {
+        return () -> %%NAME%%IlaFromArray.create(array);
+    }
+}

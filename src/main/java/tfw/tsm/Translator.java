@@ -41,8 +41,8 @@ class Translator extends Terminator {
         Argument.assertNotNull(childPort, "childPort");
         Argument.assertNotNull(parentPort, "parentPort");
 
-        ValueConstraint pvc = parentPort.getConstraint();
-        ValueConstraint cvc = childPort.getConstraint();
+        ValueConstraint<? extends Object> pvc = parentPort.getConstraint();
+        ValueConstraint<? extends Object> cvc = childPort.getConstraint();
 
         if (!cvc.isCompatible(pvc)) {
             throw new IllegalArgumentException(
@@ -82,6 +82,7 @@ class Translator extends Terminator {
      *
      * @see co2.ui.fw.EventChannel#setState(Source, Object)
      */
+    @Override
     public void setState(Source source, Object state, EventChannel forwardingEventChannel) {
         // TODO figure out how to handle the forwarding event channel...
         // Propagate the state change down...
@@ -98,6 +99,7 @@ class Translator extends Terminator {
         }
     }
 
+    @Override
     public void setTreeComponent(TreeComponent component) {
         this.childRelaySource.setTreeComponent(component);
         super.setTreeComponent(component);
@@ -115,6 +117,7 @@ class Translator extends Terminator {
             this.translator = translator;
         }
 
+        @Override
         void stateChange() {
             if (eventChannel.getCurrentStateSource() != translator.parentRelaySource) {
                 try {

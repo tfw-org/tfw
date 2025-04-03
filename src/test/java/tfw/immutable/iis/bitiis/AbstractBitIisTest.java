@@ -1,50 +1,58 @@
 package tfw.immutable.iis.bitiis;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.io.IOException;
 import org.junit.jupiter.api.Test;
 
-class AbstractBitIisTest {
+final class AbstractBitIisTest {
     @Test
-    void testArguments() throws IOException {
+    void argumentsTest() throws IOException {
         try (TestBitIis ti = new TestBitIis()) {
             final long[] array = new long[11];
 
-            assertThrows(IllegalArgumentException.class, () -> ti.read(null, 0, 1));
-            assertThrows(IllegalArgumentException.class, () -> ti.read(array, -1, 1));
-            assertThrows(IllegalArgumentException.class, () -> ti.read(array, 0, -1));
-            assertThrows(IllegalArgumentException.class, () -> ti.read(array, BitIis.MAX_BITS_IN_ARRAY, 1));
-            assertThrows(IllegalArgumentException.class, () -> ti.read(array, 0, BitIis.MAX_BITS_IN_ARRAY));
-            assertEquals(0, ti.read(array, 0, 0));
-            assertEquals(1, ti.read(array, 0, 1));
-            assertEquals(0, ti.skip(0));
-            assertEquals(1, ti.skip(1));
+            assertThatThrownBy(() -> ti.read(null, 0, 1)).isInstanceOf(IllegalArgumentException.class);
+            assertThatThrownBy(() -> ti.read(array, -1, 1)).isInstanceOf(IllegalArgumentException.class);
+            assertThatThrownBy(() -> ti.read(array, 0, -1)).isInstanceOf(IllegalArgumentException.class);
+            assertThatThrownBy(() -> ti.read(array, BitIis.MAX_BITS_IN_ARRAY, 1))
+                    .isInstanceOf(IllegalArgumentException.class);
+            assertThatThrownBy(() -> ti.read(array, 0, BitIis.MAX_BITS_IN_ARRAY))
+                    .isInstanceOf(IllegalArgumentException.class);
+            assertThat(ti.read(array, 0, 0)).isEqualTo(0);
+            assertThat(ti.read(array, 0, 1)).isEqualTo(1);
+            assertThat(ti.skip(0)).isEqualTo(0);
+            assertThat(ti.skip(1)).isEqualTo(1);
         }
     }
 
     @Test
-    void testClosed() throws IOException {
+    void closedTest() throws IOException {
         final TestBitIis ti = new TestBitIis();
         final long[] array = new long[11];
 
         ti.close();
 
-        assertTrue(ti.closeCalled);
-        assertEquals(-1, ti.read(array, 0, array.length));
-        assertEquals(-1, ti.skip(10));
+        assertThat(ti.isCloseCalled()).isTrue();
+        assertThat(ti.read(array, 0, array.length)).isEqualTo(-1);
+        assertThat(ti.skip(10)).isEqualTo(-1);
 
-        ti.closeCalled = false;
+        ti.setCloseCalled(false);
         ti.close();
 
-        assertFalse(ti.closeCalled);
+        assertThat(ti.isCloseCalled()).isFalse();
     }
 
-    private class TestBitIis extends AbstractBitIis {
-        public boolean closeCalled = false;
+    private static class TestBitIis extends AbstractBitIis {
+        private boolean closeCalled = false;
+
+        public void setCloseCalled(final boolean closeCalled) {
+            this.closeCalled = closeCalled;
+        }
+
+        public boolean isCloseCalled() {
+            return closeCalled;
+        }
 
         @Override
         protected void closeImpl() throws IOException {

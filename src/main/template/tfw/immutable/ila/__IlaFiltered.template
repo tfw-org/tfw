@@ -4,7 +4,7 @@ package %%PACKAGE%%;
 import java.io.IOException;
 import tfw.check.Argument;
 
-public final class %%NAME%%IlaFiltered%%TEMPLATE%% {
+public final class %%NAME%%IlaFiltered {
     private %%NAME%%IlaFiltered() {
         // non-instantiable class
     }

@@ -12,9 +12,6 @@ public final class ShortIlaFromCastIntIla {
     }
 
     public static ShortIla create(IntIla intIla, int bufferSize) {
-        Argument.assertNotNull(intIla, "intIla");
-        Argument.assertNotLessThan(bufferSize, 1, "bufferSize");
-
         return new ShortIlaImpl(intIla, bufferSize);
     }
 
@@ -23,6 +20,9 @@ public final class ShortIlaFromCastIntIla {
         private final int bufferSize;
 
         private ShortIlaImpl(IntIla intIla, int bufferSize) {
+            Argument.assertNotNull(intIla, "intIla");
+            Argument.assertNotLessThan(bufferSize, 1, "bufferSize");
+
             this.intIla = intIla;
             this.bufferSize = bufferSize;
         }

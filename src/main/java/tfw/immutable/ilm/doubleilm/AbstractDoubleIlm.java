@@ -12,6 +12,7 @@ public abstract class AbstractDoubleIlm extends AbstractIlm implements DoubleIlm
 
     protected AbstractDoubleIlm() {}
 
+    @Override
     public final void get(double[] array, int offset, long rowStart, long colStart, int rowCount, int colCount)
             throws IOException {
         Argument.assertNotNull(array, "array");
