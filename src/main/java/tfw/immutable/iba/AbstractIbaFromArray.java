@@ -5,7 +5,7 @@ import java.math.BigInteger;
 public abstract class AbstractIbaFromArray extends AbstractIba {
     protected final BigInteger arrayLength;
 
-    public AbstractIbaFromArray(BigInteger arrayLength) {
+    protected AbstractIbaFromArray(BigInteger arrayLength) {
         this.arrayLength = arrayLength;
     }
 
