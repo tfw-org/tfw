@@ -33,8 +33,8 @@ public final class StreamFromObjectIla {
         public boolean tryAdvance(Consumer<? super T> action) {
             try {
                 if (position < ila.length()) {
-                    ila.get((T[]) array, 0, position++, 1);
-                    action.accept((T) array[0]);
+                    ila.get(array, 0, position++, 1);
+                    action.accept(array[0]);
 
                     return true;
                 }
