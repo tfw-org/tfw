@@ -13,12 +13,12 @@
         <argLine></argLine>
         <dependency.assertj-core.version>3.27.3</dependency.assertj-core.version>
         <dependency.assertj-swing.version>3.17.1</dependency.assertj-swing.version>
-        <dependency.junit-jupiter-api.version>5.12.1</dependency.junit-jupiter-api.version>
+        <dependency.junit-jupiter-api.version>5.12.2</dependency.junit-jupiter-api.version>
         <dependency.slf4j-api.version>2.0.17</dependency.slf4j-api.version>
         <maven.compiler.release>8</maven.compiler.release>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <plugin.error-prone-contrib.version>0.21.0</plugin.error-prone-contrib.version>
+        <plugin.error-prone-contrib.version>0.22.0</plugin.error-prone-contrib.version>
         <plugin.error_prone_core.version>2.37.0</plugin.error_prone_core.version>
         <plugin.errorprone-slf4j.version>0.1.28</plugin.errorprone-slf4j.version>
         <plugin.exec-maven-plugin.version>3.5.0</plugin.exec-maven-plugin.version>
@@ -34,8 +34,8 @@
         <plugin.nexus-staging-maven-plugin.version>1.7.0</plugin.nexus-staging-maven-plugin.version>
         <plugin.pitest-junit5-plugin.version>1.2.2</plugin.pitest-junit5-plugin.version>
         <plugin.pitest-maven.version>1.19.1</plugin.pitest-maven.version>
-        <plugin.refaster-runner.version>0.21.0</plugin.refaster-runner.version>
-        <plugin.spotless-maven-plugin.version>2.44.3</plugin.spotless-maven-plugin.version>
+        <plugin.refaster-runner.version>0.22.0</plugin.refaster-runner.version>
+        <plugin.spotless-maven-plugin.version>2.44.4</plugin.spotless-maven-plugin.version>
         <plugin.spotless-palantirJavaFormat.version>2.50.0</plugin.spotless-palantirJavaFormat.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <sonar.exclusions>src/main/java/tfw/math/BigDecimal.java,
