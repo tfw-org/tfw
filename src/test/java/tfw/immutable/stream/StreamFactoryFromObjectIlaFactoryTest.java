@@ -32,21 +32,21 @@ final class StreamFactoryFromObjectIlaFactoryTest {
                 return new ObjectIla<Object>() {
                     @Override
                     public long length() throws IOException {
-                        throw new IOException("Test DoubleIla that only throws IOExceptions!");
+                        throw new IOException("Test ObjectIla that only throws IOExceptions!");
                     }
 
                     @Override
                     public void get(Object[] array, int arrayOffset, long ilaStart, int length) throws IOException {
-                        throw new IOException("Test DoubleIla that only throws IOExceptions!");
+                        throw new IOException("Test ObjectIla that only throws IOExceptions!");
                     }
                 };
             }
         };
         final StreamFactory<Object> osf = StreamFactoryFromObjectIlaFactory.create(o, Object.class);
-        final Stream<Object> s = osf.create();
-        final Object[] list = s.toArray();
 
-        assertThat(list).isEqualTo(new Object[0]);
+        assertThatThrownBy(() -> osf.create())
+                .isInstanceOf(IOException.class)
+                .hasMessage("Test ObjectIla that only throws IOExceptions!");
     }
 
     @Test
@@ -69,6 +69,7 @@ final class StreamFactoryFromObjectIlaFactoryTest {
         };
         final StreamFactory<String> osf = StreamFactoryFromObjectIlaFactory.create(o, String.class);
         final Stream<String> s = osf.create();
+
         assertThatThrownBy(() -> s.toArray())
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("End size 0 is less than fixed size 5");

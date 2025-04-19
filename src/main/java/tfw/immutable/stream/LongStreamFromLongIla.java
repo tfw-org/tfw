@@ -10,32 +10,20 @@ import tfw.immutable.ila.longila.LongIla;
 public final class LongStreamFromLongIla {
     private LongStreamFromLongIla() {}
 
-    public static LongStream create(final LongIla ila) {
+    public static LongStream create(final LongIla ila) throws IOException {
         return StreamSupport.longStream(new LongIlaSpliterator(ila), false);
     }
 
-    private static class LongIlaSpliterator implements Spliterator.OfLong {
+    private static class LongIlaSpliterator extends AbstractStreamFromIla<Long> implements Spliterator.OfLong {
         private final LongIla ila;
         private final long[] array = new long[1];
 
         private int position = 0;
 
-        public LongIlaSpliterator(final LongIla ila) {
+        public LongIlaSpliterator(final LongIla ila) throws IOException {
+            super(ila.length());
+
             this.ila = ila;
-        }
-
-        @Override
-        public long estimateSize() {
-            try {
-                return ila.length();
-            } catch (IOException e) {
-                return 0;
-            }
-        }
-
-        @Override
-        public int characteristics() {
-            return IMMUTABLE | ORDERED | SIZED;
         }
 
         @Override

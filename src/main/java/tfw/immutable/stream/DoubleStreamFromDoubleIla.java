@@ -10,32 +10,20 @@ import tfw.immutable.ila.doubleila.DoubleIla;
 public final class DoubleStreamFromDoubleIla {
     private DoubleStreamFromDoubleIla() {}
 
-    public static DoubleStream create(final DoubleIla ila) {
+    public static DoubleStream create(final DoubleIla ila) throws IOException {
         return StreamSupport.doubleStream(new DoubleIlaSpliterator(ila), false);
     }
 
-    private static class DoubleIlaSpliterator implements Spliterator.OfDouble {
+    private static class DoubleIlaSpliterator extends AbstractStreamFromIla<Double> implements Spliterator.OfDouble {
         private final DoubleIla ila;
         private final double[] array = new double[1];
 
         private int position = 0;
 
-        public DoubleIlaSpliterator(final DoubleIla ila) {
+        public DoubleIlaSpliterator(final DoubleIla ila) throws IOException {
+            super(ila.length());
+
             this.ila = ila;
-        }
-
-        @Override
-        public long estimateSize() {
-            try {
-                return ila.length();
-            } catch (IOException e) {
-                return 0;
-            }
-        }
-
-        @Override
-        public int characteristics() {
-            return IMMUTABLE | ORDERED | SIZED;
         }
 
         @Override

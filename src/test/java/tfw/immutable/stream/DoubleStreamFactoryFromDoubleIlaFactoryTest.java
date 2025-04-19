@@ -41,10 +41,10 @@ final class DoubleStreamFactoryFromDoubleIlaFactoryTest {
             }
         };
         final DoubleStreamFactory dsf = DoubleStreamFactoryFromDoubleIlaFactory.create(d);
-        final DoubleStream s = dsf.create();
-        final double[] list = s.toArray();
 
-        assertThat(list).isEqualTo(new double[0]);
+        assertThatThrownBy(() -> dsf.create())
+                .isInstanceOf(IOException.class)
+                .hasMessage("Test DoubleIla that only throws IOExceptions!");
     }
 
     @Test
@@ -67,6 +67,7 @@ final class DoubleStreamFactoryFromDoubleIlaFactoryTest {
         };
         final DoubleStreamFactory dsf = DoubleStreamFactoryFromDoubleIlaFactory.create(l);
         final DoubleStream s = dsf.create();
+
         assertThatThrownBy(() -> s.toArray())
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("End size 0 is less than fixed size 5");

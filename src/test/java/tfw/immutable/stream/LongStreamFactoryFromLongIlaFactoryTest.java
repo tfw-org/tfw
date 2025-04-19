@@ -41,10 +41,10 @@ final class LongStreamFactoryFromLongIlaFactoryTest {
             }
         };
         final LongStreamFactory lsf = LongStreamFactoryFromLongIlaFactory.create(l);
-        final LongStream s = lsf.create();
-        final long[] list = s.toArray();
 
-        assertThat(list).isEqualTo(new long[0]);
+        assertThatThrownBy(() -> lsf.create())
+                .isInstanceOf(IOException.class)
+                .hasMessage("Test LongIla that only throws IOExceptions!");
     }
 
     @Test
@@ -67,6 +67,7 @@ final class LongStreamFactoryFromLongIlaFactoryTest {
         };
         final LongStreamFactory lsf = LongStreamFactoryFromLongIlaFactory.create(l);
         final LongStream s = lsf.create();
+
         assertThatThrownBy(() -> s.toArray())
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("End size 0 is less than fixed size 5");

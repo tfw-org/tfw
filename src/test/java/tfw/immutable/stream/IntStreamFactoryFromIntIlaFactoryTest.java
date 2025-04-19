@@ -30,21 +30,21 @@ final class IntStreamFactoryFromIntIlaFactoryTest {
                 return new IntIla() {
                     @Override
                     public long length() throws IOException {
-                        throw new IOException("Test DoubleIla that only throws IOExceptions!");
+                        throw new IOException("Test IntIla that only throws IOExceptions!");
                     }
 
                     @Override
                     public void get(int[] array, int arrayOffset, long ilaStart, int length) throws IOException {
-                        throw new IOException("Test DoubleIla that only throws IOExceptions!");
+                        throw new IOException("Test IntIla that only throws IOExceptions!");
                     }
                 };
             }
         };
         final IntStreamFactory isf = IntStreamFactoryFromIntIlaFactory.create(i);
-        final IntStream s = isf.create();
-        final int[] list = s.toArray();
 
-        assertThat(list).isEqualTo(new int[0]);
+        assertThatThrownBy(() -> isf.create())
+                .isInstanceOf(IOException.class)
+                .hasMessage("Test IntIla that only throws IOExceptions!");
     }
 
     @Test
@@ -60,13 +60,14 @@ final class IntStreamFactoryFromIntIlaFactoryTest {
 
                     @Override
                     public void get(int[] array, int arrayOffset, long ilaStart, int length) throws IOException {
-                        throw new IOException("Test DoubleIla whose get() only throws IOExceptions!");
+                        throw new IOException("Test IntIla whose get() only throws IOExceptions!");
                     }
                 };
             }
         };
         final IntStreamFactory isf = IntStreamFactoryFromIntIlaFactory.create(i);
         final IntStream s = isf.create();
+
         assertThatThrownBy(() -> s.toArray())
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("End size 0 is less than fixed size 5");

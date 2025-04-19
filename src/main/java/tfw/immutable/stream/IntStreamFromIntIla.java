@@ -10,32 +10,20 @@ import tfw.immutable.ila.intila.IntIla;
 public final class IntStreamFromIntIla {
     private IntStreamFromIntIla() {}
 
-    public static IntStream create(final IntIla ila) {
+    public static IntStream create(final IntIla ila) throws IOException {
         return StreamSupport.intStream(new IntIlaSpliterator(ila), false);
     }
 
-    private static class IntIlaSpliterator implements Spliterator.OfInt {
+    private static class IntIlaSpliterator extends AbstractStreamFromIla<Integer> implements Spliterator.OfInt {
         private final IntIla ila;
         private final int[] array = new int[1];
 
         private int position = 0;
 
-        public IntIlaSpliterator(final IntIla ila) {
+        public IntIlaSpliterator(final IntIla ila) throws IOException {
+            super(ila.length());
+
             this.ila = ila;
-        }
-
-        @Override
-        public long estimateSize() {
-            try {
-                return ila.length();
-            } catch (IOException e) {
-                return 0;
-            }
-        }
-
-        @Override
-        public int characteristics() {
-            return IMMUTABLE | ORDERED | SIZED;
         }
 
         @Override
