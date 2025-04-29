@@ -25,7 +25,7 @@ final class StreamFactoryFromObjectIlaFactoryTest {
     }
 
     @Test
-    void badIlaLengthTest() throws IOException {
+    void badIlaLengthTest() {
         ObjectIlaFactory<Object> o = new ObjectIlaFactory<Object>() {
             @Override
             public ObjectIla<Object> create() {
@@ -44,7 +44,7 @@ final class StreamFactoryFromObjectIlaFactoryTest {
         };
         final StreamFactory<Object> osf = StreamFactoryFromObjectIlaFactory.create(o, Object.class);
 
-        assertThatThrownBy(() -> osf.create())
+        assertThatThrownBy(osf::create)
                 .isInstanceOf(IOException.class)
                 .hasMessage("Test ObjectIla that only throws IOExceptions!");
     }
@@ -70,7 +70,7 @@ final class StreamFactoryFromObjectIlaFactoryTest {
         final StreamFactory<String> osf = StreamFactoryFromObjectIlaFactory.create(o, String.class);
         final Stream<String> s = osf.create();
 
-        assertThatThrownBy(() -> s.toArray())
+        assertThatThrownBy(s::toArray)
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("End size 0 is less than fixed size 5");
     }

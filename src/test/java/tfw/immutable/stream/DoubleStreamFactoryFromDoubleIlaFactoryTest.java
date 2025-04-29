@@ -23,7 +23,7 @@ final class DoubleStreamFactoryFromDoubleIlaFactoryTest {
     }
 
     @Test
-    void badIlaLengthTest() throws IOException {
+    void badIlaLengthTest() {
         DoubleIlaFactory d = new DoubleIlaFactory() {
             @Override
             public DoubleIla create() {
@@ -42,7 +42,7 @@ final class DoubleStreamFactoryFromDoubleIlaFactoryTest {
         };
         final DoubleStreamFactory dsf = DoubleStreamFactoryFromDoubleIlaFactory.create(d);
 
-        assertThatThrownBy(() -> dsf.create())
+        assertThatThrownBy(dsf::create)
                 .isInstanceOf(IOException.class)
                 .hasMessage("Test DoubleIla that only throws IOExceptions!");
     }
@@ -68,7 +68,7 @@ final class DoubleStreamFactoryFromDoubleIlaFactoryTest {
         final DoubleStreamFactory dsf = DoubleStreamFactoryFromDoubleIlaFactory.create(l);
         final DoubleStream s = dsf.create();
 
-        assertThatThrownBy(() -> s.toArray())
+        assertThatThrownBy(s::toArray)
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("End size 0 is less than fixed size 5");
     }
