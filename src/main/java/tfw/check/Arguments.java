@@ -352,25 +352,34 @@ public final class Arguments {
             final Object right,
             final String rightName) {
         if (operation == Operation.EQUALS || operation == Operation.NOT_EQUALS) {
-            final boolean equals = (left == null && right == null) || (left != null && left.equals(right));
-
-            if ((operation == Operation.EQUALS && !equals) || (operation == Operation.NOT_EQUALS && equals)) {
-                final String leftClazz = left == null ? null : left.getClass().getName();
-                final String rightClazz =
-                        right == null ? null : right.getClass().getName();
-                final String msg = String.format(
-                        "%s (=%s) %s %s (=%s) not allowed!",
-                        leftName, leftClazz, OPERATION_STRING_MAP.get(operation), rightName, rightClazz);
-
-                throw new IllegalArgumentException(msg);
-            }
+            checkObjectEquals(operation, left, leftName, right, rightName);
         } else if ((operation == Operation.IS_NULL && left != null)
                 || (operation == Operation.IS_NOT_NULL && left == null)) {
-            final String leftClazz = left == null ? null : left.getClass().getName();
+            checkObjectNull(operation, left, leftName);
+        }
+    }
+
+    private static void checkObjectEquals(
+            final Operation operation,
+            final Object left,
+            final String leftName,
+            final Object right,
+            final String rightName) {
+        final boolean equals = (left == null && right == null) || (left != null && left.equals(right));
+
+        if ((operation == Operation.EQUALS && !equals) || (operation == Operation.NOT_EQUALS && equals)) {
             final String msg = String.format(
-                    "%s (=%s) %s null not allowed!", leftName, leftClazz, OPERATION_STRING_MAP.get(operation));
+                    "%s (=%s) %s %s (=%s) not allowed!",
+                    leftName, left, OPERATION_STRING_MAP.get(operation), rightName, right);
 
             throw new IllegalArgumentException(msg);
         }
+    }
+
+    private static void checkObjectNull(final Operation operation, final Object left, final String leftName) {
+        final String msg =
+                String.format("%s (=%s) %s null not allowed!", leftName, left, OPERATION_STRING_MAP.get(operation));
+
+        throw new IllegalArgumentException(msg);
     }
 }

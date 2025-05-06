@@ -255,7 +255,22 @@ final class ArgumentsTest {
         Arguments.checkLessThan(ZERO_FLOAT, LEFT, ONE_FLOAT, RIGHT);
         Arguments.checkLessThanOrEqual(ZERO_FLOAT, LEFT, ZERO_FLOAT, RIGHT);
         Arguments.checkEquals(ZERO_FLOAT, LEFT, ZERO_FLOAT, RIGHT);
+        Arguments.checkEquals(Float.POSITIVE_INFINITY, LEFT, Float.POSITIVE_INFINITY, RIGHT);
+        Arguments.checkEquals(Float.NEGATIVE_INFINITY, LEFT, Float.NEGATIVE_INFINITY, RIGHT);
         Arguments.checkNotEquals(ZERO_FLOAT, LEFT, ONE_FLOAT, RIGHT);
+        Arguments.checkNotEquals(Float.NaN, LEFT, ONE_FLOAT, RIGHT);
+        Arguments.checkNotEquals(ZERO_FLOAT, LEFT, Float.NaN, RIGHT);
+        Arguments.checkNotEquals(Float.NaN, LEFT, Float.POSITIVE_INFINITY, RIGHT);
+        Arguments.checkNotEquals(Float.POSITIVE_INFINITY, LEFT, Float.NaN, RIGHT);
+        Arguments.checkNotEquals(Float.NaN, LEFT, Float.NEGATIVE_INFINITY, RIGHT);
+        Arguments.checkNotEquals(Float.NEGATIVE_INFINITY, LEFT, Float.NaN, RIGHT);
+        Arguments.checkNotEquals(Float.NaN, LEFT, Float.NaN, RIGHT);
+        Arguments.checkNotEquals(Float.POSITIVE_INFINITY, LEFT, ONE_FLOAT, RIGHT);
+        Arguments.checkNotEquals(ZERO_FLOAT, LEFT, Float.POSITIVE_INFINITY, RIGHT);
+        Arguments.checkNotEquals(Float.NEGATIVE_INFINITY, LEFT, ONE_FLOAT, RIGHT);
+        Arguments.checkNotEquals(ZERO_FLOAT, LEFT, Float.NEGATIVE_INFINITY, RIGHT);
+        Arguments.checkNotEquals(Float.POSITIVE_INFINITY, LEFT, Float.NEGATIVE_INFINITY, RIGHT);
+        Arguments.checkNotEquals(Float.NEGATIVE_INFINITY, LEFT, Float.POSITIVE_INFINITY, RIGHT);
         Arguments.checkGreaterThanOrEqual(ZERO_FLOAT, LEFT, ZERO_FLOAT, RIGHT);
         Arguments.checkGreaterThan(ONE_FLOAT, LEFT, ZERO_FLOAT, RIGHT);
     }
@@ -280,6 +295,53 @@ final class ArgumentsTest {
         assertThatThrownBy(() -> Arguments.checkGreaterThan(ZERO_FLOAT, LEFT, ZERO_FLOAT, RIGHT))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("left (=0.000000) <= right (=0.000000) not allowed!");
+        assertThatThrownBy(
+                        () -> Arguments.checkNotEquals(Float.POSITIVE_INFINITY, LEFT, Float.POSITIVE_INFINITY, RIGHT))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("left (=Infinity) == right (=Infinity) not allowed!");
+        assertThatThrownBy(
+                        () -> Arguments.checkNotEquals(Float.NEGATIVE_INFINITY, LEFT, Float.NEGATIVE_INFINITY, RIGHT))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("left (=-Infinity) == right (=-Infinity) not allowed!");
+        assertThatThrownBy(() -> Arguments.checkEquals(Float.NaN, LEFT, ONE_FLOAT, RIGHT))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("left (=NaN) != right (=1.000000) not allowed!");
+        assertThatThrownBy(() -> Arguments.checkEquals(ZERO_FLOAT, LEFT, Float.NaN, RIGHT))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("left (=0.000000) != right (=NaN) not allowed!");
+        assertThatThrownBy(() -> Arguments.checkEquals(Float.NaN, LEFT, Float.POSITIVE_INFINITY, RIGHT))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("left (=NaN) != right (=Infinity) not allowed!");
+        assertThatThrownBy(() -> Arguments.checkEquals(Float.POSITIVE_INFINITY, LEFT, Float.NaN, RIGHT))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("left (=Infinity) != right (=NaN) not allowed!");
+        assertThatThrownBy(() -> Arguments.checkEquals(Float.NaN, LEFT, Float.NEGATIVE_INFINITY, RIGHT))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("left (=NaN) != right (=-Infinity) not allowed!");
+        assertThatThrownBy(() -> Arguments.checkEquals(Float.NEGATIVE_INFINITY, LEFT, Float.NaN, RIGHT))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("left (=-Infinity) != right (=NaN) not allowed!");
+        assertThatThrownBy(() -> Arguments.checkEquals(Float.NaN, LEFT, Float.NaN, RIGHT))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("left (=NaN) != right (=NaN) not allowed!");
+        assertThatThrownBy(() -> Arguments.checkEquals(Float.POSITIVE_INFINITY, LEFT, ONE_FLOAT, RIGHT))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("left (=Infinity) != right (=1.000000) not allowed!");
+        assertThatThrownBy(() -> Arguments.checkEquals(ZERO_FLOAT, LEFT, Float.POSITIVE_INFINITY, RIGHT))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("left (=0.000000) != right (=Infinity) not allowed!");
+        assertThatThrownBy(() -> Arguments.checkEquals(Float.NEGATIVE_INFINITY, LEFT, ONE_FLOAT, RIGHT))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("left (=-Infinity) != right (=1.000000) not allowed!");
+        assertThatThrownBy(() -> Arguments.checkEquals(ZERO_FLOAT, LEFT, Float.NEGATIVE_INFINITY, RIGHT))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("left (=0.000000) != right (=-Infinity) not allowed!");
+        assertThatThrownBy(() -> Arguments.checkEquals(Float.POSITIVE_INFINITY, LEFT, Float.NEGATIVE_INFINITY, RIGHT))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("left (=Infinity) != right (=-Infinity) not allowed!");
+        assertThatThrownBy(() -> Arguments.checkEquals(Float.NEGATIVE_INFINITY, LEFT, Float.POSITIVE_INFINITY, RIGHT))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("left (=-Infinity) != right (=Infinity) not allowed!");
     }
 
     @Test
@@ -287,7 +349,22 @@ final class ArgumentsTest {
         Arguments.checkLessThan(ZERO_DOUBLE, LEFT, ONE_DOUBLE, RIGHT);
         Arguments.checkLessThanOrEqual(ZERO_DOUBLE, LEFT, ZERO_DOUBLE, RIGHT);
         Arguments.checkEquals(ZERO_DOUBLE, LEFT, ZERO_DOUBLE, RIGHT);
+        Arguments.checkEquals(Double.POSITIVE_INFINITY, LEFT, Double.POSITIVE_INFINITY, RIGHT);
+        Arguments.checkEquals(Double.NEGATIVE_INFINITY, LEFT, Double.NEGATIVE_INFINITY, RIGHT);
         Arguments.checkNotEquals(ZERO_DOUBLE, LEFT, ONE_DOUBLE, RIGHT);
+        Arguments.checkNotEquals(Double.NaN, LEFT, ONE_FLOAT, RIGHT);
+        Arguments.checkNotEquals(ZERO_FLOAT, LEFT, Double.NaN, RIGHT);
+        Arguments.checkNotEquals(Double.NaN, LEFT, Double.POSITIVE_INFINITY, RIGHT);
+        Arguments.checkNotEquals(Double.POSITIVE_INFINITY, LEFT, Double.NaN, RIGHT);
+        Arguments.checkNotEquals(Double.NaN, LEFT, Double.NEGATIVE_INFINITY, RIGHT);
+        Arguments.checkNotEquals(Double.NEGATIVE_INFINITY, LEFT, Double.NaN, RIGHT);
+        Arguments.checkNotEquals(Double.NaN, LEFT, Double.NaN, RIGHT);
+        Arguments.checkNotEquals(Double.POSITIVE_INFINITY, LEFT, ONE_FLOAT, RIGHT);
+        Arguments.checkNotEquals(ZERO_FLOAT, LEFT, Double.POSITIVE_INFINITY, RIGHT);
+        Arguments.checkNotEquals(Double.NEGATIVE_INFINITY, LEFT, ONE_FLOAT, RIGHT);
+        Arguments.checkNotEquals(ZERO_FLOAT, LEFT, Double.NEGATIVE_INFINITY, RIGHT);
+        Arguments.checkNotEquals(Double.POSITIVE_INFINITY, LEFT, Double.NEGATIVE_INFINITY, RIGHT);
+        Arguments.checkNotEquals(Double.NEGATIVE_INFINITY, LEFT, Double.POSITIVE_INFINITY, RIGHT);
         Arguments.checkGreaterThanOrEqual(ZERO_DOUBLE, LEFT, ZERO_DOUBLE, RIGHT);
         Arguments.checkGreaterThan(ONE_DOUBLE, LEFT, ZERO_DOUBLE, RIGHT);
     }
@@ -312,6 +389,53 @@ final class ArgumentsTest {
         assertThatThrownBy(() -> Arguments.checkGreaterThan(ZERO_DOUBLE, LEFT, ZERO_DOUBLE, RIGHT))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("left (=0.000000) <= right (=0.000000) not allowed!");
+        assertThatThrownBy(
+                        () -> Arguments.checkNotEquals(Double.POSITIVE_INFINITY, LEFT, Double.POSITIVE_INFINITY, RIGHT))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("left (=Infinity) == right (=Infinity) not allowed!");
+        assertThatThrownBy(
+                        () -> Arguments.checkNotEquals(Double.NEGATIVE_INFINITY, LEFT, Double.NEGATIVE_INFINITY, RIGHT))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("left (=-Infinity) == right (=-Infinity) not allowed!");
+        assertThatThrownBy(() -> Arguments.checkEquals(Double.NaN, LEFT, ONE_FLOAT, RIGHT))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("left (=NaN) != right (=1.000000) not allowed!");
+        assertThatThrownBy(() -> Arguments.checkEquals(ZERO_FLOAT, LEFT, Double.NaN, RIGHT))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("left (=0.000000) != right (=NaN) not allowed!");
+        assertThatThrownBy(() -> Arguments.checkEquals(Double.NaN, LEFT, Double.POSITIVE_INFINITY, RIGHT))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("left (=NaN) != right (=Infinity) not allowed!");
+        assertThatThrownBy(() -> Arguments.checkEquals(Double.POSITIVE_INFINITY, LEFT, Double.NaN, RIGHT))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("left (=Infinity) != right (=NaN) not allowed!");
+        assertThatThrownBy(() -> Arguments.checkEquals(Double.NaN, LEFT, Double.NEGATIVE_INFINITY, RIGHT))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("left (=NaN) != right (=-Infinity) not allowed!");
+        assertThatThrownBy(() -> Arguments.checkEquals(Double.NEGATIVE_INFINITY, LEFT, Double.NaN, RIGHT))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("left (=-Infinity) != right (=NaN) not allowed!");
+        assertThatThrownBy(() -> Arguments.checkEquals(Double.NaN, LEFT, Double.NaN, RIGHT))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("left (=NaN) != right (=NaN) not allowed!");
+        assertThatThrownBy(() -> Arguments.checkEquals(Double.POSITIVE_INFINITY, LEFT, ONE_FLOAT, RIGHT))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("left (=Infinity) != right (=1.000000) not allowed!");
+        assertThatThrownBy(() -> Arguments.checkEquals(ZERO_FLOAT, LEFT, Double.POSITIVE_INFINITY, RIGHT))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("left (=0.000000) != right (=Infinity) not allowed!");
+        assertThatThrownBy(() -> Arguments.checkEquals(Double.NEGATIVE_INFINITY, LEFT, ONE_FLOAT, RIGHT))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("left (=-Infinity) != right (=1.000000) not allowed!");
+        assertThatThrownBy(() -> Arguments.checkEquals(ZERO_FLOAT, LEFT, Double.NEGATIVE_INFINITY, RIGHT))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("left (=0.000000) != right (=-Infinity) not allowed!");
+        assertThatThrownBy(() -> Arguments.checkEquals(Double.POSITIVE_INFINITY, LEFT, Double.NEGATIVE_INFINITY, RIGHT))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("left (=Infinity) != right (=-Infinity) not allowed!");
+        assertThatThrownBy(() -> Arguments.checkEquals(Double.NEGATIVE_INFINITY, LEFT, Double.POSITIVE_INFINITY, RIGHT))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("left (=-Infinity) != right (=Infinity) not allowed!");
     }
 
     @Test
@@ -331,30 +455,34 @@ final class ArgumentsTest {
     void objectFailureTest() {
         assertThatThrownBy(() -> Arguments.checkEquals(ZERO_OBJECT, LEFT, ONE_OBJECT, RIGHT))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("left (=java.lang.Object) != right (=java.lang.Object) not allowed!");
+                .hasMessageMatching(
+                        "left \\(=java.lang.Object@[0-9a-fA-F]+\\) != right \\(=java.lang.Object@[0-9a-fA-F]+\\) not allowed!");
         assertThatThrownBy(() -> Arguments.checkEquals(ONE_OBJECT, LEFT, ZERO_OBJECT, RIGHT))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("left (=java.lang.Object) != right (=java.lang.Object) not allowed!");
+                .hasMessageMatching(
+                        "left \\(=java.lang.Object@[0-9a-fA-F]+\\) != right \\(=java.lang.Object@[0-9a-fA-F]+\\) not allowed!");
         assertThatThrownBy(() -> Arguments.checkEquals(ZERO_OBJECT, LEFT, NULL_OBJECT, RIGHT))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("left (=java.lang.Object) != right (=null) not allowed!");
+                .hasMessageMatching("left \\(=java.lang.Object@[0-9a-fA-F]+\\) != right \\(=null\\) not allowed!");
         assertThatThrownBy(() -> Arguments.checkEquals(NULL_OBJECT, LEFT, ONE_OBJECT, RIGHT))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("left (=null) != right (=java.lang.Object) not allowed!");
+                .hasMessageMatching("left \\(=null\\) != right \\(=java.lang.Object@[0-9a-fA-F]+\\) not allowed!");
         assertThatThrownBy(() -> Arguments.checkNotEquals(ZERO_OBJECT, LEFT, ZERO_OBJECT, RIGHT))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("left (=java.lang.Object) == right (=java.lang.Object) not allowed!");
+                .hasMessageMatching(
+                        "left \\(=java.lang.Object@[0-9a-fA-F]+\\) == right \\(=java.lang.Object@[0-9a-fA-F]+\\) not allowed!");
         assertThatThrownBy(() -> Arguments.checkNotEquals(ONE_OBJECT, LEFT, ONE_OBJECT, RIGHT))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("left (=java.lang.Object) == right (=java.lang.Object) not allowed!");
+                .hasMessageMatching(
+                        "left \\(=java.lang.Object@[0-9a-fA-F]+\\) == right \\(=java.lang.Object@[0-9a-fA-F]+\\) not allowed!");
         assertThatThrownBy(() -> Arguments.checkNotEquals(NULL_OBJECT, LEFT, NULL_OBJECT, RIGHT))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("left (=null) == right (=null) not allowed!");
+                .hasMessageMatching("left \\(=null\\) == right \\(=null\\) not allowed!");
         assertThatThrownBy(() -> Arguments.checkNull(ZERO_OBJECT, LEFT))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("left (=java.lang.Object) != null not allowed!");
+                .hasMessageMatching("left \\(=java.lang.Object@[0-9a-fA-F]+\\) != null not allowed!");
         assertThatThrownBy(() -> Arguments.checkNotNull(NULL_OBJECT, LEFT))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("left (=null) == null not allowed!");
+                .hasMessageMatching("left \\(=null\\) == null not allowed!");
     }
 }
