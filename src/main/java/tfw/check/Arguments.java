@@ -146,15 +146,15 @@ public final class Arguments {
     }
 
     public static void checkEquals(Object left, String leftName, Object right, String rightName) {
-        checkObject(Operation.EQUALS, left, leftName, right, rightName);
+        checkObjectEquals(Operation.EQUALS, left, leftName, right, rightName);
     }
 
     public static void checkNull(Object object, String objectName) {
-        checkObject(Operation.IS_NULL, object, objectName, null, null);
+        checkObjectNull(Operation.IS_NULL, object, objectName);
     }
 
     public static void checkNotNull(Object object, String objectName) {
-        checkObject(Operation.IS_NOT_NULL, object, objectName, null, null);
+        checkObjectNull(Operation.IS_NOT_NULL, object, objectName);
     }
 
     public static void checkNotEquals(byte left, String leftName, byte right, String rightName) {
@@ -194,7 +194,7 @@ public final class Arguments {
     }
 
     public static void checkNotEquals(Object left, String leftName, Object right, String rightName) {
-        checkObject(Operation.NOT_EQUALS, left, leftName, right, rightName);
+        checkObjectEquals(Operation.NOT_EQUALS, left, leftName, right, rightName);
     }
 
     public static void checkGreaterThanOrEqual(byte left, String leftName, byte right, String rightName) {
@@ -345,20 +345,6 @@ public final class Arguments {
         }
     }
 
-    private static void checkObject(
-            final Operation operation,
-            final Object left,
-            final String leftName,
-            final Object right,
-            final String rightName) {
-        if (operation == Operation.EQUALS || operation == Operation.NOT_EQUALS) {
-            checkObjectEquals(operation, left, leftName, right, rightName);
-        } else if ((operation == Operation.IS_NULL && left != null)
-                || (operation == Operation.IS_NOT_NULL && left == null)) {
-            checkObjectNull(operation, left, leftName);
-        }
-    }
-
     private static void checkObjectEquals(
             final Operation operation,
             final Object left,
@@ -377,9 +363,11 @@ public final class Arguments {
     }
 
     private static void checkObjectNull(final Operation operation, final Object left, final String leftName) {
-        final String msg =
-                String.format("%s (=%s) %s null not allowed!", leftName, left, OPERATION_STRING_MAP.get(operation));
+        if ((operation == Operation.IS_NULL && left != null) || (operation == Operation.IS_NOT_NULL && left == null)) {
+            final String msg =
+                    String.format("%s (=%s) %s null not allowed!", leftName, left, OPERATION_STRING_MAP.get(operation));
 
-        throw new IllegalArgumentException(msg);
+            throw new IllegalArgumentException(msg);
+        }
     }
 }
