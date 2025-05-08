@@ -4,7 +4,7 @@
 
     <groupId>io.github.tfw-org</groupId>
     <artifactId>tfw</artifactId>
-    <version>2024.5-SNAPSHOT</version>
+    <version>2025.1</version>
 
     <name>tfw</name>
     <description>The FrameWork for building highly scalable and maintainable applications</description>
