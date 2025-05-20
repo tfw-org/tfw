@@ -1,0 +1,7 @@
+#Licence file for arcmutate mutation testing https://www.arcmutate.com
+#Tue May 06 10:10:54 BST 2025
+expires=06/05/2027
+keyVersion=1
+packages=tfw.*
+signature=VLDiHMmWy5wTmgEBq0swk9Ze7sGuMkJ0WdUQwBmbZoA5Fz9mj5v8bumrWqKiM9pMjJLk4R7CcScCj56DJVYKCZaCx4NW5ztLF98LH2O0iwVATBWoTLq7qRKNO5FKvqtIWodwne9tp4KtrDahx6qf35Z7kcCTUG4tC/prf63F7uQ\=
+type=OSSS
