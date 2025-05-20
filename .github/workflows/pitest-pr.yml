@@ -24,7 +24,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           java-version: 21
-          distribution: coretto
+          distribution: corretto
           cache: maven
       - name: run pitest
         run: mvn -e -B -Ppitest -Dfeatures="+GIT(from[HEAD~1]), +gitci" test
