@@ -32,6 +32,8 @@
         <plugin.maven-surefire-junit5-tree-reporter.version>1.4.0</plugin.maven-surefire-junit5-tree-reporter.version>
         <plugin.maven-surefire-plugin.version>3.5.3</plugin.maven-surefire-plugin.version>
         <plugin.nexus-staging-maven-plugin.version>1.7.0</plugin.nexus-staging-maven-plugin.version>
+        <plugin.pitest-git-plugin.version>2.2.1</plugin.pitest-git-plugin.version>
+        <plugin.pitest-github-maven-plugin.version>2.2.1</plugin.pitest-github-maven-plugin.version>
         <plugin.pitest-junit5-plugin.version>1.2.2</plugin.pitest-junit5-plugin.version>
         <plugin.pitest-maven.version>1.19.2</plugin.pitest-maven.version>
         <plugin.refaster-runner.version>0.23.0</plugin.refaster-runner.version>
@@ -79,6 +81,11 @@
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>com.arcmutate</groupId>
+                <artifactId>pitest-github-maven-plugin</artifactId>
+                <version>${plugin.pitest-github-maven-plugin.version}</version>
+            </plugin>
             <plugin>
                 <groupId>com.diffplug.spotless</groupId>
                 <artifactId>spotless-maven-plugin</artifactId>
@@ -471,7 +478,7 @@
                             <dependency>
                                 <groupId>com.arcmutate</groupId>
                                 <artifactId>pitest-git-plugin</artifactId>
-                                <version>2.2.1</version>
+                                <version>${plugin.pitest-git-plugin.version}</version>
                             </dependency>
                             <dependency>
                                 <groupId>org.pitest</groupId>
