@@ -23,7 +23,9 @@ jobs:
       - name: Setup Java JDK
         uses: actions/setup-java@v4
         with:
-          java-version: 11
+          java-version: 21
+          distribution: coretto
+          cache: maven
       - name: run pitest
         run: mvn -e -B -Ppitest -Dfeatures="+GIT(from[HEAD~1]), +gitci" test
       - name: update pull request
