@@ -1,0 +1,34 @@
+name: pitest
+on:
+  pull_request:
+
+jobs:
+  pull-request-ci:
+    # Only run on PRs from the repo. PRs from forks will fail due to lack of permissions and
+    # must use a two stage process
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v4
+        with:
+          # important to set a fetch depth of 2. By default the checkout action make no history available
+          fetch-depth: 2
+      - name: Cache local Maven repository
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-maven-
+      - name: Setup Java JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: 21
+          distribution: corretto
+          cache: maven
+      - name: run pitest
+        run: mvn -e -B -Ppitest -Dfeatures="+GIT(from[HEAD~1]), +gitci" test
+      - name: update pull request
+        run: mvn -e -B -DrepoToken=${{ secrets.GITHUB_TOKEN }} pitest-github:github
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
