@@ -1,19 +1,19 @@
 name: pitest
 
 permissions:
-  actions: read
-  attestations: read
-  checks: read
-  contents: read
-  deployments: read
-  discussions: read
-  issues: read
-  models: read
-  packages: read
-  pages: read
+  actions: write
+  attestations: write
+  checks: write
+  contents: write
+  deployments: write
+  discussions: write
+  issues: write
+  models: write
+  packages: write
+  pages: write
   pull-requests: write
-  security-events: read
-  statuses: read
+  security-events: write
+  statuses: write
 on:
   pull_request:
 
