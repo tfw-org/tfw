@@ -35,7 +35,7 @@
         <plugin.pitest-git-plugin.version>2.2.1</plugin.pitest-git-plugin.version>
         <plugin.pitest-github-maven-plugin.version>2.2.1</plugin.pitest-github-maven-plugin.version>
         <plugin.pitest-junit5-plugin.version>1.2.2</plugin.pitest-junit5-plugin.version>
-        <plugin.pitest-maven.version>1.19.3</plugin.pitest-maven.version>
+        <plugin.pitest-maven.version>1.19.4</plugin.pitest-maven.version>
         <plugin.refaster-runner.version>0.23.0</plugin.refaster-runner.version>
         <plugin.spotless-maven-plugin.version>2.44.4</plugin.spotless-maven-plugin.version>
         <plugin.spotless-palantirJavaFormat.version>2.50.0</plugin.spotless-palantirJavaFormat.version>
