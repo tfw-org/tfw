@@ -1,4 +1,22 @@
 name: pitest
+
+permissions:
+  Actions: read
+  Attestations: read
+  Checks: read
+  Contents: read
+  Deployments: read
+  Discussions: read
+  Issues: read
+  Metadata: read
+  Models: read
+  Packages: read
+  Pages: read
+  PullRequests: write
+  RepositoryProjects: read
+  SecurityEvents: read
+  Statuses: read
+
 on:
   pull_request:
 
