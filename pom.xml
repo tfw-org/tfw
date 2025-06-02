@@ -32,7 +32,7 @@
         <plugin.maven-surefire-junit5-tree-reporter.version>1.4.0</plugin.maven-surefire-junit5-tree-reporter.version>
         <plugin.maven-surefire-plugin.version>3.5.3</plugin.maven-surefire-plugin.version>
         <plugin.nexus-staging-maven-plugin.version>1.7.0</plugin.nexus-staging-maven-plugin.version>
-        <plugin.pitest-git-plugin.version>2.2.2</plugin.pitest-git-plugin.version>
+        <plugin.pitest-git-plugin.version>2.2.3</plugin.pitest-git-plugin.version>
         <plugin.pitest-github-maven-plugin.version>2.2.2</plugin.pitest-github-maven-plugin.version>
         <plugin.pitest-junit5-plugin.version>1.2.3</plugin.pitest-junit5-plugin.version>
         <plugin.pitest-maven.version>1.19.4</plugin.pitest-maven.version>
