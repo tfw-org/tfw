@@ -10,7 +10,7 @@
     <description>The FrameWork for building highly scalable and maintainable applications</description>
 
     <properties>
-        <argLine></argLine>
+        <argLine/>
         <dependency.assertj-core.version>3.27.3</dependency.assertj-core.version>
         <dependency.assertj-swing.version>3.17.1</dependency.assertj-swing.version>
         <dependency.junit-jupiter-api.version>5.13.3</dependency.junit-jupiter-api.version>
