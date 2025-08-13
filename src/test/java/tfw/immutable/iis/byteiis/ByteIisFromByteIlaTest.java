@@ -65,6 +65,7 @@ final class ByteIisFromByteIlaTest {
             }
 
             assertThat(iis.skip(1)).isEqualTo(-1);
+            assertThat(iis.skip(1)).isEqualTo(-1);
         }
     }
 }
