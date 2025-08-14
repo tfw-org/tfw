@@ -47,34 +47,34 @@ public final class MuLawByteIlaFromLinearShortIla {
                  * available from the following location:
                  * ftp://svr-ftp.eng.cam.ac.uk/pub/comp.speech/coding/G711_G721_G723.tar.gz
                  */
-                int pcm_val = si.next();
+                int pcmValue = si.next();
                 int mask;
 
                 /* Get the sign and the magnitude of the value. */
-                pcm_val = pcm_val >> 2;
-                if (pcm_val < 0) {
-                    pcm_val = -pcm_val;
+                pcmValue = pcmValue >> 2;
+                if (pcmValue < 0) {
+                    pcmValue = -pcmValue;
                     mask = 0x7F;
                 } else {
                     mask = 0xFF;
                 }
 
-                if (pcm_val > CLIP) {
-                    pcm_val = CLIP;
+                if (pcmValue > CLIP) {
+                    pcmValue = CLIP;
                 }
-                pcm_val += BIAS >> 2;
+                pcmValue += BIAS >> 2;
 
                 /* Convert the scaled magnitude to segment number. */
                 int seg = 8;
 
-                if (pcm_val <= 0x3F) seg = 0;
-                else if (pcm_val <= 0x7F) seg = 1;
-                else if (pcm_val <= 0xFF) seg = 2;
-                else if (pcm_val <= 0x1FF) seg = 3;
-                else if (pcm_val <= 0x3FF) seg = 4;
-                else if (pcm_val <= 0x7FF) seg = 5;
-                else if (pcm_val <= 0xFFF) seg = 6;
-                else if (pcm_val <= 0x1FFF) seg = 7;
+                if (pcmValue <= 0x3F) seg = 0;
+                else if (pcmValue <= 0x7F) seg = 1;
+                else if (pcmValue <= 0xFF) seg = 2;
+                else if (pcmValue <= 0x1FF) seg = 3;
+                else if (pcmValue <= 0x3FF) seg = 4;
+                else if (pcmValue <= 0x7FF) seg = 5;
+                else if (pcmValue <= 0xFFF) seg = 6;
+                else if (pcmValue <= 0x1FFF) seg = 7;
 
                 /*
                  * Combine the sign, segment, quantization bits;
@@ -83,7 +83,7 @@ public final class MuLawByteIlaFromLinearShortIla {
                 if (seg >= 8) /* out of range, return maximum value. */ {
                     array[i] = (byte) (0x7F ^ mask);
                 } else {
-                    int uval = (seg << 4) | ((pcm_val >> (seg + 1)) & 0xF);
+                    int uval = (seg << 4) | ((pcmValue >> (seg + 1)) & 0xF);
                     array[i] = (byte) (uval ^ mask);
                 }
             }

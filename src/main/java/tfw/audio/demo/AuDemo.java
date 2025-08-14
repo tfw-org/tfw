@@ -21,7 +21,7 @@ public class AuDemo {
         System.out.println("file.length = " + file.length());
         System.out.println("magicNumber=" + Long.toHexString(auFileFormat.magicNumber));
         System.out.println("offset = " + auFileFormat.offset);
-        System.out.println("data_size = " + auFileFormat.data_size);
+        System.out.println("dataSize = " + auFileFormat.dataSize);
         System.out.println("encoding = " + auFileFormat.encoding);
         System.out.println("sampleRate = " + auFileFormat.sampleRate);
         System.out.println("numberOfChannels = " + auFileFormat.numberOfChannels);
