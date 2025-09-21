@@ -30,7 +30,7 @@
         <plugin.maven-pmd-plugin.version>3.27.0</plugin.maven-pmd-plugin.version>
         <plugin.maven-source-plugin.version>3.3.1</plugin.maven-source-plugin.version>
         <plugin.maven-surefire-junit5-tree-reporter.version>1.4.0</plugin.maven-surefire-junit5-tree-reporter.version>
-        <plugin.maven-surefire-plugin.version>3.5.3</plugin.maven-surefire-plugin.version>
+        <plugin.maven-surefire-plugin.version>3.5.4</plugin.maven-surefire-plugin.version>
         <plugin.nexus-staging-maven-plugin.version>1.7.0</plugin.nexus-staging-maven-plugin.version>
         <plugin.pitest-git-plugin.version>2.2.4</plugin.pitest-git-plugin.version>
         <plugin.pitest-github-maven-plugin.version>2.2.4</plugin.pitest-github-maven-plugin.version>
