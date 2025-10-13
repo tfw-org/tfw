@@ -27,7 +27,7 @@
         <plugin.maven-dependency-plugin.version>3.9.0</plugin.maven-dependency-plugin.version>
         <plugin.maven-gpg-plugin.version>3.2.8</plugin.maven-gpg-plugin.version>
         <plugin.maven-javadoc-plugin.version>3.12.0</plugin.maven-javadoc-plugin.version>
-        <plugin.maven-pmd-plugin.version>3.27.0</plugin.maven-pmd-plugin.version>
+        <plugin.maven-pmd-plugin.version>3.28.0</plugin.maven-pmd-plugin.version>
         <plugin.maven-source-plugin.version>3.3.1</plugin.maven-source-plugin.version>
         <plugin.maven-surefire-junit5-tree-reporter.version>1.5.1</plugin.maven-surefire-junit5-tree-reporter.version>
         <plugin.maven-surefire-plugin.version>3.5.4</plugin.maven-surefire-plugin.version>
