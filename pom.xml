@@ -212,7 +212,7 @@
                     <doclint>all</doclint>
                     <failOnWarnings>true</failOnWarnings>
                     <failOnError>true</failOnError>
-                    <sourceFileExcludes>tfw.math.BigDecimal.java:tfw.math.BigInteger.java</sourceFileExcludes>
+                    <sourceFileExcludes>tfw.math.*</sourceFileExcludes>
                 </configuration>
                 <executions>
                     <execution>
