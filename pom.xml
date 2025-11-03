@@ -212,7 +212,7 @@
                     <doclint>all</doclint>
                     <failOnWarnings>true</failOnWarnings>
                     <failOnError>true</failOnError>
-                    <excludePackageNames>tfw.math.*</excludePackageNames>
+                    <excludePackageNames>tfw.math</excludePackageNames>
                 </configuration>
                 <executions>
                     <execution>
