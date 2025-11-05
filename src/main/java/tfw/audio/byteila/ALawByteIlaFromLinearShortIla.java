@@ -2,7 +2,6 @@ package tfw.audio.byteila;
 
 import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.ila.byteila.AbstractByteIla;
 import tfw.immutable.ila.byteila.ByteIla;
 import tfw.immutable.ila.shortila.ShortIla;
 import tfw.immutable.ila.shortila.ShortIlaIterator;
@@ -20,18 +19,9 @@ public final class ALawByteIlaFromLinearShortIla {
         return new ByteIlaImpl(shortIla, bufferSize);
     }
 
-    private static class ByteIlaImpl extends AbstractByteIla {
-        private final ShortIla shortIla;
-        private final int bufferSize;
-
+    private static class ByteIlaImpl extends ALawMuLawAbstractByteIla {
         private ByteIlaImpl(final ShortIla shortIla, final int bufferSize) {
-            this.shortIla = shortIla;
-            this.bufferSize = bufferSize;
-        }
-
-        @Override
-        protected long lengthImpl() throws IOException {
-            return shortIla.length();
+            super(shortIla, bufferSize);
         }
 
         @Override
