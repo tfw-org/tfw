@@ -55,7 +55,7 @@ public final class MuLawByteIlaFromLinearShortIla {
                 pcmValue += BIAS >> 2;
 
                 /* Convert the scaled magnitude to segment number. */
-                int seg = mulawSegmentNumerFromScaledMagnitude(pcmValue);
+                int seg = mulawSegmentNumberFromScaledMagnitude(pcmValue);
 
                 /*
                  * Combine the sign, segment, quantization bits;
