@@ -48,16 +48,7 @@ public final class ALawByteIlaFromLinearShortIla {
                 }
 
                 /* Convert the scaled magnitude to segment number. */
-                int seg = 8;
-
-                if (pcmValue <= 0xFF) seg = 0;
-                else if (pcmValue <= 0x1FF) seg = 1;
-                else if (pcmValue <= 0x3FF) seg = 2;
-                else if (pcmValue <= 0x7FF) seg = 3;
-                else if (pcmValue <= 0xFFF) seg = 4;
-                else if (pcmValue <= 0x1FFF) seg = 5;
-                else if (pcmValue <= 0x3FFF) seg = 6;
-                else if (pcmValue <= 0x7FFF) seg = 7;
+                int seg = alawSegmentNumberFromScaledMagnitude(pcmValue);
 
                 /* Combine the sign, segment, and quantization bits. */
 
