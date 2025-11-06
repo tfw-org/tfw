@@ -1,7 +1,6 @@
 package tfw.audio.byteila;
 
 import java.io.IOException;
-import tfw.check.Argument;
 import tfw.immutable.ila.byteila.ByteIla;
 import tfw.immutable.ila.shortila.ShortIla;
 import tfw.immutable.ila.shortila.ShortIlaIterator;
@@ -14,9 +13,6 @@ public final class MuLawByteIlaFromLinearShortIla {
     private MuLawByteIlaFromLinearShortIla() {}
 
     public static ByteIla create(final ShortIla shortIla, final int bufferSize) {
-        Argument.assertNotNull(shortIla, "shortIla");
-        Argument.assertNotLessThan(bufferSize, 1, "bufferSize");
-
         return new ByteIlaImpl(shortIla, bufferSize);
     }
 
