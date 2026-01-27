@@ -147,6 +147,7 @@
                         <arg>-1</arg>
                         <arg>-Xlint:all,-options,-path</arg>
                         <arg>-XDcompilePolicy=simple</arg>
+                        <arg>-XDaddTypeAnnotationsToSymbol=true</arg>
                         <arg>--should-stop=ifError=FLOW</arg>
                         <arg>-Xplugin:ErrorProne \
                         -XepAllErrorsAsWarnings \
