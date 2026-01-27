@@ -21,7 +21,6 @@
         <plugin.error-prone-contrib.version>0.28.0</plugin.error-prone-contrib.version>
         <plugin.error_prone_core.version>2.46.0</plugin.error_prone_core.version>
         <plugin.errorprone-slf4j.version>0.1.29</plugin.errorprone-slf4j.version>
-        <plugin.exec-maven-plugin.version>3.6.3</plugin.exec-maven-plugin.version>
         <plugin.jacoco-maven-plugin.version>0.8.14</plugin.jacoco-maven-plugin.version>
         <plugin.maven-compiler-plugin.version>3.14.1</plugin.maven-compiler-plugin.version>
         <plugin.maven-dependency-plugin.version>3.9.0</plugin.maven-dependency-plugin.version>
@@ -37,6 +36,7 @@
         <plugin.pitest-junit5-plugin.version>1.2.3</plugin.pitest-junit5-plugin.version>
         <plugin.pitest-maven.version>1.22.0</plugin.pitest-maven.version>
         <plugin.refaster-runner.version>0.28.0</plugin.refaster-runner.version>
+        <plugin.sonar-maven-plugin.version>5.5.0.6356</plugin.sonar-maven-plugin.version>
         <plugin.spotless-maven-plugin.version>3.2.0</plugin.spotless-maven-plugin.version>
         <plugin.spotless-palantirJavaFormat.version>2.81.0</plugin.spotless-palantirJavaFormat.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -296,9 +296,9 @@
                 </dependencies>
             </plugin>
             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>exec-maven-plugin</artifactId>
-                <version>${plugin.exec-maven-plugin.version}</version>
+                <groupId>org.sonarsource.scanner.maven</groupId>
+                <artifactId>sonar-maven-plugin</artifactId>
+                <version>${plugin.sonar-maven-plugin.version}</version>
                 <configuration>
                     <mainClass>tfw.build.SearchAndReplace</mainClass>
                     <arguments>
