@@ -47,3 +47,11 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: mvn -e -B -DrepoToken=${{ env.GITHUB_TOKEN }} pitest-github:github
+      - name: Publish Pitest Report
+        uses: Bonajo/pitest-report-action@v1.0.0
+        with:
+          file: target/pit-reports/mutations.xml
+          summary: true
+          annotation-types: SURVIVED
+          threshold: 90
+          token: ${{ secrets.GITHUB_TOKEN }}
