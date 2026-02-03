@@ -37,7 +37,7 @@
         <plugin.pitest-maven.version>1.22.1</plugin.pitest-maven.version>
         <plugin.refaster-runner.version>0.28.0</plugin.refaster-runner.version>
         <plugin.sonar-maven-plugin.version>5.5.0.6356</plugin.sonar-maven-plugin.version>
-        <plugin.spotless-maven-plugin.version>3.2.0</plugin.spotless-maven-plugin.version>
+        <plugin.spotless-maven-plugin.version>3.2.1</plugin.spotless-maven-plugin.version>
         <plugin.spotless-palantirJavaFormat.version>2.81.0</plugin.spotless-palantirJavaFormat.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <sonar.exclusions>src/main/java/tfw/math/BigDecimal.java,
