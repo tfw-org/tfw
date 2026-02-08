@@ -1,10 +1,13 @@
 package tfw.tsm;
 
 import com.google.common.flogger.FluentLogger;
+import com.google.common.flogger.context.LogLevelMap;
+import com.google.common.flogger.context.ScopedLoggingContexts;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
 import tfw.check.Argument;
 
 // TODO: What should happen if an exception occurs while processing a
@@ -34,6 +37,9 @@ import tfw.check.Argument;
  */
 public final class TransactionMgr {
     private static final FluentLogger LOGGER = FluentLogger.forEnclosingClass();
+    private static final LogLevelMap DEBUG_LEVELS = LogLevelMap.builder()
+            .setDefault(Level.FINE) // Force all logs at FINE and above
+            .build();
 
     final TransactionQueue queue;
     final CheckDependencies checkDependencies;
@@ -158,7 +164,15 @@ public final class TransactionMgr {
         Throwable thrown = null;
 
         try {
-            thrown = executeTransactionHelper(transactionState, location);
+            if (logging) {
+                thrown = ScopedLoggingContexts.newContext()
+                        .withLogLevelMap(DEBUG_LEVELS)
+                        .call(() -> executeTransactionHelper(transactionState, location));
+            } else {
+                thrown = executeTransactionHelper(transactionState, location);
+            }
+        } catch (Exception e) {
+            LOGGER.atWarning().withCause(e).log("Exception in while executing transaction!");
         } finally {
             if (transactionState != null) {
                 transactionState.getResultFuture().setResultAndRelease(thrown);
@@ -250,7 +264,7 @@ public final class TransactionMgr {
             inTransaction = false;
         }
 
-        LOGGER.atFine().log("End transaction: ", transactionCount);
+        LOGGER.atFine().log("End transaction: %d", transactionCount);
 
         return thrown;
     }
@@ -472,7 +486,6 @@ public final class TransactionMgr {
             return;
         }
 
-        // System.out.print("executeEventChannelFires()");
         EventChannel[] ec = eventChannelFires.toArray(new EventChannel[eventChannelFires.size()]);
         eventChannelFires.clear();
 
@@ -501,7 +514,6 @@ public final class TransactionMgr {
     }
 
     private void executeRollback() {
-        // System.out.print("executeRollback()");
         stateChanges.clear();
         validators = null;
         processors.clear();
@@ -515,11 +527,9 @@ public final class TransactionMgr {
         crListeners.clear();
 
         for (int i = 0; i < crls.length; i++) {
-            // System.out.print("*");
             crls[i].rollback();
         }
 
-        // System.out.println();
         executeTransactionCycles();
     }
 
@@ -538,9 +548,10 @@ public final class TransactionMgr {
             crListeners.clear();
         }
 
-        for (int i = 0, c = 0; i < commitRollbackListenersSize; i++) {
+        int commitNumber = 0;
+        for (int i = 0; i < commitRollbackListenersSize; i++) {
             if (!(commitRollbackListeners[i] instanceof Terminator)) {
-                LOGGER.atFine().log("  C%d : %s", (c++), commitRollbackListeners[i].getName());
+                LOGGER.atFine().log("  C%d : %s", commitNumber++, commitRollbackListeners[i].getName());
             }
 
             try {
@@ -549,8 +560,6 @@ public final class TransactionMgr {
                 LOGGER.atWarning().withCause(e).log("Exception in %s", commitRollbackListeners[i].getName());
             }
         }
-
-        // System.out.println();
     }
 
     void addCommitRollbackListener(CommitRollbackListener listener) {
