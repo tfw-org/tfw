@@ -62,6 +62,11 @@
         </dependency>
         <dependency>
             <groupId>com.google.flogger</groupId>
+            <artifactId>flogger-grpc-context</artifactId>
+            <version>0.9</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.flogger</groupId>
             <artifactId>flogger-system-backend</artifactId>
             <version>0.9</version>
             <scope>compile</scope>
@@ -70,12 +75,6 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
             <version>${dependency.slf4j-api.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.google.flogger</groupId>
-            <artifactId>flogger-grpc-context</artifactId>
-            <version>0.9</version>
-            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>net.goui.flogger.testing</groupId>

@@ -79,7 +79,7 @@ public final class TransactionMgr {
     private TransactionExceptionHandler exceptionHandler = new TransactionExceptionHandler() {
         @Override
         public void handle(Exception exception) {
-            LOGGER.atFine().withCause(exception).log("Unexpected Exception!");
+            LOGGER.atWarning().withCause(exception).log("Unexpected Exception!");
 
             throw new RuntimeException(
                     "An unhandled exception occured while processing a transaction: " + exception.getMessage(),
