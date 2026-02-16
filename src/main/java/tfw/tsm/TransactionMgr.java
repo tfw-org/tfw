@@ -165,14 +165,16 @@ public final class TransactionMgr {
 
         try {
             if (logging) {
-                thrown = ScopedLoggingContexts.newContext()
-                        .withLogLevelMap(DEBUG_LEVELS)
-                        .call(() -> executeTransactionHelper(transactionState, location));
+                try {
+                    thrown = ScopedLoggingContexts.newContext()
+                            .withLogLevelMap(DEBUG_LEVELS)
+                            .call(() -> executeTransactionHelper(transactionState, location));
+                } catch (Exception e) {
+                    thrown = e;
+                }
             } else {
                 thrown = executeTransactionHelper(transactionState, location);
             }
-        } catch (Exception e) {
-            LOGGER.atWarning().withCause(e).log("Exception in while executing transaction!");
         } finally {
             if (transactionState != null) {
                 transactionState.getResultFuture().setResultAndRelease(thrown);
@@ -854,8 +856,6 @@ public final class TransactionMgr {
     }
 
     static class RemoveComponentRunnable implements Runnable {
-        private static final FluentLogger LOGGER = FluentLogger.forEnclosingClass();
-
         final BranchComponent parent;
         final TreeComponent child;
         final TreeComponent[] children;
