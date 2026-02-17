@@ -40,7 +40,7 @@ public class DefaultCheckDependencies implements CheckDependencies {
     }
 
     public void privateCheckDependencies(List<Processor> processors, List<Processor> delayedProcessors) {
-        LOGGER.atInfo().log(
+        LOGGER.atFine().log(
                 "CDN: p.s=%d dp.s=%d c.s=%d", processors.size(), delayedProcessors.size(), processorCache.size());
 
         origProcessorsArraySize = processors.size();
