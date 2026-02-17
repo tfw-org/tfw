@@ -325,7 +325,7 @@ public final class TransactionMgr {
         }
 
         if (processors.size() > 1) {
-            checkDependencies.checkDependencies(processors, delayedProcessors, null);
+            checkDependencies.checkDependencies(processors, delayedProcessors, logging);
         }
 
         // process the independent processors...

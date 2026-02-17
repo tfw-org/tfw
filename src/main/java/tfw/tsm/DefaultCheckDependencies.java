@@ -1,5 +1,8 @@
 package tfw.tsm;
 
+import com.google.common.flogger.FluentLogger;
+import com.google.common.flogger.context.LogLevelMap;
+import com.google.common.flogger.context.ScopedLoggingContexts;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -7,9 +10,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class DefaultCheckDependencies implements CheckDependencies {
+    private static final FluentLogger LOGGER = FluentLogger.forEnclosingClass();
+    private static final LogLevelMap DEBUG_LEVELS = LogLevelMap.builder()
+            .setDefault(Level.FINE) // Force all logs at FINE and above
+            .build();
+
     private final Map<Processor, Map<Processor, Boolean>> processorCache = new HashMap<>();
 
     private static int origProcessorsArraySize = 0;
@@ -22,13 +29,19 @@ public class DefaultCheckDependencies implements CheckDependencies {
     private static Set<EventChannel> terminatorCrumbs = new HashSet<>();
 
     @Override
-    public void checkDependencies(List<Processor> processors, List<Processor> delayedProcessors, Logger logger) {
-        if (logger != null) {
-            logger.log(
-                    Level.FINE,
-                    "CDN: p.s=" + processors.size() + " dp.s=" + delayedProcessors.size() + " c.s="
-                            + processorCache.size());
+    public void checkDependencies(List<Processor> processors, List<Processor> delayedProcessors, boolean logging) {
+        if (logging) {
+            ScopedLoggingContexts.newContext()
+                    .withLogLevelMap(DEBUG_LEVELS)
+                    .run(() -> privateCheckDependencies(processors, delayedProcessors));
+        } else {
+            privateCheckDependencies(processors, delayedProcessors);
         }
+    }
+
+    public void privateCheckDependencies(List<Processor> processors, List<Processor> delayedProcessors) {
+        LOGGER.atInfo().log(
+                "CDN: p.s=%d dp.s=%d c.s=%d", processors.size(), delayedProcessors.size(), processorCache.size());
 
         origProcessorsArraySize = processors.size();
         if (origProcessorsArray.length < origProcessorsArraySize) {
@@ -83,8 +96,7 @@ public class DefaultCheckDependencies implements CheckDependencies {
                             terminatorCrumbs,
                             processorCache,
                             2,
-                            null,
-                            logger);
+                            null);
 
                     map = processorCache.get(origProcessor);
 
@@ -119,8 +131,7 @@ public class DefaultCheckDependencies implements CheckDependencies {
             Set<EventChannel> visitedEventChannels,
             Map<Processor, Map<Processor, Boolean>> cache,
             int spaces,
-            List<Processor> dependencyChain,
-            Logger logger) {
+            List<Processor> dependencyChain) {
         if (visitedProcessors.contains(toProcessor)) {
             return;
         }
@@ -141,7 +152,7 @@ public class DefaultCheckDependencies implements CheckDependencies {
                     sb.append(p.getName());
                     sb.append(", ");
                 }
-                logger.log(Level.FINE, sb.toString());
+                LOGGER.atFine().log("%s", sb);
             }
         }
 
@@ -161,8 +172,7 @@ public class DefaultCheckDependencies implements CheckDependencies {
                     visitedEventChannels,
                     cache,
                     spaces + 2,
-                    dependencyChain,
-                    logger);
+                    dependencyChain);
         }
     }
 
@@ -175,8 +185,7 @@ public class DefaultCheckDependencies implements CheckDependencies {
             Set<EventChannel> visitedEventChannels,
             Map<Processor, Map<Processor, Boolean>> cache,
             int spaces,
-            List<Processor> dependencyChain,
-            Logger logger) {
+            List<Processor> dependencyChain) {
         if (visitedEventChannels.contains(eventChannel)) {
             return;
         }
@@ -196,8 +205,7 @@ public class DefaultCheckDependencies implements CheckDependencies {
                     visitedEventChannels,
                     cache,
                     spaces + 2,
-                    dependencyChain,
-                    logger);
+                    dependencyChain);
         }
 
         Terminator terminator = (Terminator) eventChannel;
@@ -219,8 +227,7 @@ public class DefaultCheckDependencies implements CheckDependencies {
                             visitedEventChannels,
                             cache,
                             spaces + 4,
-                            dependencyChain,
-                            logger);
+                            dependencyChain);
                 }
             } else {
                 TreeComponent treeComponent = sinks[i].getTreeComponent();
@@ -239,8 +246,7 @@ public class DefaultCheckDependencies implements CheckDependencies {
                             visitedEventChannels,
                             cache,
                             spaces + 4,
-                            dependencyChain,
-                            logger);
+                            dependencyChain);
 
                     if (dependencyChain != null) {
                         dependencyChain.remove(dependencyChain.size() - 1);

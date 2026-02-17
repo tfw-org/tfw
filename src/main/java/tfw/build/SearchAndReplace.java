@@ -1,5 +1,6 @@
 package tfw.build;
 
+import com.google.common.flogger.FluentLogger;
 import java.io.StringReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -10,22 +11,19 @@ import java.util.List;
 import java.util.Properties;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public final class SearchAndReplace {
-    private static final Logger LOGGER;
+    private static final FluentLogger LOGGER = FluentLogger.forEnclosingClass();
 
     static {
         System.setProperty("java.util.logging.SimpleFormatter.format", "[%1$tF %1$tT] [%4$-7s] %5$s %n");
-        LOGGER = LoggerFactory.getLogger(SearchAndReplace.class);
     }
 
     private SearchAndReplace() {}
 
     public static void main(final String[] args) throws Exception {
         if (args.length < 1) {
-            LOGGER.error("Usage: SearchAndReplace <template/mapping root directory>");
+            LOGGER.atSevere().log("Usage: SearchAndReplace <template/mapping root directory>");
 
             System.exit(-1);
         }
@@ -40,38 +38,38 @@ public final class SearchAndReplace {
             }
 
             for (final Path p : templateList) {
-                LOGGER.info("Template Path ={}", p);
+                LOGGER.atInfo().log("Template Path =%s", p);
 
                 final String templateString = new String(Files.readAllBytes(p), StandardCharsets.UTF_8);
                 final String[] mappingTemplate = templateString.split("\\R", 2);
 
-                LOGGER.info("  mapping = {}", mappingTemplate[0]);
-                LOGGER.debug("  template.l = \n{}", mappingTemplate[1].length());
+                LOGGER.atInfo().log("  mapping = %s", mappingTemplate[0]);
+                LOGGER.atFine().log("  template.l = %n%s", mappingTemplate[1].length());
 
                 final int commentIndex = mappingTemplate[0].indexOf("//");
 
                 if (commentIndex != 0) {
-                    LOGGER.error("Mapping comment not at beginning of first line!");
+                    LOGGER.atSevere().log("Mapping comment not at beginning of first line!");
 
                     System.exit(-1);
                 }
 
                 final String mapping = mappingTemplate[0].substring(2).trim();
 
-                LOGGER.debug("  mapping = {}", mapping);
+                LOGGER.atFine().log("  mapping = %s", mapping);
 
                 final String[] mappings = mapping.split(",");
 
-                LOGGER.info("  mappings = {}", mappings.length);
+                LOGGER.atInfo().log("  mappings = %s", mappings.length);
 
                 for (int i = 0; i < mappings.length; i++) {
                     final Path mappingPath = Paths.get(p.getParent().toString(), mappings[i] + ".mapping");
 
-                    LOGGER.debug("  mappingPath = {}", mappingPath);
+                    LOGGER.atFine().log("  mappingPath = %s", mappingPath);
 
                     final String mappingString = new String(Files.readAllBytes(mappingPath), StandardCharsets.UTF_8);
 
-                    LOGGER.debug("  mappingString = \n{}", mappingString);
+                    LOGGER.atFine().log("  mappingString = %n%s", mappingString);
 
                     final Properties properties = new Properties();
                     properties.load(new StringReader(mappingString));
@@ -87,7 +85,7 @@ public final class SearchAndReplace {
                     // DELETE THIS!!!
                     template = template.replace("\r\n", System.lineSeparator());
 
-                    LOGGER.debug("  template = \n{}", template);
+                    LOGGER.atFine().log("  template = %n%s", template);
 
                     final Path outputPath = Paths.get(
                             p.getParent().toString().replace("template", "java"),
@@ -98,23 +96,23 @@ public final class SearchAndReplace {
                                     .replace("__", properties.getProperty("%%NAME%%"))
                                     .replaceAll("\\.\\..+\\.", "."));
 
-                    LOGGER.debug("  outputPath = {}", outputPath);
+                    LOGGER.atFine().log("  outputPath = %s", outputPath);
 
                     if (outputPath.toFile().exists()) {
                         final String originalFileString =
                                 new String(Files.readAllBytes(outputPath), StandardCharsets.UTF_8);
 
                         if (originalFileString.equals(template)) {
-                            LOGGER.info("  same as {}", outputPath);
+                            LOGGER.atInfo().log("  same as %s", outputPath);
                         } else {
                             Files.write(outputPath, template.getBytes(StandardCharsets.UTF_8));
 
-                            LOGGER.info("  writing {}", outputPath);
+                            LOGGER.atInfo().log("  writing %s", outputPath);
                         }
                     } else {
                         Files.write(outputPath, template.getBytes(StandardCharsets.UTF_8));
 
-                        LOGGER.info("  writing {}", outputPath);
+                        LOGGER.atInfo().log("  writing %s", outputPath);
                     }
                 }
             }

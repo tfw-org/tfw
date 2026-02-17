@@ -1,5 +1,6 @@
 package tfw.swing.demo;
 
+import com.google.common.flogger.FluentLogger;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
@@ -15,7 +16,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import org.slf4j.LoggerFactory;
 import tfw.awt.ecd.ColorModelECD;
 import tfw.swing.ByteInterleavedImagePanel;
 import tfw.tsm.AWTTransactionQueue;
@@ -28,6 +28,8 @@ import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.ilm.ByteIlmECD;
 
 public class ByteInterleavedImagePanelDemo {
+    private static final FluentLogger LOGGER = FluentLogger.forEnclosingClass();
+
     public ByteInterleavedImagePanelDemo() {}
 
     public static final void main(String[] args) {
@@ -118,7 +120,7 @@ public class ByteInterleavedImagePanelDemo {
 
                     initiator.set(ecsb.toArray());
                 } catch (NumberFormatException nfe) {
-                    LoggerFactory.getLogger(this.getClass()).error("Couldn't parse number!", nfe);
+                    LOGGER.atSevere().withCause(nfe).log("Couldn't parse number!");
                 }
             }
         };

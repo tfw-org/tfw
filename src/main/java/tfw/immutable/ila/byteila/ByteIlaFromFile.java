@@ -1,15 +1,14 @@
 package tfw.immutable.ila.byteila;
 
+import com.google.common.flogger.FluentLogger;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import tfw.check.Argument;
 
 public final class ByteIlaFromFile {
-    private static final Logger LOGGER = LoggerFactory.getLogger(ByteIlaFromFile.class);
+    private static final FluentLogger LOGGER = FluentLogger.forEnclosingClass();
 
     private ByteIlaFromFile() {}
 
@@ -70,7 +69,7 @@ public final class ByteIlaFromFile {
             try {
                 raf.close();
             } catch (IOException ioe) {
-                LOGGER.warn("Failed to close RandomAccessFile!", ioe);
+                LOGGER.atWarning().withCause(ioe).log("Failed to close RandomAccessFile!");
             }
 
             raf = null;

@@ -1,5 +1,6 @@
 package tfw.immutable.ila.demo;
 
+import com.google.common.flogger.FluentLogger;
 import java.io.File;
 import java.io.IOException;
 import tfw.check.Argument;
@@ -33,12 +34,15 @@ import tfw.immutable.ila.shortila.ShortIlaIterator;
 import tfw.immutable.ila.shortila.ShortIlaSegment;
 
 public class OctalDump {
+    private static final FluentLogger LOGGER = FluentLogger.forEnclosingClass();
+
     public static final int BUFFER_SIZE = 1000;
 
     public static void main(String[] args) throws IOException {
         if (args.length != 3 || args[1].length() != 2) {
-            System.err.println("Usage: OctalDump <-t type> <file>");
-            System.err.println("       type = <d,f,o,x><1,2,4,8>");
+            LOGGER.atSevere().log("Usage: OctalDump <-t type> <file>");
+            LOGGER.atSevere().log("       type = <d,f,o,x><1,2,4,8>");
+
             System.exit(-1);
         }
 
@@ -104,10 +108,10 @@ public class OctalDump {
 
         for (ObjectIlaIterator<String> oii = new ObjectIlaIterator<>(strings, new String[BUFFER_SIZE]);
                 oii.hasNext(); ) {
-            System.out.println(oii.next());
+            LOGGER.atInfo().log("%s", oii.next());
         }
 
-        System.out.println("strings = \n" + strings);
+        LOGGER.atInfo().log("strings = %n%s", strings);
     }
 
     private static class StringObjectIlaFromByteIla {
