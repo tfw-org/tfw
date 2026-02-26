@@ -25,14 +25,14 @@ final class TranslatorTest {
 
     @Test
     void translationTest() {
-        RootFactory rf = new RootFactory();
-        rf.addEventChannel(portB, null, AlwaysChangeRule.RULE, null);
-
-        TestExceptionHandler handler = new TestExceptionHandler();
-        rf.setTransactionExceptionHandler(handler);
-
-        BasicTransactionQueue queue = new BasicTransactionQueue();
-        Root topBranch = rf.create("Top Branch", queue);
+        final BasicTransactionQueue queue = new BasicTransactionQueue();
+        final TestExceptionHandler handler = new TestExceptionHandler();
+        final Root topBranch = Root.builder()
+                .setName("Top Branch")
+                .setTransactionQueue(queue)
+                .setTransactionExceptionHandler(handler)
+                .addEventChannel(portB, null, AlwaysChangeRule.RULE, null)
+                .build();
 
         BranchFactory bf = new BranchFactory();
         bf.addTranslation(portA, portB);

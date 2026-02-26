@@ -7,8 +7,7 @@ import org.junit.jupiter.api.Test;
 final class RootTest {
     @Test
     void isRootedTest() {
-        RootFactory rootFactory = new RootFactory();
-        Root root = rootFactory.create("test", new BasicTransactionQueue());
+        final Root root = Root.builder().setName("test").build();
 
         assertThat(root.isRooted()).isTrue();
     }

@@ -18,7 +18,7 @@ final class ObjectIlaFactoryEcdTest {
         final ObjectIlaFactoryEcd objectIlaFactoryEcd = new ObjectIlaFactoryEcd("ObjectIlaFactory");
         final Root root = Root.builder()
                 .setName("Root")
-                .addEventChannel(objectIlaFactoryEcd, null)
+                .addObjectECD(objectIlaFactoryEcd, null)
                 .build();
         final Initiator initiator = Initiator.builder()
                 .setName("Initiator")

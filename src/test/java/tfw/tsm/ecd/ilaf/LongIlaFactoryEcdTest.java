@@ -18,7 +18,7 @@ final class LongIlaFactoryEcdTest {
         final LongIlaFactoryEcd longIlaFactoryEcd = new LongIlaFactoryEcd("LongIlaFactory");
         final Root root = Root.builder()
                 .setName("Root")
-                .addEventChannel(longIlaFactoryEcd, null)
+                .addObjectECD(longIlaFactoryEcd, null)
                 .build();
         final Initiator initiator = Initiator.builder()
                 .setName("Initiator")

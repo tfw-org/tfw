@@ -12,14 +12,13 @@ import tfw.swing.JPanelBB;
 import tfw.swing.JTextFieldModifiableBB;
 import tfw.tsm.AWTTransactionQueue;
 import tfw.tsm.Branch;
-import tfw.tsm.RootFactory;
+import tfw.tsm.Root;
 import tfw.tsm.ecd.BooleanECD;
 import tfw.tsm.ecd.IntegerECD;
 import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.StatelessTriggerECD;
 import tfw.tsm.ecd.StringECD;
 import tfw.tsm.ecd.StringRollbackECD;
-import tfw.value.ValueException;
 
 public class TextFieldDemo extends JPanelBB {
     private static final long serialVersionUID = 1L;
@@ -133,37 +132,26 @@ public class TextFieldDemo extends JPanelBB {
     }
 
     private static Branch createBranch() {
-        RootFactory rf = new RootFactory();
-
-        try {
-            rf.addEventChannel(RED_STRING, "0");
-            rf.addEventChannel(RED_STRING_ADJ, "0");
-            rf.addEventChannel(RED_INTEGER);
-
-            rf.addEventChannel(GREEN_STRING, "1");
-            rf.addEventChannel(GREEN_STRING_ADJ);
-            rf.addEventChannel(GREEN_INTEGER);
-
-            rf.addEventChannel(BLUE_STRING, "2");
-            rf.addEventChannel(BLUE_STRING_ADJ, "2");
-            rf.addEventChannel(BLUE_INTEGER);
-
-            rf.addEventChannel(APPLY_TRIGGER);
-            rf.addEventChannel(APPLY_ENABLE);
-            rf.addEventChannel(COLOR_BUTTON_ENABLE_NAME, Boolean.TRUE);
-            rf.addEventChannel(ERROR_NAME);
-            rf.addEventChannel(COLOR_NAME);
-            rf.addEventChannel(RESET_TRIGGER);
-            rf.addEventChannel(RESET_ENABLE);
-            // rf.setLogging(true);
-        } catch (ValueException e) {
-            // This exception should not happen. So we convert it
-            // to a runtime exception so the calling code does not
-            // have to deal with it.
-            throw new RuntimeException("Unexpected ValueException: " + e.getMessage());
-        }
-
-        return rf.create("TextFieldDemo", new AWTTransactionQueue());
+        return Root.builder()
+                .setName("TextFieldDemo")
+                .setTransactionQueue(new AWTTransactionQueue())
+                .addObjectECD(RED_STRING, "0")
+                .addObjectECD(RED_STRING_ADJ, "0")
+                .addObjectECD(RED_INTEGER, null)
+                .addObjectECD(GREEN_STRING, "1")
+                .addObjectECD(GREEN_STRING_ADJ, null)
+                .addObjectECD(GREEN_INTEGER, null)
+                .addObjectECD(BLUE_STRING, "2")
+                .addObjectECD(BLUE_STRING_ADJ, "2")
+                .addObjectECD(BLUE_INTEGER, null)
+                .addStatelessTriggerECD(APPLY_TRIGGER)
+                .addObjectECD(APPLY_ENABLE, null)
+                .addObjectECD(COLOR_BUTTON_ENABLE_NAME, Boolean.TRUE)
+                .addObjectECD(ERROR_NAME, null)
+                .addObjectECD(COLOR_NAME, null)
+                .addStatelessTriggerECD(RESET_TRIGGER)
+                .addObjectECD(RESET_ENABLE, null)
+                .build();
     }
 
     public static void main(String[] args) {

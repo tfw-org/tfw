@@ -18,7 +18,7 @@ final class DoubleIlaFactoryEcdTest {
         final DoubleIlaFactoryEcd doubleIlaFactoryEcd = new DoubleIlaFactoryEcd("DoubleIlaFactory");
         final Root root = Root.builder()
                 .setName("Root")
-                .addEventChannel(doubleIlaFactoryEcd, null)
+                .addObjectECD(doubleIlaFactoryEcd, null)
                 .build();
         final Initiator initiator = Initiator.builder()
                 .setName("Initiator")
