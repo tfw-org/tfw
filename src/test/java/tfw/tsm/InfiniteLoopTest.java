@@ -64,13 +64,15 @@ final class InfiniteLoopTest {
 
     @Test
     void infiniteLoopTest() throws Exception {
-        RootFactory rf = new RootFactory();
-        BasicTransactionQueue queue = new BasicTransactionQueue();
-        rf.addEventChannel(PORT_A, null, AlwaysChangeRule.RULE, null);
-        rf.addEventChannel(PORT_B, null, AlwaysChangeRule.RULE, null);
-        rf.addEventChannel(PORT_C, null, AlwaysChangeRule.RULE, null);
+        final BasicTransactionQueue queue = new BasicTransactionQueue();
+        final Root root = Root.builder()
+                .setName("Infinite loop test")
+                .setTransactionQueue(queue)
+                .addEventChannel(PORT_A, null, AlwaysChangeRule.RULE, null)
+                .addEventChannel(PORT_B, null, AlwaysChangeRule.RULE, null)
+                .addEventChannel(PORT_C, null, AlwaysChangeRule.RULE, null)
+                .build();
 
-        Root root = rf.create("Infinite loop test", queue);
         root.add(initiator);
         root.add(convertAtoB);
 

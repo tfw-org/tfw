@@ -11,11 +11,9 @@ import tfw.swing.JButtonBB;
 import tfw.swing.JFrameBB;
 import tfw.swing.JPanelBB;
 import tfw.swing.JTextFieldBB;
-import tfw.tsm.BasicTransactionQueue;
 import tfw.tsm.Commit;
 import tfw.tsm.Converter;
 import tfw.tsm.Root;
-import tfw.tsm.RootFactory;
 import tfw.tsm.Synchronizer;
 import tfw.tsm.ecd.BooleanECD;
 import tfw.tsm.ecd.IntegerECD;
@@ -43,23 +41,23 @@ public class AdditionDemo {
         final StringECD VALUE_TWO_TEXT_ECD = new StringECD("valueTwoText");
         final StringECD VALUE_TWO_TEXT_ADJ_ECD = new StringECD("valueTwoTextAdj");
 
-        RootFactory rootFactory = new RootFactory();
-        rootFactory.addEventChannel(CALCULATE_ENABLED_ECD, Boolean.TRUE);
-        rootFactory.addEventChannel(CALCULATE_TRIGGER_ECD);
-        rootFactory.addEventChannel(ERROR_TEXT_ECD);
-        rootFactory.addEventChannel(SUM_ECD);
-        rootFactory.addEventChannel(SUM_ENABLED_ECD, Boolean.FALSE);
-        rootFactory.addEventChannel(SUM_TEXT_ECD, "");
-        rootFactory.addEventChannel(VALUE_ONE_ECD);
-        rootFactory.addEventChannel(VALUE_ONE_ENABLED_ECD, Boolean.TRUE);
-        rootFactory.addEventChannel(VALUE_ONE_TEXT_ECD, "");
-        rootFactory.addEventChannel(VALUE_ONE_TEXT_ADJ_ECD, "");
-        rootFactory.addEventChannel(VALUE_TWO_ECD);
-        rootFactory.addEventChannel(VALUE_TWO_ENABLED_ECD, Boolean.TRUE);
-        rootFactory.addEventChannel(VALUE_TWO_TEXT_ECD, "");
-        rootFactory.addEventChannel(VALUE_TWO_TEXT_ADJ_ECD, "");
-        rootFactory.setLogging(true);
-        Root root = rootFactory.create("AdditionDemo", new BasicTransactionQueue());
+        final Root root = Root.builder()
+                .setName("AdditionDemo")
+                .addObjectECD(CALCULATE_ENABLED_ECD, Boolean.TRUE)
+                .addStatelessTriggerECD(CALCULATE_TRIGGER_ECD)
+                .addObjectECD(ERROR_TEXT_ECD, null)
+                .addObjectECD(SUM_ECD, null)
+                .addObjectECD(SUM_ENABLED_ECD, Boolean.FALSE)
+                .addObjectECD(SUM_TEXT_ECD, "")
+                .addObjectECD(VALUE_ONE_ECD, null)
+                .addObjectECD(VALUE_ONE_ENABLED_ECD, Boolean.TRUE)
+                .addObjectECD(VALUE_ONE_TEXT_ECD, "")
+                .addObjectECD(VALUE_ONE_TEXT_ADJ_ECD, "")
+                .addObjectECD(VALUE_TWO_ECD, null)
+                .addObjectECD(VALUE_TWO_ENABLED_ECD, Boolean.TRUE)
+                .addObjectECD(VALUE_TWO_TEXT_ECD, "")
+                .addObjectECD(VALUE_TWO_TEXT_ADJ_ECD, "")
+                .build();
 
         JFrameBB frame = new JFrameBB(root);
 

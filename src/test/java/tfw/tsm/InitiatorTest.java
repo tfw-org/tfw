@@ -47,19 +47,20 @@ final class InitiatorTest {
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("state == null not allowed!");
 
-        RootFactory rf = new RootFactory();
-        rf.setTransactionExceptionHandler(new TransactionExceptionHandler() {
-            @Override
-            public void handle(Exception exception) {
-                assertThat(exception).isNull();
-            }
-        });
-        rf.addEventChannel(channel1, null, AlwaysChangeRule.RULE, null);
-        rf.addEventChannel(channel2, null, AlwaysChangeRule.RULE, null);
+        final BasicTransactionQueue queue = new BasicTransactionQueue();
+        final Root root = Root.builder()
+                .setName("test")
+                .setTransactionQueue(queue)
+                .setTransactionExceptionHandler(new TransactionExceptionHandler() {
+                    @Override
+                    public void handle(Exception exception) {
+                        assertThat(exception).isNull();
+                    }
+                })
+                .addEventChannel(channel1, null, AlwaysChangeRule.RULE, null)
+                .addEventChannel(channel2, null, AlwaysChangeRule.RULE, null)
+                .build();
 
-        BasicTransactionQueue queue = new BasicTransactionQueue();
-
-        Root root = rf.create("test", queue);
         root.add(initiator);
 
         TestCommit commit = new TestCommit("testcommit", channels);
@@ -158,15 +159,15 @@ final class InitiatorTest {
         assertThat(state2).isEqualTo(commit.commitState.get(channel2));
 
         assertThat(commit.debugCommitState).isNull();
-        rf = new RootFactory();
-        rf.setTransactionExceptionHandler(new TransactionExceptionHandler() {
-            @Override
-            public void handle(Exception exception) {
-                assertThat(exception).isNull();
-            }
-        });
-        rf.addEventChannel(channel1, null, AlwaysChangeRule.RULE, null);
-        rf.addEventChannel(channel2, null, AlwaysChangeRule.RULE, null);
+        // rf = new RootFactory();
+        // rf.setTransactionExceptionHandler(new TransactionExceptionHandler() {
+        //     @Override
+        //     public void handle(Exception exception) {
+        //         assertThat(exception).isNull();
+        //     }
+        // });
+        // rf.addEventChannel(channel1, null, AlwaysChangeRule.RULE, null);
+        // rf.addEventChannel(channel2, null, AlwaysChangeRule.RULE, null);
 
         //        Root root2 = rf.create("Root2", queue);
         //        initiator.set(channel1, state1);

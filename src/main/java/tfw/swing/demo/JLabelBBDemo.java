@@ -13,7 +13,6 @@ import tfw.swing.JLabelBB;
 import tfw.tsm.AWTTransactionQueue;
 import tfw.tsm.Initiator;
 import tfw.tsm.Root;
-import tfw.tsm.RootFactory;
 import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.StringECD;
 
@@ -49,9 +48,12 @@ public class JLabelBBDemo {
         p.add(l, BorderLayout.NORTH);
         p.add(c, BorderLayout.CENTER);
 
-        RootFactory rf = new RootFactory();
-        rf.addEventChannel(TEXT_ECD);
-        Root r = rf.create("JButtonBBTest", new AWTTransactionQueue());
+        final Root r = Root.builder()
+                .setName("JButtonBBTest")
+                .setTransactionQueue(new AWTTransactionQueue())
+                .addObjectECD(TEXT_ECD, null)
+                .build();
+
         r.add(initiator);
         r.add(l);
 

@@ -14,7 +14,6 @@ import tfw.tsm.AWTTransactionQueue;
 import tfw.tsm.Commit;
 import tfw.tsm.Initiator;
 import tfw.tsm.Root;
-import tfw.tsm.RootFactory;
 import tfw.tsm.ecd.BooleanECD;
 import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.StringECD;
@@ -28,10 +27,12 @@ public class JTextFieldBBDemo {
         final StringECD textECD = new StringECD("text");
         final BooleanECD enabledECD = new BooleanECD("enabled");
 
-        RootFactory rf = new RootFactory();
-        rf.addEventChannel(textECD, "Initial Value");
-        rf.addEventChannel(enabledECD, Boolean.FALSE);
-        Root root = rf.create("JTextFieldBBTest", new AWTTransactionQueue());
+        final Root root = Root.builder()
+                .setName("JTextFieldBBTest")
+                .setTransactionQueue(new AWTTransactionQueue())
+                .addObjectECD(textECD, "Initial Value")
+                .addObjectECD(enabledECD, Boolean.FALSE)
+                .build();
 
         final Initiator initiator = new Initiator("JTextFieldBBTest", new ObjectECD[] {textECD, enabledECD});
         root.add(initiator);
