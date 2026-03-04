@@ -78,11 +78,11 @@ public class Root extends Branch {
     //    	this.transactionMgr.setExceptionHandler(handler);
     //    }
 
-    public static RootBuilder builder() {
-        return new RootBuilder();
+    public static Builder builder() {
+        return new Builder();
     }
 
-    public static class RootBuilder {
+    public static class Builder {
         private String name = null;
         private TransactionQueue transactionQueue = new BasicTransactionQueue();
         private CheckDependencies checkDependencies = new DefaultCheckDependencies();
@@ -93,33 +93,33 @@ public class Root extends Branch {
         private List<String[]> exportTagsList = new ArrayList<>();
         private TransactionExceptionHandler transactionExceptionHandler = null;
 
-        RootBuilder() {}
+        Builder() {}
 
-        public RootBuilder setName(final String name) {
+        public Builder setName(final String name) {
             this.name = name;
 
             return this;
         }
 
-        public RootBuilder setTransactionQueue(final TransactionQueue transactionQueue) {
+        public Builder setTransactionQueue(final TransactionQueue transactionQueue) {
             this.transactionQueue = transactionQueue;
 
             return this;
         }
 
-        public RootBuilder setCheckDependencies(final CheckDependencies checkDependencies) {
+        public Builder setCheckDependencies(final CheckDependencies checkDependencies) {
             this.checkDependencies = checkDependencies;
 
             return this;
         }
 
-        public RootBuilder setLogging(final boolean logging) {
+        public Builder setLogging(final boolean logging) {
             this.logging = logging;
 
             return this;
         }
 
-        public RootBuilder addEventChannel(
+        public Builder addEventChannel(
                 EventChannelDescription eventChannelDescription,
                 Object initialState,
                 StateChangeRule stateChangeRule,
@@ -134,20 +134,19 @@ public class Root extends Branch {
             return this;
         }
 
-        public RootBuilder addObjectECD(ObjectECD objectECD, Object initialState) {
+        public Builder addObjectECD(ObjectECD objectECD, Object initialState) {
             return addEventChannel(objectECD, initialState, DotEqualsRule.RULE, null);
         }
 
-        public RootBuilder addRollbackECD(RollbackECD rollbackECD) {
+        public Builder addRollbackECD(RollbackECD rollbackECD) {
             return addEventChannel(rollbackECD, null, AlwaysChangeRule.RULE, null);
         }
 
-        public RootBuilder addStatelessTriggerECD(StatelessTriggerECD statelessTriggerECD) {
+        public Builder addStatelessTriggerECD(StatelessTriggerECD statelessTriggerECD) {
             return addEventChannel(statelessTriggerECD, null, AlwaysChangeRule.RULE, null);
         }
 
-        public RootBuilder setTransactionExceptionHandler(
-                final TransactionExceptionHandler transactionExceptionHandler) {
+        public Builder setTransactionExceptionHandler(final TransactionExceptionHandler transactionExceptionHandler) {
             this.transactionExceptionHandler = transactionExceptionHandler;
 
             return this;

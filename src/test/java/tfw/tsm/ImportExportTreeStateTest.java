@@ -17,11 +17,12 @@ final class ImportExportTreeStateTest {
         EventChannelState state = new EventChannelState(stringECD, "Hello");
         BasicTransactionQueue queue = new BasicTransactionQueue();
 
-        RootFactory rf = new RootFactory();
-        rf.addEventChannel(stringECD, state.getState());
-        rf.addEventChannel(stringECDNullState, null);
-
-        final Root root = rf.create(rootName, queue);
+        final Root root = Root.builder()
+                .setName(rootName)
+                .setTransactionQueue(queue)
+                .addObjectECD(stringECD, state.getState())
+                .addObjectECD(stringECDNullState, null)
+                .build();
 
         assertThatThrownBy(root::getTreeState)
                 .isInstanceOf(IllegalStateException.class)
@@ -102,35 +103,20 @@ final class ImportExportTreeStateTest {
 
     @Test
     void customTagExportImportTreeStateTest() {
-        RootFactory rf = new RootFactory();
         String tag1 = "tag1";
         String tag2 = "tag2";
         StringECD ecd1 = new StringECD("str_ecd_1");
         IntegerECD ecd2 = new IntegerECD("int_ecd_1");
         EventChannelState state1 = new EventChannelState(ecd1, "hello");
         EventChannelState state2 = new EventChannelState(ecd2, 123);
-        rf.addEventChannel(ecd1, state1.getState());
+        final BasicTransactionQueue queue = new BasicTransactionQueue();
+        final Root root = Root.builder()
+                .setName("TestRoot")
+                .setTransactionQueue(queue)
+                .addEventChannel(ecd1, state1.getState(), DotEqualsRule.RULE, new String[] {tag1, tag2})
+                .addEventChannel(ecd2, state2.getState(), DotEqualsRule.RULE, new String[] {tag2})
+                .build();
 
-        assertThatThrownBy(() -> rf.addExportTag(null, tag1))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("ecd == null not allowed!");
-        assertThatThrownBy(() -> rf.addExportTag(ecd1, null))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("tag == null not allowed!");
-        assertThatThrownBy(() -> rf.addExportTag(ecd1, ""))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("tag.isEmpty() not allowed!");
-        assertThatThrownBy(() -> rf.addExportTag(ecd2, tag1))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage(
-                        "The event channel 'int_ecd_1' has not been added to this factory and therefore can not be tagged.");
-
-        rf.addExportTag(ecd1, tag1);
-        rf.addEventChannel(ecd2, state2.getState());
-        rf.addExportTag(ecd1, tag2);
-        rf.addExportTag(ecd2, tag2);
-        BasicTransactionQueue queue = new BasicTransactionQueue();
-        Root root = rf.create("TestRoot", queue);
         GetTreeStateRunnable tsr = new GetTreeStateRunnable(root, null);
         queue.invokeLater(tsr);
         queue.waitTilEmpty();

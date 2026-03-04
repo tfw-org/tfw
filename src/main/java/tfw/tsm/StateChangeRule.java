@@ -5,7 +5,7 @@ package tfw.tsm;
  * Notification of a state change will only occur if
  * {@link #isChange(Object, Object)}returns <code>true</code>. A state
  * change rule can be set when an event channel is terminated at the root or branch
- * level. See {@link Root.RootBuilder} and {@link BranchFactory}.
+ * level. See {@link Root.Builder} and {@link BranchFactory}.
  */
 public interface StateChangeRule {
     /**

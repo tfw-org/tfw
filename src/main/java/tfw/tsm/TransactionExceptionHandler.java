@@ -3,7 +3,7 @@ package tfw.tsm;
 /**
  * Handler for processing uncaught exceptions that occur during the execution
  * of a transaction. To set the handler see
- * {@link Root.RootBuilder#setTransactionExceptionHandler(TransactionExceptionHandler)}
+ * {@link Root.Builder#setTransactionExceptionHandler(TransactionExceptionHandler)}
  */
 public interface TransactionExceptionHandler {
     /**
