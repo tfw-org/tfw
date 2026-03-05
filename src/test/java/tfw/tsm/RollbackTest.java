@@ -122,7 +122,7 @@ final class RollbackTest {
     }
 
     @Test
-    void converterTest() throws Exception {
+    void converterTest() {
         final BasicTransactionQueue queue = new BasicTransactionQueue();
         final Root root = Root.builder()
                 .setName("Test branch")

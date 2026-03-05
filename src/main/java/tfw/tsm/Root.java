@@ -83,14 +83,29 @@ public class Root extends Branch {
     }
 
     public static class Builder {
+        private static final class EventChannelConfig {
+            final EventChannelDescription eventChannelDescription;
+            final Object initialState;
+            final StateChangeRule stateChangeRule;
+            final String[] exportTags;
+
+            EventChannelConfig(
+                    EventChannelDescription eventChannelDescription,
+                    Object initialState,
+                    StateChangeRule stateChangeRule,
+                    String[] exportTags) {
+                this.eventChannelDescription = eventChannelDescription;
+                this.initialState = initialState;
+                this.stateChangeRule = stateChangeRule;
+                this.exportTags = exportTags;
+            }
+        }
+
         private String name = null;
         private TransactionQueue transactionQueue = new BasicTransactionQueue();
         private CheckDependencies checkDependencies = new DefaultCheckDependencies();
         private boolean logging = false;
-        private List<EventChannelDescription> eventChannelDescriptions = new ArrayList<>();
-        private List<Object> initialStates = new ArrayList<>();
-        private List<StateChangeRule> stateChangeRules = new ArrayList<>();
-        private List<String[]> exportTagsList = new ArrayList<>();
+        private List<EventChannelConfig> eventChannelConfigs = new ArrayList<>();
         private TransactionExceptionHandler transactionExceptionHandler = null;
 
         Builder() {}
@@ -125,11 +140,10 @@ public class Root extends Branch {
                 StateChangeRule stateChangeRule,
                 String[] exportTags) {
             Arguments.checkNotNull(eventChannelDescription, "eventChannelDescription");
+            Arguments.checkNotNull(stateChangeRule, "stateChangeRule");
 
-            this.eventChannelDescriptions.add(eventChannelDescription);
-            this.initialStates.add(initialState);
-            this.stateChangeRules.add(stateChangeRule);
-            this.exportTagsList.add(exportTags);
+            eventChannelConfigs.add(
+                    new EventChannelConfig(eventChannelDescription, initialState, stateChangeRule, exportTags));
 
             return this;
         }
@@ -163,12 +177,9 @@ public class Root extends Branch {
 
             final BaseBranchFactory baseBranchFactory = new BaseBranchFactory();
 
-            for (int i = 0; i < eventChannelDescriptions.size(); i++) {
+            for (EventChannelConfig config : eventChannelConfigs) {
                 baseBranchFactory.addEventChannel(
-                        eventChannelDescriptions.get(i),
-                        initialStates.get(i),
-                        stateChangeRules.get(i),
-                        exportTagsList.get(i));
+                        config.eventChannelDescription, config.initialState, config.stateChangeRule, config.exportTags);
             }
 
             return new Root(name, baseBranchFactory.getTerminators(), mgr);

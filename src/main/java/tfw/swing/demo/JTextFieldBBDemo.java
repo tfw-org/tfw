@@ -28,13 +28,13 @@ public class JTextFieldBBDemo {
         final BooleanECD enabledECD = new BooleanECD("enabled");
 
         final Root root = Root.builder()
-                .setName("JTextFieldBBTest")
+                .setName("JTextFieldBBTestRoot")
                 .setTransactionQueue(new AWTTransactionQueue())
                 .addObjectECD(textECD, "Initial Value")
                 .addObjectECD(enabledECD, Boolean.FALSE)
                 .build();
 
-        final Initiator initiator = new Initiator("JTextFieldBBTest", new ObjectECD[] {textECD, enabledECD});
+        final Initiator initiator = new Initiator("JTextFieldBBTestInitiator", new ObjectECD[] {textECD, enabledECD});
         root.add(initiator);
 
         final JTextField tf = new JTextField();
@@ -53,7 +53,7 @@ public class JTextFieldBBDemo {
         });
 
         JTextFieldBB tfb = JTextFieldBB.builder()
-                .setName("JTextFieldBBTest")
+                .setName("JTextFieldBBTestTextField")
                 .setTextInputOutputECD(textECD)
                 .setEnabledInputECD(enabledECD)
                 .build();
