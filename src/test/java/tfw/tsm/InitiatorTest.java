@@ -159,15 +159,19 @@ final class InitiatorTest {
         assertThat(state2).isEqualTo(commit.commitState.get(channel2));
 
         assertThat(commit.debugCommitState).isNull();
-        // rf = new RootFactory();
-        // rf.setTransactionExceptionHandler(new TransactionExceptionHandler() {
-        //     @Override
-        //     public void handle(Exception exception) {
-        //         assertThat(exception).isNull();
-        //     }
-        // });
-        // rf.addEventChannel(channel1, null, AlwaysChangeRule.RULE, null);
-        // rf.addEventChannel(channel2, null, AlwaysChangeRule.RULE, null);
+
+        Root.builder()
+                .setName("test2")
+                .setTransactionQueue(queue)
+                .setTransactionExceptionHandler(new TransactionExceptionHandler() {
+                    @Override
+                    public void handle(Exception exception) {
+                        assertThat(exception).isNull();
+                    }
+                })
+                .addEventChannel(channel1, null, AlwaysChangeRule.RULE, null)
+                .addEventChannel(channel2, null, AlwaysChangeRule.RULE, null)
+                .build();
 
         //        Root root2 = rf.create("Root2", queue);
         //        initiator.set(channel1, state1);
