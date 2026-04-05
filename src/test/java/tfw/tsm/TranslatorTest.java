@@ -31,7 +31,7 @@ final class TranslatorTest {
                 .setName("Top Branch")
                 .setTransactionQueue(queue)
                 .setTransactionExceptionHandler(handler)
-                .addEventChannel(portB, null, AlwaysChangeRule.RULE, null)
+                .addEventChannel(portB, AlwaysChangeRule.RULE, null, null)
                 .build();
 
         BranchFactory bf = new BranchFactory();

@@ -83,29 +83,11 @@ public class Root extends Branch {
     }
 
     public static class Builder {
-        private static final class EventChannelConfig {
-            final EventChannelDescription eventChannelDescription;
-            final Object initialState;
-            final StateChangeRule stateChangeRule;
-            final String[] exportTags;
-
-            EventChannelConfig(
-                    EventChannelDescription eventChannelDescription,
-                    Object initialState,
-                    StateChangeRule stateChangeRule,
-                    String[] exportTags) {
-                this.eventChannelDescription = eventChannelDescription;
-                this.initialState = initialState;
-                this.stateChangeRule = stateChangeRule;
-                this.exportTags = exportTags;
-            }
-        }
-
         private String name = null;
         private TransactionQueue transactionQueue = new BasicTransactionQueue();
         private CheckDependencies checkDependencies = new DefaultCheckDependencies();
         private boolean logging = false;
-        private List<EventChannelConfig> eventChannelConfigs = new ArrayList<>();
+        private List<EventChannelConfig<? extends EventChannelDescription>> eventChannelConfigs = new ArrayList<>();
         private TransactionExceptionHandler transactionExceptionHandler = null;
 
         Builder() {}
@@ -136,28 +118,44 @@ public class Root extends Branch {
 
         public Builder addEventChannel(
                 EventChannelDescription eventChannelDescription,
-                Object initialState,
                 StateChangeRule stateChangeRule,
+                Object initialState,
                 String[] exportTags) {
             Arguments.checkNotNull(eventChannelDescription, "eventChannelDescription");
             Arguments.checkNotNull(stateChangeRule, "stateChangeRule");
 
-            eventChannelConfigs.add(
-                    new EventChannelConfig(eventChannelDescription, initialState, stateChangeRule, exportTags));
+            eventChannelConfigs.add(new DefaultEventChannelConfig<>(
+                    eventChannelDescription, stateChangeRule, initialState, exportTags));
+
+            return this;
+        }
+
+        public Builder addEventChannel(final EventChannelConfig<? extends EventChannelDescription> eventChannelConfig) {
+            Arguments.checkNotNull(eventChannelConfig, "eventChannelConfig");
+
+            eventChannelConfigs.add(eventChannelConfig);
+
+            return this;
+        }
+
+        public Builder addEventChannels(final EventChannelEnum<? extends EventChannelDescription> eventChannelEnums) {
+            Arguments.checkNotNull(eventChannelEnums, "eventChannelEnums");
+
+            eventChannelConfigs.addAll(eventChannelEnums.values());
 
             return this;
         }
 
         public Builder addObjectECD(ObjectECD objectECD, Object initialState) {
-            return addEventChannel(objectECD, initialState, DotEqualsRule.RULE, null);
+            return addEventChannel(objectECD, DotEqualsRule.RULE, initialState, null);
         }
 
         public Builder addRollbackECD(RollbackECD rollbackECD) {
-            return addEventChannel(rollbackECD, null, AlwaysChangeRule.RULE, null);
+            return addEventChannel(rollbackECD, AlwaysChangeRule.RULE, null, null);
         }
 
         public Builder addStatelessTriggerECD(StatelessTriggerECD statelessTriggerECD) {
-            return addEventChannel(statelessTriggerECD, null, AlwaysChangeRule.RULE, null);
+            return addEventChannel(statelessTriggerECD, AlwaysChangeRule.RULE, null, null);
         }
 
         public Builder setTransactionExceptionHandler(final TransactionExceptionHandler transactionExceptionHandler) {
@@ -177,9 +175,12 @@ public class Root extends Branch {
 
             final BaseBranchFactory baseBranchFactory = new BaseBranchFactory();
 
-            for (EventChannelConfig config : eventChannelConfigs) {
+            for (EventChannelConfig<? extends EventChannelDescription> config : eventChannelConfigs) {
                 baseBranchFactory.addEventChannel(
-                        config.eventChannelDescription, config.initialState, config.stateChangeRule, config.exportTags);
+                        config.getEventChannelDescription(),
+                        config.getInitialState(),
+                        config.getStateChangeRule(),
+                        config.getExportTags());
             }
 
             return new Root(name, baseBranchFactory.getTerminators(), mgr);

@@ -57,8 +57,8 @@ final class InitiatorTest {
                         assertThat(exception).isNull();
                     }
                 })
-                .addEventChannel(channel1, null, AlwaysChangeRule.RULE, null)
-                .addEventChannel(channel2, null, AlwaysChangeRule.RULE, null)
+                .addEventChannel(channel1, AlwaysChangeRule.RULE, null, null)
+                .addEventChannel(channel2, AlwaysChangeRule.RULE, null, null)
                 .build();
 
         root.add(initiator);
@@ -169,8 +169,8 @@ final class InitiatorTest {
                         assertThat(exception).isNull();
                     }
                 })
-                .addEventChannel(channel1, null, AlwaysChangeRule.RULE, null)
-                .addEventChannel(channel2, null, AlwaysChangeRule.RULE, null)
+                .addEventChannel(channel1, AlwaysChangeRule.RULE, null, null)
+                .addEventChannel(channel2, AlwaysChangeRule.RULE, null, null)
                 .build();
 
         //        Root root2 = rf.create("Root2", queue);

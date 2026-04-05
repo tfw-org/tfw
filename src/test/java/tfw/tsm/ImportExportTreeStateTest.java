@@ -113,8 +113,8 @@ final class ImportExportTreeStateTest {
         final Root root = Root.builder()
                 .setName("TestRoot")
                 .setTransactionQueue(queue)
-                .addEventChannel(ecd1, state1.getState(), DotEqualsRule.RULE, new String[] {tag1, tag2})
-                .addEventChannel(ecd2, state2.getState(), DotEqualsRule.RULE, new String[] {tag2})
+                .addEventChannel(ecd1, DotEqualsRule.RULE, state1.getState(), new String[] {tag1, tag2})
+                .addEventChannel(ecd2, DotEqualsRule.RULE, state2.getState(), new String[] {tag2})
                 .build();
 
         GetTreeStateRunnable tsr = new GetTreeStateRunnable(root, null);

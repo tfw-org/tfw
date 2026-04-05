@@ -5,59 +5,25 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import tfw.awt.ecd.ColorECD;
 import tfw.component.TriggeredEventChannelCopy;
 import tfw.swing.JButtonBB;
 import tfw.swing.JPanelBB;
 import tfw.swing.JTextFieldModifiableBB;
 import tfw.tsm.AWTTransactionQueue;
-import tfw.tsm.Branch;
 import tfw.tsm.Root;
-import tfw.tsm.ecd.BooleanECD;
 import tfw.tsm.ecd.IntegerECD;
 import tfw.tsm.ecd.ObjectECD;
-import tfw.tsm.ecd.StatelessTriggerECD;
 import tfw.tsm.ecd.StringECD;
-import tfw.tsm.ecd.StringRollbackECD;
 
 public class TextFieldDemo extends JPanelBB {
     private static final long serialVersionUID = 1L;
 
-    // Define the event channel name space.
-    private static final StringECD RED_STRING = new StringECD("redString");
-
-    private static final StringECD RED_STRING_ADJ = new StringECD("redStringAdj");
-
-    private static final RedGreenBlueECD RED_INTEGER = new RedGreenBlueECD("redInteger");
-
-    private static final StringECD GREEN_STRING = new StringECD("greenString");
-
-    private static final StringECD GREEN_STRING_ADJ = new StringECD("greenStringAdj");
-
-    private static final RedGreenBlueECD GREEN_INTEGER = new RedGreenBlueECD("greenInteger");
-
-    private static final StringECD BLUE_STRING = new StringECD("blueString");
-
-    private static final StringECD BLUE_STRING_ADJ = new StringECD("blueStringAdj");
-
-    private static final RedGreenBlueECD BLUE_INTEGER = new RedGreenBlueECD("blueInteger");
-
-    private static final StatelessTriggerECD APPLY_TRIGGER = new StatelessTriggerECD("applyTrigger");
-
-    private static final BooleanECD APPLY_ENABLE = new BooleanECD("applyEnable");
-
-    private static final StatelessTriggerECD RESET_TRIGGER = new StatelessTriggerECD("resetTrigger");
-
-    private static final BooleanECD RESET_ENABLE = new BooleanECD("resetEnable");
-
-    private static final BooleanECD COLOR_BUTTON_ENABLE_NAME = new BooleanECD("colorButtonEnable");
-
-    private static final ColorECD COLOR_NAME = new ColorECD("color");
-
-    private static final StringRollbackECD ERROR_NAME = new StringRollbackECD("error");
-
     public TextFieldDemo() {
-        super(createBranch());
+        super(Root.builder()
+                .setName("TextFieldDemo")
+                .setTransactionQueue(new AWTTransactionQueue())
+                .addEventChannels(TextFieldDemoEnum.APPLY_ENABLE)
+                .build());
         setLayout(new BorderLayout());
         addToBoth(createColorPanel(), BorderLayout.EAST);
     }
@@ -71,14 +37,30 @@ public class TextFieldDemo extends JPanelBB {
 
         JPanelBB textFieldPanel = new JPanelBB("TextFieldPanel");
         textFieldPanel.setLayout(new GridLayout(3, 1));
-        textFieldPanel.addToBoth(createTextField("RedTextField", RED_STRING, RED_STRING_ADJ, RED_INTEGER));
-        textFieldPanel.addToBoth(createTextField("GreenTextField", GREEN_STRING, GREEN_STRING_ADJ, GREEN_INTEGER));
-        textFieldPanel.addToBoth(createTextField("BlueTextField", BLUE_STRING, BLUE_STRING_ADJ, BLUE_INTEGER));
+        textFieldPanel.addToBoth(createTextField(
+                "RedTextField",
+                TextFieldDemoEnum.RED_STRING.ecd,
+                TextFieldDemoEnum.RED_STRING_ADJ.ecd,
+                TextFieldDemoEnum.RED_INTEGER.ecd));
+        textFieldPanel.addToBoth(createTextField(
+                "GreenTextField",
+                TextFieldDemoEnum.GREEN_STRING.ecd,
+                TextFieldDemoEnum.GREEN_STRING_ADJ.ecd,
+                TextFieldDemoEnum.GREEN_INTEGER.ecd));
+        textFieldPanel.addToBoth(createTextField(
+                "BlueTextField",
+                TextFieldDemoEnum.BLUE_STRING.ecd,
+                TextFieldDemoEnum.BLUE_STRING_ADJ.ecd,
+                TextFieldDemoEnum.BLUE_INTEGER.ecd));
 
         JPanelBB colorButtonPanel = new JPanelBB("ColorButtonPanel");
         colorButtonPanel.setLayout(new FlowLayout());
         colorButtonPanel.addToBoth(new ColorButtonNB(
-                "TextFieldDemo", COLOR_NAME, COLOR_BUTTON_ENABLE_NAME, "Color Chooser", colorButtonPanel));
+                "TextFieldDemo",
+                TextFieldDemoEnum.COLOR_NAME.ecd,
+                TextFieldDemoEnum.COLOR_BUTTON_ENABLE_NAME.ecd,
+                "Color Chooser",
+                colorButtonPanel));
 
         JPanelBB northPanel = new JPanelBB("NorthPanel");
         northPanel.setLayout(new BorderLayout());
@@ -86,20 +68,26 @@ public class TextFieldDemo extends JPanelBB {
         northPanel.addToBoth(textFieldPanel, BorderLayout.CENTER);
         northPanel.addToBoth(colorButtonPanel, BorderLayout.SOUTH);
 
-        ObjectECD[] colorText = new ObjectECD[] {RED_STRING, BLUE_STRING, GREEN_STRING};
-        ObjectECD[] colorTextAdj = new ObjectECD[] {RED_STRING_ADJ, BLUE_STRING_ADJ, GREEN_STRING_ADJ};
+        ObjectECD[] colorText = new ObjectECD[] {
+            TextFieldDemoEnum.RED_STRING.ecd, TextFieldDemoEnum.BLUE_STRING.ecd, TextFieldDemoEnum.GREEN_STRING.ecd
+        };
+        ObjectECD[] colorTextAdj = new ObjectECD[] {
+            TextFieldDemoEnum.RED_STRING_ADJ.ecd,
+            TextFieldDemoEnum.BLUE_STRING_ADJ.ecd,
+            TextFieldDemoEnum.GREEN_STRING_ADJ.ecd
+        };
         JButtonBB applyButton = JButtonBB.builder()
                 .setName("Apply")
-                .setEnabledInput(APPLY_ENABLE)
-                .setActionOutput(APPLY_TRIGGER)
+                .setEnabledInput(TextFieldDemoEnum.APPLY_ENABLE.ecd)
+                .setActionOutput(TextFieldDemoEnum.APPLY_TRIGGER.ecd)
                 .build();
         applyButton.setText("Apply");
         applyButton.getBranch().add(new ButtonEnableHandler("Apply", colorText, colorTextAdj, applyButton));
 
         JButtonBB resetButton = JButtonBB.builder()
                 .setName("Reset")
-                .setEnabledInput(RESET_ENABLE)
-                .setActionOutput(RESET_TRIGGER)
+                .setEnabledInput(TextFieldDemoEnum.RESET_ENABLE.ecd)
+                .setActionOutput(TextFieldDemoEnum.RESET_TRIGGER.ecd)
                 .build();
         resetButton.setText("Reset");
         resetButton.getBranch().add(new ButtonEnableHandler("ResetButton", colorText, colorTextAdj, resetButton));
@@ -113,45 +101,37 @@ public class TextFieldDemo extends JPanelBB {
         colorPanel.setLayout(new BorderLayout());
         colorPanel.addToBoth(northPanel, BorderLayout.NORTH);
         colorPanel.addToBoth(buttonPanel, BorderLayout.SOUTH);
-        colorPanel.getBranch().add(new ErrorDialog(colorPanel, ERROR_NAME));
+        colorPanel.getBranch().add(new ErrorDialog(colorPanel, TextFieldDemoEnum.ERROR_NAME.ecd));
         colorPanel
                 .getBranch()
-                .add(new IntegerColorConverter("ColorDemo", RED_INTEGER, GREEN_INTEGER, BLUE_INTEGER, COLOR_NAME));
+                .add(new IntegerColorConverter(
+                        "ColorDemo",
+                        TextFieldDemoEnum.RED_INTEGER.ecd,
+                        TextFieldDemoEnum.GREEN_INTEGER.ecd,
+                        TextFieldDemoEnum.BLUE_INTEGER.ecd,
+                        TextFieldDemoEnum.COLOR_NAME.ecd));
 
         return colorPanel;
     }
 
     private JTextFieldModifiableBB createTextField(String name, StringECD text, StringECD textAdj, IntegerECD integer) {
-        JTextFieldModifiableBB textField =
-                new JTextFieldModifiableBB(name, text, textAdj, COLOR_BUTTON_ENABLE_NAME, APPLY_TRIGGER);
-        textField.getBranch().add(new TriggeredEventChannelCopy("Apply[" + name + "]", APPLY_TRIGGER, textAdj, text));
-        textField.getBranch().add(new TriggeredEventChannelCopy("Reset[" + name + "]", RESET_TRIGGER, text, textAdj));
-        textField.getBranch().add(new IntegerStringConverter(name, text, integer, ERROR_NAME));
+        JTextFieldModifiableBB textField = new JTextFieldModifiableBB(
+                name,
+                text,
+                textAdj,
+                TextFieldDemoEnum.COLOR_BUTTON_ENABLE_NAME.ecd,
+                TextFieldDemoEnum.APPLY_TRIGGER.ecd);
+        textField
+                .getBranch()
+                .add(new TriggeredEventChannelCopy(
+                        "Apply[" + name + "]", TextFieldDemoEnum.APPLY_TRIGGER.ecd, textAdj, text));
+        textField
+                .getBranch()
+                .add(new TriggeredEventChannelCopy(
+                        "Reset[" + name + "]", TextFieldDemoEnum.RESET_TRIGGER.ecd, text, textAdj));
+        textField.getBranch().add(new IntegerStringConverter(name, text, integer, TextFieldDemoEnum.ERROR_NAME.ecd));
 
         return textField;
-    }
-
-    private static Branch createBranch() {
-        return Root.builder()
-                .setName("TextFieldDemo")
-                .setTransactionQueue(new AWTTransactionQueue())
-                .addObjectECD(RED_STRING, "0")
-                .addObjectECD(RED_STRING_ADJ, "0")
-                .addObjectECD(RED_INTEGER, null)
-                .addObjectECD(GREEN_STRING, "1")
-                .addObjectECD(GREEN_STRING_ADJ, null)
-                .addObjectECD(GREEN_INTEGER, null)
-                .addObjectECD(BLUE_STRING, "2")
-                .addObjectECD(BLUE_STRING_ADJ, "2")
-                .addObjectECD(BLUE_INTEGER, null)
-                .addStatelessTriggerECD(APPLY_TRIGGER)
-                .addObjectECD(APPLY_ENABLE, null)
-                .addObjectECD(COLOR_BUTTON_ENABLE_NAME, Boolean.TRUE)
-                .addObjectECD(ERROR_NAME, null)
-                .addObjectECD(COLOR_NAME, null)
-                .addStatelessTriggerECD(RESET_TRIGGER)
-                .addObjectECD(RESET_ENABLE, null)
-                .build();
     }
 
     public static void main(String[] args) {
