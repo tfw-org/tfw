@@ -10,9 +10,9 @@ import tfw.tsm.ecd.EventChannelDescription;
 
 public abstract class AbstractEventChannelEnum<T extends EventChannelDescription> extends DefaultEventChannelConfig<T>
         implements EventChannelEnum<T> {
-    private static Map<Class<?>, List<Object>> REGISTRY = new ConcurrentHashMap<>();
+    private static final Map<Class<?>, List<Object>> REGISTRY = new ConcurrentHashMap<>();
 
-    public AbstractEventChannelEnum(T ecd, StateChangeRule rule, Object state, String[] tags) {
+    protected AbstractEventChannelEnum(T ecd, StateChangeRule rule, Object state, String[] tags) {
         super(ecd, rule, state, tags);
 
         REGISTRY.computeIfAbsent(this.getClass(), k -> new CopyOnWriteArrayList<>())

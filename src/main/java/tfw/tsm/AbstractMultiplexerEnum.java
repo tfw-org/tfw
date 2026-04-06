@@ -10,9 +10,9 @@ import tfw.tsm.ecd.EventChannelDescription;
 
 public abstract class AbstractMultiplexerEnum<T extends EventChannelDescription, U extends EventChannelDescription>
         extends DefaultMultiplexerConfig<T, U> implements MultiplexerEnum<T, U> {
-    private static Map<Class<?>, List<Object>> REGISTRY = new ConcurrentHashMap<>();
+    private static final Map<Class<?>, List<Object>> REGISTRY = new ConcurrentHashMap<>();
 
-    public AbstractMultiplexerEnum(
+    protected AbstractMultiplexerEnum(
             T ecd, U mecd, MultiplexerStrategy strategy, StateChangeRule rule, Object state, String[] tags) {
         super(ecd, mecd, strategy, rule, state, tags);
 

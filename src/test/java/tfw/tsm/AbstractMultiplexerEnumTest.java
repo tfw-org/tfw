@@ -1,22 +1,21 @@
 package tfw.tsm;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.List;
 import org.junit.jupiter.api.Test;
-import tfw.tsm.AbstractEventChannelEnumTest.TestEventChannelEnum;
 import tfw.tsm.ecd.EventChannelDescription;
 import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.ila.ObjectIlaECD;
 
 class AbstractMultiplexerEnumTest {
     @Test
-    void testGetEventChannels() {
+    void testValues() {
+        List<MultiplexerEnum<?, ?>> channels = TestMultiplexerEnum.E1.values();
 
-        List<EventChannelEnum<EventChannelDescription>> channels =
-                new TestEventChannelEnum<>(null, null, null, null).values();
-
-        // assertThat(channels).hasSize(3);
-        // assertThat(channels.get(0)).isEqualTo(TestMultiplexerEnum.E1);
-        // assertThat(channels.get(1)).isEqualTo(TestMultiplexerEnum.E2);
+        assertThat(channels).hasSize(2);
+        assertThat(channels.get(0)).isEqualTo(TestMultiplexerEnum.E1);
+        assertThat(channels.get(1)).isEqualTo(TestMultiplexerEnum.E2);
     }
 
     static class TestMultiplexerEnum<T extends EventChannelDescription, U extends EventChannelDescription>
@@ -25,15 +24,15 @@ class AbstractMultiplexerEnumTest {
                 new ObjectECD("O1"),
                 new ObjectIlaECD("M1"),
                 new ObjectIlaMultiplexerStrategy(),
-                null,
                 DotEqualsRule.RULE,
+                null,
                 null);
         public static final TestMultiplexerEnum<ObjectECD, ObjectIlaECD> E2 = new TestMultiplexerEnum<>(
                 new ObjectECD("O2"),
                 new ObjectIlaECD("M2"),
                 new ObjectIlaMultiplexerStrategy(),
-                null,
                 DotEqualsRule.RULE,
+                null,
                 null);
 
         public TestMultiplexerEnum(
@@ -43,8 +42,8 @@ class AbstractMultiplexerEnumTest {
 
         @Override
         @SuppressWarnings("unchecked")
-        public List<MultiplexerEnum<T, U>> getValues() {
-            return AbstractMultiplexerEnum.valuesFromClass(TestMultiplexerEnum.class);
+        public List<MultiplexerEnum<?, ?>> values() {
+            return valuesFromClass(TestMultiplexerEnum.class);
         }
     }
 }

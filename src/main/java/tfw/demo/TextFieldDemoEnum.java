@@ -57,7 +57,7 @@ public class TextFieldDemoEnum<T extends EventChannelDescription> extends Abstra
 
     @Override
     @SuppressWarnings("unchecked")
-    public List<EventChannelEnum<T>> values() {
+    public List<EventChannelEnum<?>> values() {
         return AbstractEventChannelEnum.valuesFromClass(TextFieldDemoEnum.class);
     }
 }

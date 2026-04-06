@@ -3,17 +3,15 @@ package tfw.tsm;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import tfw.tsm.ecd.EventChannelDescription;
 import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.StatelessTriggerECD;
 
 class AbstractEventChannelEnumTest {
     @Test
-    void testGetEventChannels() {
-
-        List<EventChannelEnum<EventChannelDescription>> channels =
-                new TestEventChannelEnum<>(null, null, null, null).values();
+    void testValues() {
+        List<EventChannelEnum<?>> channels = TestEventChannelEnum.TRIGGER.values();
 
         assertThat(channels).hasSize(2);
         assertThat(channels.get(0)).isEqualTo(TestEventChannelEnum.TRIGGER);
@@ -32,8 +30,8 @@ class AbstractEventChannelEnumTest {
 
         @Override
         @SuppressWarnings("unchecked")
-        public List<EventChannelEnum<T>> values() {
-            return AbstractEventChannelEnum.valuesFromClass(TestEventChannelEnum.class);
+        public List<EventChannelEnum<?>> values() {
+            return valuesFromClass(TestEventChannelEnum.class);
         }
     }
 }
