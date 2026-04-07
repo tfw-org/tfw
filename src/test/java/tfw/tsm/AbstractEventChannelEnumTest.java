@@ -20,7 +20,7 @@ class AbstractEventChannelEnumTest {
 
     static class TestEventChannelEnum<T extends EventChannelDescription> extends AbstractEventChannelEnum<T> {
         public static final TestEventChannelEnum<StatelessTriggerECD> TRIGGER =
-                new TestEventChannelEnum<>(new StatelessTriggerECD("trigger"), null, null, null);
+                new TestEventChannelEnum<>(new StatelessTriggerECD("trigger"), AlwaysChangeRule.RULE, null, null);
         public static final TestEventChannelEnum<ObjectECD> OBJECT =
                 new TestEventChannelEnum<>(new ObjectECD("object"), DotEqualsRule.RULE, null, null);
 

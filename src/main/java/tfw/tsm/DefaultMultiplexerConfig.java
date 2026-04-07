@@ -1,5 +1,7 @@
 package tfw.tsm;
 
+import static tfw.check.Arguments.checkNotNull;
+
 import tfw.tsm.ecd.EventChannelDescription;
 
 public class DefaultMultiplexerConfig<T extends EventChannelDescription, U extends EventChannelDescription>
@@ -18,6 +20,11 @@ public class DefaultMultiplexerConfig<T extends EventChannelDescription, U exten
             StateChangeRule rule,
             Object initialMultiState,
             String[] tags) {
+        checkNotNull(ecd, "ecd");
+        checkNotNull(mecd, "mecd");
+        checkNotNull(strategy, "strategy");
+        checkNotNull(rule, "rule");
+
         this.ecd = ecd;
         this.mecd = mecd;
         this.strategy = strategy;

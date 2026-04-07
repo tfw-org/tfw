@@ -1,5 +1,7 @@
 package tfw.tsm;
 
+import static tfw.check.Arguments.checkNotNull;
+
 import tfw.tsm.ecd.EventChannelDescription;
 
 public class DefaultEventChannelConfig<T extends EventChannelDescription> implements EventChannelConfig<T> {
@@ -9,6 +11,9 @@ public class DefaultEventChannelConfig<T extends EventChannelDescription> implem
     public final String[] tags;
 
     public DefaultEventChannelConfig(T ecd, StateChangeRule rule, Object state, String[] tags) {
+        checkNotNull(ecd, "ecd");
+        checkNotNull(rule, "rule");
+
         this.ecd = ecd;
         this.rule = rule;
         this.state = state;

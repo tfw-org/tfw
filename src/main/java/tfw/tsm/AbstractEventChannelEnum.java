@@ -1,6 +1,5 @@
 package tfw.tsm;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -23,8 +22,6 @@ public abstract class AbstractEventChannelEnum<T extends EventChannelDescription
             Class<T> enumClass) {
         List<Object> list = REGISTRY.get(enumClass);
 
-        return list == null
-                ? Collections.emptyList()
-                : list.stream().map(enumClass::cast).collect(Collectors.toList());
+        return list.stream().map(enumClass::cast).collect(Collectors.toList());
     }
 }
