@@ -20,7 +20,7 @@ public class TextFieldDemo extends JPanelBB {
 
     public TextFieldDemo() {
         super(Root.builder()
-                .setName("TextFieldDemo")
+                .setName("TextFieldDemoRoot")
                 .setTransactionQueue(new AWTTransactionQueue())
                 .addEventChannels(TextFieldDemoEnum.values())
                 .build());

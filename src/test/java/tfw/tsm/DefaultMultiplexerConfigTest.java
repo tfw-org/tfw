@@ -28,6 +28,7 @@ class DefaultMultiplexerConfigTest {
         assertThat(tags).containsExactlyInAnyOrder(config.getExportTags());
     }
 
+    @Test
     void testValidation() {
         ObjectECD ecd = new ObjectECD("ecd");
         ObjectECD mecd = new ObjectECD("mecd");
