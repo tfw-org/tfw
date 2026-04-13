@@ -1,5 +1,6 @@
 package tfw.tsm;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -25,6 +26,10 @@ public abstract class AbstractMultiplexerEnum<T extends EventChannelDescription,
                                             ? extends EventChannelDescription, ? extends EventChannelDescription>>
             List<T> valuesFromClass(Class<T> enumClass) {
         List<Object> list = REGISTRY.get(enumClass);
+
+        if (list == null) {
+            return Collections.emptyList();
+        }
 
         return list.stream().map(enumClass::cast).collect(Collectors.toList());
     }

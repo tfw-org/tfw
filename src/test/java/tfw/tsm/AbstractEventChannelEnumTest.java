@@ -11,7 +11,7 @@ import tfw.tsm.ecd.StatelessTriggerECD;
 class AbstractEventChannelEnumTest {
     @Test
     void testValues() {
-        List<EventChannelEnum<?>> channels = TestEventChannelEnum.TRIGGER.values();
+        List<EventChannelEnum<?>> channels = TestEventChannelEnum.values();
 
         assertThat(channels).hasSize(2);
         assertThat(channels.get(0)).isEqualTo(TestEventChannelEnum.TRIGGER);
@@ -28,10 +28,30 @@ class AbstractEventChannelEnumTest {
             super(ecd, rule, state, tags);
         }
 
-        @Override
         @SuppressWarnings("unchecked")
-        public List<EventChannelEnum<?>> values() {
+        public static List<EventChannelEnum<?>> values() {
             return valuesFromClass(TestEventChannelEnum.class);
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    @Test
+    void testValuesFromClassWhenNoInstances() {
+        // Call valuesFromClass on a class that has no instances registered
+        List<UnregisteredEventChannelEnum<?>> result =
+                AbstractEventChannelEnum.valuesFromClass(UnregisteredEventChannelEnum.class);
+
+        assertThat(result).isEmpty();
+    }
+
+    static class UnregisteredEventChannelEnum<T extends EventChannelDescription> extends AbstractEventChannelEnum<T> {
+        public UnregisteredEventChannelEnum(T ecd) {
+            super(ecd, DotEqualsRule.RULE, null, null);
+        }
+
+        @SuppressWarnings("unchecked")
+        public static List<EventChannelEnum<?>> values() {
+            return valuesFromClass(UnregisteredEventChannelEnum.class);
         }
     }
 }

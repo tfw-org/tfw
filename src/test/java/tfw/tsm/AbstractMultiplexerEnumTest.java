@@ -11,7 +11,7 @@ import tfw.tsm.ecd.ila.ObjectIlaECD;
 class AbstractMultiplexerEnumTest {
     @Test
     void testValues() {
-        List<MultiplexerEnum<?, ?>> channels = TestMultiplexerEnum.E1.values();
+        List<MultiplexerEnum<?, ?>> channels = TestMultiplexerEnum.values();
 
         assertThat(channels).hasSize(2);
         assertThat(channels.get(0)).isEqualTo(TestMultiplexerEnum.E1);
@@ -40,10 +40,30 @@ class AbstractMultiplexerEnumTest {
             super(ecd, mecd, strategy, rule, state, tags);
         }
 
-        @Override
         @SuppressWarnings("unchecked")
-        public List<MultiplexerEnum<?, ?>> values() {
+        public static List<MultiplexerEnum<?, ?>> values() {
             return valuesFromClass(TestMultiplexerEnum.class);
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    @Test
+    void testValuesFromClassWhenNoInstances() {
+        // Call valuesFromClass on a class that has no instances registered
+        List<?> result = AbstractMultiplexerEnum.valuesFromClass(UnregisteredMultiplexerEnum.class);
+
+        assertThat(result).isEmpty();
+    }
+
+    static class UnregisteredMultiplexerEnum<T extends EventChannelDescription, U extends EventChannelDescription>
+            extends AbstractMultiplexerEnum<T, U> {
+        public UnregisteredMultiplexerEnum(T ecd, U mecd) {
+            super(ecd, mecd, new ObjectIlaMultiplexerStrategy(), DotEqualsRule.RULE, null, null);
+        }
+
+        @SuppressWarnings("unchecked")
+        public static List<MultiplexerEnum<?, ?>> values() {
+            return valuesFromClass(UnregisteredMultiplexerEnum.class);
         }
     }
 }

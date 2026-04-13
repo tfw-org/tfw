@@ -138,10 +138,10 @@ public class Root extends Branch {
             return this;
         }
 
-        public Builder addEventChannels(final EventChannelEnum<? extends EventChannelDescription> eventChannelEnums) {
+        public Builder addEventChannels(final List<EventChannelEnum<?>> eventChannelEnums) {
             Arguments.checkNotNull(eventChannelEnums, "eventChannelEnums");
 
-            eventChannelConfigs.addAll(eventChannelEnums.values());
+            eventChannelConfigs.addAll(eventChannelEnums);
 
             return this;
         }

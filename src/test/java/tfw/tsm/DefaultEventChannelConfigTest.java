@@ -3,7 +3,7 @@ package tfw.tsm;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.StatelessTriggerECD;
 
@@ -24,9 +24,9 @@ class DefaultEventChannelConfigTest {
         assertThat(tags).containsExactlyInAnyOrder(config.getExportTags());
 
         DefaultEventChannelConfig<StatelessTriggerECD> triggerConfig =
-                new DefaultEventChannelConfig<>(triggerEcd, null, null, null);
+                new DefaultEventChannelConfig<>(triggerEcd, rule, null, null);
         assertThat(triggerEcd).isEqualTo(triggerConfig.getEventChannelDescription());
-        assertThat(triggerConfig.getStateChangeRule()).isNull();
+        assertThat(triggerConfig.getStateChangeRule()).isEqualTo(rule);
         assertThat(triggerConfig.getInitialState()).isNull();
         assertThat(triggerConfig.getExportTags()).isNull();
     }

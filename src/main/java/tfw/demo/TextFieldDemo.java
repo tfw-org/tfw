@@ -22,7 +22,7 @@ public class TextFieldDemo extends JPanelBB {
         super(Root.builder()
                 .setName("TextFieldDemo")
                 .setTransactionQueue(new AWTTransactionQueue())
-                .addEventChannels(TextFieldDemoEnum.APPLY_ENABLE)
+                .addEventChannels(TextFieldDemoEnum.values())
                 .build());
         setLayout(new BorderLayout());
         addToBoth(createColorPanel(), BorderLayout.EAST);
