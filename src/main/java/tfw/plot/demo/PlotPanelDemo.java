@@ -9,9 +9,7 @@ import tfw.awt.ecd.ImageObserverECD;
 import tfw.awt.event.ComponentInitiator;
 import tfw.plot.PlotPanel;
 import tfw.swing.JFrameBB;
-import tfw.tsm.BasicTransactionQueue;
 import tfw.tsm.Root;
-import tfw.tsm.RootFactory;
 import tfw.tsm.ecd.IntegerECD;
 import tfw.tsm.ecd.StatelessTriggerECD;
 import tfw.tsm.ecd.ila.ObjectIlaECD;
@@ -33,18 +31,18 @@ public final class PlotPanelDemo {
 
         JFrameBB frame = new JFrameBB("PlotPanelTest");
 
-        RootFactory rf2 = new RootFactory();
-        //		rf2.setLogging(true);
-        rf2.addEventChannel(BACKGROUND_COLOR_ECD, Color.blue);
-        rf2.addEventChannel(GENERATE_GRAPHIC_TRIGGER_ECD);
-        rf2.addEventChannel(HEIGHT_ECD);
-        rf2.addEventChannel(IMAGE_ECD, new BufferedImage(30, 30, BufferedImage.TYPE_INT_RGB));
-        rf2.addEventChannel(IMAGE_OBSERVER_ECD, frame);
-        rf2.addEventChannel(IMAGE_X_ECD, 10);
-        rf2.addEventChannel(IMAGE_Y_ECD, 10);
-        rf2.addEventChannel(MULTI_GRAPHIC_ECD);
-        rf2.addEventChannel(WIDTH_ECD);
-        Root root2 = rf2.create("PlotPanelTest", new BasicTransactionQueue());
+        final Root root2 = Root.builder()
+                .setName("PlotPanelTest")
+                .addObjectECD(BACKGROUND_COLOR_ECD, Color.blue)
+                .addStatelessTriggerECD(GENERATE_GRAPHIC_TRIGGER_ECD)
+                .addObjectECD(HEIGHT_ECD, null)
+                .addObjectECD(IMAGE_ECD, new BufferedImage(30, 30, BufferedImage.TYPE_INT_RGB))
+                .addObjectECD(IMAGE_OBSERVER_ECD, frame)
+                .addObjectECD(IMAGE_X_ECD, 10)
+                .addObjectECD(IMAGE_Y_ECD, 10)
+                .addObjectECD(MULTI_GRAPHIC_ECD, null)
+                .addObjectECD(WIDTH_ECD, null)
+                .build();
 
         PlotPanel plotPanel = new PlotPanel(root2);
         plotPanel.addComponentListenerToBoth(

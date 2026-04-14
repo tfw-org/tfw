@@ -59,8 +59,8 @@ final class JTextFieldBBTest {
         final Root root = Root.builder()
                 .setName(this.getClass().getSimpleName())
                 .setLogging(true)
-                .addEventChannel(TEXTFIELD_ENABLED_ECD, textField.isEnabled())
-                .addEventChannel(TEXTFIELD_TEXT_ECD, textField.text())
+                .addObjectECD(TEXTFIELD_ENABLED_ECD, textField.isEnabled())
+                .addObjectECD(TEXTFIELD_TEXT_ECD, textField.text())
                 .setTransactionQueue(basicTransactionQueue)
                 .build();
         final Initiator initiator = Initiator.builder()

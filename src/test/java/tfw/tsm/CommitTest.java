@@ -47,20 +47,23 @@ final class CommitTest {
     }
 
     @Test
-    void triggerBehaviorTest() throws Exception {
-        RootFactory rf = new RootFactory();
-        rf.addEventChannel(portA, "avalue");
-        rf.addEventChannel(portB, "bvalue");
-        rf.addEventChannel(portC, "cvalue");
-        rf.addEventChannel(portD, "dvalue");
+    void triggerBehaviorTest() {
 
-        BasicTransactionQueue queue = new BasicTransactionQueue();
-        Branch branch = rf.create("TestBranch", queue);
-        branch.add(initA);
-        branch.add(initB);
-        branch.add(initC);
-        branch.add(initD);
-        branch.add(testCommit);
+        final BasicTransactionQueue queue = new BasicTransactionQueue();
+        final Root root = Root.builder()
+                .setName("TestBranch")
+                .setTransactionQueue(queue)
+                .addObjectECD(portA, "avalue")
+                .addObjectECD(portB, "bvalue")
+                .addObjectECD(portC, "cvalue")
+                .addObjectECD(portD, "dvalue")
+                .build();
+
+        root.add(initA);
+        root.add(initB);
+        root.add(initC);
+        root.add(initD);
+        root.add(testCommit);
         testCommit.clear();
         initC.set(portC, "cvalue");
         queue.waitTilEmpty();
@@ -74,14 +77,14 @@ final class CommitTest {
         assertThat(testCommit.debugCommitFired).isFalse();
 
         testCommit.clear();
-        branch.add(new SetAOnA("SetAOnA", portA));
+        root.add(new SetAOnA("SetAOnA", portA));
         initA.set(portA, "avalue");
         queue.waitTilEmpty();
         assertThat(testCommit.commitFired).isTrue();
         assertThat(testCommit.portAState).isEqualTo("true");
 
         testCommit.clear();
-        branch.add(new SetAOnC("SetAOnC", portC, portA));
+        root.add(new SetAOnC("SetAOnC", portC, portA));
 
         initC.set(portC, "anything");
         queue.waitTilEmpty();

@@ -38,14 +38,15 @@ final class ConverterTest {
 
     @Test
     void converterTest() {
-        RootFactory rf = new RootFactory();
-        rf.addEventChannel(porta);
-        rf.addEventChannel(portb);
-        rf.addEventChannel(portc);
+        final BasicTransactionQueue queue = new BasicTransactionQueue();
+        final Root root = Root.builder()
+                .setName("Test")
+                .setTransactionQueue(queue)
+                .addObjectECD(porta, null)
+                .addObjectECD(portb, null)
+                .addObjectECD(portc, null)
+                .build();
 
-        BasicTransactionQueue queue = new BasicTransactionQueue();
-
-        Root root = rf.create("Test", queue);
         root.add(converter);
 
         Initiator initiator = new Initiator("test", new ObjectECD[] {porta, portb, portc});

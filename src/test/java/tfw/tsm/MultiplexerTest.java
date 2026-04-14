@@ -18,20 +18,16 @@ final class MultiplexerTest {
 
     @Test
     void multiplexerWithIntermediateBranchTest() throws Exception {
-        StatelessTriggerECD triggerECD = new StatelessTriggerECD("trigger");
-        RootFactory rf = new RootFactory();
-        rf.addEventChannel(triggerECD);
-
-        // THE FOLLOWING LINE SHOULD NOT HAVE A SECOND ARGUMENT.  THE SECOND
-        // ARGUMENT IS PUT IN TO SOLVE THE "multistate == null not allowed!"
-        // EXCEPTION!
-        rf.addEventChannel(multiValueECD, ObjectIlaFill.create(null, 2));
-        TestTransactionExceptionHandler exceptionHandler = new TestTransactionExceptionHandler();
-        rf.setTransactionExceptionHandler(exceptionHandler);
-
-        BasicTransactionQueue queue = new BasicTransactionQueue();
-
-        Root root = rf.create("MultiplexerTestRoot", queue);
+        final StatelessTriggerECD triggerECD = new StatelessTriggerECD("trigger");
+        final TestTransactionExceptionHandler exceptionHandler = new TestTransactionExceptionHandler();
+        final BasicTransactionQueue queue = new BasicTransactionQueue();
+        final Root root = Root.builder()
+                .setName("MultiplexerTestRoot")
+                .setTransactionQueue(queue)
+                .setTransactionExceptionHandler(exceptionHandler)
+                .addStatelessTriggerECD(triggerECD)
+                .addObjectECD(multiValueECD, ObjectIlaFill.create(null, 2))
+                .build();
 
         MultiplexedBranchFactory mbf = new MultiplexedBranchFactory();
         mbf.addMultiplexer(valueECD, multiValueECD);
@@ -168,10 +164,12 @@ final class MultiplexerTest {
         ObjectIla<Object> vmmo = createMultiMultiValue(v00, v01, v10, v11);
         // TODO add multiMultiInitiator and multiMultiCommit...
 
-        RootFactory rf = new RootFactory();
-        rf.addEventChannel(multiMultiValueECD, vmmo);
-        BasicTransactionQueue queue = new BasicTransactionQueue();
-        Root root = rf.create("MultiplexerTestRoot", queue);
+        final BasicTransactionQueue queue = new BasicTransactionQueue();
+        final Root root = Root.builder()
+                .setName("MultiplexerTestRoot")
+                .setTransactionQueue(queue)
+                .addObjectECD(multiMultiValueECD, vmmo)
+                .build();
 
         MultiplexedBranchFactory mbf = new MultiplexedBranchFactory();
         mbf.addMultiplexer(multiValueECD, multiMultiValueECD);
@@ -237,10 +235,12 @@ final class MultiplexerTest {
     void multipleMultiplexersTest() {
         String slot0 = "slot0";
 
-        RootFactory rf = new RootFactory();
-        rf.addEventChannel(multiValueECD, ObjectIlaFromArray.create(new String[] {slot0}));
-        BasicTransactionQueue queue = new BasicTransactionQueue();
-        Root root = rf.create("MultiplexerTestRoot", queue);
+        final BasicTransactionQueue queue = new BasicTransactionQueue();
+        final Root root = Root.builder()
+                .setName("MultiplexerTestRoot")
+                .setTransactionQueue(queue)
+                .addObjectECD(multiValueECD, ObjectIlaFromArray.create(new String[] {slot0}))
+                .build();
 
         MultiplexedBranchFactory mbf = new MultiplexedBranchFactory();
         mbf.addMultiplexer(valueECD, multiValueECD);

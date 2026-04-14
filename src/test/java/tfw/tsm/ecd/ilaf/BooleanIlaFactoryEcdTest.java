@@ -18,7 +18,7 @@ final class BooleanIlaFactoryEcdTest {
         final BooleanIlaFactoryEcd booleanIlaFactoryEcd = new BooleanIlaFactoryEcd("BooleanIlaFactory");
         final Root root = Root.builder()
                 .setName("Root")
-                .addEventChannel(booleanIlaFactoryEcd, null)
+                .addObjectECD(booleanIlaFactoryEcd, null)
                 .build();
         final Initiator initiator = Initiator.builder()
                 .setName("Initiator")

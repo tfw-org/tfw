@@ -10,12 +10,14 @@ import tfw.tsm.ecd.StatelessTriggerECD;
 final class StateLessECDTest {
     @Test
     void getStateTest() {
-        RootFactory rf = new RootFactory();
-        StatelessTriggerECD trigger = new StatelessTriggerECD("test");
-        rf.addEventChannel(trigger);
+        final StatelessTriggerECD trigger = new StatelessTriggerECD("test");
+        final BasicTransactionQueue queue = new BasicTransactionQueue();
+        final Root root = Root.builder()
+                .setName("getStateTest")
+                .setTransactionQueue(queue)
+                .addStatelessTriggerECD(trigger)
+                .build();
 
-        BasicTransactionQueue queue = new BasicTransactionQueue();
-        Root root = rf.create("getStateTest", queue);
         TestTriggeredCommit commit = new TestTriggeredCommit(trigger);
         Initiator initiator = new Initiator("TestInitiator", trigger);
         root.add(commit);

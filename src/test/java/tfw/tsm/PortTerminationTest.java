@@ -11,17 +11,18 @@ final class PortTerminationTest {
 
     @Test
     void unTerminatedPortTest() {
-        ObjectECD ecd = new StringECD("Test");
-        RootFactory rf = new RootFactory();
-        rf.setTransactionExceptionHandler(new TransactionExceptionHandler() {
-            @Override
-            public void handle(Exception exception) {
-                PortTerminationTest.expected = exception;
-            }
-        });
-
-        BasicTransactionQueue queue = new BasicTransactionQueue();
-        Root root = rf.create("test", queue);
+        final ObjectECD ecd = new StringECD("Test");
+        final BasicTransactionQueue queue = new BasicTransactionQueue();
+        final Root root = Root.builder()
+                .setName("test")
+                .setTransactionQueue(queue)
+                .setTransactionExceptionHandler(new TransactionExceptionHandler() {
+                    @Override
+                    public void handle(Exception exception) {
+                        PortTerminationTest.expected = exception;
+                    }
+                })
+                .build();
 
         Commit commit = new Commit("test", new ObjectECD[] {ecd}) {
             @Override

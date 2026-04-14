@@ -18,7 +18,7 @@ final class ShortIlaFactoryEcdTest {
         final ShortIlaFactoryEcd shortIlaFactoryEcd = new ShortIlaFactoryEcd("ShortIlaFactory");
         final Root root = Root.builder()
                 .setName("Root")
-                .addEventChannel(shortIlaFactoryEcd, null)
+                .addObjectECD(shortIlaFactoryEcd, null)
                 .build();
         final Initiator initiator = Initiator.builder()
                 .setName("Initiator")

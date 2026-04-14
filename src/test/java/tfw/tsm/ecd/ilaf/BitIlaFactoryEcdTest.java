@@ -18,7 +18,7 @@ final class BitIlaFactoryEcdTest {
         final BitIlaFactoryEcd bitIlaFactoryEcd = new BitIlaFactoryEcd("BitIlaFactory");
         final Root root = Root.builder()
                 .setName("Root")
-                .addEventChannel(bitIlaFactoryEcd, null)
+                .addObjectECD(bitIlaFactoryEcd, null)
                 .build();
         final Initiator initiator = Initiator.builder()
                 .setName("Initiator")

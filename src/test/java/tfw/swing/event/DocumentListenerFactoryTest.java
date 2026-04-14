@@ -47,7 +47,7 @@ final class DocumentListenerFactoryTest {
         final BasicTransactionQueue basicTransactionQueue = new BasicTransactionQueue();
         final Root root = Root.builder()
                 .setName(ROOT_NAME)
-                .addEventChannel(TEXT_ECD, null)
+                .addObjectECD(TEXT_ECD, null)
                 .setTransactionQueue(basicTransactionQueue)
                 .build();
         final DocumentListener documentListener = DocumentListenerFactory.create(TEST_NAME, TEXT_ECD, null);

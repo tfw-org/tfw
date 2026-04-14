@@ -42,7 +42,7 @@ final class ActionListenerFactoryTest {
         final BasicTransactionQueue basicTransactionQueue = new BasicTransactionQueue();
         final Root root = Root.builder()
                 .setName(ROOT_NAME)
-                .addEventChannel(STATELESS_TRIGGER_ECD, null)
+                .addStatelessTriggerECD(STATELESS_TRIGGER_ECD)
                 .setTransactionQueue(basicTransactionQueue)
                 .build();
         final ActionListener actionListener = ActionListenerFactory.create(TEST_NAME, STATELESS_TRIGGER_ECD, null);
@@ -67,7 +67,7 @@ final class ActionListenerFactoryTest {
         final BasicTransactionQueue basicTransactionQueue = new BasicTransactionQueue();
         final Root root = Root.builder()
                 .setName(ROOT_NAME)
-                .addEventChannel(STATELESS_TRIGGER_ECD, null)
+                .addStatelessTriggerECD(STATELESS_TRIGGER_ECD)
                 .setTransactionQueue(basicTransactionQueue)
                 .build();
         final ActionListener actionListener =

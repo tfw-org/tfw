@@ -36,12 +36,14 @@ final class ValidatorTest {
 
     @Test
     void validatorTest() {
-        RootFactory rf = new RootFactory();
-        rf.addEventChannel(eventChannelAECD);
-        rf.addEventChannel(eventChannelBECD);
+        final BasicTransactionQueue queue = new BasicTransactionQueue();
+        final Root root = Root.builder()
+                .setName("ValidatorTestRoot")
+                .setTransactionQueue(queue)
+                .addObjectECD(eventChannelAECD, null)
+                .addObjectECD(eventChannelBECD, null)
+                .build();
 
-        BasicTransactionQueue queue = new BasicTransactionQueue();
-        Root root = rf.create("ValidatorTestRoot", queue);
         Initiator initiator =
                 new Initiator("ValidatorTestInitiator", new StringECD[] {eventChannelAECD, eventChannelBECD});
         root.add(initiator);
@@ -75,13 +77,15 @@ final class ValidatorTest {
         final IntegerECD minECD = new IntegerECD("min");
         final IntegerECD maxECD = new IntegerECD("max");
         final StringRollbackECD error = new StringRollbackECD("error");
-        RootFactory rf = new RootFactory();
-        rf.addEventChannel(trigger);
-        rf.addEventChannel(error);
-        rf.addEventChannel(minECD, 0);
-        rf.addEventChannel(maxECD, 1);
         BasicTransactionQueue queue = new BasicTransactionQueue();
-        Root root = rf.create("Test", queue);
+        Root root = Root.builder()
+                .setName("Test")
+                .setTransactionQueue(queue)
+                .addStatelessTriggerECD(trigger)
+                .addRollbackECD(error)
+                .addObjectECD(minECD, 0)
+                .addObjectECD(maxECD, 1)
+                .build();
         Initiator initiator = new Initiator("Initiator", new EventChannelDescription[] {trigger, minECD, maxECD});
         root.add(initiator);
         root.add(new Validator("TestValidator", trigger, new ObjectECD[] {minECD, maxECD}, new RollbackECD[] {error}) {

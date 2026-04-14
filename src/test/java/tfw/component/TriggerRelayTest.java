@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import tfw.tsm.BasicTransactionQueue;
 import tfw.tsm.Initiator;
 import tfw.tsm.Root;
-import tfw.tsm.RootFactory;
 import tfw.tsm.TriggeredCommit;
 import tfw.tsm.ecd.StatelessTriggerECD;
 
@@ -17,11 +16,14 @@ final class TriggerRelayTest {
 
     @Test
     void triggerRelayTest() {
-        RootFactory rf = new RootFactory();
-        rf.addEventChannel(triggerToRelayECD);
-        rf.addEventChannel(relayedTriggerECD);
-        BasicTransactionQueue queue = new BasicTransactionQueue();
-        Root root = rf.create("Root", queue);
+        final BasicTransactionQueue queue = new BasicTransactionQueue();
+        final Root root = Root.builder()
+                .setName("Root")
+                .setTransactionQueue(queue)
+                .addStatelessTriggerECD(triggerToRelayECD)
+                .addStatelessTriggerECD(relayedTriggerECD)
+                .build();
+
         Initiator initiator = new Initiator("initiator", triggerToRelayECD);
         CommitImpl commit = new CommitImpl();
         root.add(initiator);

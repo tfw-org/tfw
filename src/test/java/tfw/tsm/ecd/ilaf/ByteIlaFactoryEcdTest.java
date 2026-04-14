@@ -18,7 +18,7 @@ final class ByteIlaFactoryEcdTest {
         final ByteIlaFactoryEcd byteIlaFactoryEcd = new ByteIlaFactoryEcd("ByteIlaFactory");
         final Root root = Root.builder()
                 .setName("Root")
-                .addEventChannel(byteIlaFactoryEcd, null)
+                .addObjectECD(byteIlaFactoryEcd, null)
                 .build();
         final Initiator initiator = Initiator.builder()
                 .setName("Initiator")

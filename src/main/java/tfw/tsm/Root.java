@@ -3,7 +3,11 @@ package tfw.tsm;
 import java.util.ArrayList;
 import java.util.List;
 import tfw.check.Argument;
+import tfw.check.Arguments;
 import tfw.tsm.ecd.EventChannelDescription;
+import tfw.tsm.ecd.ObjectECD;
+import tfw.tsm.ecd.RollbackECD;
+import tfw.tsm.ecd.StatelessTriggerECD;
 
 /**
  * The base of the event channel communications structure. All event channels
@@ -74,54 +78,87 @@ public class Root extends Branch {
     //    	this.transactionMgr.setExceptionHandler(handler);
     //    }
 
-    public static RootBuilder builder() {
-        return new RootBuilder();
+    public static Builder builder() {
+        return new Builder();
     }
 
-    public static class RootBuilder {
+    public static class Builder {
         private String name = null;
         private TransactionQueue transactionQueue = new BasicTransactionQueue();
         private CheckDependencies checkDependencies = new DefaultCheckDependencies();
         private boolean logging = false;
-        private List<EventChannelDescription> eventChannelDescriptions = new ArrayList<>();
-        private List<Object> initialState = new ArrayList<>();
+        private List<EventChannelConfig<? extends EventChannelDescription>> eventChannelConfigs = new ArrayList<>();
         private TransactionExceptionHandler transactionExceptionHandler = null;
 
-        RootBuilder() {}
+        Builder() {}
 
-        public RootBuilder setName(final String name) {
+        public Builder setName(final String name) {
             this.name = name;
 
             return this;
         }
 
-        public RootBuilder setTransactionQueue(final TransactionQueue transactionQueue) {
+        public Builder setTransactionQueue(final TransactionQueue transactionQueue) {
             this.transactionQueue = transactionQueue;
 
             return this;
         }
 
-        public RootBuilder setCheckDependencies(final CheckDependencies checkDependencies) {
+        public Builder setCheckDependencies(final CheckDependencies checkDependencies) {
             this.checkDependencies = checkDependencies;
 
             return this;
         }
 
-        public RootBuilder setLogging(final boolean logging) {
+        public Builder setLogging(final boolean logging) {
             this.logging = logging;
 
             return this;
         }
 
-        public RootBuilder addEventChannel(EventChannelDescription eventChannelDescription, Object initialState) {
-            this.eventChannelDescriptions.add(eventChannelDescription);
-            this.initialState.add(initialState);
+        public Builder addEventChannel(
+                EventChannelDescription eventChannelDescription,
+                StateChangeRule stateChangeRule,
+                Object initialState,
+                String[] exportTags) {
+            Arguments.checkNotNull(eventChannelDescription, "eventChannelDescription");
+            Arguments.checkNotNull(stateChangeRule, "stateChangeRule");
+
+            eventChannelConfigs.add(new DefaultEventChannelConfig<>(
+                    eventChannelDescription, stateChangeRule, initialState, exportTags));
 
             return this;
         }
 
-        public RootBuilder setTransactionExceptionHandler(
-                final TransactionExceptionHandler transactionExceptionHandler) {
+        public Builder addEventChannel(final EventChannelConfig<? extends EventChannelDescription> eventChannelConfig) {
+            Arguments.checkNotNull(eventChannelConfig, "eventChannelConfig");
+
+            eventChannelConfigs.add(eventChannelConfig);
+
+            return this;
+        }
+
+        public Builder addEventChannels(final List<EventChannelEnum<?>> eventChannelEnums) {
+            Arguments.checkNotNull(eventChannelEnums, "eventChannelEnums");
+
+            eventChannelConfigs.addAll(eventChannelEnums);
+
+            return this;
+        }
+
+        public Builder addObjectECD(ObjectECD objectECD, Object initialState) {
+            return addEventChannel(objectECD, DotEqualsRule.RULE, initialState, null);
+        }
+
+        public Builder addRollbackECD(RollbackECD rollbackECD) {
+            return addEventChannel(rollbackECD, AlwaysChangeRule.RULE, null, null);
+        }
+
+        public Builder addStatelessTriggerECD(StatelessTriggerECD statelessTriggerECD) {
+            return addEventChannel(statelessTriggerECD, AlwaysChangeRule.RULE, null, null);
+        }
+
+        public Builder setTransactionExceptionHandler(final TransactionExceptionHandler transactionExceptionHandler) {
             this.transactionExceptionHandler = transactionExceptionHandler;
 
             return this;
@@ -138,8 +175,12 @@ public class Root extends Branch {
 
             final BaseBranchFactory baseBranchFactory = new BaseBranchFactory();
 
-            for (int i = 0; i < eventChannelDescriptions.size(); i++) {
-                baseBranchFactory.addEventChannel(eventChannelDescriptions.get(i), initialState.get(i));
+            for (EventChannelConfig<? extends EventChannelDescription> config : eventChannelConfigs) {
+                baseBranchFactory.addEventChannel(
+                        config.getEventChannelDescription(),
+                        config.getInitialState(),
+                        config.getStateChangeRule(),
+                        config.getExportTags());
             }
 
             return new Root(name, baseBranchFactory.getTerminators(), mgr);

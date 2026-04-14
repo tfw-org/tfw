@@ -18,7 +18,7 @@ final class FloatIlaFactoryEcdTest {
         final FloatIlaFactoryEcd floatIlaFactoryEcd = new FloatIlaFactoryEcd("FloatIlaFactory");
         final Root root = Root.builder()
                 .setName("Root")
-                .addEventChannel(floatIlaFactoryEcd, null)
+                .addObjectECD(floatIlaFactoryEcd, null)
                 .build();
         final Initiator initiator = Initiator.builder()
                 .setName("Initiator")

@@ -37,14 +37,15 @@ final class TriggeredConverterTest {
 
     @Test
     void converterTest() {
-        RootFactory rf = new RootFactory();
-        rf.addEventChannel(channel1);
-        rf.addEventChannel(channel2);
-        rf.addEventChannel(trigger);
+        final BasicTransactionQueue queue = new BasicTransactionQueue();
+        final Root root = Root.builder()
+                .setName("Test branch")
+                .setTransactionQueue(queue)
+                .addObjectECD(channel1, null)
+                .addObjectECD(channel2, null)
+                .addStatelessTriggerECD(trigger)
+                .build();
 
-        BasicTransactionQueue queue = new BasicTransactionQueue();
-
-        Root root = rf.create("Test branch", queue);
         root.add(initiator);
         root.add(triggeredConverter);
 

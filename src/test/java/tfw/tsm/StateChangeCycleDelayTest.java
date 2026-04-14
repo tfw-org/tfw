@@ -15,16 +15,19 @@ final class StateChangeCycleDelayTest {
 
     @Test
     void twoStageTest() {
-        RootFactory rf = new RootFactory();
         BasicTransactionQueue queue = new BasicTransactionQueue();
         Initiator initiator = new Initiator("Test", ecI);
         TestConverter converterA = new TestConverter("ConverterA", new StringECD[] {ecI}, ecA);
         TestConverter converterB = new TestConverter("ConverterB", new StringECD[] {ecI, ecA}, ecB);
-        rf.addEventChannel(ecI);
-        rf.addEventChannel(ecA, "A initial");
-        rf.addEventChannel(ecB, "B initial");
 
-        Root root = rf.create("Test", queue);
+        final Root root = Root.builder()
+                .setName("Test")
+                .setTransactionQueue(queue)
+                .addObjectECD(ecI, null)
+                .addObjectECD(ecA, "A initial")
+                .addObjectECD(ecB, "B initial")
+                .build();
+
         root.add(converterA);
         root.add(converterB);
         root.add(initiator);
@@ -43,18 +46,21 @@ final class StateChangeCycleDelayTest {
 
     @Test
     void indirectDependencyTest() {
-        RootFactory rf = new RootFactory();
         BasicTransactionQueue queue = new BasicTransactionQueue();
         Initiator initiator = new Initiator("Test", ecI);
         TestConverter converterA = new TestConverter("ConverterA", new StringECD[] {ecI}, ecA);
         TestConverter converterB = new TestConverter("ConverterB", new StringECD[] {ecA}, ecB);
         TestConverter converterC = new TestConverter("ConverterC", new StringECD[] {ecI, ecB}, ecC);
-        rf.addEventChannel(ecI);
-        rf.addEventChannel(ecA, "A initial");
-        rf.addEventChannel(ecB, "B initial");
-        rf.addEventChannel(ecC, "C initial");
 
-        Root root = rf.create("Test", queue);
+        final Root root = Root.builder()
+                .setName("Test")
+                .setTransactionQueue(queue)
+                .addObjectECD(ecI, null)
+                .addObjectECD(ecA, "A initial")
+                .addObjectECD(ecB, "B initial")
+                .addObjectECD(ecC, "C initial")
+                .build();
+
         root.add(converterA);
         root.add(converterB);
         root.add(converterC);
@@ -77,20 +83,23 @@ final class StateChangeCycleDelayTest {
 
     @Test
     void directIndirectDependencyTest() {
-        RootFactory rf = new RootFactory();
         BasicTransactionQueue queue = new BasicTransactionQueue();
         Initiator initiator = new Initiator("Test", ecI);
         TestConverter converterA = new TestConverter("ConverterA", new StringECD[] {ecI}, ecA);
         TestConverter converterB = new TestConverter("ConverterB", new StringECD[] {ecI, ecA}, ecB);
         TestConverter converterC = new TestConverter("ConverterC", new StringECD[] {ecB}, ecC);
         TestConverter converterD = new TestConverter("ConverterD", new StringECD[] {ecI, ecC}, ecD);
-        rf.addEventChannel(ecI);
-        rf.addEventChannel(ecA, "A initial");
-        rf.addEventChannel(ecB, "B initial");
-        rf.addEventChannel(ecC, "C initial");
-        rf.addEventChannel(ecD, "D initial");
 
-        Root root = rf.create("Test", queue);
+        final Root root = Root.builder()
+                .setName("Test")
+                .setTransactionQueue(queue)
+                .addObjectECD(ecI, null)
+                .addObjectECD(ecA, "A initial")
+                .addObjectECD(ecB, "B initial")
+                .addObjectECD(ecC, "C initial")
+                .addObjectECD(ecD, "D initial")
+                .build();
+
         root.add(converterA);
         root.add(converterB);
         root.add(converterC);
@@ -117,21 +126,23 @@ final class StateChangeCycleDelayTest {
 
     @Test
     void circularDependencyTest() {
-        RootFactory rf = new RootFactory();
         BasicTransactionQueue queue = new BasicTransactionQueue();
         Initiator initiator = new Initiator("Test", ecI);
         TestConverter converterA = new TestConverter("ConverterA", new StringECD[] {ecI}, ecA);
         TestConverter converterB = new TestConverter("ConverterB", new StringECD[] {ecA}, ecB);
         TestConverter converterC = new TestConverter("ConverterC", new StringECD[] {ecI, ecB}, ecA, false);
-        rf.addEventChannel(ecI);
-        rf.addEventChannel(ecA, "A initial");
-        rf.addEventChannel(ecB, "B initial");
-        rf.addEventChannel(ecC, "C initial");
-
         TestHandler handler = new TestHandler();
-        rf.setTransactionExceptionHandler(handler);
 
-        Root root = rf.create("Test", queue);
+        final Root root = Root.builder()
+                .setName("Test")
+                .setTransactionQueue(queue)
+                .setTransactionExceptionHandler(handler)
+                .addObjectECD(ecI, null)
+                .addObjectECD(ecA, "A initial")
+                .addObjectECD(ecB, "B initial")
+                .addObjectECD(ecC, "C initial")
+                .build();
+
         root.add(converterA);
         root.add(converterB);
         root.add(converterC);
@@ -149,18 +160,21 @@ final class StateChangeCycleDelayTest {
 
     @Test
     void threeWayDependencyTest() {
-        RootFactory rf = new RootFactory();
         BasicTransactionQueue queue = new BasicTransactionQueue();
         Initiator initiator = new Initiator("Test", ecI);
         TestConverter converterA = new TestConverter("ConverterA", new StringECD[] {ecI}, ecA);
         TestConverter converterB = new TestConverter("ConverterB", new StringECD[] {ecI, ecA}, ecB);
         TestConverter converterC = new TestConverter("ConverterC", new StringECD[] {ecI, ecA, ecB}, ecC);
-        rf.addEventChannel(ecI);
-        rf.addEventChannel(ecA, "A initial");
-        rf.addEventChannel(ecB, "B initial");
-        rf.addEventChannel(ecC, "C initial");
 
-        Root root = rf.create("Test", queue);
+        final Root root = Root.builder()
+                .setName("Test")
+                .setTransactionQueue(queue)
+                .addObjectECD(ecI, null)
+                .addObjectECD(ecA, "A initial")
+                .addObjectECD(ecB, "B initial")
+                .addObjectECD(ecC, "C initial")
+                .build();
+
         root.add(converterA);
         root.add(converterB);
         root.add(converterC);
