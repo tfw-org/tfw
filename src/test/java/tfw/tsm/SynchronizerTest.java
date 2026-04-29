@@ -149,6 +149,7 @@ final class SynchronizerTest {
         final Root root = Root.builder()
                 .setName("Root")
                 .setTransactionQueue(queue)
+                .setCheckDependencies(new DefaultCheckDependencies())
                 .setTransactionExceptionHandler(handler)
                 .addObjectECD(a1Port, null)
                 .addObjectECD(a2Port, null)

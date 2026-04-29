@@ -7,6 +7,8 @@ import tfw.immutable.ilaf.bitilaf.BitIlaFactory;
 import tfw.immutable.ilaf.bitilaf.BitIlaFactoryFill;
 import tfw.immutable.ilaf.floatilaf.FloatIlaFactory;
 import tfw.immutable.ilaf.floatilaf.FloatIlaFactoryFill;
+import tfw.tsm.BasicTransactionQueue;
+import tfw.tsm.DefaultCheckDependencies;
 import tfw.tsm.Initiator;
 import tfw.tsm.Root;
 
@@ -18,6 +20,8 @@ final class FloatIlaFactoryEcdTest {
         final FloatIlaFactoryEcd floatIlaFactoryEcd = new FloatIlaFactoryEcd("FloatIlaFactory");
         final Root root = Root.builder()
                 .setName("Root")
+                .setTransactionQueue(new BasicTransactionQueue())
+                .setCheckDependencies(new DefaultCheckDependencies())
                 .addObjectECD(floatIlaFactoryEcd, null)
                 .build();
         final Initiator initiator = Initiator.builder()

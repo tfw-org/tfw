@@ -2,6 +2,7 @@ package tfw.tsm.demo;
 
 import com.google.common.flogger.FluentLogger;
 import tfw.tsm.BasicTransactionQueue;
+import tfw.tsm.DefaultCheckDependencies;
 import tfw.tsm.Initiator;
 import tfw.tsm.Root;
 import tfw.tsm.TriggeredCommit;
@@ -25,6 +26,7 @@ public class HelloWorld {
         final Root r = Root.builder()
                 .setName("Hello World Root")
                 .setTransactionQueue(basicTransactionQueue)
+                .setCheckDependencies(new DefaultCheckDependencies())
                 .addStatelessTriggerECD(triggerECD)
                 .build();
 

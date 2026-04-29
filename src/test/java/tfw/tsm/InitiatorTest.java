@@ -51,6 +51,7 @@ final class InitiatorTest {
         final Root root = Root.builder()
                 .setName("test")
                 .setTransactionQueue(queue)
+                .setCheckDependencies(new DefaultCheckDependencies())
                 .setTransactionExceptionHandler(new TransactionExceptionHandler() {
                     @Override
                     public void handle(Exception exception) {
@@ -163,6 +164,7 @@ final class InitiatorTest {
         Root.builder()
                 .setName("test2")
                 .setTransactionQueue(queue)
+                .setCheckDependencies(new DefaultCheckDependencies())
                 .setTransactionExceptionHandler(new TransactionExceptionHandler() {
                     @Override
                     public void handle(Exception exception) {

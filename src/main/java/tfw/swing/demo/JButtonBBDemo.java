@@ -11,6 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import tfw.swing.JButtonBB;
 import tfw.tsm.AWTTransactionQueue;
+import tfw.tsm.DefaultCheckDependencies;
 import tfw.tsm.Initiator;
 import tfw.tsm.Root;
 import tfw.tsm.TriggeredCommit;
@@ -64,6 +65,7 @@ public class JButtonBBDemo {
         final Root r = Root.builder()
                 .setName("JButtonBBTest")
                 .setTransactionQueue(new AWTTransactionQueue())
+                .setCheckDependencies(new DefaultCheckDependencies())
                 .addObjectECD(ENABLE_ECD, Boolean.FALSE)
                 .addStatelessTriggerECD(TRIGGER_ECD)
                 .build();

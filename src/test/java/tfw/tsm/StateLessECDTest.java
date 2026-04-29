@@ -15,6 +15,7 @@ final class StateLessECDTest {
         final Root root = Root.builder()
                 .setName("getStateTest")
                 .setTransactionQueue(queue)
+                .setCheckDependencies(new DefaultCheckDependencies())
                 .addStatelessTriggerECD(trigger)
                 .build();
 

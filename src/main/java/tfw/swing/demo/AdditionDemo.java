@@ -11,8 +11,10 @@ import tfw.swing.JButtonBB;
 import tfw.swing.JFrameBB;
 import tfw.swing.JPanelBB;
 import tfw.swing.JTextFieldBB;
+import tfw.tsm.BasicTransactionQueue;
 import tfw.tsm.Commit;
 import tfw.tsm.Converter;
+import tfw.tsm.DefaultCheckDependencies;
 import tfw.tsm.Root;
 import tfw.tsm.Synchronizer;
 import tfw.tsm.ecd.BooleanECD;
@@ -43,6 +45,8 @@ public class AdditionDemo {
 
         final Root root = Root.builder()
                 .setName("AdditionDemo")
+                .setTransactionQueue(new BasicTransactionQueue())
+                .setCheckDependencies(new DefaultCheckDependencies())
                 .addObjectECD(CALCULATE_ENABLED_ECD, Boolean.TRUE)
                 .addStatelessTriggerECD(CALCULATE_TRIGGER_ECD)
                 .addObjectECD(ERROR_TEXT_ECD, null)

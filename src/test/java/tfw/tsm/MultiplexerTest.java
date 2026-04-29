@@ -24,6 +24,7 @@ final class MultiplexerTest {
         final Root root = Root.builder()
                 .setName("MultiplexerTestRoot")
                 .setTransactionQueue(queue)
+                .setCheckDependencies(new DefaultCheckDependencies())
                 .setTransactionExceptionHandler(exceptionHandler)
                 .addStatelessTriggerECD(triggerECD)
                 .addObjectECD(multiValueECD, ObjectIlaFill.create(null, 2))
@@ -168,6 +169,7 @@ final class MultiplexerTest {
         final Root root = Root.builder()
                 .setName("MultiplexerTestRoot")
                 .setTransactionQueue(queue)
+                .setCheckDependencies(new DefaultCheckDependencies())
                 .addObjectECD(multiMultiValueECD, vmmo)
                 .build();
 
@@ -239,6 +241,7 @@ final class MultiplexerTest {
         final Root root = Root.builder()
                 .setName("MultiplexerTestRoot")
                 .setTransactionQueue(queue)
+                .setCheckDependencies(new DefaultCheckDependencies())
                 .addObjectECD(multiValueECD, ObjectIlaFromArray.create(new String[] {slot0}))
                 .build();
 

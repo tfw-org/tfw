@@ -40,6 +40,7 @@ final class ValidatorTest {
         final Root root = Root.builder()
                 .setName("ValidatorTestRoot")
                 .setTransactionQueue(queue)
+                .setCheckDependencies(new DefaultCheckDependencies())
                 .addObjectECD(eventChannelAECD, null)
                 .addObjectECD(eventChannelBECD, null)
                 .build();
@@ -81,6 +82,7 @@ final class ValidatorTest {
         Root root = Root.builder()
                 .setName("Test")
                 .setTransactionQueue(queue)
+                .setCheckDependencies(new DefaultCheckDependencies())
                 .addStatelessTriggerECD(trigger)
                 .addRollbackECD(error)
                 .addObjectECD(minECD, 0)

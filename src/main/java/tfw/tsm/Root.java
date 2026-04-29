@@ -84,8 +84,8 @@ public class Root extends Branch {
 
     public static class Builder {
         private String name = null;
-        private TransactionQueue transactionQueue = new BasicTransactionQueue();
-        private CheckDependencies checkDependencies = new DefaultCheckDependencies();
+        private TransactionQueue transactionQueue = null;
+        private CheckDependencies checkDependencies = null;
         private boolean logging = false;
         private List<EventChannelConfig<? extends EventChannelDescription>> eventChannelConfigs = new ArrayList<>();
         private TransactionExceptionHandler transactionExceptionHandler = null;

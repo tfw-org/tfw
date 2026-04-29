@@ -19,6 +19,7 @@ import org.slf4j.LoggerFactory;
 import tfw.awt.ecd.ColorModelECD;
 import tfw.swing.ByteInterleavedImagePanel;
 import tfw.tsm.AWTTransactionQueue;
+import tfw.tsm.DefaultCheckDependencies;
 import tfw.tsm.EventChannelStateBuffer;
 import tfw.tsm.Initiator;
 import tfw.tsm.Root;
@@ -41,6 +42,7 @@ public class ByteInterleavedImagePanelDemo {
         final Root root = Root.builder()
                 .setName("ByteInterleavedImagePanelTest")
                 .setTransactionQueue(new AWTTransactionQueue())
+                .setCheckDependencies(new DefaultCheckDependencies())
                 .addObjectECD(xECD, null)
                 .addObjectECD(yECD, null)
                 .addObjectECD(ilmECD, null)

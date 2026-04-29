@@ -7,7 +7,11 @@ import org.junit.jupiter.api.Test;
 final class RootTest {
     @Test
     void isRootedTest() {
-        final Root root = Root.builder().setName("test").build();
+        final Root root = Root.builder()
+                .setName("test")
+                .setTransactionQueue(new BasicTransactionQueue())
+                .setCheckDependencies(new DefaultCheckDependencies())
+                .build();
 
         assertThat(root.isRooted()).isTrue();
     }
@@ -20,6 +24,7 @@ final class RootTest {
         final Root root = Root.builder()
                 .setName("test")
                 .setTransactionQueue(transactionQueue)
+                .setCheckDependencies(new DefaultCheckDependencies())
                 .setTransactionExceptionHandler(transactionExceptionHandler)
                 .setCheckDependencies(checkDependencies)
                 .build();

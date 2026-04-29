@@ -16,6 +16,7 @@ import org.junit.jupiter.api.condition.DisabledIf;
 import tfw.tsm.BasicTransactionQueue;
 import tfw.tsm.Branch;
 import tfw.tsm.BranchProxy;
+import tfw.tsm.DefaultCheckDependencies;
 import tfw.tsm.Initiator;
 import tfw.tsm.Root;
 import tfw.tsm.ecd.BooleanECD;
@@ -58,6 +59,8 @@ final class JTextFieldBBTest {
         final JTextComponentFixture textField = window.textBox(TEXTFIELD_NAME);
         final Root root = Root.builder()
                 .setName(this.getClass().getSimpleName())
+                .setTransactionQueue(new BasicTransactionQueue())
+                .setCheckDependencies(new DefaultCheckDependencies())
                 .setLogging(true)
                 .addObjectECD(TEXTFIELD_ENABLED_ECD, textField.isEnabled())
                 .addObjectECD(TEXTFIELD_TEXT_ECD, textField.text())

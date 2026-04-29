@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import tfw.swing.JLabelBB;
 import tfw.tsm.AWTTransactionQueue;
+import tfw.tsm.DefaultCheckDependencies;
 import tfw.tsm.Initiator;
 import tfw.tsm.Root;
 import tfw.tsm.ecd.ObjectECD;
@@ -51,6 +52,7 @@ public class JLabelBBDemo {
         final Root r = Root.builder()
                 .setName("JButtonBBTest")
                 .setTransactionQueue(new AWTTransactionQueue())
+                .setCheckDependencies(new DefaultCheckDependencies())
                 .addObjectECD(TEXT_ECD, null)
                 .build();
 
