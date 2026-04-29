@@ -13,10 +13,10 @@ jobs:
           java-version: 21
           distribution: corretto
           server-id: central
-          server-username: ${{ secrets.MVN_USERNAME }}
-          server-password: ${{ secrets.MVN_PASSWORD }}
+          server-username: MVN_USERNAME
+          server-password: MVN_PASSWORD
           gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
-          gpg-passphrase: ${{ secrets.GPG_PASSPHRASE }}
+          gpg-passphrase: GPG_PASSPHRASE
       - name: Publish package
         run: mvn -ntp -B deploy -P release
         env:
