@@ -70,6 +70,7 @@ final class CascadeTest {
         final Root root = Root.builder()
                 .setName("Test branch")
                 .setTransactionQueue(queue)
+                .setCheckDependencies(new DefaultCheckDependencies())
                 .addObjectECD(portA, null)
                 .addObjectECD(portB, null)
                 .addObjectECD(portC, null)

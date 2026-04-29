@@ -17,6 +17,7 @@ final class GetPreviousStateTest {
         final Root root = Root.builder()
                 .setName("TestRoot")
                 .setTransactionQueue(queue)
+                .setCheckDependencies(new DefaultCheckDependencies())
                 .setTransactionExceptionHandler(new TransactionExceptionHandler() {
                     @Override
                     public void handle(Exception e) {

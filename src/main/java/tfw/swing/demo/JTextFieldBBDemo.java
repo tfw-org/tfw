@@ -12,6 +12,7 @@ import javax.swing.JTextField;
 import tfw.swing.JTextFieldBB;
 import tfw.tsm.AWTTransactionQueue;
 import tfw.tsm.Commit;
+import tfw.tsm.DefaultCheckDependencies;
 import tfw.tsm.Initiator;
 import tfw.tsm.Root;
 import tfw.tsm.ecd.BooleanECD;
@@ -30,6 +31,7 @@ public class JTextFieldBBDemo {
         final Root root = Root.builder()
                 .setName("JTextFieldBBTestRoot")
                 .setTransactionQueue(new AWTTransactionQueue())
+                .setCheckDependencies(new DefaultCheckDependencies())
                 .addObjectECD(textECD, "Initial Value")
                 .addObjectECD(enabledECD, Boolean.FALSE)
                 .build();

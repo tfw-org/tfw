@@ -30,6 +30,7 @@ final class TranslatorTest {
         final Root topBranch = Root.builder()
                 .setName("Top Branch")
                 .setTransactionQueue(queue)
+                .setCheckDependencies(new DefaultCheckDependencies())
                 .setTransactionExceptionHandler(handler)
                 .addEventChannel(portB, AlwaysChangeRule.RULE, null, null)
                 .build();

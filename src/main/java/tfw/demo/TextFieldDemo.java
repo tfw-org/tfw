@@ -10,6 +10,7 @@ import tfw.swing.JButtonBB;
 import tfw.swing.JPanelBB;
 import tfw.swing.JTextFieldModifiableBB;
 import tfw.tsm.AWTTransactionQueue;
+import tfw.tsm.DefaultCheckDependencies;
 import tfw.tsm.Root;
 import tfw.tsm.ecd.IntegerECD;
 import tfw.tsm.ecd.ObjectECD;
@@ -22,6 +23,7 @@ public class TextFieldDemo extends JPanelBB {
         super(Root.builder()
                 .setName("TextFieldDemoRoot")
                 .setTransactionQueue(new AWTTransactionQueue())
+                .setCheckDependencies(new DefaultCheckDependencies())
                 .addEventChannels(TextFieldDemoEnum.values())
                 .build());
         setLayout(new BorderLayout());

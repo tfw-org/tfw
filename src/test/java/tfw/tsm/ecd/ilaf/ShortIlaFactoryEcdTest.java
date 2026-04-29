@@ -7,6 +7,8 @@ import tfw.immutable.ilaf.bitilaf.BitIlaFactory;
 import tfw.immutable.ilaf.bitilaf.BitIlaFactoryFill;
 import tfw.immutable.ilaf.shortilaf.ShortIlaFactory;
 import tfw.immutable.ilaf.shortilaf.ShortIlaFactoryFill;
+import tfw.tsm.BasicTransactionQueue;
+import tfw.tsm.DefaultCheckDependencies;
 import tfw.tsm.Initiator;
 import tfw.tsm.Root;
 
@@ -18,6 +20,8 @@ final class ShortIlaFactoryEcdTest {
         final ShortIlaFactoryEcd shortIlaFactoryEcd = new ShortIlaFactoryEcd("ShortIlaFactory");
         final Root root = Root.builder()
                 .setName("Root")
+                .setTransactionQueue(new BasicTransactionQueue())
+                .setCheckDependencies(new DefaultCheckDependencies())
                 .addObjectECD(shortIlaFactoryEcd, null)
                 .build();
         final Initiator initiator = Initiator.builder()

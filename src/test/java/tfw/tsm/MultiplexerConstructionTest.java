@@ -28,6 +28,7 @@ final class MultiplexerConstructionTest {
         final Root root = Root.builder()
                 .setName("Test")
                 .setTransactionQueue(queue)
+                .setCheckDependencies(new DefaultCheckDependencies())
                 .addObjectECD(MULTIVALUE_ECD, ObjectIlaFromArray.create(new String[] {value}))
                 .addStatelessTriggerECD(TRIGGER_ECD)
                 .build();
@@ -52,6 +53,7 @@ final class MultiplexerConstructionTest {
         final Root root = Root.builder()
                 .setName("Test")
                 .setTransactionQueue(queue)
+                .setCheckDependencies(new DefaultCheckDependencies())
                 .addObjectECD(MULTIVALUE_ECD, ObjectIlaFromArray.create(new String[] {value0, value1}))
                 .build();
 

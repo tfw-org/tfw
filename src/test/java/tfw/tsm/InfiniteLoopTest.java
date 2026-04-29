@@ -68,6 +68,7 @@ final class InfiniteLoopTest {
         final Root root = Root.builder()
                 .setName("Infinite loop test")
                 .setTransactionQueue(queue)
+                .setCheckDependencies(new DefaultCheckDependencies())
                 .addEventChannel(PORT_A, AlwaysChangeRule.RULE, null, null)
                 .addEventChannel(PORT_B, AlwaysChangeRule.RULE, null, null)
                 .addEventChannel(PORT_C, AlwaysChangeRule.RULE, null, null)

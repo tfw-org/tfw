@@ -53,6 +53,7 @@ final class CommitTest {
         final Root root = Root.builder()
                 .setName("TestBranch")
                 .setTransactionQueue(queue)
+                .setCheckDependencies(new DefaultCheckDependencies())
                 .addObjectECD(portA, "avalue")
                 .addObjectECD(portB, "bvalue")
                 .addObjectECD(portC, "cvalue")

@@ -42,6 +42,7 @@ final class ConverterTest {
         final Root root = Root.builder()
                 .setName("Test")
                 .setTransactionQueue(queue)
+                .setCheckDependencies(new DefaultCheckDependencies())
                 .addObjectECD(porta, null)
                 .addObjectECD(portb, null)
                 .addObjectECD(portc, null)

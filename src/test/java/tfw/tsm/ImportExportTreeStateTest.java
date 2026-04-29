@@ -20,6 +20,7 @@ final class ImportExportTreeStateTest {
         final Root root = Root.builder()
                 .setName(rootName)
                 .setTransactionQueue(queue)
+                .setCheckDependencies(new DefaultCheckDependencies())
                 .addObjectECD(stringECD, state.getState())
                 .addObjectECD(stringECDNullState, null)
                 .build();
@@ -113,6 +114,7 @@ final class ImportExportTreeStateTest {
         final Root root = Root.builder()
                 .setName("TestRoot")
                 .setTransactionQueue(queue)
+                .setCheckDependencies(new DefaultCheckDependencies())
                 .addEventChannel(ecd1, DotEqualsRule.RULE, state1.getState(), new String[] {tag1, tag2})
                 .addEventChannel(ecd2, DotEqualsRule.RULE, state2.getState(), new String[] {tag2})
                 .build();

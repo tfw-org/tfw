@@ -9,6 +9,8 @@ import tfw.awt.ecd.ImageObserverECD;
 import tfw.awt.event.ComponentInitiator;
 import tfw.plot.PlotPanel;
 import tfw.swing.JFrameBB;
+import tfw.tsm.BasicTransactionQueue;
+import tfw.tsm.DefaultCheckDependencies;
 import tfw.tsm.Root;
 import tfw.tsm.ecd.IntegerECD;
 import tfw.tsm.ecd.StatelessTriggerECD;
@@ -33,6 +35,8 @@ public final class PlotPanelDemo {
 
         final Root root2 = Root.builder()
                 .setName("PlotPanelTest")
+                .setTransactionQueue(new BasicTransactionQueue())
+                .setCheckDependencies(new DefaultCheckDependencies())
                 .addObjectECD(BACKGROUND_COLOR_ECD, Color.blue)
                 .addStatelessTriggerECD(GENERATE_GRAPHIC_TRIGGER_ECD)
                 .addObjectECD(HEIGHT_ECD, null)

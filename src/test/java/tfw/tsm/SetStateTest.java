@@ -19,6 +19,7 @@ final class SetStateTest {
         final Root root = Root.builder()
                 .setName("Test")
                 .setTransactionQueue(queue)
+                .setCheckDependencies(new DefaultCheckDependencies())
                 .setTransactionExceptionHandler(exceptionHandler)
                 .addObjectECD(ecd, null)
                 .build();

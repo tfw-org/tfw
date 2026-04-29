@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
 import tfw.tsm.BasicTransactionQueue;
+import tfw.tsm.DefaultCheckDependencies;
 import tfw.tsm.Initiator;
 import tfw.tsm.Root;
 import tfw.tsm.TriggeredCommit;
@@ -20,6 +21,7 @@ final class TriggerRelayTest {
         final Root root = Root.builder()
                 .setName("Root")
                 .setTransactionQueue(queue)
+                .setCheckDependencies(new DefaultCheckDependencies())
                 .addStatelessTriggerECD(triggerToRelayECD)
                 .addStatelessTriggerECD(relayedTriggerECD)
                 .build();

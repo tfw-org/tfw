@@ -41,6 +41,7 @@ final class TriggeredConverterTest {
         final Root root = Root.builder()
                 .setName("Test branch")
                 .setTransactionQueue(queue)
+                .setCheckDependencies(new DefaultCheckDependencies())
                 .addObjectECD(channel1, null)
                 .addObjectECD(channel2, null)
                 .addStatelessTriggerECD(trigger)
