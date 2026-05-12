@@ -1,0 +1,12 @@
+%%TYPE%% = double
+%%NAME%% = Double
+%%PACKAGE%% = tfw.immutable.ilmf.doubleilmf
+%%RANDOM_VALUE%% = random.nextDouble()
+%%ASSERT_EQUALS_DELTA%% = , 0
+%%CREATE_IMMUTABLE_START%% = new Double(
+%%CREATE_IMMUTABLE_END%% = )
+%%DIAMOND%% = 
+%%TEMPLATE%% =
+%%TEMPLATE_SPACE%% =
+%%TYPE_OR_TEMPLATE%% = double
+%%LOWER_NAME%% = double

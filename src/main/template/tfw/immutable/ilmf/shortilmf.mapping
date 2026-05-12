@@ -1,0 +1,12 @@
+%%TYPE%% = short
+%%NAME%% = Short
+%%PACKAGE%% = tfw.immutable.ilmf.shortilmf
+%%RANDOM_VALUE%% = (short)random.nextInt()
+%%ASSERT_EQUALS_DELTA%% =
+%%CREATE_IMMUTABLE_START%% = new Short(
+%%CREATE_IMMUTABLE_END%% = )
+%%DIAMOND%% = 
+%%TEMPLATE%% =
+%%TEMPLATE_SPACE%% =
+%%TYPE_OR_TEMPLATE%% = short
+%%LOWER_NAME%% = short

@@ -1,0 +1,16 @@
+// booleanilmf,byteilmf,charilmf,doubleilmf,floatilmf,intilmf,longilmf,objectilmf,shortilmf
+package %%PACKAGE%%;
+
+import tfw.immutable.ilm.%%LOWER_NAME%%ilm.%%NAME%%Ilm;
+
+/**
+ * This interface defines a factory that creates %%NAME%%Ilm objects.
+ */
+public interface %%NAME%%IlmFactory%%TEMPLATE%% {
+    /**
+     * Create a %%NAME%%Ilm object.
+     *
+     * @return the %%NAME%%Ilm object.
+     */
+    %%NAME%%Ilm%%TEMPLATE%% create();
+}
