@@ -3,7 +3,7 @@ package tfw.immutable.ilmf.charilmf;
 import tfw.immutable.ilm.charilm.CharIlm;
 
 /**
- * This interface defines a factory that creates CharIla objects.
+ * This interface defines a factory that creates CharIlm objects.
  */
 public interface CharIlmFactory {
     /**

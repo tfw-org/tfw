@@ -3,7 +3,7 @@ package tfw.immutable.ilmf.objectilmf;
 import tfw.immutable.ilm.objectilm.ObjectIlm;
 
 /**
- * This interface defines a factory that creates ObjectIla objects.
+ * This interface defines a factory that creates ObjectIlm objects.
  */
 public interface ObjectIlmFactory<T> {
     /**

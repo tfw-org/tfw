@@ -3,7 +3,7 @@ package tfw.immutable.ilmf.byteilmf;
 import tfw.immutable.ilm.byteilm.ByteIlm;
 
 /**
- * This interface defines a factory that creates ByteIla objects.
+ * This interface defines a factory that creates ByteIlm objects.
  */
 public interface ByteIlmFactory {
     /**

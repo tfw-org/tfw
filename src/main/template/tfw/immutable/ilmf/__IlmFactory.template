@@ -4,7 +4,7 @@ package %%PACKAGE%%;
 import tfw.immutable.ilm.%%LOWER_NAME%%ilm.%%NAME%%Ilm;
 
 /**
- * This interface defines a factory that creates %%NAME%%Ila objects.
+ * This interface defines a factory that creates %%NAME%%Ilm objects.
  */
 public interface %%NAME%%IlmFactory%%TEMPLATE%% {
     /**

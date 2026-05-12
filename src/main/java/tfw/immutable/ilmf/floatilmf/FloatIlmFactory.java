@@ -3,7 +3,7 @@ package tfw.immutable.ilmf.floatilmf;
 import tfw.immutable.ilm.floatilm.FloatIlm;
 
 /**
- * This interface defines a factory that creates FloatIla objects.
+ * This interface defines a factory that creates FloatIlm objects.
  */
 public interface FloatIlmFactory {
     /**

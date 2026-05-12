@@ -3,7 +3,7 @@ package tfw.immutable.ilmf.doubleilmf;
 import tfw.immutable.ilm.doubleilm.DoubleIlm;
 
 /**
- * This interface defines a factory that creates DoubleIla objects.
+ * This interface defines a factory that creates DoubleIlm objects.
  */
 public interface DoubleIlmFactory {
     /**

@@ -3,7 +3,7 @@ package tfw.immutable.ilmf.intilmf;
 import tfw.immutable.ilm.intilm.IntIlm;
 
 /**
- * This interface defines a factory that creates IntIla objects.
+ * This interface defines a factory that creates IntIlm objects.
  */
 public interface IntIlmFactory {
     /**

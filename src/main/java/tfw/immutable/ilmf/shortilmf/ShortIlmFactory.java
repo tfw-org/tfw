@@ -3,7 +3,7 @@ package tfw.immutable.ilmf.shortilmf;
 import tfw.immutable.ilm.shortilm.ShortIlm;
 
 /**
- * This interface defines a factory that creates ShortIla objects.
+ * This interface defines a factory that creates ShortIlm objects.
  */
 public interface ShortIlmFactory {
     /**
