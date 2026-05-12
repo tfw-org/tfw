@@ -1,0 +1,12 @@
+%%TYPE%% = byte
+%%NAME%% = Byte
+%%PACKAGE%% = tfw.immutable.ilmf.byteilmf
+%%RANDOM_VALUE%% = (byte)random.nextInt()
+%%ASSERT_EQUALS_DELTA%% =
+%%CREATE_IMMUTABLE_START%% = new Byte(
+%%CREATE_IMMUTABLE_END%% = )
+%%DIAMOND%% = 
+%%TEMPLATE%% =
+%%TEMPLATE_SPACE%% =
+%%TYPE_OR_TEMPLATE%% = byte
+%%LOWER_NAME%% = byte
