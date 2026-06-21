@@ -17,7 +17,7 @@ class DefaultComponentConfigTest {
 
         DefaultComponentConfig<Initiator> config = new DefaultComponentConfig<>(initiator);
 
-        assertThat(initiator).isEqualTo(config.getComponent());
+        assertThat(config.getComponent()).isSameAs(initiator);
     }
 
     @Test
