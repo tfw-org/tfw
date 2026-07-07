@@ -192,7 +192,7 @@ public final class TransactionMgr {
 
         long cycleNumber = 0;
         do {
-            debug("Cycle %d", cycleNumber);
+            debug("Cycle {}", cycleNumber);
             debug("  State Changes:");
 
             trace("executeEventChannelFires()");
@@ -240,7 +240,7 @@ public final class TransactionMgr {
             }
         }
 
-        debug("******** Begin transaction: %d *********", ++transactionCount);
+        debug("******** Begin transaction: {} *********", ++transactionCount);
 
         synchronized (lock) {
             if (locationFormatter != null) {
@@ -271,7 +271,7 @@ public final class TransactionMgr {
             inTransaction = false;
         }
 
-        debug("End transaction: %d", transactionCount);
+        debug("End transaction: {}", transactionCount);
 
         return thrown;
     }
@@ -297,8 +297,11 @@ public final class TransactionMgr {
             cycleStateChanges.add(sourcesArray[i].eventChannel);
             transStateChanges.add(sourcesArray[i].eventChannel);
             debug(
-                    "    S%d : %s : %s = %s",
-                    i, sourcesArray[i].getTreeComponent().getName(), sourcesArray[i].ecd.getEventChannelName(), state);
+                    "    S{} : {} : {} = {}",
+                    i,
+                    sourcesArray[i].getTreeComponent().getName(),
+                    sourcesArray[i].ecd.getEventChannelName(),
+                    state);
         }
 
         executingStateChanges = false;
@@ -314,7 +317,7 @@ public final class TransactionMgr {
         validators = null;
 
         for (int i = 0; i < v.length; i++) {
-            debug("validators[%d].validateState(): %s", i, v[i].getName());
+            debug("validators[{}].validateState(): {}", i, v[i].getName());
 
             v[i].validate();
         }
@@ -351,11 +354,11 @@ public final class TransactionMgr {
         }
 
         for (int i = 0; i < executeProcessorsArraySize; i++) {
-            debug("    P%d : %s", i, executeProcessorsArray[i].getName());
+            debug("    P{} : {}", i, executeProcessorsArray[i].getName());
             try {
                 executeProcessorsArray[i].process();
             } catch (Exception e) {
-                LOGGER.atWarn().setCause(e).log("Exception in %s", executeProcessorsArray[i].getName());
+                LOGGER.atWarn().setCause(e).log("Exception in {}", executeProcessorsArray[i].getName());
             }
         }
     }
@@ -457,8 +460,9 @@ public final class TransactionMgr {
 
         for (int i = 0; i < cycleStateChangesArraySize; i++) {
             trace(
-                    "eventChannels[%d].synchronizeCycleState(): %s",
-                    i, cycleStateChangesArray[i].getECD().getEventChannelName());
+                    "eventChannels[{}].synchronizeCycleState(): {}",
+                    i,
+                    cycleStateChangesArray[i].getECD().getEventChannelName());
 
             cycleStateChangesArray[i].synchronizeCycleState();
         }
@@ -481,8 +485,9 @@ public final class TransactionMgr {
 
         for (int i = 0; i < eventChannelsSize; i++) {
             trace(
-                    "eventChannels[%d].synchronizeTransactionState(): %s",
-                    i, eventChannels[i].getECD().getEventChannelName());
+                    "eventChannels[{}].synchronizeTransactionState(): {}",
+                    i,
+                    eventChannels[i].getECD().getEventChannelName());
 
             eventChannels[i].synchronizeTransactionState();
         }
@@ -501,7 +506,7 @@ public final class TransactionMgr {
         for (int i = 0; i < ec.length; i++) {
             ec[i].fire();
 
-            debug("    S%d : %s : %s", i, ec[i].getECD().getEventChannelName(), ec[i].getState());
+            debug("    S{} : {} : {}", i, ec[i].getECD().getEventChannelName(), ec[i].getState());
 
             this.transStateChanges.add(ec[i]);
         }
@@ -515,7 +520,7 @@ public final class TransactionMgr {
         }
 
         debug("Add/Remove Component");
-        debug("  %s", componentChange);
+        debug("  {}", componentChange);
 
         componentChange.run();
     }
@@ -558,13 +563,13 @@ public final class TransactionMgr {
         int commitNumber = 0;
         for (int i = 0; i < commitRollbackListenersSize; i++) {
             if (!(commitRollbackListeners[i] instanceof Terminator)) {
-                debug("  C%d : %s", commitNumber++, commitRollbackListeners[i].getName());
+                debug("  C{} : {}", commitNumber++, commitRollbackListeners[i].getName());
             }
 
             try {
                 commitRollbackListeners[i].commit();
             } catch (Exception e) {
-                LOGGER.atWarn().setCause(e).log("Exception in %s", commitRollbackListeners[i].getName());
+                LOGGER.atWarn().setCause(e).log("Exception in {}", commitRollbackListeners[i].getName());
             }
         }
     }
@@ -880,7 +885,7 @@ public final class TransactionMgr {
 
         @Override
         public void run() {
-            LOGGER.atDebug().log("%s", this);
+            LOGGER.atDebug().log("{}", this);
 
             boolean clearCache = false;
 
