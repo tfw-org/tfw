@@ -23,3 +23,8 @@ jobs:
          
           # Optional: Post a helpful summary table directly into the PR comments
           comment-summary-in-pr: always
+
+          # Optional: Wait slightly if you suspect race conditions, 
+          # but usually the push workflow finishes before PR checks start.
+          retry-on-snapshot-warnings: true
+          retry-on-snapshot-warnings-timeout: 120
