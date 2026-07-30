@@ -2,10 +2,11 @@ name: Dependency Submission
 on:
   push:
     branches: [ "master" ]
-  pull_request:
+  pull_request: # Runs for internal PRs to ensure immediate graph availability
+    branches: [ "master" ]
 
-  permissions:
-    contents: write
+permissions:
+  contents: write
 
 jobs:
   submit:
