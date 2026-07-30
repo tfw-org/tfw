@@ -19,7 +19,7 @@ jobs:
         with:
           # Fail the build if a vulnerability is moderate, high, or critical
           # fail-on-severity: moderate
-          warn-only: true 
+          # warn-only: true 
          
           # Optional: Prevent merging unapproved licenses
           allow-licenses: MIT
