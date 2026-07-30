@@ -10,16 +10,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 'Checkout Repository'
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: 'Dependency Review'
-        uses: actions/dependency-review-action@v5
+        uses: actions/dependency-review-action@a1d282b36b6f3519aa1f3fc636f609c47dddb294 # v5.0.0
         with:
           # Fail the build if a vulnerability is moderate, high, or critical
           fail-on-severity: moderate
          
           # Optional: Prevent merging unapproved licenses
-          deny-licenses: GPL-2.0, GPL-3.0, AGPL-3.0
+          allow-licenses: MIT
          
           # Optional: Post a helpful summary table directly into the PR comments
           comment-summary-in-pr: always
