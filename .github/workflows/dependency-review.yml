@@ -1,0 +1,25 @@
+name: 'Dependency Review'
+on: [pull_request]
+
+permissions:
+  contents: read
+  pull-requests: write # Required if you want PR summaries/comments
+
+jobs:
+  dependency-review:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout Repository'
+        uses: actions/checkout@v7
+
+      - name: 'Dependency Review'
+        uses: actions/dependency-review-action@v5
+        with:
+          # Fail the build if a vulnerability is moderate, high, or critical
+          fail-on-severity: moderate
+         
+          # Optional: Prevent merging unapproved licenses
+          deny-licenses: GPL-2.0, GPL-3.0, AGPL-3.0
+         
+          # Optional: Post a helpful summary table directly into the PR comments
+          comment-summary-in-pr: always
