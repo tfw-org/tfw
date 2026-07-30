@@ -41,5 +41,5 @@ jobs:
     - name: Run Grype Scanner
       uses: anchore/scan-action@e1165082ffb1fe366ebaf02d8526e7c4989ea9d2 # v7.4.0
       with:
-        bom: 'target/bom.json'
+        sbom: 'target/bom.json'
         fail-build: false # Logs findings to console without breaking the build

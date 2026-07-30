@@ -15,9 +15,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v7
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
     - name: Set up Java ${{ matrix.java }}-${{ matrix.distribution }}
-      uses: actions/setup-java@v5
+      uses: actions/setup-java@03ad4de0992f5dab5e18fcb136590ce7c4a0ac95 # v5.6.0
       with:
         java-version: ${{ matrix.java }}
         distribution: ${{ matrix.distribution }}
@@ -29,11 +29,11 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: ${{ github.workspace }}/execute-on-vnc.sh mvn -B verify
     - name: Get changed files
-      uses: tj-actions/verify-changed-files@4616eed12cee617b16fa9d0ef524f883d2a48a48 #v20.0.4
+      uses: tj-actions/verify-changed-files@4616eed12cee617b16fa9d0ef524f883d2a48a48 # v20.0.4
       id: verify-changed-files
     - name: Run step only when files change
       if: steps.verify-changed-files.outputs.files_changed == 'true'
-      uses: actions/github-script@v9
+      uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
       with:
         script: |
             core.setFailed('Changed files found: ${{ steps.verify-changed-files.outputs.changed_files }}')
