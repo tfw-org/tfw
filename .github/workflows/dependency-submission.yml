@@ -1,9 +1,9 @@
 name: Dependency Submission
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "master" ]
   pull_request: # Runs for internal PRs to ensure immediate graph availability
-    branches: [ "main" ]
+    branches: [ "master" ]
 
 jobs:
   submit:
