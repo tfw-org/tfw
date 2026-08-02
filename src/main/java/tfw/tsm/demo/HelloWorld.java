@@ -1,6 +1,7 @@
 package tfw.tsm.demo;
 
-import com.google.common.flogger.FluentLogger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import tfw.tsm.BasicTransactionQueue;
 import tfw.tsm.DefaultCheckDependencies;
 import tfw.tsm.Initiator;
@@ -11,7 +12,7 @@ import tfw.tsm.ecd.StatelessTriggerECD;
 
 public class HelloWorld {
     public static final String HELLO_WORLD_STRING = "HelloWorld!";
-    private static final FluentLogger LOGGER = FluentLogger.forEnclosingClass();
+    private static final Logger LOG = LoggerFactory.getLogger(HelloWorld.class);
 
     public static final void main(String[] args) {
         final BasicTransactionQueue basicTransactionQueue = new BasicTransactionQueue();
@@ -20,7 +21,7 @@ public class HelloWorld {
         final TriggeredCommit c = new TriggeredCommit("Hello World Commit", triggerECD, null, null) {
             @Override
             protected void commit() {
-                LOGGER.atInfo().log(HELLO_WORLD_STRING);
+                LOG.atInfo().log(HELLO_WORLD_STRING);
             }
         };
         final Root r = Root.builder()

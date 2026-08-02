@@ -15,6 +15,7 @@
         <dependency.assertj-swing.version>3.17.1</dependency.assertj-swing.version>
         <dependency.junit-jupiter-api.version>6.1.2</dependency.junit-jupiter-api.version>
         <dependency.slf4j-api.version>2.0.18</dependency.slf4j-api.version>
+        <dependency.slf4j-jdk14.version>2.0.18</dependency.slf4j-jdk14.version>
         <maven.compiler.release>8</maven.compiler.release>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
@@ -57,33 +58,9 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.google.flogger</groupId>
-            <artifactId>flogger</artifactId>
-            <version>0.9</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
             <version>${dependency.slf4j-api.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.google.flogger</groupId>
-            <artifactId>flogger-grpc-context</artifactId>
-            <version>0.9</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.google.flogger</groupId>
-            <artifactId>flogger-system-backend</artifactId>
-            <version>0.9</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>net.goui.flogger.testing</groupId>
-            <artifactId>junit5</artifactId>
-            <version>1.0.12</version>
-            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.assertj</groupId>
@@ -101,6 +78,12 @@
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
             <version>${dependency.junit-jupiter-api.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-jdk14</artifactId>
+            <version>${dependency.slf4j-jdk14.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
