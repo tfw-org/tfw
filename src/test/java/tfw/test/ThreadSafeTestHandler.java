@@ -1,5 +1,6 @@
 package tfw.test;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Handler;
@@ -11,14 +12,16 @@ public class ThreadSafeTestHandler extends Handler {
     private final List<LogRecord> records = new CopyOnWriteArrayList<>();
 
     @Override
-    public void publish(LogRecord record) {
-        if (isLoggable(record)) {
-            records.add(record);
+    public void publish(LogRecord logRecord) {
+        if (isLoggable(logRecord)) {
+            records.add(logRecord);
         }
     }
 
     @Override
-    public void flush() {}
+    public void flush() {
+        // Nothing to flush.
+    }
 
     @Override
     public void close() {
@@ -27,6 +30,6 @@ public class ThreadSafeTestHandler extends Handler {
 
     public List<LogRecord> getRecords() {
         // Returns a safe snapshot; iteration will not throw ConcurrentModificationException
-        return records;
+        return new ArrayList<>(records);
     }
 }

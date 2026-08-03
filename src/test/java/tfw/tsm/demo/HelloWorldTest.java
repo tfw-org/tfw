@@ -20,14 +20,14 @@ final class HelloWorldTest {
     private ThreadSafeTestHandler handler;
 
     @BeforeEach
-    public void beforeEach() {
+    void beforeEach() {
         logger = Logger.getLogger(HelloWorld.class.getName());
 
         handler = TestHelper.beforeEach(logger);
     }
 
     @AfterEach
-    public void afterEach() {
+    void afterEach() {
         TestHelper.afterEach(logger, handler);
     }
 
