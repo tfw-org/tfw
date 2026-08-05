@@ -19,7 +19,7 @@
         <maven.compiler.release>8</maven.compiler.release>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <plugin.cyclonedx-maven-plugin.version>2.9.2</plugin.cyclonedx-maven-plugin.version>
+        <plugin.cyclonedx-maven-plugin.version>2.9.3</plugin.cyclonedx-maven-plugin.version>
         <plugin.error-prone-contrib.version>0.30.0</plugin.error-prone-contrib.version>
         <plugin.error_prone_core.version>2.50.0</plugin.error_prone_core.version>
         <plugin.errorprone-slf4j.version>0.1.29</plugin.errorprone-slf4j.version>
