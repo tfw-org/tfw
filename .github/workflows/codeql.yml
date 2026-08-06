@@ -61,7 +61,7 @@ jobs:
         # queries: security-extended,security-and-quality
 
         # Explicitly set build-mode to avoid 'undefined' warning
-        build-mode: none 
+        build-mode: none
 
     # Autobuild attempts to build any compiled languages  (C/C++, C#, Go, or Java).
     # If this step fails, then you should remove it and run the build manually (see below)
