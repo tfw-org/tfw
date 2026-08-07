@@ -1,21 +1,10 @@
 name: pitest
 
-permissions:
-  actions: write
-  attestations: write
-  checks: write
-  contents: write
-  deployments: write
-  discussions: write
-  issues: write
-  models: read
-  packages: write
-  pages: write
-  pull-requests: write
-  security-events: write
-  statuses: write
 on:
   pull_request:
+
+permissions:
+  contents: read
 
 jobs:
   pull-request-ci:
@@ -23,27 +12,37 @@ jobs:
     # must use a two stage process
     if: github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
+    
+    # Elevate permissions strictly for this specific job
+    permissions:
+      contents: read
+      pull-requests: write
+
     steps:
       - name: Checkout project
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           # important to set a fetch depth of 2. By default the checkout action make no history available
           fetch-depth: 2
+
       - name: Cache local Maven repository
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: ~/.m2/repository
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-maven-
+
       - name: Setup Java JDK
         uses: actions/setup-java@b6effb05e454b25005698d916606bdc6ffcbf961 # v5.7.0
         with:
           java-version: 21
           distribution: corretto
           cache: maven
-      - name: run pitest
+
+      - name: Run pitest
         run: mvn -e -B -Ppitest -Dfeatures="+GIT(from[HEAD~1]), +gitci" test
-      - name: update pull request
+
+      - name: Update pull request
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: mvn -e -B -DrepoToken=${{ env.GITHUB_TOKEN }} pitest-github:github
