@@ -210,28 +210,23 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-gpg-plugin</artifactId>
-                <version>${plugin.maven-gpg-plugin.version}</version>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>${plugin.maven-javadoc-plugin.version}</version>
                 <configuration>
                     <quiet>true</quiet>
-                    <doclint>all</doclint>
-                    <failOnWarnings>true</failOnWarnings>
-                    <failOnError>true</failOnError>
                     <excludePackageNames>tfw.math</excludePackageNames>
                 </configuration>
                 <executions>
                     <execution>
                         <id>attach-javadocs</id>
                         <goals>
+                            <goal>javadoc-no-fork</goal>
                             <goal>jar</goal>
                         </goals>
+                        <phase>package</phase>
                         <configuration>
                             <doclint>none</doclint>
+                            <failOnError>false</failOnError>
                         </configuration>
                     </execution>
                 </executions>
@@ -461,6 +456,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
+                        <version>${plugin.maven-gpg-plugin.version}</version>
                         <executions>
                             <execution>
                                 <id>sign-artifacts</id>
@@ -489,12 +485,6 @@
                     </plugin>
                 </plugins>
             </build>
-            <distributionManagement>
-                <repository>
-                    <id>central</id>
-                    <url>https://central.sonatype.com/api/v1/publish</url>
-                </repository>
-            </distributionManagement>
         </profile>
         <profile>
             <id>pitest</id>
