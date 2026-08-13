@@ -1,6 +1,6 @@
 # TFW
 
-**TFW is a lightweight Java framework for building large-scale applications.** It is comprised of two main packages, `tfw.immutable` and `tfw.tsm`, which provide complementary foundations for managing application data, state, and component composition.
+**TFW is a lightweight Java framework for building large-scale applications.** It is composed of two main packages, `tfw.immutable` and `tfw.tsm`, which provide complementary foundations for managing application data, state, and component composition.
 
 ## Overview
 
