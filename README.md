@@ -24,7 +24,7 @@ Key characteristics include:
 
 The `tfw.tsm` package provides a **transaction-based state-management and component framework** for building large, modular applications.
 
-Application state and communication channels are organized into a hierarchical component model supporting:
+Application state and communication channels are organized into a hierarchical component model that supports:
 
 - Transactional state changes
 - Publish/subscribe messaging
