@@ -4,6 +4,10 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends maven && \
     rm -rf /var/lib/apt/lists/*
 
+RUN java -version && \
+    javac -version && \
+    mvn -version
+
 COPY . $SRC/tfw
 
 WORKDIR $SRC/tfw
