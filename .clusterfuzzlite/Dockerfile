@@ -1,12 +1,12 @@
 FROM gcr.io/oss-fuzz-base/base-builder-jvm
 
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends maven && \
+    apt-get install -y --no-install-recommends \
+        maven \
+        openjdk-21-jdk && \
+    java -version && \
+    mvn -version && \
     rm -rf /var/lib/apt/lists/*
-
-RUN java -version && \
-    javac -version && \
-    mvn -version
 
 COPY . $SRC/tfw
 
