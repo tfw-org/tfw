@@ -65,6 +65,18 @@ LD_LIBRARY_PATH="\$JVM_LD_LIBRARY_PATH:\$this_dir" \
 EOF
 
     chmod +x "$OUT/$fuzzer_basename"
+
+    echo "===== GENERATED FUZZER ====="
+    cat "$OUT/$fuzzer_basename"
+
+    echo "===== FUZZER FILE INFO ====="
+    file "$OUT/$fuzzer_basename"
+
+    echo "===== FUZZER CLASS ====="
+    javap -classpath "$OUT" "$fuzzer_basename" || true
+
+    echo "===== OUT CONTENTS ====="
+    ls -la "$OUT"
 done
 
 echo "Contents of \$OUT:"
