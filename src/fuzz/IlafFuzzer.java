@@ -1,5 +1,4 @@
 import com.code_intelligence.jazzer.api.FuzzedDataProvider;
-
 import tfw.immutable.ila.longila.LongIla;
 import tfw.immutable.ilaf.longilaf.LongIlaFactory;
 import tfw.immutable.ilaf.longilaf.LongIlaFactoryFromArray;
