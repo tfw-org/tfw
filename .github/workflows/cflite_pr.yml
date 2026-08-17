@@ -9,7 +9,8 @@ on:
       - '.github/workflows/cflite_pr.yml'
       - 'pom.xml'
 
-permissions: read-all
+permissions:
+  contents: read
 
 jobs:
   PR:
@@ -28,7 +29,7 @@ jobs:
     steps:
       - name: Build Fuzzers
         id: build
-        uses: google/clusterfuzzlite/actions/build_fuzzers@v1
+        uses: google/clusterfuzzlite/actions/build_fuzzers@884713a6c30a92e5e8544c39945cd7cb630abcd1 # v1
         with:
           language: jvm
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -36,7 +37,7 @@ jobs:
 
       - name: Run Fuzzers
         id: run
-        uses: google/clusterfuzzlite/actions/run_fuzzers@v1
+        uses: google/clusterfuzzlite/actions/run_fuzzers@884713a6c30a92e5e8544c39945cd7cb630abcd1 # v1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           fuzz-seconds: 300

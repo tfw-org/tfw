@@ -45,7 +45,7 @@ LD_LIBRARY_PATH="\$JVM_LD_LIBRARY_PATH:\$this_dir" \
     --agent_path="\$this_dir/jazzer_agent_deploy.jar" \
     --cp="\$this_dir/tfw.jar:\$this_dir/deps/*:\$this_dir" \
     --target_class="$fuzzer_basename" \
-    --jvm_args="-Xmx2048m:-Djava.awt.headless=true" \
+    --jvm_args="-Xmx2048m -Djava.awt.headless=true" \
     "\$@"
 EOF
 
