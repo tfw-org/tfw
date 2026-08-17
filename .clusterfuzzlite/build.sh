@@ -29,7 +29,9 @@ PROJECT_JARS="tfw.jar"
 BUILD_CLASSPATH="$(echo "$PROJECT_JARS" | xargs printf -- "$OUT/%s:")$JAZZER_API_PATH"
 
 # Classpath used when Jazzer executes the fuzz target.
-RUNTIME_CLASSPATH="$(echo "$PROJECT_JARS" | xargs printf -- '\$this_dir/%s:')\$this_dir"
+# Escape $this_dir here so it is expanded by the generated wrapper,
+# rather than while this build.sh is running.
+RUNTIME_CLASSPATH="$(echo "$PROJECT_JARS" | xargs printf -- "\$this_dir/%s:"):\$this_dir"
 
 for fuzzer in $(find "$SRC" -name '*Fuzzer.java'); do
     fuzzer_basename="$(basename -s .java "$fuzzer")"
@@ -46,6 +48,7 @@ for fuzzer in $(find "$SRC" -name '*Fuzzer.java'); do
     # Create the executable Jazzer wrapper in $OUT.
     cat > "$OUT/$fuzzer_basename" <<EOF
 #!/bin/bash
+# LLVMFuzzerTestOneInput for fuzzer detection.
 
 this_dir=\$(dirname "\$0")
 
@@ -55,28 +58,16 @@ else
     mem_settings='-Xmx2048m:-Xss1024k'
 fi
 
-LD_LIBRARY_PATH="\$JVM_LD_LIBRARY_PATH:\$this_dir" \
-"\$this_dir/jazzer_driver" \
-    --agent_path="\$this_dir/jazzer_agent_deploy.jar" \
-    --cp="$RUNTIME_CLASSPATH" \
-    --target_class="$fuzzer_basename" \
+LD_LIBRARY_PATH="\$JVM_LD_LIBRARY_PATH":\$this_dir \
+\$this_dir/jazzer_driver \
+    --agent_path=\$this_dir/jazzer_agent_deploy.jar \
+    --cp=$RUNTIME_CLASSPATH \
+    --target_class=$fuzzer_basename \
     --jvm_args="\$mem_settings:-Djava.awt.headless=true" \
     "\$@"
 EOF
 
     chmod +x "$OUT/$fuzzer_basename"
-
-    echo "===== GENERATED FUZZER ====="
-    cat "$OUT/$fuzzer_basename"
-
-    echo "===== FUZZER FILE INFO ====="
-    file "$OUT/$fuzzer_basename"
-
-    echo "===== FUZZER CLASS ====="
-    javap -classpath "$OUT" "$fuzzer_basename" || true
-
-    echo "===== OUT CONTENTS ====="
-    ls -la "$OUT"
 done
 
 echo "Contents of \$OUT:"
