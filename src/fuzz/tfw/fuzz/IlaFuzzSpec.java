@@ -19,13 +19,7 @@ public final class IlaFuzzSpec<A, I> {
     @FunctionalInterface
     public interface GetFunction<A, I> {
 
-        void get(
-                I ila,
-                A destination,
-                int offset,
-                long start,
-                int length)
-                throws Exception;
+        void get(I ila, A destination, int offset, long start, int length) throws Exception;
     }
 
     private final String name;
@@ -64,19 +58,8 @@ public final class IlaFuzzSpec<A, I> {
         return length.length(ila);
     }
 
-    public void get(
-            I ila,
-            A destination,
-            int offset,
-            long start,
-            int length)
-            throws Exception {
+    public void get(I ila, A destination, int offset, long start, int length) throws Exception {
 
-        get.get(
-                ila,
-                destination,
-                offset,
-                start,
-                length);
+        get.get(ila, destination, offset, start, length);
     }
 }

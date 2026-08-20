@@ -16,12 +16,7 @@ public final class IlaFuzzInput {
     private final long start;
     private final int length;
 
-    private IlaFuzzInput(
-            int sourceLength,
-            int destinationLength,
-            int offset,
-            long start,
-            int length) {
+    private IlaFuzzInput(int sourceLength, int destinationLength, int offset, long start, int length) {
 
         this.sourceLength = sourceLength;
         this.destinationLength = destinationLength;
@@ -30,8 +25,7 @@ public final class IlaFuzzInput {
         this.length = length;
     }
 
-    public static IlaFuzzInput consume(
-            FuzzedDataProvider data) {
+    public static IlaFuzzInput consume(FuzzedDataProvider data) {
 
         return new IlaFuzzInput(
                 data.consumeInt(0, MAX_ARRAY_LENGTH),

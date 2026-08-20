@@ -8,9 +8,5 @@ public interface IlaArrayAdapter<A> {
 
     A copy(A array);
 
-    void assertElementEquals(
-            A expected,
-            int expectedIndex,
-            A actual,
-            int actualIndex);
+    void assertElementEquals(A expected, int expectedIndex, A actual, int actualIndex);
 }

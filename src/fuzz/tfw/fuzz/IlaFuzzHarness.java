@@ -1,29 +1,20 @@
 package tfw.fuzz;
 
 public final class IlaFuzzHarness<A, I> {
-
     private static final long SENTINEL = 0x5a5a5a5a5a5a5a5aL;
 
     private final IlaFuzzSpec<A, I> spec;
 
-    public IlaFuzzHarness(
-            IlaFuzzSpec<A, I> spec) {
-
+    public IlaFuzzHarness(IlaFuzzSpec<A, I> spec) {
         this.spec = spec;
     }
 
-    public void fuzz(
-            com.code_intelligence.jazzer.api.FuzzedDataProvider data)
-            throws Exception {
+    public void fuzz(com.code_intelligence.jazzer.api.FuzzedDataProvider data) throws Exception {
+        IlaFuzzInput input = IlaFuzzInput.consume(data);
 
-        IlaFuzzInput input =
-                IlaFuzzInput.consume(data);
+        IlaArrayAdapter<A> adapter = spec.adapter();
 
-        IlaArrayAdapter<A> adapter =
-                spec.adapter();
-
-        A source =
-                adapter.create(input.sourceLength());
+        A source = adapter.create(input.sourceLength());
 
         adapter.initialize(source);
 
@@ -41,34 +32,23 @@ public final class IlaFuzzHarness<A, I> {
         try {
             ila = spec.create(source);
         } catch (Throwable t) {
-            throw failure(
-                    input,
-                    "create(array) unexpectedly failed",
-                    t);
+            throw failure(input, "create(array) unexpectedly failed", t);
         }
 
-        verifyLength(
-                ila,
-                input);
+        verifyLength(ila, input);
 
         /*
          * Verify that the created ILA actually represents the source
          * array when there is something to read.
          */
         if (input.sourceLength() > 0) {
-            verifyElement(
-                    ila,
-                    source,
-                    0);
+            verifyElement(ila, source, 0);
         }
 
         /*
          * Exercise the exact fuzzed get() operation.
          */
-        verifyFuzzedGet(
-                ila,
-                source,
-                input);
+        verifyFuzzedGet(ila, source, input);
 
         /*
          * Exercise a null destination separately.
@@ -78,19 +58,14 @@ public final class IlaFuzzHarness<A, I> {
          *
          * For length != 0 it must produce IllegalArgumentException.
          */
-        verifyNullDestination(
-                ila,
-                input);
+        verifyNullDestination(ila, input);
     }
 
     private void verifyNullCreate() {
-
         try {
             spec.create(null);
 
-            throw new AssertionError(
-                    spec.name()
-                            + ": create(null) was accepted");
+            throw new AssertionError(spec.name() + ": create(null) was accepted");
 
         } catch (IllegalArgumentException expected) {
             /*
@@ -109,185 +84,94 @@ public final class IlaFuzzHarness<A, I> {
         }
     }
 
-    private void verifyLength(
-            I ila,
-            IlaFuzzInput input)
-            throws Exception {
-
-        long actual =
-                spec.length(ila);
+    private void verifyLength(I ila, IlaFuzzInput input) throws Exception {
+        long actual = spec.length(ila);
 
         if (actual != input.sourceLength()) {
-            throw failure(
-                    input,
-                    "incorrect ILA length: expected="
-                            + input.sourceLength()
-                            + ", actual="
-                            + actual,
-                    null);
+            throw failure(input, "incorrect ILA length: expected=" + input.sourceLength() + ", actual=" + actual, null);
         }
     }
 
-    private void verifyElement(
-            I ila,
-            A source,
-            int index)
-            throws Exception {
+    private void verifyElement(I ila, A source, int index) throws Exception {
+        IlaArrayAdapter<A> adapter = spec.adapter();
 
-        IlaArrayAdapter<A> adapter =
-                spec.adapter();
-
-        A destination =
-                adapter.create(1);
+        A destination = adapter.create(1);
 
         adapter.initialize(destination);
 
-        spec.get(
-                ila,
-                destination,
-                0,
-                index,
-                1);
+        spec.get(ila, destination, 0, index, 1);
 
-        adapter.assertElementEquals(
-                source,
-                index,
-                destination,
-                0);
+        adapter.assertElementEquals(source, index, destination, 0);
     }
 
-    private void verifyFuzzedGet(
-            I ila,
-            A source,
-            IlaFuzzInput input) {
+    private void verifyFuzzedGet(I ila, A source, IlaFuzzInput input) {
+        IlaArrayAdapter<A> adapter = spec.adapter();
 
-        IlaArrayAdapter<A> adapter =
-                spec.adapter();
+        boolean valid = isValidGet(
+                input.sourceLength(), input.destinationLength(), input.offset(), input.start(), input.length());
 
-        boolean valid =
-                isValidGet(
-                        input.sourceLength(),
-                        input.destinationLength(),
-                        input.offset(),
-                        input.start(),
-                        input.length());
-
-        A destination =
-                adapter.create(
-                        input.destinationLength());
+        A destination = adapter.create(input.destinationLength());
 
         adapter.initialize(destination);
 
-        A before =
-                adapter.copy(destination);
+        A before = adapter.copy(destination);
 
         try {
-            spec.get(
-                    ila,
-                    destination,
-                    input.offset(),
-                    input.start(),
-                    input.length());
+            spec.get(ila, destination, input.offset(), input.start(), input.length());
 
             if (!valid) {
-                throw failure(
-                        input,
-                        "get() accepted invalid arguments",
-                        null);
+                throw failure(input, "get() accepted invalid arguments", null);
             }
 
-            verifySuccessfulGet(
-                    source,
-                    before,
-                    destination,
-                    input);
+            verifySuccessfulGet(source, before, destination, input);
 
         } catch (IllegalArgumentException e) {
 
             if (valid) {
-                throw failure(
-                        input,
-                        "get() rejected valid arguments",
-                        e);
+                throw failure(input, "get() rejected valid arguments", e);
             }
 
             /*
              * A failed argument check must happen before arraycopy,
              * so the destination must remain untouched.
              */
-            verifyUnchanged(
-                    before,
-                    destination,
-                    input);
+            verifyUnchanged(before, destination, input);
 
         } catch (Throwable t) {
 
-            throw failure(
-                    input,
-                    "get() threw "
-                            + t.getClass().getName(),
-                    t);
+            throw failure(input, "get() threw " + t.getClass().getName(), t);
         }
     }
 
-    private void verifyNullDestination(
-            I ila,
-            IlaFuzzInput input) {
-
+    private void verifyNullDestination(I ila, IlaFuzzInput input) {
         try {
-            spec.get(
-                    ila,
-                    null,
-                    input.offset(),
-                    input.start(),
-                    input.length());
+            spec.get(ila, null, input.offset(), input.start(), input.length());
 
             if (input.length() != 0) {
-                throw failure(
-                        input,
-                        "get(null, ..., length != 0) "
-                                + "was accepted",
-                        null);
+                throw failure(input, "get(null, ..., length != 0) " + "was accepted", null);
             }
 
         } catch (IllegalArgumentException e) {
 
             if (input.length() == 0) {
-                throw failure(
-                        input,
-                        "get(null, ..., length == 0) "
-                                + "was rejected",
-                        e);
+                throw failure(input, "get(null, ..., length == 0) " + "was rejected", e);
             }
 
         } catch (Throwable t) {
 
-            throw failure(
-                    input,
-                    "get(null, ...) threw "
-                            + t.getClass().getName(),
-                    t);
+            throw failure(input, "get(null, ...) threw " + t.getClass().getName(), t);
         }
     }
 
-    private void verifySuccessfulGet(
-            A source,
-            A before,
-            A destination,
-            IlaFuzzInput input) {
-
-        IlaArrayAdapter<A> adapter =
-                spec.adapter();
+    private void verifySuccessfulGet(A source, A before, A destination, IlaFuzzInput input) {
+        IlaArrayAdapter<A> adapter = spec.adapter();
 
         /*
          * The current implementation treats length == 0 as an
          * unconditional no-op.
          */
         if (input.length() == 0) {
-            verifyUnchanged(
-                    before,
-                    destination,
-                    input);
+            verifyUnchanged(before, destination, input);
             return;
         }
 
@@ -295,62 +179,36 @@ public final class IlaFuzzHarness<A, I> {
          * A successful operation necessarily has a start that fits
          * in a Java array because sourceLength is bounded.
          */
-        int sourceIndex =
-                Math.toIntExact(input.start());
+        int sourceIndex = Math.toIntExact(input.start());
 
-        for (int i = 0;
-             i < input.length();
-             i++) {
+        for (int i = 0; i < input.length(); i++) {
 
-            adapter.assertElementEquals(
-                    source,
-                    sourceIndex + i,
-                    destination,
-                    input.offset() + i);
+            adapter.assertElementEquals(source, sourceIndex + i, destination, input.offset() + i);
         }
 
         /*
          * Nothing outside the requested destination range may change.
          */
-        int copyStart =
-                input.offset();
+        int copyStart = input.offset();
 
-        int copyEnd =
-                copyStart + input.length();
+        int copyEnd = copyStart + input.length();
 
-        for (int i = 0;
-             i < input.destinationLength();
-             i++) {
+        for (int i = 0; i < input.destinationLength(); i++) {
 
             if (i >= copyStart && i < copyEnd) {
                 continue;
             }
 
-            adapter.assertElementEquals(
-                    before,
-                    i,
-                    destination,
-                    i);
+            adapter.assertElementEquals(before, i, destination, i);
         }
     }
 
-    private void verifyUnchanged(
-            A before,
-            A destination,
-            IlaFuzzInput input) {
+    private void verifyUnchanged(A before, A destination, IlaFuzzInput input) {
+        IlaArrayAdapter<A> adapter = spec.adapter();
 
-        IlaArrayAdapter<A> adapter =
-                spec.adapter();
+        for (int i = 0; i < input.destinationLength(); i++) {
 
-        for (int i = 0;
-             i < input.destinationLength();
-             i++) {
-
-            adapter.assertElementEquals(
-                    before,
-                    i,
-                    destination,
-                    i);
+            adapter.assertElementEquals(before, i, destination, i);
         }
     }
 
@@ -358,13 +216,7 @@ public final class IlaFuzzHarness<A, I> {
      * This deliberately mirrors ImmutableLongArrayUtil.boundsCheck(),
      * including the special zero-length behavior of Abstract*Ila.
      */
-    private static boolean isValidGet(
-            long ilaLength,
-            int arrayLength,
-            int offset,
-            long start,
-            int length) {
-
+    private static boolean isValidGet(long ilaLength, int arrayLength, int offset, long start, int length) {
         /*
          * Abstract*Ila.get() returns before ANY argument checking
          * when length == 0.
@@ -404,23 +256,18 @@ public final class IlaFuzzHarness<A, I> {
         /*
          * Widen BEFORE adding.
          */
-        if ((long) offset + (long) length
-                > (long) arrayLength) {
+        if ((long) offset + (long) length > (long) arrayLength) {
             return false;
         }
 
-        if (start + (long) length
-                > ilaLength) {
+        if (start + (long) length > ilaLength) {
             return false;
         }
 
         return true;
     }
 
-    private void assertSentinel(
-            A array,
-            int index) {
-
+    private void assertSentinel(A array, int index) {
         /*
          * This method is intentionally unused for the generic case.
          * The adapter owns element comparison because primitive arrays
@@ -428,25 +275,13 @@ public final class IlaFuzzHarness<A, I> {
          */
     }
 
-    private AssertionError failure(
-            IlaFuzzInput input,
-            String message,
-            Throwable cause) {
-
-        String fullMessage =
-                spec.name()
-                        + ": "
-                        + message
-                        + " ["
-                        + input
-                        + "]";
+    private AssertionError failure(IlaFuzzInput input, String message, Throwable cause) {
+        String fullMessage = spec.name() + ": " + message + " [" + input + "]";
 
         if (cause == null) {
             return new AssertionError(fullMessage);
         }
 
-        return new AssertionError(
-                fullMessage,
-                cause);
+        return new AssertionError(fullMessage, cause);
     }
 }
