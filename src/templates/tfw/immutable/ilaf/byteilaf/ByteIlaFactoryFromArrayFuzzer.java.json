@@ -1,0 +1,15 @@
+{
+    "templateName": "IlaFactoryFromArrayFuzzer.java.ftl",
+    "dataModel": {
+        "typePackage": "byteilaf",
+        "fuzzerClassName": "ByteIlaFactoryFromArrayFuzzer",
+        "factoryName": "ByteIlaFactoryFromArray",
+        "ilaPackage": "byteila",
+        "ilaType": "ByteIla",
+        "arrayType": "byte[]",
+        "arrayTypeCreation": "byte[length]",
+        "factoryExpression": "array -> ByteIlaFactoryFromArray.create(array).create()",
+        "initializationKind": "byte",
+        "equalityKind": "primitive"
+    }
+}

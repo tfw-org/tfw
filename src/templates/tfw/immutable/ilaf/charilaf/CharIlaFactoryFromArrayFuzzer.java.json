@@ -1,0 +1,15 @@
+{
+    "templateName": "IlaFactoryFromArrayFuzzer.java.ftl",
+    "dataModel": {
+        "typePackage": "charilaf",
+        "fuzzerClassName": "CharIlaFactoryFromArrayFuzzer",
+        "factoryName": "CharIlaFactoryFromArray",
+        "ilaPackage": "charila",
+        "ilaType": "CharIla",
+        "arrayType": "char[]",
+        "arrayTypeCreation": "char[length]",
+        "factoryExpression": "array -> CharIlaFactoryFromArray.create(array).create()",
+        "initializationKind": "char",
+        "equalityKind": "char"
+    }
+}
