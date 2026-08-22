@@ -45,12 +45,15 @@ jobs:
 
       - name: Upload Artifacts and Signatures to GitHub Release
         run: |
-          gh release upload "${{ github.event.release.tag_name }}" \
-            "target/${{ steps.maven.outputs.artifactId }}-${{ steps.maven.outputs.version }}.jar" \
-            "target/${{ steps.maven.outputs.artifactId }}-${{ steps.maven.outputs.version }}.jar.asc" \
-            "target/${{ steps.maven.outputs.artifactId }}-${{ steps.maven.outputs.version }}-sources.jar" \
-            "target/${{ steps.maven.outputs.artifactId }}-${{ steps.maven.outputs.version }}-sources.jar.asc" \
-            "target/${{ steps.maven.outputs.artifactId }}-${{ steps.maven.outputs.version }}-javadoc.jar" \
-            "target/${{ steps.maven.outputs.artifactId }}-${{ steps.maven.outputs.version }}-javadoc.jar.asc"
+          gh release upload "$RELEASE_TAG" \
+            "target/$ARTIFACT_ID-$VERSION.jar" \
+            "target/$ARTIFACT_ID-$VERSION.jar.asc" \
+            "target/$ARTIFACT_ID-$VERSION-sources.jar" \
+            "target/$ARTIFACT_ID-$VERSION-sources.jar.asc" \
+            "target/$ARTIFACT_ID-$VERSION-javadoc.jar" \
+            "target/$ARTIFACT_ID-$VERSION-javadoc.jar.asc"
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+          ARTIFACT_ID: ${{ steps.maven.outputs.artifactId }}
+          VERSION: ${{ steps.maven.outputs.version }}
