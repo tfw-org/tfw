@@ -44,14 +44,17 @@ jobs:
           GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
 
       - name: Upload Artifacts and Signatures to GitHub Release
-        uses: softprops/action-gh-release@3d0d9888cb7fd7b750713d6e236d1fcb99157228 # v3.0.2
-        with:
-          files: |
-            target/${{ steps.maven.outputs.artifactId }}-${{ steps.maven.outputs.version }}.jar
-            target/${{ steps.maven.outputs.artifactId }}-${{ steps.maven.outputs.version }}.jar.asc
-            target/${{ steps.maven.outputs.artifactId }}-${{ steps.maven.outputs.version }}-sources.jar
-            target/${{ steps.maven.outputs.artifactId }}-${{ steps.maven.outputs.version }}-sources.jar.asc
-            target/${{ steps.maven.outputs.artifactId }}-${{ steps.maven.outputs.version }}-javadoc.jar
-            target/${{ steps.maven.outputs.artifactId }}-${{ steps.maven.outputs.version }}-javadoc.jar.asc
+        run: |
+          gh release upload "$RELEASE_TAG" \
+            --clobber \
+            "target/$ARTIFACT_ID-$VERSION.jar" \
+            "target/$ARTIFACT_ID-$VERSION.jar.asc" \
+            "target/$ARTIFACT_ID-$VERSION-sources.jar" \
+            "target/$ARTIFACT_ID-$VERSION-sources.jar.asc" \
+            "target/$ARTIFACT_ID-$VERSION-javadoc.jar" \
+            "target/$ARTIFACT_ID-$VERSION-javadoc.jar.asc"
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+          ARTIFACT_ID: ${{ steps.maven.outputs.artifactId }}
+          VERSION: ${{ steps.maven.outputs.version }}
