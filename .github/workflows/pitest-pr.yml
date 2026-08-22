@@ -46,5 +46,5 @@ jobs:
 
       - name: Update pull request
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: mvn -e -B -DrepoToken=${{ env.GITHUB_TOKEN }} pitest-github:github
+          GITHUB_TOKEN: ${{ github.token }}
+        run: mvn -e -B -DrepoToken="$GITHUB_TOKEN" pitest-github:github
