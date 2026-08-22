@@ -46,6 +46,7 @@ jobs:
       - name: Upload Artifacts and Signatures to GitHub Release
         run: |
           gh release upload "$RELEASE_TAG" \
+            --clobber \
             "target/$ARTIFACT_ID-$VERSION.jar" \
             "target/$ARTIFACT_ID-$VERSION.jar.asc" \
             "target/$ARTIFACT_ID-$VERSION-sources.jar" \
