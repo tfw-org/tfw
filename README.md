@@ -36,6 +36,12 @@ Application state and communication channels are organized into a hierarchical c
 
 The design of `tfw.tsm` is inspired by the component-programming principles described by **Clemens Szyperski** in *Component Software: Beyond Object-Oriented Programming*. The goal is to provide a practical foundation for composing large applications from well-defined components with controlled interactions and predictable state transitions.
 
+## Hello World
+
+The following example demonstrates the basic structure of a TFW application:
+
+[`HelloWorld.java`](src/main/java/tfw/tsm/demo/HelloWorld.java)
+
 ## Designed for Large-Scale Applications
 
 `tfw.immutable` and `tfw.tsm` are designed to complement one another.

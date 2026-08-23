@@ -17,24 +17,24 @@ public class HelloWorld {
     public static final void main(String[] args) {
         final BasicTransactionQueue basicTransactionQueue = new BasicTransactionQueue();
         final StatelessTriggerECD triggerECD = new StatelessTriggerECD("trigger");
-        final Initiator i = new Initiator("Hello World Initiator", new EventChannelDescription[] {triggerECD});
-        final TriggeredCommit c = new TriggeredCommit("Hello World Commit", triggerECD, null, null) {
+        final Initiator initiator = new Initiator("Hello World Initiator", new EventChannelDescription[] {triggerECD});
+        final TriggeredCommit commit = new TriggeredCommit("Hello World Commit", triggerECD, null, null) {
             @Override
             protected void commit() {
                 LOG.atInfo().log(HELLO_WORLD_STRING);
             }
         };
-        final Root r = Root.builder()
+        final Root root = Root.builder()
                 .setName("Hello World Root")
                 .setTransactionQueue(basicTransactionQueue)
                 .setCheckDependencies(new DefaultCheckDependencies())
                 .addStatelessTriggerECD(triggerECD)
                 .build();
 
-        r.add(i);
-        r.add(c);
+        root.add(initiator);
+        root.add(commit);
 
-        i.trigger(triggerECD);
+        initiator.trigger(triggerECD);
         basicTransactionQueue.waitTilEmpty();
     }
 }
