@@ -1,5 +1,14 @@
 # TFW
 
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.tfw-org/tfw.svg)](https://central.sonatype.com/artifact/io.github.tfw-org/tfw)
+[![Java](https://img.shields.io/badge/Java-8%2B-blue)](https://github.com/tfw-org/tfw)
+[![License](https://img.shields.io/github/license/tfw-org/tfw?color=blue)](https://github.com/tfw-org/tfw/blob/master/LICENSE.md)
+[![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/tfw-org/tfw/badge)](https://securityscorecards.dev/viewer/?uri=github.com/tfw-org/tfw)
+<br>
+[![Java CI with Maven](https://github.com/tfw-org/tfw/actions/workflows/maven.yml/badge.svg)](https://github.com/tfw-org/tfw/actions/workflows/maven.yml)
+[![CodeQL](https://github.com/tfw-org/tfw/actions/workflows/codeql.yml/badge.svg)](https://github.com/tfw-org/tfw/actions/workflows/codeql.yml)
+[![Sonar Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=tfw-org_tfw&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=tfw-org_tfw)
+
 **TFW is a lightweight Java framework for building large-scale applications.** It is composed of two main packages, `tfw.immutable` and `tfw.tsm`, which provide complementary foundations for managing application data, state, and component composition.
 
 ## Overview
