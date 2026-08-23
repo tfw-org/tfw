@@ -2,7 +2,7 @@
 
 [![Maven Central](https://img.shields.io/maven-central/v/io.github.tfw-org/tfw.svg)](https://central.sonatype.com/artifact/io.github.tfw-org/tfw)
 [![Java](https://img.shields.io/badge/Java-8%2B-blue)](https://github.com/tfw-org/tfw)
-[![License](https://img.shields.io/github/license/tfw-org/tfw?color=blue)](https://github.com/tfw-org/tfw/blob/master/LICENSE)
+[![License](https://img.shields.io/github/license/tfw-org/tfw?color=blue)](https://github.com/tfw-org/tfw/blob/master/LICENSE.md)
 [![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/tfw-org/tfw/badge)](https://securityscorecards.dev/viewer/?uri=github.com/tfw-org/tfw)
 <br>
 [![Java CI with Maven](https://github.com/tfw-org/tfw/actions/workflows/maven.yml/badge.svg)](https://github.com/tfw-org/tfw/actions/workflows/maven.yml)
