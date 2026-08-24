@@ -139,7 +139,7 @@ Avoid combining large unrelated cleanup efforts with a focused functional change
 
 Please do not report security vulnerabilities through public GitHub issues.
 
-Use the repository's security reporting mechanism so vulnerabilities can be evaluated privately.
+Use GitHub's private vulnerability reporting form at [https://github.com/tfw-org/tfw/security/advisories/new](https://github.com/tfw-org/tfw/security/advisories/new) so vulnerabilities can be evaluated privately.
 
 Security findings from automated checks should be investigated and addressed rather than simply suppressed.
 
