@@ -313,6 +313,20 @@
                 </dependencies>
                 <executions>
                     <execution>
+                        <id>create-fuzzer-generator-directory</id>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <executable>mkdir</executable>
+                            <arguments>
+                                <argument>-p</argument>
+                                <argument>${project.build.directory}/fuzzer-generator-classes</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
                         <id>compile-fuzzer-generator</id>
                         <goals>
                             <goal>exec</goal>
