@@ -10,7 +10,6 @@ public final class ByteIlaFactoryFromArrayFuzzer {
     private static final IlaFuzzSpec<byte[], ByteIla> SPEC = new IlaFuzzSpec<>(
             "ByteIlaFactoryFromArray",
             new IlaArrayAdapter<>() {
-
                 @Override
                 public byte[] create(int length) {
                     return new byte[length];
@@ -18,7 +17,6 @@ public final class ByteIlaFactoryFromArrayFuzzer {
 
                 @Override
                 public void initialize(byte[] array) {
-
                     for (int i = 0; i < array.length; i++) {
                         array[i] = (byte) (i * 37 + 11);
                     }
@@ -31,7 +29,6 @@ public final class ByteIlaFactoryFromArrayFuzzer {
 
                 @Override
                 public void assertElementEquals(byte[] expected, int expectedIndex, byte[] actual, int actualIndex) {
-
                     if (expected[expectedIndex] != actual[actualIndex]) {
                         throw new AssertionError(
                                 "expected=" + expected[expectedIndex] + ", actual=" + actual[actualIndex]);

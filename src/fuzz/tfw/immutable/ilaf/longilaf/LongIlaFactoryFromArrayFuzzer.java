@@ -10,7 +10,6 @@ public final class LongIlaFactoryFromArrayFuzzer {
     private static final IlaFuzzSpec<long[], LongIla> SPEC = new IlaFuzzSpec<>(
             "LongIlaFactoryFromArray",
             new IlaArrayAdapter<>() {
-
                 @Override
                 public long[] create(int length) {
                     return new long[length];
@@ -18,7 +17,6 @@ public final class LongIlaFactoryFromArrayFuzzer {
 
                 @Override
                 public void initialize(long[] array) {
-
                     for (int i = 0; i < array.length; i++) {
                         array[i] = 0x123456789ABCDEFL ^ ((long) i * 0x100000001L);
                     }
@@ -26,13 +24,11 @@ public final class LongIlaFactoryFromArrayFuzzer {
 
                 @Override
                 public long[] copy(long[] array) {
-
                     return array.clone();
                 }
 
                 @Override
                 public void assertElementEquals(long[] expected, int expectedIndex, long[] actual, int actualIndex) {
-
                     if (expected[expectedIndex] != actual[actualIndex]) {
                         throw new AssertionError(
                                 "expected=" + expected[expectedIndex] + ", actual=" + actual[actualIndex]);

@@ -10,7 +10,6 @@ public final class ShortIlaFactoryFromArrayFuzzer {
     private static final IlaFuzzSpec<short[], ShortIla> SPEC = new IlaFuzzSpec<>(
             "ShortIlaFactoryFromArray",
             new IlaArrayAdapter<>() {
-
                 @Override
                 public short[] create(int length) {
                     return new short[length];
@@ -18,7 +17,6 @@ public final class ShortIlaFactoryFromArrayFuzzer {
 
                 @Override
                 public void initialize(short[] array) {
-
                     for (int i = 0; i < array.length; i++) {
                         array[i] = (short) (i * 7919 + 12345);
                     }
@@ -26,13 +24,11 @@ public final class ShortIlaFactoryFromArrayFuzzer {
 
                 @Override
                 public short[] copy(short[] array) {
-
                     return array.clone();
                 }
 
                 @Override
                 public void assertElementEquals(short[] expected, int expectedIndex, short[] actual, int actualIndex) {
-
                     if (expected[expectedIndex] != actual[actualIndex]) {
                         throw new AssertionError(
                                 "expected=" + expected[expectedIndex] + ", actual=" + actual[actualIndex]);

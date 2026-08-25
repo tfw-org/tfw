@@ -304,13 +304,68 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>${plugin.exec-maven-plugin.version}</version>
-                <configuration>
-                    <mainClass>tfw.build.SearchAndReplace</mainClass>
-                    <arguments>
-                        <argument>${project.basedir}/src/main/template</argument>
-                        <argument>${project.basedir}/src/test/template</argument>
-                    </arguments>
-                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.freemarker</groupId>
+                        <artifactId>freemarker</artifactId>
+                        <version>2.3.34</version>
+                    </dependency>
+                </dependencies>
+                <executions>
+                    <execution>
+                        <id>create-fuzzer-generator-directory</id>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <executable>mkdir</executable>
+                            <arguments>
+                                <argument>-p</argument>
+                                <argument>${project.build.directory}/fuzzer-generator-classes</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>compile-fuzzer-generator</id>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <executable>javac</executable>
+                            <includeProjectDependencies>false</includeProjectDependencies>
+                            <includePluginDependencies>true</includePluginDependencies>
+
+                            <arguments>
+                                <argument>-classpath</argument>
+                                <classpath/>
+                                <argument>-d</argument>
+                                <argument>${project.build.directory}/fuzzer-generator-classes</argument>
+                                <argument>${project.basedir}/src/fuzz/build/FuzzerGenerator.java</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>generate-fuzzers</id>
+                        <goals>
+                            <goal>java</goal>
+                        </goals>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <mainClass>tfw.build.FuzzerGenerator</mainClass>
+                            <includeProjectDependencies>false</includeProjectDependencies>
+                            <includePluginDependencies>true</includePluginDependencies>
+                            <additionalClasspathElements>
+                                <additionalClasspathElement>${project.build.directory}/fuzzer-generator-classes</additionalClasspathElement>
+                            </additionalClasspathElements>
+                            <arguments>
+                                <argument>${project.basedir}/src/templates</argument>
+                                <argument>${project.basedir}/src/fuzz</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>org.cyclonedx</groupId>

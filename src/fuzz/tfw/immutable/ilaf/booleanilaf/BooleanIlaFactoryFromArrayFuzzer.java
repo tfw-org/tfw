@@ -10,7 +10,6 @@ public final class BooleanIlaFactoryFromArrayFuzzer {
     private static final IlaFuzzSpec<boolean[], BooleanIla> SPEC = new IlaFuzzSpec<>(
             "BooleanIlaFactoryFromArray",
             new IlaArrayAdapter<>() {
-
                 @Override
                 public boolean[] create(int length) {
                     return new boolean[length];
@@ -18,7 +17,6 @@ public final class BooleanIlaFactoryFromArrayFuzzer {
 
                 @Override
                 public void initialize(boolean[] array) {
-
                     for (int i = 0; i < array.length; i++) {
                         array[i] = (i & 1) != 0;
                     }
@@ -32,7 +30,6 @@ public final class BooleanIlaFactoryFromArrayFuzzer {
                 @Override
                 public void assertElementEquals(
                         boolean[] expected, int expectedIndex, boolean[] actual, int actualIndex) {
-
                     if (expected[expectedIndex] != actual[actualIndex]) {
                         throw new AssertionError(
                                 "expected=" + expected[expectedIndex] + ", actual=" + actual[actualIndex]);

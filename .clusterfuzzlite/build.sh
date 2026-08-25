@@ -11,9 +11,7 @@ mvn -DskipTests \
     -Dmaven.compiler.target=17 \
     package
 
-
 # Find the project JAR produced by Maven.
-
 PROJECT_JAR="$(
     find target \
         -maxdepth 1 \
@@ -33,19 +31,17 @@ cp "$PROJECT_JAR" "$OUT/tfw.jar"
 
 PROJECT_JARS="tfw.jar"
 
-
 # Classpath used to compile the fuzz targets.
 #
 # tfw.jar contains the production classes.
 # JAZZER_API_PATH contains FuzzedDataProvider and the other Jazzer API
-# classes.  The fuzzing sources are intentionally not part of Maven's
+# classes. The fuzzing sources are intentionally not part of Maven's
 # production compilation.
 
 BUILD_CLASSPATH="$(
     echo "$PROJECT_JARS" |
         xargs printf -- "$OUT/%s:"
 )$JAZZER_API_PATH"
-
 
 # Classpath used when Jazzer executes the fuzz target.
 #
@@ -57,14 +53,19 @@ RUNTIME_CLASSPATH="$(
         xargs printf -- "\$this_dir/%s:"
 ):\$this_dir"
 
-
-# Find all Java sources under src/fuzz.
+# Find all Java sources under src/fuzz, except for build-time generator
+# sources.
 #
-# This includes both:
+# The build directory contains Java programs used to generate the fuzzers.
+# Those programs are compiled and executed by Maven during generate-sources.
+# They are not part of the fuzzing runtime and must not be compiled by the
+# ClusterFuzzLite javac invocation.
+#
+# Everything else under src/fuzz includes either:
 #
 #   shared fuzzing support classes
 #
-# and:
+# or:
 #
 #   *Fuzzer.java classes
 #
@@ -82,6 +83,7 @@ mapfile -t FUZZ_SOURCES < <(
     find "$FUZZ_SRC" \
         -type f \
         -name '*.java' \
+        ! -path "$FUZZ_SRC/build/*" \
         -print
 )
 
@@ -98,7 +100,6 @@ javac \
     -d "$FUZZ_CLASSES" \
     "${FUZZ_SOURCES[@]}"
 
-
 # Copy the compiled fuzz classes into $OUT.
 #
 # The directory hierarchy is preserved, so for example:
@@ -111,7 +112,6 @@ javac \
 #       LongIlaFactoryFromArrayFuzzer.class
 
 cp -R "$FUZZ_CLASSES"/. "$OUT/"
-
 
 # Find the actual fuzz target source files.
 #
@@ -130,7 +130,6 @@ if [ "${#FUZZERS[@]}" -eq 0 ]; then
     exit 1
 fi
 
-
 # Create one executable Jazzer wrapper for each fuzz target.
 
 for fuzzer in "${FUZZERS[@]}"; do
@@ -143,7 +142,6 @@ for fuzzer in "${FUZZERS[@]}"; do
     #       LongIlaFactoryFromArrayFuzzer.java
 
     relative="${fuzzer#"$FUZZ_SRC"/}"
-
 
     # Convert the source path into the fully-qualified Java class name.
     #
@@ -159,7 +157,6 @@ for fuzzer in "${FUZZERS[@]}"; do
     class_name="${relative%.java}"
     class_name="${class_name//\//.}"
 
-
     # The executable itself uses the simple class name.
     #
     # Example:
@@ -170,12 +167,10 @@ for fuzzer in "${FUZZERS[@]}"; do
 
     echo "Building fuzzer: $class_name"
 
-
     # Create the executable Jazzer wrapper in $OUT.
 
     cat > "$OUT/$fuzzer_basename" <<EOF
 #!/bin/bash
-
 # LLVMFuzzerTestOneInput for fuzzer detection.
 
 this_dir=\$(dirname "\$0")
@@ -198,7 +193,6 @@ EOF
     chmod +x "$OUT/$fuzzer_basename"
 
 done
-
 
 echo "Contents of \$OUT:"
 ls -la "$OUT"
