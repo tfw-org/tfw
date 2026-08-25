@@ -4,16 +4,15 @@ import com.code_intelligence.jazzer.api.FuzzedDataProvider;
 import tfw.fuzz.IlaArrayAdapter;
 import tfw.fuzz.IlaFuzzHarness;
 import tfw.fuzz.IlaFuzzSpec;
-import tfw.immutable.ila.${ilaPackage}.${ilaType}Ila;
+import tfw.immutable.ila.${ilaPackage}.${ilaType};
 
 public final class ${className} {
-    private static final IlaFuzzSpec<${arrayType}, ${ilaType}<#if generic??><${generic}></#if>> SPEC =
-            new IlaFuzzSpec<>(
+    private static final IlaFuzzSpec<${arrayType}, ${ilaType}<#if generic??><${generic}></#if>> SPEC = new IlaFuzzSpec<>(
                     "${factoryName}",
                     new IlaArrayAdapter<>() {
                         @Override
                         public ${arrayType} create(int length) {
-                            return new ${arrayType}(length);
+                            return new ${elementType}[length];
                         }
 
                         @Override
@@ -28,10 +27,7 @@ ${initialize}
 
                         @Override
                         public void assertElementEquals(
-                                ${arrayType} expected,
-                                int expectedIndex,
-                                ${arrayType} actual,
-                                int actualIndex) {
+                                ${arrayType} expected, int expectedIndex, ${arrayType} actual, int actualIndex) {
 ${assertElementEquals}
                         }
                     },
@@ -39,8 +35,7 @@ ${assertElementEquals}
                     ${lengthExpression},
                     ${getExpression});
 
-    private static final IlaFuzzHarness<${arrayType}, ${ilaType}<#if generic??><${generic}></#if>> HARNESS =
-            new IlaFuzzHarness<>(SPEC);
+    private static final IlaFuzzHarness<${arrayType}, ${ilaType}<#if generic??><${generic}></#if>> HARNESS = new IlaFuzzHarness<>(SPEC);
 
     private ${className}() {}
 

@@ -8,39 +8,37 @@ import tfw.immutable.ila.byteila.ByteIla;
 
 public final class ByteIlaFactoryFromArrayFuzzer {
     private static final IlaFuzzSpec<byte[], ByteIla> SPEC = new IlaFuzzSpec<>(
-            "ByteIlaFactoryFromArray",
-            new IlaArrayAdapter<>() {
+                    "ByteIlaFactoryFromArray",
+                    new IlaArrayAdapter<>() {
+                        @Override
+                        public byte[] create(int length) {
+                            return new byte[length];
+                        }
 
-                @Override
-                public byte[] create(int length) {
-                    return new byte[length];
-                }
+                        @Override
+                        public void initialize(byte[] array) {
+for (int i = 0; i < array.length; i++) {
+    array[i] = (byte) (i * 37 + 11);
+}
+                        }
 
-                @Override
-                public void initialize(byte[] array) {
+                        @Override
+                        public byte[] copy(byte[] array) {
+                            return array.clone();
+                        }
 
-                    for (int i = 0; i < array.length; i++) {
-                        array[i] = (byte) (i * 37 + 11);
-                    }
-                }
-
-                @Override
-                public byte[] copy(byte[] array) {
-                    return array.clone();
-                }
-
-                @Override
-                public void assertElementEquals(byte[] expected, int expectedIndex, byte[] actual, int actualIndex) {
-
-                    if (expected[expectedIndex] != actual[actualIndex]) {
-                        throw new AssertionError(
-                                "expected=" + expected[expectedIndex] + ", actual=" + actual[actualIndex]);
-                    }
-                }
-            },
-            array -> ByteIlaFactoryFromArray.create(array).create(),
-            ByteIla::length,
-            ByteIla::get);
+                        @Override
+                        public void assertElementEquals(
+                                byte[] expected, int expectedIndex, byte[] actual, int actualIndex) {
+if (expected[expectedIndex] != actual[actualIndex]) {
+    throw new AssertionError(
+        "expected=" + expected[expectedIndex] + ", actual=" + actual[actualIndex]);
+}
+                        }
+                    },
+                    array -> ByteIlaFactoryFromArray.create(array).create(),
+                    ByteIla::length,
+                    ByteIla::get);
 
     private static final IlaFuzzHarness<byte[], ByteIla> HARNESS = new IlaFuzzHarness<>(SPEC);
 
