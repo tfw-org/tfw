@@ -26,8 +26,8 @@ ${initialize}
                 }
 
                 @Override
-                public void assertElementEquals(
-                        ${arrayType} expected, int expectedIndex, ${arrayType} actual, int actualIndex) {
+                public void assertElementEquals(<#if singleLineAssertElementEquals>${arrayType} expected, int expectedIndex, ${arrayType} actual, int actualIndex<#else>
+                        ${arrayType} expected, int expectedIndex, ${arrayType} actual, int actualIndex</#if>) {
 ${assertElementEquals}
                 }
             },

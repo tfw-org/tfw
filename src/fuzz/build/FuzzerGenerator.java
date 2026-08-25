@@ -27,14 +27,12 @@ public final class FuzzerGenerator {
 
         final Path templateDirectory = Paths.get(args[0]);
         final Path fuzzDirectory = Paths.get(args[1]);
-
         final Configuration configuration = new Configuration(Configuration.VERSION_2_3_34);
         configuration.setDirectoryForTemplateLoading(templateDirectory.toFile());
         configuration.setDefaultEncoding(StandardCharsets.UTF_8.name());
         configuration.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
         configuration.setLogTemplateExceptions(false);
         configuration.setWrapUncheckedExceptions(true);
-
         final List<FuzzerDefinition> definitions = definitions();
 
         System.out.println("Generating " + definitions.size() + " fuzzers from " + templateDirectory);
@@ -55,7 +53,6 @@ public final class FuzzerGenerator {
                 fuzzDirectory.resolve(definition.packageName().replace('.', File.separatorChar));
 
         Files.createDirectories(packageDirectory);
-
         final Path outputFile = packageDirectory.resolve(definition.className() + ".java");
 
         System.out.println("  " + definition.template() + " -> " + outputFile);
@@ -80,7 +77,6 @@ public final class FuzzerGenerator {
      */
     private static List<FuzzerDefinition> definitions() {
         final List<FuzzerDefinition> definitions = new ArrayList<>();
-
         for (final IlaType type : ilaTypes()) {
             definitions.add(ilaFactoryFromArray(type));
         }
@@ -131,9 +127,7 @@ public final class FuzzerGenerator {
      *   }
      */
     private static FuzzerDefinition ilaFactoryFromArray(final IlaType type) {
-
         final String ilaType = type.ilaType();
-
         return new FuzzerDefinition(
                 "tfw/immutable/ilaf/IlaFactoryFromArrayFuzzer.java.ftl",
                 "tfw.immutable.ilaf." + type.packageName(),
@@ -160,7 +154,6 @@ public final class FuzzerGenerator {
             final String assertElementEquals) {
 
         final Map<String, Object> model = new HashMap<>();
-
         model.put("package", "tfw.immutable.ilaf." + type.packageName());
         model.put("className", className);
         model.put("elementType", type.elementType());
@@ -178,6 +171,7 @@ public final class FuzzerGenerator {
         model.put("getExpression", getExpression);
         model.put("initialize", indent(initialize, 20));
         model.put("assertElementEquals", indent(assertElementEquals, 20));
+        model.put("singleLineAssertElementEquals", singleLineAssertElementEquals(type));
 
         return model;
     }
@@ -191,7 +185,6 @@ public final class FuzzerGenerator {
      * template-specific leading whitespace.
      */
     private static String indent(final String text, final int spaces) {
-
         final String indentation = String.join("", Collections.nCopies(spaces, " "));
 
         final String[] lines = text.split("\\n", -1);
@@ -210,6 +203,26 @@ public final class FuzzerGenerator {
         }
 
         return result.toString();
+    }
+
+    private static boolean singleLineAssertElementEquals(final IlaType type) {
+        switch (type.ilaType()) {
+            case "ByteIla":
+            case "CharIla":
+            case "FloatIla":
+            case "IntIla":
+            case "LongIla":
+            case "ShortIla":
+                return true;
+
+            case "BooleanIla":
+            case "DoubleIla":
+            case "ObjectIla":
+                return false;
+
+            default:
+                throw new IllegalArgumentException("Unsupported Ila type: " + type.ilaType());
+        }
     }
 
     private static String createExpression(final IlaType type) {
@@ -379,14 +392,13 @@ public final class FuzzerGenerator {
             case "ShortIla":
                 return "if (expected[expectedIndex] != actual[actualIndex]) {\n"
                         + "    throw new AssertionError(\n"
-                        + "        \"expected=\" + expected[expectedIndex] + \", actual=\" + actual[actualIndex]);\n"
+                        + "            \"expected=\" + expected[expectedIndex] + \", actual=\" + actual[actualIndex]);\n"
                         + "}";
 
             case "CharIla":
                 return "if (expected[expectedIndex] != actual[actualIndex]) {\n"
                         + "    throw new AssertionError(\n"
-                        + "        \"expected=\" + (int) expected[expectedIndex]\n"
-                        + "            + \", actual=\" + (int) actual[actualIndex]);\n"
+                        + "            \"expected=\" + (int) expected[expectedIndex] + \", actual=\" + (int) actual[actualIndex]);\n"
                         + "}";
 
             case "DoubleIla":
@@ -394,8 +406,8 @@ public final class FuzzerGenerator {
                         + "long actualBits = Double.doubleToRawLongBits(actual[actualIndex]);\n"
                         + "if (expectedBits != actualBits) {\n"
                         + "    throw new AssertionError(\"expectedBits=\"\n"
-                        + "        + Long.toHexString(expectedBits)\n"
-                        + "        + \", actualBits=\" + Long.toHexString(actualBits));\n"
+                        + "            + Long.toHexString(expectedBits)\n"
+                        + "            + \", actualBits=\" + Long.toHexString(actualBits));\n"
                         + "}";
 
             case "FloatIla":
@@ -403,8 +415,8 @@ public final class FuzzerGenerator {
                         + "int actualBits = Float.floatToRawIntBits(actual[actualIndex]);\n"
                         + "if (expectedBits != actualBits) {\n"
                         + "    throw new AssertionError(\"expectedBits=\"\n"
-                        + "        + Integer.toHexString(expectedBits)\n"
-                        + "        + \", actualBits=\" + Integer.toHexString(actualBits));\n"
+                        + "            + Integer.toHexString(expectedBits)\n"
+                        + "            + \", actualBits=\" + Integer.toHexString(actualBits));\n"
                         + "}";
 
             case "ObjectIla":
