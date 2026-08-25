@@ -28,11 +28,10 @@ public final class LongIlaFactoryFromArrayFuzzer {
                 }
 
                 @Override
-                public void assertElementEquals(
-                        long[] expected, int expectedIndex, long[] actual, int actualIndex) {
+                public void assertElementEquals(long[] expected, int expectedIndex, long[] actual, int actualIndex) {
                     if (expected[expectedIndex] != actual[actualIndex]) {
                         throw new AssertionError(
-                            "expected=" + expected[expectedIndex] + ", actual=" + actual[actualIndex]);
+                                "expected=" + expected[expectedIndex] + ", actual=" + actual[actualIndex]);
                     }
                 }
             },

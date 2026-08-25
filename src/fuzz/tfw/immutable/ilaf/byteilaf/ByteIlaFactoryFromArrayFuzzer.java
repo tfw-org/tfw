@@ -28,11 +28,10 @@ public final class ByteIlaFactoryFromArrayFuzzer {
                 }
 
                 @Override
-                public void assertElementEquals(
-                        byte[] expected, int expectedIndex, byte[] actual, int actualIndex) {
+                public void assertElementEquals(byte[] expected, int expectedIndex, byte[] actual, int actualIndex) {
                     if (expected[expectedIndex] != actual[actualIndex]) {
                         throw new AssertionError(
-                            "expected=" + expected[expectedIndex] + ", actual=" + actual[actualIndex]);
+                                "expected=" + expected[expectedIndex] + ", actual=" + actual[actualIndex]);
                     }
                 }
             },

@@ -28,11 +28,10 @@ public final class ShortIlaFactoryFromArrayFuzzer {
                 }
 
                 @Override
-                public void assertElementEquals(
-                        short[] expected, int expectedIndex, short[] actual, int actualIndex) {
+                public void assertElementEquals(short[] expected, int expectedIndex, short[] actual, int actualIndex) {
                     if (expected[expectedIndex] != actual[actualIndex]) {
                         throw new AssertionError(
-                            "expected=" + expected[expectedIndex] + ", actual=" + actual[actualIndex]);
+                                "expected=" + expected[expectedIndex] + ", actual=" + actual[actualIndex]);
                     }
                 }
             },

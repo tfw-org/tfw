@@ -41,12 +41,10 @@ public final class CharIlaFactoryFromArrayFuzzer {
                 }
 
                 @Override
-                public void assertElementEquals(
-                        char[] expected, int expectedIndex, char[] actual, int actualIndex) {
+                public void assertElementEquals(char[] expected, int expectedIndex, char[] actual, int actualIndex) {
                     if (expected[expectedIndex] != actual[actualIndex]) {
                         throw new AssertionError(
-                            "expected=" + (int) expected[expectedIndex]
-                                + ", actual=" + (int) actual[actualIndex]);
+                                "expected=" + (int) expected[expectedIndex] + ", actual=" + (int) actual[actualIndex]);
                     }
                 }
             },

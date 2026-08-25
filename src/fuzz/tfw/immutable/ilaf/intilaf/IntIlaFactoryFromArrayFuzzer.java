@@ -28,11 +28,10 @@ public final class IntIlaFactoryFromArrayFuzzer {
                 }
 
                 @Override
-                public void assertElementEquals(
-                        int[] expected, int expectedIndex, int[] actual, int actualIndex) {
+                public void assertElementEquals(int[] expected, int expectedIndex, int[] actual, int actualIndex) {
                     if (expected[expectedIndex] != actual[actualIndex]) {
                         throw new AssertionError(
-                            "expected=" + expected[expectedIndex] + ", actual=" + actual[actualIndex]);
+                                "expected=" + expected[expectedIndex] + ", actual=" + actual[actualIndex]);
                     }
                 }
             },

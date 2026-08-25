@@ -53,14 +53,13 @@ public final class FloatIlaFactoryFromArrayFuzzer {
                 }
 
                 @Override
-                public void assertElementEquals(
-                        float[] expected, int expectedIndex, float[] actual, int actualIndex) {
+                public void assertElementEquals(float[] expected, int expectedIndex, float[] actual, int actualIndex) {
                     int expectedBits = Float.floatToRawIntBits(expected[expectedIndex]);
                     int actualBits = Float.floatToRawIntBits(actual[actualIndex]);
                     if (expectedBits != actualBits) {
                         throw new AssertionError("expectedBits="
-                            + Integer.toHexString(expectedBits)
-                            + ", actualBits=" + Integer.toHexString(actualBits));
+                                + Integer.toHexString(expectedBits)
+                                + ", actualBits=" + Integer.toHexString(actualBits));
                     }
                 }
             },

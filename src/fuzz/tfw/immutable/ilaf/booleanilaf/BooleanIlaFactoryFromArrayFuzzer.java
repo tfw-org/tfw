@@ -32,7 +32,7 @@ public final class BooleanIlaFactoryFromArrayFuzzer {
                         boolean[] expected, int expectedIndex, boolean[] actual, int actualIndex) {
                     if (expected[expectedIndex] != actual[actualIndex]) {
                         throw new AssertionError(
-                            "expected=" + expected[expectedIndex] + ", actual=" + actual[actualIndex]);
+                                "expected=" + expected[expectedIndex] + ", actual=" + actual[actualIndex]);
                     }
                 }
             },

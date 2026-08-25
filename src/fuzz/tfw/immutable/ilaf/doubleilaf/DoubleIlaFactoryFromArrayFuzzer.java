@@ -59,8 +59,8 @@ public final class DoubleIlaFactoryFromArrayFuzzer {
                     long actualBits = Double.doubleToRawLongBits(actual[actualIndex]);
                     if (expectedBits != actualBits) {
                         throw new AssertionError("expectedBits="
-                            + Long.toHexString(expectedBits)
-                            + ", actualBits=" + Long.toHexString(actualBits));
+                                + Long.toHexString(expectedBits)
+                                + ", actualBits=" + Long.toHexString(actualBits));
                     }
                 }
             },
