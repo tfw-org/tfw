@@ -176,10 +176,40 @@ public final class FuzzerGenerator {
         model.put("createExpression", createExpression);
         model.put("lengthExpression", lengthExpression);
         model.put("getExpression", getExpression);
-        model.put("initialize", initialize);
-        model.put("assertElementEquals", assertElementEquals);
+        model.put("initialize", indent(initialize, 20));
+        model.put("assertElementEquals", indent(assertElementEquals, 20));
 
         return model;
+    }
+
+    /**
+     * Indents every non-empty line in a generated multiline Java fragment.
+     *
+     * <p>The fragments are inserted directly inside Java method bodies by the
+     * FreeMarker template. Keeping the indentation here means that individual
+     * fuzzer definitions can remain readable and do not need to contain
+     * template-specific leading whitespace.
+     */
+    private static String indent(final String text, final int spaces) {
+
+        final String indentation = String.join("", Collections.nCopies(spaces, " "));
+
+        final String[] lines = text.split("\\n", -1);
+
+        final StringBuilder result = new StringBuilder();
+
+        for (int i = 0; i < lines.length; i++) {
+            if (i > 0) {
+                result.append('\n');
+            }
+
+            if (!lines[i].isEmpty()) {
+                result.append(indentation);
+                result.append(lines[i]);
+            }
+        }
+
+        return result.toString();
     }
 
     private static String createExpression(final IlaType type) {

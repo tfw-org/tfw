@@ -8,32 +8,32 @@ import tfw.immutable.ila.${ilaPackage}.${ilaType};
 
 public final class ${className} {
     private static final IlaFuzzSpec<${arrayType}, ${ilaType}<#if generic??><${generic}></#if>> SPEC = new IlaFuzzSpec<>(
-                    "${factoryName}",
-                    new IlaArrayAdapter<>() {
-                        @Override
-                        public ${arrayType} create(int length) {
-                            return new ${elementType}[length];
-                        }
+            "${factoryName}",
+            new IlaArrayAdapter<>() {
+                @Override
+                public ${arrayType} create(int length) {
+                    return new ${elementType}[length];
+                }
 
-                        @Override
-                        public void initialize(${arrayType} array) {
+                @Override
+                public void initialize(${arrayType} array) {
 ${initialize}
-                        }
+                }
 
-                        @Override
-                        public ${arrayType} copy(${arrayType} array) {
-                            return array.clone();
-                        }
+                @Override
+                public ${arrayType} copy(${arrayType} array) {
+                    return array.clone();
+                }
 
-                        @Override
-                        public void assertElementEquals(
-                                ${arrayType} expected, int expectedIndex, ${arrayType} actual, int actualIndex) {
+                @Override
+                public void assertElementEquals(
+                        ${arrayType} expected, int expectedIndex, ${arrayType} actual, int actualIndex) {
 ${assertElementEquals}
-                        }
-                    },
-                    ${createExpression},
-                    ${lengthExpression},
-                    ${getExpression});
+                }
+            },
+            ${createExpression},
+            ${lengthExpression},
+            ${getExpression});
 
     private static final IlaFuzzHarness<${arrayType}, ${ilaType}<#if generic??><${generic}></#if>> HARNESS = new IlaFuzzHarness<>(SPEC);
 
