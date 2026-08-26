@@ -194,5 +194,12 @@ EOF
 
 done
 
+# jazzer_junit.jar is a Jazzer support artifact, not a fuzz target.
+#
+# ClusterFuzzLite's JVM coverage target discovery can identify executable
+# files in $OUT as fuzz targets. Remove this support artifact so that only
+# the actual TFW fuzzers are discovered during coverage runs.
+rm -f "$OUT/jazzer_junit.jar"
+
 echo "Contents of \$OUT:"
 ls -la "$OUT"
