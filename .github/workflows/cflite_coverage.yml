@@ -16,7 +16,6 @@ jobs:
   Coverage:
     if: ${{ github.repository == 'tfw-org/tfw' }}
     runs-on: ubuntu-latest
-
     steps:
       - name: Build Fuzzers
         id: build
@@ -41,13 +40,14 @@ jobs:
       - name: Download JaCoCo CLI
         run: |
           curl --fail --silent --show-error --location \
+            --proto '=https' \
+            --proto-redir '=https' \
             --output jacococli.jar \
             https://repo1.maven.org/maven2/org/jacoco/org.jacoco.cli/0.8.13/org.jacoco.cli-0.8.13-nodeps.jar
 
       - name: Generate HTML Coverage Report
         run: |
           set -euo pipefail
-
           EXEC_FILE="coverage/latest/dumps/jacoco.merged.exec"
           CLASS_DIR="coverage/latest/dumps/classes"
           SOURCE_DIR="src/main/java"
@@ -58,7 +58,6 @@ jobs:
           test -d "${SOURCE_DIR}"
 
           rm -rf "${REPORT_DIR}"
-
           java -jar jacococli.jar report \
             "${EXEC_FILE}" \
             --classfiles "${CLASS_DIR}" \
@@ -72,7 +71,6 @@ jobs:
           TFW_FUZZING_TOKEN: ${{ secrets.TFW_FUZZING_TOKEN }}
         run: |
           set -euo pipefail
-
           git clone \
             --branch gh-pages \
             "https://x-access-token:${TFW_FUZZING_TOKEN}@github.com/tfw-org/tfw-fuzzing.git" \
@@ -85,7 +83,6 @@ jobs:
             coverage-publish/coverage/latest/report
 
           cd coverage-publish
-
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
