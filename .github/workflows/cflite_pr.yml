@@ -45,3 +45,5 @@ jobs:
           sanitizer: ${{ matrix.sanitizer }}
           output-sarif: true
           language: jvm
+          storage-repo: https://${{ secrets.TFW_FUZZING_TOKEN }}@github.com/tfw-org/tfw-fuzzing.git
+          storage-repo-branch: main
