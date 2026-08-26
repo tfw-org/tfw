@@ -16,6 +16,7 @@ jobs:
   Coverage:
     if: ${{ github.repository == 'tfw-org/tfw' }}
     runs-on: ubuntu-latest
+
     steps:
       - name: Build Fuzzers
         id: build
@@ -24,7 +25,7 @@ jobs:
           language: jvm
           sanitizer: coverage
 
-      - name: Generate Coverage Data
+      - name: Generate Coverage Report
         id: run
         uses: google/clusterfuzzlite/actions/run_fuzzers@884713a6c30a92e5e8544c39945cd7cb630abcd1 # v1
         with:
@@ -36,62 +37,3 @@ jobs:
           storage-repo: https://${{ secrets.TFW_FUZZING_TOKEN }}@github.com/tfw-org/tfw-fuzzing.git
           storage-repo-branch: main
           storage-repo-branch-coverage: gh-pages
-
-      - name: Download JaCoCo CLI
-        run: |
-          curl --fail --silent --show-error --location \
-            --proto '=https' \
-            --proto-redir '=https' \
-            --output jacococli.jar \
-            https://repo1.maven.org/maven2/org/jacoco/org.jacoco.cli/0.8.13/org.jacoco.cli-0.8.13-nodeps.jar
-
-      - name: Generate HTML Coverage Report
-        run: |
-          set -euo pipefail
-          EXEC_FILE="coverage/latest/dumps/jacoco.merged.exec"
-          CLASS_DIR="coverage/latest/dumps/classes"
-          SOURCE_DIR="src/main/java"
-          REPORT_DIR="coverage/latest/report"
-
-          test -f "${EXEC_FILE}"
-          test -d "${CLASS_DIR}"
-          test -d "${SOURCE_DIR}"
-
-          rm -rf "${REPORT_DIR}"
-          java -jar jacococli.jar report \
-            "${EXEC_FILE}" \
-            --classfiles "${CLASS_DIR}" \
-            --sourcefiles "${SOURCE_DIR}" \
-            --html "${REPORT_DIR}"
-
-          test -f "${REPORT_DIR}/index.html"
-
-      - name: Publish Coverage Report
-        env:
-          TFW_FUZZING_TOKEN: ${{ secrets.TFW_FUZZING_TOKEN }}
-        run: |
-          set -euo pipefail
-          git clone \
-            --branch gh-pages \
-            "https://x-access-token:${TFW_FUZZING_TOKEN}@github.com/tfw-org/tfw-fuzzing.git" \
-            coverage-publish
-
-          rm -rf coverage-publish/coverage/latest/report
-          mkdir -p coverage-publish/coverage/latest
-
-          cp -R coverage/latest/report \
-            coverage-publish/coverage/latest/report
-
-          cd coverage-publish
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-
-          git add coverage/latest/report
-
-          if git diff --cached --quiet; then
-            echo "Coverage report has not changed."
-            exit 0
-          fi
-
-          git commit -m "Update coverage report"
-          git push origin gh-pages
