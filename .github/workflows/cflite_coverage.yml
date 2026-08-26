@@ -1,0 +1,39 @@
+name: ClusterFuzzLite coverage
+
+concurrency:
+  group: clusterfuzzlite-coverage
+  cancel-in-progress: true
+
+on:
+  schedule:
+    - cron: '30 1 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  Coverage:
+    if: ${{ github.repository == 'tfw-org/tfw' }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Build Fuzzers
+        id: build
+        uses: google/clusterfuzzlite/actions/build_fuzzers@884713a6c30a92e5e8544c39945cd7cb630abcd1 # v1
+        with:
+          language: jvm
+          sanitizer: coverage
+
+      - name: Generate Coverage Report
+        id: run
+        uses: google/clusterfuzzlite/actions/run_fuzzers@884713a6c30a92e5e8544c39945cd7cb630abcd1 # v1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          fuzz-seconds: 600
+          mode: coverage
+          sanitizer: coverage
+          language: jvm
+          storage-repo: https://${{ secrets.TFW_FUZZING_TOKEN }}@github.com/tfw-org/tfw-fuzzing.git
+          storage-repo-branch: main
+          storage-repo-branch-coverage: gh-pages
