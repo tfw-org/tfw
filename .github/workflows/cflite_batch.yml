@@ -1,5 +1,9 @@
 name: ClusterFuzzLite batch fuzzing
 
+concurrency:
+  group: clusterfuzzlite-batch
+  cancel-in-progress: false
+
 on:
   schedule:
     - cron: '0 0 * * *'
