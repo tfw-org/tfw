@@ -365,6 +365,19 @@
                             </arguments>
                         </configuration>
                     </execution>
+                    <execution>
+                        <id>search-and-replace</id>
+                        <goals>
+                            <goal>java</goal>
+                        </goals>
+                        <configuration>
+                            <mainClass>tfw.build.SearchAndReplace</mainClass>
+                            <arguments>
+                                <argument>${project.basedir}/src/main/template</argument>
+                                <argument>${project.basedir}/src/test/template</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
             <plugin>
@@ -384,13 +397,6 @@
                 <groupId>org.sonarsource.scanner.maven</groupId>
                 <artifactId>sonar-maven-plugin</artifactId>
                 <version>${plugin.sonar-maven-plugin.version}</version>
-                <configuration>
-                    <mainClass>tfw.build.SearchAndReplace</mainClass>
-                    <arguments>
-                        <argument>./src/main/template</argument>
-                        <argument>./src/test/template</argument>
-                    </arguments>
-                </configuration>
             </plugin>
         </plugins>
     </build>
