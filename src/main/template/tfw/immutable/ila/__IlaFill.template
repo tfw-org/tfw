@@ -1,6 +1,7 @@
 // booleanila,byteila,charila,doubleila,floatila,intila,longila,objectila,shortila
 package %%PACKAGE%%;
 
+import java.io.IOException;
 import tfw.check.Argument;
 
 public final class %%NAME%%IlaFill {
@@ -34,6 +35,11 @@ public final class %%NAME%%IlaFill {
             for (int startInt = (int) start; startInt != startPlusLength; ++startInt, offset++) {
                 array[offset] = value;
             }
+        }
+
+        @Override
+        protected void closeImpl() throws IOException {
+            // Nothing to do.
         }
     }
 }

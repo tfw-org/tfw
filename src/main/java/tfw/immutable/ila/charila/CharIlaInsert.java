@@ -55,6 +55,11 @@ public final class CharIlaInsert {
                 }
             }
         }
+
+        @Override
+        protected void closeImpl() throws IOException {
+            ila.close();
+        }
     }
 }
 // AUTO GENERATED FROM TEMPLATE

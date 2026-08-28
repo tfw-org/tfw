@@ -11,12 +11,15 @@ public abstract class AbstractByteIla extends AbstractIla implements ByteIla {
 
     @Override
     public final void get(final byte[] array, final int offset, final long start, int length) throws IOException {
+        checkClosed();
+
+        Argument.assertNotNull(array, "array");
+        boundsCheck(array.length, offset, start, length);
+
         if (length == 0) {
             return;
         }
 
-        Argument.assertNotNull(array, "array");
-        boundsCheck(array.length, offset, start, length);
         getImpl(array, offset, start, length);
     }
 }

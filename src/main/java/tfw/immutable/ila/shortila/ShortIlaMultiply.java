@@ -44,6 +44,12 @@ public final class ShortIlaMultiply {
                 array[ii] = (short) (li.next() * ri.next());
             }
         }
+
+        @Override
+        protected void closeImpl() throws IOException {
+            leftIla.close();
+            rightIla.close();
+        }
     }
 }
 // AUTO GENERATED FROM TEMPLATE

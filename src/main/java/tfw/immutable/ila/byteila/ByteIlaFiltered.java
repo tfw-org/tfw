@@ -58,6 +58,11 @@ public final class ByteIlaFiltered {
                 }
             }
         }
+
+        @Override
+        protected void closeImpl() throws IOException {
+            ila.close();
+        }
     }
 }
 // AUTO GENERATED FROM TEMPLATE

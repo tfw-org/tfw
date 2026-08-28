@@ -88,5 +88,10 @@ public final class MuLawByteIlaFromLinearShortIla {
                 }
             }
         }
+
+        @Override
+        protected void closeImpl() throws IOException {
+            shortIla.close();
+        }
     }
 }

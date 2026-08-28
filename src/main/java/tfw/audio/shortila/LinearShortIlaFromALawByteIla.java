@@ -73,5 +73,10 @@ public final class LinearShortIlaFromALawByteIla {
                 array[i] = (short) (((a_val & SIGN_BIT) != 0) ? s : -s);
             }
         }
+
+        @Override
+        protected void closeImpl() throws IOException {
+            byteIla.close();
+        }
     }
 }

@@ -49,6 +49,11 @@ public final class BooleanIlaMutate {
                 }
             }
         }
+
+        @Override
+        protected void closeImpl() throws IOException {
+            ila.close();
+        }
     }
 }
 // AUTO GENERATED FROM TEMPLATE

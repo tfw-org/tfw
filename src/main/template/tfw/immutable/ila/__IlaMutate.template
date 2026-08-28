@@ -50,5 +50,10 @@ public final class %%NAME%%IlaMutate {
                 }
             }
         }
+
+        @Override
+        protected void closeImpl() throws IOException {
+            ila.close();
+        }
     }
 }

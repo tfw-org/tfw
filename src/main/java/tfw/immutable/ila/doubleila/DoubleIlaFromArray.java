@@ -1,5 +1,6 @@
 package tfw.immutable.ila.doubleila;
 
+import java.io.IOException;
 import tfw.check.Argument;
 
 public final class DoubleIlaFromArray {
@@ -28,6 +29,11 @@ public final class DoubleIlaFromArray {
         @Override
         protected void getImpl(double[] array, int offset, long start, int length) {
             System.arraycopy(this.array, (int) start, array, offset, length);
+        }
+
+        @Override
+        protected void closeImpl() throws IOException {
+            // Nothing to do.
         }
     }
 }

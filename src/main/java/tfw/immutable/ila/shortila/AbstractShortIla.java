@@ -11,12 +11,15 @@ public abstract class AbstractShortIla extends AbstractIla implements ShortIla {
 
     @Override
     public final void get(final short[] array, final int offset, final long start, int length) throws IOException {
+        checkClosed();
+
+        Argument.assertNotNull(array, "array");
+        boundsCheck(array.length, offset, start, length);
+
         if (length == 0) {
             return;
         }
 
-        Argument.assertNotNull(array, "array");
-        boundsCheck(array.length, offset, start, length);
         getImpl(array, offset, start, length);
     }
 }

@@ -1,5 +1,6 @@
 package tfw.immutable.ila.longila;
 
+import java.io.IOException;
 import tfw.check.Argument;
 
 public final class LongIlaRamp {
@@ -45,6 +46,11 @@ public final class LongIlaRamp {
             for (int startInt = (int) start; startInt != startPlusLength; ++startInt, offset++, value += increment) {
                 array[offset] = value;
             }
+        }
+
+        @Override
+        protected void closeImpl() throws IOException {
+            // Nothing to do.
         }
     }
 }

@@ -35,6 +35,11 @@ public final class FloatIlaReverse {
 
             stridedFloatIla.get(array, offset + length - 1, -1, length() - (start + length), length);
         }
+
+        @Override
+        protected void closeImpl() throws IOException {
+            ila.close();
+        }
     }
 }
 // AUTO GENERATED FROM TEMPLATE

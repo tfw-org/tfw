@@ -74,6 +74,13 @@ public final class FloatIlaInterleave {
                 }
             }
         }
+
+        @Override
+        protected void closeImpl() throws IOException {
+            for (StridedFloatIla ila : stridedFloatIlas) {
+                ila.close();
+            }
+        }
     }
 }
 // AUTO GENERATED FROM TEMPLATE

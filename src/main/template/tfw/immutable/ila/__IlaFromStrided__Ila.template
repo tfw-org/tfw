@@ -29,5 +29,10 @@ public final class %%NAME%%IlaFromStrided%%NAME%%Ila%%TEMPLATE%% {
         public void getImpl(final %%TYPE_OR_TEMPLATE%%[] array, final int offset, final long start, int length) throws IOException {
             stridedIla.get(array, offset, 1, start, length);
         }
+
+        @Override
+        protected void closeImpl() throws IOException {
+            stridedIla.close();
+        }
     }
 }

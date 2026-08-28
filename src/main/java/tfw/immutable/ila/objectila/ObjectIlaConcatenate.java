@@ -54,6 +54,12 @@ public final class ObjectIlaConcatenate {
                 rightIla.get(array, offset + leftAmount, 0, length - leftAmount);
             }
         }
+
+        @Override
+        protected void closeImpl() throws IOException {
+            leftIla.close();
+            rightIla.close();
+        }
     }
 }
 // AUTO GENERATED FROM TEMPLATE

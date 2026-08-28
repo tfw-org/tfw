@@ -44,6 +44,11 @@ public final class DoubleIlaRemove {
                 ila.get(array, offset + indexMinusStart, index + 1, length - indexMinusStart);
             }
         }
+
+        @Override
+        protected void closeImpl() throws IOException {
+            ila.close();
+        }
     }
 }
 // AUTO GENERATED FROM TEMPLATE

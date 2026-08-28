@@ -33,5 +33,10 @@ public final class LongIlaFromBitIla {
 
             bitIla.get(array, offset, startInBits, lengthInBits);
         }
+
+        @Override
+        protected void closeImpl() throws IOException {
+            bitIla.close();
+        }
     }
 }

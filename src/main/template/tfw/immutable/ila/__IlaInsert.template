@@ -56,5 +56,10 @@ public final class %%NAME%%IlaInsert {
                 }
             }
         }
+
+        @Override
+        protected void closeImpl() throws IOException {
+            ila.close();
+        }
     }
 }

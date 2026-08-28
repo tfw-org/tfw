@@ -76,6 +76,11 @@ public final class ByteIlaFromFile {
             raf = null;
             timerRunnable = null;
         }
+
+        @Override
+        protected void closeImpl() throws IOException {
+            // Replace timerRunnable with just raf.close().
+        }
     }
 
     private static class TimerRunnable implements Runnable {
