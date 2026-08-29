@@ -3,7 +3,10 @@
 [![Maven Central](https://img.shields.io/maven-central/v/io.github.tfw-org/tfw.svg)](https://central.sonatype.com/artifact/io.github.tfw-org/tfw)
 [![Java](https://img.shields.io/badge/Java-8%2B-blue)](https://github.com/tfw-org/tfw)
 [![License](https://img.shields.io/github/license/tfw-org/tfw?color=blue)](https://github.com/tfw-org/tfw/blob/master/LICENSE.md)
+<br>
 [![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/tfw-org/tfw/badge)](https://securityscorecards.dev/viewer/?uri=github.com/tfw-org/tfw)
+[![OpenSSF Best Practices](https://www.bestpractices.dev/projects/14047/badge)](https://www.bestpractices.dev/projects/14047)
+[![OpenSSF Baseline](https://www.bestpractices.dev/projects/14047/baseline)](https://www.bestpractices.dev/projects/14047)
 <br>
 [![Java CI with Maven](https://github.com/tfw-org/tfw/actions/workflows/maven.yml/badge.svg)](https://github.com/tfw-org/tfw/actions/workflows/maven.yml)
 [![CodeQL](https://github.com/tfw-org/tfw/actions/workflows/codeql.yml/badge.svg)](https://github.com/tfw-org/tfw/actions/workflows/codeql.yml)
@@ -58,6 +61,14 @@ The following example demonstrates the basic structure of a TFW application:
 Immutable data structures provide a safe and predictable way for components to share information, while the transactional state-management system provides the mechanisms needed to coordinate changes and communication across a large component hierarchy.
 
 Together, they provide a foundation for applications whose **data and state can be composed, observed, validated, and updated in a controlled and predictable manner**.
+
+## Testing and Code Quality
+
+TFW uses several complementary techniques to assess the quality and robustness of the framework.
+
+- **Code coverage** — [SonarQube Cloud](https://sonarcloud.io) is used to monitor the coverage of the unit tests. The latest coverage report is available at [TFW's Overview](https://sonarcloud.io/project/overview?id=tfw-org_tfw)
+- **Mutation testing** — [PIT Mutation Testing](https://pitest.org/) is used to evaluate the effectiveness of the test suite. The latest mutation testing report is available on [TFW's GitHub Pages](https://tfw-org.github.io/tfw).
+- **Fuzz testing** — [ClusterFuzzLite](https://google.github.io/clusterfuzzlite/) is used to "fuzz" test the API.
 
 ## Lightweight by Design
 
