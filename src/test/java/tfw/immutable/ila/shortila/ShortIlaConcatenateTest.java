@@ -1,7 +1,9 @@
 package tfw.immutable.ila.shortila;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import java.io.IOException;
 import java.util.Random;
 import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
@@ -39,6 +41,17 @@ final class ShortIlaConcatenateTest {
         ShortIla actualIla = ShortIlaConcatenate.create(leftIla, rightIla);
 
         ShortIlaCheck.check(targetIla, actualIla);
+    }
+
+    @Test
+    void closeTest() throws IOException {
+        final TestCloseShortIla leftIla = new TestCloseShortIla();
+        final TestCloseShortIla rightIla = new TestCloseShortIla();
+
+        try (ShortIla ila = ShortIlaConcatenate.create(leftIla, rightIla)) {}
+
+        assertThat(leftIla.getNumberOfCloses()).isEqualTo(1);
+        assertThat(rightIla.getNumberOfCloses()).isEqualTo(1);
     }
 }
 // AUTO GENERATED FROM TEMPLATE

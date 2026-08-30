@@ -27,32 +27,37 @@ public final class FuzzerGenerator {
 
         final Path templateDirectory = Paths.get(args[0]);
         final Path fuzzDirectory = Paths.get(args[1]);
+
         final Configuration configuration = new Configuration(Configuration.VERSION_2_3_34);
         configuration.setDirectoryForTemplateLoading(templateDirectory.toFile());
         configuration.setDefaultEncoding(StandardCharsets.UTF_8.name());
         configuration.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
         configuration.setLogTemplateExceptions(false);
         configuration.setWrapUncheckedExceptions(true);
-        final List<FuzzerDefinition> definitions = definitions();
 
-        System.out.println("Generating " + definitions.size() + " fuzzers from " + templateDirectory);
-        System.out.println("Writing generated fuzzers to " + fuzzDirectory);
+        final List<GenerationDefinition> definitions = definitions();
 
-        for (final FuzzerDefinition definition : definitions) {
+        System.out.println("Generating " + definitions.size() + " sources from " + templateDirectory);
+
+        for (final GenerationDefinition definition : definitions) {
             generate(configuration, definition, fuzzDirectory);
         }
     }
 
     private static void generate(
-            final Configuration configuration, final FuzzerDefinition definition, final Path fuzzDirectory)
+            final Configuration configuration, final GenerationDefinition definition, final Path fuzzDirectory)
             throws Exception {
 
-        final Template template = configuration.getTemplate(definition.template());
+        final Template template =
+                configuration.getTemplate(definition.sourceKind().directoryName() + "/" + definition.template());
+
+        final Path outputRoot = definition.sourceKind().outputDirectory(fuzzDirectory);
 
         final Path packageDirectory =
-                fuzzDirectory.resolve(definition.packageName().replace('.', File.separatorChar));
+                outputRoot.resolve(definition.packageName().replace('.', File.separatorChar));
 
         Files.createDirectories(packageDirectory);
+
         final Path outputFile = packageDirectory.resolve(definition.className() + ".java");
 
         System.out.println("  " + definition.template() + " -> " + outputFile);
@@ -66,19 +71,21 @@ public final class FuzzerGenerator {
      * The generator is organized around two independent concepts:
      *
      *   1. IlaType
-     *        Describes a type for which a fuzzer can be generated.
+     *        Describes a type for which generated source can be created.
      *
-     *   2. FuzzerDefinition
-     *        Describes one fuzzer function instantiated for one IlaType.
+     *   2. GenerationDefinition
+     *        Describes one generated source file instantiated for one IlaType.
      *
-     * This means that one template can generate a fuzzer for every applicable
-     * type. Adding another fuzzer function should add another method below,
-     * rather than another copy of the template for every type.
+     * This means that one template can generate source for every applicable
+     * type. Adding another generated source function should add another method
+     * below, rather than another copy of the template for every type.
      */
-    private static List<FuzzerDefinition> definitions() {
-        final List<FuzzerDefinition> definitions = new ArrayList<>();
+    private static List<GenerationDefinition> definitions() {
+        final List<GenerationDefinition> definitions = new ArrayList<>();
+
         for (final IlaType type : ilaTypes()) {
             definitions.add(ilaFactoryFromArray(type));
+            definitions.add(testCloseIla(type));
         }
 
         return Collections.unmodifiableList(definitions);
@@ -87,7 +94,7 @@ public final class FuzzerGenerator {
     /*
      * These are the types currently represented by the immutable Ila family.
      *
-     * The package name is the ilaf package because that is where the generated
+     * packageName is the ilaf package because that is where the generated
      * fuzzer belongs.
      *
      * elementType is the Java element type.
@@ -111,24 +118,11 @@ public final class FuzzerGenerator {
                 new IlaType("shortilaf", "short", "short[]", "ShortIla", null));
     }
 
-    /*
-     * One function -> one template.
-     *
-     * This method describes IlaFactoryFromArray for one type. The template is
-     * shared by every type; all of the type-specific information is supplied
-     * through the model.
-     *
-     * When another fuzzer function is added, create another method following
-     * this pattern, for example:
-     *
-     *   private static FuzzerDefinition ilaFactoryFromSomething(
-     *       final IlaType type) {
-     *     ...
-     *   }
-     */
-    private static FuzzerDefinition ilaFactoryFromArray(final IlaType type) {
+    private static GenerationDefinition ilaFactoryFromArray(final IlaType type) {
         final String ilaType = type.ilaType();
-        return new FuzzerDefinition(
+
+        return new GenerationDefinition(
+                SourceKind.FUZZ,
                 "tfw/immutable/ilaf/IlaFactoryFromArrayFuzzer.java.ftl",
                 "tfw.immutable.ilaf." + type.packageName(),
                 ilaType + "FactoryFromArrayFuzzer",
@@ -143,6 +137,29 @@ public final class FuzzerGenerator {
                         assertElementEquals(type)));
     }
 
+    private static GenerationDefinition testCloseIla(final IlaType type) {
+        return new GenerationDefinition(
+                SourceKind.TEST,
+                "tfw/immutable/ila/TestCloseIla.java.ftl",
+                "tfw.immutable.ila." + type.ilaPackage(),
+                "TestClose" + type.ilaType(),
+                createTestCloseModel(type));
+    }
+
+    private static Map<String, Object> createTestCloseModel(final IlaType type) {
+        final Map<String, Object> model = new HashMap<>();
+
+        model.put("package", "tfw.immutable.ila." + type.ilaPackage());
+        model.put("arrayType", type.arrayType());
+        model.put("ilaType", type.ilaType());
+
+        if (type.generic() != null) {
+            model.put("generic", type.generic());
+        }
+
+        return model;
+    }
+
     private static Map<String, Object> createModel(
             final IlaType type,
             final String className,
@@ -154,6 +171,7 @@ public final class FuzzerGenerator {
             final String assertElementEquals) {
 
         final Map<String, Object> model = new HashMap<>();
+
         model.put("package", "tfw.immutable.ilaf." + type.packageName());
         model.put("className", className);
         model.put("elementType", type.elementType());
@@ -431,6 +449,38 @@ public final class FuzzerGenerator {
         }
     }
 
+    private enum SourceKind {
+        FUZZ("fuzz"),
+        MAIN("main"),
+        TEST("test");
+
+        private final String directoryName;
+
+        SourceKind(final String directoryName) {
+            this.directoryName = directoryName;
+        }
+
+        private String directoryName() {
+            return directoryName;
+        }
+
+        private Path outputDirectory(final Path fuzzDirectory) {
+            switch (this) {
+                case FUZZ:
+                    return fuzzDirectory;
+
+                case MAIN:
+                    return Paths.get("src", "main", "java");
+
+                case TEST:
+                    return Paths.get("src", "test", "java");
+
+                default:
+                    throw new IllegalStateException("Unsupported source kind: " + this);
+            }
+        }
+    }
+
     private static final class IlaType {
 
         private final String packageName;
@@ -477,22 +527,29 @@ public final class FuzzerGenerator {
         }
     }
 
-    private static final class FuzzerDefinition {
+    private static final class GenerationDefinition {
 
+        private final SourceKind sourceKind;
         private final String template;
         private final String packageName;
         private final String className;
         private final Map<String, Object> model;
 
-        private FuzzerDefinition(
+        private GenerationDefinition(
+                final SourceKind sourceKind,
                 final String template,
                 final String packageName,
                 final String className,
                 final Map<String, Object> model) {
+            this.sourceKind = sourceKind;
             this.template = template;
             this.packageName = packageName;
             this.className = className;
             this.model = model;
+        }
+
+        private SourceKind sourceKind() {
+            return sourceKind;
         }
 
         private String template() {

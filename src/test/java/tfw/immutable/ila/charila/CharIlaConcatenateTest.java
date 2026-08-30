@@ -1,7 +1,9 @@
 package tfw.immutable.ila.charila;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import java.io.IOException;
 import java.util.Random;
 import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
@@ -39,6 +41,17 @@ final class CharIlaConcatenateTest {
         CharIla actualIla = CharIlaConcatenate.create(leftIla, rightIla);
 
         CharIlaCheck.check(targetIla, actualIla);
+    }
+
+    @Test
+    void closeTest() throws IOException {
+        final TestCloseCharIla leftIla = new TestCloseCharIla();
+        final TestCloseCharIla rightIla = new TestCloseCharIla();
+
+        try (CharIla ila = CharIlaConcatenate.create(leftIla, rightIla)) {}
+
+        assertThat(leftIla.getNumberOfCloses()).isEqualTo(1);
+        assertThat(rightIla.getNumberOfCloses()).isEqualTo(1);
     }
 }
 // AUTO GENERATED FROM TEMPLATE
