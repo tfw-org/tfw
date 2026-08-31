@@ -1,5 +1,6 @@
 package tfw.audio.demo;
 
+import com.google.common.flogger.FluentLogger;
 import java.io.File;
 import java.io.IOException;
 import tfw.audio.au.Au;
@@ -8,36 +9,37 @@ import tfw.immutable.ila.byteila.ByteIla;
 import tfw.immutable.ila.byteila.ByteIlaFromFile;
 import tfw.immutable.ila.byteila.ByteIlaUtil;
 import tfw.immutable.ila.doubleila.DoubleIla;
-import tfw.immutable.ila.doubleila.DoubleIlaUtil;
 
 public class AuDemo {
+    private static final FluentLogger LOGGER = FluentLogger.forEnclosingClass();
+
+    private AuDemo() {}
 
     public static void main(String[] args) throws IOException {
-        File file = new File(args[0]);
-        ByteIla byteIla = ByteIlaFromFile.create(file);
-        Au auFileFormat = new Au(byteIla);
+        if (args == null || args.length != 1) {
+            LOGGER.atInfo().log("USAGE: AuDemo auFileName");
 
-        System.out.println("filename = " + args[0]);
-        System.out.println("file.length = " + file.length());
-        System.out.println("magicNumber=" + Long.toHexString(auFileFormat.magicNumber));
-        System.out.println("offset = " + auFileFormat.offset);
-        System.out.println("data_size = " + auFileFormat.data_size);
-        System.out.println("encoding = " + auFileFormat.encoding);
-        System.out.println("sampleRate = " + auFileFormat.sampleRate);
-        System.out.println("numberOfChannels = " + auFileFormat.numberOfChannels);
-        System.out.println("annotation = " + new String(ByteIlaUtil.toArray(auFileFormat.annotation)));
-        System.out.println("data.length = " + auFileFormat.audioData.length());
+            return;
+        }
 
-        DoubleIla normalizedData = NormalizedDoubleIlaFromAuAudioData.create(
+        final File file = new File(args[0]);
+        final ByteIla byteIla = ByteIlaFromFile.create(file);
+        final Au auFileFormat = new Au(byteIla);
+
+        LOGGER.atInfo().log("filename = %s", args[0]);
+        LOGGER.atInfo().log("file.length = %d", file.length());
+        LOGGER.atInfo().log("magicNumber = %X", auFileFormat.magicNumber);
+        LOGGER.atInfo().log("offset = %d", auFileFormat.offset);
+        LOGGER.atInfo().log("dataSize = %d", auFileFormat.dataSize);
+        LOGGER.atInfo().log("encoding = %d", auFileFormat.encoding);
+        LOGGER.atInfo().log("sampleRate = %d", auFileFormat.sampleRate);
+        LOGGER.atInfo().log("numberOfChannels = %d", auFileFormat.numberOfChannels);
+        LOGGER.atInfo().log("annotation = %s", new String(ByteIlaUtil.toArray(auFileFormat.annotation)));
+        LOGGER.atInfo().log("data.length = %d", auFileFormat.audioData.length());
+
+        final DoubleIla normalizedData = NormalizedDoubleIlaFromAuAudioData.create(
                 auFileFormat.audioData, auFileFormat.magicNumber, auFileFormat.encoding, 1000);
 
-        System.out.println("normalizedData = " + normalizedData);
-
-        if (normalizedData != null) {
-            double[] d = DoubleIlaUtil.toArray(normalizedData, 0, 10);
-            for (int i = 0; i < d.length; i++) {
-                System.out.println("  nD[" + i + "]=" + d[i]);
-            }
-        }
+        LOGGER.atInfo().log("normalizedData.length = %d", normalizedData.length());
     }
 }

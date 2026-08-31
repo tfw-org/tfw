@@ -49,12 +49,12 @@ public final class LinearShortIlaFromALawByteIla {
                  * available from the following location:
                  * ftp://svr-ftp.eng.cam.ac.uk/pub/comp.speech/coding/G711_G721_G723.tar.gz
                  */
-                int a_val = bi.next();
+                int aLawValue = bi.next();
 
-                a_val ^= 0x55;
+                aLawValue ^= 0x55;
 
-                int t = (a_val & QUANT_MASK) << 4;
-                int seg = (a_val & SEG_MASK) >> SEG_SHIFT;
+                int t = (aLawValue & QUANT_MASK) << 4;
+                int seg = (aLawValue & SEG_MASK) >> SEG_SHIFT;
 
                 switch (seg) {
                     case 0:
@@ -70,7 +70,7 @@ public final class LinearShortIlaFromALawByteIla {
 
                 short s = (short) t;
 
-                array[i] = (short) (((a_val & SIGN_BIT) != 0) ? s : -s);
+                array[i] = (short) (((aLawValue & SIGN_BIT) != 0) ? s : -s);
             }
         }
     }
