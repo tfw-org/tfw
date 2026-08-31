@@ -14,6 +14,11 @@ jobs:
     permissions:
       contents: write
 
+    outputs:
+      hashes: ${{ steps.hash.outputs.hashes }}
+      artifactId: ${{ steps.maven.outputs.artifactId }}
+      version: ${{ steps.maven.outputs.version }}
+
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -43,6 +48,19 @@ jobs:
           MVN_PASSWORD: ${{ secrets.MVN_PASSWORD }}
           GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
 
+      - name: Generate SLSA provenance subjects
+        id: hash
+        run: |
+          set -euo pipefail
+
+          sha256sum \
+            "target/${{ steps.maven.outputs.artifactId }}-${{ steps.maven.outputs.version }}.jar" \
+            "target/${{ steps.maven.outputs.artifactId }}-${{ steps.maven.outputs.version }}-sources.jar" \
+            "target/${{ steps.maven.outputs.artifactId }}-${{ steps.maven.outputs.version }}-javadoc.jar" \
+            > hashes.txt
+
+          echo "hashes=$(base64 -w0 hashes.txt)" >> "$GITHUB_OUTPUT"
+
       - name: Upload Artifacts and Signatures to GitHub Release
         run: |
           gh release upload "$RELEASE_TAG" \
@@ -58,3 +76,18 @@ jobs:
           RELEASE_TAG: ${{ github.event.release.tag_name }}
           ARTIFACT_ID: ${{ steps.maven.outputs.artifactId }}
           VERSION: ${{ steps.maven.outputs.version }}
+
+  provenance:
+    needs: [publish]
+
+    permissions:
+      actions: read
+      id-token: write
+      contents: write
+
+    uses: slsa-framework/slsa-github-generator/.github/workflows/generator_generic_slsa3.yml@v2.1.0
+
+    with:
+      base64-subjects: "${{ needs.publish.outputs.hashes }}"
+      provenance-name: "${{ needs.publish.outputs.artifactId }}-${{ needs.publish.outputs.version }}.intoto.jsonl"
+      upload-assets: true
