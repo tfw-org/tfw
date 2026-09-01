@@ -1,4 +1,3 @@
-```yaml
 name: Release to Maven Central
 
 on:
@@ -14,11 +13,9 @@ jobs:
 
     permissions:
       contents: write
-
-    outputs:
-      hashes: ${{ steps.hash.outputs.hashes }}
-      artifactId: ${{ steps.maven.outputs.artifactId }}
-      version: ${{ steps.maven.outputs.version }}
+      id-token: write
+      attestations: write
+      artifact-metadata: write
 
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -49,23 +46,27 @@ jobs:
           MVN_PASSWORD: ${{ secrets.MVN_PASSWORD }}
           GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
 
-      - name: Generate SLSA provenance subjects
-        id: hash
+      - name: Generate build provenance
+        id: attest
+        uses: actions/attest@508db95dd578ae2727ebd6217d5ba78e4fbda05d # v4.2.1
+        with:
+          subject-path: |
+            target/${{ steps.maven.outputs.artifactId }}-${{ steps.maven.outputs.version }}.jar
+            target/${{ steps.maven.outputs.artifactId }}-${{ steps.maven.outputs.version }}-sources.jar
+            target/${{ steps.maven.outputs.artifactId }}-${{ steps.maven.outputs.version }}-javadoc.jar
+
+      - name: Prepare provenance bundle
         env:
+          BUNDLE_PATH: ${{ steps.attest.outputs.bundle-path }}
           ARTIFACT_ID: ${{ steps.maven.outputs.artifactId }}
           VERSION: ${{ steps.maven.outputs.version }}
         run: |
           set -euo pipefail
 
-          sha256sum \
-            "target/${ARTIFACT_ID}-${VERSION}.jar" \
-            "target/${ARTIFACT_ID}-${VERSION}-sources.jar" \
-            "target/${ARTIFACT_ID}-${VERSION}-javadoc.jar" \
-            > hashes.txt
+          cp "$BUNDLE_PATH" \
+            "target/${ARTIFACT_ID}-${VERSION}.sigstore.json"
 
-          echo "hashes=$(base64 -w0 hashes.txt)" >> "$GITHUB_OUTPUT"
-
-      - name: Upload Artifacts and Signatures to GitHub Release
+      - name: Upload Artifacts, Signatures, and Provenance to GitHub Release
         run: |
           gh release upload "$RELEASE_TAG" \
             --clobber \
@@ -74,28 +75,10 @@ jobs:
             "target/$ARTIFACT_ID-$VERSION-sources.jar" \
             "target/$ARTIFACT_ID-$VERSION-sources.jar.asc" \
             "target/$ARTIFACT_ID-$VERSION-javadoc.jar" \
-            "target/$ARTIFACT_ID-$VERSION-javadoc.jar.asc"
+            "target/$ARTIFACT_ID-$VERSION-javadoc.jar.asc" \
+            "target/$ARTIFACT_ID-$VERSION.sigstore.json"
         env:
           GH_TOKEN: ${{ github.token }}
           RELEASE_TAG: ${{ github.event.release.tag_name }}
           ARTIFACT_ID: ${{ steps.maven.outputs.artifactId }}
           VERSION: ${{ steps.maven.outputs.version }}
-
-  provenance:
-    needs: [publish]
-
-    permissions:
-      actions: read
-      id-token: write
-      contents: write
-
-    # SLSA requires this reusable workflow to be referenced by
-    # semantic-version tag rather than a commit SHA.
-    uses: slsa-framework/slsa-github-generator/.github/workflows/generator_generic_slsa3.yml@v2.1.0
-
-    with:
-      base64-subjects: "${{ needs.publish.outputs.hashes }}"
-      provenance-name: "${{ needs.publish.outputs.artifactId }}-${{ needs.publish.outputs.version }}.intoto.jsonl"
-      upload-assets: true
-      upload-tag-name: "${{ github.event.release.tag_name }}"
-```
