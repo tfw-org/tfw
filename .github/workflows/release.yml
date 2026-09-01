@@ -1,4 +1,3 @@
-```yaml
 name: Release to Maven Central
 
 on:
@@ -98,4 +97,3 @@ jobs:
       provenance-name: "${{ needs.publish.outputs.artifactId }}-${{ needs.publish.outputs.version }}.intoto.jsonl"
       upload-assets: true
       upload-tag-name: "${{ github.event.release.tag_name }}"
-```
