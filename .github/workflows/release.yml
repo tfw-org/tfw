@@ -1,3 +1,4 @@
+```yaml
 name: Release to Maven Central
 
 on:
@@ -50,13 +51,16 @@ jobs:
 
       - name: Generate SLSA provenance subjects
         id: hash
+        env:
+          ARTIFACT_ID: ${{ steps.maven.outputs.artifactId }}
+          VERSION: ${{ steps.maven.outputs.version }}
         run: |
           set -euo pipefail
 
           sha256sum \
-            "target/${{ steps.maven.outputs.artifactId }}-${{ steps.maven.outputs.version }}.jar" \
-            "target/${{ steps.maven.outputs.artifactId }}-${{ steps.maven.outputs.version }}-sources.jar" \
-            "target/${{ steps.maven.outputs.artifactId }}-${{ steps.maven.outputs.version }}-javadoc.jar" \
+            "target/${ARTIFACT_ID}-${VERSION}.jar" \
+            "target/${ARTIFACT_ID}-${VERSION}-sources.jar" \
+            "target/${ARTIFACT_ID}-${VERSION}-javadoc.jar" \
             > hashes.txt
 
           echo "hashes=$(base64 -w0 hashes.txt)" >> "$GITHUB_OUTPUT"
@@ -85,9 +89,13 @@ jobs:
       id-token: write
       contents: write
 
+    # SLSA requires this reusable workflow to be referenced by
+    # semantic-version tag rather than a commit SHA.
     uses: slsa-framework/slsa-github-generator/.github/workflows/generator_generic_slsa3.yml@v2.1.0
 
     with:
       base64-subjects: "${{ needs.publish.outputs.hashes }}"
       provenance-name: "${{ needs.publish.outputs.artifactId }}-${{ needs.publish.outputs.version }}.intoto.jsonl"
       upload-assets: true
+      upload-tag-name: "${{ github.event.release.tag_name }}"
+```
