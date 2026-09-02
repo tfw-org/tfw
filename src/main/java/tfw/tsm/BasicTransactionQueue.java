@@ -151,6 +151,10 @@ public final class BasicTransactionQueue implements TransactionQueue {
      * method must not be called from within this transaction queue's thread.
      * Use {@link #isDispatchThread} to check whether the calling thread is the
      * transaction queue thread.
+     *
+     * @throws InterruptedException
+     *             if the waiting thread is interrupted; the interruption is
+     *             propagated to the caller.
      */
     public void waitTilEmpty() throws InterruptedException {
         if (isDispatchThread()) {
