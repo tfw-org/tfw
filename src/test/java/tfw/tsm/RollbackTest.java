@@ -122,7 +122,7 @@ final class RollbackTest {
     }
 
     @Test
-    void converterTest() {
+    void converterTest() throws InterruptedException {
         final BasicTransactionQueue queue = new BasicTransactionQueue();
         final Root root = Root.builder()
                 .setName("Test branch")
@@ -178,7 +178,7 @@ final class RollbackTest {
     }
 
     @Test
-    void simpleRollbackTest() {
+    void simpleRollbackTest() throws InterruptedException {
         String errorMsg = "An error occurred";
         TestCommit aCommit = new TestCommit(aECD, null);
         TestCommit errorCommit = new TestCommit(error1ECD, null);
@@ -213,7 +213,7 @@ final class RollbackTest {
     }
 
     @Test
-    void daisyChainedMultiCycleRollbackTest() {
+    void daisyChainedMultiCycleRollbackTest() throws InterruptedException {
         String cErrorMsg = "An error occurred";
         Initiator initiator = new Initiator("Test initiator", aECD);
         TestCommit aCommit = new TestCommit(aECD, null);
@@ -269,7 +269,7 @@ final class RollbackTest {
     }
 
     @Test
-    void multiValueRollbackTest() {
+    void multiValueRollbackTest() throws InterruptedException {
         String error1msg = "Error notification on error channel one";
         String error2msg = "Error notification on error channel two";
         EventChannelState[] rollbackState = new EventChannelState[] {

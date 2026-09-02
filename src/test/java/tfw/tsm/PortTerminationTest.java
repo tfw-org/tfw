@@ -10,7 +10,7 @@ final class PortTerminationTest {
     static Exception expected = null;
 
     @Test
-    void unTerminatedPortTest() {
+    void unTerminatedPortTest() throws InterruptedException {
         final ObjectECD ecd = new StringECD("Test");
         final BasicTransactionQueue queue = new BasicTransactionQueue();
         final Root root = Root.builder()
