@@ -11,7 +11,7 @@ final class SetStateTest {
      * event channel twice in the same state change cyecle.
      */
     @Test
-    void doubleSetTest() {
+    void doubleSetTest() throws InterruptedException {
         StringECD ecd = new StringECD("stringECD");
         TestTransactionExceptionHandler exceptionHandler = new TestTransactionExceptionHandler();
         BasicTransactionQueue queue = new BasicTransactionQueue();

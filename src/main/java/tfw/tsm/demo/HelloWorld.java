@@ -14,7 +14,7 @@ public class HelloWorld {
     public static final String HELLO_WORLD_STRING = "HelloWorld!";
     private static final Logger LOG = LoggerFactory.getLogger(HelloWorld.class);
 
-    public static final void main(String[] args) {
+    public static final void main(String[] args) throws InterruptedException {
         final BasicTransactionQueue basicTransactionQueue = new BasicTransactionQueue();
         final StatelessTriggerECD triggerECD = new StatelessTriggerECD("trigger");
         final Initiator initiator = new Initiator("Hello World Initiator", new EventChannelDescription[] {triggerECD});

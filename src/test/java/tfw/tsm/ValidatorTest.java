@@ -35,7 +35,7 @@ final class ValidatorTest {
     private final StringECD eventChannelBECD = new StringECD("ecB");
 
     @Test
-    void validatorTest() {
+    void validatorTest() throws InterruptedException {
         final BasicTransactionQueue queue = new BasicTransactionQueue();
         final Root root = Root.builder()
                 .setName("ValidatorTestRoot")
@@ -73,7 +73,7 @@ final class ValidatorTest {
     }
 
     @Test
-    void triggeredValidationTest() {
+    void triggeredValidationTest() throws InterruptedException {
         StatelessTriggerECD trigger = new StatelessTriggerECD("trigger");
         final IntegerECD minECD = new IntegerECD("min");
         final IntegerECD maxECD = new IntegerECD("max");

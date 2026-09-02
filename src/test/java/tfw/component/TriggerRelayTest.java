@@ -16,7 +16,7 @@ final class TriggerRelayTest {
     private final StatelessTriggerECD relayedTriggerECD = new StatelessTriggerECD("relayedTrigger");
 
     @Test
-    void triggerRelayTest() {
+    void triggerRelayTest() throws InterruptedException {
         final BasicTransactionQueue queue = new BasicTransactionQueue();
         final Root root = Root.builder()
                 .setName("Root")

@@ -27,7 +27,7 @@ final class InitiatorTest {
     }
 
     @Test
-    void initatorSetMehtodsTest() {
+    void initatorSetMehtodsTest() throws InterruptedException {
         Initiator initiator = new Initiator("test", channels);
         Object object = new Object();
 
