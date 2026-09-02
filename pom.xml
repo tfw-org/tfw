@@ -150,6 +150,7 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${plugin.maven-compiler-plugin.version}</version>
                 <configuration>
+                    <fork>true</fork>
                     <compilerArgs>
                         <arg>-Xmaxerrs</arg>
                         <arg>-1</arg>
@@ -159,9 +160,17 @@
                         <arg>-XDcompilePolicy=simple</arg>
                         <arg>-XDaddTypeAnnotationsToSymbol=true</arg>
                         <arg>--should-stop=ifError=FLOW</arg>
-                        <arg>-Xplugin:ErrorProne \
-                        -XepAllErrorsAsWarnings \
-                        -XepExcludedPaths:.*/tfw/math/BigDecimal.java|.*/tfw/math/BigInteger.java|.*/tfw/math/BitSieve.java|.*/tfw/math/DoubleConsts.java|.*/tfw/math/FloatConsts.java|.*/tfw/math/MathContext.java|.*/tfw/math/MutableBigInteger.java|.*/tfw/math/RoundingMode.java|.*/tfw/math/SignedMutableBigInteger.java</arg>
+                        <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED</arg>
+                        <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.file=ALL-UNNAMED</arg>
+                        <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.main=ALL-UNNAMED</arg>
+                        <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.model=ALL-UNNAMED</arg>
+                        <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.parser=ALL-UNNAMED</arg>
+                        <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.processing=ALL-UNNAMED</arg>
+                        <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.tree=ALL-UNNAMED</arg>
+                        <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED</arg>
+                        <arg>-J--add-opens=jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED</arg>
+                        <arg>-J--add-opens=jdk.compiler/com.sun.tools.javac.comp=ALL-UNNAMED</arg>
+                        <arg>-Xplugin:ErrorProne -XepAllErrorsAsWarnings -XepExcludedPaths:.*/tfw/math/BigDecimal.java|.*/tfw/math/BigInteger.java|.*/tfw/math/BitSieve.java|.*/tfw/math/DoubleConsts.java|.*/tfw/math/FloatConsts.java|.*/tfw/math/MathContext.java|.*/tfw/math/MutableBigInteger.java|.*/tfw/math/RoundingMode.java|.*/tfw/math/SignedMutableBigInteger.java</arg>
                     </compilerArgs>
                     <annotationProcessorPaths>
                         <path>
