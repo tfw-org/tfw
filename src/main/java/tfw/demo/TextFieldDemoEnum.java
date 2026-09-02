@@ -3,6 +3,7 @@ package tfw.demo;
 import java.util.List;
 import tfw.awt.ecd.ColorECD;
 import tfw.tsm.AbstractEventChannelEnum;
+import tfw.tsm.AlwaysChangeRule;
 import tfw.tsm.DotEqualsRule;
 import tfw.tsm.EventChannelEnum;
 import tfw.tsm.StateChangeRule;
@@ -47,7 +48,7 @@ public class TextFieldDemoEnum<T extends EventChannelDescription> extends Abstra
             new TextFieldDemoEnum<>(new StringRollbackECD("error"), DotEqualsRule.RULE, null, null);
 
     TextFieldDemoEnum(T statelessTriggerECD) {
-        super(statelessTriggerECD, null, null, null);
+        super(statelessTriggerECD, AlwaysChangeRule.RULE, null, null);
     }
 
     TextFieldDemoEnum(
