@@ -234,7 +234,7 @@ final class MultiplexerTest {
     }
 
     @Test
-    void multipleMultiplexersTest() {
+    void multipleMultiplexersTest() throws InterruptedException {
         String slot0 = "slot0";
 
         final BasicTransactionQueue queue = new BasicTransactionQueue();

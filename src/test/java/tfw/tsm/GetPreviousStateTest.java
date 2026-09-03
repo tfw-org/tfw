@@ -9,7 +9,7 @@ final class GetPreviousStateTest {
     StringECD channel = new StringECD("channel");
 
     @Test
-    void isStateChangedTest() {
+    void isStateChangedTest() throws InterruptedException {
         final String initialState = "initialState";
         final String stateChangeOne = "StateOne";
         final String stateChangeTwo = "StateTwo";

@@ -17,7 +17,7 @@ final class MultiplexerConstructionTest {
     private final ValueCommit vc2 = new ValueCommit("vc2");
 
     @Test
-    void dynamicConstructionTest() {
+    void dynamicConstructionTest() throws InterruptedException {
         String value = "bob";
         MultiplexedBranchFactory mbf = new MultiplexedBranchFactory();
         mbf.addMultiplexer(VALUE_ECD, MULTIVALUE_ECD);
@@ -38,7 +38,7 @@ final class MultiplexerConstructionTest {
     }
 
     @Test
-    void nameSpaceSeparationTest() {
+    void nameSpaceSeparationTest() throws InterruptedException {
         String value0 = "bob";
         String value1 = "sally";
         MultiplexedBranchFactory mbf = new MultiplexedBranchFactory();

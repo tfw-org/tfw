@@ -19,7 +19,7 @@ public abstract class ValueConstraint<T> {
     public final void checkValue(Object value) throws ValueException {
         String valueCompliance = getValueCompliance(value);
 
-        if (valueCompliance != VALID) {
+        if (!VALID.equals(valueCompliance)) {
             throw new ValueException(valueCompliance);
         }
     }
