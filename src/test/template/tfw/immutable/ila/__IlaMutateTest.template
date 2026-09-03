@@ -1,8 +1,10 @@
 // booleanila,byteila,charila,doubleila,floatila,intila,longila,objectila,shortila
 package %%PACKAGE%%;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import java.io.IOException;
 %%RANDOM_INCLUDE%%import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 
@@ -41,5 +43,17 @@ final class %%NAME%%IlaMutateTest {
 
             %%NAME%%IlaCheck.check(targetIla, actualIla);
         }
+    }
+
+    @Test
+    void closeTest() throws IOException {
+        %%RANDOM_INIT%%final int length = IlaTestDimensions.defaultIlaLength();
+        final TestClose%%NAME%%Ila testIla = new TestClose%%NAME%%Ila();
+
+        try (%%NAME%%Ila%%TEMPLATE%% ila = %%NAME%%IlaMutate.create(testIla, 2, %%RANDOM_VALUE%%)) {
+            assertThat(ila).isNotNull();
+        }
+
+        assertThat(testIla.getNumberOfCloses()).isEqualTo(1);
     }
 }
