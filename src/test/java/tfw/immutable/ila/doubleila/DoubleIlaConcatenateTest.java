@@ -48,7 +48,9 @@ final class DoubleIlaConcatenateTest {
         final TestCloseDoubleIla leftIla = new TestCloseDoubleIla();
         final TestCloseDoubleIla rightIla = new TestCloseDoubleIla();
 
-        try (DoubleIla ila = DoubleIlaConcatenate.create(leftIla, rightIla)) {}
+        try (DoubleIla ila = DoubleIlaConcatenate.create(leftIla, rightIla)) {
+            assertThat(ila).isNotNull();
+        }
 
         assertThat(leftIla.getNumberOfCloses()).isEqualTo(1);
         assertThat(rightIla.getNumberOfCloses()).isEqualTo(1);

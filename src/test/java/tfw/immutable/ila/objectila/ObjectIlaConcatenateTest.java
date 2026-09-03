@@ -48,7 +48,9 @@ final class ObjectIlaConcatenateTest {
         final TestCloseObjectIla leftIla = new TestCloseObjectIla();
         final TestCloseObjectIla rightIla = new TestCloseObjectIla();
 
-        try (ObjectIla ila = ObjectIlaConcatenate.create(leftIla, rightIla)) {}
+        try (ObjectIla ila = ObjectIlaConcatenate.create(leftIla, rightIla)) {
+            assertThat(ila).isNotNull();
+        }
 
         assertThat(leftIla.getNumberOfCloses()).isEqualTo(1);
         assertThat(rightIla.getNumberOfCloses()).isEqualTo(1);

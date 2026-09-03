@@ -7,7 +7,7 @@ public final class TestCloseCharIla implements CharIla {
 
     @Override
     public long length() throws IOException {
-        throw new IOException("Close Test CharIla");
+        return 11L;
     }
 
     @Override

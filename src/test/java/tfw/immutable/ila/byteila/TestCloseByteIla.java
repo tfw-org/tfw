@@ -7,7 +7,7 @@ public final class TestCloseByteIla implements ByteIla {
 
     @Override
     public long length() throws IOException {
-        throw new IOException("Close Test ByteIla");
+        return 11L;
     }
 
     @Override

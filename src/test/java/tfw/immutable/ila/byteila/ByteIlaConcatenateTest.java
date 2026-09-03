@@ -48,7 +48,9 @@ final class ByteIlaConcatenateTest {
         final TestCloseByteIla leftIla = new TestCloseByteIla();
         final TestCloseByteIla rightIla = new TestCloseByteIla();
 
-        try (ByteIla ila = ByteIlaConcatenate.create(leftIla, rightIla)) {}
+        try (ByteIla ila = ByteIlaConcatenate.create(leftIla, rightIla)) {
+            assertThat(ila).isNotNull();
+        }
 
         assertThat(leftIla.getNumberOfCloses()).isEqualTo(1);
         assertThat(rightIla.getNumberOfCloses()).isEqualTo(1);

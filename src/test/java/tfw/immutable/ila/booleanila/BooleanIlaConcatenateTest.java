@@ -48,7 +48,9 @@ final class BooleanIlaConcatenateTest {
         final TestCloseBooleanIla leftIla = new TestCloseBooleanIla();
         final TestCloseBooleanIla rightIla = new TestCloseBooleanIla();
 
-        try (BooleanIla ila = BooleanIlaConcatenate.create(leftIla, rightIla)) {}
+        try (BooleanIla ila = BooleanIlaConcatenate.create(leftIla, rightIla)) {
+            assertThat(ila).isNotNull();
+        }
 
         assertThat(leftIla.getNumberOfCloses()).isEqualTo(1);
         assertThat(rightIla.getNumberOfCloses()).isEqualTo(1);

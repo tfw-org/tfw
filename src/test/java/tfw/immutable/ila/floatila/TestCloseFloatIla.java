@@ -7,7 +7,7 @@ public final class TestCloseFloatIla implements FloatIla {
 
     @Override
     public long length() throws IOException {
-        throw new IOException("Close Test FloatIla");
+        return 11L;
     }
 
     @Override

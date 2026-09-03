@@ -7,7 +7,7 @@ public final class TestClose${ilaType} implements ${ilaType}<#if generic??><${ge
 
     @Override
     public long length() throws IOException {
-        throw new IOException("Close Test ${ilaType}");
+        return 11L;
     }
 
     @Override

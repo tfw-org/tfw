@@ -114,7 +114,7 @@ public final class FuzzerGenerator {
                 new IlaType("floatilaf", "float", "float[]", "FloatIla", null),
                 new IlaType("intilaf", "int", "int[]", "IntIla", null),
                 new IlaType("longilaf", "long", "long[]", "LongIla", null),
-                new IlaType("objectilaf", "String", "String[]", "ObjectIla", "String"),
+                new IlaType("objectilaf", "Object", "Object[]", "ObjectIla", "Object"),
                 new IlaType("shortilaf", "short", "short[]", "ShortIla", null));
     }
 
@@ -267,7 +267,7 @@ public final class FuzzerGenerator {
                 return "array -> LongIlaFactoryFromArray.create(array).create()";
 
             case "ObjectIla":
-                return "array -> ObjectIlaFactoryFromArray.<String>create(array).create()";
+                return "array -> ObjectIlaFactoryFromArray.<Object>create(array).create()";
 
             case "ShortIla":
                 return "array -> ShortIlaFactoryFromArray.create(array).create()";
@@ -383,10 +383,10 @@ public final class FuzzerGenerator {
                         + "            array[i] = \"tfw-\" + i;\n"
                         + "            break;\n"
                         + "        case 2:\n"
-                        + "            array[i] = \"value-\" + i + \"-distinct\";\n"
+                        + "            array[i] = Integer.valueOf(i);\n"
                         + "            break;\n"
                         + "        default:\n"
-                        + "            array[i] = String.valueOf(Integer.MIN_VALUE + i);\n"
+                        + "            array[i] = Long.valueOf(i);\n"
                         + "            break;\n"
                         + "    }\n"
                         + "}";
@@ -438,8 +438,8 @@ public final class FuzzerGenerator {
                         + "}";
 
             case "ObjectIla":
-                return "String expectedValue = expected[expectedIndex];\n"
-                        + "String actualValue = actual[actualIndex];\n"
+                return "Object expectedValue = expected[expectedIndex];\n"
+                        + "Object actualValue = actual[actualIndex];\n"
                         + "if (expectedValue == null ? actualValue != null : !expectedValue.equals(actualValue)) {\n"
                         + "    throw new AssertionError(\"expected=\" + expectedValue + \", actual=\" + actualValue);\n"
                         + "}";

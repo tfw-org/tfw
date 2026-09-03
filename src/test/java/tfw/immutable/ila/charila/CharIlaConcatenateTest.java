@@ -48,7 +48,9 @@ final class CharIlaConcatenateTest {
         final TestCloseCharIla leftIla = new TestCloseCharIla();
         final TestCloseCharIla rightIla = new TestCloseCharIla();
 
-        try (CharIla ila = CharIlaConcatenate.create(leftIla, rightIla)) {}
+        try (CharIla ila = CharIlaConcatenate.create(leftIla, rightIla)) {
+            assertThat(ila).isNotNull();
+        }
 
         assertThat(leftIla.getNumberOfCloses()).isEqualTo(1);
         assertThat(rightIla.getNumberOfCloses()).isEqualTo(1);

@@ -7,7 +7,7 @@ public final class TestCloseDoubleIla implements DoubleIla {
 
     @Override
     public long length() throws IOException {
-        throw new IOException("Close Test DoubleIla");
+        return 11L;
     }
 
     @Override

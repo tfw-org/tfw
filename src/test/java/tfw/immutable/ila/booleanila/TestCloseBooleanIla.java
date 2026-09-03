@@ -7,7 +7,7 @@ public final class TestCloseBooleanIla implements BooleanIla {
 
     @Override
     public long length() throws IOException {
-        throw new IOException("Close Test BooleanIla");
+        return 11L;
     }
 
     @Override

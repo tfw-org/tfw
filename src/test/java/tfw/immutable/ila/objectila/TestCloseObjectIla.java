@@ -2,12 +2,12 @@ package tfw.immutable.ila.objectila;
 
 import java.io.IOException;
 
-public final class TestCloseObjectIla implements ObjectIla<String> {
+public final class TestCloseObjectIla implements ObjectIla<Object> {
     private int numberOfCloses = 0;
 
     @Override
     public long length() throws IOException {
-        throw new IOException("Close Test ObjectIla");
+        return 11L;
     }
 
     @Override
@@ -16,7 +16,7 @@ public final class TestCloseObjectIla implements ObjectIla<String> {
     }
 
     @Override
-    public void get(String[] array, int arrayOffset, long ilaStart, int length) throws IOException {
+    public void get(Object[] array, int arrayOffset, long ilaStart, int length) throws IOException {
         throw new IOException("Close Test ObjectIla");
     }
 

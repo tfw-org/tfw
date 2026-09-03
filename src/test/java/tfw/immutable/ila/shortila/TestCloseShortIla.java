@@ -7,7 +7,7 @@ public final class TestCloseShortIla implements ShortIla {
 
     @Override
     public long length() throws IOException {
-        throw new IOException("Close Test ShortIla");
+        return 11L;
     }
 
     @Override

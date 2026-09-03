@@ -49,7 +49,9 @@ final class %%NAME%%IlaConcatenateTest {
         final TestClose%%NAME%%Ila leftIla = new TestClose%%NAME%%Ila();
         final TestClose%%NAME%%Ila rightIla = new TestClose%%NAME%%Ila();
 
-        try (%%NAME%%Ila ila = %%NAME%%IlaConcatenate.create(leftIla, rightIla)) {}
+        try (%%NAME%%Ila ila = %%NAME%%IlaConcatenate.create(leftIla, rightIla)) {
+            assertThat(ila).isNotNull();
+        }
 
         assertThat(leftIla.getNumberOfCloses()).isEqualTo(1);
         assertThat(rightIla.getNumberOfCloses()).isEqualTo(1);

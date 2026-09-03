@@ -48,7 +48,9 @@ final class FloatIlaConcatenateTest {
         final TestCloseFloatIla leftIla = new TestCloseFloatIla();
         final TestCloseFloatIla rightIla = new TestCloseFloatIla();
 
-        try (FloatIla ila = FloatIlaConcatenate.create(leftIla, rightIla)) {}
+        try (FloatIla ila = FloatIlaConcatenate.create(leftIla, rightIla)) {
+            assertThat(ila).isNotNull();
+        }
 
         assertThat(leftIla.getNumberOfCloses()).isEqualTo(1);
         assertThat(rightIla.getNumberOfCloses()).isEqualTo(1);
