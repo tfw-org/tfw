@@ -24,3 +24,4 @@ public final class TestCloseFloatIla implements FloatIla {
         return numberOfCloses;
     }
 }
+// AUTO GENERATED FROM TEMPLATE

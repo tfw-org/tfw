@@ -24,3 +24,4 @@ public final class TestCloseIntIla implements IntIla {
         return numberOfCloses;
     }
 }
+// AUTO GENERATED FROM TEMPLATE

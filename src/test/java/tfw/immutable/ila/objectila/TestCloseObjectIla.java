@@ -24,3 +24,4 @@ public final class TestCloseObjectIla implements ObjectIla<Object> {
         return numberOfCloses;
     }
 }
+// AUTO GENERATED FROM TEMPLATE

@@ -4,7 +4,7 @@ import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateExceptionHandler;
 import java.io.File;
-import java.io.Writer;
+import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -47,7 +47,6 @@ public final class FuzzerGenerator {
     private static void generate(
             final Configuration configuration, final GenerationDefinition definition, final Path fuzzDirectory)
             throws Exception {
-
         final Template template =
                 configuration.getTemplate(definition.sourceKind().directoryName() + "/" + definition.template());
 
@@ -62,9 +61,13 @@ public final class FuzzerGenerator {
 
         System.out.println("  " + definition.template() + " -> " + outputFile);
 
-        try (Writer writer = Files.newBufferedWriter(outputFile, StandardCharsets.UTF_8)) {
-            template.process(definition.model(), writer);
-        }
+        final StringWriter writer = new StringWriter();
+
+        template.process(definition.model(), writer);
+
+        final String generated = writer.toString() + "// AUTO GENERATED FROM TEMPLATE" + System.lineSeparator();
+
+        Files.write(outputFile, generated.getBytes(StandardCharsets.UTF_8));
     }
 
     /*

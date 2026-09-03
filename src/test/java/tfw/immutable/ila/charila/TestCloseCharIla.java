@@ -24,3 +24,4 @@ public final class TestCloseCharIla implements CharIla {
         return numberOfCloses;
     }
 }
+// AUTO GENERATED FROM TEMPLATE

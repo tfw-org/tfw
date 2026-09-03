@@ -24,3 +24,4 @@ public final class TestCloseLongIla implements LongIla {
         return numberOfCloses;
     }
 }
+// AUTO GENERATED FROM TEMPLATE

@@ -24,3 +24,4 @@ public final class TestCloseByteIla implements ByteIla {
         return numberOfCloses;
     }
 }
+// AUTO GENERATED FROM TEMPLATE

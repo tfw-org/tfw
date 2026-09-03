@@ -24,3 +24,4 @@ public final class TestCloseShortIla implements ShortIla {
         return numberOfCloses;
     }
 }
+// AUTO GENERATED FROM TEMPLATE

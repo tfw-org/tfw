@@ -24,3 +24,4 @@ public final class TestCloseDoubleIla implements DoubleIla {
         return numberOfCloses;
     }
 }
+// AUTO GENERATED FROM TEMPLATE

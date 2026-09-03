@@ -24,3 +24,4 @@ public final class TestCloseBooleanIla implements BooleanIla {
         return numberOfCloses;
     }
 }
+// AUTO GENERATED FROM TEMPLATE
