@@ -50,7 +50,7 @@ jobs:
         -DtimestampedReports=false
         org.pitest:pitest-maven:mutationCoverage
 
-    - name: Generate Javadoc
+    - name: Generate development Javadoc
       run: >
         mvn -B
         javadoc:javadoc
@@ -58,23 +58,63 @@ jobs:
         -Ddoclint=none
         -DfailOnError=false
 
-    - name: Prepare GitHub Pages
+    - name: Get latest release
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        echo "Generated Javadoc directories:"
-        find target -type d -name apidocs -print
+        release_tag=$(gh api \
+          "repos/${GITHUB_REPOSITORY}/releases/latest" \
+          --jq '.tag_name')
 
-        mkdir -p target/pages/pit
+        echo "Latest release: ${release_tag}"
+        echo "RELEASE_TAG=${release_tag}" >> "$GITHUB_ENV"
+
+    - name: Generate latest release Javadoc
+      run: |
+        echo "Generating Javadoc for release ${RELEASE_TAG}"
+
+        # Fetch the exact release tag.
+        git fetch --depth=1 origin \
+          "refs/tags/${RELEASE_TAG}:refs/tags/${RELEASE_TAG}"
+
+        # Save the development Javadoc before changing the working tree.
         mkdir -p target/pages/javadoc
-
-        cp -R target/pit-reports/. target/pages/pit/
         cp -R target/reports/apidocs/. target/pages/javadoc/
 
-        # Calculate the sizes of the reports.
-        javadoc_bytes=$(find target/pages/javadoc -type f -printf '%s\n' | awk '{sum += $1} END {print sum}')
-        pit_bytes=$(find target/pages/pit -type f -printf '%s\n' | awk '{sum += $1} END {print sum}')
-        report_bytes=$((javadoc_bytes + pit_bytes))
+        # Check out the exact source corresponding to the latest release.
+        git checkout --detach "${RELEASE_TAG}"
 
-        javadoc_size=$(numfmt --to=iec --suffix=B "$javadoc_bytes")
+        # Generate Javadoc for the released source.
+        rm -rf target/reports/apidocs
+
+        mvn -B \
+          javadoc:javadoc \
+          -DoutputDirectory=target/reports/apidocs \
+          -Ddoclint=none \
+          -DfailOnError=false
+
+        # Put the release Javadoc under /javadoc/latest/.
+        mkdir -p target/pages/javadoc/latest
+        cp -R target/reports/apidocs/. target/pages/javadoc/latest/
+
+    - name: Prepare GitHub Pages
+      run: |
+        # Return to the master checkout for consistency.
+        git checkout --detach origin/master
+
+        mkdir -p target/pages/pit
+
+        cp -R target/pit-reports/. target/pages/pit/
+
+        # Calculate the sizes of the reports.
+        development_javadoc_bytes=$(find target/pages/javadoc -type f ! -path '*/latest/*' -printf '%s\n' | awk '{sum += $1} END {print sum}')
+        release_javadoc_bytes=$(find target/pages/javadoc/latest -type f -printf '%s\n' | awk '{sum += $1} END {print sum}')
+        pit_bytes=$(find target/pages/pit -type f -printf '%s\n' | awk '{sum += $1} END {print sum}')
+
+        report_bytes=$((development_javadoc_bytes + release_javadoc_bytes + pit_bytes))
+
+        development_javadoc_size=$(numfmt --to=iec --suffix=B "$development_javadoc_bytes")
+        release_javadoc_size=$(numfmt --to=iec --suffix=B "$release_javadoc_bytes")
         pit_size=$(numfmt --to=iec --suffix=B "$pit_bytes")
         report_size=$(numfmt --to=iec --suffix=B "$report_bytes")
 
@@ -90,9 +130,26 @@ jobs:
         <body>
           <h1>TFW Reports</h1>
 
+          <h2>Documentation</h2>
+
           <ul>
-            <li><a href="javadoc/">Javadoc</a></li>
-            <li><a href="pit/">Mutation Testing Report</a></li>
+            <li>
+              <a href="javadoc/">Development Javadoc</a>
+              — documentation for the current master branch.
+            </li>
+            <li>
+              <a href="javadoc/latest/">Latest Release Javadoc</a>
+              — documentation for release ${RELEASE_TAG}.
+            </li>
+          </ul>
+
+          <h2>Testing</h2>
+
+          <ul>
+            <li>
+              <a href="pit/">Mutation Testing Report</a>
+              — PIT mutation testing results for the current master branch.
+            </li>
           </ul>
 
           <h2>Site Information</h2>
@@ -103,8 +160,12 @@ jobs:
               <th>Size</th>
             </tr>
             <tr>
-              <td>Javadoc</td>
-              <td>${javadoc_size}</td>
+              <td>Development Javadoc</td>
+              <td>${development_javadoc_size}</td>
+            </tr>
+            <tr>
+              <td>Latest Release Javadoc (${RELEASE_TAG})</td>
+              <td>${release_javadoc_size}</td>
             </tr>
             <tr>
               <td>PIT report</td>
@@ -115,22 +176,29 @@ jobs:
               <td>${report_size}</td>
             </tr>
           </table>
+
+          <p>
+            Report sizes are calculated from the files published to GitHub Pages.
+          </p>
         </body>
         </html>
         EOF
 
-        # Calculate the exact size of the complete published site.
+        # Calculate the exact size of the complete published site,
+        # including the top-level index.html.
         total_bytes=$(find target/pages -type f -printf '%s\n' | awk '{sum += $1} END {print sum}')
         file_count=$(find target/pages -type f | wc -l)
         total_size=$(numfmt --to=iec --suffix=B "$total_bytes")
 
         echo
         echo "GitHub Pages content:"
-        echo "  Total site size: ${total_size} (${total_bytes} bytes)"
-        echo "  Javadoc size:    ${javadoc_size} (${javadoc_bytes} bytes)"
-        echo "  PIT size:        ${pit_size} (${pit_bytes} bytes)"
-        echo "  Total reports:   ${report_size} (${report_bytes} bytes)"
-        echo "  File count:      ${file_count}"
+        echo "  Latest release:         ${RELEASE_TAG}"
+        echo "  Total site size:        ${total_size} (${total_bytes} bytes)"
+        echo "  Development Javadoc:    ${development_javadoc_size} (${development_javadoc_bytes} bytes)"
+        echo "  Release Javadoc:        ${release_javadoc_size} (${release_javadoc_bytes} bytes)"
+        echo "  PIT size:               ${pit_size} (${pit_bytes} bytes)"
+        echo "  Total reports:          ${report_size} (${report_bytes} bytes)"
+        echo "  File count:             ${file_count}"
 
     - name: Configure GitHub Pages
       uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6.0.0
