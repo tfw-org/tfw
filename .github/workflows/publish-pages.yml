@@ -62,9 +62,12 @@ jobs:
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        release_tag=$(gh api \
+        if ! release_tag=$(gh api \
           "repos/${GITHUB_REPOSITORY}/releases/latest" \
-          --jq '.tag_name')
+          --jq '.tag_name'); then
+          echo "::error::No non-draft GitHub release found; cannot generate release Javadoc."
+          exit 1
+        fi
 
         echo "Latest release: ${release_tag}"
         echo "RELEASE_TAG=${release_tag}" >> "$GITHUB_ENV"
@@ -74,8 +77,11 @@ jobs:
         echo "Generating Javadoc for release ${RELEASE_TAG}"
 
         # Fetch the exact release tag.
-        git fetch --depth=1 origin \
-          "refs/tags/${RELEASE_TAG}:refs/tags/${RELEASE_TAG}"
+        if ! git fetch --depth=1 origin \
+          "refs/tags/${RELEASE_TAG}:refs/tags/${RELEASE_TAG}"; then
+          echo "::error::Unable to fetch tag ${RELEASE_TAG} for the latest GitHub release."
+          exit 1
+        fi
 
         # Save the development Javadoc before changing the working tree.
         mkdir -p target/pages/javadoc
