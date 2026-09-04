@@ -64,11 +64,12 @@ Together, they provide a foundation for applications whose **data and state can 
 
 ## Testing and Code Quality
 
-TFW uses several complementary techniques to assess the quality and robustness of the framework.
+TFW uses several complementary techniques to assess the quality, robustness, and documentation of the framework.
 
 - **Code coverage** — [SonarQube Cloud](https://sonarcloud.io) is used to monitor the coverage of the unit tests. The latest coverage report is available at [TFW's Overview](https://sonarcloud.io/project/overview?id=tfw-org_tfw)
-- **Mutation testing** — [PIT Mutation Testing](https://pitest.org/) is used to evaluate the effectiveness of the test suite. The latest mutation testing report is available on [TFW's GitHub Pages](https://tfw-org.github.io/tfw).
+- **Mutation testing** — [PIT Mutation Testing](https://pitest.org/) is used to evaluate the effectiveness of the test suite. The latest mutation testing report is available at [TFW's PIT report](https://tfw-org.github.io/tfw/pit/)
 - **Fuzz testing** — [ClusterFuzzLite](https://google.github.io/clusterfuzzlite/) is used to "fuzz" test the API.
+- **Javadoc** — The latest API documentation is available at [TFW's Javadoc](https://tfw-org.github.io/tfw/javadoc/)
 
 ## Lightweight by Design
 
