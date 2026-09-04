@@ -54,17 +54,20 @@ jobs:
       run: >
         mvn -B
         javadoc:javadoc
-        -DoutputDirectory=target/site/apidocs
+        -DoutputDirectory=target/reports/apidocs
         -Ddoclint=none
         -DfailOnError=false
 
     - name: Prepare GitHub Pages
       run: |
+        echo "Generated Javadoc directories:"
+        find target -type d -name apidocs -print
+
         mkdir -p target/pages/pit
         mkdir -p target/pages/javadoc
 
         cp -R target/pit-reports/. target/pages/pit/
-        cp -R target/site/apidocs/. target/pages/javadoc/
+        cp -R target/reports/apidocs/. target/pages/javadoc/
 
         # Calculate the sizes of the reports.
         javadoc_bytes=$(find target/pages/javadoc -type f -printf '%s\n' | awk '{sum += $1} END {print sum}')
@@ -116,12 +119,12 @@ jobs:
         </html>
         EOF
 
-        # Calculate the exact size of the complete published site,
-        # including the top-level index.html.
+        # Calculate the exact size of the complete published site.
         total_bytes=$(find target/pages -type f -printf '%s\n' | awk '{sum += $1} END {print sum}')
         file_count=$(find target/pages -type f | wc -l)
         total_size=$(numfmt --to=iec --suffix=B "$total_bytes")
 
+        echo
         echo "GitHub Pages content:"
         echo "  Total site size: ${total_size} (${total_bytes} bytes)"
         echo "  Javadoc size:    ${javadoc_size} (${javadoc_bytes} bytes)"
