@@ -54,6 +54,7 @@ jobs:
       run: >
         mvn -B
         javadoc:javadoc
+        -DoutputDirectory=target/site/apidocs
         -Ddoclint=none
         -DfailOnError=false
 
@@ -65,22 +66,16 @@ jobs:
         cp -R target/pit-reports/. target/pages/pit/
         cp -R target/site/apidocs/. target/pages/javadoc/
 
-        # Calculate GitHub Pages content sizes.
-        total_bytes=$(du -sb target/pages | cut -f1)
-        javadoc_bytes=$(du -sb target/pages/javadoc | cut -f1)
-        pit_bytes=$(du -sb target/pages/pit | cut -f1)
-        file_count=$(find target/pages -type f | wc -l)
+        # Calculate the sizes of the reports.
+        javadoc_bytes=$(find target/pages/javadoc -type f -printf '%s\n' | awk '{sum += $1} END {print sum}')
+        pit_bytes=$(find target/pages/pit -type f -printf '%s\n' | awk '{sum += $1} END {print sum}')
+        report_bytes=$((javadoc_bytes + pit_bytes))
 
-        total_size=$(du -sh target/pages | cut -f1)
-        javadoc_size=$(du -sh target/pages/javadoc | cut -f1)
-        pit_size=$(du -sh target/pages/pit | cut -f1)
+        javadoc_size=$(numfmt --to=iec --suffix=B "$javadoc_bytes")
+        pit_size=$(numfmt --to=iec --suffix=B "$pit_bytes")
+        report_size=$(numfmt --to=iec --suffix=B "$report_bytes")
 
-        echo "GitHub Pages content:"
-        echo "  Total size:   ${total_size} (${total_bytes} bytes)"
-        echo "  Javadoc size: ${javadoc_size} (${javadoc_bytes} bytes)"
-        echo "  PIT size:     ${pit_size} (${pit_bytes} bytes)"
-        echo "  File count:   ${file_count}"
-
+        # Create the top-level GitHub Pages landing page.
         cat > target/pages/index.html <<EOF
         <!DOCTYPE html>
         <html lang="en">
@@ -113,17 +108,26 @@ jobs:
               <td>${pit_size}</td>
             </tr>
             <tr>
-              <td>Total site</td>
-              <td>${total_size}</td>
-            </tr>
-            <tr>
-              <td>Files</td>
-              <td>${file_count}</td>
+              <td>Total reports</td>
+              <td>${report_size}</td>
             </tr>
           </table>
         </body>
         </html>
         EOF
+
+        # Calculate the exact size of the complete published site,
+        # including the top-level index.html.
+        total_bytes=$(find target/pages -type f -printf '%s\n' | awk '{sum += $1} END {print sum}')
+        file_count=$(find target/pages -type f | wc -l)
+        total_size=$(numfmt --to=iec --suffix=B "$total_bytes")
+
+        echo "GitHub Pages content:"
+        echo "  Total site size: ${total_size} (${total_bytes} bytes)"
+        echo "  Javadoc size:    ${javadoc_size} (${javadoc_bytes} bytes)"
+        echo "  PIT size:        ${pit_size} (${pit_bytes} bytes)"
+        echo "  Total reports:   ${report_size} (${report_bytes} bytes)"
+        echo "  File count:      ${file_count}"
 
     - name: Configure GitHub Pages
       uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6.0.0
