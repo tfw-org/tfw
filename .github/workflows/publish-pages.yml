@@ -65,7 +65,23 @@ jobs:
         cp -R target/pit-reports/. target/pages/pit/
         cp -R target/site/apidocs/. target/pages/javadoc/
 
-        cat > target/pages/index.html <<'EOF'
+        # Calculate GitHub Pages content sizes.
+        total_bytes=$(du -sb target/pages | cut -f1)
+        javadoc_bytes=$(du -sb target/pages/javadoc | cut -f1)
+        pit_bytes=$(du -sb target/pages/pit | cut -f1)
+        file_count=$(find target/pages -type f | wc -l)
+
+        total_size=$(du -sh target/pages | cut -f1)
+        javadoc_size=$(du -sh target/pages/javadoc | cut -f1)
+        pit_size=$(du -sh target/pages/pit | cut -f1)
+
+        echo "GitHub Pages content:"
+        echo "  Total size:   ${total_size} (${total_bytes} bytes)"
+        echo "  Javadoc size: ${javadoc_size} (${javadoc_bytes} bytes)"
+        echo "  PIT size:     ${pit_size} (${pit_bytes} bytes)"
+        echo "  File count:   ${file_count}"
+
+        cat > target/pages/index.html <<EOF
         <!DOCTYPE html>
         <html lang="en">
         <head>
@@ -75,10 +91,36 @@ jobs:
         </head>
         <body>
           <h1>TFW Reports</h1>
+
           <ul>
             <li><a href="javadoc/">Javadoc</a></li>
             <li><a href="pit/">Mutation Testing Report</a></li>
           </ul>
+
+          <h2>Site Information</h2>
+
+          <table>
+            <tr>
+              <th>Content</th>
+              <th>Size</th>
+            </tr>
+            <tr>
+              <td>Javadoc</td>
+              <td>${javadoc_size}</td>
+            </tr>
+            <tr>
+              <td>PIT report</td>
+              <td>${pit_size}</td>
+            </tr>
+            <tr>
+              <td>Total site</td>
+              <td>${total_size}</td>
+            </tr>
+            <tr>
+              <td>Files</td>
+              <td>${file_count}</td>
+            </tr>
+          </table>
         </body>
         </html>
         EOF
