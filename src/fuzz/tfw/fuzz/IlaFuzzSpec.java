@@ -1,8 +1,9 @@
 package tfw.fuzz;
 
 import java.io.IOException;
+import tfw.immutable.ila.ImmutableLongArray;
 
-public final class IlaFuzzSpec<A, I> {
+public final class IlaFuzzSpec<A, I extends ImmutableLongArray> {
 
     @FunctionalInterface
     public interface CreateFunction<A, I> {
@@ -59,7 +60,6 @@ public final class IlaFuzzSpec<A, I> {
     }
 
     public void get(I ila, A destination, int offset, long start, int length) throws Exception {
-
         get.get(ila, destination, offset, start, length);
     }
 }
