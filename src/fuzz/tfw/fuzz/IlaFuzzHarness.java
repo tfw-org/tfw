@@ -1,6 +1,6 @@
 package tfw.fuzz;
 
-public final class IlaFuzzHarness<A, I> {
+public final class IlaFuzzHarness<A, I extends tfw.immutable.ila.ImmutableLongArray> {
     private final IlaFuzzSpec<A, I> spec;
 
     public IlaFuzzHarness(IlaFuzzSpec<A, I> spec) {
@@ -56,6 +56,15 @@ public final class IlaFuzzHarness<A, I> {
          * produce IllegalArgumentException, including when length == 0.
          */
         verifyNullDestination(ila, input);
+
+        /*
+         * Exercise the ILA close lifecycle.
+         *
+         * close() must succeed the first time and must be idempotent
+         * when called a second time. Once closed, operations must
+         * reject access with IllegalStateException.
+         */
+        verifyClose(ila, adapter, input);
     }
 
     private void verifyNullCreate() {
@@ -156,6 +165,69 @@ public final class IlaFuzzHarness<A, I> {
         } catch (Throwable t) {
 
             throw failure(input, "get(null, ...) threw " + t.getClass().getName(), t);
+        }
+    }
+
+    private void verifyClose(I ila, IlaArrayAdapter<A> adapter, IlaFuzzInput input) {
+        try {
+            ila.close();
+        } catch (Throwable t) {
+            throw failure(input, "close() threw " + t.getClass().getName(), t);
+        }
+
+        /*
+         * close() must be idempotent.
+         */
+        try {
+            ila.close();
+        } catch (Throwable t) {
+            throw failure(input, "second close() threw " + t.getClass().getName(), t);
+        }
+
+        /*
+         * length() must reject access after close.
+         */
+        try {
+            ila.length();
+
+            throw failure(input, "length() was accepted after close()", null);
+
+        } catch (IllegalStateException expected) {
+            /*
+             * Correct.
+             */
+        } catch (Throwable t) {
+            throw failure(
+                    input,
+                    "length() after close() threw " + t.getClass().getName() + " instead of IllegalStateException",
+                    t);
+        }
+
+        /*
+         * get() must also reject access after close.
+         *
+         * Use a one-element destination and a zero-length request.
+         * The closed-state check occurs before argument validation, so
+         * this also verifies that a closed ILA cannot be accessed even
+         * when the requested range would otherwise require validation.
+         */
+        A destination = adapter.create(1);
+        adapter.initialize(destination);
+
+        try {
+            spec.get(ila, destination, 0, 0, 0);
+
+            throw failure(input, "get() was accepted after close()", null);
+
+        } catch (IllegalStateException expected) {
+            /*
+             * Correct.
+             */
+        } catch (Throwable t) {
+            throw failure(
+                    input,
+                    "get() after close() threw " + t.getClass().getName() + " instead of IllegalStateException",
+                    t);
         }
     }
 
