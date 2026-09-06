@@ -44,6 +44,12 @@ public final class ByteIlaMultiply {
                 array[ii] = (byte) (li.next() * ri.next());
             }
         }
+
+        @Override
+        protected void closeImpl() throws IOException {
+            leftIla.close();
+            rightIla.close();
+        }
     }
 }
 // AUTO GENERATED FROM TEMPLATE

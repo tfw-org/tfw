@@ -2,6 +2,7 @@ package tfw.immutable.ila.byteila;
 
 import java.io.IOException;
 import tfw.check.Argument;
+import tfw.immutable.ila.IlaInsertUtil;
 
 public final class ByteIlaInsert {
     private ByteIlaInsert() {
@@ -38,22 +39,18 @@ public final class ByteIlaInsert {
 
         @Override
         protected void getImpl(byte[] array, int offset, long start, int length) throws IOException {
-            final long startPlusLength = start + length;
+            IlaInsertUtil.get(
+                    index,
+                    start,
+                    length,
+                    offset,
+                    (destinationOffset, sourceStart, amount) -> ila.get(array, destinationOffset, sourceStart, amount),
+                    destinationOffset -> array[destinationOffset] = value);
+        }
 
-            if (index < start) {
-                ila.get(array, offset, start - 1, length);
-            } else if (index >= startPlusLength) {
-                ila.get(array, offset, start, length);
-            } else {
-                final int indexMinusStart = (int) (index - start);
-                if (index > start) {
-                    ila.get(array, offset, start, indexMinusStart);
-                }
-                array[offset + indexMinusStart] = value;
-                if (index < startPlusLength - 1) {
-                    ila.get(array, offset + indexMinusStart + 1, index, length - indexMinusStart - 1);
-                }
-            }
+        @Override
+        protected void closeImpl() throws IOException {
+            ila.close();
         }
     }
 }

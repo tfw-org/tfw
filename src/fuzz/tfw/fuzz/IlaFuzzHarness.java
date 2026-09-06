@@ -1,8 +1,6 @@
 package tfw.fuzz;
 
 public final class IlaFuzzHarness<A, I> {
-    private static final long SENTINEL = 0x5a5a5a5a5a5a5a5aL;
-
     private final IlaFuzzSpec<A, I> spec;
 
     public IlaFuzzHarness(IlaFuzzSpec<A, I> spec) {
@@ -51,12 +49,11 @@ public final class IlaFuzzHarness<A, I> {
         verifyFuzzedGet(ila, source, input);
 
         /*
-         * Exercise a null destination separately.
+         * Exercise null destination separately.
          *
-         * For length == 0 this must be accepted by the current API,
-         * because Abstract*Ila returns before checking null.
-         *
-         * For length != 0 it must produce IllegalArgumentException.
+         * Abstract*Ila.get() checks the destination for null before
+         * checking length. Therefore a null destination must always
+         * produce IllegalArgumentException, including when length == 0.
          */
         verifyNullDestination(ila, input);
     }
@@ -147,15 +144,14 @@ public final class IlaFuzzHarness<A, I> {
         try {
             spec.get(ila, null, input.offset(), input.start(), input.length());
 
-            if (input.length() != 0) {
-                throw failure(input, "get(null, ..., length != 0) " + "was accepted", null);
-            }
+            throw failure(input, "get(null, ...) was accepted", null);
 
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException expected) {
 
-            if (input.length() == 0) {
-                throw failure(input, "get(null, ..., length == 0) " + "was rejected", e);
-            }
+            /*
+             * Correct. Abstract*Ila.get() rejects a null destination
+             * before checking the requested length.
+             */
 
         } catch (Throwable t) {
 
@@ -167,8 +163,10 @@ public final class IlaFuzzHarness<A, I> {
         IlaArrayAdapter<A> adapter = spec.adapter();
 
         /*
-         * The current implementation treats length == 0 as an
-         * unconditional no-op.
+         * A successful zero-length operation is a no-op.
+         *
+         * Note that the arguments must still be valid. That validation
+         * is performed by isValidGet().
          */
         if (input.length() == 0) {
             verifyUnchanged(before, destination, input);
@@ -182,7 +180,6 @@ public final class IlaFuzzHarness<A, I> {
         int sourceIndex = Math.toIntExact(input.start());
 
         for (int i = 0; i < input.length(); i++) {
-
             adapter.assertElementEquals(source, sourceIndex + i, destination, input.offset() + i);
         }
 
@@ -207,24 +204,19 @@ public final class IlaFuzzHarness<A, I> {
         IlaArrayAdapter<A> adapter = spec.adapter();
 
         for (int i = 0; i < input.destinationLength(); i++) {
-
             adapter.assertElementEquals(before, i, destination, i);
         }
     }
 
     /*
-     * This deliberately mirrors ImmutableLongArrayUtil.boundsCheck(),
-     * including the special zero-length behavior of Abstract*Ila.
+     * This mirrors ImmutableLongArrayUtil.boundsCheck().
+     *
+     * Abstract*Ila.get() performs argument validation BEFORE the
+     * length == 0 early return. Therefore zero-length operations
+     * are valid only when all of the normal bounds requirements are
+     * satisfied.
      */
     private static boolean isValidGet(long ilaLength, int arrayLength, int offset, long start, int length) {
-        /*
-         * Abstract*Ila.get() returns before ANY argument checking
-         * when length == 0.
-         */
-        if (length == 0) {
-            return true;
-        }
-
         if (ilaLength < 0) {
             return false;
         }
@@ -245,6 +237,10 @@ public final class IlaFuzzHarness<A, I> {
             return false;
         }
 
+        /*
+         * offset and start must identify valid positions in their
+         * respective arrays/ILAs, even when length == 0.
+         */
         if (offset >= arrayLength) {
             return false;
         }
@@ -265,14 +261,6 @@ public final class IlaFuzzHarness<A, I> {
         }
 
         return true;
-    }
-
-    private void assertSentinel(A array, int index) {
-        /*
-         * This method is intentionally unused for the generic case.
-         * The adapter owns element comparison because primitive arrays
-         * have no common generic element type.
-         */
     }
 
     private AssertionError failure(IlaFuzzInput input, String message, Throwable cause) {

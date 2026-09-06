@@ -41,6 +41,11 @@ public final class DoubleIlaFromCastByteIla {
                 array[ii] = (double) fi.next();
             }
         }
+
+        @Override
+        protected void closeImpl() throws IOException {
+            byteIla.close();
+        }
     }
 }
 // AUTO GENERATED FROM TEMPLATE

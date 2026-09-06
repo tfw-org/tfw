@@ -47,5 +47,10 @@ public class DoubleIlaClip {
                 array[offset + i] = d;
             }
         }
+
+        @Override
+        protected void closeImpl() throws IOException {
+            doubleIla.close();
+        }
     }
 }

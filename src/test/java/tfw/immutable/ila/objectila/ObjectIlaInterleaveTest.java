@@ -1,7 +1,9 @@
 package tfw.immutable.ila.objectila;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import java.io.IOException;
 import java.lang.reflect.Array;
 import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
@@ -71,6 +73,22 @@ final class ObjectIlaInterleaveTest {
 
             ObjectIlaCheck.check(targetIla, actualIla);
         }
+    }
+
+    @Test
+    void closeTest() throws IOException {
+        final TestCloseObjectIla ila0 = new TestCloseObjectIla();
+        final TestCloseObjectIla ila1 = new TestCloseObjectIla();
+        final ObjectIla<Object>[] ilas = (ObjectIla<Object>[]) Array.newInstance(ObjectIla.class, 2);
+
+        ilas[0] = ila0;
+        ilas[1] = ila1;
+        try (ObjectIla ila = ObjectIlaInterleave.create(ilas, new Object[1000])) {
+            assertThat(ila).isNotNull();
+        }
+
+        assertThat(ila0.getNumberOfCloses()).isEqualTo(1);
+        assertThat(ila1.getNumberOfCloses()).isEqualTo(1);
     }
 }
 // AUTO GENERATED FROM TEMPLATE

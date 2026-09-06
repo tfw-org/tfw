@@ -2,6 +2,7 @@ package tfw.immutable.ila.longila;
 
 import java.io.IOException;
 import tfw.check.Argument;
+import tfw.immutable.ila.IlaMutateUtil;
 
 public final class LongIlaMutate {
     private LongIlaMutate() {
@@ -34,20 +35,18 @@ public final class LongIlaMutate {
 
         @Override
         protected void getImpl(long[] array, int offset, long start, int length) throws IOException {
-            final long startPlusLength = start + length;
+            IlaMutateUtil.get(
+                    index,
+                    start,
+                    length,
+                    offset,
+                    (destinationOffset, sourceStart, amount) -> ila.get(array, destinationOffset, sourceStart, amount),
+                    destinationOffset -> array[destinationOffset] = value);
+        }
 
-            if (index < start || index >= startPlusLength) {
-                ila.get(array, offset, start, length);
-            } else {
-                final int indexMinusStart = (int) (index - start);
-                if (index > start) {
-                    ila.get(array, offset, start, indexMinusStart);
-                }
-                array[offset + indexMinusStart] = value;
-                if (index <= startPlusLength) {
-                    ila.get(array, offset + indexMinusStart + 1, index + 1, length - indexMinusStart - 1);
-                }
-            }
+        @Override
+        protected void closeImpl() throws IOException {
+            ila.close();
         }
     }
 }

@@ -47,3 +47,4 @@ public final class IntIlaFactoryFromArrayFuzzer {
         HARNESS.fuzz(data);
     }
 }
+// AUTO GENERATED FROM TEMPLATE

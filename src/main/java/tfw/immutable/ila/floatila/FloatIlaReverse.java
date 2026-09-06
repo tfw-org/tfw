@@ -2,6 +2,7 @@ package tfw.immutable.ila.floatila;
 
 import java.io.IOException;
 import tfw.check.Argument;
+import tfw.immutable.ila.IlaReverseUtil;
 
 public final class FloatIlaReverse {
     private FloatIlaReverse() {
@@ -11,6 +12,7 @@ public final class FloatIlaReverse {
     public static FloatIla create(FloatIla ila, final float[] buffer) {
         Argument.assertNotNull(ila, "ila");
         Argument.assertNotNull(buffer, "buffer");
+        Argument.assertNotLessThan(buffer.length, 1, "buffer.length");
 
         return new FloatIlaImpl(ila, buffer);
     }
@@ -31,9 +33,26 @@ public final class FloatIlaReverse {
 
         @Override
         protected void getImpl(float[] array, int offset, long start, int length) throws IOException {
-            final StridedFloatIla stridedFloatIla = StridedFloatIlaFromFloatIla.create(ila, buffer.clone());
+            final float[] reverseBuffer = buffer.clone();
 
-            stridedFloatIla.get(array, offset + length - 1, -1, length() - (start + length), length);
+            IlaReverseUtil.reverse(
+                    ila.length(),
+                    offset,
+                    start,
+                    length,
+                    reverseBuffer.length,
+                    (sourcePosition, destinationOffset, amount) -> {
+                        ila.get(reverseBuffer, 0, sourcePosition, amount);
+
+                        for (int i = 0; i < amount; i++) {
+                            array[destinationOffset + i] = reverseBuffer[amount - 1 - i];
+                        }
+                    });
+        }
+
+        @Override
+        protected void closeImpl() throws IOException {
+            ila.close();
         }
     }
 }

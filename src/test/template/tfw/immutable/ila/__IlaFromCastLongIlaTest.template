@@ -1,12 +1,15 @@
 // byteila,charila,doubleila,floatila,intila,shortila
 package %%PACKAGE%%;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import java.io.IOException;
 %%RANDOM_INCLUDE%%import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 import tfw.immutable.ila.longila.LongIla;
 import tfw.immutable.ila.longila.LongIlaFromArray;
+import tfw.immutable.ila.longila.TestCloseLongIla;
 
 final class %%NAME%%IlaFromCastLongIlaTest {
     @Test
@@ -35,5 +38,16 @@ final class %%NAME%%IlaFromCastLongIlaTest {
         %%NAME%%Ila actualIla = %%NAME%%IlaFromCastLongIla.create(ila, 100);
 
         %%NAME%%IlaCheck.check(targetIla, actualIla);
+    }
+
+    @Test
+    void closeTest() throws IOException {
+        final TestCloseLongIla testIla = new TestCloseLongIla();
+
+        try (%%NAME%%Ila ila = %%NAME%%IlaFromCastLongIla.create(testIla, 100)) {
+            assertThat(ila).isNotNull();
+        }
+
+        assertThat(testIla.getNumberOfCloses()).isEqualTo(1);
     }
 }

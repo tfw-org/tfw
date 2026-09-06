@@ -39,5 +39,10 @@ public final class ShortIlaFromByteIla {
                 array[offset + i] = (short) (((bii.next() & 0xFF) << 8) | (bii.next() & 0xFF));
             }
         }
+
+        @Override
+        protected void closeImpl() throws IOException {
+            byteIla.close();
+        }
     }
 }

@@ -46,5 +46,10 @@ public final class LongIlaFromByteIla {
                         | ((long) bii.next() & 0xFF);
             }
         }
+
+        @Override
+        protected void closeImpl() throws IOException {
+            byteIla.close();
+        }
     }
 }

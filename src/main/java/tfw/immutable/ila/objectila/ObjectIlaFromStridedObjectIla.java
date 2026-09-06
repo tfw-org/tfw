@@ -28,6 +28,11 @@ public final class ObjectIlaFromStridedObjectIla<T> {
         public void getImpl(final T[] array, final int offset, final long start, int length) throws IOException {
             stridedIla.get(array, offset, 1, start, length);
         }
+
+        @Override
+        protected void closeImpl() throws IOException {
+            stridedIla.close();
+        }
     }
 }
 // AUTO GENERATED FROM TEMPLATE

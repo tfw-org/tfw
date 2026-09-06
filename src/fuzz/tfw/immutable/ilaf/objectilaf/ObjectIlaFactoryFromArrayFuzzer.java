@@ -7,16 +7,16 @@ import tfw.fuzz.IlaFuzzSpec;
 import tfw.immutable.ila.objectila.ObjectIla;
 
 public final class ObjectIlaFactoryFromArrayFuzzer {
-    private static final IlaFuzzSpec<String[], ObjectIla<String>> SPEC = new IlaFuzzSpec<>(
+    private static final IlaFuzzSpec<Object[], ObjectIla<Object>> SPEC = new IlaFuzzSpec<>(
             "ObjectIlaFactoryFromArray",
             new IlaArrayAdapter<>() {
                 @Override
-                public String[] create(int length) {
-                    return new String[length];
+                public Object[] create(int length) {
+                    return new Object[length];
                 }
 
                 @Override
-                public void initialize(String[] array) {
+                public void initialize(Object[] array) {
                     for (int i = 0; i < array.length; i++) {
                         switch (i & 3) {
                             case 0:
@@ -26,35 +26,35 @@ public final class ObjectIlaFactoryFromArrayFuzzer {
                                 array[i] = "tfw-" + i;
                                 break;
                             case 2:
-                                array[i] = "value-" + i + "-distinct";
+                                array[i] = Integer.valueOf(i);
                                 break;
                             default:
-                                array[i] = String.valueOf(Integer.MIN_VALUE + i);
+                                array[i] = Long.valueOf(i);
                                 break;
                         }
                     }
                 }
 
                 @Override
-                public String[] copy(String[] array) {
+                public Object[] copy(Object[] array) {
                     return array.clone();
                 }
 
                 @Override
                 public void assertElementEquals(
-                        String[] expected, int expectedIndex, String[] actual, int actualIndex) {
-                    String expectedValue = expected[expectedIndex];
-                    String actualValue = actual[actualIndex];
+                        Object[] expected, int expectedIndex, Object[] actual, int actualIndex) {
+                    Object expectedValue = expected[expectedIndex];
+                    Object actualValue = actual[actualIndex];
                     if (expectedValue == null ? actualValue != null : !expectedValue.equals(actualValue)) {
                         throw new AssertionError("expected=" + expectedValue + ", actual=" + actualValue);
                     }
                 }
             },
-            array -> ObjectIlaFactoryFromArray.<String>create(array).create(),
+            array -> ObjectIlaFactoryFromArray.<Object>create(array).create(),
             ObjectIla::length,
             ObjectIla::get);
 
-    private static final IlaFuzzHarness<String[], ObjectIla<String>> HARNESS = new IlaFuzzHarness<>(SPEC);
+    private static final IlaFuzzHarness<Object[], ObjectIla<Object>> HARNESS = new IlaFuzzHarness<>(SPEC);
 
     private ObjectIlaFactoryFromArrayFuzzer() {}
 
@@ -62,3 +62,4 @@ public final class ObjectIlaFactoryFromArrayFuzzer {
         HARNESS.fuzz(data);
     }
 }
+// AUTO GENERATED FROM TEMPLATE

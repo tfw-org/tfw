@@ -2,6 +2,7 @@ package tfw.immutable.ila.byteila;
 
 import java.io.IOException;
 import tfw.check.Argument;
+import tfw.immutable.ila.IlaReverseUtil;
 
 public final class ByteIlaReverse {
     private ByteIlaReverse() {
@@ -11,6 +12,7 @@ public final class ByteIlaReverse {
     public static ByteIla create(ByteIla ila, final byte[] buffer) {
         Argument.assertNotNull(ila, "ila");
         Argument.assertNotNull(buffer, "buffer");
+        Argument.assertNotLessThan(buffer.length, 1, "buffer.length");
 
         return new ByteIlaImpl(ila, buffer);
     }
@@ -31,9 +33,26 @@ public final class ByteIlaReverse {
 
         @Override
         protected void getImpl(byte[] array, int offset, long start, int length) throws IOException {
-            final StridedByteIla stridedByteIla = StridedByteIlaFromByteIla.create(ila, buffer.clone());
+            final byte[] reverseBuffer = buffer.clone();
 
-            stridedByteIla.get(array, offset + length - 1, -1, length() - (start + length), length);
+            IlaReverseUtil.reverse(
+                    ila.length(),
+                    offset,
+                    start,
+                    length,
+                    reverseBuffer.length,
+                    (sourcePosition, destinationOffset, amount) -> {
+                        ila.get(reverseBuffer, 0, sourcePosition, amount);
+
+                        for (int i = 0; i < amount; i++) {
+                            array[destinationOffset + i] = reverseBuffer[amount - 1 - i];
+                        }
+                    });
+        }
+
+        @Override
+        protected void closeImpl() throws IOException {
+            ila.close();
         }
     }
 }

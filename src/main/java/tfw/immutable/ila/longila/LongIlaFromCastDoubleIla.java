@@ -41,6 +41,11 @@ public final class LongIlaFromCastDoubleIla {
                 array[ii] = (long) fi.next();
             }
         }
+
+        @Override
+        protected void closeImpl() throws IOException {
+            doubleIla.close();
+        }
     }
 }
 // AUTO GENERATED FROM TEMPLATE

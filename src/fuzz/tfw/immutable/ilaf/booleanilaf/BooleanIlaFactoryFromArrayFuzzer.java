@@ -48,3 +48,4 @@ public final class BooleanIlaFactoryFromArrayFuzzer {
         HARNESS.fuzz(data);
     }
 }
+// AUTO GENERATED FROM TEMPLATE

@@ -47,3 +47,4 @@ public final class LongIlaFactoryFromArrayFuzzer {
         HARNESS.fuzz(data);
     }
 }
+// AUTO GENERATED FROM TEMPLATE

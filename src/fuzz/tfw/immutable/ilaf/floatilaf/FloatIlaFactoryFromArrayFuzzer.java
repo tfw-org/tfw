@@ -75,3 +75,4 @@ public final class FloatIlaFactoryFromArrayFuzzer {
         HARNESS.fuzz(data);
     }
 }
+// AUTO GENERATED FROM TEMPLATE

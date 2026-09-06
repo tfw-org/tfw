@@ -2,6 +2,7 @@ package tfw.immutable.ila.objectila;
 
 import java.io.IOException;
 import tfw.check.Argument;
+import tfw.immutable.ila.IlaRemoveUtil;
 
 public final class ObjectIlaRemove {
     private ObjectIlaRemove() {
@@ -32,17 +33,17 @@ public final class ObjectIlaRemove {
 
         @Override
         protected void getImpl(T[] array, int offset, long start, int length) throws IOException {
-            final long startPlusLength = start + length;
+            IlaRemoveUtil.get(
+                    index,
+                    start,
+                    length,
+                    offset,
+                    (destinationOffset, sourceStart, amount) -> ila.get(array, destinationOffset, sourceStart, amount));
+        }
 
-            if ((index - 1) < start) {
-                ila.get(array, offset, start + 1, length);
-            } else if ((index + 1) > startPlusLength) {
-                ila.get(array, offset, start, length);
-            } else {
-                final int indexMinusStart = (int) (index - start);
-                ila.get(array, offset, start, indexMinusStart);
-                ila.get(array, offset + indexMinusStart, index + 1, length - indexMinusStart);
-            }
+        @Override
+        protected void closeImpl() throws IOException {
+            ila.close();
         }
     }
 }

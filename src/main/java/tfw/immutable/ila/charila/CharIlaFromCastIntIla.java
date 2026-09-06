@@ -40,6 +40,11 @@ public final class CharIlaFromCastIntIla {
                 array[ii] = (char) fi.next();
             }
         }
+
+        @Override
+        protected void closeImpl() throws IOException {
+            intIla.close();
+        }
     }
 }
 // AUTO GENERATED FROM TEMPLATE

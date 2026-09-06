@@ -45,6 +45,11 @@ public final class BooleanIlaDecimate {
                 fi.skip(factor - 1);
             }
         }
+
+        @Override
+        protected void closeImpl() throws IOException {
+            ila.close();
+        }
     }
 }
 // AUTO GENERATED FROM TEMPLATE

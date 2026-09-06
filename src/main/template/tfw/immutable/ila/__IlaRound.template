@@ -35,5 +35,10 @@ public final class %%NAME%%IlaRound {
                 array[ii] =%%CAST_FROM_DOUBLE%% StrictMath.rint(array[ii]);
             }
         }
+
+        @Override
+        protected void closeImpl() throws IOException {
+            ila.close();
+        }
     }
 }

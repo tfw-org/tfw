@@ -122,5 +122,10 @@ public final class BitIlaReverse {
         protected long lengthInBitsImpl() throws IOException {
             return bitIla.lengthInBits();
         }
+
+        @Override
+        protected void closeImpl() throws IOException {
+            bitIla.close();
+        }
     }
 }

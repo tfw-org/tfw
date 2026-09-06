@@ -41,6 +41,11 @@ public final class LongIlaFromCastShortIla {
                 array[ii] = (long) fi.next();
             }
         }
+
+        @Override
+        protected void closeImpl() throws IOException {
+            shortIla.close();
+        }
     }
 }
 // AUTO GENERATED FROM TEMPLATE

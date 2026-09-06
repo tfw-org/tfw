@@ -99,5 +99,10 @@ public final class BitIlaFill {
                 throws IOException {
             fill(array, arrayOffsetInBits, lengthInBits, value);
         }
+
+        @Override
+        public void closeImpl() throws IOException {
+            // Nothing to do.
+        }
     }
 }

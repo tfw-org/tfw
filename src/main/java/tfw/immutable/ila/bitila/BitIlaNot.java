@@ -88,5 +88,10 @@ public final class BitIlaNot {
 
             not(array, arrayOffsetInBits, lengthInBits);
         }
+
+        @Override
+        public void closeImpl() throws IOException {
+            bitIla.close();
+        }
     }
 }

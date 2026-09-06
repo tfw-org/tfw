@@ -1,6 +1,7 @@
 // booleanila,byteila,charila,doubleila,floatila,intila,longila,objectila,shortila
 package %%PACKAGE%%;
 
+import java.io.IOException;
 import tfw.check.Argument;
 
 public final class %%NAME%%IlaFromArray {
@@ -29,6 +30,11 @@ public final class %%NAME%%IlaFromArray {
         @Override
         protected void getImpl(%%TYPE_OR_TEMPLATE%%[] array, int offset, long start, int length) {
             System.arraycopy(this.array, (int) start, array, offset, length);
+        }
+
+        @Override
+        protected void closeImpl() throws IOException {
+            // Nothing to do.
         }
     }
 }

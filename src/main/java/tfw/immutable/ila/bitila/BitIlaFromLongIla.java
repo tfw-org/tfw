@@ -45,5 +45,10 @@ public final class BitIlaFromLongIla {
 
             BitIlaUtil.copy(array, arrayOffsetInBits, tempArray, firstLongOffsetInBits, lengthInBits);
         }
+
+        @Override
+        public void closeImpl() throws IOException {
+            longIla.close();
+        }
     }
 }

@@ -39,6 +39,11 @@ final class StreamFactoryFromObjectIlaFactoryTest {
                     public void get(Object[] array, int arrayOffset, long ilaStart, int length) throws IOException {
                         throw new IOException("Test ObjectIla that only throws IOExceptions!");
                     }
+
+                    @Override
+                    public void close() throws IOException {
+                        throw new IOException("Test ObjectIla that only throws IOExceptions!");
+                    }
                 };
             }
         };
@@ -63,6 +68,11 @@ final class StreamFactoryFromObjectIlaFactoryTest {
                     @Override
                     public void get(String[] array, int arrayOffset, long ilaStart, int length) throws IOException {
                         throw new IOException("Test DoubleIla whose get() only throws IOExceptions!");
+                    }
+
+                    @Override
+                    public void close() throws IOException {
+                        throw new IOException("Test DoubleIla whose close() only throws IOExceptions!");
                     }
                 };
             }

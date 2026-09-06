@@ -37,6 +37,11 @@ final class LongStreamFactoryFromLongIlaFactoryTest {
                     public void get(long[] array, int arrayOffset, long ilaStart, int length) throws IOException {
                         throw new IOException("Test LongIla that only throws IOExceptions!");
                     }
+
+                    @Override
+                    public void close() throws IOException {
+                        throw new IOException("Test LongIla that only throws IOExceptions!");
+                    }
                 };
             }
         };
@@ -60,6 +65,11 @@ final class LongStreamFactoryFromLongIlaFactoryTest {
 
                     @Override
                     public void get(long[] array, int arrayOffset, long ilaStart, int length) throws IOException {
+                        throw new IOException("Test LongIla whose get() only throws IOExceptions!");
+                    }
+
+                    @Override
+                    public void close() throws IOException {
                         throw new IOException("Test LongIla whose get() only throws IOExceptions!");
                     }
                 };

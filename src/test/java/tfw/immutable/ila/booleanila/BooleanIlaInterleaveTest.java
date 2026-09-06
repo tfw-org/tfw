@@ -1,7 +1,9 @@
 package tfw.immutable.ila.booleanila;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.Random;
 import org.junit.jupiter.api.Test;
@@ -71,6 +73,22 @@ final class BooleanIlaInterleaveTest {
 
             BooleanIlaCheck.check(targetIla, actualIla);
         }
+    }
+
+    @Test
+    void closeTest() throws IOException {
+        final TestCloseBooleanIla ila0 = new TestCloseBooleanIla();
+        final TestCloseBooleanIla ila1 = new TestCloseBooleanIla();
+        final BooleanIla[] ilas = (BooleanIla[]) Array.newInstance(BooleanIla.class, 2);
+
+        ilas[0] = ila0;
+        ilas[1] = ila1;
+        try (BooleanIla ila = BooleanIlaInterleave.create(ilas, new boolean[1000])) {
+            assertThat(ila).isNotNull();
+        }
+
+        assertThat(ila0.getNumberOfCloses()).isEqualTo(1);
+        assertThat(ila1.getNumberOfCloses()).isEqualTo(1);
     }
 }
 // AUTO GENERATED FROM TEMPLATE

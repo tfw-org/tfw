@@ -42,5 +42,10 @@ public final class IntIlaFromByteIla {
                         | (bii.next() & 0xFF);
             }
         }
+
+        @Override
+        protected void closeImpl() throws IOException {
+            byteIla.close();
+        }
     }
 }

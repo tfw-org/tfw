@@ -101,5 +101,11 @@ public final class BitIlaOr {
 
             or(array, arrayOffsetInBits, rightArray, rightOffsetInBits, lengthInBits);
         }
+
+        @Override
+        protected void closeImpl() throws IOException {
+            leftIla.close();
+            rightIla.close();
+        }
     }
 }
