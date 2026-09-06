@@ -54,7 +54,6 @@ final class ByteIlaInsertTest {
     @Test
     void closeTest() throws IOException {
         final Random random = new Random(0);
-        final int length = IlaTestDimensions.defaultIlaLength();
         final TestCloseByteIla testIla = new TestCloseByteIla();
 
         try (ByteIla ila = ByteIlaInsert.create(testIla, 2, (byte) random.nextInt())) {

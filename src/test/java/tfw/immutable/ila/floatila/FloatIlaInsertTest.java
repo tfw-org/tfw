@@ -54,7 +54,6 @@ final class FloatIlaInsertTest {
     @Test
     void closeTest() throws IOException {
         final Random random = new Random(0);
-        final int length = IlaTestDimensions.defaultIlaLength();
         final TestCloseFloatIla testIla = new TestCloseFloatIla();
 
         try (FloatIla ila = FloatIlaInsert.create(testIla, 2, random.nextFloat())) {

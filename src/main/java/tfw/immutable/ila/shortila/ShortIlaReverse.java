@@ -11,6 +11,7 @@ public final class ShortIlaReverse {
     public static ShortIla create(ShortIla ila, final short[] buffer) {
         Argument.assertNotNull(ila, "ila");
         Argument.assertNotNull(buffer, "buffer");
+        Argument.assertNotLessThan(buffer.length, 1, "buffer.length");
 
         return new ShortIlaImpl(ila, buffer);
     }
@@ -31,9 +32,26 @@ public final class ShortIlaReverse {
 
         @Override
         protected void getImpl(short[] array, int offset, long start, int length) throws IOException {
-            final StridedShortIla stridedShortIla = StridedShortIlaFromShortIla.create(ila, buffer.clone());
+            final short[] reverseBuffer = buffer.clone();
 
-            stridedShortIla.get(array, offset + length - 1, -1, length() - (start + length), length);
+            int destinationOffset = offset + length;
+            long sourcePosition = length() - start;
+            int remaining = length;
+
+            while (remaining > 0) {
+                final int amount = Math.min(remaining, reverseBuffer.length);
+
+                sourcePosition -= amount;
+                destinationOffset -= amount;
+
+                ila.get(reverseBuffer, 0, sourcePosition, amount);
+
+                for (int i = 0; i < amount; i++) {
+                    array[destinationOffset + i] = reverseBuffer[amount - 1 - i];
+                }
+
+                remaining -= amount;
+            }
         }
 
         @Override

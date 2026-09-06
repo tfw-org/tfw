@@ -54,7 +54,6 @@ final class LongIlaInsertTest {
     @Test
     void closeTest() throws IOException {
         final Random random = new Random(0);
-        final int length = IlaTestDimensions.defaultIlaLength();
         final TestCloseLongIla testIla = new TestCloseLongIla();
 
         try (LongIla ila = LongIlaInsert.create(testIla, 2, random.nextLong())) {

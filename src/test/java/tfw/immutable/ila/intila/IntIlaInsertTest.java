@@ -54,7 +54,6 @@ final class IntIlaInsertTest {
     @Test
     void closeTest() throws IOException {
         final Random random = new Random(0);
-        final int length = IlaTestDimensions.defaultIlaLength();
         final TestCloseIntIla testIla = new TestCloseIntIla();
 
         try (IntIla ila = IntIlaInsert.create(testIla, 2, random.nextInt())) {

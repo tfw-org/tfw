@@ -54,7 +54,6 @@ final class BooleanIlaInsertTest {
     @Test
     void closeTest() throws IOException {
         final Random random = new Random(0);
-        final int length = IlaTestDimensions.defaultIlaLength();
         final TestCloseBooleanIla testIla = new TestCloseBooleanIla();
 
         try (BooleanIla ila = BooleanIlaInsert.create(testIla, 2, random.nextBoolean())) {

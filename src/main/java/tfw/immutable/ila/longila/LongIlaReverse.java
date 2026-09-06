@@ -11,6 +11,7 @@ public final class LongIlaReverse {
     public static LongIla create(LongIla ila, final long[] buffer) {
         Argument.assertNotNull(ila, "ila");
         Argument.assertNotNull(buffer, "buffer");
+        Argument.assertNotLessThan(buffer.length, 1, "buffer.length");
 
         return new LongIlaImpl(ila, buffer);
     }
@@ -31,9 +32,26 @@ public final class LongIlaReverse {
 
         @Override
         protected void getImpl(long[] array, int offset, long start, int length) throws IOException {
-            final StridedLongIla stridedLongIla = StridedLongIlaFromLongIla.create(ila, buffer.clone());
+            final long[] reverseBuffer = buffer.clone();
 
-            stridedLongIla.get(array, offset + length - 1, -1, length() - (start + length), length);
+            int destinationOffset = offset + length;
+            long sourcePosition = length() - start;
+            int remaining = length;
+
+            while (remaining > 0) {
+                final int amount = Math.min(remaining, reverseBuffer.length);
+
+                sourcePosition -= amount;
+                destinationOffset -= amount;
+
+                ila.get(reverseBuffer, 0, sourcePosition, amount);
+
+                for (int i = 0; i < amount; i++) {
+                    array[destinationOffset + i] = reverseBuffer[amount - 1 - i];
+                }
+
+                remaining -= amount;
+            }
         }
 
         @Override

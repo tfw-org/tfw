@@ -11,6 +11,7 @@ public final class FloatIlaReverse {
     public static FloatIla create(FloatIla ila, final float[] buffer) {
         Argument.assertNotNull(ila, "ila");
         Argument.assertNotNull(buffer, "buffer");
+        Argument.assertNotLessThan(buffer.length, 1, "buffer.length");
 
         return new FloatIlaImpl(ila, buffer);
     }
@@ -31,9 +32,26 @@ public final class FloatIlaReverse {
 
         @Override
         protected void getImpl(float[] array, int offset, long start, int length) throws IOException {
-            final StridedFloatIla stridedFloatIla = StridedFloatIlaFromFloatIla.create(ila, buffer.clone());
+            final float[] reverseBuffer = buffer.clone();
 
-            stridedFloatIla.get(array, offset + length - 1, -1, length() - (start + length), length);
+            int destinationOffset = offset + length;
+            long sourcePosition = length() - start;
+            int remaining = length;
+
+            while (remaining > 0) {
+                final int amount = Math.min(remaining, reverseBuffer.length);
+
+                sourcePosition -= amount;
+                destinationOffset -= amount;
+
+                ila.get(reverseBuffer, 0, sourcePosition, amount);
+
+                for (int i = 0; i < amount; i++) {
+                    array[destinationOffset + i] = reverseBuffer[amount - 1 - i];
+                }
+
+                remaining -= amount;
+            }
         }
 
         @Override

@@ -50,7 +50,6 @@ final class IntIlaMutateTest {
     @Test
     void closeTest() throws IOException {
         final Random random = new Random(0);
-        final int length = IlaTestDimensions.defaultIlaLength();
         final TestCloseIntIla testIla = new TestCloseIntIla();
 
         try (IntIla ila = IntIlaMutate.create(testIla, 2, random.nextInt())) {

@@ -50,7 +50,6 @@ final class DoubleIlaMutateTest {
     @Test
     void closeTest() throws IOException {
         final Random random = new Random(0);
-        final int length = IlaTestDimensions.defaultIlaLength();
         final TestCloseDoubleIla testIla = new TestCloseDoubleIla();
 
         try (DoubleIla ila = DoubleIlaMutate.create(testIla, 2, random.nextDouble())) {

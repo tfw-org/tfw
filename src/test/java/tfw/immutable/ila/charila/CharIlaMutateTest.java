@@ -50,7 +50,6 @@ final class CharIlaMutateTest {
     @Test
     void closeTest() throws IOException {
         final Random random = new Random(0);
-        final int length = IlaTestDimensions.defaultIlaLength();
         final TestCloseCharIla testIla = new TestCloseCharIla();
 
         try (CharIla ila = CharIlaMutate.create(testIla, 2, (char) random.nextInt())) {

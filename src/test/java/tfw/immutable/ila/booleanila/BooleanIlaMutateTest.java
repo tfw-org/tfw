@@ -50,7 +50,6 @@ final class BooleanIlaMutateTest {
     @Test
     void closeTest() throws IOException {
         final Random random = new Random(0);
-        final int length = IlaTestDimensions.defaultIlaLength();
         final TestCloseBooleanIla testIla = new TestCloseBooleanIla();
 
         try (BooleanIla ila = BooleanIlaMutate.create(testIla, 2, random.nextBoolean())) {

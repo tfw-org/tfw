@@ -46,7 +46,6 @@ final class ObjectIlaMutateTest {
 
     @Test
     void closeTest() throws IOException {
-        final int length = IlaTestDimensions.defaultIlaLength();
         final TestCloseObjectIla testIla = new TestCloseObjectIla();
 
         try (ObjectIla<Object> ila = ObjectIlaMutate.create(testIla, 2, new Object())) {
