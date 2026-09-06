@@ -2,6 +2,7 @@ package tfw.immutable.ila.floatila;
 
 import java.io.IOException;
 import tfw.check.Argument;
+import tfw.immutable.ila.IlaInsertUtil;
 
 public final class FloatIlaInsert {
     private FloatIlaInsert() {

@@ -2,6 +2,7 @@ package tfw.immutable.ila.charila;
 
 import java.io.IOException;
 import tfw.check.Argument;
+import tfw.immutable.ila.IlaRemoveUtil;
 
 public final class CharIlaRemove {
     private CharIlaRemove() {

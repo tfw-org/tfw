@@ -2,6 +2,7 @@ package tfw.immutable.ila.byteila;
 
 import java.io.IOException;
 import tfw.check.Argument;
+import tfw.immutable.ila.IlaRemoveUtil;
 
 public final class ByteIlaRemove {
     private ByteIlaRemove() {

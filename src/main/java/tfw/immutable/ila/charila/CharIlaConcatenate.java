@@ -2,6 +2,7 @@ package tfw.immutable.ila.charila;
 
 import java.io.IOException;
 import tfw.check.Argument;
+import tfw.immutable.ila.IlaConcatenateUtil;
 
 public final class CharIlaConcatenate {
     private CharIlaConcatenate() {

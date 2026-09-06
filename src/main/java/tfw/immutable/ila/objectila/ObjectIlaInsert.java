@@ -2,6 +2,7 @@ package tfw.immutable.ila.objectila;
 
 import java.io.IOException;
 import tfw.check.Argument;
+import tfw.immutable.ila.IlaInsertUtil;
 
 public final class ObjectIlaInsert {
     private ObjectIlaInsert() {

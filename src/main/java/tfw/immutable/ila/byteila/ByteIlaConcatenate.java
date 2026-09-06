@@ -2,6 +2,7 @@ package tfw.immutable.ila.byteila;
 
 import java.io.IOException;
 import tfw.check.Argument;
+import tfw.immutable.ila.IlaConcatenateUtil;
 
 public final class ByteIlaConcatenate {
     private ByteIlaConcatenate() {

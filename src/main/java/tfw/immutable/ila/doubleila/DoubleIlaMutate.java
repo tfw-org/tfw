@@ -2,6 +2,7 @@ package tfw.immutable.ila.doubleila;
 
 import java.io.IOException;
 import tfw.check.Argument;
+import tfw.immutable.ila.IlaMutateUtil;
 
 public final class DoubleIlaMutate {
     private DoubleIlaMutate() {

@@ -2,6 +2,7 @@ package tfw.immutable.ila.booleanila;
 
 import java.io.IOException;
 import tfw.check.Argument;
+import tfw.immutable.ila.IlaRemoveUtil;
 
 public final class BooleanIlaRemove {
     private BooleanIlaRemove() {

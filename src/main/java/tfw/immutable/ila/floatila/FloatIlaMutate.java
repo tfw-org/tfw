@@ -2,6 +2,7 @@ package tfw.immutable.ila.floatila;
 
 import java.io.IOException;
 import tfw.check.Argument;
+import tfw.immutable.ila.IlaMutateUtil;
 
 public final class FloatIlaMutate {
     private FloatIlaMutate() {
