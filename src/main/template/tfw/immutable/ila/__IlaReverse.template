@@ -3,6 +3,7 @@ package %%PACKAGE%%;
 
 import java.io.IOException;
 import tfw.check.Argument;
+import tfw.immutable.ila.IlaReverseUtil;
 
 public final class %%NAME%%IlaReverse {
     private %%NAME%%IlaReverse() {
@@ -35,24 +36,19 @@ public final class %%NAME%%IlaReverse {
         protected void getImpl(%%TYPE_OR_TEMPLATE%%[] array, int offset, long start, int length) throws IOException {
             final %%TYPE_OR_TEMPLATE%%[] reverseBuffer = buffer.clone();
 
-            int destinationOffset = offset + length;
-            long sourcePosition = length() - start;
-            int remaining = length;
+            IlaReverseUtil.reverse(
+                    ila.length(),
+                    offset,
+                    start,
+                    length,
+                    reverseBuffer.length,
+                    (sourcePosition, destinationOffset, amount) -> {
+                        ila.get(reverseBuffer, 0, sourcePosition, amount);
 
-            while (remaining > 0) {
-                final int amount = Math.min(remaining, reverseBuffer.length);
-
-                sourcePosition -= amount;
-                destinationOffset -= amount;
-
-                ila.get(reverseBuffer, 0, sourcePosition, amount);
-
-                for (int i = 0; i < amount; i++) {
-                    array[destinationOffset + i] = reverseBuffer[amount - 1 - i];
-                }
-
-                remaining -= amount;
-            }
+                        for (int i = 0; i < amount; i++) {
+                            array[destinationOffset + i] = reverseBuffer[amount - 1 - i];
+                        }
+                    });
         }
 
         @Override
