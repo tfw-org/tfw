@@ -41,6 +41,11 @@ public final class FloatIlaFromCastCharIla {
                 array[ii] = (float) fi.next();
             }
         }
+
+        @Override
+        protected void closeImpl() throws IOException {
+            charIla.close();
+        }
     }
 }
 // AUTO GENERATED FROM TEMPLATE

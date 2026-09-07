@@ -40,6 +40,11 @@ public final class ShortIlaFromCastIntIla {
                 array[ii] = (short) fi.next();
             }
         }
+
+        @Override
+        protected void closeImpl() throws IOException {
+            intIla.close();
+        }
     }
 }
 // AUTO GENERATED FROM TEMPLATE

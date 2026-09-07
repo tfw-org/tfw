@@ -1,7 +1,9 @@
 package tfw.immutable.ila.floatila;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import java.io.IOException;
 import java.util.Random;
 import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
@@ -43,6 +45,18 @@ final class FloatIlaMutateTest {
 
             FloatIlaCheck.check(targetIla, actualIla);
         }
+    }
+
+    @Test
+    void closeTest() throws IOException {
+        final Random random = new Random(0);
+        final TestCloseFloatIla testIla = new TestCloseFloatIla();
+
+        try (FloatIla ila = FloatIlaMutate.create(testIla, 2, random.nextFloat())) {
+            assertThat(ila).isNotNull();
+        }
+
+        assertThat(testIla.getNumberOfCloses()).isEqualTo(1);
     }
 }
 // AUTO GENERATED FROM TEMPLATE

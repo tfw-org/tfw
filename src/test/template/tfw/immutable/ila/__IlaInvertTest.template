@@ -1,8 +1,10 @@
 // doubleila,floatila
 package %%PACKAGE%%;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import java.io.IOException;
 %%RANDOM_INCLUDE%%import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 
@@ -28,5 +30,16 @@ final class %%NAME%%IlaInvertTest {
         %%NAME%%Ila actualIla = %%NAME%%IlaInvert.create(ila);
 
         %%NAME%%IlaCheck.check(targetIla, actualIla);
+    }
+
+    @Test
+    void closeTest() throws IOException {
+        final TestClose%%NAME%%Ila testIla = new TestClose%%NAME%%Ila();
+
+        try (%%NAME%%Ila%%TEMPLATE%% ila = %%NAME%%IlaInvert.create(testIla)) {
+            assertThat(ila).isNotNull();
+        }
+
+        assertThat(testIla.getNumberOfCloses()).isEqualTo(1);
     }
 }

@@ -1,5 +1,11 @@
 # Security Policy
 
+## Security Contact
+
+The security contact for `tfw` is:
+
+- **[@jdcove2](https://github.com/jdcove2)** — TFW project maintainer
+
 ## Supported Versions
 
 The `tfw` project is actively maintained on the latest development and release versions.

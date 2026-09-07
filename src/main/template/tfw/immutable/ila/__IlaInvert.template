@@ -35,5 +35,10 @@ public final class %%NAME%%IlaInvert {
                 array[ii] = (%%TYPE%%) 1 / array[ii];
             }
         }
+
+        @Override
+        protected void closeImpl() throws IOException {
+            ila.close();
+        }
     }
 }

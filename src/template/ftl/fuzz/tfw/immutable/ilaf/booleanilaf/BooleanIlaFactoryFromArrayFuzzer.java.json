@@ -1,0 +1,15 @@
+{
+    "templateName": "IlaFactoryFromArrayFuzzer.java.ftl",
+    "dataModel": {
+        "typePackage": "booleanilaf",
+        "fuzzerClassName": "BooleanIlaFactoryFromArrayFuzzer",
+        "factoryName": "BooleanIlaFactoryFromArray",
+        "ilaPackage": "booleanila",
+        "ilaType": "BooleanIla",
+        "arrayType": "boolean[]",
+        "arrayTypeCreation": "boolean[length]",
+        "factoryExpression": "array -> BooleanIlaFactoryFromArray.create(array).create()",
+        "initializationKind": "boolean",
+        "equalityKind": "primitive"
+    }
+}

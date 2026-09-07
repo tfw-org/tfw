@@ -47,7 +47,7 @@ final class CommitTest {
     }
 
     @Test
-    void triggerBehaviorTest() {
+    void triggerBehaviorTest() throws InterruptedException {
 
         final BasicTransactionQueue queue = new BasicTransactionQueue();
         final Root root = Root.builder()

@@ -1,8 +1,10 @@
 // booleanila,byteila,charila,doubleila,floatila,intila,longila,objectila,shortila
 package %%PACKAGE%%;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import java.io.IOException;
 import java.lang.reflect.Array;
 %%RANDOM_INCLUDE%%import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
@@ -70,5 +72,21 @@ final class %%NAME%%IlaInterleaveTest {
 
             %%NAME%%IlaCheck.check(targetIla, actualIla);
         }
+    }
+
+    @Test
+    void closeTest() throws IOException {
+        final TestClose%%NAME%%Ila ila0 = new TestClose%%NAME%%Ila();
+        final TestClose%%NAME%%Ila ila1 = new TestClose%%NAME%%Ila();
+        final %%NAME%%Ila%%TEMPLATE%%[] ilas = %%FULL_CAST%%Array.newInstance(%%NAME%%Ila.class, 2);
+
+        ilas[0] = ila0;
+        ilas[1] = ila1;
+        try (%%NAME%%Ila ila = %%NAME%%IlaInterleave.create(ilas, new %%TYPE%%[1000])) {
+            assertThat(ila).isNotNull();
+        }
+
+        assertThat(ila0.getNumberOfCloses()).isEqualTo(1);
+        assertThat(ila1.getNumberOfCloses()).isEqualTo(1);
     }
 }

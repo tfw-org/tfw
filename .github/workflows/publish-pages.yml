@@ -1,0 +1,233 @@
+name: Publish GitHub Pages
+
+on:
+  push:
+    branches: [ "master" ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  publish:
+    name: Generate and publish reports
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+
+    steps:
+    - name: Checkout project
+      uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      with:
+        persist-credentials: false
+
+    - name: Set up Java 21-temurin
+      uses: actions/setup-java@dd06d9cba3e5552c54d9f8ea23572deb30010f7c # v6.0.0
+      with:
+        java-version: '21'
+        distribution: 'temurin'
+        cache: maven
+
+    - name: Install tightvncserver
+      run: sudo apt-get install -y tightvncserver
+
+    - name: Run full mutation testing
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: >
+        ${{ github.workspace }}/execute-on-vnc.sh
+        mvn -B
+        clean
+        test-compile
+        -Ppitest
+        -DtimestampedReports=false
+        org.pitest:pitest-maven:mutationCoverage
+
+    - name: Generate development Javadoc
+      run: >
+        mvn -B
+        javadoc:javadoc
+        -DoutputDirectory=target/reports/apidocs
+        -Ddoclint=none
+        -DfailOnError=false
+
+    - name: Get latest release
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        if ! release_tag=$(gh api \
+          "repos/${GITHUB_REPOSITORY}/releases/latest" \
+          --jq '.tag_name'); then
+          echo "::error::No non-draft GitHub release found; cannot generate release Javadoc."
+          exit 1
+        fi
+
+        echo "Latest release: ${release_tag}"
+        echo "RELEASE_TAG=${release_tag}" >> "$GITHUB_ENV"
+
+    - name: Generate latest release Javadoc
+      run: |
+        echo "Generating Javadoc for release ${RELEASE_TAG}"
+
+        # Fetch the exact release tag.
+        if ! git fetch --depth=1 origin \
+          "refs/tags/${RELEASE_TAG}:refs/tags/${RELEASE_TAG}"; then
+          echo "::error::Unable to fetch tag ${RELEASE_TAG} for the latest GitHub release."
+          exit 1
+        fi
+
+        # Save the development Javadoc before changing the working tree.
+        mkdir -p target/pages/javadoc
+        cp -R target/reports/apidocs/. target/pages/javadoc/
+
+        # Check out the exact source corresponding to the latest release.
+        git checkout --detach "${RELEASE_TAG}"
+
+        # Generate Javadoc for the released source.
+        rm -rf target/reports/apidocs
+
+        mvn -B \
+          javadoc:javadoc \
+          -DoutputDirectory=target/reports/apidocs \
+          -Ddoclint=none \
+          -DfailOnError=false
+
+        # Put the release Javadoc under /javadoc/latest/.
+        mkdir -p target/pages/javadoc/latest
+        cp -R target/reports/apidocs/. target/pages/javadoc/latest/
+
+    - name: Prepare GitHub Pages
+      run: |
+        # Return to the master checkout for consistency.
+        git checkout --detach origin/master
+
+        mkdir -p target/pages/pit
+
+        cp -R target/pit-reports/. target/pages/pit/
+
+        # Calculate the sizes of the reports.
+        development_javadoc_bytes=$(find target/pages/javadoc -type f ! -path '*/latest/*' -printf '%s\n' | awk '{sum += $1} END {print sum}')
+        release_javadoc_bytes=$(find target/pages/javadoc/latest -type f -printf '%s\n' | awk '{sum += $1} END {print sum}')
+        pit_bytes=$(find target/pages/pit -type f -printf '%s\n' | awk '{sum += $1} END {print sum}')
+
+        report_bytes=$((development_javadoc_bytes + release_javadoc_bytes + pit_bytes))
+
+        development_javadoc_size=$(numfmt --to=iec --suffix=B "$development_javadoc_bytes")
+        release_javadoc_size=$(numfmt --to=iec --suffix=B "$release_javadoc_bytes")
+        pit_size=$(numfmt --to=iec --suffix=B "$pit_bytes")
+        report_size=$(numfmt --to=iec --suffix=B "$report_bytes")
+
+        # Create the top-level GitHub Pages landing page.
+        cat > target/pages/index.html <<EOF
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>TFW Reports</title>
+        </head>
+        <body>
+          <h1>TFW Reports</h1>
+
+          <h2>Documentation</h2>
+
+          <ul>
+            <li>
+              <a href="javadoc/">Development Javadoc</a>
+              — documentation for the current master branch.
+            </li>
+            <li>
+              <a href="javadoc/latest/">Latest Release Javadoc</a>
+              — documentation for release ${RELEASE_TAG}.
+            </li>
+          </ul>
+
+          <h2>Testing</h2>
+
+          <ul>
+            <li>
+              <a href="pit/">Mutation Testing Report</a>
+              — PIT mutation testing results for the current master branch.
+            </li>
+          </ul>
+
+          <h2>Site Information</h2>
+
+          <table>
+            <tr>
+              <th>Content</th>
+              <th>Size</th>
+            </tr>
+            <tr>
+              <td>Development Javadoc</td>
+              <td>${development_javadoc_size}</td>
+            </tr>
+            <tr>
+              <td>Latest Release Javadoc (${RELEASE_TAG})</td>
+              <td>${release_javadoc_size}</td>
+            </tr>
+            <tr>
+              <td>PIT report</td>
+              <td>${pit_size}</td>
+            </tr>
+            <tr>
+              <td>Total reports</td>
+              <td>${report_size}</td>
+            </tr>
+          </table>
+
+          <p>
+            Report sizes are calculated from the files published to GitHub Pages.
+          </p>
+        </body>
+        </html>
+        EOF
+
+        # Calculate the exact size of the complete published site,
+        # including the top-level index.html.
+        total_bytes=$(find target/pages -type f -printf '%s\n' | awk '{sum += $1} END {print sum}')
+        file_count=$(find target/pages -type f | wc -l)
+        total_size=$(numfmt --to=iec --suffix=B "$total_bytes")
+
+        echo
+        echo "GitHub Pages content:"
+        echo "  Latest release:         ${RELEASE_TAG}"
+        echo "  Total site size:        ${total_size} (${total_bytes} bytes)"
+        echo "  Development Javadoc:    ${development_javadoc_size} (${development_javadoc_bytes} bytes)"
+        echo "  Release Javadoc:        ${release_javadoc_size} (${release_javadoc_bytes} bytes)"
+        echo "  PIT size:               ${pit_size} (${pit_bytes} bytes)"
+        echo "  Total reports:          ${report_size} (${report_bytes} bytes)"
+        echo "  File count:             ${file_count}"
+
+    - name: Configure GitHub Pages
+      uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6.0.0
+
+    - name: Upload GitHub Pages artifact
+      uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
+      with:
+        path: target/pages
+
+  deploy:
+    name: Deploy GitHub Pages
+    needs: publish
+    runs-on: ubuntu-latest
+
+    permissions:
+      pages: write
+      id-token: write
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+    - name: Deploy GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@cd2ce8fcbc39b97be8ca5fce6e763baed58fa128 # v5.0.0

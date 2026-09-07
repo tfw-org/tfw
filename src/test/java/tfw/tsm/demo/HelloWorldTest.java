@@ -32,7 +32,7 @@ final class HelloWorldTest {
     }
 
     @Test
-    void testHelloWorld() {
+    void testHelloWorld() throws InterruptedException {
         final List<LogRecord> expectedLogRecords = new ArrayList<>(
                 Arrays.asList(new LogRecord[] {new LogRecord(Level.INFO, HelloWorld.HELLO_WORLD_STRING)}));
 

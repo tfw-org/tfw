@@ -41,6 +41,11 @@ public final class ShortIlaFromCastFloatIla {
                 array[ii] = (short) fi.next();
             }
         }
+
+        @Override
+        protected void closeImpl() throws IOException {
+            floatIla.close();
+        }
     }
 }
 // AUTO GENERATED FROM TEMPLATE

@@ -14,7 +14,7 @@ final class StateChangeCycleDelayTest {
     StringECD ecD = new StringECD("ecD");
 
     @Test
-    void twoStageTest() {
+    void twoStageTest() throws InterruptedException {
         BasicTransactionQueue queue = new BasicTransactionQueue();
         Initiator initiator = new Initiator("Test", ecI);
         TestConverter converterA = new TestConverter("ConverterA", new StringECD[] {ecI}, ecA);
@@ -46,7 +46,7 @@ final class StateChangeCycleDelayTest {
     }
 
     @Test
-    void indirectDependencyTest() {
+    void indirectDependencyTest() throws InterruptedException {
         BasicTransactionQueue queue = new BasicTransactionQueue();
         Initiator initiator = new Initiator("Test", ecI);
         TestConverter converterA = new TestConverter("ConverterA", new StringECD[] {ecI}, ecA);
@@ -84,7 +84,7 @@ final class StateChangeCycleDelayTest {
     }
 
     @Test
-    void directIndirectDependencyTest() {
+    void directIndirectDependencyTest() throws InterruptedException {
         BasicTransactionQueue queue = new BasicTransactionQueue();
         Initiator initiator = new Initiator("Test", ecI);
         TestConverter converterA = new TestConverter("ConverterA", new StringECD[] {ecI}, ecA);
@@ -128,7 +128,7 @@ final class StateChangeCycleDelayTest {
     }
 
     @Test
-    void circularDependencyTest() {
+    void circularDependencyTest() throws InterruptedException {
         BasicTransactionQueue queue = new BasicTransactionQueue();
         Initiator initiator = new Initiator("Test", ecI);
         TestConverter converterA = new TestConverter("ConverterA", new StringECD[] {ecI}, ecA);
@@ -163,7 +163,7 @@ final class StateChangeCycleDelayTest {
     }
 
     @Test
-    void threeWayDependencyTest() {
+    void threeWayDependencyTest() throws InterruptedException {
         BasicTransactionQueue queue = new BasicTransactionQueue();
         Initiator initiator = new Initiator("Test", ecI);
         TestConverter converterA = new TestConverter("ConverterA", new StringECD[] {ecI}, ecA);

@@ -42,5 +42,10 @@ public final class %%NAME%%IlaFromCastByteIla {
                 array[ii] = (%%TYPE%%) fi.next();
             }
         }
+
+        @Override
+        protected void closeImpl() throws IOException {
+            byteIla.close();
+        }
     }
 }

@@ -2,6 +2,7 @@ package tfw.immutable.ila.booleanila;
 
 import java.io.IOException;
 import tfw.check.Argument;
+import tfw.immutable.ila.IlaConcatenateUtil;
 
 public final class BooleanIlaConcatenate {
     private BooleanIlaConcatenate() {
@@ -42,17 +43,22 @@ public final class BooleanIlaConcatenate {
         @Override
         protected void getImpl(boolean[] array, int offset, long start, int length) throws IOException {
             final long leftIlaLength = leftIla.length();
-            final long leftIlaLastIndex = leftIlaLength - 1;
 
-            if (start + length <= leftIlaLastIndex) {
-                leftIla.get(array, offset, start, length);
-            } else if (start > leftIlaLastIndex) {
-                rightIla.get(array, offset, start - leftIlaLength, length);
-            } else {
-                final int leftAmount = (int) (leftIlaLength - start);
-                leftIla.get(array, offset, start, leftAmount);
-                rightIla.get(array, offset + leftAmount, 0, length - leftAmount);
-            }
+            IlaConcatenateUtil.get(
+                    leftIlaLength,
+                    offset,
+                    start,
+                    length,
+                    (destinationOffset, sourceStart, amount) ->
+                            leftIla.get(array, destinationOffset, sourceStart, amount),
+                    (destinationOffset, sourceStart, amount) ->
+                            rightIla.get(array, destinationOffset, sourceStart, amount));
+        }
+
+        @Override
+        protected void closeImpl() throws IOException {
+            leftIla.close();
+            rightIla.close();
         }
     }
 }

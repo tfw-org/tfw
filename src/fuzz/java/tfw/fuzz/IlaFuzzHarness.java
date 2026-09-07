@@ -1,0 +1,389 @@
+package tfw.fuzz;
+
+public final class IlaFuzzHarness<A, I extends tfw.immutable.ila.ImmutableLongArray> {
+    private final IlaFuzzSpec<A, I> spec;
+
+    public IlaFuzzHarness(IlaFuzzSpec<A, I> spec) {
+        this.spec = spec;
+    }
+
+    public void fuzz(com.code_intelligence.jazzer.api.FuzzedDataProvider data) throws Exception {
+        IlaFuzzInput input = IlaFuzzInput.consume(data);
+
+        IlaArrayAdapter<A> adapter = spec.adapter();
+
+        A source = adapter.create(input.sourceLength());
+
+        adapter.initialize(source);
+
+        /*
+         * Test the factory's null argument handling.
+         *
+         * The current FactoryFromArray.create(null) itself returns
+         * a factory; the exception occurs when that factory creates
+         * the ILA. Therefore spec.create(null) is the correct test.
+         */
+        verifyNullCreate();
+
+        I ila;
+
+        try {
+            ila = spec.create(source);
+        } catch (Throwable t) {
+            throw failure(input, "create(array) unexpectedly failed", t);
+        }
+
+        Throwable primaryFailure = null;
+
+        try {
+            verifyLength(ila, input);
+
+            /*
+             * Verify that the created ILA actually represents the source
+             * array when there is something to read.
+             */
+            if (input.sourceLength() > 0) {
+                verifyElement(ila, source, 0);
+            }
+
+            /*
+             * Exercise the exact fuzzed get() operation.
+             */
+            verifyFuzzedGet(ila, source, input);
+
+            /*
+             * Exercise null destination separately.
+             *
+             * Abstract*Ila.get() checks the destination for null before
+             * checking length. Therefore a null destination must always
+             * produce IllegalArgumentException, including when length == 0.
+             */
+            verifyNullDestination(ila, input);
+
+            /*
+             * Exercise the ILA close lifecycle.
+             *
+             * close() must succeed the first time and must be idempotent
+             * when called a second time. Once closed, operations must
+             * reject access with IllegalStateException.
+             */
+            verifyClose(ila, adapter, input);
+
+        } catch (Exception | Error t) {
+            /*
+             * Remember the original failure so that a failure from close()
+             * during cleanup cannot replace it.
+             */
+            primaryFailure = t;
+            throw t;
+
+        } finally {
+            /*
+             * Always close the ILA, even when one of the preceding
+             * verifications fails.
+             *
+             * verifyClose() already closes the ILA on the normal path,
+             * so this second close is intentional and relies on the
+             * idempotent close() contract.
+             */
+            try {
+                ila.close();
+
+            } catch (Exception | Error closeFailure) {
+
+                if (primaryFailure != null) {
+                    /*
+                     * Preserve the original verification failure and
+                     * retain the cleanup failure as diagnostic information.
+                     */
+                    primaryFailure.addSuppressed(closeFailure);
+
+                } else {
+                    /*
+                     * There was no preceding failure, so a cleanup
+                     * failure should be reported normally.
+                     */
+                    throw closeFailure;
+                }
+            }
+        }
+    }
+
+    private void verifyNullCreate() {
+        try {
+            spec.create(null);
+
+            throw new AssertionError(spec.name() + ": create(null) was accepted");
+
+        } catch (IllegalArgumentException expected) {
+            /*
+             * Correct.
+             */
+        } catch (AssertionError e) {
+            throw e;
+
+        } catch (Throwable t) {
+            throw new AssertionError(
+                    spec.name()
+                            + ": create(null) threw "
+                            + t.getClass().getName()
+                            + " instead of IllegalArgumentException",
+                    t);
+        }
+    }
+
+    private void verifyLength(I ila, IlaFuzzInput input) throws Exception {
+        long actual = spec.length(ila);
+
+        if (actual != input.sourceLength()) {
+            throw failure(input, "incorrect ILA length: expected=" + input.sourceLength() + ", actual=" + actual, null);
+        }
+    }
+
+    private void verifyElement(I ila, A source, int index) throws Exception {
+        IlaArrayAdapter<A> adapter = spec.adapter();
+
+        A destination = adapter.create(1);
+
+        adapter.initialize(destination);
+
+        spec.get(ila, destination, 0, index, 1);
+
+        adapter.assertElementEquals(source, index, destination, 0);
+    }
+
+    private void verifyFuzzedGet(I ila, A source, IlaFuzzInput input) {
+        IlaArrayAdapter<A> adapter = spec.adapter();
+
+        boolean valid = isValidGet(
+                input.sourceLength(), input.destinationLength(), input.offset(), input.start(), input.length());
+
+        A destination = adapter.create(input.destinationLength());
+
+        adapter.initialize(destination);
+
+        A before = adapter.copy(destination);
+
+        try {
+            spec.get(ila, destination, input.offset(), input.start(), input.length());
+
+            if (!valid) {
+                throw failure(input, "get() accepted invalid arguments", null);
+            }
+
+            verifySuccessfulGet(source, before, destination, input);
+
+        } catch (IllegalArgumentException e) {
+
+            if (valid) {
+                throw failure(input, "get() rejected valid arguments", e);
+            }
+
+            /*
+             * A failed argument check must happen before arraycopy,
+             * so the destination must remain untouched.
+             */
+            verifyUnchanged(before, destination, input);
+
+        } catch (Throwable t) {
+
+            throw failure(input, "get() threw " + t.getClass().getName(), t);
+        }
+    }
+
+    private void verifyNullDestination(I ila, IlaFuzzInput input) {
+        try {
+            spec.get(ila, null, input.offset(), input.start(), input.length());
+
+            throw failure(input, "get(null, ...) was accepted", null);
+
+        } catch (IllegalArgumentException expected) {
+
+            /*
+             * Correct. Abstract*Ila.get() rejects a null destination
+             * before checking the requested length.
+             */
+
+        } catch (Throwable t) {
+
+            throw failure(input, "get(null, ...) threw " + t.getClass().getName(), t);
+        }
+    }
+
+    private void verifyClose(I ila, IlaArrayAdapter<A> adapter, IlaFuzzInput input) {
+        try {
+            ila.close();
+        } catch (Throwable t) {
+            throw failure(input, "close() threw " + t.getClass().getName(), t);
+        }
+
+        /*
+         * close() must be idempotent.
+         */
+        try {
+            ila.close();
+        } catch (Throwable t) {
+            throw failure(input, "second close() threw " + t.getClass().getName(), t);
+        }
+
+        /*
+         * length() must reject access after close.
+         */
+        try {
+            ila.length();
+
+            throw failure(input, "length() was accepted after close()", null);
+
+        } catch (IllegalStateException expected) {
+            /*
+             * Correct.
+             */
+        } catch (Throwable t) {
+            throw failure(
+                    input,
+                    "length() after close() threw " + t.getClass().getName() + " instead of IllegalStateException",
+                    t);
+        }
+
+        /*
+         * get() must also reject access after close.
+         *
+         * Use a one-element destination and a zero-length request.
+         * The closed-state check occurs before argument validation, so
+         * this also verifies that a closed ILA cannot be accessed even
+         * when the requested range would otherwise require validation.
+         */
+        A destination = adapter.create(1);
+        adapter.initialize(destination);
+
+        try {
+            spec.get(ila, destination, 0, 0, 0);
+
+            throw failure(input, "get() was accepted after close()", null);
+
+        } catch (IllegalStateException expected) {
+            /*
+             * Correct.
+             */
+        } catch (Throwable t) {
+            throw failure(
+                    input,
+                    "get() after close() threw " + t.getClass().getName() + " instead of IllegalStateException",
+                    t);
+        }
+    }
+
+    private void verifySuccessfulGet(A source, A before, A destination, IlaFuzzInput input) {
+        IlaArrayAdapter<A> adapter = spec.adapter();
+
+        /*
+         * A successful zero-length operation is a no-op.
+         *
+         * Note that the arguments must still be valid. That validation
+         * is performed by isValidGet().
+         */
+        if (input.length() == 0) {
+            verifyUnchanged(before, destination, input);
+            return;
+        }
+
+        /*
+         * A successful operation necessarily has a start that fits
+         * in a Java array because sourceLength is bounded.
+         */
+        int sourceIndex = Math.toIntExact(input.start());
+
+        for (int i = 0; i < input.length(); i++) {
+            adapter.assertElementEquals(source, sourceIndex + i, destination, input.offset() + i);
+        }
+
+        /*
+         * Nothing outside the requested destination range may change.
+         */
+        int copyStart = input.offset();
+
+        int copyEnd = copyStart + input.length();
+
+        for (int i = 0; i < input.destinationLength(); i++) {
+
+            if (i >= copyStart && i < copyEnd) {
+                continue;
+            }
+
+            adapter.assertElementEquals(before, i, destination, i);
+        }
+    }
+
+    private void verifyUnchanged(A before, A destination, IlaFuzzInput input) {
+        IlaArrayAdapter<A> adapter = spec.adapter();
+
+        for (int i = 0; i < input.destinationLength(); i++) {
+            adapter.assertElementEquals(before, i, destination, i);
+        }
+    }
+
+    /*
+     * This mirrors ImmutableLongArrayUtil.boundsCheck().
+     *
+     * Abstract*Ila.get() performs argument validation BEFORE the
+     * length == 0 early return. Therefore zero-length operations
+     * are valid only when all of the normal bounds requirements are
+     * satisfied.
+     */
+    private static boolean isValidGet(long ilaLength, int arrayLength, int offset, long start, int length) {
+        if (ilaLength < 0) {
+            return false;
+        }
+
+        if (arrayLength < 0) {
+            return false;
+        }
+
+        if (offset < 0) {
+            return false;
+        }
+
+        if (start < 0) {
+            return false;
+        }
+
+        if (length < 0) {
+            return false;
+        }
+
+        /*
+         * offset and start must identify valid positions in their
+         * respective arrays/ILAs, even when length == 0.
+         */
+        if (offset >= arrayLength) {
+            return false;
+        }
+
+        if (start >= ilaLength) {
+            return false;
+        }
+
+        /*
+         * Widen BEFORE adding.
+         */
+        if ((long) offset + (long) length > (long) arrayLength) {
+            return false;
+        }
+
+        if (start + (long) length > ilaLength) {
+            return false;
+        }
+
+        return true;
+    }
+
+    private AssertionError failure(IlaFuzzInput input, String message, Throwable cause) {
+        String fullMessage = spec.name() + ": " + message + " [" + input + "]";
+
+        if (cause == null) {
+            return new AssertionError(fullMessage);
+        }
+
+        return new AssertionError(fullMessage, cause);
+    }
+}

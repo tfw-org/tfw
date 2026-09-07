@@ -74,6 +74,13 @@ public final class CharIlaInterleave {
                 }
             }
         }
+
+        @Override
+        protected void closeImpl() throws IOException {
+            for (StridedCharIla ila : stridedCharIlas) {
+                ila.close();
+            }
+        }
     }
 }
 // AUTO GENERATED FROM TEMPLATE

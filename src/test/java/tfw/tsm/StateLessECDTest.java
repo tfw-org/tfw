@@ -9,7 +9,7 @@ import tfw.tsm.ecd.StatelessTriggerECD;
 
 final class StateLessECDTest {
     @Test
-    void getStateTest() {
+    void getStateTest() throws InterruptedException {
         final StatelessTriggerECD trigger = new StatelessTriggerECD("test");
         final BasicTransactionQueue queue = new BasicTransactionQueue();
         final Root root = Root.builder()

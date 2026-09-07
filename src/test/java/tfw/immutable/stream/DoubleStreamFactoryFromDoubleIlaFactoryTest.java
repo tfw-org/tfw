@@ -37,6 +37,11 @@ final class DoubleStreamFactoryFromDoubleIlaFactoryTest {
                     public void get(double[] array, int arrayOffset, long ilaStart, int length) throws IOException {
                         throw new IOException("Test DoubleIla that only throws IOExceptions!");
                     }
+
+                    @Override
+                    public void close() throws IOException {
+                        throw new IOException("Test DoubleIla that only throws IOExceptions!");
+                    }
                 };
             }
         };
@@ -61,6 +66,11 @@ final class DoubleStreamFactoryFromDoubleIlaFactoryTest {
                     @Override
                     public void get(double[] array, int arrayOffset, long ilaStart, int length) throws IOException {
                         throw new IOException("Test DoubleIla whose get() only throws IOExceptions!");
+                    }
+
+                    @Override
+                    public void close() throws IOException {
+                        throw new IOException("Test DoubleIla whose close() only throws IOExceptions!");
                     }
                 };
             }

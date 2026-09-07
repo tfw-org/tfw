@@ -1,7 +1,9 @@
 package tfw.immutable.ila.shortila;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.Random;
 import org.junit.jupiter.api.Test;
@@ -71,6 +73,22 @@ final class ShortIlaInterleaveTest {
 
             ShortIlaCheck.check(targetIla, actualIla);
         }
+    }
+
+    @Test
+    void closeTest() throws IOException {
+        final TestCloseShortIla ila0 = new TestCloseShortIla();
+        final TestCloseShortIla ila1 = new TestCloseShortIla();
+        final ShortIla[] ilas = (ShortIla[]) Array.newInstance(ShortIla.class, 2);
+
+        ilas[0] = ila0;
+        ilas[1] = ila1;
+        try (ShortIla ila = ShortIlaInterleave.create(ilas, new short[1000])) {
+            assertThat(ila).isNotNull();
+        }
+
+        assertThat(ila0.getNumberOfCloses()).isEqualTo(1);
+        assertThat(ila1.getNumberOfCloses()).isEqualTo(1);
     }
 }
 // AUTO GENERATED FROM TEMPLATE

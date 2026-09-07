@@ -1,7 +1,9 @@
 package tfw.immutable.ila.doubleila;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import java.io.IOException;
 import java.util.Random;
 import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
@@ -48,6 +50,25 @@ final class DoubleIlaBoundTest {
         DoubleIla actualIla = DoubleIlaBound.create(ila, minimum, maximum);
 
         DoubleIlaCheck.check(targetIla, actualIla);
+    }
+
+    @Test
+    void closeTest() throws IOException {
+        final Random random = new Random(0);
+        final TestCloseDoubleIla testIla = new TestCloseDoubleIla();
+        double minimum = random.nextDouble();
+        double maximum = random.nextDouble();
+        if (minimum > maximum) {
+            double tmp = minimum;
+            minimum = maximum;
+            maximum = tmp;
+        }
+
+        try (DoubleIla ila = DoubleIlaBound.create(testIla, minimum, maximum)) {
+            assertThat(ila).isNotNull();
+        }
+
+        assertThat(testIla.getNumberOfCloses()).isEqualTo(1);
     }
 }
 // AUTO GENERATED FROM TEMPLATE

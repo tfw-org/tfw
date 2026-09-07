@@ -1,7 +1,9 @@
 package tfw.immutable.ila.charila;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.Random;
 import org.junit.jupiter.api.Test;
@@ -71,6 +73,22 @@ final class CharIlaInterleaveTest {
 
             CharIlaCheck.check(targetIla, actualIla);
         }
+    }
+
+    @Test
+    void closeTest() throws IOException {
+        final TestCloseCharIla ila0 = new TestCloseCharIla();
+        final TestCloseCharIla ila1 = new TestCloseCharIla();
+        final CharIla[] ilas = (CharIla[]) Array.newInstance(CharIla.class, 2);
+
+        ilas[0] = ila0;
+        ilas[1] = ila1;
+        try (CharIla ila = CharIlaInterleave.create(ilas, new char[1000])) {
+            assertThat(ila).isNotNull();
+        }
+
+        assertThat(ila0.getNumberOfCloses()).isEqualTo(1);
+        assertThat(ila1.getNumberOfCloses()).isEqualTo(1);
     }
 }
 // AUTO GENERATED FROM TEMPLATE

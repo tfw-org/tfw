@@ -4,7 +4,7 @@
 
     <groupId>io.github.tfw-org</groupId>
     <artifactId>tfw</artifactId>
-    <version>2026.12-SNAPSHOT</version>
+    <version>2026.16-SNAPSHOT</version>
 
     <name>tfw</name>
     <description>The FrameWork for building highly scalable and maintainable applications</description>
@@ -40,7 +40,7 @@
         <plugin.pitest-maven.version>1.25.9</plugin.pitest-maven.version>
         <plugin.refaster-runner.version>0.30.0</plugin.refaster-runner.version>
         <plugin.sonar-maven-plugin.version>5.7.0.6970</plugin.sonar-maven-plugin.version>
-        <plugin.spotless-maven-plugin.version>3.9.0</plugin.spotless-maven-plugin.version>
+        <plugin.spotless-maven-plugin.version>3.10.0</plugin.spotless-maven-plugin.version>
         <plugin.spotless-palantirJavaFormat.version>2.81.0</plugin.spotless-palantirJavaFormat.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <sonar.exclusions>src/main/java/tfw/math/BigDecimal.java,
@@ -104,6 +104,7 @@
                         <includes>
                             <include>src/main/java/**/*.java</include>
                             <include>src/test/java/**/*.java</include>
+                            <include>src/fuzz/java/**/*.java</include>
                         </includes>
                         <excludes>
                             <exclude>src/main/java/tfw/math/BigDecimal.java</exclude>
@@ -149,6 +150,7 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${plugin.maven-compiler-plugin.version}</version>
                 <configuration>
+                    <fork>true</fork>
                     <compilerArgs>
                         <arg>-Xmaxerrs</arg>
                         <arg>-1</arg>
@@ -158,9 +160,17 @@
                         <arg>-XDcompilePolicy=simple</arg>
                         <arg>-XDaddTypeAnnotationsToSymbol=true</arg>
                         <arg>--should-stop=ifError=FLOW</arg>
-                        <arg>-Xplugin:ErrorProne \
-                        -XepAllErrorsAsWarnings \
-                        -XepExcludedPaths:.*/tfw/math/BigDecimal.java|.*/tfw/math/BigInteger.java|.*/tfw/math/BitSieve.java|.*/tfw/math/DoubleConsts.java|.*/tfw/math/FloatConsts.java|.*/tfw/math/MathContext.java|.*/tfw/math/MutableBigInteger.java|.*/tfw/math/RoundingMode.java|.*/tfw/math/SignedMutableBigInteger.java</arg>
+                        <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED</arg>
+                        <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.file=ALL-UNNAMED</arg>
+                        <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.main=ALL-UNNAMED</arg>
+                        <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.model=ALL-UNNAMED</arg>
+                        <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.parser=ALL-UNNAMED</arg>
+                        <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.processing=ALL-UNNAMED</arg>
+                        <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.tree=ALL-UNNAMED</arg>
+                        <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED</arg>
+                        <arg>-J--add-opens=jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED</arg>
+                        <arg>-J--add-opens=jdk.compiler/com.sun.tools.javac.comp=ALL-UNNAMED</arg>
+                        <arg>-Xplugin:ErrorProne -XepAllErrorsAsWarnings -XepExcludedPaths:.*/tfw/math/BigDecimal.java|.*/tfw/math/BigInteger.java|.*/tfw/math/BitSieve.java|.*/tfw/math/DoubleConsts.java|.*/tfw/math/FloatConsts.java|.*/tfw/math/MathContext.java|.*/tfw/math/MutableBigInteger.java|.*/tfw/math/RoundingMode.java|.*/tfw/math/SignedMutableBigInteger.java</arg>
                     </compilerArgs>
                     <annotationProcessorPaths>
                         <path>
@@ -303,13 +313,81 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>${plugin.exec-maven-plugin.version}</version>
-                <configuration>
-                    <mainClass>tfw.build.SearchAndReplace</mainClass>
-                    <arguments>
-                        <argument>${project.basedir}/src/main/template</argument>
-                        <argument>${project.basedir}/src/test/template</argument>
-                    </arguments>
-                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.freemarker</groupId>
+                        <artifactId>freemarker</artifactId>
+                        <version>2.3.35</version>
+                    </dependency>
+                </dependencies>
+                <executions>
+                    <execution>
+                        <id>create-fuzzer-generator-directory</id>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <executable>mkdir</executable>
+                            <arguments>
+                                <argument>-p</argument>
+                                <argument>${project.build.directory}/fuzzer-generator-classes</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>compile-fuzzer-generator</id>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <executable>javac</executable>
+                            <includeProjectDependencies>false</includeProjectDependencies>
+                            <includePluginDependencies>true</includePluginDependencies>
+
+                            <arguments>
+                                <argument>-classpath</argument>
+                                <classpath/>
+                                <argument>-d</argument>
+                                <argument>${project.build.directory}/fuzzer-generator-classes</argument>
+                                <argument>${project.basedir}/src/fuzz/java/build/FuzzerGenerator.java</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>generate-fuzzers</id>
+                        <goals>
+                            <goal>java</goal>
+                        </goals>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <mainClass>tfw.build.FuzzerGenerator</mainClass>
+                            <includeProjectDependencies>false</includeProjectDependencies>
+                            <includePluginDependencies>true</includePluginDependencies>
+                            <additionalClasspathElements>
+                                <additionalClasspathElement>${project.build.directory}/fuzzer-generator-classes</additionalClasspathElement>
+                            </additionalClasspathElements>
+                            <arguments>
+                                <argument>${project.basedir}/src/template/ftl</argument>
+                                <argument>${project.basedir}/src/fuzz/java</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>search-and-replace</id>
+                        <goals>
+                            <goal>java</goal>
+                        </goals>
+                        <configuration>
+                            <mainClass>tfw.build.SearchAndReplace</mainClass>
+                            <arguments>
+                                <argument>${project.basedir}/src/main/template</argument>
+                                <argument>${project.basedir}/src/test/template</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>org.cyclonedx</groupId>
@@ -328,13 +406,6 @@
                 <groupId>org.sonarsource.scanner.maven</groupId>
                 <artifactId>sonar-maven-plugin</artifactId>
                 <version>${plugin.sonar-maven-plugin.version}</version>
-                <configuration>
-                    <mainClass>tfw.build.SearchAndReplace</mainClass>
-                    <arguments>
-                        <argument>./src/main/template</argument>
-                        <argument>./src/test/template</argument>
-                    </arguments>
-                </configuration>
             </plugin>
         </plugins>
     </build>

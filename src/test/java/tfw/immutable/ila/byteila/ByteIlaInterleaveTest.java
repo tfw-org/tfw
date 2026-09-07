@@ -1,7 +1,9 @@
 package tfw.immutable.ila.byteila;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.Random;
 import org.junit.jupiter.api.Test;
@@ -71,6 +73,22 @@ final class ByteIlaInterleaveTest {
 
             ByteIlaCheck.check(targetIla, actualIla);
         }
+    }
+
+    @Test
+    void closeTest() throws IOException {
+        final TestCloseByteIla ila0 = new TestCloseByteIla();
+        final TestCloseByteIla ila1 = new TestCloseByteIla();
+        final ByteIla[] ilas = (ByteIla[]) Array.newInstance(ByteIla.class, 2);
+
+        ilas[0] = ila0;
+        ilas[1] = ila1;
+        try (ByteIla ila = ByteIlaInterleave.create(ilas, new byte[1000])) {
+            assertThat(ila).isNotNull();
+        }
+
+        assertThat(ila0.getNumberOfCloses()).isEqualTo(1);
+        assertThat(ila1.getNumberOfCloses()).isEqualTo(1);
     }
 }
 // AUTO GENERATED FROM TEMPLATE

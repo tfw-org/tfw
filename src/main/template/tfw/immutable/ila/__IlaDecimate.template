@@ -46,5 +46,10 @@ public final class %%NAME%%IlaDecimate {
                 fi.skip(factor - 1);
             }
         }
+
+        @Override
+        protected void closeImpl() throws IOException {
+            ila.close();
+        }
     }
 }

@@ -68,7 +68,7 @@ public final class BasicTransactionQueue implements TransactionQueue {
                 try {
                     this.runnable.run();
                 } finally {
-                    lock.notify();
+                    lock.notifyAll();
                 }
             }
         }
@@ -151,17 +151,18 @@ public final class BasicTransactionQueue implements TransactionQueue {
      * method must not be called from within this transaction queue's thread.
      * Use {@link #isDispatchThread} to check whether the calling thread is the
      * transaction queue thread.
+     *
+     * @throws InterruptedException
+     *             if the waiting thread is interrupted; the interruption is
+     *             propagated to the caller.
      */
-    public void waitTilEmpty() {
+    public void waitTilEmpty() throws InterruptedException {
         if (isDispatchThread()) {
             throw new IllegalStateException("This method can not be called from within the queue's thread");
         }
 
         while (!isEmpty()) {
-            try {
-                Thread.sleep(2);
-            } catch (InterruptedException e) {
-            }
+            Thread.sleep(2);
         }
     }
 

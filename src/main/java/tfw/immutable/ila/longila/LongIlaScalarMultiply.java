@@ -36,6 +36,11 @@ public final class LongIlaScalarMultiply {
                 array[ii] *= scalar;
             }
         }
+
+        @Override
+        protected void closeImpl() throws IOException {
+            ila.close();
+        }
     }
 }
 // AUTO GENERATED FROM TEMPLATE

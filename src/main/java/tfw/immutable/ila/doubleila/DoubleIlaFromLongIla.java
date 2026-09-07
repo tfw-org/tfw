@@ -39,5 +39,10 @@ public final class DoubleIlaFromLongIla {
                 array[offset + i] = Double.longBitsToDouble(lii.next());
             }
         }
+
+        @Override
+        protected void closeImpl() throws IOException {
+            longIla.close();
+        }
     }
 }

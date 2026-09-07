@@ -1,7 +1,9 @@
 package tfw.immutable.ila.floatila;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.Random;
 import org.junit.jupiter.api.Test;
@@ -71,6 +73,22 @@ final class FloatIlaInterleaveTest {
 
             FloatIlaCheck.check(targetIla, actualIla);
         }
+    }
+
+    @Test
+    void closeTest() throws IOException {
+        final TestCloseFloatIla ila0 = new TestCloseFloatIla();
+        final TestCloseFloatIla ila1 = new TestCloseFloatIla();
+        final FloatIla[] ilas = (FloatIla[]) Array.newInstance(FloatIla.class, 2);
+
+        ilas[0] = ila0;
+        ilas[1] = ila1;
+        try (FloatIla ila = FloatIlaInterleave.create(ilas, new float[1000])) {
+            assertThat(ila).isNotNull();
+        }
+
+        assertThat(ila0.getNumberOfCloses()).isEqualTo(1);
+        assertThat(ila1.getNumberOfCloses()).isEqualTo(1);
     }
 }
 // AUTO GENERATED FROM TEMPLATE

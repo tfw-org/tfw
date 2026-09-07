@@ -36,7 +36,7 @@ final class TriggeredConverterTest {
             };
 
     @Test
-    void converterTest() {
+    void converterTest() throws InterruptedException {
         final BasicTransactionQueue queue = new BasicTransactionQueue();
         final Root root = Root.builder()
                 .setName("Test branch")

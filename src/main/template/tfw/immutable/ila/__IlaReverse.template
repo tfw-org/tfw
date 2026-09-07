@@ -3,6 +3,7 @@ package %%PACKAGE%%;
 
 import java.io.IOException;
 import tfw.check.Argument;
+import tfw.immutable.ila.IlaReverseUtil;
 
 public final class %%NAME%%IlaReverse {
     private %%NAME%%IlaReverse() {
@@ -12,6 +13,7 @@ public final class %%NAME%%IlaReverse {
     public static %%TEMPLATE_SPACE%%%%NAME%%Ila%%TEMPLATE%% create(%%NAME%%Ila%%TEMPLATE%% ila, final %%TYPE_OR_TEMPLATE%%[] buffer) {
         Argument.assertNotNull(ila, "ila");
         Argument.assertNotNull(buffer, "buffer");
+        Argument.assertNotLessThan(buffer.length, 1, "buffer.length");
 
         return new %%NAME%%IlaImpl%%DIAMOND%%(ila, buffer);
     }
@@ -32,9 +34,26 @@ public final class %%NAME%%IlaReverse {
 
         @Override
         protected void getImpl(%%TYPE_OR_TEMPLATE%%[] array, int offset, long start, int length) throws IOException {
-            final Strided%%NAME%%Ila%%TEMPLATE%% strided%%NAME%%Ila = Strided%%NAME%%IlaFrom%%NAME%%Ila.create(ila, buffer.clone());
+            final %%TYPE_OR_TEMPLATE%%[] reverseBuffer = buffer.clone();
 
-            strided%%NAME%%Ila.get(array, offset + length - 1, -1, length() - (start + length), length);
+            IlaReverseUtil.reverse(
+                    ila.length(),
+                    offset,
+                    start,
+                    length,
+                    reverseBuffer.length,
+                    (sourcePosition, destinationOffset, amount) -> {
+                        ila.get(reverseBuffer, 0, sourcePosition, amount);
+
+                        for (int i = 0; i < amount; i++) {
+                            array[destinationOffset + i] = reverseBuffer[amount - 1 - i];
+                        }
+                    });
+        }
+
+        @Override
+        protected void closeImpl() throws IOException {
+            ila.close();
         }
     }
 }

@@ -41,6 +41,11 @@ public final class ByteIlaFromCastShortIla {
                 array[ii] = (byte) fi.next();
             }
         }
+
+        @Override
+        protected void closeImpl() throws IOException {
+            shortIla.close();
+        }
     }
 }
 // AUTO GENERATED FROM TEMPLATE

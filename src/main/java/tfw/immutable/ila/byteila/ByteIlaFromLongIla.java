@@ -46,5 +46,10 @@ public final class ByteIlaFromLongIla {
                 col = 0;
             }
         }
+
+        @Override
+        protected void closeImpl() throws IOException {
+            longIla.close();
+        }
     }
 }

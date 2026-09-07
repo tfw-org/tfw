@@ -103,7 +103,7 @@ final class ImportExportTreeStateTest {
     }
 
     @Test
-    void customTagExportImportTreeStateTest() {
+    void customTagExportImportTreeStateTest() throws InterruptedException {
         String tag1 = "tag1";
         String tag2 = "tag2";
         StringECD ecd1 = new StringECD("str_ecd_1");

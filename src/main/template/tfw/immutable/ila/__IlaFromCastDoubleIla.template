@@ -42,5 +42,10 @@ public final class %%NAME%%IlaFromCastDoubleIla {
                 array[ii] = (%%TYPE%%) fi.next();
             }
         }
+
+        @Override
+        protected void closeImpl() throws IOException {
+            doubleIla.close();
+        }
     }
 }

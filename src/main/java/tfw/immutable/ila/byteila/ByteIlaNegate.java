@@ -34,6 +34,11 @@ public final class ByteIlaNegate {
                 array[ii] = (byte) -array[ii];
             }
         }
+
+        @Override
+        protected void closeImpl() throws IOException {
+            ila.close();
+        }
     }
 }
 // AUTO GENERATED FROM TEMPLATE

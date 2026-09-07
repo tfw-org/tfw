@@ -1,7 +1,9 @@
 package tfw.immutable.ila.longila;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.Random;
 import org.junit.jupiter.api.Test;
@@ -71,6 +73,22 @@ final class LongIlaInterleaveTest {
 
             LongIlaCheck.check(targetIla, actualIla);
         }
+    }
+
+    @Test
+    void closeTest() throws IOException {
+        final TestCloseLongIla ila0 = new TestCloseLongIla();
+        final TestCloseLongIla ila1 = new TestCloseLongIla();
+        final LongIla[] ilas = (LongIla[]) Array.newInstance(LongIla.class, 2);
+
+        ilas[0] = ila0;
+        ilas[1] = ila1;
+        try (LongIla ila = LongIlaInterleave.create(ilas, new long[1000])) {
+            assertThat(ila).isNotNull();
+        }
+
+        assertThat(ila0.getNumberOfCloses()).isEqualTo(1);
+        assertThat(ila1.getNumberOfCloses()).isEqualTo(1);
     }
 }
 // AUTO GENERATED FROM TEMPLATE

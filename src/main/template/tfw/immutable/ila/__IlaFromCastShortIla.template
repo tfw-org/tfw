@@ -42,5 +42,10 @@ public final class %%NAME%%IlaFromCastShortIla {
                 array[ii] = (%%TYPE%%) fi.next();
             }
         }
+
+        @Override
+        protected void closeImpl() throws IOException {
+            shortIla.close();
+        }
     }
 }

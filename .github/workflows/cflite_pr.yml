@@ -4,7 +4,8 @@ on:
   pull_request:
     paths:
       - 'src/main/java/tfw/immutable/**'
-      - 'src/fuzz/**'
+      - 'src/fuzz/java/**'
+      - 'src/template/ftl/**'
       - '.clusterfuzzlite/**'
       - '.github/workflows/cflite_pr.yml'
       - 'pom.xml'
@@ -45,3 +46,5 @@ jobs:
           sanitizer: ${{ matrix.sanitizer }}
           output-sarif: true
           language: jvm
+          storage-repo: https://${{ secrets.TFW_FUZZING_TOKEN }}@github.com/tfw-org/tfw-fuzzing.git
+          storage-repo-branch: main

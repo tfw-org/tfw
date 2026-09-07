@@ -145,7 +145,7 @@ final class SynchronizerTest {
 
     private BasicTransactionQueue queue = new BasicTransactionQueue();
 
-    public Root initializeRoot(TransactionExceptionHandler handler) {
+    public Root initializeRoot(TransactionExceptionHandler handler) throws InterruptedException {
         final Root root = Root.builder()
                 .setName("Root")
                 .setTransactionQueue(queue)

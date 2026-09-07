@@ -24,7 +24,7 @@ final class TranslatorTest {
     };
 
     @Test
-    void translationTest() {
+    void translationTest() throws InterruptedException {
         final BasicTransactionQueue queue = new BasicTransactionQueue();
         final TestExceptionHandler handler = new TestExceptionHandler();
         final Root topBranch = Root.builder()

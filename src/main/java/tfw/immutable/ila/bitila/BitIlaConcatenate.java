@@ -41,5 +41,11 @@ public final class BitIlaConcatenate {
                 rightIla.get(array, arrayOffsetInBits + leftAmount, 0, lengthInBits - leftAmount);
             }
         }
+
+        @Override
+        public void closeImpl() throws IOException {
+            leftIla.close();
+            rightIla.close();
+        }
     }
 }

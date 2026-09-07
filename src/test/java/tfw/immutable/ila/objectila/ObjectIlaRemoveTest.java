@@ -1,7 +1,9 @@
 package tfw.immutable.ila.objectila;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import java.io.IOException;
 import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 
@@ -41,6 +43,17 @@ final class ObjectIlaRemoveTest {
 
             ObjectIlaCheck.check(targetIla, actualIla);
         }
+    }
+
+    @Test
+    void closeTest() throws IOException {
+        final TestCloseObjectIla testIla = new TestCloseObjectIla();
+
+        try (ObjectIla ila = ObjectIlaRemove.create(testIla, 0)) {
+            assertThat(ila).isNotNull();
+        }
+
+        assertThat(testIla.getNumberOfCloses()).isEqualTo(1);
     }
 }
 // AUTO GENERATED FROM TEMPLATE

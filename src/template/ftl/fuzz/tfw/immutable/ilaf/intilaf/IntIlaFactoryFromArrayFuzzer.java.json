@@ -1,0 +1,15 @@
+{
+    "templateName": "IlaFactoryFromArrayFuzzer.java.ftl",
+    "dataModel": {
+        "typePackage": "intilaf",
+        "fuzzerClassName": "IntIlaFactoryFromArrayFuzzer",
+        "factoryName": "IntIlaFactoryFromArray",
+        "ilaPackage": "intila",
+        "ilaType": "IntIla",
+        "arrayType": "int[]",
+        "arrayTypeCreation": "int[length]",
+        "factoryExpression": "array -> IntIlaFactoryFromArray.create(array).create()",
+        "initializationKind": "int",
+        "equalityKind": "primitive"
+    }
+}

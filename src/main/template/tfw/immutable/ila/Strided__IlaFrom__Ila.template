@@ -39,5 +39,10 @@ public final class Strided%%NAME%%IlaFrom%%NAME%%Ila%%TEMPLATE%% {
                 array[ii] = bii.next();
             }
         }
+
+        @Override
+        protected void closeImpl() throws IOException {
+            ila.close();
+        }
     }
 }

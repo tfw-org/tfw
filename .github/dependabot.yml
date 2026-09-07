@@ -9,6 +9,8 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    cooldown:
+      default-days: 7
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
@@ -16,8 +18,12 @@ updates:
     groups:
       codeql-action:
         patterns:
-          - "github/codeql-action"
+          - "github/codeql-action/*"
+    cooldown:
+      default-days: 7
   - package-ecosystem: "docker"
-    directory: "/"
+    directory: "/.clusterfuzzlite"
     schedule:
       interval: "weekly"
+    cooldown:
+      default-days: 7

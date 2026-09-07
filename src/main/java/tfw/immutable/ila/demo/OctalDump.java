@@ -166,6 +166,11 @@ public class OctalDump {
                     array[offset + i] = sb.toString();
                 }
             }
+
+            @Override
+            protected void closeImpl() throws IOException {
+                byteIla.close();
+            }
         }
     }
 
@@ -226,6 +231,11 @@ public class OctalDump {
                     array[offset + i] = sb.toString();
                 }
             }
+
+            @Override
+            protected void closeImpl() throws IOException {
+                shortIla.close();
+            }
         }
     }
 
@@ -282,6 +292,11 @@ public class OctalDump {
 
                     array[offset + i] = sb.toString();
                 }
+            }
+
+            @Override
+            protected void closeImpl() throws IOException {
+                intIla.close();
             }
         }
     }
@@ -340,6 +355,11 @@ public class OctalDump {
                     array[offset + i] = sb.toString();
                 }
             }
+
+            @Override
+            protected void closeImpl() throws IOException {
+                longIla.close();
+            }
         }
     }
 
@@ -386,6 +406,11 @@ public class OctalDump {
                     array[offset + i] = sb.toString();
                 }
             }
+
+            @Override
+            protected void closeImpl() throws IOException {
+                floatIla.close();
+            }
         }
     }
 
@@ -431,6 +456,11 @@ public class OctalDump {
 
                     array[offset + i] = sb.toString();
                 }
+            }
+
+            @Override
+            protected void closeImpl() throws IOException {
+                doubleIla.close();
             }
         }
     }

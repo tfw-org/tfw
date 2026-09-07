@@ -39,5 +39,10 @@ public final class IntIlaFromFloatIla {
                 array[offset + i] = Float.floatToRawIntBits(fii.next());
             }
         }
+
+        @Override
+        protected void closeImpl() throws IOException {
+            floatIla.close();
+        }
     }
 }

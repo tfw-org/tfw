@@ -1,0 +1,15 @@
+{
+    "templateName": "IlaFactoryFromArrayFuzzer.java.ftl",
+    "dataModel": {
+        "typePackage": "longilaf",
+        "fuzzerClassName": "LongIlaFactoryFromArrayFuzzer",
+        "factoryName": "LongIlaFactoryFromArray",
+        "ilaPackage": "longila",
+        "ilaType": "LongIla",
+        "arrayType": "long[]",
+        "arrayTypeCreation": "long[length]",
+        "factoryExpression": "array -> LongIlaFactoryFromArray.create(array).create()",
+        "initializationKind": "long",
+        "equalityKind": "primitive"
+    }
+}

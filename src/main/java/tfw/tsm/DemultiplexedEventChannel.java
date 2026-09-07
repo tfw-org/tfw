@@ -60,7 +60,7 @@ public class DemultiplexedEventChannel extends Terminator {
      * Overrides the Terminator method inorder to count connections.
      */
     @Override
-    public void add(Port port) {
+    public synchronized void add(Port port) {
         super.add(port);
         connectionCount++;
     }
@@ -70,7 +70,7 @@ public class DemultiplexedEventChannel extends Terminator {
      * this demultiplexer event channel when connections reach zero.
      */
     @Override
-    public void remove(Port port) {
+    public synchronized void remove(Port port) {
         super.remove(port);
         connectionCount--;
 

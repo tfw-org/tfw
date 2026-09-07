@@ -75,5 +75,12 @@ public final class %%NAME%%IlaInterleave {
                 }
             }
         }
+
+        @Override
+        protected void closeImpl() throws IOException {
+            for (Strided%%NAME%%Ila%%TEMPLATE%% ila : strided%%NAME%%Ilas) {
+                ila.close();
+            }
+        }
     }
 }

@@ -1,0 +1,15 @@
+{
+    "templateName": "IlaFactoryFromArrayFuzzer.java.ftl",
+    "dataModel": {
+        "typePackage": "floatilaf",
+        "fuzzerClassName": "FloatIlaFactoryFromArrayFuzzer",
+        "factoryName": "FloatIlaFactoryFromArray",
+        "ilaPackage": "floatila",
+        "ilaType": "FloatIla",
+        "arrayType": "float[]",
+        "arrayTypeCreation": "float[length]",
+        "factoryExpression": "array -> FloatIlaFactoryFromArray.create(array).create()",
+        "initializationKind": "float",
+        "equalityKind": "float"
+    }
+}

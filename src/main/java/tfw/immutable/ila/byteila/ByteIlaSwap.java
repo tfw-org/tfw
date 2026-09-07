@@ -56,5 +56,10 @@ public class ByteIlaSwap {
                 array[offset + l] = bytes[bs];
             }
         }
+
+        @Override
+        protected void closeImpl() throws IOException {
+            byteIla.close();
+        }
     }
 }
