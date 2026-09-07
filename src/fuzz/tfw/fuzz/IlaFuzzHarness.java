@@ -33,38 +33,80 @@ public final class IlaFuzzHarness<A, I extends tfw.immutable.ila.ImmutableLongAr
             throw failure(input, "create(array) unexpectedly failed", t);
         }
 
-        verifyLength(ila, input);
+        Throwable primaryFailure = null;
 
-        /*
-         * Verify that the created ILA actually represents the source
-         * array when there is something to read.
-         */
-        if (input.sourceLength() > 0) {
-            verifyElement(ila, source, 0);
+        try {
+            verifyLength(ila, input);
+
+            /*
+             * Verify that the created ILA actually represents the source
+             * array when there is something to read.
+             */
+            if (input.sourceLength() > 0) {
+                verifyElement(ila, source, 0);
+            }
+
+            /*
+             * Exercise the exact fuzzed get() operation.
+             */
+            verifyFuzzedGet(ila, source, input);
+
+            /*
+             * Exercise null destination separately.
+             *
+             * Abstract*Ila.get() checks the destination for null before
+             * checking length. Therefore a null destination must always
+             * produce IllegalArgumentException, including when length == 0.
+             */
+            verifyNullDestination(ila, input);
+
+            /*
+             * Exercise the ILA close lifecycle.
+             *
+             * close() must succeed the first time and must be idempotent
+             * when called a second time. Once closed, operations must
+             * reject access with IllegalStateException.
+             */
+            verifyClose(ila, adapter, input);
+
+        } catch (Exception | Error t) {
+            /*
+             * Remember the original failure so that a failure from close()
+             * during cleanup cannot replace it.
+             */
+            primaryFailure = t;
+            throw t;
+
+        } finally {
+            /*
+             * Always close the ILA, even when one of the preceding
+             * verifications fails.
+             *
+             * verifyClose() already closes the ILA on the normal path,
+             * so this second close is intentional and relies on the
+             * idempotent close() contract.
+             */
+            try {
+                ila.close();
+
+            } catch (Exception | Error closeFailure) {
+
+                if (primaryFailure != null) {
+                    /*
+                     * Preserve the original verification failure and
+                     * retain the cleanup failure as diagnostic information.
+                     */
+                    primaryFailure.addSuppressed(closeFailure);
+
+                } else {
+                    /*
+                     * There was no preceding failure, so a cleanup
+                     * failure should be reported normally.
+                     */
+                    throw closeFailure;
+                }
+            }
         }
-
-        /*
-         * Exercise the exact fuzzed get() operation.
-         */
-        verifyFuzzedGet(ila, source, input);
-
-        /*
-         * Exercise null destination separately.
-         *
-         * Abstract*Ila.get() checks the destination for null before
-         * checking length. Therefore a null destination must always
-         * produce IllegalArgumentException, including when length == 0.
-         */
-        verifyNullDestination(ila, input);
-
-        /*
-         * Exercise the ILA close lifecycle.
-         *
-         * close() must succeed the first time and must be idempotent
-         * when called a second time. Once closed, operations must
-         * reject access with IllegalStateException.
-         */
-        verifyClose(ila, adapter, input);
     }
 
     private void verifyNullCreate() {
