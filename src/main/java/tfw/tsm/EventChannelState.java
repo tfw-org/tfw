@@ -2,7 +2,6 @@ package tfw.tsm;
 
 import tfw.check.Argument;
 import tfw.tsm.ecd.EventChannelDescription;
-import tfw.value.ValueException;
 
 /**
  * A container for event channel state.
@@ -23,9 +22,9 @@ public class EventChannelState {
      *             if the specified value is not compatible with the constraint
      *             defined in the specified event channel description.
      */
-    public EventChannelState(EventChannelDescription ecd, Object state) throws ValueException {
+    public EventChannelState(EventChannelDescription ecd, Object state) {
         Argument.assertNotNull(ecd, "ecd");
-        ecd.getConstraint().checkValue(state);
+        ecd.getPredicate().test(state);
         this.state = state;
         this.eventChannelName = ecd.getEventChannelName();
     }

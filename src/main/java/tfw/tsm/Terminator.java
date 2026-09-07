@@ -8,7 +8,6 @@ import tfw.check.Argument;
 import tfw.tsm.DemultiplexedEventChannel.DemultiSource;
 import tfw.tsm.ecd.EventChannelDescription;
 import tfw.tsm.ecd.StatelessTriggerECD;
-import tfw.value.ValueException;
 
 /**
  * A terminating event channel.
@@ -60,8 +59,7 @@ public class Terminator implements EventChannel, CommitRollbackListener {
      *             if the specified <code>initialState</code> does not comply
      *             with the specified <code>ecd.getConstraint()</code>.
      */
-    Terminator(EventChannelDescription ecd, Object initialState, StateChangeRule stateChangeRule)
-            throws ValueException {
+    Terminator(EventChannelDescription ecd, Object initialState, StateChangeRule stateChangeRule) {
         this.ecd = ecd;
         this.state = initialState;
         this.previousState = initialState;
@@ -70,7 +68,7 @@ public class Terminator implements EventChannel, CommitRollbackListener {
         this.isStateChanged = initialState != null;
 
         if (initialState != null) {
-            ecd.getConstraint().checkValue(initialState);
+            ecd.getPredicate().test(initialState);
         }
 
         this.stateChangeRule = stateChangeRule;
@@ -168,13 +166,13 @@ public class Terminator implements EventChannel, CommitRollbackListener {
     }
 
     void addSource(Source source) {
-        if (!ecd.getConstraint().isCompatible(source.ecd.getConstraint())) {
+        if (!ecd.getPredicate().equals(source.ecd.getPredicate())) {
             throw new TerminatorException("The source '"
                     + source.getFullyQualifiedName() + ", with '"
-                    + source.ecd.getConstraint()
+                    + source.ecd.getPredicate()
                     + "' is not compatible with the event channel '"
                     + ecd.getEventChannelName() + "' with '"
-                    + ecd.getConstraint() + "'");
+                    + ecd.getPredicate() + "'");
         }
 
         source.setEventChannel(this);
@@ -193,13 +191,13 @@ public class Terminator implements EventChannel, CommitRollbackListener {
     private void addSink(Sink sink) {
         Argument.assertNotNull(sink, "sink");
 
-        if (!sink.ecd.getConstraint().isCompatible(ecd.getConstraint())) {
+        if (!sink.ecd.getPredicate().equals(ecd.getPredicate())) {
             throw new TerminatorException("The sink '"
                     + sink.getFullyQualifiedName() + ", with '"
-                    + sink.ecd.getConstraint()
+                    + sink.ecd.getPredicate()
                     + "' is not compatible with the event channel '"
                     + ecd.getEventChannelName() + "' with '"
-                    + ecd.getConstraint() + "'");
+                    + ecd.getPredicate() + "'");
         }
 
         if (!sinks.contains(sink)) {

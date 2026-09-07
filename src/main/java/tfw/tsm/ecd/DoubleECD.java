@@ -1,8 +1,5 @@
 package tfw.tsm.ecd;
 
-import tfw.value.ClassValueConstraint;
-import tfw.value.DoubleConstraint;
-
 /**
  * A <code>java.lang.Double</code> event channel descritpion.
  */
@@ -18,15 +15,15 @@ public class DoubleECD extends ObjectECD {
      * @param maxInclusive if true <code>max</code> is a valid value,
      * otherwise it is not valid.
      */
-    public DoubleECD(String name, double min, double max, boolean minInclusive, boolean maxInclusive) {
-        super(name, new DoubleConstraint(min, max, minInclusive, maxInclusive));
-    }
+    // public DoubleECD(String name, double min, double max, boolean minInclusive, boolean maxInclusive) {
+    //     super(name, new DoubleConstraint(min, max, minInclusive, maxInclusive));
+    // }
 
     /**
      * Creates an event channel description with the specified name.
      * @param name the name of the event channel.
      */
     public DoubleECD(String name) {
-        super(name, ClassValueConstraint.DOUBLE);
+        super(name, new IsAssignableFromPredicate(Double.class));
     }
 }

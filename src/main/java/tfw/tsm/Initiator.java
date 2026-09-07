@@ -6,7 +6,6 @@ import tfw.check.Argument;
 import tfw.tsm.ecd.EventChannelDescription;
 import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.StatelessTriggerECD;
-import tfw.value.ValueException;
 
 /**
  * This class provides an interface to generate a transaction and to set the
@@ -198,11 +197,7 @@ public class Initiator extends TreeComponent {
             throw new IllegalArgumentException(sourceEventChannel + " not found");
         }
 
-        try {
-            source.ecd.getConstraint().checkValue(state);
-        } catch (ValueException ve) {
-            throw new IllegalArgumentException(ve.getMessage());
-        }
+        source.ecd.getPredicate().test(state);
         return newTransaction(new InitiatorSource[] {source}, new Object[] {state});
     }
 

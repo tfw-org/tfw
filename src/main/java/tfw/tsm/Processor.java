@@ -3,7 +3,6 @@ package tfw.tsm;
 import tfw.check.Argument;
 import tfw.tsm.ecd.EventChannelDescription;
 import tfw.tsm.ecd.StatelessTriggerECD;
-import tfw.value.ValueException;
 
 /**
  * The base class for all event handling components which participate in the
@@ -71,11 +70,7 @@ public abstract class Processor extends RollbackHandler {
                     "Cannot set null on event channel " + sourceEventChannel.getEventChannelName());
         }
 
-        try {
-            source.setState(state);
-        } catch (ValueException ve) {
-            throw new IllegalArgumentException(ve.getMessage());
-        }
+        source.setState(state);
     }
 
     /**

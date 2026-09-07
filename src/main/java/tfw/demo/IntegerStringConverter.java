@@ -1,11 +1,11 @@
 package tfw.demo;
 
+import java.util.function.Predicate;
 import tfw.tsm.Synchronizer;
 import tfw.tsm.ecd.IntegerECD;
 import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.StringECD;
 import tfw.tsm.ecd.StringRollbackECD;
-import tfw.value.ValueConstraint;
 
 /**
  * Converts between <code>java.lang.String</code> and <code>
@@ -15,7 +15,7 @@ public class IntegerStringConverter extends Synchronizer {
     private final StringECD stringECD;
     private final IntegerECD integerECD;
     private final StringRollbackECD errorECD;
-    private final ValueConstraint integerConstraint;
+    private final Predicate<Object> integerPredicate;
 
     public IntegerStringConverter(String name, StringECD stringECD, IntegerECD integerECD, StringRollbackECD errorECD) {
         super(
@@ -27,7 +27,7 @@ public class IntegerStringConverter extends Synchronizer {
         this.stringECD = stringECD;
         this.integerECD = integerECD;
         this.errorECD = errorECD;
-        this.integerConstraint = integerECD.getConstraint();
+        this.integerPredicate = integerECD.getPredicate();
     }
 
     @Override
@@ -45,9 +45,9 @@ public class IntegerStringConverter extends Synchronizer {
             rollback(errorECD, "Invalid integer value '" + get(stringECD) + "'");
         }
 
-        String compliance = this.integerConstraint.getValueCompliance(intValue);
+        boolean compliance = this.integerPredicate.test(intValue);
 
-        if (!compliance.equals(ValueConstraint.VALID)) {
+        if (!compliance) {
             rollback(errorECD, compliance);
         }
         set(integerECD, intValue);

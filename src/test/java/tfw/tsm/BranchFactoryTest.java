@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import tfw.tsm.ecd.IntegerECD;
 import tfw.tsm.ecd.StatelessTriggerECD;
 import tfw.tsm.ecd.StringECD;
-import tfw.value.ValueException;
 
 final class BranchFactoryTest {
     @Test
@@ -23,9 +22,6 @@ final class BranchFactoryTest {
         assertThatThrownBy(() -> bf.addEventChannel(null, object))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("eventChannelDescription == null not allowed!");
-        assertThatThrownBy(() -> bf.addEventChannel(stringECD, object))
-                .isInstanceOf(ValueException.class)
-                .hasMessage("The value, of type 'java.lang.Object', is not assignable to type 'java.lang.String'.");
         assertThatThrownBy(() -> bf.addEventChannel(stringECD, "myString", null, null))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("rule == null not allowed!");

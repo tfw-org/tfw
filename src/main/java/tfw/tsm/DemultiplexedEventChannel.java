@@ -2,7 +2,6 @@ package tfw.tsm;
 
 import tfw.check.Argument;
 import tfw.tsm.ecd.EventChannelDescription;
-import tfw.value.ValueException;
 
 /**
  * The event channel for sub-channels under a multiplexer.
@@ -116,7 +115,7 @@ public class DemultiplexedEventChannel extends Terminator {
         }
 
         @Override
-        void setState(Object state) throws ValueException {
+        void setState(Object state) {
             Argument.assertNotNull(state, "state");
             if (this.getState() != null) {
                 // (new IllegalStateException("Attempt to overwrite state "

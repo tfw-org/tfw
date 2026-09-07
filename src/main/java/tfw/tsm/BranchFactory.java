@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import tfw.check.Argument;
 import tfw.tsm.ecd.EventChannelDescription;
-import tfw.value.ValueException;
 
 /**
  * A factory for creating an {@link Branch}.
@@ -70,26 +69,20 @@ public class BranchFactory extends BaseBranchFactory {
                     + "' which is already translated.");
         }
 
-        if (!childEventChannel.getConstraint().isCompatible(parentEventChannel.getConstraint())) {
+        if (!childEventChannel.getPredicate().equals(parentEventChannel.getPredicate())) {
             throw new IllegalArgumentException("Incompatible event channels, values from the parent event channel '"
                     + parentEventChannel.getEventChannelName()
                     + "' are not assignable to the child event channel '"
                     + childEventChannel.getEventChannelName() + "'");
         }
-        if (!parentEventChannel.getConstraint().isCompatible(childEventChannel.getConstraint())) {
+        if (!parentEventChannel.getPredicate().equals(childEventChannel.getPredicate())) {
             throw new IllegalArgumentException("Incompatible event channels values from the child event channel '"
                     + childEventChannel.getEventChannelName()
                     + "' are not assignable to the parent event channel '"
                     + parentEventChannel.getEventChannelName() + "'");
         }
 
-        try {
-            translators.put(
-                    childEventChannel.getEventChannelName(), new Translator(childEventChannel, parentEventChannel));
-        } catch (ValueException unexpected) {
-            throw new RuntimeException(
-                    "Unexpected error creating a translator: " + unexpected.getMessage(), unexpected);
-        }
+        translators.put(childEventChannel.getEventChannelName(), new Translator(childEventChannel, parentEventChannel));
     }
 
     /**
@@ -115,8 +108,7 @@ public class BranchFactory extends BaseBranchFactory {
             EventChannelDescription eventChannelDescription,
             Object initialState,
             StateChangeRule rule,
-            String[] exportTags)
-            throws ValueException {
+            String[] exportTags) {
         if (eventChannelDescription != null && isTranslated(eventChannelDescription)) {
             throw new IllegalStateException("Attemp to terminate an event channel, '"
                     + eventChannelDescription.getEventChannelName()

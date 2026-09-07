@@ -1,7 +1,7 @@
 package tfw.tsm.ecd;
 
+import java.util.function.Predicate;
 import tfw.check.Argument;
-import tfw.value.ValueConstraint;
 
 /**
  * Describes an event channel. For specialized event channel descriptions
@@ -12,7 +12,7 @@ public abstract class EventChannelDescription {
     private final String eventChannelName;
 
     /** The value constraint for this event channel. */
-    private final ValueConstraint<? extends Object> constraint;
+    private final Predicate<Object> predicate;
 
     /** A flag indicating whether the event channel fires on connection. */
     private final boolean fireOnConnect;
@@ -28,8 +28,8 @@ public abstract class EventChannelDescription {
      * @param constraint
      *            the value constraint for the event channel.
      */
-    EventChannelDescription(String eventChannelName, ValueConstraint<? extends Object> constraint) {
-        this(eventChannelName, constraint, true, true);
+    EventChannelDescription(String eventChannelName, Predicate<Object> predicate) {
+        this(eventChannelName, predicate, true, true);
     }
 
     /**
@@ -41,16 +41,13 @@ public abstract class EventChannelDescription {
      * @param rollbackParticipant flag indicating whether the event channel participates in transaction rollbacks.
      */
     EventChannelDescription(
-            String eventChannelName,
-            ValueConstraint<? extends Object> constraint,
-            boolean fireOnConnect,
-            boolean rollbackParticipant) {
+            String eventChannelName, Predicate<Object> predicate, boolean fireOnConnect, boolean rollbackParticipant) {
         Argument.assertNotNull(eventChannelName, "eventChannelName");
-        Argument.assertNotNull(constraint, "constraint");
+        Argument.assertNotNull(predicate, "predicate");
         // CheckArgument.checkNull(codec, "codec");
 
         this.eventChannelName = eventChannelName.trim();
-        this.constraint = constraint;
+        this.predicate = predicate;
         this.fireOnConnect = fireOnConnect;
         this.rollbackParticipant = rollbackParticipant;
 
@@ -73,8 +70,8 @@ public abstract class EventChannelDescription {
      *
      * @return the value constraint.
      */
-    public final ValueConstraint<? extends Object> getConstraint() {
-        return constraint;
+    public final Predicate<Object> getPredicate() {
+        return predicate;
     }
 
     /**
@@ -121,7 +118,7 @@ public abstract class EventChannelDescription {
         EventChannelDescription ecd = (EventChannelDescription) object;
 
         return ecd.eventChannelName.equals(this.eventChannelName)
-                && ecd.constraint == this.constraint
+                && ecd.predicate == this.predicate
                 && ecd.fireOnConnect == this.fireOnConnect
                 && ecd.rollbackParticipant == this.rollbackParticipant;
     }

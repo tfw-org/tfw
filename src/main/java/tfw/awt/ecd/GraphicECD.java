@@ -1,11 +1,11 @@
 package tfw.awt.ecd;
 
-import tfw.awt.graphic.Graphic;
+import java.awt.Graphics;
+import tfw.tsm.ecd.IsAssignableFromPredicate;
 import tfw.tsm.ecd.ObjectECD;
-import tfw.value.ClassValueConstraint;
 
 public class GraphicECD extends ObjectECD {
     public GraphicECD(String name) {
-        super(name, ClassValueConstraint.getInstance(Graphic.class));
+        super(name, new IsAssignableFromPredicate(Graphics.class));
     }
 }

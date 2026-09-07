@@ -1,9 +1,8 @@
 package tfw.tsm;
 
+import java.util.function.Predicate;
 import tfw.check.Argument;
 import tfw.tsm.ecd.EventChannelDescription;
-import tfw.value.ValueConstraint;
-import tfw.value.ValueException;
 
 /**
  * Translates between a set of child and parent event channels. This class
@@ -36,20 +35,20 @@ class Translator extends Terminator {
      * @throws IllegalArgumentException if the child and parent port
      * description value constraints are not two way compatible.
      */
-    public Translator(EventChannelDescription childPort, EventChannelDescription parentPort) throws ValueException {
+    public Translator(EventChannelDescription childPort, EventChannelDescription parentPort) {
         super(childPort, null, AlwaysChangeRule.RULE);
         Argument.assertNotNull(childPort, "childPort");
         Argument.assertNotNull(parentPort, "parentPort");
 
-        ValueConstraint<? extends Object> pvc = parentPort.getConstraint();
-        ValueConstraint<? extends Object> cvc = childPort.getConstraint();
+        Predicate<?> pvc = parentPort.getPredicate();
+        Predicate<?> cvc = childPort.getPredicate();
 
-        if (!cvc.isCompatible(pvc)) {
+        if (!cvc.equals(pvc)) {
             throw new IllegalArgumentException(
                     "The parent value constraint is not compatable with the child value constraint");
         }
 
-        if (!pvc.isCompatible(cvc)) {
+        if (!pvc.equals(cvc)) {
             throw new IllegalArgumentException(
                     "The child value constraint is not compatable with the parent value constraint");
         }
@@ -91,11 +90,7 @@ class Translator extends Terminator {
         // if this translator is not responsible for the state change...
         if (source != parentRelaySource && source != childRelaySource) {
             // Propagate the state change up...
-            try {
-                this.parentRelaySource.setState(state);
-            } catch (ValueException ve) {
-                throw new IllegalArgumentException(ve.getMessage());
-            }
+            this.parentRelaySource.setState(state);
         }
     }
 
@@ -120,11 +115,7 @@ class Translator extends Terminator {
         @Override
         void stateChange() {
             if (eventChannel.getCurrentStateSource() != translator.parentRelaySource) {
-                try {
-                    translator.childRelaySource.setState(eventChannel.getState());
-                } catch (ValueException ve) {
-                    throw new IllegalArgumentException(ve.getMessage());
-                }
+                translator.childRelaySource.setState(eventChannel.getState());
             }
         }
     }

@@ -4,7 +4,6 @@ import java.awt.Color;
 import tfw.awt.ecd.ColorECD;
 import tfw.tsm.Synchronizer;
 import tfw.tsm.ecd.ObjectECD;
-import tfw.value.IntegerConstraint;
 
 /**
  * Converts back and forth between red, green, and blue <code>
@@ -14,9 +13,8 @@ public class IntegerColorConverter extends Synchronizer {
     /**
      * The value constraint for RGB event channels.
      */
-    public static final IntegerConstraint RGB_CONSTRAINT = RGBConstraint.CONSTRAINT;
-
     private final RedGreenBlueECD redInteger;
+
     private final RedGreenBlueECD greenInteger;
     private final RedGreenBlueECD blueInteger;
     private final ColorECD color;
