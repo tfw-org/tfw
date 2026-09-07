@@ -32,7 +32,9 @@ class ProcessorSource extends Source {
         if (eventChannel == null) {
             throw new IllegalStateException("Attempt to set state using disconnected source");
         }
-        ecd.getPredicate().test(state);
+        if (!ecd.getPredicate().test(state)) {
+            throw new IllegalArgumentException("FIX THIS MESSAGE");
+        }
 
         this.state = state;
         if (defer) {

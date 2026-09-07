@@ -197,7 +197,10 @@ public class Initiator extends TreeComponent {
             throw new IllegalArgumentException(sourceEventChannel + " not found");
         }
 
-        source.ecd.getPredicate().test(state);
+        if (!source.ecd.getPredicate().test(state)) {
+            throw new IllegalArgumentException("value == " + state + " does not meet the constraints on this value");
+        }
+
         return newTransaction(new InitiatorSource[] {source}, new Object[] {state});
     }
 

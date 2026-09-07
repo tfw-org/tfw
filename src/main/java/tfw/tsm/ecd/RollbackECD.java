@@ -13,8 +13,8 @@ public abstract class RollbackECD extends ObjectECD {
      *
      * @param eventChannelName
      *            the name of the event channel.
-     * @param constraint
-     *            the value constraint for the evnet channel.
+     * @param predicate
+     *            the value predicate for the evnet channel.
      */
     protected RollbackECD(String eventChannelName, Predicate<Object> predicate) {
         super(eventChannelName, predicate);

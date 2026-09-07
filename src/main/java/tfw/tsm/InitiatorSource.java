@@ -49,7 +49,9 @@ class InitiatorSource extends Source {
             throw new IllegalStateException(
                     "Attempt to set state on disconnected event channel (" + eventChannel.getECD() + ").");
         }
-        ecd.getPredicate().test(state);
+        if (!ecd.getPredicate().test(state)) {
+            throw new IllegalArgumentException("FIX THIS MESSAGE");
+        }
         this.stateQueue.push(new EventChannelNState(this.eventChannel, state));
     }
 

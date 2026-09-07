@@ -68,7 +68,9 @@ public class Terminator implements EventChannel, CommitRollbackListener {
         this.isStateChanged = initialState != null;
 
         if (initialState != null) {
-            ecd.getPredicate().test(initialState);
+            if (!ecd.getPredicate().test(initialState)) {
+                throw new IllegalArgumentException("FIX THIS MESSAGE");
+            }
         }
 
         this.stateChangeRule = stateChangeRule;

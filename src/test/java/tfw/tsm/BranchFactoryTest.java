@@ -71,7 +71,7 @@ final class BranchFactoryTest {
         assertThatThrownBy(() -> bf.addTranslation(integerECD, constrainedIntECD))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage(
-                        "Incompatible event channels values from the child event channel 'Full Range Integer' are not assignable to the parent event channel 'constrained integer'");
+                        "Incompatible event channels, values from the parent event channel 'constrained integer' are not assignable to the child event channel 'Full Range Integer'");
         assertThatThrownBy(() -> bf.addTranslation(constrainedIntECD, integerECD))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage(

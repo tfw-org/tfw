@@ -15,8 +15,6 @@ public class EventChannelStateBuffer {
      * channel description and state.
      * @param ecd The event channel description
      * @param state The event channel state.
-     * @throws ValueException If the specified state is incompatible with
-     * the specified event channel description.
      */
     public void put(ObjectECD ecd, Object state) {
         EventChannelState ecs = new EventChannelState(ecd, state);

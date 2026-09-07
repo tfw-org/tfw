@@ -25,7 +25,7 @@ final class EventChannelDescriptionTest {
         TestECD ecd1 = new TestECD("A", new IsAssignableFromPredicate(String.class));
         TestECD ecd2 = new TestECD("A", new IsAssignableFromPredicate(String.class));
 
-        assertThat(ecd1).isEqualTo(ecd2).isNotNull();
+        assertThat(ecd1).isEqualTo(ecd2);
 
         ecd2 = new TestECD("different", new IsAssignableFromPredicate(String.class));
         assertThat(ecd2).isNotEqualTo(ecd1);

@@ -50,9 +50,6 @@ public class BaseBranchFactory {
      *            a description of the event channel.
      * @param initialState
      *            the initial state for the event channel.
-     * @throws ValueException
-     *             if the <code>initialState</code> value is incompatible with
-     *             the event channel.
      */
     public void addEventChannel(EventChannelDescription eventChannelDescription, Object initialState) {
         if (eventChannelDescription instanceof StatelessTriggerECD || eventChannelDescription instanceof RollbackECD) {
@@ -74,9 +71,6 @@ public class BaseBranchFactory {
      *            change for the event channel.
      * @param exportTags
      *            The list of export tags for this event channel.
-     * @throws ValueException
-     *             if the <code>initialState</code> value is incompatible with
-     *             the event channel.
      */
     public void addEventChannel(
             EventChannelDescription eventChannelDescription,

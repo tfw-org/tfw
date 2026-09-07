@@ -118,7 +118,7 @@ public abstract class EventChannelDescription {
         EventChannelDescription ecd = (EventChannelDescription) object;
 
         return ecd.eventChannelName.equals(this.eventChannelName)
-                && ecd.predicate == this.predicate
+                && ecd.predicate.equals(this.predicate)
                 && ecd.fireOnConnect == this.fireOnConnect
                 && ecd.rollbackParticipant == this.rollbackParticipant;
     }

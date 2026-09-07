@@ -23,8 +23,8 @@ public class ObjectECD extends EventChannelDescription {
      *
      * @param eventChannelName
      *            the name of the event channel.
-     * @param constraint
-     *            the value constraint for the event channel.
+     * @param predicate
+     *            the value predicate for the event channel.
      */
     protected ObjectECD(String eventChannelName, Predicate<Object> predicate) {
         super(eventChannelName, predicate, true, true);
@@ -36,8 +36,8 @@ public class ObjectECD extends EventChannelDescription {
      *
      * @param eventChannelName
      *            the name of the event channel.
-     * @param constraint
-     *            the value constraint for the evnet channel.
+     * @param predicate
+     *            the value predicate for the evnet channel.
      * @param fireOnConnect
      *            flag indicating whether the event channel fires state when a
      *            new sink is connected.
