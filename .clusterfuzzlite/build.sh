@@ -53,7 +53,7 @@ RUNTIME_CLASSPATH="$(
         xargs printf -- "\$this_dir/%s:"
 ):\$this_dir"
 
-# Find all Java sources under src/fuzz, except for build-time generator
+# Find all Java sources under src/fuzz/java, except for build-time generator
 # sources.
 #
 # The build directory contains Java programs used to generate the fuzzers.
@@ -61,7 +61,7 @@ RUNTIME_CLASSPATH="$(
 # They are not part of the fuzzing runtime and must not be compiled by the
 # ClusterFuzzLite javac invocation.
 #
-# Everything else under src/fuzz includes either:
+# Everything else under src/fuzz/java includes either:
 #
 #   shared fuzzing support classes
 #
@@ -72,7 +72,7 @@ RUNTIME_CLASSPATH="$(
 # Everything is compiled together because the individual fuzz targets
 # depend on the shared classes.
 
-FUZZ_SRC="$SRC/tfw/src/fuzz"
+FUZZ_SRC="$SRC/tfw/src/fuzz/java"
 
 FUZZ_CLASSES="$WORK/fuzz-classes"
 
@@ -134,7 +134,7 @@ fi
 
 for fuzzer in "${FUZZERS[@]}"; do
 
-    # Get the path relative to src/fuzz.
+    # Get the path relative to src/fuzz/java.
     #
     # Example:
     #

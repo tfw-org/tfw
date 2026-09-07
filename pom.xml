@@ -104,7 +104,7 @@
                         <includes>
                             <include>src/main/java/**/*.java</include>
                             <include>src/test/java/**/*.java</include>
-                            <include>src/fuzz/**/*.java</include>
+                            <include>src/fuzz/java/**/*.java</include>
                         </includes>
                         <excludes>
                             <exclude>src/main/java/tfw/math/BigDecimal.java</exclude>
@@ -351,7 +351,7 @@
                                 <classpath/>
                                 <argument>-d</argument>
                                 <argument>${project.build.directory}/fuzzer-generator-classes</argument>
-                                <argument>${project.basedir}/src/fuzz/build/FuzzerGenerator.java</argument>
+                                <argument>${project.basedir}/src/fuzz/java/build/FuzzerGenerator.java</argument>
                             </arguments>
                         </configuration>
                     </execution>
@@ -369,8 +369,8 @@
                                 <additionalClasspathElement>${project.build.directory}/fuzzer-generator-classes</additionalClasspathElement>
                             </additionalClasspathElements>
                             <arguments>
-                                <argument>${project.basedir}/src/templates</argument>
-                                <argument>${project.basedir}/src/fuzz</argument>
+                                <argument>${project.basedir}/src/template/ftl</argument>
+                                <argument>${project.basedir}/src/fuzz/java</argument>
                             </arguments>
                         </configuration>
                     </execution>
