@@ -141,7 +141,7 @@ public final class IlaFuzzHarness<A, I extends tfw.immutable.ila.ImmutableLongAr
     }
 
     private void verifyElement(I ila, A source, int index) throws Exception {
-        IlaFuzzHarness.IlaArrayAdapter<A> adapter = spec.adapter();
+        IlaArrayAdapter<A> adapter = spec.adapter();
 
         A destination = adapter.create(1);
 
@@ -153,7 +153,7 @@ public final class IlaFuzzHarness<A, I extends tfw.immutable.ila.ImmutableLongAr
     }
 
     private void verifyFuzzedGet(I ila, A source, IlaFuzzInput input) {
-        IlaFuzzHarness.IlaArrayAdapter<A> adapter = spec.adapter();
+        IlaArrayAdapter<A> adapter = spec.adapter();
 
         boolean valid = isValidGet(
                 input.sourceLength(), input.destinationLength(), input.offset(), input.start(), input.length());
