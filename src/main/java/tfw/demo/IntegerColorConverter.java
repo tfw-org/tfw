@@ -10,11 +10,7 @@ import tfw.tsm.ecd.ObjectECD;
  * java.lang.Integer</code> values and <code>java.awt.Color</code>.
  */
 public class IntegerColorConverter extends Synchronizer {
-    /**
-     * The value constraint for RGB event channels.
-     */
     private final RedGreenBlueECD redInteger;
-
     private final RedGreenBlueECD greenInteger;
     private final RedGreenBlueECD blueInteger;
     private final ColorECD color;
