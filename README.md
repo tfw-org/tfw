@@ -71,6 +71,13 @@ TFW uses several complementary techniques to assess the quality, robustness, and
 - **Fuzz testing** — [ClusterFuzzLite](https://google.github.io/clusterfuzzlite/) is used to "fuzz" test the API.
 - **Javadoc** — API documentation is available for both the [current development version](https://tfw-org.github.io/tfw/javadoc/) and the [latest released version](https://tfw-org.github.io/tfw/javadoc/latest/).
 
+## Project Repositories
+
+The TFW project has two repositories:
+
+- **[tfw](https://github.com/tfw-org/tfw)** — The primary TFW repository. It contains the TFW Java framework, its tests, documentation, and the code used to produce TFW releases.
+- **[tfw-fuzzing](https://github.com/tfw-org/tfw-fuzzing)** — A ClusterFuzzLite corpus storage repository used by the TFW project's fuzz-testing infrastructure. It contains fuzzing corpus data only and does not provide source code or other components used to build or run TFW.
+
 ## Lightweight by Design
 
 TFW has **only one external dependency: [SLF4J](https://www.slf4j.org/)**.
