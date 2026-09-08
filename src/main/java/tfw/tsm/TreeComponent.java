@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.Set;
 import tfw.check.Argument;
 import tfw.tsm.ecd.EventChannelDescription;
-import tfw.value.NullConstraint;
+import tfw.tsm.ecd.StatelessTriggerPredicate;
 
 /**
  * The base class for all components.
@@ -330,7 +330,7 @@ public class TreeComponent {
                 throw new IllegalStateException(eventChannelArray[i] + " is not connected to an event channel");
             }
 
-            if (!(sink.ecd.getConstraint() instanceof NullConstraint)) {
+            if (!(sink.ecd.getPredicate() instanceof StatelessTriggerPredicate)) {
                 if (sink.eventChannel.getState() == null) {
                     return false;
                 }

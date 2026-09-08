@@ -11,7 +11,6 @@ import tfw.tsm.AddRemoveOperation.Operation;
 import tfw.tsm.TransactionMgr.AddComponentRunnable;
 import tfw.tsm.TransactionMgr.RemoveComponentRunnable;
 import tfw.tsm.ecd.StatelessTriggerECD;
-import tfw.value.ValueException;
 
 public abstract class BranchComponent extends TreeComponent {
     public static final String DEFAULT_EXPORT_TAG = "All";
@@ -169,13 +168,8 @@ public abstract class BranchComponent extends TreeComponent {
 
         for (EventChannel ec : this.eventChannels.values()) {
             if (isExport(ec, exportTag)) {
-                try {
-                    EventChannelState ecs = new EventChannelState(ec.getECD(), ec.getState());
-                    buff.addState(ecs);
-                } catch (ValueException unexpected) {
-                    // This should never happen.
-                    throw new IllegalStateException("Event channel has invalid state: " + unexpected.getMessage());
-                }
+                EventChannelState ecs = new EventChannelState(ec.getECD(), ec.getState());
+                buff.addState(ecs);
             }
         }
 

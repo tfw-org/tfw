@@ -1,7 +1,6 @@
 package tfw.tsm;
 
 import tfw.tsm.ecd.EventChannelDescription;
-import tfw.value.ValueException;
 
 /**
  *
@@ -45,12 +44,14 @@ class InitiatorSource extends Source {
      *            the new event channel value.
      */
     @Override
-    synchronized void setState(Object state) throws ValueException {
+    synchronized void setState(Object state) {
         if (!this.getTreeComponent().isRooted()) {
             throw new IllegalStateException(
                     "Attempt to set state on disconnected event channel (" + eventChannel.getECD() + ").");
         }
-        ecd.getConstraint().checkValue(state);
+        if (!ecd.getPredicate().test(state)) {
+            throw new IllegalArgumentException("FIX THIS MESSAGE");
+        }
         this.stateQueue.push(new EventChannelNState(this.eventChannel, state));
     }
 

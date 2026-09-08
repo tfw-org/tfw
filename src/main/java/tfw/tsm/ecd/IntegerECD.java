@@ -1,8 +1,5 @@
 package tfw.tsm.ecd;
 
-import tfw.value.ClassValueConstraint;
-import tfw.value.IntegerConstraint;
-
 /**
  * A <code>java.lang.Integer</code> event channel descritpion
  */
@@ -14,7 +11,7 @@ public class IntegerECD extends ObjectECD {
      * @param max the maximum value allowed.
      */
     public IntegerECD(String name, int min, int max) {
-        super(name, new IntegerConstraint(min, max));
+        super(name, new IntegerRangePredicate(min, max));
     }
 
     /**
@@ -22,6 +19,6 @@ public class IntegerECD extends ObjectECD {
      * @param name the name of the event channel.
      */
     public IntegerECD(String name) {
-        super(name, ClassValueConstraint.INTEGER);
+        super(name, new IsAssignableFromPredicate(Integer.class));
     }
 }

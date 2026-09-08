@@ -1,7 +1,6 @@
 package tfw.tsm;
 
 import tfw.tsm.ecd.EventChannelDescription;
-import tfw.value.ValueException;
 
 /**
  *
@@ -18,11 +17,11 @@ class ProcessorSource extends Source {
     }
 
     @Override
-    void setState(Object state) throws ValueException {
+    void setState(Object state) {
         setState(state, true);
     }
 
-    void setState(Object state, boolean defer) throws ValueException {
+    void setState(Object state, boolean defer) {
         // This check is potentially invalid if a rollback occurs
         //        if (this.state != null)
         //        {
@@ -33,7 +32,9 @@ class ProcessorSource extends Source {
         if (eventChannel == null) {
             throw new IllegalStateException("Attempt to set state using disconnected source");
         }
-        ecd.getConstraint().checkValue(state);
+        if (!ecd.getPredicate().test(state)) {
+            throw new IllegalArgumentException("FIX THIS MESSAGE");
+        }
 
         this.state = state;
         if (defer) {

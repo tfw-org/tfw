@@ -1,7 +1,5 @@
 package tfw.tsm.ecd;
 
-import tfw.value.ClassValueConstraint;
-
 /**
  * A <code>java.lang.Boolean</code> event channel descritpion
  */
@@ -11,6 +9,6 @@ public class BooleanECD extends ObjectECD {
      * @param name the name of the event channel.
      */
     public BooleanECD(String name) {
-        super(name, ClassValueConstraint.BOOLEAN);
+        super(name, new IsAssignableFromPredicate(Boolean.class));
     }
 }

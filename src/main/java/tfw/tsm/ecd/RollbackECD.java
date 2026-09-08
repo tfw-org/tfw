@@ -1,6 +1,6 @@
 package tfw.tsm.ecd;
 
-import tfw.value.ValueConstraint;
+import java.util.function.Predicate;
 
 /**
  * The base class for all event channels that are used to set state as part of a
@@ -13,10 +13,10 @@ public abstract class RollbackECD extends ObjectECD {
      *
      * @param eventChannelName
      *            the name of the event channel.
-     * @param constraint
-     *            the value constraint for the evnet channel.
+     * @param predicate
+     *            the value predicate for the evnet channel.
      */
-    protected RollbackECD(String eventChannelName, ValueConstraint<? extends Object> constraint) {
-        super(eventChannelName, constraint);
+    protected RollbackECD(String eventChannelName, Predicate<Object> predicate) {
+        super(eventChannelName, predicate);
     }
 }
