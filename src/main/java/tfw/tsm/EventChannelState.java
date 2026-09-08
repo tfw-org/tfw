@@ -23,7 +23,8 @@ public class EventChannelState {
         Argument.assertNotNull(ecd, "ecd");
 
         if (!ecd.getPredicate().test(state)) {
-            throw new IllegalArgumentException("FIX THIS MESSAGE");
+            throw new IllegalArgumentException(
+                    "Invalid state for event channel '" + ecd.getEventChannelName() + "': " + state);
         }
 
         this.state = state;
