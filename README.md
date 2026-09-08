@@ -76,7 +76,7 @@ TFW uses several complementary techniques to assess the quality, robustness, and
 The TFW project has two repositories:
 
 - **[tfw](https://github.com/tfw-org/tfw)** — The primary TFW repository. It contains the TFW Java framework, its tests, documentation, and the code used to produce TFW releases.
-- **[tfw-fuzzing](https://github.com/tfw-org/tfw-fuzzing)** — A ClusterFuzzLite corpus storage repository used by the TFW project's fuzz-testing infrastructure. It contains fuzzing corpus data only and does not provide source code or other components used to build or run TFW.
+- **[tfw-fuzzing](https://github.com/tfw-org/tfw-fuzzing)** — A repository used by the TFW project's fuzz-testing infrastructure. It contains ClusterFuzzLite fuzzing corpus and coverage data only and does not provide source code or other components used to build or run TFW.
 
 ## Lightweight by Design
 
