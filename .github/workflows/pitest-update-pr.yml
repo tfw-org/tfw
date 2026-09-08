@@ -1,0 +1,33 @@
+name: Update Pitest PR
+
+on:
+  workflow_run:
+    workflows: ["pitest"]
+    types:
+      - completed
+
+permissions:
+  contents: read
+  pull-requests: write
+  checks: write
+
+jobs:
+  pitest-update-pr:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download Pitest results
+        uses: dawidd6/action-download-artifact@57aa996fc1713cc2c54d9f8ea23572deb30010f7c # v23
+        with:
+          workflow: ${{ github.event.workflow_run.workflow_id }}
+          run_id: ${{ github.event.workflow_run.id }}
+          name: pitest
+          path: target/pit-reports-ci
+
+      - name: Update pull request
+        env:
+          REPO_TOKEN: ${{ github.token }}
+        run: >
+          mvn -B
+          com.arcmutate:pitest-github-maven-plugin:2.3.3:updatePR
