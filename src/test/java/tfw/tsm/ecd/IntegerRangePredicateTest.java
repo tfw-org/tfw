@@ -38,7 +38,7 @@ final class IntegerRangePredicateTest {
 
         assertThat(predicate1).isEqualTo(predicate2);
         assertThat(predicate2).isEqualTo(predicate1);
-        assertThat(predicate1.hashCode()).isEqualTo(predicate2.hashCode());
+        assertThat(predicate1).hasSameHashCodeAs(predicate2);
 
         predicate2 = new IntegerRangePredicate(10, 21);
 
@@ -53,8 +53,9 @@ final class IntegerRangePredicateTest {
     void equalsDifferentTypeTest() {
         IntegerRangePredicate predicate = new IntegerRangePredicate(10, 20);
 
-        assertThat(predicate).isNotEqualTo(null);
-        assertThat(predicate).isNotEqualTo(new Object());
-        assertThat(predicate).isNotEqualTo(new IsAssignableFromPredicate(Integer.class));
+        assertThat(predicate)
+                .isNotEqualTo(null)
+                .isNotEqualTo(new Object())
+                .isNotEqualTo(new IsAssignableFromPredicate(Integer.class));
     }
 }

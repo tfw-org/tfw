@@ -45,12 +45,7 @@ class Translator extends Terminator {
 
         if (!cvc.equals(pvc)) {
             throw new IllegalArgumentException(
-                    "The parent value constraint is not compatable with the child value constraint");
-        }
-
-        if (!pvc.equals(cvc)) {
-            throw new IllegalArgumentException(
-                    "The child value constraint is not compatable with the parent value constraint");
+                    "The parent value constraint is not compatible with the child value constraint");
         }
 
         this.parentRelaySink = new ParentSink(parentPort, this);

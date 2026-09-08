@@ -5,16 +5,6 @@ package tfw.tsm.ecd;
  */
 public class ByteECD extends ObjectECD {
     /**
-     * Creates an event channel description with the specified attribute.
-     * @param name the name of the event channel.
-     * @param min the minimum value allowed.
-     * @param max the maximum value allowed.
-     */
-    // public ByteECD(String name, byte min, byte max) {
-    //     super(name, new ByteConstraint(min, max));
-    // }
-
-    /**
      * Creates an event channel description with the specified name.
      * @param name the name of the event channel.
      */

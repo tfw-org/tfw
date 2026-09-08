@@ -9,11 +9,13 @@ import org.junit.jupiter.api.Test;
 final class EventChannelDescriptionTest {
     @Test
     void constructionTest() {
-        assertThatThrownBy(() -> new TestECD(null, new IsAssignableFromPredicate(String.class)))
+        final IsAssignableFromPredicate predicate = new IsAssignableFromPredicate(String.class);
+
+        assertThatThrownBy(() -> new TestECD(null, predicate))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("eventChannelName == null not allowed!");
 
-        assertThatThrownBy(() -> new TestECD(" ", new IsAssignableFromPredicate(String.class)))
+        assertThatThrownBy(() -> new TestECD(" ", predicate))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("eventChannelName.trim().length() == 0 not allowed!");
 
@@ -29,7 +31,7 @@ final class EventChannelDescriptionTest {
 
         assertThat(ecd1).isEqualTo(ecd2);
         assertThat(ecd2).isEqualTo(ecd1);
-        assertThat(ecd1.hashCode()).isEqualTo(ecd2.hashCode());
+        assertThat(ecd1).hasSameHashCodeAs(ecd2);
 
         ecd2 = new TestECD("different", new IsAssignableFromPredicate(String.class));
 
@@ -47,7 +49,7 @@ final class EventChannelDescriptionTest {
 
         assertThat(ecd1).isEqualTo(ecd2);
         assertThat(ecd2).isEqualTo(ecd1);
-        assertThat(ecd1.hashCode()).isEqualTo(ecd2.hashCode());
+        assertThat(ecd1).hasSameHashCodeAs(ecd2);
     }
 
     @Test
@@ -57,7 +59,7 @@ final class EventChannelDescriptionTest {
 
         assertThat(ecd1).isEqualTo(ecd2);
         assertThat(ecd2).isEqualTo(ecd1);
-        assertThat(ecd1.hashCode()).isEqualTo(ecd2.hashCode());
+        assertThat(ecd1).hasSameHashCodeAs(ecd2);
 
         ecd2 = new IntegerECD("value", 0, 101);
 

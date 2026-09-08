@@ -23,15 +23,16 @@ final class StatelessTriggerPredicateTest {
 
         assertThat(predicate1).isEqualTo(predicate2);
         assertThat(predicate2).isEqualTo(predicate1);
-        assertThat(predicate1.hashCode()).isEqualTo(predicate2.hashCode());
+        assertThat(predicate1).hasSameHashCodeAs(predicate2);
     }
 
     @Test
     void equalsDifferentTypeTest() {
         StatelessTriggerPredicate predicate = new StatelessTriggerPredicate();
 
-        assertThat(predicate).isNotEqualTo(null);
-        assertThat(predicate).isNotEqualTo(new Object());
-        assertThat(predicate).isNotEqualTo(new IsAssignableFromPredicate(Object.class));
+        assertThat(predicate)
+                .isNotEqualTo(null)
+                .isNotEqualTo(new Object())
+                .isNotEqualTo(new IsAssignableFromPredicate(Object.class));
     }
 }
