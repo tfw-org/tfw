@@ -37,19 +37,21 @@ public class IntegerStringConverter extends Synchronizer {
 
     @Override
     public void convertAToB() {
-        Integer intValue = null;
+        final String stringValue = (String) get(stringECD);
+        final Integer intValue;
 
         try {
-            intValue = Integer.valueOf((String) get(stringECD));
+            intValue = Integer.valueOf(stringValue);
         } catch (NumberFormatException nfe) {
-            rollback(errorECD, "Invalid integer value '" + get(stringECD) + "'");
+            rollback(errorECD, "Invalid integer value '" + stringValue + "'");
+            return;
         }
 
-        boolean compliance = this.integerPredicate.test(intValue);
-
-        if (!compliance) {
-            rollback(errorECD, compliance);
+        if (!this.integerPredicate.test(intValue)) {
+            rollback(errorECD, "Integer value '" + intValue + "' is not valid");
+            return;
         }
+
         set(integerECD, intValue);
     }
 }

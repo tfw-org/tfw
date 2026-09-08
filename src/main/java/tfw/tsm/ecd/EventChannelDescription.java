@@ -42,7 +42,7 @@ public abstract class EventChannelDescription {
      * Creates an event channel description with the specified attributes.
      *
      * @param eventChannelName the name of the event channel.
-     * @param constraint the value constraint for the evnet channel.
+     * @param predicate the predicate used to validate values for the event channel.
      * @param fireOnConnect flag indicating whether the event channel fires state when a new sink is connected.
      * @param rollbackParticipant flag indicating whether the event channel participates in transaction rollbacks.
      */
@@ -72,9 +72,9 @@ public abstract class EventChannelDescription {
     }
 
     /**
-     * Returns the value constraint.
+     * Returns the predicate used to validate values for this event channel.
      *
-     * @return the value constraint.
+     * @return the validation predicate.
      */
     public final Predicate<Object> getPredicate() {
         return predicate;
