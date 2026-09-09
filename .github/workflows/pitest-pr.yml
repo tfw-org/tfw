@@ -7,23 +7,13 @@ permissions:
   contents: read
 
 jobs:
-  pull-request-ci:
-    # Only run on PRs from the repo. PRs from forks will fail due to lack of permissions and
-    # must use a two stage process
-    if: github.event.pull_request.head.repo.full_name == github.repository
+  receive-pr:
     runs-on: ubuntu-latest
-    
-    # Elevate permissions strictly for this specific job
-    permissions:
-      contents: read
-      pull-requests: write
-      checks: write
 
     steps:
       - name: Checkout project
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          # important to set a fetch depth of 2. By default the checkout action make no history available
           fetch-depth: 2
           persist-credentials: false
 
@@ -44,7 +34,11 @@ jobs:
       - name: Run pitest
         run: mvn -e -B -Ppitest -Dfeatures="+GIT(from[HEAD~1]), +gitci" test
 
-      - name: Update pull request
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-        run: mvn -e -B -DrepoToken="$GITHUB_TOKEN" pitest-github:github
+      - name: Aggregate Pitest results
+        run: mvn -e -B -Ppitest pitest-git:aggregate
+
+      - name: Upload Pitest results
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: pitest
+          path: target/pit-reports-ci/

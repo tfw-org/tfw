@@ -91,11 +91,6 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>com.arcmutate</groupId>
-                <artifactId>pitest-github-maven-plugin</artifactId>
-                <version>${plugin.pitest-github-maven-plugin.version}</version>
-            </plugin>
-            <plugin>
                 <groupId>com.diffplug.spotless</groupId>
                 <artifactId>spotless-maven-plugin</artifactId>
                 <version>${plugin.spotless-maven-plugin.version}</version>
@@ -567,6 +562,16 @@
             <id>pitest</id>
             <build>
                 <plugins>
+                    <plugin>
+                        <groupId>com.arcmutate</groupId>
+                        <artifactId>pitest-git-maven-plugin</artifactId>
+                        <version>${plugin.pitest-git-plugin.version}</version>
+                    </plugin>
+                    <plugin>
+                        <groupId>com.arcmutate</groupId>
+                        <artifactId>pitest-github-maven-plugin</artifactId>
+                        <version>${plugin.pitest-github-maven-plugin.version}</version>
+                    </plugin>
                     <plugin>
                         <groupId>org.pitest</groupId>
                         <artifactId>pitest-maven</artifactId>
