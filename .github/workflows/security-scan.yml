@@ -44,7 +44,7 @@ jobs:
     # 3. Auditor: Run Grype directly against the precise Maven-generated SBOM.
     # It checks for package vulnerabilities using a different database pool.
     - name: Run Grype Scanner
-      uses: anchore/scan-action@e1165082ffb1fe366ebaf02d8526e7c4989ea9d2 # v7.4.0
+      uses: anchore/scan-action@27805bf3b4e84b4a5c980df22ed233c00390a439 # v7.4.2
       with:
         sbom: 'target/bom.json'
         fail-build: false # Logs findings to console without breaking the build
