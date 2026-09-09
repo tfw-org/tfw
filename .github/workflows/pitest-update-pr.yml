@@ -31,3 +31,4 @@ jobs:
         run: >
           mvn -B
           com.arcmutate:pitest-github-maven-plugin:2.3.3:updatePR
+          -DrepoToken="$REPO_TOKEN"
