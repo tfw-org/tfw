@@ -1,7 +1,7 @@
 name: Update Pitest PR
 
 on:
-  workflow_run:
+  workflow_run: # zizmor: ignore[dangerous-triggers] Intentional privileged follow-up; this workflow never checks out or executes PR code.
     workflows: ["pitest"]
     types:
       - completed
@@ -18,7 +18,7 @@ jobs:
 
     steps:
       - name: Download Pitest results
-        uses: dawidd6/action-download-artifact@57aa996fc1713cc2c54d9f8ea23572deb30010f7c # v23
+        uses: dawidd6/action-download-artifact@d63b86af1b34672e53c440b1b83979861906bad7 # v24
         with:
           workflow: ${{ github.event.workflow_run.workflow_id }}
           run_id: ${{ github.event.workflow_run.id }}
