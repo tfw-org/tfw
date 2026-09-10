@@ -25,7 +25,7 @@ jobs:
          
           # Optional: Prevent merging unapproved licenses
           allow-licenses: MIT, Apache-2.0
-          allow-dependencies-licenses: pkg:maven/com.arcmutate/pitest-git-maven-plugin
+          allow-dependencies-licenses: pkg:maven/com.arcmutate/pitest-git-maven-plugin, pkg:maven/com.arcmutate/pitest-git-plugin, pkg:maven/com.arcmutate/pitest-github-maven-plugin
          
           # Optional: Post a helpful summary table directly into the PR comments
           comment-summary-in-pr: always
