@@ -88,7 +88,6 @@ public final class FuzzerGenerator {
 
         for (final IlaType type : ilaTypes()) {
             definitions.add(ilaFactoryFromArray(type));
-            definitions.add(testCloseIla(type));
         }
 
         return Collections.unmodifiableList(definitions);
@@ -138,29 +137,6 @@ public final class FuzzerGenerator {
                         type.ilaType() + "::get",
                         initialize(type),
                         assertElementEquals(type)));
-    }
-
-    private static GenerationDefinition testCloseIla(final IlaType type) {
-        return new GenerationDefinition(
-                SourceKind.TEST,
-                "tfw/immutable/ila/TestCloseIla.java.ftl",
-                "tfw.immutable.ila." + type.ilaPackage(),
-                "TestClose" + type.ilaType(),
-                createTestCloseModel(type));
-    }
-
-    private static Map<String, Object> createTestCloseModel(final IlaType type) {
-        final Map<String, Object> model = new HashMap<>();
-
-        model.put("package", "tfw.immutable.ila." + type.ilaPackage());
-        model.put("arrayType", type.arrayType());
-        model.put("ilaType", type.ilaType());
-
-        if (type.generic() != null) {
-            model.put("generic", type.generic());
-        }
-
-        return model;
     }
 
     private static Map<String, Object> createModel(

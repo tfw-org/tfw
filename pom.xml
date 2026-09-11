@@ -347,6 +347,7 @@
                                 <argument>-d</argument>
                                 <argument>${project.build.directory}/fuzzer-generator-classes</argument>
                                 <argument>${project.basedir}/src/fuzz/java/build/FuzzerGenerator.java</argument>
+                                <argument>${project.basedir}/src/fuzz/java/build/TemplateGenerator.java</argument>
                             </arguments>
                         </configuration>
                     </execution>
@@ -379,6 +380,24 @@
                             <arguments>
                                 <argument>${project.basedir}/src/main/template</argument>
                                 <argument>${project.basedir}/src/test/template</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>generate-templates</id>
+                        <goals>
+                            <goal>java</goal>
+                        </goals>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <mainClass>tfw.build.TemplateGenerator</mainClass>
+                            <includeProjectDependencies>false</includeProjectDependencies>
+                            <includePluginDependencies>true</includePluginDependencies>
+                            <additionalClasspathElements>
+                                <additionalClasspathElement>${project.build.directory}/fuzzer-generator-classes</additionalClasspathElement>
+                            </additionalClasspathElements>
+                            <arguments>
+                                <argument>${project.basedir}/src/template/ftl</argument>
                             </arguments>
                         </configuration>
                     </execution>
