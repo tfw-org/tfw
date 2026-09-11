@@ -1,8 +1,9 @@
-package ${package};
+// booleanila,byteila,charila,doubleila,floatila,intila,longila,objectila,shortila
+package ${PACKAGE};
 
 import java.io.IOException;
 
-public final class TestClose${ilaType} implements ${ilaType}<#if generic??><${generic}></#if> {
+public final class TestClose${NAME}Ila implements ${NAME}Ila${TEMPLATE} {
     private int numberOfCloses = 0;
 
     @Override
@@ -16,8 +17,8 @@ public final class TestClose${ilaType} implements ${ilaType}<#if generic??><${ge
     }
 
     @Override
-    public void get(${arrayType} array, int arrayOffset, long ilaStart, int length) throws IOException {
-        throw new IOException("Close Test ${ilaType}");
+    public void get(${TYPE}[] array, int arrayOffset, long ilaStart, int length) throws IOException {
+        throw new IOException("Close Test ${NAME}Ila");
     }
 
     public int getNumberOfCloses() {

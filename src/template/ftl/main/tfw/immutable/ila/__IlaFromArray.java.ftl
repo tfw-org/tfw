@@ -1,24 +1,24 @@
 // booleanila,byteila,charila,doubleila,floatila,intila,longila,objectila,shortila
-package %%PACKAGE%%;
+package ${PACKAGE};
 
 import java.io.IOException;
 import tfw.check.Argument;
 
-public final class %%NAME%%IlaFromArray {
-    private %%NAME%%IlaFromArray() {
+public final class ${NAME}IlaFromArray {
+    private ${NAME}IlaFromArray() {
         // non-instantiable class
     }
 
-    public static %%TEMPLATE_SPACE%%%%NAME%%Ila%%TEMPLATE%% create(%%TYPE_OR_TEMPLATE%%[] array) {
+    public static ${TEMPLATE_SPACE}${NAME}Ila${TEMPLATE} create(${TYPE_OR_TEMPLATE}[] array) {
         Argument.assertNotNull(array, "array");
 
-        return new %%NAME%%IlaImpl%%DIAMOND%%(array);
+        return new ${NAME}IlaImpl${DIAMOND}(array);
     }
 
-    private static class %%NAME%%IlaImpl%%TEMPLATE%% extends Abstract%%NAME%%Ila%%TEMPLATE%% {
-        private final %%TYPE_OR_TEMPLATE%%[] array;
+    private static class ${NAME}IlaImpl${TEMPLATE} extends Abstract${NAME}Ila${TEMPLATE} {
+        private final ${TYPE_OR_TEMPLATE}[] array;
 
-        private %%NAME%%IlaImpl(%%TYPE_OR_TEMPLATE%%[] array) {
+        private ${NAME}IlaImpl(${TYPE_OR_TEMPLATE}[] array) {
             this.array = array;
         }
 
@@ -28,7 +28,7 @@ public final class %%NAME%%IlaFromArray {
         }
 
         @Override
-        protected void getImpl(%%TYPE_OR_TEMPLATE%%[] array, int offset, long start, int length) {
+        protected void getImpl(${TYPE_OR_TEMPLATE}[] array, int offset, long start, int length) {
             System.arraycopy(this.array, (int) start, array, offset, length);
         }
 
