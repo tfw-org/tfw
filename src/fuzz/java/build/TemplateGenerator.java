@@ -20,6 +20,45 @@ import java.util.stream.Stream;
 public final class TemplateGenerator {
     private TemplateGenerator() {}
 
+    private static final class TypeDefinition {
+        private final String name;
+        private final String template;
+        private final String templateSpace;
+        private final String typeOrTemplate;
+        private final String diamond;
+
+        private TypeDefinition(
+                final String name,
+                final String template,
+                final String templateSpace,
+                final String typeOrTemplate,
+                final String diamond) {
+            this.name = name;
+            this.template = template;
+            this.templateSpace = templateSpace;
+            this.typeOrTemplate = typeOrTemplate;
+            this.diamond = diamond;
+        }
+    }
+
+    private static final Map<String, TypeDefinition> IBA_TYPES = createIbaTypes();
+
+    private static Map<String, TypeDefinition> createIbaTypes() {
+        final Map<String, TypeDefinition> types = new HashMap<>();
+
+        types.put("booleaniba", new TypeDefinition("Boolean", "", "", "boolean", ""));
+        types.put("byteiba", new TypeDefinition("Byte", "", "", "byte", ""));
+        types.put("chariba", new TypeDefinition("Char", "", "", "char", ""));
+        types.put("doubleiba", new TypeDefinition("Double", "", "", "double", ""));
+        types.put("floatiba", new TypeDefinition("Float", "", "", "float", ""));
+        types.put("intiba", new TypeDefinition("Int", "", "", "int", ""));
+        types.put("longiba", new TypeDefinition("Long", "", "", "long", ""));
+        types.put("objectiba", new TypeDefinition("Object", "<T>", "<T> ", "T", "<>"));
+        types.put("shortiba", new TypeDefinition("Short", "", "", "short", ""));
+
+        return types;
+    }
+
     public static void main(final String[] args) throws Exception {
         if (args.length != 1) {
             throw new IllegalArgumentException("Usage: TemplateGenerator <template-root>");
@@ -104,24 +143,36 @@ public final class TemplateGenerator {
             final Path relativeDirectory,
             final Path templatePath)
             throws Exception {
-        final Path mappingPath = mappingDirectory.resolve(mappingName + ".mapping");
-
-        final Properties properties = new Properties();
-
-        properties.load(new StringReader(new String(Files.readAllBytes(mappingPath), StandardCharsets.UTF_8)));
-
         final Map<String, Object> model = new HashMap<>();
+        final TypeDefinition type = IBA_TYPES.get(mappingName);
 
-        for (final Map.Entry<Object, Object> entry : properties.entrySet()) {
-            final String propertyName = ((String) entry.getKey()).trim();
+        if (type != null && relativeDirectory.equals(Paths.get("tfw", "immutable", "iba"))) {
+            model.put("NAME", type.name);
+            model.put("TEMPLATE", type.template);
+            model.put("TEMPLATE_SPACE", type.templateSpace);
+            model.put("TYPE_OR_TEMPLATE", type.typeOrTemplate);
+            model.put("DIAMOND", type.diamond);
 
-            if (!propertyName.startsWith("%%") || !propertyName.endsWith("%%")) {
-                throw new IllegalArgumentException("Invalid mapping property: " + propertyName);
+            final String packageName =
+                    relativeDirectory.resolve(mappingName).toString().replace(File.separatorChar, '.');
+
+            model.put("PACKAGE", packageName);
+        } else {
+            final Path mappingPath = mappingDirectory.resolve(mappingName + ".mapping");
+
+            final Properties properties = new Properties();
+            properties.load(new StringReader(new String(Files.readAllBytes(mappingPath), StandardCharsets.UTF_8)));
+
+            for (final Map.Entry<Object, Object> entry : properties.entrySet()) {
+                final String propertyName = ((String) entry.getKey()).trim();
+                if (!propertyName.startsWith("%%") || !propertyName.endsWith("%%")) {
+                    throw new IllegalArgumentException("Invalid mapping property: " + propertyName);
+                }
+
+                final String modelName = propertyName.substring(2, propertyName.length() - 2);
+
+                model.put(modelName, entry.getValue());
             }
-
-            final String modelName = propertyName.substring(2, propertyName.length() - 2);
-
-            model.put(modelName, entry.getValue());
         }
 
         final Template template = new Template(templatePath.toString(), templateSource, configuration);

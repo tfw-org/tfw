@@ -1,5 +1,5 @@
 // booleaniba,byteiba,chariba,doubleiba,floatiba,intiba,longiba,objectiba,shortiba
-package %%PACKAGE%%;
+package ${PACKAGE};
 
 import java.io.IOException;
 import java.math.BigInteger;
@@ -7,12 +7,12 @@ import tfw.check.Argument;
 import tfw.immutable.iba.AbstractIba;
 import tfw.immutable.iba.ImmutableBigIntegerArrayUtil;
 
-public abstract class Abstract%%NAME%%Iba%%TEMPLATE%% extends AbstractIba implements %%NAME%%Iba%%TEMPLATE%% {
-    protected abstract void getImpl(final %%TYPE_OR_TEMPLATE%%[] array, int arrayOffset, BigInteger ibaStart, int length)
+public abstract class Abstract${NAME}Iba${TEMPLATE} extends AbstractIba implements ${NAME}Iba${TEMPLATE} {
+    protected abstract void getImpl(final ${TYPE_OR_TEMPLATE}[] array, int arrayOffset, BigInteger ibaStart, int length)
             throws IOException;
 
     @Override
-    public final void get(%%TYPE_OR_TEMPLATE%%[] array, int arrayOffset, BigInteger ibaStart, int length) throws IOException {
+    public final void get(${TYPE_OR_TEMPLATE}[] array, int arrayOffset, BigInteger ibaStart, int length) throws IOException {
         checkClosed();
 
         Argument.assertNotNull(array, "array");
