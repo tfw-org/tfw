@@ -1,0 +1,30 @@
+// booleaniis,byteiis,chariis,doubleiis,floatiis,intiis,longiis,objectiis,shortiis
+package ${PACKAGE};
+
+import java.io.IOException;
+import java.math.BigInteger;
+import tfw.immutable.iis.AbstractIis;
+
+/**
+ * This class is an optional abstract class that implements ${NAME}Iis and provides
+ * some common parameter validation.
+ */
+public abstract class Abstract${NAME}Iis${TEMPLATE} extends AbstractIis implements ${NAME}Iis${TEMPLATE} {
+    /**
+     * This method replaces the actual read method and is called after parameter validation.
+     *
+     * @param array that will hold the ${TYPE}s.
+     * @param offset into the array to put the first ${TYPE}.
+     * @param length of ${TYPE}s to put into the array.
+     * @return the number of ${TYPE}s put into the array.
+     * @throws IOException if something happens while trying to read the ${TYPE}s.
+     */
+    protected abstract int readImpl(${TYPE_OR_TEMPLATE}[] array, int offset, int length) throws IOException;
+
+    @Override
+    public final int read(final ${TYPE_OR_TEMPLATE}[] array, final int offset, final int length) throws IOException {
+        final BigInteger r = readCheck(array, offset, length);
+
+        return r == null ? readImpl(array, offset, length) : r.intValue();
+    }
+}

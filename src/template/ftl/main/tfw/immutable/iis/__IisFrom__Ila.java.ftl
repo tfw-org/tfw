@@ -1,23 +1,23 @@
 // booleaniis,byteiis,chariis,doubleiis,floatiis,intiis,longiis,objectiis,shortiis
-package %%PACKAGE%%;
+package ${PACKAGE};
 
 import java.io.IOException;
 import tfw.check.Argument;
-import tfw.immutable.ila.%%LOWERCASE%%ila.%%NAME%%Ila;
+import tfw.immutable.ila.${LOWERCASE}ila.${NAME}Ila;
 
-public final class %%NAME%%IisFrom%%NAME%%Ila {
-    private %%NAME%%IisFrom%%NAME%%Ila() {}
+public final class ${NAME}IisFrom${NAME}Ila {
+    private ${NAME}IisFrom${NAME}Ila() {}
 
-    public static %%TEMPLATE_SPACE%%%%NAME%%Iis%%TEMPLATE%% create(final %%NAME%%Ila%%TEMPLATE%% ila) {
-        return new %%NAME%%IisImpl%%DIAMOND%%(ila);
+    public static ${TEMPLATE_SPACE}${NAME}Iis${TEMPLATE} create(final ${NAME}Ila${TEMPLATE} ila) {
+        return new ${NAME}IisImpl${DIAMOND}(ila);
     }
 
-    private static class %%NAME%%IisImpl%%TEMPLATE%% extends Abstract%%NAME%%Iis%%TEMPLATE%% {
-        private final %%NAME%%Ila%%TEMPLATE%% ila;
+    private static class ${NAME}IisImpl${TEMPLATE} extends Abstract${NAME}Iis${TEMPLATE} {
+        private final ${NAME}Ila${TEMPLATE} ila;
 
         private long index = 0;
 
-        public %%NAME%%IisImpl(final %%NAME%%Ila%%TEMPLATE%% ila) {
+        public ${NAME}IisImpl(final ${NAME}Ila${TEMPLATE} ila) {
             Argument.assertNotNull(ila, "ila");
 
             this.ila = ila;
@@ -29,7 +29,7 @@ public final class %%NAME%%IisFrom%%NAME%%Ila {
         }
 
         @Override
-        protected int readImpl(%%TYPE_OR_TEMPLATE%%[] array, int offset, int length) throws IOException {
+        protected int readImpl(${TYPE_OR_TEMPLATE}[] array, int offset, int length) throws IOException {
             if (index == ila.length()) {
                 return -1;
             }

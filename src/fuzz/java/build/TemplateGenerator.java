@@ -26,35 +26,51 @@ public final class TemplateGenerator {
         private final String templateSpace;
         private final String typeOrTemplate;
         private final String diamond;
+        private final String type;
+        private final String lowercase;
 
         private TypeDefinition(
                 final String name,
                 final String template,
                 final String templateSpace,
                 final String typeOrTemplate,
-                final String diamond) {
+                final String diamond,
+                final String type,
+                final String lowercase) {
             this.name = name;
             this.template = template;
             this.templateSpace = templateSpace;
             this.typeOrTemplate = typeOrTemplate;
             this.diamond = diamond;
+            this.type = type;
+            this.lowercase = lowercase;
         }
     }
 
-    private static final Map<String, TypeDefinition> IBA_TYPES = createIbaTypes();
+    private static final Map<String, TypeDefinition> TYPES = createTypes();
 
-    private static Map<String, TypeDefinition> createIbaTypes() {
+    private static Map<String, TypeDefinition> createTypes() {
         final Map<String, TypeDefinition> types = new HashMap<>();
 
-        types.put("booleaniba", new TypeDefinition("Boolean", "", "", "boolean", ""));
-        types.put("byteiba", new TypeDefinition("Byte", "", "", "byte", ""));
-        types.put("chariba", new TypeDefinition("Char", "", "", "char", ""));
-        types.put("doubleiba", new TypeDefinition("Double", "", "", "double", ""));
-        types.put("floatiba", new TypeDefinition("Float", "", "", "float", ""));
-        types.put("intiba", new TypeDefinition("Int", "", "", "int", ""));
-        types.put("longiba", new TypeDefinition("Long", "", "", "long", ""));
-        types.put("objectiba", new TypeDefinition("Object", "<T>", "<T> ", "T", "<>"));
-        types.put("shortiba", new TypeDefinition("Short", "", "", "short", ""));
+        types.put("booleaniba", new TypeDefinition("Boolean", "", "", "boolean", "", "boolean", "boolean"));
+        types.put("byteiba", new TypeDefinition("Byte", "", "", "byte", "", "byte", "byte"));
+        types.put("chariba", new TypeDefinition("Char", "", "", "char", "", "char", "char"));
+        types.put("doubleiba", new TypeDefinition("Double", "", "", "double", "", "double", "double"));
+        types.put("floatiba", new TypeDefinition("Float", "", "", "float", "", "float", "float"));
+        types.put("intiba", new TypeDefinition("Int", "", "", "int", "", "int", "int"));
+        types.put("longiba", new TypeDefinition("Long", "", "", "long", "", "long", "long"));
+        types.put("objectiba", new TypeDefinition("Object", "<T>", "<T> ", "T", "<>", "Object", "object"));
+        types.put("shortiba", new TypeDefinition("Short", "", "", "short", "", "short", "short"));
+
+        types.put("booleaniis", new TypeDefinition("Boolean", "", "", "boolean", "", "boolean", "boolean"));
+        types.put("byteiis", new TypeDefinition("Byte", "", "", "byte", "", "byte", "byte"));
+        types.put("chariis", new TypeDefinition("Char", "", "", "char", "", "char", "char"));
+        types.put("doubleiis", new TypeDefinition("Double", "", "", "double", "", "double", "double"));
+        types.put("floatiis", new TypeDefinition("Float", "", "", "float", "", "float", "float"));
+        types.put("intiis", new TypeDefinition("Int", "", "", "int", "", "int", "int"));
+        types.put("longiis", new TypeDefinition("Long", "", "", "long", "", "long", "long"));
+        types.put("objectiis", new TypeDefinition("Object", "<T>", "<T> ", "T", "<>", "Object", "object"));
+        types.put("shortiis", new TypeDefinition("Short", "", "", "short", "", "short", "short"));
 
         return types;
     }
@@ -144,14 +160,18 @@ public final class TemplateGenerator {
             final Path templatePath)
             throws Exception {
         final Map<String, Object> model = new HashMap<>();
-        final TypeDefinition type = IBA_TYPES.get(mappingName);
+        final TypeDefinition type = TYPES.get(mappingName);
+        final boolean isIba = relativeDirectory.equals(Paths.get("tfw", "immutable", "iba"));
+        final boolean isIis = relativeDirectory.equals(Paths.get("tfw", "immutable", "iis"));
 
-        if (type != null && relativeDirectory.equals(Paths.get("tfw", "immutable", "iba"))) {
+        if (type != null && (isIba || isIis)) {
             model.put("NAME", type.name);
             model.put("TEMPLATE", type.template);
             model.put("TEMPLATE_SPACE", type.templateSpace);
             model.put("TYPE_OR_TEMPLATE", type.typeOrTemplate);
             model.put("DIAMOND", type.diamond);
+            model.put("TYPE", type.type);
+            model.put("LOWERCASE", type.lowercase);
 
             final String packageName =
                     relativeDirectory.resolve(mappingName).toString().replace(File.separatorChar, '.');
@@ -161,10 +181,12 @@ public final class TemplateGenerator {
             final Path mappingPath = mappingDirectory.resolve(mappingName + ".mapping");
 
             final Properties properties = new Properties();
+
             properties.load(new StringReader(new String(Files.readAllBytes(mappingPath), StandardCharsets.UTF_8)));
 
             for (final Map.Entry<Object, Object> entry : properties.entrySet()) {
                 final String propertyName = ((String) entry.getKey()).trim();
+
                 if (!propertyName.startsWith("%%") || !propertyName.endsWith("%%")) {
                     throw new IllegalArgumentException("Invalid mapping property: " + propertyName);
                 }
@@ -178,6 +200,7 @@ public final class TemplateGenerator {
         final Template template = new Template(templatePath.toString(), templateSource, configuration);
 
         final StringWriter writer = new StringWriter();
+
         template.process(model, writer);
 
         final String generated = writer.toString() + "// AUTO GENERATED FROM TEMPLATE" + System.lineSeparator();
