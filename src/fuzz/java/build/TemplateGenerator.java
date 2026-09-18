@@ -82,6 +82,16 @@ public final class TemplateGenerator {
         types.put("objectiisf", new TypeDefinition("Object", "<T>", "<T> ", "T", "<>", "Object", "object"));
         types.put("shortiisf", new TypeDefinition("Short", "", "", "short", "", "short", "short"));
 
+        types.put("booleanilmf", new TypeDefinition("Boolean", "", "", "boolean", "", "boolean", "boolean"));
+        types.put("byteilmf", new TypeDefinition("Byte", "", "", "byte", "", "byte", "byte"));
+        types.put("charilmf", new TypeDefinition("Char", "", "", "char", "", "char", "char"));
+        types.put("doubleilmf", new TypeDefinition("Double", "", "", "double", "", "double", "double"));
+        types.put("floatilmf", new TypeDefinition("Float", "", "", "float", "", "float", "float"));
+        types.put("intilmf", new TypeDefinition("Int", "", "", "int", "", "int", "int"));
+        types.put("longilmf", new TypeDefinition("Long", "", "", "long", "", "long", "long"));
+        types.put("objectilmf", new TypeDefinition("Object", "<T>", "<T> ", "T", "<>", "Object", "object"));
+        types.put("shortilmf", new TypeDefinition("Short", "", "", "short", "", "short", "short"));
+
         return types;
     }
 
@@ -174,8 +184,9 @@ public final class TemplateGenerator {
         final boolean isIba = relativeDirectory.equals(Paths.get("tfw", "immutable", "iba"));
         final boolean isIis = relativeDirectory.equals(Paths.get("tfw", "immutable", "iis"));
         final boolean isIisf = relativeDirectory.equals(Paths.get("tfw", "immutable", "iisf"));
+        final boolean isIlmf = relativeDirectory.equals(Paths.get("tfw", "immutable", "ilmf"));
 
-        if (type != null && (isIba || isIis || isIisf)) {
+        if (type != null && (isIba || isIis || isIisf || isIlmf)) {
             model.put("NAME", type.name);
             model.put("TEMPLATE", type.template);
             model.put("TEMPLATE_SPACE", type.templateSpace);
