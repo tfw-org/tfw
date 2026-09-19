@@ -1,25 +1,25 @@
 // booleanilm,byteilm,charilm,doubleilm,floatilm,intilm,longilm,objectilm,shortilm
-package %%PACKAGE%%;
+package ${PACKAGE};
 
 import java.io.IOException;
 import java.util.Arrays;
 import tfw.check.Argument;
 
-public final class Strided%%NAME%%IlmFrom%%NAME%%Ilm%%TEMPLATE%% {
-    private Strided%%NAME%%IlmFrom%%NAME%%Ilm() {}
+public final class Strided${NAME}IlmFrom${NAME}Ilm${TEMPLATE} {
+    private Strided${NAME}IlmFrom${NAME}Ilm() {}
 
-    public static %%TEMPLATE_SPACE%%Strided%%NAME%%Ilm%%TEMPLATE%% create(final %%NAME%%Ilm%%TEMPLATE%% ilm, final %%TYPE_OR_TEMPLATE%%[] buffer) {
+    public static ${TEMPLATE_SPACE}Strided${NAME}Ilm${TEMPLATE} create(final ${NAME}Ilm${TEMPLATE} ilm, final ${TYPE_OR_TEMPLATE}[] buffer) {
         Argument.assertNotNull(ilm, "ilm");
         Argument.assertNotNull(buffer, "buffer");
 
-        return new Strided%%NAME%%IlmImpl%%DIAMOND%%(ilm, buffer);
+        return new Strided${NAME}IlmImpl${DIAMOND}(ilm, buffer);
     }
 
-    private static class Strided%%NAME%%IlmImpl%%TEMPLATE%% extends AbstractStrided%%NAME%%Ilm%%TEMPLATE%% {
-        private final %%NAME%%Ilm%%TEMPLATE%% ilm;
-        private final %%TYPE_OR_TEMPLATE%%[] buffer;
+    private static class Strided${NAME}IlmImpl${TEMPLATE} extends AbstractStrided${NAME}Ilm${TEMPLATE} {
+        private final ${NAME}Ilm${TEMPLATE} ilm;
+        private final ${TYPE_OR_TEMPLATE}[] buffer;
 
-        private Strided%%NAME%%IlmImpl(final %%NAME%%Ilm%%TEMPLATE%% ilm, final %%TYPE_OR_TEMPLATE%%[] buffer) {
+        private Strided${NAME}IlmImpl(final ${NAME}Ilm${TEMPLATE} ilm, final ${TYPE_OR_TEMPLATE}[] buffer) {
             this.ilm = ilm;
             this.buffer = buffer;
         }
@@ -36,7 +36,7 @@ public final class Strided%%NAME%%IlmFrom%%NAME%%Ilm%%TEMPLATE%% {
 
         @Override
         public final void getImpl(
-                %%TYPE_OR_TEMPLATE%%[] array,
+                ${TYPE_OR_TEMPLATE}[] array,
                 int offset,
                 int rowStride,
                 int colStride,
@@ -45,7 +45,7 @@ public final class Strided%%NAME%%IlmFrom%%NAME%%Ilm%%TEMPLATE%% {
                 int rowCount,
                 int colCount)
                 throws IOException {
-            final %%TYPE_OR_TEMPLATE%%[] b = Arrays.copyOf(buffer, colCount);
+            final ${TYPE_OR_TEMPLATE}[] b = Arrays.copyOf(buffer, colCount);
 
             for (int i = 0; i < rowCount; i++) {
                 ilm.get(b, 0, rowStart + i, colStart, 1, colCount);
