@@ -1,13 +1,13 @@
 // booleanilm,byteilm,charilm,doubleilm,floatilm,intilm,longilm,objectilm,shortilm
-package %%PACKAGE%%;
+package ${PACKAGE};
 
 import java.io.IOException;
 import tfw.immutable.ilm.AbstractIlm;
 import tfw.immutable.ilm.AbstractStridedIlmCheck;
 
-public abstract class AbstractStrided%%NAME%%Ilm%%TEMPLATE%% extends AbstractIlm implements Strided%%NAME%%Ilm%%TEMPLATE%% {
+public abstract class AbstractStrided${NAME}Ilm${TEMPLATE} extends AbstractIlm implements Strided${NAME}Ilm${TEMPLATE} {
     protected abstract void getImpl(
-            %%TYPE_OR_TEMPLATE%%[] array,
+            ${TYPE_OR_TEMPLATE}[] array,
             int offset,
             int rowStride,
             int colStride,
@@ -17,11 +17,11 @@ public abstract class AbstractStrided%%NAME%%Ilm%%TEMPLATE%% extends AbstractIlm
             int colCount)
             throws IOException;
 
-    protected AbstractStrided%%NAME%%Ilm() {}
+    protected AbstractStrided${NAME}Ilm() {}
 
     @Override
     public final void get(
-            %%TYPE_OR_TEMPLATE%%[] array,
+            ${TYPE_OR_TEMPLATE}[] array,
             int offset,
             int rowStride,
             int colStride,
