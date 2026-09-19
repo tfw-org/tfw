@@ -20,14 +20,14 @@ jobs:
     steps:
       - name: Build Fuzzers
         id: build
-        uses: google/clusterfuzzlite/actions/build_fuzzers@884713a6c30a92e5e8544c39945cd7cb630abcd1 # v1
+        uses: ./.github/actions/cflite-build-fuzzers
         with:
           language: jvm
           sanitizer: coverage
 
       - name: Generate Coverage Report
         id: run
-        uses: google/clusterfuzzlite/actions/run_fuzzers@884713a6c30a92e5e8544c39945cd7cb630abcd1 # v1
+        uses: ./.github/actions/cflite-run-fuzzers
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           fuzz-seconds: 600
