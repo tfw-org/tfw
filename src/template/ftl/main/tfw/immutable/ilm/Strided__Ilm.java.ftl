@@ -1,12 +1,12 @@
 // booleanilm,byteilm,charilm,doubleilm,floatilm,intilm,longilm,objectilm,shortilm
-package %%PACKAGE%%;
+package ${PACKAGE};
 
 import java.io.IOException;
 import tfw.immutable.ilm.ImmutableLongMatrix;
 
-public interface Strided%%NAME%%Ilm%%TEMPLATE%% extends ImmutableLongMatrix {
+public interface Strided${NAME}Ilm${TEMPLATE} extends ImmutableLongMatrix {
     void get(
-            %%TYPE_OR_TEMPLATE%%[] array,
+            ${TYPE_OR_TEMPLATE}[] array,
             int offset,
             int rowStride,
             int colStride,

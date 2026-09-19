@@ -1,33 +1,33 @@
 // booleanilm,byteilm,charilm,doubleilm,floatilm,intilm,longilm,objectilm,shortilm
-package %%PACKAGE%%;
+package ${PACKAGE};
 
 import java.io.IOException;
 import java.util.Arrays;
 import tfw.check.Argument;
 
-public class Strided%%NAME%%IlmCircularCache {
-    private Strided%%NAME%%IlmCircularCache() {}
+public class Strided${NAME}IlmCircularCache {
+    private Strided${NAME}IlmCircularCache() {}
 
-    public static %%TEMPLATE_SPACE%%Strided%%NAME%%Ilm%%TEMPLATE%% create(final Strided%%NAME%%Ilm%%TEMPLATE%% stridedIlm, final int numRows, %%TYPE_OR_TEMPLATE%%[] buffer)
+    public static ${TEMPLATE_SPACE}Strided${NAME}Ilm${TEMPLATE} create(final Strided${NAME}Ilm${TEMPLATE} stridedIlm, final int numRows, ${TYPE_OR_TEMPLATE}[] buffer)
             throws IOException {
         Argument.assertNotNull(stridedIlm, "stridedIlm");
         Argument.assertGreaterThan(numRows, 0, "numRows");
         Argument.assertNotNull(buffer, "buffer");
 
-        return new %%NAME%%IlmImpl%%DIAMOND%%(stridedIlm, numRows, buffer);
+        return new ${NAME}IlmImpl${DIAMOND}(stridedIlm, numRows, buffer);
     }
 
-    private static class %%NAME%%IlmImpl%%TEMPLATE%% extends AbstractStrided%%NAME%%Ilm%%TEMPLATE%% {
-        private final Strided%%NAME%%Ilm%%TEMPLATE%% stridedIlm;
+    private static class ${NAME}IlmImpl${TEMPLATE} extends AbstractStrided${NAME}Ilm${TEMPLATE} {
+        private final Strided${NAME}Ilm${TEMPLATE} stridedIlm;
         private final int cacheLength;
-        private %%TYPE_OR_TEMPLATE%%[] buffer;
+        private ${TYPE_OR_TEMPLATE}[] buffer;
         private long cacheStart = 0;
         private long cacheEnd = 0;
         private final int cStride = 1;
         private final int rStride;
         private final int maxRows;
 
-        private %%NAME%%IlmImpl(Strided%%NAME%%Ilm%%TEMPLATE%% stridedIlm, int numRows, %%TYPE_OR_TEMPLATE%%[] buffer) throws IOException {
+        private ${NAME}IlmImpl(Strided${NAME}Ilm${TEMPLATE} stridedIlm, int numRows, ${TYPE_OR_TEMPLATE}[] buffer) throws IOException {
             this.stridedIlm = stridedIlm;
             this.maxRows = numRows;
             this.buffer = buffer;
@@ -48,7 +48,7 @@ public class Strided%%NAME%%IlmCircularCache {
 
         @Override
         protected synchronized void getImpl(
-                %%TYPE_OR_TEMPLATE%%[] array,
+                ${TYPE_OR_TEMPLATE}[] array,
                 int offset,
                 int rowStride,
                 int colStride,

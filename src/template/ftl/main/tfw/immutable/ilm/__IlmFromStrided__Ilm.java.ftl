@@ -1,22 +1,22 @@
 // booleanilm,byteilm,charilm,doubleilm,floatilm,intilm,longilm,objectilm,shortilm
-package %%PACKAGE%%;
+package ${PACKAGE};
 
 import java.io.IOException;
 import tfw.check.Argument;
 
-public final class %%NAME%%IlmFromStrided%%NAME%%Ilm%%TEMPLATE%% {
-    private %%NAME%%IlmFromStrided%%NAME%%Ilm() {}
+public final class ${NAME}IlmFromStrided${NAME}Ilm${TEMPLATE} {
+    private ${NAME}IlmFromStrided${NAME}Ilm() {}
 
-    public static %%TEMPLATE_SPACE%%%%NAME%%Ilm%%TEMPLATE%% create(final Strided%%NAME%%Ilm%%TEMPLATE%% stridedIlm) {
+    public static ${TEMPLATE_SPACE}${NAME}Ilm${TEMPLATE} create(final Strided${NAME}Ilm${TEMPLATE} stridedIlm) {
         Argument.assertNotNull(stridedIlm, "stridedIlm");
 
-        return new %%NAME%%IlmImpl%%DIAMOND%%(stridedIlm);
+        return new ${NAME}IlmImpl${DIAMOND}(stridedIlm);
     }
 
-    private static class %%NAME%%IlmImpl%%TEMPLATE%% extends Abstract%%NAME%%Ilm%%TEMPLATE%% {
-        private final Strided%%NAME%%Ilm%%TEMPLATE%% stridedIlm;
+    private static class ${NAME}IlmImpl${TEMPLATE} extends Abstract${NAME}Ilm${TEMPLATE} {
+        private final Strided${NAME}Ilm${TEMPLATE} stridedIlm;
 
-        private %%NAME%%IlmImpl(final Strided%%NAME%%Ilm%%TEMPLATE%% stridedIlm) {
+        private ${NAME}IlmImpl(final Strided${NAME}Ilm${TEMPLATE} stridedIlm) {
             this.stridedIlm = stridedIlm;
         }
 
@@ -32,7 +32,7 @@ public final class %%NAME%%IlmFromStrided%%NAME%%Ilm%%TEMPLATE%% {
 
         @Override
         protected void getImpl(
-                final %%TYPE_OR_TEMPLATE%%[] array, final int offset, long rowStart, long colStart, int rowCount, int colCount)
+                final ${TYPE_OR_TEMPLATE}[] array, final int offset, long rowStart, long colStart, int rowCount, int colCount)
                 throws IOException {
             stridedIlm.get(array, offset, colCount, 1, rowStart, colStart, rowCount, colCount);
         }
