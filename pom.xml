@@ -368,6 +368,10 @@
                             <includePluginDependencies>true</includePluginDependencies>
 
                             <arguments>
+                                <argument>-source</argument>
+                                <argument>${maven.compiler.source}</argument>
+                                <argument>-target</argument>
+                                <argument>${maven.compiler.target}</argument>
                                 <argument>-classpath</argument>
                                 <classpath/>
                                 <argument>-d</argument>
