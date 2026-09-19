@@ -59,12 +59,12 @@ inputs:
     default: False
   parallel-fuzzing:
     description: "Whether to use all available cores for fuzzing."
-    required: false
     default: false
+    required: false
   output-sarif:
     description: "Whether to output fuzzing results to SARIF."
-    required: false
     default: false
+    required: false
   report-timeouts:
     description: "Whether to report fails due to timeout."
     required: false
@@ -92,6 +92,7 @@ runs:
     OUTPUT_SARIF: ${{ inputs.output-sarif }}
     MINIMIZE_CRASHES: ${{ inputs.minimize-crashes }}
     CFL_PLATFORM: 'github'
+    CIFUZZ_DEBUG: 'true'
     PARALLEL_FUZZING: ${{ inputs.parallel-fuzzing }}
     REPORT_TIMEOUTS: ${{ inputs.report-timeouts }}
     REPORT_OOMS: ${{ inputs.report-ooms}}

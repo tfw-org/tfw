@@ -42,3 +42,36 @@ jobs:
           storage-repo: https://${{ secrets.TFW_FUZZING_TOKEN }}@github.com/tfw-org/tfw-fuzzing.git
           storage-repo-branch: main
           storage-repo-branch-coverage: gh-pages
+
+      - name: Inspect Generated Coverage
+        if: always()
+        shell: bash
+        run: |
+          echo "=== ClusterFuzzLite coverage workspace ==="
+
+          if [ ! -d cifuzz-coverage ]; then
+            echo "ERROR: cifuzz-coverage directory was not created."
+            exit 1
+          fi
+
+          echo "--- Files ---"
+          find cifuzz-coverage -type f -print | sort
+
+          echo "--- Directories ---"
+          find cifuzz-coverage -type d -print | sort
+
+          echo "--- Expected report files ---"
+
+          for file in \
+            cifuzz-coverage/report/linux/index.html \
+            cifuzz-coverage/report/linux/index.xml \
+            cifuzz-coverage/report/linux/jacoco.exec \
+            cifuzz-coverage/report/linux/jacoco.xml \
+            cifuzz-coverage/dumps/jacoco.merged.exec
+          do
+            if [ -f "$file" ]; then
+              ls -lh "$file"
+            else
+              echo "MISSING: $file"
+            fi
+          done
