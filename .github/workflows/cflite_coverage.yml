@@ -18,21 +18,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout project
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-
       - name: Build Fuzzers
         id: build
-        uses: ./.github/actions/cflite-build-fuzzers
+        uses: google/clusterfuzzlite/actions/build_fuzzers@884713a6c30a92e5e8544c39945cd7cb630abcd1 # v1
         with:
           language: jvm
           sanitizer: coverage
 
       - name: Generate Coverage Report
         id: run
-        uses: ./.github/actions/cflite-run-fuzzers
+        uses: google/clusterfuzzlite/actions/run_fuzzers@884713a6c30a92e5e8544c39945cd7cb630abcd1 # v1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           fuzz-seconds: 600
@@ -42,36 +37,3 @@ jobs:
           storage-repo: https://${{ secrets.TFW_FUZZING_TOKEN }}@github.com/tfw-org/tfw-fuzzing.git
           storage-repo-branch: main
           storage-repo-branch-coverage: gh-pages
-
-      - name: Inspect Generated Coverage
-        if: always()
-        shell: bash
-        run: |
-          echo "=== ClusterFuzzLite coverage workspace ==="
-
-          if [ ! -d cifuzz-coverage ]; then
-            echo "ERROR: cifuzz-coverage directory was not created."
-            exit 1
-          fi
-
-          echo "--- Files ---"
-          find cifuzz-coverage -type f -print | sort
-
-          echo "--- Directories ---"
-          find cifuzz-coverage -type d -print | sort
-
-          echo "--- Expected report files ---"
-
-          for file in \
-            cifuzz-coverage/report/linux/index.html \
-            cifuzz-coverage/report/linux/index.xml \
-            cifuzz-coverage/report/linux/jacoco.exec \
-            cifuzz-coverage/report/linux/jacoco.xml \
-            cifuzz-coverage/dumps/jacoco.merged.exec
-          do
-            if [ -f "$file" ]; then
-              ls -lh "$file"
-            else
-              echo "MISSING: $file"
-            fi
-          done
