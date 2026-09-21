@@ -6,12 +6,15 @@ on:
     types:
       - completed
 
+permissions: {}
+
 jobs:
   pitest-update-pr:
     permissions:
       contents: read
       pull-requests: write
       checks: write
+      actions: read
 
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
