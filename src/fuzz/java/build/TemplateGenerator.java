@@ -28,6 +28,7 @@ public final class TemplateGenerator {
         private final String diamond;
         private final String type;
         private final String lowercase;
+        private final String suppress;
 
         private TypeDefinition(
                 final String name,
@@ -37,6 +38,18 @@ public final class TemplateGenerator {
                 final String diamond,
                 final String type,
                 final String lowercase) {
+            this(name, template, templateSpace, typeOrTemplate, diamond, type, lowercase, "");
+        }
+
+        private TypeDefinition(
+                final String name,
+                final String template,
+                final String templateSpace,
+                final String typeOrTemplate,
+                final String diamond,
+                final String type,
+                final String lowercase,
+                final String suppress) {
             this.name = name;
             this.template = template;
             this.templateSpace = templateSpace;
@@ -44,6 +57,7 @@ public final class TemplateGenerator {
             this.diamond = diamond;
             this.type = type;
             this.lowercase = lowercase;
+            this.suppress = suppress;
         }
     }
 
@@ -101,6 +115,26 @@ public final class TemplateGenerator {
         types.put("longilm", new TypeDefinition("Long", "", "", "long", "", "long", "long"));
         types.put("objectilm", new TypeDefinition("Object", "<T>", "<T> ", "T", "<>", "Object", "object"));
         types.put("shortilm", new TypeDefinition("Short", "", "", "short", "", "short", "short"));
+
+        types.put("booleanilaf", new TypeDefinition("Boolean", "", "", "boolean", "", "boolean", "boolean"));
+        types.put("byteilaf", new TypeDefinition("Byte", "", "", "byte", "", "byte", "byte"));
+        types.put("charilaf", new TypeDefinition("Char", "", "", "char", "", "char", "char"));
+        types.put("doubleilaf", new TypeDefinition("Double", "", "", "double", "", "double", "double"));
+        types.put("floatilaf", new TypeDefinition("Float", "", "", "float", "", "float", "float"));
+        types.put("intilaf", new TypeDefinition("Int", "", "", "int", "", "int", "int"));
+        types.put("longilaf", new TypeDefinition("Long", "", "", "long", "", "long", "long"));
+        types.put(
+                "objectilaf",
+                new TypeDefinition(
+                        "Object",
+                        "<T>",
+                        "<T> ",
+                        "T",
+                        "<>",
+                        "Object",
+                        "object",
+                        "@SuppressWarnings(\"unchecked\")\n        "));
+        types.put("shortilaf", new TypeDefinition("Short", "", "", "short", "", "short", "short"));
 
         return types;
     }
@@ -196,8 +230,9 @@ public final class TemplateGenerator {
         final boolean isIisf = relativeDirectory.equals(Paths.get("tfw", "immutable", "iisf"));
         final boolean isIlmf = relativeDirectory.equals(Paths.get("tfw", "immutable", "ilmf"));
         final boolean isIlm = relativeDirectory.equals(Paths.get("tfw", "immutable", "ilm"));
+        final boolean isIlaf = relativeDirectory.equals(Paths.get("tfw", "immutable", "ilaf"));
 
-        if (type != null && (isIba || isIis || isIisf || isIlmf || isIlm)) {
+        if (type != null && (isIba || isIis || isIisf || isIlmf || isIlm || isIlaf)) {
             model.put("NAME", type.name);
             model.put("TEMPLATE", type.template);
             model.put("TEMPLATE_SPACE", type.templateSpace);
@@ -205,6 +240,8 @@ public final class TemplateGenerator {
             model.put("DIAMOND", type.diamond);
             model.put("TYPE", type.type);
             model.put("LOWERCASE", type.lowercase);
+            model.put("LOWER_NAME", type.lowercase);
+            model.put("SUPPRESS", type.suppress);
 
             final String packageName =
                     relativeDirectory.resolve(mappingName).toString().replace(File.separatorChar, '.');
