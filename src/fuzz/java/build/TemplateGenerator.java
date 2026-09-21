@@ -30,6 +30,18 @@ public final class TemplateGenerator {
         private final String lowercase;
         private final String suppress;
 
+        private final String randomValue;
+        private final String assertEqualsDelta;
+        private final String createImmutableStart;
+        private final String createImmutableEnd;
+        private final String castFromInt;
+        private final String castFromIntPre;
+        private final String castFromIntPost;
+        private final String castFromLong;
+        private final String castFromLongPre;
+        private final String castFromLongPost;
+        private final String castFromDouble;
+
         private TypeDefinition(
                 final String name,
                 final String template,
@@ -38,7 +50,26 @@ public final class TemplateGenerator {
                 final String diamond,
                 final String type,
                 final String lowercase) {
-            this(name, template, templateSpace, typeOrTemplate, diamond, type, lowercase, "");
+            this(
+                    name,
+                    template,
+                    templateSpace,
+                    typeOrTemplate,
+                    diamond,
+                    type,
+                    lowercase,
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "");
         }
 
         private TypeDefinition(
@@ -50,6 +81,48 @@ public final class TemplateGenerator {
                 final String type,
                 final String lowercase,
                 final String suppress) {
+            this(
+                    name,
+                    template,
+                    templateSpace,
+                    typeOrTemplate,
+                    diamond,
+                    type,
+                    lowercase,
+                    suppress,
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "");
+        }
+
+        private TypeDefinition(
+                final String name,
+                final String template,
+                final String templateSpace,
+                final String typeOrTemplate,
+                final String diamond,
+                final String type,
+                final String lowercase,
+                final String suppress,
+                final String randomValue,
+                final String assertEqualsDelta,
+                final String createImmutableStart,
+                final String createImmutableEnd,
+                final String castFromInt,
+                final String castFromIntPre,
+                final String castFromIntPost,
+                final String castFromLong,
+                final String castFromLongPre,
+                final String castFromLongPost,
+                final String castFromDouble) {
             this.name = name;
             this.template = template;
             this.templateSpace = templateSpace;
@@ -58,6 +131,17 @@ public final class TemplateGenerator {
             this.type = type;
             this.lowercase = lowercase;
             this.suppress = suppress;
+            this.randomValue = randomValue;
+            this.assertEqualsDelta = assertEqualsDelta;
+            this.createImmutableStart = createImmutableStart;
+            this.createImmutableEnd = createImmutableEnd;
+            this.castFromInt = castFromInt;
+            this.castFromIntPre = castFromIntPre;
+            this.castFromIntPost = castFromIntPost;
+            this.castFromLong = castFromLong;
+            this.castFromLongPre = castFromLongPre;
+            this.castFromLongPost = castFromLongPost;
+            this.castFromDouble = castFromDouble;
         }
     }
 
@@ -135,6 +219,219 @@ public final class TemplateGenerator {
                         "object",
                         "@SuppressWarnings(\"unchecked\")\n        "));
         types.put("shortilaf", new TypeDefinition("Short", "", "", "short", "", "short", "short"));
+
+        /*
+         * ILA types.
+         *
+         * These values are the former contents of the nine
+         * src/main/template/tfw/immutable/ila/*.mapping files.
+         */
+        types.put(
+                "booleanila",
+                new TypeDefinition(
+                        "Boolean",
+                        "",
+                        "",
+                        "boolean",
+                        "",
+                        "boolean",
+                        "boolean",
+                        "",
+                        "random.nextBoolean()",
+                        "",
+                        "new Boolean(",
+                        ")",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        ""));
+
+        types.put(
+                "byteila",
+                new TypeDefinition(
+                        "Byte",
+                        "",
+                        "",
+                        "byte",
+                        "",
+                        "byte",
+                        "byte",
+                        "",
+                        "(byte)random.nextInt()",
+                        "",
+                        "new Byte(",
+                        ")",
+                        " (byte)",
+                        "(byte) (",
+                        ")",
+                        " (byte)",
+                        "(byte) (",
+                        ")",
+                        ""));
+
+        types.put(
+                "charila",
+                new TypeDefinition(
+                        "Char",
+                        "",
+                        "",
+                        "char",
+                        "",
+                        "char",
+                        "char",
+                        "",
+                        "(char)random.nextInt()",
+                        "",
+                        "new Character(",
+                        ")",
+                        " (char)",
+                        "(char) (",
+                        ")",
+                        " (char)",
+                        "(char) (",
+                        ")",
+                        ""));
+
+        types.put(
+                "doubleila",
+                new TypeDefinition(
+                        "Double",
+                        "",
+                        "",
+                        "double",
+                        "",
+                        "double",
+                        "double",
+                        "",
+                        "random.nextDouble()",
+                        ", 0",
+                        "new Double(",
+                        ")",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        ""));
+
+        types.put(
+                "floatila",
+                new TypeDefinition(
+                        "Float",
+                        "",
+                        "",
+                        "float",
+                        "",
+                        "float",
+                        "float",
+                        "",
+                        "random.nextFloat()",
+                        ", 0f",
+                        "new Float(",
+                        ")",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        " (float)"));
+
+        types.put(
+                "intila",
+                new TypeDefinition(
+                        "Int",
+                        "",
+                        "",
+                        "int",
+                        "",
+                        "int",
+                        "int",
+                        "",
+                        "random.nextInt()",
+                        "",
+                        "new Integer(",
+                        ")",
+                        "",
+                        "",
+                        "",
+                        " (int)",
+                        "(int) (",
+                        ")",
+                        ""));
+
+        types.put(
+                "longila",
+                new TypeDefinition(
+                        "Long",
+                        "",
+                        "",
+                        "long",
+                        "",
+                        "long",
+                        "long",
+                        "",
+                        "random.nextLong()",
+                        "",
+                        "new Long(",
+                        ")",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        ""));
+
+        types.put(
+                "objectila",
+                new TypeDefinition(
+                        "Object",
+                        "<T>",
+                        "<T> ",
+                        "T",
+                        "<>",
+                        "Object",
+                        "object",
+                        "",
+                        "new Object()",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        ""));
+
+        types.put(
+                "shortila",
+                new TypeDefinition(
+                        "Short",
+                        "",
+                        "",
+                        "short",
+                        "",
+                        "short",
+                        "short",
+                        "",
+                        "(short)random.nextInt()",
+                        "",
+                        "new Short(",
+                        ")",
+                        " (short)",
+                        "(short) (",
+                        ")",
+                        " (short)",
+                        "(short) (",
+                        ")",
+                        ""));
 
         return types;
     }
@@ -225,14 +522,16 @@ public final class TemplateGenerator {
             throws Exception {
         final Map<String, Object> model = new HashMap<>();
         final TypeDefinition type = TYPES.get(mappingName);
+        final boolean isMain = mappingDirectory.startsWith(Paths.get("src", "main", "template"));
         final boolean isIba = relativeDirectory.equals(Paths.get("tfw", "immutable", "iba"));
         final boolean isIis = relativeDirectory.equals(Paths.get("tfw", "immutable", "iis"));
         final boolean isIisf = relativeDirectory.equals(Paths.get("tfw", "immutable", "iisf"));
         final boolean isIlmf = relativeDirectory.equals(Paths.get("tfw", "immutable", "ilmf"));
         final boolean isIlm = relativeDirectory.equals(Paths.get("tfw", "immutable", "ilm"));
         final boolean isIlaf = relativeDirectory.equals(Paths.get("tfw", "immutable", "ilaf"));
+        final boolean isIla = relativeDirectory.equals(Paths.get("tfw", "immutable", "ila"));
 
-        if (type != null && (isIba || isIis || isIisf || isIlmf || isIlm || isIlaf)) {
+        if (type != null && isMain && (isIba || isIis || isIisf || isIlmf || isIlm || isIlaf || isIla)) {
             model.put("NAME", type.name);
             model.put("TEMPLATE", type.template);
             model.put("TEMPLATE_SPACE", type.templateSpace);
@@ -242,6 +541,20 @@ public final class TemplateGenerator {
             model.put("LOWERCASE", type.lowercase);
             model.put("LOWER_NAME", type.lowercase);
             model.put("SUPPRESS", type.suppress);
+
+            if (isIla) {
+                model.put("RANDOM_VALUE", type.randomValue);
+                model.put("ASSERT_EQUALS_DELTA", type.assertEqualsDelta);
+                model.put("CREATE_IMMUTABLE_START", type.createImmutableStart);
+                model.put("CREATE_IMMUTABLE_END", type.createImmutableEnd);
+                model.put("CAST_FROM_INT", type.castFromInt);
+                model.put("CAST_FROM_INT_PRE", type.castFromIntPre);
+                model.put("CAST_FROM_INT_POST", type.castFromIntPost);
+                model.put("CAST_FROM_LONG", type.castFromLong);
+                model.put("CAST_FROM_LONG_PRE", type.castFromLongPre);
+                model.put("CAST_FROM_LONG_POST", type.castFromLongPost);
+                model.put("CAST_FROM_DOUBLE", type.castFromDouble);
+            }
 
             final String packageName =
                     relativeDirectory.resolve(mappingName).toString().replace(File.separatorChar, '.');
