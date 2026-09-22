@@ -6,15 +6,16 @@ import org.junit.jupiter.api.Test;
 
 final class ObjectIlmFromArrayTest {
     @Test
-    void objectIlmFromArrayTest() throws Exception {
+    void ObjectIlmFromArrayTest() throws Exception {
         Object[] array = new Object[6];
 
         for (int i = 0; i < array.length; i++) {
             array[i] = new Object();
         }
 
-        ObjectIlm<Object> objectIlm = ObjectIlmFromArray.create(array, array.length / 2);
+        ObjectIlm ObjectIlm = ObjectIlmFromArray.create(array, array.length / 2);
 
-        assertThat(array).isEqualTo(ObjectIlmUtil.toArray(objectIlm, new Object[0]));
+        assertThat(array).isEqualTo(ObjectIlmUtil.toArray(ObjectIlm, new Object[0]));
     }
 }
+// AUTO GENERATED FROM TEMPLATE

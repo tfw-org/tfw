@@ -1,4 +1,4 @@
-// booleanilm,byteilm,charilm,doubleilm,floatilm,intilm,longilm,shortilm
+// booleanilm,byteilm,charilm,doubleilm,floatilm,intilm,longilm,objectilm,shortilm
 package ${PACKAGE};
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -16,6 +16,10 @@ final class ${NAME}IlmFromArrayTest {
 
         ${NAME}Ilm ${TYPE}Ilm = ${NAME}IlmFromArray.create(array, array.length / 2);
 
+<#if TYPE == "Object">
+        assertThat(array).isEqualTo(${NAME}IlmUtil.toArray(${TYPE}Ilm, new Object[0]));
+<#else>
         assertThat(array).isEqualTo(${NAME}IlmUtil.toArray(${TYPE}Ilm));
+</#if>
     }
 }
