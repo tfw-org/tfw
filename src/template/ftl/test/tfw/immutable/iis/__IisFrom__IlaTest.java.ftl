@@ -1,0 +1,71 @@
+// booleaniis,byteiis,chariis,doubleiis,floatiis,intiis,longiis,objectiis,shortiis
+package ${PACKAGE};
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
+import java.io.IOException;
+import java.util.Arrays;
+import org.junit.jupiter.api.Test;
+import tfw.immutable.ila.${LOWERCASE}ila.${NAME}Ila;
+import tfw.immutable.ila.${LOWERCASE}ila.${NAME}IlaFromArray;
+
+final class ${NAME}IisFrom${NAME}IlaTest {
+    @Test
+    void argumentsTest() {
+        assertThatThrownBy(() -> ${NAME}IisFrom${NAME}Ila.create(null)).isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
+    void readTest() throws IOException {
+        final ${TYPE}[] expectedArray = new ${TYPE}[12];
+        final ${NAME}Ila${TEMPLATE} ila = ${NAME}IlaFromArray.create(expectedArray);
+
+        try (${NAME}Iis${TEMPLATE} iis = ${NAME}IisFrom${NAME}Ila.create(ila)) {
+            final ${TYPE}[] actualArray = new ${TYPE}[expectedArray.length];
+
+            for (int i = 0; i < actualArray.length; i += actualArray.length / 4) {
+                assertThat(iis.read(actualArray, i, actualArray.length / 4)).isEqualTo(actualArray.length / 4);
+            }
+
+            assertThat(iis.read(new ${TYPE}[1], 0, 1)).isEqualTo(-1);
+            assertThat(actualArray).isEqualTo(expectedArray);
+        }
+    }
+
+    @Test
+    void read2Test() throws IOException {
+        final ${TYPE}[] array = new ${TYPE}[12];
+        final ${TYPE}[] expectedArray = new ${TYPE}[array.length];
+
+        Arrays.fill(array, ${DEFAULT_VALUE_2});
+        Arrays.fill(expectedArray, 0, expectedArray.length, ${DEFAULT_VALUE});
+        Arrays.fill(expectedArray, 0, expectedArray.length - 1, ${DEFAULT_VALUE_2});
+
+        final ${NAME}Ila${TEMPLATE} ila = ${NAME}IlaFromArray.create(array);
+
+        try (${NAME}Iis${TEMPLATE} iis = ${NAME}IisFrom${NAME}Ila.create(ila)) {
+            final ${TYPE}[] actualArray = new ${TYPE}[expectedArray.length];
+
+            Arrays.fill(actualArray, ${DEFAULT_VALUE});
+
+            assertThat(iis.skip(1)).isEqualTo(1);
+            assertThat(iis.read(actualArray, 0, actualArray.length)).isEqualTo(expectedArray.length - 1);
+            assertThat(actualArray).isEqualTo(expectedArray);
+        }
+    }
+
+    @Test
+    void skipTest() throws IOException {
+        final ${TYPE}[] expectedArray = new ${TYPE}[12];
+        final ${NAME}Ila${TEMPLATE} ila = ${NAME}IlaFromArray.create(expectedArray);
+
+        try (${NAME}Iis${TEMPLATE} iis = ${NAME}IisFrom${NAME}Ila.create(ila)) {
+            for (int i = 0; i < 4; i++) {
+                assertThat(iis.skip(expectedArray.length / 4)).isEqualTo(expectedArray.length / 4);
+            }
+
+            assertThat(iis.skip(1)).isEqualTo(-1);
+        }
+    }
+}

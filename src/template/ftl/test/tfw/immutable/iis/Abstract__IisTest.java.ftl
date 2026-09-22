@@ -1,5 +1,5 @@
 // booleaniis,byteiis,chariis,doubleiis,floatiis,intiis,longiis,objectiis,shortiis
-package %%PACKAGE%%;
+package ${PACKAGE};
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -7,11 +7,11 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import java.io.IOException;
 import org.junit.jupiter.api.Test;
 
-final class Abstract%%NAME%%IisTest {
+final class Abstract${NAME}IisTest {
     @Test
     void argumentsTest() throws IOException {
-        try (Test%%NAME%%Iis ti = new Test%%NAME%%Iis()) {
-            final %%TYPE%%[] array = new %%TYPE%%[11];
+        try (Test${NAME}Iis ti = new Test${NAME}Iis()) {
+            final ${TYPE}[] array = new ${TYPE}[11];
 
             assertThatThrownBy(() -> ti.read(null, 0, 1)).isInstanceOf(IllegalArgumentException.class);
             assertThatThrownBy(() -> ti.read(array, -1, 1)).isInstanceOf(IllegalArgumentException.class);
@@ -25,8 +25,8 @@ final class Abstract%%NAME%%IisTest {
 
     @Test
     void closedTest() throws IOException {
-        final Test%%NAME%%Iis ti = new Test%%NAME%%Iis();
-        final %%TYPE%%[] array = new %%TYPE%%[11];
+        final Test${NAME}Iis ti = new Test${NAME}Iis();
+        final ${TYPE}[] array = new ${TYPE}[11];
 
         ti.close();
 
@@ -40,7 +40,7 @@ final class Abstract%%NAME%%IisTest {
         assertThat(ti.isCloseCalled()).isFalse();
     }
 
-    private static class Test%%NAME%%Iis extends Abstract%%NAME%%Iis%%TEMPLATE%% {
+    private static class Test${NAME}Iis extends Abstract${NAME}Iis${TEMPLATE} {
         private boolean closeCalled = false;
 
         public void setCloseCalled(final boolean closeCalled) {
@@ -57,7 +57,7 @@ final class Abstract%%NAME%%IisTest {
         }
 
         @Override
-        protected int readImpl(%%TYPE%%[] array, int offset, int length) throws IOException {
+        protected int readImpl(${TYPE}[] array, int offset, int length) throws IOException {
             return length;
         }
 

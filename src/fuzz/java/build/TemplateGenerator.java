@@ -522,16 +522,31 @@ public final class TemplateGenerator {
             throws Exception {
         final Map<String, Object> model = new HashMap<>();
         final TypeDefinition type = TYPES.get(mappingName);
+
         final boolean isMain = mappingDirectory.startsWith(Paths.get("src", "main", "template"));
+
+        final boolean isTest = mappingDirectory.startsWith(Paths.get("src", "test", "template"));
+
         final boolean isIba = relativeDirectory.equals(Paths.get("tfw", "immutable", "iba"));
+
         final boolean isIis = relativeDirectory.equals(Paths.get("tfw", "immutable", "iis"));
+
         final boolean isIisf = relativeDirectory.equals(Paths.get("tfw", "immutable", "iisf"));
+
         final boolean isIlmf = relativeDirectory.equals(Paths.get("tfw", "immutable", "ilmf"));
+
         final boolean isIlm = relativeDirectory.equals(Paths.get("tfw", "immutable", "ilm"));
+
         final boolean isIlaf = relativeDirectory.equals(Paths.get("tfw", "immutable", "ilaf"));
+
         final boolean isIla = relativeDirectory.equals(Paths.get("tfw", "immutable", "ila"));
 
-        if (type != null && isMain && (isIba || isIis || isIisf || isIlmf || isIlm || isIlaf || isIla)) {
+        final boolean isMigratedMainType = isIba || isIis || isIisf || isIlmf || isIlm || isIlaf || isIla;
+
+        final boolean isMigratedTestType = isIba || isIis || isIisf || isIlm;
+
+        if (type != null && ((isMain && isMigratedMainType) || (isTest && isMigratedTestType))) {
+
             model.put("NAME", type.name);
             model.put("TEMPLATE", type.template);
             model.put("TEMPLATE_SPACE", type.templateSpace);
@@ -542,7 +557,7 @@ public final class TemplateGenerator {
             model.put("LOWER_NAME", type.lowercase);
             model.put("SUPPRESS", type.suppress);
 
-            if (isIla) {
+            if (isMain && isIla) {
                 model.put("RANDOM_VALUE", type.randomValue);
                 model.put("ASSERT_EQUALS_DELTA", type.assertEqualsDelta);
                 model.put("CREATE_IMMUTABLE_START", type.createImmutableStart);
@@ -554,6 +569,15 @@ public final class TemplateGenerator {
                 model.put("CAST_FROM_LONG_PRE", type.castFromLongPre);
                 model.put("CAST_FROM_LONG_POST", type.castFromLongPost);
                 model.put("CAST_FROM_DOUBLE", type.castFromDouble);
+            }
+
+            if (isTest) {
+                model.put("TEMPLATE", testTemplate(type.type));
+                model.put("DEFAULT_VALUE", defaultValue(type.type));
+                model.put("DEFAULT_VALUE_2", defaultValue2(type.type));
+                model.put("RANDOM_VALUE", randomValue(type.type));
+                model.put("RANDOM_INCLUDE", randomInclude(type.type));
+                model.put("RANDOM_INIT", randomInit(type.type));
             }
 
             final String packageName =
@@ -602,5 +626,100 @@ public final class TemplateGenerator {
         System.out.println("  " + templatePath + " [" + mappingName + "] -> " + outputFile);
 
         Files.write(outputFile, generated.getBytes(StandardCharsets.UTF_8));
+    }
+
+    private static String testTemplate(final String type) {
+        return "Object".equals(type) ? "<Object>" : "";
+    }
+
+    private static String defaultValue(final String type) {
+        switch (type) {
+            case "boolean":
+                return "false";
+            case "byte":
+                return "(byte) 0";
+            case "char":
+                return "(char) 0";
+            case "double":
+                return "0.0";
+            case "float":
+                return "0.0f";
+            case "int":
+                return "0";
+            case "long":
+                return "0L";
+            case "Object":
+                return "Object.class";
+            case "short":
+                return "(short) 0";
+            default:
+                throw new IllegalArgumentException("Unknown type: " + type);
+        }
+    }
+
+    private static String defaultValue2(final String type) {
+        switch (type) {
+            case "boolean":
+                return "true";
+            case "byte":
+                return "(byte) 1";
+            case "char":
+                return "(char) 1";
+            case "double":
+                return "1.0";
+            case "float":
+                return "1.0f";
+            case "int":
+                return "1";
+            case "long":
+                return "1L";
+            case "Object":
+                return "String.class";
+            case "short":
+                return "(short) 1";
+            default:
+                throw new IllegalArgumentException("Unknown type: " + type);
+        }
+    }
+
+    private static String randomValue(final String type) {
+        switch (type) {
+            case "boolean":
+                return "random.nextBoolean()";
+            case "byte":
+                return "(byte) random.nextInt()";
+            case "char":
+                return "(char) random.nextInt()";
+            case "double":
+                return "random.nextDouble()";
+            case "float":
+                return "random.nextFloat()";
+            case "int":
+                return "random.nextInt()";
+            case "long":
+                return "random.nextLong()";
+            case "Object":
+                return "new Object()";
+            case "short":
+                return "(short) random.nextInt()";
+            default:
+                throw new IllegalArgumentException("Unknown type: " + type);
+        }
+    }
+
+    private static String randomInclude(final String type) {
+        if ("Object".equals(type)) {
+            return "";
+        }
+
+        return "import java.util.Random;\n";
+    }
+
+    private static String randomInit(final String type) {
+        if ("Object".equals(type)) {
+            return "";
+        }
+
+        return "final Random random = new Random(0);\n        ";
     }
 }

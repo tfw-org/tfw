@@ -1,5 +1,5 @@
 // booleaniba,byteiba,chariba,doubleiba,floatiba,intiba,longiba,objectiba,shortiba
-package %%PACKAGE%%;
+package ${PACKAGE};
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -8,13 +8,13 @@ import java.io.IOException;
 import java.math.BigInteger;
 import org.junit.jupiter.api.Test;
 
-class Abstract%%NAME%%IbaTest {
+class Abstract${NAME}IbaTest {
     private static final BigInteger BIG_INTEGER_ZERO = BigInteger.valueOf(0);
 
     @Test
     void closeTest() throws IOException {
-        try (TestAbstract%%NAME%%Iba tabi = new TestAbstract%%NAME%%Iba()) {
-            final %%TYPE%%[] array = new %%TYPE%%[10];
+        try (TestAbstract${NAME}Iba tabi = new TestAbstract${NAME}Iba()) {
+            final ${TYPE}[] array = new ${TYPE}[10];
 
             assertThat(tabi.getCloseImplCalls()).isZero();
             assertThat(tabi.length()).isEqualTo(BigInteger.valueOf(5));
@@ -44,9 +44,9 @@ class Abstract%%NAME%%IbaTest {
 
     @Test
     void getTest() throws IOException {
-        try (TestAbstract%%NAME%%Iba tabi = new TestAbstract%%NAME%%Iba()) {
-            final %%TYPE%%[] expectedArray = new %%TYPE%%[10];
-            final %%TYPE%%[] actualArray = expectedArray.clone();
+        try (TestAbstract${NAME}Iba tabi = new TestAbstract${NAME}Iba()) {
+            final ${TYPE}[] expectedArray = new ${TYPE}[10];
+            final ${TYPE}[] actualArray = expectedArray.clone();
 
             tabi.get(actualArray, 0, BIG_INTEGER_ZERO, 0);
 
@@ -54,7 +54,7 @@ class Abstract%%NAME%%IbaTest {
         }
     }
 
-    private static class TestAbstract%%NAME%%Iba extends Abstract%%NAME%%Iba%%TEMPLATE%% {
+    private static class TestAbstract${NAME}Iba extends Abstract${NAME}Iba${TEMPLATE} {
         private int closeImplCalls = 0;
 
         public int getCloseImplCalls() {
@@ -72,7 +72,7 @@ class Abstract%%NAME%%IbaTest {
         }
 
         @Override
-        protected void getImpl(%%TYPE%%[] array, int arrayOffset, BigInteger ibaStart, int length) throws IOException {
+        protected void getImpl(${TYPE}[] array, int arrayOffset, BigInteger ibaStart, int length) throws IOException {
             // Nothing to do
         }
     }
