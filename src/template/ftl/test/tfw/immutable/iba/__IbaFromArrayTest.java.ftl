@@ -1,5 +1,5 @@
 // booleaniba,byteiba,chariba,doubleiba,floatiba,intiba,longiba,objectiba,shortiba
-package %%PACKAGE%%;
+package ${PACKAGE};
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -8,23 +8,23 @@ import java.math.BigInteger;
 import java.util.Arrays;
 import org.junit.jupiter.api.Test;
 
-class %%NAME%%IbaFromArrayTest {
+class ${NAME}IbaFromArrayTest {
     @Test
     void parameterTest() {
-        assertThatThrownBy(() -> %%NAME%%IbaFromArray.create(null))
+        assertThatThrownBy(() -> ${NAME}IbaFromArray.create(null))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("array == null not allowed!");
     }
 
     @Test
     void validTest() throws Exception {
-        final %%TYPE%%[] expectedArray = new %%TYPE%%[10];
-        final %%TYPE%%[] actualArray = expectedArray.clone();
+        final ${TYPE}[] expectedArray = new ${TYPE}[10];
+        final ${TYPE}[] actualArray = expectedArray.clone();
 
-        Arrays.fill(actualArray, %%DEFAULT_VALUE%%);
-        Arrays.fill(expectedArray, %%DEFAULT_VALUE_2%%);
+        Arrays.fill(actualArray, ${DEFAULT_VALUE});
+        Arrays.fill(expectedArray, ${DEFAULT_VALUE_2});
 
-        try (%%NAME%%Iba iba = %%NAME%%IbaFromArray.create(expectedArray)) {
+        try (${NAME}Iba iba = ${NAME}IbaFromArray.create(expectedArray)) {
             assertThat(iba.length()).isEqualTo(BigInteger.TEN);
 
             iba.get(actualArray, 0, BigInteger.ZERO, actualArray.length);
