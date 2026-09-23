@@ -1,0 +1,53 @@
+// byteila,doubleila,floatila,intila,longila,shortila
+package ${PACKAGE};
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
+import java.io.IOException;
+${RANDOM_INCLUDE}import org.junit.jupiter.api.Test;
+import tfw.immutable.ila.IlaTestDimensions;
+import tfw.immutable.ila.charila.CharIla;
+import tfw.immutable.ila.charila.CharIlaFromArray;
+import tfw.immutable.ila.charila.TestCloseCharIla;
+
+final class ${NAME}IlaFromCastCharIlaTest {
+    @Test
+    void argumentsTest() {
+        final CharIla ila = CharIlaFromArray.create(new char[10]);
+
+        assertThatThrownBy(() -> ${NAME}IlaFromCastCharIla.create(null, 1))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("charIla == null not allowed!");
+        assertThatThrownBy(() -> ${NAME}IlaFromCastCharIla.create(ila, 0))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("bufferSize (=0) < 1 not allowed!");
+    }
+
+    @Test
+    void allTest() throws Exception {
+        ${RANDOM_INIT}final int length = IlaTestDimensions.defaultIlaLength();
+        final char[] array = new char[length];
+        final ${TYPE}[] target = new ${TYPE}[length];
+        for (int ii = 0; ii < array.length; ++ii) {
+            array[ii] = (char) random.nextInt();
+            target[ii] = (${TYPE}) array[ii];
+        }
+        CharIla ila = CharIlaFromArray.create(array);
+        ${NAME}Ila targetIla = ${NAME}IlaFromArray.create(target);
+        ${NAME}Ila actualIla = ${NAME}IlaFromCastCharIla.create(ila, 100);
+
+        ${NAME}IlaCheck.check(targetIla, actualIla);
+    }
+
+    @Test
+    void closeTest() throws IOException {
+        final TestCloseCharIla testIla = new TestCloseCharIla();
+
+        try (${NAME}Ila ila = ${NAME}IlaFromCastCharIla.create(testIla, 100)) {
+            assertThat(ila).isNotNull();
+        }
+
+        assertThat(testIla.getNumberOfCloses()).isEqualTo(1);
+    }
+}

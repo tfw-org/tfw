@@ -1,0 +1,53 @@
+// booleanila,byteila,charila,doubleila,floatila,intila,longila,objectila,shortila
+package ${PACKAGE};
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
+import java.io.IOException;
+${RANDOM_INCLUDE}import org.junit.jupiter.api.Test;
+import tfw.immutable.ila.IlaTestDimensions;
+
+final class ${NAME}IlaReverseTest {
+    @Test
+    void argumentsTest() {
+        final ${NAME}Ila${TEMPLATE} ila = ${NAME}IlaFromArray.create(new ${TYPE}[10]);
+        final ${TYPE}[] buffer = new ${TYPE}[10];
+
+        assertThatThrownBy(() -> ${NAME}IlaReverse.create(null, buffer))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("ila == null not allowed!");
+        assertThatThrownBy(() -> ${NAME}IlaReverse.create(ila, null))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("buffer == null not allowed!");
+    }
+
+    @Test
+    void allTest() throws Exception {
+        ${RANDOM_INIT}final int length = IlaTestDimensions.defaultIlaLength();
+        final ${TYPE}[] array = new ${TYPE}[length];
+        final ${TYPE}[] reversed = new ${TYPE}[length];
+        for (int ii = 0; ii < array.length; ++ii) {
+            array[ii] = ${RANDOM_VALUE};
+        }
+        for (int ii = 0; ii < reversed.length; ++ii) {
+            reversed[ii] = array[length - 1 - ii];
+        }
+        ${NAME}Ila${TEMPLATE} origIla = ${NAME}IlaFromArray.create(array);
+        ${NAME}Ila${TEMPLATE} targetIla = ${NAME}IlaFromArray.create(reversed);
+        ${NAME}Ila${TEMPLATE} actualIla = ${NAME}IlaReverse.create(origIla, new ${TYPE}[1000]);
+
+        ${NAME}IlaCheck.check(targetIla, actualIla);
+    }
+
+    @Test
+    void closeTest() throws IOException {
+        final TestClose${NAME}Ila testIla = new TestClose${NAME}Ila();
+
+        try (${NAME}Ila ila = ${NAME}IlaReverse.create(testIla, new ${TYPE}[100])) {
+            assertThat(ila).isNotNull();
+        }
+
+        assertThat(testIla.getNumberOfCloses()).isEqualTo(1);
+    }
+}
