@@ -11,7 +11,7 @@
 #   gcr.io/oss-fuzz-base/base-builder-jvm@
 #
 # and replace the digest below with the value after '@'.
-FROM gcr.io/oss-fuzz-base/base-builder-jvm@sha256:cc3c3da52c2f48d7a6caf1d5736ab8ec8cb213f4345329b33cb6e497780b1ed0
+FROM gcr.io/oss-fuzz-base/base-builder-jvm@sha256:5eaa9b0d62fe132cfd319061dffa85a7bb6a6795ff2cdd52872a4b3a2c816f4a
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
