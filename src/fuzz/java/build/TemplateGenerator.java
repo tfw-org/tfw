@@ -4,7 +4,6 @@ import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateExceptionHandler;
 import java.io.File;
-import java.io.StringReader;
 import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -13,7 +12,6 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -598,24 +596,6 @@ public final class TemplateGenerator {
                     relativeDirectory.resolve(mappingName).toString().replace(File.separatorChar, '.');
 
             model.put("PACKAGE", packageName);
-        } else {
-            final Path mappingPath = mappingDirectory.resolve(mappingName + ".mapping");
-
-            final Properties properties = new Properties();
-
-            properties.load(new StringReader(new String(Files.readAllBytes(mappingPath), StandardCharsets.UTF_8)));
-
-            for (final Map.Entry<Object, Object> entry : properties.entrySet()) {
-                final String propertyName = ((String) entry.getKey()).trim();
-
-                if (!propertyName.startsWith("%%") || !propertyName.endsWith("%%")) {
-                    throw new IllegalArgumentException("Invalid mapping property: " + propertyName);
-                }
-
-                final String modelName = propertyName.substring(2, propertyName.length() - 2);
-
-                model.put(modelName, entry.getValue());
-            }
         }
 
         final Template template = new Template(templatePath.toString(), templateSource, configuration);
