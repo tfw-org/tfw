@@ -1,0 +1,71 @@
+// byteila,charila,doubleila,floatila,intila,longila,shortila
+package ${PACKAGE};
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
+import java.io.IOException;
+${RANDOM_INCLUDE}import org.junit.jupiter.api.Test;
+import tfw.immutable.ila.IlaTestDimensions;
+
+final class ${NAME}IlaBoundTest {
+    @Test
+    void argumentsTest() {
+        final ${TYPE} low = ${CAST_FROM_INT}5;
+        final ${TYPE} high = ${CAST_FROM_INT}10;
+        final ${NAME}Ila ila = ${NAME}IlaFromArray.create(new ${TYPE}[10]);
+
+        assertThatThrownBy(() -> ${NAME}IlaBound.create(null, low, high))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("ila == null not allowed!");
+        assertThatThrownBy(() -> ${NAME}IlaBound.create(ila, high, low))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("minimum (=" + ${CHAR_CAST_TO_INT}high + "${FP_ZEROS}) > maximum (=" + ${CHAR_CAST_TO_INT}low + "${FP_ZEROS}) not allowed!");
+    }
+
+    @Test
+    void allTest() throws Exception {
+        ${RANDOM_INIT}final int length = IlaTestDimensions.defaultIlaLength();
+        final ${TYPE}[] array = new ${TYPE}[length];
+        final ${TYPE}[] target = new ${TYPE}[length];
+        ${TYPE} minimum = ${RANDOM_VALUE};
+        ${TYPE} maximum = ${RANDOM_VALUE};
+        if (minimum > maximum) {
+            ${TYPE} tmp = minimum;
+            minimum = maximum;
+            maximum = tmp;
+        }
+        for (int ii = 0; ii < array.length; ++ii) {
+            array[ii] = ${RANDOM_VALUE};
+            target[ii] = array[ii];
+            if (target[ii] < minimum) {
+                target[ii] = minimum;
+            } else if (target[ii] > maximum) {
+                target[ii] = maximum;
+            }
+        }
+        ${NAME}Ila ila = ${NAME}IlaFromArray.create(array);
+        ${NAME}Ila targetIla = ${NAME}IlaFromArray.create(target);
+        ${NAME}Ila actualIla = ${NAME}IlaBound.create(ila, minimum, maximum);
+
+        ${NAME}IlaCheck.check(targetIla, actualIla);
+    }
+
+    @Test
+    void closeTest() throws IOException {
+        ${RANDOM_INIT}final TestClose${NAME}Ila testIla = new TestClose${NAME}Ila();
+        ${TYPE} minimum = ${RANDOM_VALUE};
+        ${TYPE} maximum = ${RANDOM_VALUE};
+        if (minimum > maximum) {
+            ${TYPE} tmp = minimum;
+            minimum = maximum;
+            maximum = tmp;
+        }
+
+        try (${NAME}Ila ila = ${NAME}IlaBound.create(testIla, minimum, maximum)) {
+            assertThat(ila).isNotNull();
+        }
+
+        assertThat(testIla.getNumberOfCloses()).isEqualTo(1);
+    }
+}

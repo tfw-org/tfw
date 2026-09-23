@@ -1,0 +1,59 @@
+// booleanila,byteila,charila,doubleila,floatila,intila,longila,objectila,shortila
+package ${PACKAGE};
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
+import java.io.IOException;
+${RANDOM_INCLUDE}import org.junit.jupiter.api.Test;
+import tfw.immutable.ila.IlaTestDimensions;
+
+final class ${NAME}IlaRemoveTest {
+    @Test
+    void argumentsTest() throws Exception {
+        final ${NAME}Ila${TEMPLATE} ila = ${NAME}IlaFromArray.create(new ${TYPE}[10]);
+        final long ilaLength = ila.length();
+
+        assertThatThrownBy(() -> ${NAME}IlaRemove.create(null, 0))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("ila == null not allowed!");
+        assertThatThrownBy(() -> ${NAME}IlaRemove.create(ila, -1))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("index (=-1) < 0 not allowed!");
+        assertThatThrownBy(() -> ${NAME}IlaRemove.create(ila, ilaLength))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("index (=10) >= ila.length() (=10) not allowed!");
+    }
+
+    @Test
+    void allTest() throws Exception {
+        ${RANDOM_INIT}final int length = IlaTestDimensions.defaultIlaLength();
+        final ${TYPE}[] array = new ${TYPE}[length];
+        final ${TYPE}[] target = new ${TYPE}[length - 1];
+        for (int index = 0; index < length; ++index) {
+            int targetii = 0;
+            for (int ii = 0; ii < array.length; ++ii) {
+                array[ii] = ${RANDOM_VALUE};
+                if (ii != index) {
+                    target[targetii++] = array[ii];
+                }
+            }
+            ${NAME}Ila${TEMPLATE} origIla = ${NAME}IlaFromArray.create(array);
+            ${NAME}Ila${TEMPLATE} targetIla = ${NAME}IlaFromArray.create(target);
+            ${NAME}Ila${TEMPLATE} actualIla = ${NAME}IlaRemove.create(origIla, index);
+
+            ${NAME}IlaCheck.check(targetIla, actualIla);
+        }
+    }
+
+    @Test
+    void closeTest() throws IOException {
+        final TestClose${NAME}Ila testIla = new TestClose${NAME}Ila();
+
+        try (${NAME}Ila ila = ${NAME}IlaRemove.create(testIla, 0)) {
+            assertThat(ila).isNotNull();
+        }
+
+        assertThat(testIla.getNumberOfCloses()).isEqualTo(1);
+    }
+}

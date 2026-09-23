@@ -543,7 +543,7 @@ public final class TemplateGenerator {
 
         final boolean isMigratedMainType = isIba || isIis || isIisf || isIlmf || isIlm || isIlaf || isIla;
 
-        final boolean isMigratedTestType = isIba || isIis || isIisf || isIlm;
+        final boolean isMigratedTestType = isIba || isIis || isIisf || isIlm || isIla || isIlaf;
 
         if (type != null && ((isMain && isMigratedMainType) || (isTest && isMigratedTestType))) {
 
@@ -578,6 +578,20 @@ public final class TemplateGenerator {
                 model.put("RANDOM_VALUE", randomValue(type.type));
                 model.put("RANDOM_INCLUDE", randomInclude(type.type));
                 model.put("RANDOM_INIT", randomInit(type.type));
+                model.put("RANDOM_INCLUDE_2", randomInclude2(type.type));
+                model.put("RANDOM_INIT_0", randomInit0(type.type));
+                model.put("RANDOM_INIT_12", randomInit12(type.type));
+                model.put("UTIL", util(type.type));
+                model.put("FULL_CAST", fullCast(type));
+                model.put("CHAR_CAST_TO_INT", charCastToInt(type.type));
+                model.put("FP_ZEROS", fpZeros(type.type));
+                model.put("IS_EQUALS_START", isEqualsStart(type.type));
+                model.put("IS_EQUALS_END", isEqualsEnd(type.type));
+                model.put("CAST_FROM_INT", testCastFromInt(type.type));
+                model.put("CAST_FROM_INT_PAREN", testCastFromIntParen(type.type));
+                model.put("CAST_FROM_INT_PAREN_END", testCastFromIntParenEnd(type.type));
+                model.put("CAST_FROM_DOUBLE", testCastFromDouble(type.type));
+                model.put("SUPPRESS", testSuppress(type.type));
             }
 
             final String packageName =
@@ -619,7 +633,10 @@ public final class TemplateGenerator {
 
         final String templateName = templatePath.getFileName().toString();
 
-        final String outputName = templateName.replace(".ftl", "").replace("__", (String) model.get("NAME"));
+        final String outputName = templateName
+                .replace(".ftl", "")
+                .replace("__", (String) model.get("NAME"))
+                .replaceAll("\\.\\..+\\.", ".");
 
         final Path outputFile = packageDirectory.resolve(outputName);
 
@@ -705,6 +722,148 @@ public final class TemplateGenerator {
             default:
                 throw new IllegalArgumentException("Unknown type: " + type);
         }
+    }
+
+    private static String randomInclude2(final String type) {
+        if ("Object".equals(type)) {
+            return "\n";
+        }
+
+        return "import java.util.Random;\n\n";
+    }
+
+    private static String randomInit0(final String type) {
+        if ("Object".equals(type)) {
+            return "";
+        }
+
+        return "final Random random = new Random(0);\n";
+    }
+
+    private static String randomInit12(final String type) {
+        if ("Object".equals(type)) {
+            return "";
+        }
+
+        return "final Random random = new Random(0);\n        ";
+    }
+
+    private static String util(final String type) {
+        if ("boolean".equals(type)) {
+            return "BooleanIlaUtilCheck.checkAll(actual, epsilon);\n        ";
+        }
+
+        return "";
+    }
+
+    private static String fullCast(final TypeDefinition type) {
+        final String template = "Object".equals(type.type) ? "<Object>" : "";
+        return "(" + type.name + "Ila" + template + "[]) ";
+    }
+
+    private static String charCastToInt(final String type) {
+        if ("char".equals(type)) {
+            return "(int) ";
+        }
+
+        return "";
+    }
+
+    private static String fpZeros(final String type) {
+        if ("double".equals(type) || "float".equals(type)) {
+            return "00000";
+        }
+
+        return "";
+    }
+
+    private static String isEqualsStart(final String type) {
+        if ("Object".equals(type)) {
+            return ".equals(";
+        }
+
+        if ("boolean".equals(type)
+                || "byte".equals(type)
+                || "char".equals(type)
+                || "int".equals(type)
+                || "long".equals(type)
+                || "short".equals(type)) {
+            return " == ";
+        }
+
+        return "";
+    }
+
+    private static String isEqualsEnd(final String type) {
+        if ("Object".equals(type)) {
+            return ")";
+        }
+
+        return "";
+    }
+
+    private static String testCastFromInt(final String type) {
+        switch (type) {
+            case "byte":
+                return "(byte) ";
+            case "char":
+                return "(char) ";
+            case "short":
+                return "(short) ";
+            default:
+                return "";
+        }
+    }
+
+    private static String testCastFromIntParen(final String type) {
+        switch (type) {
+            case "byte":
+                return "(byte) (";
+            case "char":
+                return "(char) (";
+            case "short":
+                return "(short) (";
+            default:
+                return "";
+        }
+    }
+
+    private static String testCastFromIntParenEnd(final String type) {
+        switch (type) {
+            case "byte":
+            case "char":
+            case "short":
+                return ")";
+            default:
+                return "";
+        }
+    }
+
+    private static String testCastFromDouble(final String type) {
+        switch (type) {
+            case "byte":
+                return "(byte) ";
+            case "char":
+                return "(char) ";
+            case "float":
+                return "(float) ";
+            case "int":
+                return "(int) ";
+            case "long":
+                return "(long) ";
+            case "short":
+                return "(short) ";
+            default:
+                return "";
+        }
+    }
+
+    private static String testSuppress(final String type) {
+        if ("Object".equals(type)) {
+            return "@SuppressWarnings(\"unchecked\")\n    ";
+        }
+
+        return "";
     }
 
     private static String randomInclude(final String type) {
