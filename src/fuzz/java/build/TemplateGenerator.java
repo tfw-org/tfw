@@ -631,6 +631,19 @@ public final class TemplateGenerator {
         }
     }
 
+    private static void addCommonModel(final Map<String, Object> model, final TypeDefinition type) {
+
+        model.put("NAME", type.name);
+        model.put("TEMPLATE", type.template(TemplateProperty.TEMPLATE));
+        model.put("TEMPLATE_SPACE", type.template(TemplateProperty.TEMPLATE_SPACE));
+        model.put("TYPE_OR_TEMPLATE", type.template(TemplateProperty.TYPE_OR_TEMPLATE));
+        model.put("DIAMOND", type.template(TemplateProperty.DIAMOND));
+        model.put("TYPE", type.type);
+        model.put("LOWERCASE", type.lowercase);
+        model.put("LOWER_NAME", type.lowercase);
+        model.put("SUPPRESS", type.template(TemplateProperty.SUPPRESS));
+    }
+
     private static void generateMapping(
             final Configuration configuration,
             final String mappingName,
@@ -667,15 +680,7 @@ public final class TemplateGenerator {
             return;
         }
 
-        model.put("NAME", type.name);
-        model.put("TEMPLATE", type.template(TemplateProperty.TEMPLATE));
-        model.put("TEMPLATE_SPACE", type.template(TemplateProperty.TEMPLATE_SPACE));
-        model.put("TYPE_OR_TEMPLATE", type.template(TemplateProperty.TYPE_OR_TEMPLATE));
-        model.put("DIAMOND", type.template(TemplateProperty.DIAMOND));
-        model.put("TYPE", type.type);
-        model.put("LOWERCASE", type.lowercase);
-        model.put("LOWER_NAME", type.lowercase);
-        model.put("SUPPRESS", type.template(TemplateProperty.SUPPRESS));
+        addCommonModel(model, type);
 
         if (isMain && isIla) {
             model.put("RANDOM_VALUE", type.ila(IlaProperty.RANDOM_VALUE));
