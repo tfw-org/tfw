@@ -644,7 +644,6 @@ public final class TemplateGenerator {
     }
 
     private static void addIlaModel(final Map<String, Object> model, final TypeDefinition type) {
-
         model.put("RANDOM_VALUE", type.ila(IlaProperty.RANDOM_VALUE));
         model.put("ASSERT_EQUALS_DELTA", type.ila(IlaProperty.ASSERT_EQUALS_DELTA));
         model.put("CREATE_IMMUTABLE_START", type.ila(IlaProperty.CREATE_IMMUTABLE_START));
@@ -659,7 +658,6 @@ public final class TemplateGenerator {
     }
 
     private static void addTestModel(final Map<String, Object> model, final TypeDefinition type) {
-
         model.put("TEMPLATE", testTemplate(type.type));
         model.put("DEFAULT_VALUE", defaultValue(type.type));
         model.put("DEFAULT_VALUE_2", defaultValue2(type.type));
@@ -680,6 +678,24 @@ public final class TemplateGenerator {
         model.put("CAST_FROM_INT_PAREN_END", testCastFromIntParenEnd(type.type));
         model.put("CAST_FROM_DOUBLE", testCastFromDouble(type.type));
         model.put("SUPPRESS", testSuppress(type.type));
+    }
+
+    private static void addFuzzModel(final Map<String, Object> model, final TypeDefinition type) {
+        model.put("FUZZ_ARRAY_TYPE", type.type + "[]");
+        model.put("FUZZ_ELEMENT_TYPE", type.type);
+        model.put("FUZZ_ILA_PACKAGE", type.lowercase + "ila");
+        model.put("FUZZ_ILA_TYPE", type.name + "Ila");
+        model.put("FUZZ_FACTORY_NAME", type.name + "IlaFactoryFromArray");
+        model.put("FUZZ_CREATE_EXPRESSION", type.fuzz(FuzzProperty.CREATE_EXPRESSION));
+        model.put("FUZZ_LENGTH_EXPRESSION", type.fuzz(FuzzProperty.LENGTH_EXPRESSION));
+        model.put("FUZZ_GET_EXPRESSION", type.fuzz(FuzzProperty.GET_EXPRESSION));
+        model.put("FUZZ_INITIALIZE", indent(type.fuzz(FuzzProperty.INITIALIZE), 20));
+        model.put("FUZZ_ASSERT_ELEMENT_EQUALS", indent(type.fuzz(FuzzProperty.ASSERT_ELEMENT_EQUALS), 20));
+        model.put("FUZZ_SINGLE_LINE_ASSERT_ELEMENT_EQUALS", type.fuzzSingleLineAssertElementEquals);
+
+        if ("Object".equals(type.type)) {
+            model.put("FUZZ_GENERIC", "Object");
+        }
     }
 
     private static void generateMapping(
@@ -729,21 +745,7 @@ public final class TemplateGenerator {
         }
 
         if (isFuzz) {
-            model.put("FUZZ_ARRAY_TYPE", type.type + "[]");
-            model.put("FUZZ_ELEMENT_TYPE", type.type);
-            model.put("FUZZ_ILA_PACKAGE", type.lowercase + "ila");
-            model.put("FUZZ_ILA_TYPE", type.name + "Ila");
-            model.put("FUZZ_FACTORY_NAME", type.name + "IlaFactoryFromArray");
-            model.put("FUZZ_CREATE_EXPRESSION", type.fuzz(FuzzProperty.CREATE_EXPRESSION));
-            model.put("FUZZ_LENGTH_EXPRESSION", type.fuzz(FuzzProperty.LENGTH_EXPRESSION));
-            model.put("FUZZ_GET_EXPRESSION", type.fuzz(FuzzProperty.GET_EXPRESSION));
-            model.put("FUZZ_INITIALIZE", indent(type.fuzz(FuzzProperty.INITIALIZE), 20));
-            model.put("FUZZ_ASSERT_ELEMENT_EQUALS", indent(type.fuzz(FuzzProperty.ASSERT_ELEMENT_EQUALS), 20));
-            model.put("FUZZ_SINGLE_LINE_ASSERT_ELEMENT_EQUALS", type.fuzzSingleLineAssertElementEquals);
-
-            if ("Object".equals(type.type)) {
-                model.put("FUZZ_GENERIC", "Object");
-            }
+            addFuzzModel(model, type);
         }
 
         final String packageName =
