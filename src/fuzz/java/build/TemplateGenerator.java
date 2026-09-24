@@ -40,6 +40,13 @@ public final class TemplateGenerator {
         private final String castFromLongPost;
         private final String castFromDouble;
 
+        private final String fuzzCreateExpression;
+        private final String fuzzLengthExpression;
+        private final String fuzzGetExpression;
+        private final String fuzzInitialize;
+        private final String fuzzAssertElementEquals;
+        private final boolean fuzzSingleLineAssertElementEquals;
+
         private TypeDefinition(
                 final String name,
                 final String template,
@@ -140,6 +147,49 @@ public final class TemplateGenerator {
             this.castFromLongPre = castFromLongPre;
             this.castFromLongPost = castFromLongPost;
             this.castFromDouble = castFromDouble;
+
+            this.fuzzCreateExpression = "";
+            this.fuzzLengthExpression = "";
+            this.fuzzGetExpression = "";
+            this.fuzzInitialize = "";
+            this.fuzzAssertElementEquals = "";
+            this.fuzzSingleLineAssertElementEquals = false;
+        }
+
+        private TypeDefinition(
+                final TypeDefinition base,
+                final String fuzzCreateExpression,
+                final String fuzzLengthExpression,
+                final String fuzzGetExpression,
+                final String fuzzInitialize,
+                final String fuzzAssertElementEquals,
+                final boolean fuzzSingleLineAssertElementEquals) {
+            this.name = base.name;
+            this.template = base.template;
+            this.templateSpace = base.templateSpace;
+            this.typeOrTemplate = base.typeOrTemplate;
+            this.diamond = base.diamond;
+            this.type = base.type;
+            this.lowercase = base.lowercase;
+            this.suppress = base.suppress;
+            this.randomValue = base.randomValue;
+            this.assertEqualsDelta = base.assertEqualsDelta;
+            this.createImmutableStart = base.createImmutableStart;
+            this.createImmutableEnd = base.createImmutableEnd;
+            this.castFromInt = base.castFromInt;
+            this.castFromIntPre = base.castFromIntPre;
+            this.castFromIntPost = base.castFromIntPost;
+            this.castFromLong = base.castFromLong;
+            this.castFromLongPre = base.castFromLongPre;
+            this.castFromLongPost = base.castFromLongPost;
+            this.castFromDouble = base.castFromDouble;
+
+            this.fuzzCreateExpression = fuzzCreateExpression;
+            this.fuzzLengthExpression = fuzzLengthExpression;
+            this.fuzzGetExpression = fuzzGetExpression;
+            this.fuzzInitialize = fuzzInitialize;
+            this.fuzzAssertElementEquals = fuzzAssertElementEquals;
+            this.fuzzSingleLineAssertElementEquals = fuzzSingleLineAssertElementEquals;
         }
     }
 
@@ -431,7 +481,252 @@ public final class TemplateGenerator {
                         ")",
                         ""));
 
+        addFuzzTypes(types);
+
         return types;
+    }
+
+    private static void addFuzzTypes(final Map<String, TypeDefinition> types) {
+        types.put(
+                "booleanilaf",
+                withFuzz(
+                        types.get("booleanilaf"),
+                        "array -> BooleanIlaFactoryFromArray.create(array).create()",
+                        "BooleanIla::length",
+                        "BooleanIla::get",
+                        "for (int i = 0; i < array.length; i++) {\n" + "    array[i] = (i & 1) != 0;\n" + "}",
+                        "if (expected[expectedIndex] != actual[actualIndex]) {\n"
+                                + "    throw new AssertionError(\n"
+                                + "            \"expected=\" + expected[expectedIndex] + \", actual=\" + actual[actualIndex]);\n"
+                                + "}",
+                        false));
+
+        types.put(
+                "byteilaf",
+                withFuzz(
+                        types.get("byteilaf"),
+                        "array -> ByteIlaFactoryFromArray.create(array).create()",
+                        "ByteIla::length",
+                        "ByteIla::get",
+                        "for (int i = 0; i < array.length; i++) {\n" + "    array[i] = (byte) (i * 37 + 11);\n" + "}",
+                        "if (expected[expectedIndex] != actual[actualIndex]) {\n"
+                                + "    throw new AssertionError(\n"
+                                + "            \"expected=\" + expected[expectedIndex] + \", actual=\" + actual[actualIndex]);\n"
+                                + "}",
+                        true));
+
+        types.put(
+                "charilaf",
+                withFuzz(
+                        types.get("charilaf"),
+                        "array -> CharIlaFactoryFromArray.create(array).create()",
+                        "CharIla::length",
+                        "CharIla::get",
+                        "for (int i = 0; i < array.length; i++) {\n"
+                                + "    switch (i & 3) {\n"
+                                + "        case 0:\n"
+                                + "            array[i] = '\\0';\n"
+                                + "            break;\n"
+                                + "        case 1:\n"
+                                + "            array[i] = '\\uffff';\n"
+                                + "            break;\n"
+                                + "        case 2:\n"
+                                + "            array[i] = (char) i;\n"
+                                + "            break;\n"
+                                + "        default:\n"
+                                + "            array[i] = (char) (0xffff - i);\n"
+                                + "            break;\n"
+                                + "    }\n"
+                                + "}",
+                        "if (expected[expectedIndex] != actual[actualIndex]) {\n"
+                                + "    throw new AssertionError(\n"
+                                + "            \"expected=\" + (int) expected[expectedIndex] + \", actual=\" + (int) actual[actualIndex]);\n"
+                                + "}",
+                        true));
+
+        types.put(
+                "doubleilaf",
+                withFuzz(
+                        types.get("doubleilaf"),
+                        "array -> DoubleIlaFactoryFromArray.create(array).create()",
+                        "DoubleIla::length",
+                        "DoubleIla::get",
+                        "for (int i = 0; i < array.length; i++) {\n"
+                                + "    switch (i & 7) {\n"
+                                + "        case 0:\n"
+                                + "            array[i] = 0.0;\n"
+                                + "            break;\n"
+                                + "        case 1:\n"
+                                + "            array[i] = -0.0;\n"
+                                + "            break;\n"
+                                + "        case 2:\n"
+                                + "            array[i] = Double.NaN;\n"
+                                + "            break;\n"
+                                + "        case 3:\n"
+                                + "            array[i] = Double.POSITIVE_INFINITY;\n"
+                                + "            break;\n"
+                                + "        case 4:\n"
+                                + "            array[i] = Double.NEGATIVE_INFINITY;\n"
+                                + "            break;\n"
+                                + "        case 5:\n"
+                                + "            array[i] = Double.MIN_VALUE;\n"
+                                + "            break;\n"
+                                + "        case 6:\n"
+                                + "            array[i] = Double.MAX_VALUE;\n"
+                                + "            break;\n"
+                                + "        default:\n"
+                                + "            array[i] = i * 1.23456789;\n"
+                                + "            break;\n"
+                                + "    }\n"
+                                + "}",
+                        "long expectedBits = Double.doubleToRawLongBits(expected[expectedIndex]);\n"
+                                + "long actualBits = Double.doubleToRawLongBits(actual[actualIndex]);\n"
+                                + "if (expectedBits != actualBits) {\n"
+                                + "    throw new AssertionError(\"expectedBits=\"\n"
+                                + "            + Long.toHexString(expectedBits)\n"
+                                + "            + \", actualBits=\" + Long.toHexString(actualBits));\n"
+                                + "}",
+                        false));
+
+        types.put(
+                "floatilaf",
+                withFuzz(
+                        types.get("floatilaf"),
+                        "array -> FloatIlaFactoryFromArray.create(array).create()",
+                        "FloatIla::length",
+                        "FloatIla::get",
+                        "for (int i = 0; i < array.length; i++) {\n"
+                                + "    switch (i & 7) {\n"
+                                + "        case 0:\n"
+                                + "            array[i] = 0.0f;\n"
+                                + "            break;\n"
+                                + "        case 1:\n"
+                                + "            array[i] = -0.0f;\n"
+                                + "            break;\n"
+                                + "        case 2:\n"
+                                + "            array[i] = Float.NaN;\n"
+                                + "            break;\n"
+                                + "        case 3:\n"
+                                + "            array[i] = Float.POSITIVE_INFINITY;\n"
+                                + "            break;\n"
+                                + "        case 4:\n"
+                                + "            array[i] = Float.NEGATIVE_INFINITY;\n"
+                                + "            break;\n"
+                                + "        case 5:\n"
+                                + "            array[i] = Float.MIN_VALUE;\n"
+                                + "            break;\n"
+                                + "        case 6:\n"
+                                + "            array[i] = Float.MAX_VALUE;\n"
+                                + "            break;\n"
+                                + "        default:\n"
+                                + "            array[i] = i * 1.2345678f;\n"
+                                + "            break;\n"
+                                + "    }\n"
+                                + "}",
+                        "int expectedBits = Float.floatToRawIntBits(expected[expectedIndex]);\n"
+                                + "int actualBits = Float.floatToRawIntBits(actual[actualIndex]);\n"
+                                + "if (expectedBits != actualBits) {\n"
+                                + "    throw new AssertionError(\"expectedBits=\"\n"
+                                + "            + Integer.toHexString(expectedBits)\n"
+                                + "            + \", actualBits=\" + Integer.toHexString(actualBits));\n"
+                                + "}",
+                        true));
+
+        types.put(
+                "intilaf",
+                withFuzz(
+                        types.get("intilaf"),
+                        "array -> IntIlaFactoryFromArray.create(array).create()",
+                        "IntIla::length",
+                        "IntIla::get",
+                        "for (int i = 0; i < array.length; i++) {\n"
+                                + "    array[i] = i * 0x9e3779b9 ^ 0x12345678;\n"
+                                + "}",
+                        "if (expected[expectedIndex] != actual[actualIndex]) {\n"
+                                + "    throw new AssertionError(\n"
+                                + "            \"expected=\" + expected[expectedIndex] + \", actual=\" + actual[actualIndex]);\n"
+                                + "}",
+                        true));
+
+        types.put(
+                "longilaf",
+                withFuzz(
+                        types.get("longilaf"),
+                        "array -> LongIlaFactoryFromArray.create(array).create()",
+                        "LongIla::length",
+                        "LongIla::get",
+                        "for (int i = 0; i < array.length; i++) {\n"
+                                + "    array[i] = 0x123456789ABCDEFL ^ ((long) i * 0x100000001L);\n"
+                                + "}",
+                        "if (expected[expectedIndex] != actual[actualIndex]) {\n"
+                                + "    throw new AssertionError(\n"
+                                + "            \"expected=\" + expected[expectedIndex] + \", actual=\" + actual[actualIndex]);\n"
+                                + "}",
+                        true));
+
+        types.put(
+                "objectilaf",
+                withFuzz(
+                        types.get("objectilaf"),
+                        "array -> ObjectIlaFactoryFromArray.<Object>create(array).create()",
+                        "ObjectIla::length",
+                        "ObjectIla::get",
+                        "for (int i = 0; i < array.length; i++) {\n"
+                                + "    switch (i & 3) {\n"
+                                + "        case 0:\n"
+                                + "            array[i] = null;\n"
+                                + "            break;\n"
+                                + "        case 1:\n"
+                                + "            array[i] = \"tfw-\" + i;\n"
+                                + "            break;\n"
+                                + "        case 2:\n"
+                                + "            array[i] = Integer.valueOf(i);\n"
+                                + "            break;\n"
+                                + "        default:\n"
+                                + "            array[i] = Long.valueOf(i);\n"
+                                + "            break;\n"
+                                + "    }\n"
+                                + "}",
+                        "Object expectedValue = expected[expectedIndex];\n"
+                                + "Object actualValue = actual[actualIndex];\n"
+                                + "if (expectedValue == null ? actualValue != null : !expectedValue.equals(actualValue)) {\n"
+                                + "    throw new AssertionError(\"expected=\" + expectedValue + \", actual=\" + actualValue);\n"
+                                + "}",
+                        false));
+
+        types.put(
+                "shortilaf",
+                withFuzz(
+                        types.get("shortilaf"),
+                        "array -> ShortIlaFactoryFromArray.create(array).create()",
+                        "ShortIla::length",
+                        "ShortIla::get",
+                        "for (int i = 0; i < array.length; i++) {\n"
+                                + "    array[i] = (short) (i * 7919 + 12345);\n"
+                                + "}",
+                        "if (expected[expectedIndex] != actual[actualIndex]) {\n"
+                                + "    throw new AssertionError(\n"
+                                + "            \"expected=\" + expected[expectedIndex] + \", actual=\" + actual[actualIndex]);\n"
+                                + "}",
+                        true));
+    }
+
+    private static TypeDefinition withFuzz(
+            final TypeDefinition base,
+            final String createExpression,
+            final String lengthExpression,
+            final String getExpression,
+            final String initialize,
+            final String assertElementEquals,
+            final boolean singleLineAssertElementEquals) {
+        return new TypeDefinition(
+                base,
+                createExpression,
+                lengthExpression,
+                getExpression,
+                initialize,
+                assertElementEquals,
+                singleLineAssertElementEquals);
     }
 
     public static void main(final String[] args) throws Exception {
@@ -441,12 +736,23 @@ public final class TemplateGenerator {
 
         final Path templateRoot = Paths.get(args[0]);
 
-        generate(templateRoot.resolve("main"), Paths.get("src", "main", "template"), Paths.get("src", "main", "java"));
+        generate(
+                templateRoot.resolve("main"),
+                Paths.get("src", "main", "template"),
+                Paths.get("src", "main", "java"),
+                SourceKind.MAIN);
 
-        generate(templateRoot.resolve("test"), Paths.get("src", "test", "template"), Paths.get("src", "test", "java"));
+        generate(
+                templateRoot.resolve("test"),
+                Paths.get("src", "test", "template"),
+                Paths.get("src", "test", "java"),
+                SourceKind.TEST);
+
+        generate(templateRoot.resolve("fuzz"), null, Paths.get("src", "fuzz", "java"), SourceKind.FUZZ);
     }
 
-    private static void generate(final Path templateRoot, final Path mappingRoot, final Path outputRoot)
+    private static void generate(
+            final Path templateRoot, final Path mappingRoot, final Path outputRoot, final SourceKind sourceKind)
             throws Exception {
         if (!Files.exists(templateRoot)) {
             return;
@@ -471,7 +777,7 @@ public final class TemplateGenerator {
         }
 
         for (final Path templatePath : templates) {
-            generate(configuration, templateRoot, mappingRoot, outputRoot, templatePath);
+            generate(configuration, templateRoot, mappingRoot, outputRoot, sourceKind, templatePath);
         }
     }
 
@@ -480,6 +786,7 @@ public final class TemplateGenerator {
             final Path templateRoot,
             final Path mappingRoot,
             final Path outputRoot,
+            final SourceKind sourceKind,
             final Path templatePath)
             throws Exception {
         final String source = new String(Files.readAllBytes(templatePath), StandardCharsets.UTF_8);
@@ -495,7 +802,7 @@ public final class TemplateGenerator {
 
         final Path relativeDirectory = templateRoot.relativize(templatePath.getParent());
 
-        final Path templateMappingDirectory = mappingRoot.resolve(relativeDirectory);
+        final Path templateMappingDirectory = mappingRoot == null ? null : mappingRoot.resolve(relativeDirectory);
 
         for (final String mappingName : mappingLine.split(",")) {
             generateMapping(
@@ -505,6 +812,7 @@ public final class TemplateGenerator {
                     templateMappingDirectory,
                     outputRoot,
                     relativeDirectory,
+                    sourceKind,
                     templatePath);
         }
     }
@@ -516,87 +824,113 @@ public final class TemplateGenerator {
             final Path mappingDirectory,
             final Path outputRoot,
             final Path relativeDirectory,
+            final SourceKind sourceKind,
             final Path templatePath)
             throws Exception {
         final Map<String, Object> model = new HashMap<>();
         final TypeDefinition type = TYPES.get(mappingName);
 
-        final boolean isMain = mappingDirectory.startsWith(Paths.get("src", "main", "template"));
+        if (type == null) {
+            throw new IllegalArgumentException("Unknown type mapping: " + mappingName);
+        }
 
-        final boolean isTest = mappingDirectory.startsWith(Paths.get("src", "test", "template"));
+        final boolean isMain = sourceKind == SourceKind.MAIN;
+        final boolean isTest = sourceKind == SourceKind.TEST;
+        final boolean isFuzz = sourceKind == SourceKind.FUZZ;
 
         final boolean isIba = relativeDirectory.equals(Paths.get("tfw", "immutable", "iba"));
-
         final boolean isIis = relativeDirectory.equals(Paths.get("tfw", "immutable", "iis"));
-
         final boolean isIisf = relativeDirectory.equals(Paths.get("tfw", "immutable", "iisf"));
-
         final boolean isIlmf = relativeDirectory.equals(Paths.get("tfw", "immutable", "ilmf"));
-
         final boolean isIlm = relativeDirectory.equals(Paths.get("tfw", "immutable", "ilm"));
-
         final boolean isIlaf = relativeDirectory.equals(Paths.get("tfw", "immutable", "ilaf"));
-
         final boolean isIla = relativeDirectory.equals(Paths.get("tfw", "immutable", "ila"));
 
         final boolean isMigratedMainType = isIba || isIis || isIisf || isIlmf || isIlm || isIlaf || isIla;
 
         final boolean isMigratedTestType = isIba || isIis || isIisf || isIlm || isIla || isIlaf;
 
-        if (type != null && ((isMain && isMigratedMainType) || (isTest && isMigratedTestType))) {
-
-            model.put("NAME", type.name);
-            model.put("TEMPLATE", type.template);
-            model.put("TEMPLATE_SPACE", type.templateSpace);
-            model.put("TYPE_OR_TEMPLATE", type.typeOrTemplate);
-            model.put("DIAMOND", type.diamond);
-            model.put("TYPE", type.type);
-            model.put("LOWERCASE", type.lowercase);
-            model.put("LOWER_NAME", type.lowercase);
-            model.put("SUPPRESS", type.suppress);
-
-            if (isMain && isIla) {
-                model.put("RANDOM_VALUE", type.randomValue);
-                model.put("ASSERT_EQUALS_DELTA", type.assertEqualsDelta);
-                model.put("CREATE_IMMUTABLE_START", type.createImmutableStart);
-                model.put("CREATE_IMMUTABLE_END", type.createImmutableEnd);
-                model.put("CAST_FROM_INT", type.castFromInt);
-                model.put("CAST_FROM_INT_PRE", type.castFromIntPre);
-                model.put("CAST_FROM_INT_POST", type.castFromIntPost);
-                model.put("CAST_FROM_LONG", type.castFromLong);
-                model.put("CAST_FROM_LONG_PRE", type.castFromLongPre);
-                model.put("CAST_FROM_LONG_POST", type.castFromLongPost);
-                model.put("CAST_FROM_DOUBLE", type.castFromDouble);
-            }
-
-            if (isTest) {
-                model.put("TEMPLATE", testTemplate(type.type));
-                model.put("DEFAULT_VALUE", defaultValue(type.type));
-                model.put("DEFAULT_VALUE_2", defaultValue2(type.type));
-                model.put("RANDOM_VALUE", randomValue(type.type));
-                model.put("RANDOM_INCLUDE", randomInclude(type.type));
-                model.put("RANDOM_INIT", randomInit(type.type));
-                model.put("RANDOM_INCLUDE_2", randomInclude2(type.type));
-                model.put("RANDOM_INIT_0", randomInit0(type.type));
-                model.put("RANDOM_INIT_12", randomInit12(type.type));
-                model.put("UTIL", util(type.type));
-                model.put("FULL_CAST", fullCast(type));
-                model.put("CHAR_CAST_TO_INT", charCastToInt(type.type));
-                model.put("FP_ZEROS", fpZeros(type.type));
-                model.put("IS_EQUALS_START", isEqualsStart(type.type));
-                model.put("IS_EQUALS_END", isEqualsEnd(type.type));
-                model.put("CAST_FROM_INT", testCastFromInt(type.type));
-                model.put("CAST_FROM_INT_PAREN", testCastFromIntParen(type.type));
-                model.put("CAST_FROM_INT_PAREN_END", testCastFromIntParenEnd(type.type));
-                model.put("CAST_FROM_DOUBLE", testCastFromDouble(type.type));
-                model.put("SUPPRESS", testSuppress(type.type));
-            }
-
-            final String packageName =
-                    relativeDirectory.resolve(mappingName).toString().replace(File.separatorChar, '.');
-
-            model.put("PACKAGE", packageName);
+        if (isMain && !isMigratedMainType) {
+            return;
         }
+
+        if (isTest && !isMigratedTestType) {
+            return;
+        }
+
+        if (isFuzz && !isIlaf) {
+            return;
+        }
+
+        model.put("NAME", type.name);
+        model.put("TEMPLATE", type.template);
+        model.put("TEMPLATE_SPACE", type.templateSpace);
+        model.put("TYPE_OR_TEMPLATE", type.typeOrTemplate);
+        model.put("DIAMOND", type.diamond);
+        model.put("TYPE", type.type);
+        model.put("LOWERCASE", type.lowercase);
+        model.put("LOWER_NAME", type.lowercase);
+        model.put("SUPPRESS", type.suppress);
+
+        if (isMain && isIla) {
+            model.put("RANDOM_VALUE", type.randomValue);
+            model.put("ASSERT_EQUALS_DELTA", type.assertEqualsDelta);
+            model.put("CREATE_IMMUTABLE_START", type.createImmutableStart);
+            model.put("CREATE_IMMUTABLE_END", type.createImmutableEnd);
+            model.put("CAST_FROM_INT", type.castFromInt);
+            model.put("CAST_FROM_INT_PRE", type.castFromIntPre);
+            model.put("CAST_FROM_INT_POST", type.castFromIntPost);
+            model.put("CAST_FROM_LONG", type.castFromLong);
+            model.put("CAST_FROM_LONG_PRE", type.castFromLongPre);
+            model.put("CAST_FROM_LONG_POST", type.castFromLongPost);
+            model.put("CAST_FROM_DOUBLE", type.castFromDouble);
+        }
+
+        if (isTest) {
+            model.put("TEMPLATE", testTemplate(type.type));
+            model.put("DEFAULT_VALUE", defaultValue(type.type));
+            model.put("DEFAULT_VALUE_2", defaultValue2(type.type));
+            model.put("RANDOM_VALUE", randomValue(type.type));
+            model.put("RANDOM_INCLUDE", randomInclude(type.type));
+            model.put("RANDOM_INIT", randomInit(type.type));
+            model.put("RANDOM_INCLUDE_2", randomInclude2(type.type));
+            model.put("RANDOM_INIT_0", randomInit0(type.type));
+            model.put("RANDOM_INIT_12", randomInit12(type.type));
+            model.put("UTIL", util(type.type));
+            model.put("FULL_CAST", fullCast(type));
+            model.put("CHAR_CAST_TO_INT", charCastToInt(type.type));
+            model.put("FP_ZEROS", fpZeros(type.type));
+            model.put("IS_EQUALS_START", isEqualsStart(type.type));
+            model.put("IS_EQUALS_END", isEqualsEnd(type.type));
+            model.put("CAST_FROM_INT", testCastFromInt(type.type));
+            model.put("CAST_FROM_INT_PAREN", testCastFromIntParen(type.type));
+            model.put("CAST_FROM_INT_PAREN_END", testCastFromIntParenEnd(type.type));
+            model.put("CAST_FROM_DOUBLE", testCastFromDouble(type.type));
+            model.put("SUPPRESS", testSuppress(type.type));
+        }
+
+        if (isFuzz) {
+            model.put("FUZZ_ARRAY_TYPE", type.type + "[]");
+            model.put("FUZZ_ELEMENT_TYPE", type.type);
+            model.put("FUZZ_ILA_PACKAGE", type.lowercase + "ila");
+            model.put("FUZZ_ILA_TYPE", type.name + "Ila");
+            model.put("FUZZ_FACTORY_NAME", type.name + "IlaFactoryFromArray");
+            model.put("FUZZ_CREATE_EXPRESSION", type.fuzzCreateExpression);
+            model.put("FUZZ_LENGTH_EXPRESSION", type.fuzzLengthExpression);
+            model.put("FUZZ_GET_EXPRESSION", type.fuzzGetExpression);
+            model.put("FUZZ_INITIALIZE", indent(type.fuzzInitialize, 20));
+            model.put("FUZZ_ASSERT_ELEMENT_EQUALS", indent(type.fuzzAssertElementEquals, 20));
+            model.put("FUZZ_SINGLE_LINE_ASSERT_ELEMENT_EQUALS", type.fuzzSingleLineAssertElementEquals);
+
+            if ("Object".equals(type.type)) {
+                model.put("FUZZ_GENERIC", "Object");
+            }
+        }
+
+        final String packageName =
+                relativeDirectory.resolve(mappingName).toString().replace(File.separatorChar, '.');
+
+        model.put("PACKAGE", packageName);
 
         final Template template = new Template(templatePath.toString(), templateSource, configuration);
 
@@ -623,6 +957,27 @@ public final class TemplateGenerator {
         System.out.println("  " + templatePath + " [" + mappingName + "] -> " + outputFile);
 
         Files.write(outputFile, generated.getBytes(StandardCharsets.UTF_8));
+    }
+
+    private static String indent(final String text, final int spaces) {
+        final String indentation = String.join("", java.util.Collections.nCopies(spaces, " "));
+
+        final String[] lines = text.split("\\n", -1);
+
+        final StringBuilder result = new StringBuilder();
+
+        for (int i = 0; i < lines.length; i++) {
+            if (i > 0) {
+                result.append('\n');
+            }
+
+            if (!lines[i].isEmpty()) {
+                result.append(indentation);
+                result.append(lines[i]);
+            }
+        }
+
+        return result.toString();
     }
 
     private static String testTemplate(final String type) {
@@ -860,5 +1215,11 @@ public final class TemplateGenerator {
         }
 
         return "final Random random = new Random(0);\n        ";
+    }
+
+    private enum SourceKind {
+        MAIN,
+        TEST,
+        FUZZ
     }
 }

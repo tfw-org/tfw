@@ -343,7 +343,7 @@
                 </dependencies>
                 <executions>
                     <execution>
-                        <id>create-fuzzer-generator-directory</id>
+                        <id>create-template-generator-directory</id>
                         <goals>
                             <goal>exec</goal>
                         </goals>
@@ -352,12 +352,12 @@
                             <executable>mkdir</executable>
                             <arguments>
                                 <argument>-p</argument>
-                                <argument>${project.build.directory}/fuzzer-generator-classes</argument>
+                                <argument>${project.build.directory}/template-generator-classes</argument>
                             </arguments>
                         </configuration>
                     </execution>
                     <execution>
-                        <id>compile-fuzzer-generator</id>
+                        <id>compile-template-generator</id>
                         <goals>
                             <goal>exec</goal>
                         </goals>
@@ -366,7 +366,6 @@
                             <executable>javac</executable>
                             <includeProjectDependencies>false</includeProjectDependencies>
                             <includePluginDependencies>true</includePluginDependencies>
-
                             <arguments>
                                 <argument>-source</argument>
                                 <argument>${maven.compiler.source}</argument>
@@ -375,28 +374,8 @@
                                 <argument>-classpath</argument>
                                 <classpath/>
                                 <argument>-d</argument>
-                                <argument>${project.build.directory}/fuzzer-generator-classes</argument>
-                                <argument>${project.basedir}/src/fuzz/java/build/FuzzerGenerator.java</argument>
+                                <argument>${project.build.directory}/template-generator-classes</argument>
                                 <argument>${project.basedir}/src/fuzz/java/build/TemplateGenerator.java</argument>
-                            </arguments>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>generate-fuzzers</id>
-                        <goals>
-                            <goal>java</goal>
-                        </goals>
-                        <phase>generate-sources</phase>
-                        <configuration>
-                            <mainClass>tfw.build.FuzzerGenerator</mainClass>
-                            <includeProjectDependencies>false</includeProjectDependencies>
-                            <includePluginDependencies>true</includePluginDependencies>
-                            <additionalClasspathElements>
-                                <additionalClasspathElement>${project.build.directory}/fuzzer-generator-classes</additionalClasspathElement>
-                            </additionalClasspathElements>
-                            <arguments>
-                                <argument>${project.basedir}/src/template/ftl</argument>
-                                <argument>${project.basedir}/src/fuzz/java</argument>
                             </arguments>
                         </configuration>
                     </execution>
@@ -411,7 +390,7 @@
                             <includeProjectDependencies>false</includeProjectDependencies>
                             <includePluginDependencies>true</includePluginDependencies>
                             <additionalClasspathElements>
-                                <additionalClasspathElement>${project.build.directory}/fuzzer-generator-classes</additionalClasspathElement>
+                                <additionalClasspathElement>${project.build.directory}/template-generator-classes</additionalClasspathElement>
                             </additionalClasspathElements>
                             <arguments>
                                 <argument>${project.basedir}/src/template/ftl</argument>
