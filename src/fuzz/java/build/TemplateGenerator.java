@@ -658,6 +658,30 @@ public final class TemplateGenerator {
         model.put("CAST_FROM_DOUBLE", type.ila(IlaProperty.CAST_FROM_DOUBLE));
     }
 
+    private static void addTestModel(final Map<String, Object> model, final TypeDefinition type) {
+
+        model.put("TEMPLATE", testTemplate(type.type));
+        model.put("DEFAULT_VALUE", defaultValue(type.type));
+        model.put("DEFAULT_VALUE_2", defaultValue2(type.type));
+        model.put("RANDOM_VALUE", randomValue(type.type));
+        model.put("RANDOM_INCLUDE", randomInclude(type.type));
+        model.put("RANDOM_INIT", randomInit(type.type));
+        model.put("RANDOM_INCLUDE_2", randomInclude2(type.type));
+        model.put("RANDOM_INIT_0", randomInit0(type.type));
+        model.put("RANDOM_INIT_12", randomInit12(type.type));
+        model.put("UTIL", util(type.type));
+        model.put("FULL_CAST", fullCast(type));
+        model.put("CHAR_CAST_TO_INT", charCastToInt(type.type));
+        model.put("FP_ZEROS", fpZeros(type.type));
+        model.put("IS_EQUALS_START", isEqualsStart(type.type));
+        model.put("IS_EQUALS_END", isEqualsEnd(type.type));
+        model.put("CAST_FROM_INT", testCastFromInt(type.type));
+        model.put("CAST_FROM_INT_PAREN", testCastFromIntParen(type.type));
+        model.put("CAST_FROM_INT_PAREN_END", testCastFromIntParenEnd(type.type));
+        model.put("CAST_FROM_DOUBLE", testCastFromDouble(type.type));
+        model.put("SUPPRESS", testSuppress(type.type));
+    }
+
     private static void generateMapping(
             final Configuration configuration,
             final String mappingName,
@@ -701,26 +725,7 @@ public final class TemplateGenerator {
         }
 
         if (isTest) {
-            model.put("TEMPLATE", testTemplate(type.type));
-            model.put("DEFAULT_VALUE", defaultValue(type.type));
-            model.put("DEFAULT_VALUE_2", defaultValue2(type.type));
-            model.put("RANDOM_VALUE", randomValue(type.type));
-            model.put("RANDOM_INCLUDE", randomInclude(type.type));
-            model.put("RANDOM_INIT", randomInit(type.type));
-            model.put("RANDOM_INCLUDE_2", randomInclude2(type.type));
-            model.put("RANDOM_INIT_0", randomInit0(type.type));
-            model.put("RANDOM_INIT_12", randomInit12(type.type));
-            model.put("UTIL", util(type.type));
-            model.put("FULL_CAST", fullCast(type));
-            model.put("CHAR_CAST_TO_INT", charCastToInt(type.type));
-            model.put("FP_ZEROS", fpZeros(type.type));
-            model.put("IS_EQUALS_START", isEqualsStart(type.type));
-            model.put("IS_EQUALS_END", isEqualsEnd(type.type));
-            model.put("CAST_FROM_INT", testCastFromInt(type.type));
-            model.put("CAST_FROM_INT_PAREN", testCastFromIntParen(type.type));
-            model.put("CAST_FROM_INT_PAREN_END", testCastFromIntParenEnd(type.type));
-            model.put("CAST_FROM_DOUBLE", testCastFromDouble(type.type));
-            model.put("SUPPRESS", testSuppress(type.type));
+            addTestModel(model, type);
         }
 
         if (isFuzz) {
