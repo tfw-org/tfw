@@ -137,6 +137,10 @@ public final class TemplateGenerator {
             Paths.get("tfw", "immutable", "ila"),
             Paths.get("tfw", "immutable", "ilaf"));
 
+    private static final Path ILA_DIRECTORY = Paths.get("tfw", "immutable", "ila");
+
+    private static final Path ILAF_DIRECTORY = Paths.get("tfw", "immutable", "ilaf");
+
     private static Map<String, TypeDefinition> createTypes() {
         final Map<String, TypeDefinition> types = new HashMap<>();
 
@@ -695,36 +699,29 @@ public final class TemplateGenerator {
             throw new IllegalArgumentException("Unknown type mapping: " + mappingName);
         }
 
-        final boolean isMain = sourceKind == SourceKind.MAIN;
-        final boolean isTest = sourceKind == SourceKind.TEST;
-        final boolean isFuzz = sourceKind == SourceKind.FUZZ;
-
-        final boolean isIla = relativeDirectory.equals(Paths.get("tfw", "immutable", "ila"));
-        final boolean isIlaf = relativeDirectory.equals(Paths.get("tfw", "immutable", "ilaf"));
-
-        if (isMain && !MIGRATED_MAIN_DIRECTORIES.contains(relativeDirectory)) {
+        if (sourceKind == SourceKind.MAIN && !MIGRATED_MAIN_DIRECTORIES.contains(relativeDirectory)) {
             return;
         }
 
-        if (isTest && !MIGRATED_TEST_DIRECTORIES.contains(relativeDirectory)) {
+        if (sourceKind == SourceKind.TEST && !MIGRATED_TEST_DIRECTORIES.contains(relativeDirectory)) {
             return;
         }
 
-        if (isFuzz && !isIlaf) {
+        if (sourceKind == SourceKind.FUZZ && !ILAF_DIRECTORY.equals(relativeDirectory)) {
             return;
         }
 
         addCommonModel(model, type);
 
-        if (isMain && isIla) {
+        if (sourceKind == SourceKind.MAIN && ILA_DIRECTORY.equals(relativeDirectory)) {
             addIlaModel(model, type);
         }
 
-        if (isTest) {
+        if (sourceKind == SourceKind.TEST) {
             addTestModel(model, type);
         }
 
-        if (isFuzz) {
+        if (sourceKind == SourceKind.FUZZ) {
             addFuzzModel(model, type);
         }
 
