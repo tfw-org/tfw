@@ -632,7 +632,6 @@ public final class TemplateGenerator {
     }
 
     private static void addCommonModel(final Map<String, Object> model, final TypeDefinition type) {
-
         model.put("NAME", type.name);
         model.put("TEMPLATE", type.template(TemplateProperty.TEMPLATE));
         model.put("TEMPLATE_SPACE", type.template(TemplateProperty.TEMPLATE_SPACE));
@@ -642,6 +641,21 @@ public final class TemplateGenerator {
         model.put("LOWERCASE", type.lowercase);
         model.put("LOWER_NAME", type.lowercase);
         model.put("SUPPRESS", type.template(TemplateProperty.SUPPRESS));
+    }
+
+    private static void addIlaModel(final Map<String, Object> model, final TypeDefinition type) {
+
+        model.put("RANDOM_VALUE", type.ila(IlaProperty.RANDOM_VALUE));
+        model.put("ASSERT_EQUALS_DELTA", type.ila(IlaProperty.ASSERT_EQUALS_DELTA));
+        model.put("CREATE_IMMUTABLE_START", type.ila(IlaProperty.CREATE_IMMUTABLE_START));
+        model.put("CREATE_IMMUTABLE_END", type.ila(IlaProperty.CREATE_IMMUTABLE_END));
+        model.put("CAST_FROM_INT", type.ila(IlaProperty.CAST_FROM_INT));
+        model.put("CAST_FROM_INT_PRE", type.ila(IlaProperty.CAST_FROM_INT_PRE));
+        model.put("CAST_FROM_INT_POST", type.ila(IlaProperty.CAST_FROM_INT_POST));
+        model.put("CAST_FROM_LONG", type.ila(IlaProperty.CAST_FROM_LONG));
+        model.put("CAST_FROM_LONG_PRE", type.ila(IlaProperty.CAST_FROM_LONG_PRE));
+        model.put("CAST_FROM_LONG_POST", type.ila(IlaProperty.CAST_FROM_LONG_POST));
+        model.put("CAST_FROM_DOUBLE", type.ila(IlaProperty.CAST_FROM_DOUBLE));
     }
 
     private static void generateMapping(
@@ -683,17 +697,7 @@ public final class TemplateGenerator {
         addCommonModel(model, type);
 
         if (isMain && isIla) {
-            model.put("RANDOM_VALUE", type.ila(IlaProperty.RANDOM_VALUE));
-            model.put("ASSERT_EQUALS_DELTA", type.ila(IlaProperty.ASSERT_EQUALS_DELTA));
-            model.put("CREATE_IMMUTABLE_START", type.ila(IlaProperty.CREATE_IMMUTABLE_START));
-            model.put("CREATE_IMMUTABLE_END", type.ila(IlaProperty.CREATE_IMMUTABLE_END));
-            model.put("CAST_FROM_INT", type.ila(IlaProperty.CAST_FROM_INT));
-            model.put("CAST_FROM_INT_PRE", type.ila(IlaProperty.CAST_FROM_INT_PRE));
-            model.put("CAST_FROM_INT_POST", type.ila(IlaProperty.CAST_FROM_INT_POST));
-            model.put("CAST_FROM_LONG", type.ila(IlaProperty.CAST_FROM_LONG));
-            model.put("CAST_FROM_LONG_PRE", type.ila(IlaProperty.CAST_FROM_LONG_PRE));
-            model.put("CAST_FROM_LONG_POST", type.ila(IlaProperty.CAST_FROM_LONG_POST));
-            model.put("CAST_FROM_DOUBLE", type.ila(IlaProperty.CAST_FROM_DOUBLE));
+            addIlaModel(model, type);
         }
 
         if (isTest) {
