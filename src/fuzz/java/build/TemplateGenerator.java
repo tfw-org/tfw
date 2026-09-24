@@ -9,6 +9,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
@@ -118,6 +119,23 @@ public final class TemplateGenerator {
     }
 
     private static final Map<String, TypeDefinition> TYPES = createTypes();
+
+    private static final List<Path> MIGRATED_MAIN_DIRECTORIES = Arrays.asList(
+            Paths.get("tfw", "immutable", "iba"),
+            Paths.get("tfw", "immutable", "iis"),
+            Paths.get("tfw", "immutable", "iisf"),
+            Paths.get("tfw", "immutable", "ilmf"),
+            Paths.get("tfw", "immutable", "ilm"),
+            Paths.get("tfw", "immutable", "ilaf"),
+            Paths.get("tfw", "immutable", "ila"));
+
+    private static final List<Path> MIGRATED_TEST_DIRECTORIES = Arrays.asList(
+            Paths.get("tfw", "immutable", "iba"),
+            Paths.get("tfw", "immutable", "iis"),
+            Paths.get("tfw", "immutable", "iisf"),
+            Paths.get("tfw", "immutable", "ilm"),
+            Paths.get("tfw", "immutable", "ila"),
+            Paths.get("tfw", "immutable", "ilaf"));
 
     private static Map<String, TypeDefinition> createTypes() {
         final Map<String, TypeDefinition> types = new HashMap<>();
@@ -634,23 +652,14 @@ public final class TemplateGenerator {
         final boolean isTest = sourceKind == SourceKind.TEST;
         final boolean isFuzz = sourceKind == SourceKind.FUZZ;
 
-        final boolean isIba = relativeDirectory.equals(Paths.get("tfw", "immutable", "iba"));
-        final boolean isIis = relativeDirectory.equals(Paths.get("tfw", "immutable", "iis"));
-        final boolean isIisf = relativeDirectory.equals(Paths.get("tfw", "immutable", "iisf"));
-        final boolean isIlmf = relativeDirectory.equals(Paths.get("tfw", "immutable", "ilmf"));
-        final boolean isIlm = relativeDirectory.equals(Paths.get("tfw", "immutable", "ilm"));
-        final boolean isIlaf = relativeDirectory.equals(Paths.get("tfw", "immutable", "ilaf"));
         final boolean isIla = relativeDirectory.equals(Paths.get("tfw", "immutable", "ila"));
+        final boolean isIlaf = relativeDirectory.equals(Paths.get("tfw", "immutable", "ilaf"));
 
-        final boolean isMigratedMainType = isIba || isIis || isIisf || isIlmf || isIlm || isIlaf || isIla;
-
-        final boolean isMigratedTestType = isIba || isIis || isIisf || isIlm || isIla || isIlaf;
-
-        if (isMain && !isMigratedMainType) {
+        if (isMain && !MIGRATED_MAIN_DIRECTORIES.contains(relativeDirectory)) {
             return;
         }
 
-        if (isTest && !isMigratedTestType) {
+        if (isTest && !MIGRATED_TEST_DIRECTORIES.contains(relativeDirectory)) {
             return;
         }
 
