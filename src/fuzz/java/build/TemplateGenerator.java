@@ -734,6 +734,20 @@ public final class TemplateGenerator {
             addFuzzModel(model, type);
         }
 
+        writeGeneratedFile(
+                configuration, templateSource, templatePath, model, mappingName, outputRoot, relativeDirectory);
+    }
+
+    private static void writeGeneratedFile(
+            final Configuration configuration,
+            final String templateSource,
+            final Path templatePath,
+            final Map<String, Object> model,
+            final String mappingName,
+            final Path outputRoot,
+            final Path relativeDirectory)
+            throws Exception {
+
         final String packageName =
                 relativeDirectory.resolve(mappingName).toString().replace(File.separatorChar, '.');
 
@@ -747,8 +761,7 @@ public final class TemplateGenerator {
 
         final String generated = writer.toString() + "// AUTO GENERATED FROM TEMPLATE" + System.lineSeparator();
 
-        final Path packageDirectory =
-                outputRoot.resolve(((String) model.get("PACKAGE")).replace('.', File.separatorChar));
+        final Path packageDirectory = outputRoot.resolve(packageName.replace('.', File.separatorChar));
 
         Files.createDirectories(packageDirectory);
 
