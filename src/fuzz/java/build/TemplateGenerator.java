@@ -265,228 +265,244 @@ public final class TemplateGenerator {
     }
 
     private static void addFuzzTypes(final Map<String, TypeDefinition> types) {
-        types.put(
-                "booleanilaf",
-                withFuzz(
-                        types.get("booleanilaf"),
-                        "array -> BooleanIlaFactoryFromArray.create(array).create()",
-                        "BooleanIla::length",
-                        "BooleanIla::get",
-                        "for (int i = 0; i < array.length; i++) {\n" + "    array[i] = (i & 1) != 0;\n" + "}",
-                        "if (expected[expectedIndex] != actual[actualIndex]) {\n"
-                                + "    throw new AssertionError(\n"
-                                + "            \"expected=\" + expected[expectedIndex] + \", actual=\" + actual[actualIndex]);\n"
-                                + "}",
-                        false));
+        addFuzzType(
+                types,
+                "boolean",
+                "array -> BooleanIlaFactoryFromArray.create(array).create()",
+                "BooleanIla::length",
+                "BooleanIla::get",
+                "for (int i = 0; i < array.length; i++) {\n" + "    array[i] = (i & 1) != 0;\n" + "}",
+                "if (expected[expectedIndex] != actual[actualIndex]) {\n"
+                        + "    throw new AssertionError(\n"
+                        + "            \"expected=\" + expected[expectedIndex] + \", actual=\" + actual[actualIndex]);\n"
+                        + "}",
+                false);
+
+        addFuzzType(
+                types,
+                "byte",
+                "array -> ByteIlaFactoryFromArray.create(array).create()",
+                "ByteIla::length",
+                "ByteIla::get",
+                "for (int i = 0; i < array.length; i++) {\n" + "    array[i] = (byte) (i * 37 + 11);\n" + "}",
+                "if (expected[expectedIndex] != actual[actualIndex]) {\n"
+                        + "    throw new AssertionError(\n"
+                        + "            \"expected=\" + expected[expectedIndex] + \", actual=\" + actual[actualIndex]);\n"
+                        + "}",
+                true);
+
+        addFuzzType(
+                types,
+                "char",
+                "array -> CharIlaFactoryFromArray.create(array).create()",
+                "CharIla::length",
+                "CharIla::get",
+                "for (int i = 0; i < array.length; i++) {\n"
+                        + "    switch (i & 3) {\n"
+                        + "        case 0:\n"
+                        + "            array[i] = '\\0';\n"
+                        + "            break;\n"
+                        + "        case 1:\n"
+                        + "            array[i] = '\\uffff';\n"
+                        + "            break;\n"
+                        + "        case 2:\n"
+                        + "            array[i] = (char) i;\n"
+                        + "            break;\n"
+                        + "        default:\n"
+                        + "            array[i] = (char) (0xffff - i);\n"
+                        + "            break;\n"
+                        + "    }\n"
+                        + "}",
+                "if (expected[expectedIndex] != actual[actualIndex]) {\n"
+                        + "    throw new AssertionError(\n"
+                        + "            \"expected=\" + (int) expected[expectedIndex] + \", actual=\" + (int) actual[actualIndex]);\n"
+                        + "}",
+                true);
+
+        addFuzzType(
+                types,
+                "double",
+                "array -> DoubleIlaFactoryFromArray.create(array).create()",
+                "DoubleIla::length",
+                "DoubleIla::get",
+                "for (int i = 0; i < array.length; i++) {\n"
+                        + "    switch (i & 7) {\n"
+                        + "        case 0:\n"
+                        + "            array[i] = 0.0;\n"
+                        + "            break;\n"
+                        + "        case 1:\n"
+                        + "            array[i] = -0.0;\n"
+                        + "            break;\n"
+                        + "        case 2:\n"
+                        + "            array[i] = Double.NaN;\n"
+                        + "            break;\n"
+                        + "        case 3:\n"
+                        + "            array[i] = Double.POSITIVE_INFINITY;\n"
+                        + "            break;\n"
+                        + "        case 4:\n"
+                        + "            array[i] = Double.NEGATIVE_INFINITY;\n"
+                        + "            break;\n"
+                        + "        case 5:\n"
+                        + "            array[i] = Double.MIN_VALUE;\n"
+                        + "            break;\n"
+                        + "        case 6:\n"
+                        + "            array[i] = Double.MAX_VALUE;\n"
+                        + "            break;\n"
+                        + "        default:\n"
+                        + "            array[i] = i * 1.23456789;\n"
+                        + "            break;\n"
+                        + "    }\n"
+                        + "}",
+                "long expectedBits = Double.doubleToRawLongBits(expected[expectedIndex]);\n"
+                        + "long actualBits = Double.doubleToRawLongBits(actual[actualIndex]);\n"
+                        + "if (expectedBits != actualBits) {\n"
+                        + "    throw new AssertionError(\"expectedBits=\"\n"
+                        + "            + Long.toHexString(expectedBits)\n"
+                        + "            + \", actualBits=\" + Long.toHexString(actualBits));\n"
+                        + "}",
+                false);
+
+        addFuzzType(
+                types,
+                "float",
+                "array -> FloatIlaFactoryFromArray.create(array).create()",
+                "FloatIla::length",
+                "FloatIla::get",
+                "for (int i = 0; i < array.length; i++) {\n"
+                        + "    switch (i & 7) {\n"
+                        + "        case 0:\n"
+                        + "            array[i] = 0.0f;\n"
+                        + "            break;\n"
+                        + "        case 1:\n"
+                        + "            array[i] = -0.0f;\n"
+                        + "            break;\n"
+                        + "        case 2:\n"
+                        + "            array[i] = Float.NaN;\n"
+                        + "            break;\n"
+                        + "        case 3:\n"
+                        + "            array[i] = Float.POSITIVE_INFINITY;\n"
+                        + "            break;\n"
+                        + "        case 4:\n"
+                        + "            array[i] = Float.NEGATIVE_INFINITY;\n"
+                        + "            break;\n"
+                        + "        case 5:\n"
+                        + "            array[i] = Float.MIN_VALUE;\n"
+                        + "            break;\n"
+                        + "        case 6:\n"
+                        + "            array[i] = Float.MAX_VALUE;\n"
+                        + "            break;\n"
+                        + "        default:\n"
+                        + "            array[i] = i * 1.2345678f;\n"
+                        + "            break;\n"
+                        + "    }\n"
+                        + "}",
+                "int expectedBits = Float.floatToRawIntBits(expected[expectedIndex]);\n"
+                        + "int actualBits = Float.floatToRawIntBits(actual[actualIndex]);\n"
+                        + "if (expectedBits != actualBits) {\n"
+                        + "    throw new AssertionError(\"expectedBits=\"\n"
+                        + "            + Integer.toHexString(expectedBits)\n"
+                        + "            + \", actualBits=\" + Integer.toHexString(actualBits));\n"
+                        + "}",
+                true);
+
+        addFuzzType(
+                types,
+                "int",
+                "array -> IntIlaFactoryFromArray.create(array).create()",
+                "IntIla::length",
+                "IntIla::get",
+                "for (int i = 0; i < array.length; i++) {\n" + "    array[i] = i * 0x9e3779b9 ^ 0x12345678;\n" + "}",
+                "if (expected[expectedIndex] != actual[actualIndex]) {\n"
+                        + "    throw new AssertionError(\n"
+                        + "            \"expected=\" + expected[expectedIndex] + \", actual=\" + actual[actualIndex]);\n"
+                        + "}",
+                true);
+
+        addFuzzType(
+                types,
+                "long",
+                "array -> LongIlaFactoryFromArray.create(array).create()",
+                "LongIla::length",
+                "LongIla::get",
+                "for (int i = 0; i < array.length; i++) {\n"
+                        + "    array[i] = 0x123456789ABCDEFL ^ ((long) i * 0x100000001L);\n"
+                        + "}",
+                "if (expected[expectedIndex] != actual[actualIndex]) {\n"
+                        + "    throw new AssertionError(\n"
+                        + "            \"expected=\" + expected[expectedIndex] + \", actual=\" + actual[actualIndex]);\n"
+                        + "}",
+                true);
+
+        addFuzzType(
+                types,
+                "object",
+                "array -> ObjectIlaFactoryFromArray.<Object>create(array).create()",
+                "ObjectIla::length",
+                "ObjectIla::get",
+                "for (int i = 0; i < array.length; i++) {\n"
+                        + "    switch (i & 3) {\n"
+                        + "        case 0:\n"
+                        + "            array[i] = null;\n"
+                        + "            break;\n"
+                        + "        case 1:\n"
+                        + "            array[i] = \"tfw-\" + i;\n"
+                        + "            break;\n"
+                        + "        case 2:\n"
+                        + "            array[i] = Integer.valueOf(i);\n"
+                        + "            break;\n"
+                        + "        default:\n"
+                        + "            array[i] = Long.valueOf(i);\n"
+                        + "            break;\n"
+                        + "    }\n"
+                        + "}",
+                "Object expectedValue = expected[expectedIndex];\n"
+                        + "Object actualValue = actual[actualIndex];\n"
+                        + "if (expectedValue == null ? actualValue != null : !expectedValue.equals(actualValue)) {\n"
+                        + "    throw new AssertionError(\"expected=\" + expectedValue + \", actual=\" + actualValue);\n"
+                        + "}",
+                false);
+
+        addFuzzType(
+                types,
+                "short",
+                "array -> ShortIlaFactoryFromArray.create(array).create()",
+                "ShortIla::length",
+                "ShortIla::get",
+                "for (int i = 0; i < array.length; i++) {\n" + "    array[i] = (short) (i * 7919 + 12345);\n" + "}",
+                "if (expected[expectedIndex] != actual[actualIndex]) {\n"
+                        + "    throw new AssertionError(\n"
+                        + "            \"expected=\" + expected[expectedIndex] + \", actual=\" + actual[actualIndex]);\n"
+                        + "}",
+                true);
+    }
+
+    private static void addFuzzType(
+            final Map<String, TypeDefinition> types,
+            final String lowercase,
+            final String createExpression,
+            final String lengthExpression,
+            final String getExpression,
+            final String initialize,
+            final String assertElementEquals,
+            final boolean singleLineAssertElementEquals) {
+
+        final String key = lowercase + "ilaf";
+        final TypeDefinition base = types.get(key);
+
+        if (base == null) {
+            throw new IllegalArgumentException("Unknown fuzz type: " + key);
+        }
 
         types.put(
-                "byteilaf",
+                key,
                 withFuzz(
-                        types.get("byteilaf"),
-                        "array -> ByteIlaFactoryFromArray.create(array).create()",
-                        "ByteIla::length",
-                        "ByteIla::get",
-                        "for (int i = 0; i < array.length; i++) {\n" + "    array[i] = (byte) (i * 37 + 11);\n" + "}",
-                        "if (expected[expectedIndex] != actual[actualIndex]) {\n"
-                                + "    throw new AssertionError(\n"
-                                + "            \"expected=\" + expected[expectedIndex] + \", actual=\" + actual[actualIndex]);\n"
-                                + "}",
-                        true));
-
-        types.put(
-                "charilaf",
-                withFuzz(
-                        types.get("charilaf"),
-                        "array -> CharIlaFactoryFromArray.create(array).create()",
-                        "CharIla::length",
-                        "CharIla::get",
-                        "for (int i = 0; i < array.length; i++) {\n"
-                                + "    switch (i & 3) {\n"
-                                + "        case 0:\n"
-                                + "            array[i] = '\\0';\n"
-                                + "            break;\n"
-                                + "        case 1:\n"
-                                + "            array[i] = '\\uffff';\n"
-                                + "            break;\n"
-                                + "        case 2:\n"
-                                + "            array[i] = (char) i;\n"
-                                + "            break;\n"
-                                + "        default:\n"
-                                + "            array[i] = (char) (0xffff - i);\n"
-                                + "            break;\n"
-                                + "    }\n"
-                                + "}",
-                        "if (expected[expectedIndex] != actual[actualIndex]) {\n"
-                                + "    throw new AssertionError(\n"
-                                + "            \"expected=\" + (int) expected[expectedIndex] + \", actual=\" + (int) actual[actualIndex]);\n"
-                                + "}",
-                        true));
-
-        types.put(
-                "doubleilaf",
-                withFuzz(
-                        types.get("doubleilaf"),
-                        "array -> DoubleIlaFactoryFromArray.create(array).create()",
-                        "DoubleIla::length",
-                        "DoubleIla::get",
-                        "for (int i = 0; i < array.length; i++) {\n"
-                                + "    switch (i & 7) {\n"
-                                + "        case 0:\n"
-                                + "            array[i] = 0.0;\n"
-                                + "            break;\n"
-                                + "        case 1:\n"
-                                + "            array[i] = -0.0;\n"
-                                + "            break;\n"
-                                + "        case 2:\n"
-                                + "            array[i] = Double.NaN;\n"
-                                + "            break;\n"
-                                + "        case 3:\n"
-                                + "            array[i] = Double.POSITIVE_INFINITY;\n"
-                                + "            break;\n"
-                                + "        case 4:\n"
-                                + "            array[i] = Double.NEGATIVE_INFINITY;\n"
-                                + "            break;\n"
-                                + "        case 5:\n"
-                                + "            array[i] = Double.MIN_VALUE;\n"
-                                + "            break;\n"
-                                + "        case 6:\n"
-                                + "            array[i] = Double.MAX_VALUE;\n"
-                                + "            break;\n"
-                                + "        default:\n"
-                                + "            array[i] = i * 1.23456789;\n"
-                                + "            break;\n"
-                                + "    }\n"
-                                + "}",
-                        "long expectedBits = Double.doubleToRawLongBits(expected[expectedIndex]);\n"
-                                + "long actualBits = Double.doubleToRawLongBits(actual[actualIndex]);\n"
-                                + "if (expectedBits != actualBits) {\n"
-                                + "    throw new AssertionError(\"expectedBits=\"\n"
-                                + "            + Long.toHexString(expectedBits)\n"
-                                + "            + \", actualBits=\" + Long.toHexString(actualBits));\n"
-                                + "}",
-                        false));
-
-        types.put(
-                "floatilaf",
-                withFuzz(
-                        types.get("floatilaf"),
-                        "array -> FloatIlaFactoryFromArray.create(array).create()",
-                        "FloatIla::length",
-                        "FloatIla::get",
-                        "for (int i = 0; i < array.length; i++) {\n"
-                                + "    switch (i & 7) {\n"
-                                + "        case 0:\n"
-                                + "            array[i] = 0.0f;\n"
-                                + "            break;\n"
-                                + "        case 1:\n"
-                                + "            array[i] = -0.0f;\n"
-                                + "            break;\n"
-                                + "        case 2:\n"
-                                + "            array[i] = Float.NaN;\n"
-                                + "            break;\n"
-                                + "        case 3:\n"
-                                + "            array[i] = Float.POSITIVE_INFINITY;\n"
-                                + "            break;\n"
-                                + "        case 4:\n"
-                                + "            array[i] = Float.NEGATIVE_INFINITY;\n"
-                                + "            break;\n"
-                                + "        case 5:\n"
-                                + "            array[i] = Float.MIN_VALUE;\n"
-                                + "            break;\n"
-                                + "        case 6:\n"
-                                + "            array[i] = Float.MAX_VALUE;\n"
-                                + "            break;\n"
-                                + "        default:\n"
-                                + "            array[i] = i * 1.2345678f;\n"
-                                + "            break;\n"
-                                + "    }\n"
-                                + "}",
-                        "int expectedBits = Float.floatToRawIntBits(expected[expectedIndex]);\n"
-                                + "int actualBits = Float.floatToRawIntBits(actual[actualIndex]);\n"
-                                + "if (expectedBits != actualBits) {\n"
-                                + "    throw new AssertionError(\"expectedBits=\"\n"
-                                + "            + Integer.toHexString(expectedBits)\n"
-                                + "            + \", actualBits=\" + Integer.toHexString(actualBits));\n"
-                                + "}",
-                        true));
-
-        types.put(
-                "intilaf",
-                withFuzz(
-                        types.get("intilaf"),
-                        "array -> IntIlaFactoryFromArray.create(array).create()",
-                        "IntIla::length",
-                        "IntIla::get",
-                        "for (int i = 0; i < array.length; i++) {\n"
-                                + "    array[i] = i * 0x9e3779b9 ^ 0x12345678;\n"
-                                + "}",
-                        "if (expected[expectedIndex] != actual[actualIndex]) {\n"
-                                + "    throw new AssertionError(\n"
-                                + "            \"expected=\" + expected[expectedIndex] + \", actual=\" + actual[actualIndex]);\n"
-                                + "}",
-                        true));
-
-        types.put(
-                "longilaf",
-                withFuzz(
-                        types.get("longilaf"),
-                        "array -> LongIlaFactoryFromArray.create(array).create()",
-                        "LongIla::length",
-                        "LongIla::get",
-                        "for (int i = 0; i < array.length; i++) {\n"
-                                + "    array[i] = 0x123456789ABCDEFL ^ ((long) i * 0x100000001L);\n"
-                                + "}",
-                        "if (expected[expectedIndex] != actual[actualIndex]) {\n"
-                                + "    throw new AssertionError(\n"
-                                + "            \"expected=\" + expected[expectedIndex] + \", actual=\" + actual[actualIndex]);\n"
-                                + "}",
-                        true));
-
-        types.put(
-                "objectilaf",
-                withFuzz(
-                        types.get("objectilaf"),
-                        "array -> ObjectIlaFactoryFromArray.<Object>create(array).create()",
-                        "ObjectIla::length",
-                        "ObjectIla::get",
-                        "for (int i = 0; i < array.length; i++) {\n"
-                                + "    switch (i & 3) {\n"
-                                + "        case 0:\n"
-                                + "            array[i] = null;\n"
-                                + "            break;\n"
-                                + "        case 1:\n"
-                                + "            array[i] = \"tfw-\" + i;\n"
-                                + "            break;\n"
-                                + "        case 2:\n"
-                                + "            array[i] = Integer.valueOf(i);\n"
-                                + "            break;\n"
-                                + "        default:\n"
-                                + "            array[i] = Long.valueOf(i);\n"
-                                + "            break;\n"
-                                + "    }\n"
-                                + "}",
-                        "Object expectedValue = expected[expectedIndex];\n"
-                                + "Object actualValue = actual[actualIndex];\n"
-                                + "if (expectedValue == null ? actualValue != null : !expectedValue.equals(actualValue)) {\n"
-                                + "    throw new AssertionError(\"expected=\" + expectedValue + \", actual=\" + actualValue);\n"
-                                + "}",
-                        false));
-
-        types.put(
-                "shortilaf",
-                withFuzz(
-                        types.get("shortilaf"),
-                        "array -> ShortIlaFactoryFromArray.create(array).create()",
-                        "ShortIla::length",
-                        "ShortIla::get",
-                        "for (int i = 0; i < array.length; i++) {\n"
-                                + "    array[i] = (short) (i * 7919 + 12345);\n"
-                                + "}",
-                        "if (expected[expectedIndex] != actual[actualIndex]) {\n"
-                                + "    throw new AssertionError(\n"
-                                + "            \"expected=\" + expected[expectedIndex] + \", actual=\" + actual[actualIndex]);\n"
-                                + "}",
-                        true));
+                        base,
+                        createExpression,
+                        lengthExpression,
+                        getExpression,
+                        initialize,
+                        assertElementEquals,
+                        singleLineAssertElementEquals));
     }
 
     private static TypeDefinition withFuzz(
