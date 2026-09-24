@@ -606,15 +606,10 @@ public final class TemplateGenerator {
 
         final Path relativeDirectory = templateRoot.relativize(templatePath.getParent());
 
+        final Template template = new Template(templatePath.toString(), parts[1], configuration);
+
         for (final String mappingName : mappingLine.split(",")) {
-            generateMapping(
-                    configuration,
-                    mappingName.trim(),
-                    parts[1],
-                    outputRoot,
-                    relativeDirectory,
-                    sourceKind,
-                    templatePath);
+            generateMapping(template, outputRoot, relativeDirectory, sourceKind, templatePath, mappingName.trim());
         }
     }
 
@@ -686,13 +681,12 @@ public final class TemplateGenerator {
     }
 
     private static void generateMapping(
-            final Configuration configuration,
-            final String mappingName,
-            final String templateSource,
+            final Template template,
             final Path outputRoot,
             final Path relativeDirectory,
             final SourceKind sourceKind,
-            final Path templatePath)
+            final Path templatePath,
+            final String mappingName)
             throws Exception {
         final Map<String, Object> model = new HashMap<>();
         final TypeDefinition type = TYPES.get(mappingName);
@@ -734,13 +728,11 @@ public final class TemplateGenerator {
             addFuzzModel(model, type);
         }
 
-        writeGeneratedFile(
-                configuration, templateSource, templatePath, model, mappingName, outputRoot, relativeDirectory);
+        writeGeneratedFile(template, templatePath, model, mappingName, outputRoot, relativeDirectory);
     }
 
     private static void writeGeneratedFile(
-            final Configuration configuration,
-            final String templateSource,
+            final Template template,
             final Path templatePath,
             final Map<String, Object> model,
             final String mappingName,
@@ -752,8 +744,6 @@ public final class TemplateGenerator {
                 relativeDirectory.resolve(mappingName).toString().replace(File.separatorChar, '.');
 
         model.put("PACKAGE", packageName);
-
-        final Template template = new Template(templatePath.toString(), templateSource, configuration);
 
         final StringWriter writer = new StringWriter();
 
