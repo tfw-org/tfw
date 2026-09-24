@@ -550,23 +550,14 @@ public final class TemplateGenerator {
 
         final Path templateRoot = Paths.get(args[0]);
 
-        generate(
-                templateRoot.resolve("main"),
-                Paths.get("src", "main", "template"),
-                Paths.get("src", "main", "java"),
-                SourceKind.MAIN);
+        generate(templateRoot.resolve("main"), Paths.get("src", "main", "java"), SourceKind.MAIN);
 
-        generate(
-                templateRoot.resolve("test"),
-                Paths.get("src", "test", "template"),
-                Paths.get("src", "test", "java"),
-                SourceKind.TEST);
+        generate(templateRoot.resolve("test"), Paths.get("src", "test", "java"), SourceKind.TEST);
 
-        generate(templateRoot.resolve("fuzz"), null, Paths.get("src", "fuzz", "java"), SourceKind.FUZZ);
+        generate(templateRoot.resolve("fuzz"), Paths.get("src", "fuzz", "java"), SourceKind.FUZZ);
     }
 
-    private static void generate(
-            final Path templateRoot, final Path mappingRoot, final Path outputRoot, final SourceKind sourceKind)
+    private static void generate(final Path templateRoot, final Path outputRoot, final SourceKind sourceKind)
             throws Exception {
         if (!Files.exists(templateRoot)) {
             return;
@@ -591,14 +582,13 @@ public final class TemplateGenerator {
         }
 
         for (final Path templatePath : templates) {
-            generate(configuration, templateRoot, mappingRoot, outputRoot, sourceKind, templatePath);
+            generate(configuration, templateRoot, outputRoot, sourceKind, templatePath);
         }
     }
 
     private static void generate(
             final Configuration configuration,
             final Path templateRoot,
-            final Path mappingRoot,
             final Path outputRoot,
             final SourceKind sourceKind,
             final Path templatePath)
@@ -616,14 +606,11 @@ public final class TemplateGenerator {
 
         final Path relativeDirectory = templateRoot.relativize(templatePath.getParent());
 
-        final Path templateMappingDirectory = mappingRoot == null ? null : mappingRoot.resolve(relativeDirectory);
-
         for (final String mappingName : mappingLine.split(",")) {
             generateMapping(
                     configuration,
                     mappingName.trim(),
                     parts[1],
-                    templateMappingDirectory,
                     outputRoot,
                     relativeDirectory,
                     sourceKind,
@@ -702,7 +689,6 @@ public final class TemplateGenerator {
             final Configuration configuration,
             final String mappingName,
             final String templateSource,
-            final Path mappingDirectory,
             final Path outputRoot,
             final Path relativeDirectory,
             final SourceKind sourceKind,
