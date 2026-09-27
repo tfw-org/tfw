@@ -26,7 +26,10 @@ public final class IlaConcatenateUtil {
             final int leftAmount = (int) (leftLength - start);
 
             leftGet.get(offset, start, leftAmount);
-            rightGet.get(offset + leftAmount, 0, length - leftAmount);
+
+            if (length > leftAmount) {
+                rightGet.get(offset + leftAmount, 0, length - leftAmount);
+            }
         }
     }
 }

@@ -56,4 +56,30 @@ final class ${NAME}IlaConcatenateTest {
         assertThat(leftIla.getNumberOfCloses()).isEqualTo(1);
         assertThat(rightIla.getNumberOfCloses()).isEqualTo(1);
     }
+
+    @Test
+    void exactLeftBoundaryTest() throws Exception {
+        ${RANDOM_INIT}final ${TYPE}[] leftArray = new ${TYPE}[2];
+        final ${TYPE}[] rightArray = new ${TYPE}[2];
+
+        leftArray[0] = ${RANDOM_VALUE};
+        leftArray[1] = ${RANDOM_VALUE};
+        rightArray[0] = ${RANDOM_VALUE};
+        rightArray[1] = ${RANDOM_VALUE};
+
+        final ${NAME}Ila${TEMPLATE} leftIla = ${NAME}IlaFromArray.create(leftArray);
+        final ${NAME}Ila${TEMPLATE} rightIla = ${NAME}IlaFromArray.create(rightArray);
+        final ${NAME}Ila${TEMPLATE} actualIla = ${NAME}IlaConcatenate.create(leftIla, rightIla);
+
+        try {
+            final ${TYPE}[] destination = new ${TYPE}[1];
+
+            // Read exactly the final element of the left ILA.
+            actualIla.get(destination, 0, 1, 1);
+
+            assertThat(destination[0]).isEqualTo(leftArray[1]);
+        } finally {
+            actualIla.close();
+        }
+    }
 }

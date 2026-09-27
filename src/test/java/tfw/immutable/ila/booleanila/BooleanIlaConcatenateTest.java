@@ -55,5 +55,32 @@ final class BooleanIlaConcatenateTest {
         assertThat(leftIla.getNumberOfCloses()).isEqualTo(1);
         assertThat(rightIla.getNumberOfCloses()).isEqualTo(1);
     }
+
+    @Test
+    void exactLeftBoundaryTest() throws Exception {
+        final Random random = new Random(0);
+        final boolean[] leftArray = new boolean[2];
+        final boolean[] rightArray = new boolean[2];
+
+        leftArray[0] = random.nextBoolean();
+        leftArray[1] = random.nextBoolean();
+        rightArray[0] = random.nextBoolean();
+        rightArray[1] = random.nextBoolean();
+
+        final BooleanIla leftIla = BooleanIlaFromArray.create(leftArray);
+        final BooleanIla rightIla = BooleanIlaFromArray.create(rightArray);
+        final BooleanIla actualIla = BooleanIlaConcatenate.create(leftIla, rightIla);
+
+        try {
+            final boolean[] destination = new boolean[1];
+
+            // Read exactly the final element of the left ILA.
+            actualIla.get(destination, 0, 1, 1);
+
+            assertThat(destination[0]).isEqualTo(leftArray[1]);
+        } finally {
+            actualIla.close();
+        }
+    }
 }
 // AUTO GENERATED FROM TEMPLATE
