@@ -59,4 +59,30 @@ final class ${NAME}IlaDecimateTest {
 
         assertThat(testIla.getNumberOfCloses()).isEqualTo(1);
     }
+
+    @Test
+    void largeFactorTest() throws Exception {
+        ${RANDOM_INIT}final ${TYPE}[] array = new ${TYPE}[2];
+        array[0] = ${RANDOM_VALUE};
+        array[1] = ${RANDOM_VALUE};
+
+        final ${NAME}Ila${TEMPLATE} ila = ${NAME}IlaFromArray.create(array);
+
+        try {
+            final ${NAME}Ila${TEMPLATE} actualIla = ${NAME}IlaDecimate.create(ila, Long.MAX_VALUE, new ${TYPE}[1]);
+
+            try {
+                assertThat(actualIla.length()).isEqualTo(1);
+
+                final ${TYPE}[] destination = new ${TYPE}[1];
+                actualIla.get(destination, 0, 0, 1);
+
+                assertThat(destination[0]).isEqualTo(array[0]);
+            } finally {
+                actualIla.close();
+            }
+        } finally {
+            ila.close();
+        }
+    }
 }

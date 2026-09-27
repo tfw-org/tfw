@@ -30,7 +30,9 @@ public final class BooleanIlaDecimate {
 
         @Override
         protected long lengthImpl() throws IOException {
-            return (ila.length() + factor - 1) / factor;
+            final long length = ila.length();
+
+            return length == 0 ? 0 : 1 + (length - 1) / factor;
         }
 
         @Override
