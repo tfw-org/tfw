@@ -1,27 +1,28 @@
-package tfw.immutable.ilaf.intilaf;
+// intilaf
+package ${PACKAGE};
 
 import com.code_intelligence.jazzer.api.FuzzedDataProvider;
 import tfw.immutable.ila.intila.IntIla;
 
-public final class IntIlaFactoryDecimateFuzzer {
+public final class ${NAME}IlaFactoryDecimateFuzzer {
 
-    private IntIlaFactoryDecimateFuzzer() {}
+    private ${NAME}IlaFactoryDecimateFuzzer() {}
 
     public static void fuzzerTestOneInput(FuzzedDataProvider data) throws Exception {
 
-        final int sourceLength = data.consumeInt(0, IntIlaFactoryFuzzerSupport.MAX_LENGTH);
+        final int sourceLength = data.consumeInt(0, ${NAME}IlaFactoryFuzzerSupport.MAX_LENGTH);
 
-        final IntIlaFactoryFuzzerSupport.GetInput input = IntIlaFactoryFuzzerSupport.consumeGetInput(data);
+        final ${NAME}IlaFactoryFuzzerSupport.GetInput input = ${NAME}IlaFactoryFuzzerSupport.consumeGetInput(data);
 
         final long factor = data.consumeLong();
 
-        final int bufferLength = data.consumeInt(0, IntIlaFactoryFuzzerSupport.MAX_LENGTH);
+        final int bufferLength = data.consumeInt(0, ${NAME}IlaFactoryFuzzerSupport.MAX_LENGTH);
 
-        final int[] source = IntIlaFactoryFuzzerSupport.createInitializedArray(sourceLength, data);
+        final ${TYPE}[] source = ${NAME}IlaFactoryFuzzerSupport.createInitializedArray(sourceLength, data);
 
-        final int[] buffer = IntIlaFactoryFuzzerSupport.createInitializedArray(bufferLength, data);
+        final ${TYPE}[] buffer = ${NAME}IlaFactoryFuzzerSupport.createInitializedArray(bufferLength, data);
 
-        final IntIlaFactory sourceFactory = IntIlaFactoryFromArray.create(source);
+        final ${NAME}IlaFactory sourceFactory = ${NAME}IlaFactoryFromArray.create(source);
 
         testArgumentValidation(sourceFactory, factor, bufferLength);
 
@@ -29,9 +30,9 @@ public final class IntIlaFactoryDecimateFuzzer {
             return;
         }
 
-        final IntIlaFactory decimateFactory = IntIlaFactoryDecimate.create(sourceFactory, factor, buffer);
+        final ${NAME}IlaFactory decimateFactory = ${NAME}IlaFactoryDecimate.create(sourceFactory, factor, buffer);
 
-        final IntIla ila;
+        final ${NAME}Ila ila;
 
         try {
             ila = decimateFactory.create();
@@ -51,18 +52,18 @@ public final class IntIlaFactoryDecimateFuzzer {
 
         final long expectedLength = expectedLength(sourceLength, factor);
 
-        IntIlaFactoryFuzzerSupport.verifyIla(
+        ${NAME}IlaFactoryFuzzerSupport.verifyIla(
                 ila, expectedLength, input, index -> source[Math.toIntExact(index * factor)], data);
     }
 
-    private static void testArgumentValidation(IntIlaFactory sourceFactory, long factor, int bufferLength)
+    private static void testArgumentValidation(${NAME}IlaFactory sourceFactory, long factor, int bufferLength)
             throws Exception {
 
-        IntIlaFactoryFuzzerSupport.expectIllegalArgumentException(
-                () -> IntIlaFactoryDecimate.create(null, 2, new int[1]), "create() accepted null ilaFactory");
+        ${NAME}IlaFactoryFuzzerSupport.expectIllegalArgumentException(
+                () -> ${NAME}IlaFactoryDecimate.create(null, 2, new ${TYPE}[1]), "create() accepted null ilaFactory");
 
         if (factor < 2) {
-            final IntIlaFactory invalidFactorFactory = IntIlaFactoryDecimate.create(sourceFactory, factor, new int[1]);
+            final ${NAME}IlaFactory invalidFactorFactory = ${NAME}IlaFactoryDecimate.create(sourceFactory, factor, new ${TYPE}[1]);
 
             try {
                 invalidFactorFactory.create();
@@ -75,7 +76,7 @@ public final class IntIlaFactoryDecimateFuzzer {
         }
 
         if (bufferLength == 0) {
-            final IntIlaFactory invalidBufferFactory = IntIlaFactoryDecimate.create(sourceFactory, 2, new int[0]);
+            final ${NAME}IlaFactory invalidBufferFactory = ${NAME}IlaFactoryDecimate.create(sourceFactory, 2, new ${TYPE}[0]);
 
             try {
                 invalidBufferFactory.create();
@@ -104,4 +105,3 @@ public final class IntIlaFactoryDecimateFuzzer {
         return 1 + (sourceLength - 1L) / factor;
     }
 }
-// AUTO GENERATED FROM TEMPLATE

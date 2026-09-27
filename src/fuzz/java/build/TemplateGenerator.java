@@ -43,9 +43,6 @@ public final class TemplateGenerator {
     }
 
     private enum FuzzProperty {
-        CREATE_EXPRESSION,
-        LENGTH_EXPRESSION,
-        GET_EXPRESSION,
         INITIALIZE,
         ASSERT_ELEMENT_EQUALS
     }
@@ -290,9 +287,6 @@ public final class TemplateGenerator {
         addFuzzType(
                 types,
                 "boolean",
-                "array -> BooleanIlaFactoryFromArray.create(array).create()",
-                "BooleanIla::length",
-                "BooleanIla::get",
                 "for (int i = 0; i < array.length; i++) {\n" + "    array[i] = (i & 1) != 0;\n" + "}",
                 "if (expected[expectedIndex] != actual[actualIndex]) {\n"
                         + "    throw new AssertionError(\n"
@@ -303,9 +297,6 @@ public final class TemplateGenerator {
         addFuzzType(
                 types,
                 "byte",
-                "array -> ByteIlaFactoryFromArray.create(array).create()",
-                "ByteIla::length",
-                "ByteIla::get",
                 "for (int i = 0; i < array.length; i++) {\n" + "    array[i] = (byte) (i * 37 + 11);\n" + "}",
                 "if (expected[expectedIndex] != actual[actualIndex]) {\n"
                         + "    throw new AssertionError(\n"
@@ -316,9 +307,6 @@ public final class TemplateGenerator {
         addFuzzType(
                 types,
                 "char",
-                "array -> CharIlaFactoryFromArray.create(array).create()",
-                "CharIla::length",
-                "CharIla::get",
                 "for (int i = 0; i < array.length; i++) {\n"
                         + "    switch (i & 3) {\n"
                         + "        case 0:\n"
@@ -344,9 +332,6 @@ public final class TemplateGenerator {
         addFuzzType(
                 types,
                 "double",
-                "array -> DoubleIlaFactoryFromArray.create(array).create()",
-                "DoubleIla::length",
-                "DoubleIla::get",
                 "for (int i = 0; i < array.length; i++) {\n"
                         + "    switch (i & 7) {\n"
                         + "        case 0:\n"
@@ -387,9 +372,6 @@ public final class TemplateGenerator {
         addFuzzType(
                 types,
                 "float",
-                "array -> FloatIlaFactoryFromArray.create(array).create()",
-                "FloatIla::length",
-                "FloatIla::get",
                 "for (int i = 0; i < array.length; i++) {\n"
                         + "    switch (i & 7) {\n"
                         + "        case 0:\n"
@@ -430,9 +412,6 @@ public final class TemplateGenerator {
         addFuzzType(
                 types,
                 "int",
-                "array -> IntIlaFactoryFromArray.create(array).create()",
-                "IntIla::length",
-                "IntIla::get",
                 "for (int i = 0; i < array.length; i++) {\n" + "    array[i] = i * 0x9e3779b9 ^ 0x12345678;\n" + "}",
                 "if (expected[expectedIndex] != actual[actualIndex]) {\n"
                         + "    throw new AssertionError(\n"
@@ -443,9 +422,6 @@ public final class TemplateGenerator {
         addFuzzType(
                 types,
                 "long",
-                "array -> LongIlaFactoryFromArray.create(array).create()",
-                "LongIla::length",
-                "LongIla::get",
                 "for (int i = 0; i < array.length; i++) {\n"
                         + "    array[i] = 0x123456789ABCDEFL ^ ((long) i * 0x100000001L);\n"
                         + "}",
@@ -458,9 +434,6 @@ public final class TemplateGenerator {
         addFuzzType(
                 types,
                 "object",
-                "array -> ObjectIlaFactoryFromArray.<Object>create(array).create()",
-                "ObjectIla::length",
-                "ObjectIla::get",
                 "for (int i = 0; i < array.length; i++) {\n"
                         + "    switch (i & 3) {\n"
                         + "        case 0:\n"
@@ -487,9 +460,6 @@ public final class TemplateGenerator {
         addFuzzType(
                 types,
                 "short",
-                "array -> ShortIlaFactoryFromArray.create(array).create()",
-                "ShortIla::length",
-                "ShortIla::get",
                 "for (int i = 0; i < array.length; i++) {\n" + "    array[i] = (short) (i * 7919 + 12345);\n" + "}",
                 "if (expected[expectedIndex] != actual[actualIndex]) {\n"
                         + "    throw new AssertionError(\n"
@@ -501,9 +471,6 @@ public final class TemplateGenerator {
     private static void addFuzzType(
             final Map<String, TypeDefinition> types,
             final String lowercase,
-            final String createExpression,
-            final String lengthExpression,
-            final String getExpression,
             final String initialize,
             final String assertElementEquals,
             final boolean singleLineAssertElementEquals) {
@@ -515,31 +482,16 @@ public final class TemplateGenerator {
             throw new IllegalArgumentException("Unknown fuzz type: " + key);
         }
 
-        types.put(
-                key,
-                withFuzz(
-                        base,
-                        createExpression,
-                        lengthExpression,
-                        getExpression,
-                        initialize,
-                        assertElementEquals,
-                        singleLineAssertElementEquals));
+        types.put(key, withFuzz(base, initialize, assertElementEquals, singleLineAssertElementEquals));
     }
 
     private static TypeDefinition withFuzz(
             final TypeDefinition base,
-            final String createExpression,
-            final String lengthExpression,
-            final String getExpression,
             final String initialize,
             final String assertElementEquals,
             final boolean singleLineAssertElementEquals) {
         final TypeDefinition result = new TypeDefinition(base);
 
-        result.fuzz(FuzzProperty.CREATE_EXPRESSION, createExpression);
-        result.fuzz(FuzzProperty.LENGTH_EXPRESSION, lengthExpression);
-        result.fuzz(FuzzProperty.GET_EXPRESSION, getExpression);
         result.fuzz(FuzzProperty.INITIALIZE, initialize);
         result.fuzz(FuzzProperty.ASSERT_ELEMENT_EQUALS, assertElementEquals);
         result.fuzzSingleLineAssertElementEquals = singleLineAssertElementEquals;
@@ -667,21 +619,9 @@ public final class TemplateGenerator {
     }
 
     private static void addFuzzModel(final Map<String, Object> model, final TypeDefinition type) {
-        model.put("FUZZ_ARRAY_TYPE", type.type + "[]");
-        model.put("FUZZ_ELEMENT_TYPE", type.type);
-        model.put("FUZZ_ILA_PACKAGE", type.lowercase + "ila");
-        model.put("FUZZ_ILA_TYPE", type.name + "Ila");
-        model.put("FUZZ_FACTORY_NAME", type.name + "IlaFactoryFromArray");
-        model.put("FUZZ_CREATE_EXPRESSION", type.fuzz(FuzzProperty.CREATE_EXPRESSION));
-        model.put("FUZZ_LENGTH_EXPRESSION", type.fuzz(FuzzProperty.LENGTH_EXPRESSION));
-        model.put("FUZZ_GET_EXPRESSION", type.fuzz(FuzzProperty.GET_EXPRESSION));
         model.put("FUZZ_INITIALIZE", indent(type.fuzz(FuzzProperty.INITIALIZE), 20));
         model.put("FUZZ_ASSERT_ELEMENT_EQUALS", indent(type.fuzz(FuzzProperty.ASSERT_ELEMENT_EQUALS), 20));
         model.put("FUZZ_SINGLE_LINE_ASSERT_ELEMENT_EQUALS", type.fuzzSingleLineAssertElementEquals);
-
-        if ("Object".equals(type.type)) {
-            model.put("FUZZ_GENERIC", "Object");
-        }
     }
 
     private static void generateMapping(

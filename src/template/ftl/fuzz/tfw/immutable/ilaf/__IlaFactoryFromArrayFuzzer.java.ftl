@@ -5,38 +5,38 @@ import com.code_intelligence.jazzer.api.FuzzedDataProvider;
 import tfw.fuzz.IlaArrayAdapter;
 import tfw.fuzz.IlaFuzzHarness;
 import tfw.fuzz.IlaFuzzSpec;
-import tfw.immutable.ila.${FUZZ_ILA_PACKAGE}.${FUZZ_ILA_TYPE};
+import tfw.immutable.ila.${LOWERCASE}ila.${NAME}Ila;
 
 public final class ${NAME}IlaFactoryFromArrayFuzzer {
-    private static final IlaFuzzSpec<${FUZZ_ARRAY_TYPE}, ${FUZZ_ILA_TYPE}<#if FUZZ_GENERIC??><${FUZZ_GENERIC}></#if>> SPEC = new IlaFuzzSpec<>(
-            "${FUZZ_FACTORY_NAME}",
+    private static final IlaFuzzSpec<${TYPE}[], ${NAME}Ila<#if TYPE == "Object"><Object></#if>> SPEC = new IlaFuzzSpec<>(
+            "${NAME}IlaFactoryFromArray",
             new IlaArrayAdapter<>() {
                 @Override
-                public ${FUZZ_ARRAY_TYPE} create(int length) {
-                    return new ${FUZZ_ELEMENT_TYPE}[length];
+                public ${TYPE}[] create(int length) {
+                    return new ${TYPE}[length];
                 }
 
                 @Override
-                public void initialize(${FUZZ_ARRAY_TYPE} array) {
+                public void initialize(${TYPE}[] array) {
 ${FUZZ_INITIALIZE}
                 }
 
                 @Override
-                public ${FUZZ_ARRAY_TYPE} copy(${FUZZ_ARRAY_TYPE} array) {
+                public ${TYPE}[] copy(${TYPE}[] array) {
                     return array.clone();
                 }
 
                 @Override
-                public void assertElementEquals(<#if FUZZ_SINGLE_LINE_ASSERT_ELEMENT_EQUALS>${FUZZ_ARRAY_TYPE} expected, int expectedIndex, ${FUZZ_ARRAY_TYPE} actual, int actualIndex<#else>
-                        ${FUZZ_ARRAY_TYPE} expected, int expectedIndex, ${FUZZ_ARRAY_TYPE} actual, int actualIndex</#if>) {
+                public void assertElementEquals(<#if FUZZ_SINGLE_LINE_ASSERT_ELEMENT_EQUALS>${TYPE}[] expected, int expectedIndex, ${TYPE}[] actual, int actualIndex<#else>
+                        ${TYPE}[] expected, int expectedIndex, ${TYPE}[] actual, int actualIndex</#if>) {
 ${FUZZ_ASSERT_ELEMENT_EQUALS}
                 }
             },
-            ${FUZZ_CREATE_EXPRESSION},
-            ${FUZZ_LENGTH_EXPRESSION},
-            ${FUZZ_GET_EXPRESSION});
+            array -> ${NAME}IlaFactoryFromArray.<#if TYPE == "Object"><Object></#if>create(array).create(),
+            ${NAME}Ila::length,
+            ${NAME}Ila::get);
 
-    private static final IlaFuzzHarness<${FUZZ_ARRAY_TYPE}, ${FUZZ_ILA_TYPE}<#if FUZZ_GENERIC??><${FUZZ_GENERIC}></#if>> HARNESS = new IlaFuzzHarness<>(SPEC);
+    private static final IlaFuzzHarness<${TYPE}[], ${NAME}Ila<#if TYPE == "Object"><Object></#if>> HARNESS = new IlaFuzzHarness<>(SPEC);
 
     private ${NAME}IlaFactoryFromArrayFuzzer() {}
 

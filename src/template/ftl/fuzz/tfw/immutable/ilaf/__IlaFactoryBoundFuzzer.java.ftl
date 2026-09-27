@@ -1,20 +1,21 @@
-package tfw.immutable.ilaf.intilaf;
+// intilaf
+package ${PACKAGE};
 
 import com.code_intelligence.jazzer.api.FuzzedDataProvider;
 
-public final class IntIlaFactoryBoundFuzzer {
+public final class ${NAME}IlaFactoryBoundFuzzer {
 
-    private IntIlaFactoryBoundFuzzer() {}
+    private ${NAME}IlaFactoryBoundFuzzer() {}
 
     public static void fuzzerTestOneInput(FuzzedDataProvider data) throws Exception {
 
-        final int length = data.consumeInt(0, IntIlaFactoryFuzzerSupport.MAX_LENGTH);
+        final int length = data.consumeInt(0, ${NAME}IlaFactoryFuzzerSupport.MAX_LENGTH);
 
-        final IntIlaFactoryFuzzerSupport.GetInput input = IntIlaFactoryFuzzerSupport.consumeGetInput(data);
+        final ${NAME}IlaFactoryFuzzerSupport.GetInput input = ${NAME}IlaFactoryFuzzerSupport.consumeGetInput(data);
 
-        final int[] source = IntIlaFactoryFuzzerSupport.createInitializedArray(length, data);
+        final ${TYPE}[] source = ${NAME}IlaFactoryFuzzerSupport.createInitializedArray(length, data);
 
-        final IntIlaFactory sourceFactory = IntIlaFactoryFromArray.create(source);
+        final ${NAME}IlaFactory sourceFactory = ${NAME}IlaFactoryFromArray.create(source);
 
         testArgumentValidation(sourceFactory);
 
@@ -24,9 +25,9 @@ public final class IntIlaFactoryBoundFuzzer {
         final int actualMinimum = Math.min(minimum, maximum);
         final int actualMaximum = Math.max(minimum, maximum);
 
-        final IntIlaFactory boundedFactory = IntIlaFactoryBound.create(sourceFactory, actualMinimum, actualMaximum);
+        final ${NAME}IlaFactory boundedFactory = ${NAME}IlaFactoryBound.create(sourceFactory, actualMinimum, actualMaximum);
 
-        IntIlaFactoryFuzzerSupport.verifyIla(
+        ${NAME}IlaFactoryFuzzerSupport.verifyIla(
                 boundedFactory.create(),
                 length,
                 input,
@@ -34,12 +35,12 @@ public final class IntIlaFactoryBoundFuzzer {
                 data);
     }
 
-    private static void testArgumentValidation(IntIlaFactory sourceFactory) throws Exception {
+    private static void testArgumentValidation(${NAME}IlaFactory sourceFactory) throws Exception {
 
-        IntIlaFactoryFuzzerSupport.expectIllegalArgumentException(
-                () -> IntIlaFactoryBound.create(null, 0, 1), "create() accepted null ilaFactory");
+        ${NAME}IlaFactoryFuzzerSupport.expectIllegalArgumentException(
+                () -> ${NAME}IlaFactoryBound.create(null, 0, 1), "create() accepted null ilaFactory");
 
-        final IntIlaFactory invalidBoundsFactory = IntIlaFactoryBound.create(sourceFactory, 1, 0);
+        final ${NAME}IlaFactory invalidBoundsFactory = ${NAME}IlaFactoryBound.create(sourceFactory, 1, 0);
 
         try {
             invalidBoundsFactory.create();
@@ -64,4 +65,3 @@ public final class IntIlaFactoryBoundFuzzer {
         return value;
     }
 }
-// AUTO GENERATED FROM TEMPLATE
