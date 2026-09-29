@@ -1,4 +1,4 @@
-// intilaf
+// booleanilaf,byteilaf,charilaf,doubleilaf,floatilaf,intilaf,longilaf,objectilaf,shortilaf
 package ${PACKAGE};
 
 import com.code_intelligence.jazzer.api.FuzzedDataProvider;
@@ -40,7 +40,8 @@ public final class ${NAME}IlaFactoryConcatenateFuzzer {
         testLeftBoundary(concatenateFactory, left, leftLength);
     }
 
-    private static void testArgumentValidation(${NAME}IlaFactory leftFactory, ${NAME}IlaFactory rightFactory) throws Exception {
+    private static void testArgumentValidation(final ${NAME}IlaFactory leftFactory, ${NAME}IlaFactory rightFactory)
+            throws Exception {
 
         ${NAME}IlaFactoryFuzzerSupport.expectIllegalArgumentException(
                 () -> ${NAME}IlaFactoryConcatenate.create(null, rightFactory), "create() accepted null leftFactory");

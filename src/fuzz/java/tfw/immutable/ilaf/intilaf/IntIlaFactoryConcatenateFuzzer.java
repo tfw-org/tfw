@@ -39,7 +39,8 @@ public final class IntIlaFactoryConcatenateFuzzer {
         testLeftBoundary(concatenateFactory, left, leftLength);
     }
 
-    private static void testArgumentValidation(IntIlaFactory leftFactory, IntIlaFactory rightFactory) throws Exception {
+    private static void testArgumentValidation(final IntIlaFactory leftFactory, IntIlaFactory rightFactory)
+            throws Exception {
 
         IntIlaFactoryFuzzerSupport.expectIllegalArgumentException(
                 () -> IntIlaFactoryConcatenate.create(null, rightFactory), "create() accepted null leftFactory");
