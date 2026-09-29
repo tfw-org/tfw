@@ -1,28 +1,27 @@
-// booleanilaf,byteilaf,charilaf,doubleilaf,floatilaf,intilaf,longilaf,objectilaf,shortilaf
-package ${PACKAGE};
+package tfw.immutable.ilaf.floatilaf;
 
 import com.code_intelligence.jazzer.api.FuzzedDataProvider;
-import tfw.immutable.ila.${LOWERCASE}ila.${NAME}Ila;
+import tfw.immutable.ila.floatila.FloatIla;
 
-public final class ${NAME}IlaFactoryDecimateFuzzer {
+public final class FloatIlaFactoryDecimateFuzzer {
 
-    private ${NAME}IlaFactoryDecimateFuzzer() {}
+    private FloatIlaFactoryDecimateFuzzer() {}
 
     public static void fuzzerTestOneInput(FuzzedDataProvider data) throws Exception {
 
-        final int sourceLength = data.consumeInt(0, ${NAME}IlaFactoryFuzzerSupport.MAX_LENGTH);
+        final int sourceLength = data.consumeInt(0, FloatIlaFactoryFuzzerSupport.MAX_LENGTH);
 
-        final ${NAME}IlaFactoryFuzzerSupport.GetInput input = ${NAME}IlaFactoryFuzzerSupport.consumeGetInput(data);
+        final FloatIlaFactoryFuzzerSupport.GetInput input = FloatIlaFactoryFuzzerSupport.consumeGetInput(data);
 
         final long factor = data.consumeLong();
 
-        final int bufferLength = data.consumeInt(0, ${NAME}IlaFactoryFuzzerSupport.MAX_LENGTH);
+        final int bufferLength = data.consumeInt(0, FloatIlaFactoryFuzzerSupport.MAX_LENGTH);
 
-        final ${TYPE}[] source = ${NAME}IlaFactoryFuzzerSupport.createInitializedArray(sourceLength, data);
+        final float[] source = FloatIlaFactoryFuzzerSupport.createInitializedArray(sourceLength, data);
 
-        final ${TYPE}[] buffer = ${NAME}IlaFactoryFuzzerSupport.createInitializedArray(bufferLength, data);
+        final float[] buffer = FloatIlaFactoryFuzzerSupport.createInitializedArray(bufferLength, data);
 
-        final ${NAME}IlaFactory sourceFactory = ${NAME}IlaFactoryFromArray.create(source);
+        final FloatIlaFactory sourceFactory = FloatIlaFactoryFromArray.create(source);
 
         testArgumentValidation(sourceFactory, factor, bufferLength);
 
@@ -30,9 +29,9 @@ public final class ${NAME}IlaFactoryDecimateFuzzer {
             return;
         }
 
-        final ${NAME}IlaFactory decimateFactory = ${NAME}IlaFactoryDecimate.create(sourceFactory, factor, buffer);
+        final FloatIlaFactory decimateFactory = FloatIlaFactoryDecimate.create(sourceFactory, factor, buffer);
 
-        final ${NAME}Ila ila;
+        final FloatIla ila;
 
         try {
             ila = decimateFactory.create();
@@ -52,19 +51,19 @@ public final class ${NAME}IlaFactoryDecimateFuzzer {
 
         final long expectedLength = expectedLength(sourceLength, factor);
 
-        ${NAME}IlaFactoryFuzzerSupport.verifyIla(
+        FloatIlaFactoryFuzzerSupport.verifyIla(
                 ila, expectedLength, input, index -> source[Math.toIntExact(index * factor)], data);
     }
 
-    private static void testArgumentValidation(${NAME}IlaFactory sourceFactory, long factor, int bufferLength)
+    private static void testArgumentValidation(FloatIlaFactory sourceFactory, long factor, int bufferLength)
             throws Exception {
 
-        ${NAME}IlaFactoryFuzzerSupport.expectIllegalArgumentException(
-                () -> ${NAME}IlaFactoryDecimate.create(null, 2, new ${TYPE}[1]), "create() accepted null ilaFactory");
+        FloatIlaFactoryFuzzerSupport.expectIllegalArgumentException(
+                () -> FloatIlaFactoryDecimate.create(null, 2, new float[1]), "create() accepted null ilaFactory");
 
         if (factor < 2) {
-            final ${NAME}IlaFactory invalidFactorIlaFactory =
-                    ${NAME}IlaFactoryDecimate.create(sourceFactory, factor, new ${TYPE}[1]);
+            final FloatIlaFactory invalidFactorIlaFactory =
+                    FloatIlaFactoryDecimate.create(sourceFactory, factor, new float[1]);
 
             try {
                 invalidFactorIlaFactory.create();
@@ -77,7 +76,7 @@ public final class ${NAME}IlaFactoryDecimateFuzzer {
         }
 
         if (bufferLength == 0) {
-            final ${NAME}IlaFactory invalidFactory = ${NAME}IlaFactoryDecimate.create(sourceFactory, 2, new ${TYPE}[0]);
+            final FloatIlaFactory invalidFactory = FloatIlaFactoryDecimate.create(sourceFactory, 2, new float[0]);
 
             try {
                 invalidFactory.create();
@@ -106,3 +105,4 @@ public final class ${NAME}IlaFactoryDecimateFuzzer {
         return 1 + (sourceLength - 1L) / factor;
     }
 }
+// AUTO GENERATED FROM TEMPLATE

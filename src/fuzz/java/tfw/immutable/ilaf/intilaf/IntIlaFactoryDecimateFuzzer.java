@@ -62,10 +62,11 @@ public final class IntIlaFactoryDecimateFuzzer {
                 () -> IntIlaFactoryDecimate.create(null, 2, new int[1]), "create() accepted null ilaFactory");
 
         if (factor < 2) {
-            final IntIlaFactory invalidFactorFactory = IntIlaFactoryDecimate.create(sourceFactory, factor, new int[1]);
+            final IntIlaFactory invalidFactorIlaFactory =
+                    IntIlaFactoryDecimate.create(sourceFactory, factor, new int[1]);
 
             try {
-                invalidFactorFactory.create();
+                invalidFactorIlaFactory.create();
 
                 throw new AssertionError("create() accepted invalid factor" + " [factor=" + factor + "]");
 
@@ -75,10 +76,10 @@ public final class IntIlaFactoryDecimateFuzzer {
         }
 
         if (bufferLength == 0) {
-            final IntIlaFactory invalidBufferFactory = IntIlaFactoryDecimate.create(sourceFactory, 2, new int[0]);
+            final IntIlaFactory invalidFactory = IntIlaFactoryDecimate.create(sourceFactory, 2, new int[0]);
 
             try {
-                invalidBufferFactory.create();
+                invalidFactory.create();
 
                 throw new AssertionError("create() accepted bufferLength=0");
 
