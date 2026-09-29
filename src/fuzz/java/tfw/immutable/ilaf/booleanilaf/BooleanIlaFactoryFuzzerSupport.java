@@ -1,82 +1,76 @@
-package tfw.immutable.ilaf.intilaf;
+package tfw.immutable.ilaf.booleanilaf;
 
 import com.code_intelligence.jazzer.api.FuzzedDataProvider;
-import tfw.immutable.ila.intila.IntIla;
+import tfw.immutable.ila.booleanila.BooleanIla;
 
-final class IntIlaFactoryFuzzerSupport {
+final class BooleanIlaFactoryFuzzerSupport {
 
     static final int MAX_LENGTH = 512;
 
-    private IntIlaFactoryFuzzerSupport() {}
+    private BooleanIlaFactoryFuzzerSupport() {}
 
     static GetInput consumeGetInput(FuzzedDataProvider data) {
         return new GetInput(data.consumeInt(0, MAX_LENGTH), data.consumeInt(), data.consumeLong(), data.consumeInt());
     }
 
-    static int[] createInitializedArray(int length, FuzzedDataProvider data) {
+    static boolean[] createInitializedArray(int length, FuzzedDataProvider data) {
 
-        final int[] array = new int[length];
+        final boolean[] array = new boolean[length];
         initialize(array, data);
         return array;
     }
 
-    static int[] createInitializedArray(int length) {
-        final int[] array = new int[length];
+    static boolean[] createInitializedArray(int length) {
+        final boolean[] array = new boolean[length];
         initialize(array);
         return array;
     }
 
-    static void initialize(int[] array, FuzzedDataProvider data) {
+    static void initialize(boolean[] array, FuzzedDataProvider data) {
 
         for (int i = 0; i < array.length; i++) {
             array[i] = initializeValue(i, data);
         }
     }
 
-    static void initialize(int[] array) {
+    static void initialize(boolean[] array) {
         for (int i = 0; i < array.length; i++) {
-            array[i] = i * 0x9e3779b9 ^ 0x12345678;
+            array[i] = (i & 1) != 0;
         }
     }
 
-    private static int initializeValue(int index, FuzzedDataProvider data) {
+    private static boolean initializeValue(int index, FuzzedDataProvider data) {
 
         switch (index & 7) {
             case 0:
-                return Integer.MIN_VALUE;
+                return false;
             case 1:
-                return Integer.MAX_VALUE;
-            case 2:
-                return 0;
-            case 3:
-                return -1;
-            case 4:
-                return 1;
+                return true;
             default:
-                return data.consumeInt();
+                return data.consumeBoolean();
         }
     }
 
     static void verifyIla(
-            IntIla ila, long expectedLen, GetInput input, ExpectedValue expectedVal, FuzzedDataProvider data)
+            BooleanIla ila, long expectedLen, GetInput input, ExpectedValue expectedVal, FuzzedDataProvider data)
             throws Exception {
         if (ila.length() != expectedLen) {
             throw new AssertionError("Incorrect length: expected=" + expectedLen + ", actual=" + ila.length());
         }
 
         if (expectedLen > 0) {
-            final int[] destination = new int[1];
+            final boolean[] destination = new boolean[1];
 
             ila.get(destination, 0, 0, 1);
 
             assertEquals(expectedVal.apply(0), destination[0], 0);
         }
 
-        final int[] destination = new int[input.destinationLength];
+        final boolean[] destination = new boolean[input.destinationLength];
 
         initialize(destination, data);
 
-        final int[] before = destination.clone();
+        final boolean[] before = destination.clone();
 
         final boolean valid = isValidGet(expectedLen, input.destinationLength, input.offset, input.start, input.length);
 
@@ -121,7 +115,7 @@ final class IntIlaFactoryFuzzerSupport {
         }
 
         try {
-            ila.get(new int[1], 0, 0, 0);
+            ila.get(new boolean[1], 0, 0, 0);
 
             throw new AssertionError("get() accepted after close()");
 
@@ -160,7 +154,7 @@ final class IntIlaFactoryFuzzerSupport {
     }
 
     private static void verifyGet(
-            int[] destination, int[] before, int offset, long start, int length, ExpectedValue expectedValue) {
+            boolean[] destination, boolean[] before, int offset, long start, int length, ExpectedValue expectedValue) {
 
         if (length == 0) {
             assertUnchanged(before, destination);
@@ -180,7 +174,7 @@ final class IntIlaFactoryFuzzerSupport {
         }
     }
 
-    static void assertUnchanged(int[] before, int[] actual) {
+    static void assertUnchanged(boolean[] before, boolean[] actual) {
 
         if (before.length != actual.length) {
             throw new AssertionError("Array lengths differ: " + before.length + " != " + actual.length);
@@ -191,7 +185,7 @@ final class IntIlaFactoryFuzzerSupport {
         }
     }
 
-    static void assertEquals(int expected, int actual, int index) {
+    static void assertEquals(boolean expected, boolean actual, int index) {
         if (expected != actual) {
             throw new AssertionError(
                     "Incorrect value at index " + index + ": expected=" + expected + ", actual=" + actual);
@@ -199,7 +193,7 @@ final class IntIlaFactoryFuzzerSupport {
     }
 
     interface ExpectedValue {
-        int apply(int index);
+        boolean apply(int index);
     }
 
     interface ThrowingRunnable {

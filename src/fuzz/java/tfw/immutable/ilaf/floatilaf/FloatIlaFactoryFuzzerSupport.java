@@ -1,82 +1,111 @@
-package tfw.immutable.ilaf.intilaf;
+package tfw.immutable.ilaf.floatilaf;
 
 import com.code_intelligence.jazzer.api.FuzzedDataProvider;
-import tfw.immutable.ila.intila.IntIla;
+import tfw.immutable.ila.floatila.FloatIla;
 
-final class IntIlaFactoryFuzzerSupport {
+final class FloatIlaFactoryFuzzerSupport {
 
     static final int MAX_LENGTH = 512;
 
-    private IntIlaFactoryFuzzerSupport() {}
+    private FloatIlaFactoryFuzzerSupport() {}
 
     static GetInput consumeGetInput(FuzzedDataProvider data) {
         return new GetInput(data.consumeInt(0, MAX_LENGTH), data.consumeInt(), data.consumeLong(), data.consumeInt());
     }
 
-    static int[] createInitializedArray(int length, FuzzedDataProvider data) {
+    static float[] createInitializedArray(int length, FuzzedDataProvider data) {
 
-        final int[] array = new int[length];
+        final float[] array = new float[length];
         initialize(array, data);
         return array;
     }
 
-    static int[] createInitializedArray(int length) {
-        final int[] array = new int[length];
+    static float[] createInitializedArray(int length) {
+        final float[] array = new float[length];
         initialize(array);
         return array;
     }
 
-    static void initialize(int[] array, FuzzedDataProvider data) {
+    static void initialize(float[] array, FuzzedDataProvider data) {
 
         for (int i = 0; i < array.length; i++) {
             array[i] = initializeValue(i, data);
         }
     }
 
-    static void initialize(int[] array) {
+    static void initialize(float[] array) {
         for (int i = 0; i < array.length; i++) {
-            array[i] = i * 0x9e3779b9 ^ 0x12345678;
+            switch (i & 7) {
+                case 0:
+                    array[i] = 0.0f;
+                    break;
+                case 1:
+                    array[i] = -0.0f;
+                    break;
+                case 2:
+                    array[i] = Float.NaN;
+                    break;
+                case 3:
+                    array[i] = Float.POSITIVE_INFINITY;
+                    break;
+                case 4:
+                    array[i] = Float.NEGATIVE_INFINITY;
+                    break;
+                case 5:
+                    array[i] = Float.MIN_VALUE;
+                    break;
+                case 6:
+                    array[i] = Float.MAX_VALUE;
+                    break;
+                default:
+                    array[i] = i * 1.2345678f;
+                    break;
+            }
         }
     }
 
-    private static int initializeValue(int index, FuzzedDataProvider data) {
+    private static float initializeValue(int index, FuzzedDataProvider data) {
 
         switch (index & 7) {
             case 0:
-                return Integer.MIN_VALUE;
+                return 0.0f;
             case 1:
-                return Integer.MAX_VALUE;
+                return -0.0f;
             case 2:
-                return 0;
+                return Float.NaN;
             case 3:
-                return -1;
+                return Float.POSITIVE_INFINITY;
             case 4:
-                return 1;
+                return Float.NEGATIVE_INFINITY;
+            case 5:
+                return Float.MIN_VALUE;
+            case 6:
+                return Float.MAX_VALUE;
             default:
-                return data.consumeInt();
+                return data.consumeFloat();
         }
     }
 
     static void verifyIla(
-            IntIla ila, long expectedLen, GetInput input, ExpectedValue expectedVal, FuzzedDataProvider data)
+            FloatIla ila, long expectedLen, GetInput input, ExpectedValue expectedVal, FuzzedDataProvider data)
             throws Exception {
         if (ila.length() != expectedLen) {
             throw new AssertionError("Incorrect length: expected=" + expectedLen + ", actual=" + ila.length());
         }
 
         if (expectedLen > 0) {
-            final int[] destination = new int[1];
+            final float[] destination = new float[1];
 
             ila.get(destination, 0, 0, 1);
 
             assertEquals(expectedVal.apply(0), destination[0], 0);
         }
 
-        final int[] destination = new int[input.destinationLength];
+        final float[] destination = new float[input.destinationLength];
 
         initialize(destination, data);
 
-        final int[] before = destination.clone();
+        final float[] before = destination.clone();
 
         final boolean valid = isValidGet(expectedLen, input.destinationLength, input.offset, input.start, input.length);
 
@@ -121,7 +150,7 @@ final class IntIlaFactoryFuzzerSupport {
         }
 
         try {
-            ila.get(new int[1], 0, 0, 0);
+            ila.get(new float[1], 0, 0, 0);
 
             throw new AssertionError("get() accepted after close()");
 
@@ -160,7 +189,7 @@ final class IntIlaFactoryFuzzerSupport {
     }
 
     private static void verifyGet(
-            int[] destination, int[] before, int offset, long start, int length, ExpectedValue expectedValue) {
+            float[] destination, float[] before, int offset, long start, int length, ExpectedValue expectedValue) {
 
         if (length == 0) {
             assertUnchanged(before, destination);
@@ -180,7 +209,7 @@ final class IntIlaFactoryFuzzerSupport {
         }
     }
 
-    static void assertUnchanged(int[] before, int[] actual) {
+    static void assertUnchanged(float[] before, float[] actual) {
 
         if (before.length != actual.length) {
             throw new AssertionError("Array lengths differ: " + before.length + " != " + actual.length);
@@ -191,15 +220,21 @@ final class IntIlaFactoryFuzzerSupport {
         }
     }
 
-    static void assertEquals(int expected, int actual, int index) {
-        if (expected != actual) {
-            throw new AssertionError(
-                    "Incorrect value at index " + index + ": expected=" + expected + ", actual=" + actual);
+    static void assertEquals(float expected, float actual, int index) {
+        int expectedBits = Float.floatToRawIntBits(expected);
+        int actualBits = Float.floatToRawIntBits(actual);
+        if (expectedBits != actualBits) {
+            throw new AssertionError("Incorrect value at index "
+                    + index
+                    + ": expectedBits="
+                    + Integer.toHexString(expectedBits)
+                    + ", actualBits="
+                    + Integer.toHexString(actualBits));
         }
     }
 
     interface ExpectedValue {
-        int apply(int index);
+        float apply(int index);
     }
 
     interface ThrowingRunnable {

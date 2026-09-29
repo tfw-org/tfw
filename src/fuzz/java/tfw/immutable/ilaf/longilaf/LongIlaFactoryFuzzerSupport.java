@@ -1,82 +1,82 @@
-package tfw.immutable.ilaf.intilaf;
+package tfw.immutable.ilaf.longilaf;
 
 import com.code_intelligence.jazzer.api.FuzzedDataProvider;
-import tfw.immutable.ila.intila.IntIla;
+import tfw.immutable.ila.longila.LongIla;
 
-final class IntIlaFactoryFuzzerSupport {
+final class LongIlaFactoryFuzzerSupport {
 
     static final int MAX_LENGTH = 512;
 
-    private IntIlaFactoryFuzzerSupport() {}
+    private LongIlaFactoryFuzzerSupport() {}
 
     static GetInput consumeGetInput(FuzzedDataProvider data) {
         return new GetInput(data.consumeInt(0, MAX_LENGTH), data.consumeInt(), data.consumeLong(), data.consumeInt());
     }
 
-    static int[] createInitializedArray(int length, FuzzedDataProvider data) {
+    static long[] createInitializedArray(int length, FuzzedDataProvider data) {
 
-        final int[] array = new int[length];
+        final long[] array = new long[length];
         initialize(array, data);
         return array;
     }
 
-    static int[] createInitializedArray(int length) {
-        final int[] array = new int[length];
+    static long[] createInitializedArray(int length) {
+        final long[] array = new long[length];
         initialize(array);
         return array;
     }
 
-    static void initialize(int[] array, FuzzedDataProvider data) {
+    static void initialize(long[] array, FuzzedDataProvider data) {
 
         for (int i = 0; i < array.length; i++) {
             array[i] = initializeValue(i, data);
         }
     }
 
-    static void initialize(int[] array) {
+    static void initialize(long[] array) {
         for (int i = 0; i < array.length; i++) {
-            array[i] = i * 0x9e3779b9 ^ 0x12345678;
+            array[i] = 0x123456789ABCDEFL ^ ((long) i * 0x100000001L);
         }
     }
 
-    private static int initializeValue(int index, FuzzedDataProvider data) {
+    private static long initializeValue(int index, FuzzedDataProvider data) {
 
         switch (index & 7) {
             case 0:
-                return Integer.MIN_VALUE;
+                return Long.MIN_VALUE;
             case 1:
-                return Integer.MAX_VALUE;
+                return Long.MAX_VALUE;
             case 2:
-                return 0;
+                return 0L;
             case 3:
-                return -1;
+                return -1L;
             case 4:
-                return 1;
+                return 1L;
             default:
-                return data.consumeInt();
+                return data.consumeLong();
         }
     }
 
     static void verifyIla(
-            IntIla ila, long expectedLen, GetInput input, ExpectedValue expectedVal, FuzzedDataProvider data)
+            LongIla ila, long expectedLen, GetInput input, ExpectedValue expectedVal, FuzzedDataProvider data)
             throws Exception {
         if (ila.length() != expectedLen) {
             throw new AssertionError("Incorrect length: expected=" + expectedLen + ", actual=" + ila.length());
         }
 
         if (expectedLen > 0) {
-            final int[] destination = new int[1];
+            final long[] destination = new long[1];
 
             ila.get(destination, 0, 0, 1);
 
             assertEquals(expectedVal.apply(0), destination[0], 0);
         }
 
-        final int[] destination = new int[input.destinationLength];
+        final long[] destination = new long[input.destinationLength];
 
         initialize(destination, data);
 
-        final int[] before = destination.clone();
+        final long[] before = destination.clone();
 
         final boolean valid = isValidGet(expectedLen, input.destinationLength, input.offset, input.start, input.length);
 
@@ -121,7 +121,7 @@ final class IntIlaFactoryFuzzerSupport {
         }
 
         try {
-            ila.get(new int[1], 0, 0, 0);
+            ila.get(new long[1], 0, 0, 0);
 
             throw new AssertionError("get() accepted after close()");
 
@@ -160,7 +160,7 @@ final class IntIlaFactoryFuzzerSupport {
     }
 
     private static void verifyGet(
-            int[] destination, int[] before, int offset, long start, int length, ExpectedValue expectedValue) {
+            long[] destination, long[] before, int offset, long start, int length, ExpectedValue expectedValue) {
 
         if (length == 0) {
             assertUnchanged(before, destination);
@@ -180,7 +180,7 @@ final class IntIlaFactoryFuzzerSupport {
         }
     }
 
-    static void assertUnchanged(int[] before, int[] actual) {
+    static void assertUnchanged(long[] before, long[] actual) {
 
         if (before.length != actual.length) {
             throw new AssertionError("Array lengths differ: " + before.length + " != " + actual.length);
@@ -191,7 +191,7 @@ final class IntIlaFactoryFuzzerSupport {
         }
     }
 
-    static void assertEquals(int expected, int actual, int index) {
+    static void assertEquals(long expected, long actual, int index) {
         if (expected != actual) {
             throw new AssertionError(
                     "Incorrect value at index " + index + ": expected=" + expected + ", actual=" + actual);
@@ -199,7 +199,7 @@ final class IntIlaFactoryFuzzerSupport {
     }
 
     interface ExpectedValue {
-        int apply(int index);
+        long apply(int index);
     }
 
     interface ThrowingRunnable {

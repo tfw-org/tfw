@@ -44,7 +44,10 @@ public final class TemplateGenerator {
 
     private enum FuzzProperty {
         INITIALIZE,
-        ASSERT_ELEMENT_EQUALS
+        SUPPORT_INITIALIZE,
+        RANDOM_INITIALIZE,
+        ASSERT_ELEMENT_EQUALS,
+        ASSERT_VALUE_EQUALS
     }
 
     private static final class TypeDefinition {
@@ -288,9 +291,21 @@ public final class TemplateGenerator {
                 types,
                 "boolean",
                 "for (int i = 0; i < array.length; i++) {\n" + "    array[i] = (i & 1) != 0;\n" + "}",
+                "switch (index & 7) {\n"
+                        + "    case 0:\n"
+                        + "        return false;\n"
+                        + "    case 1:\n"
+                        + "        return true;\n"
+                        + "    default:\n"
+                        + "        return data.consumeBoolean();\n"
+                        + "}",
                 "if (expected[expectedIndex] != actual[actualIndex]) {\n"
                         + "    throw new AssertionError(\n"
                         + "            \"expected=\" + expected[expectedIndex] + \", actual=\" + actual[actualIndex]);\n"
+                        + "}",
+                "if (expected != actual) {\n"
+                        + "    throw new AssertionError(\n"
+                        + "            \"Incorrect value at index \" + index + \": expected=\" + expected + \", actual=\" + actual);\n"
                         + "}",
                 false);
 
@@ -298,9 +313,27 @@ public final class TemplateGenerator {
                 types,
                 "byte",
                 "for (int i = 0; i < array.length; i++) {\n" + "    array[i] = (byte) (i * 37 + 11);\n" + "}",
+                "switch (index & 7) {\n"
+                        + "    case 0:\n"
+                        + "        return Byte.MIN_VALUE;\n"
+                        + "    case 1:\n"
+                        + "        return Byte.MAX_VALUE;\n"
+                        + "    case 2:\n"
+                        + "        return 0;\n"
+                        + "    case 3:\n"
+                        + "        return -1;\n"
+                        + "    case 4:\n"
+                        + "        return 1;\n"
+                        + "    default:\n"
+                        + "        return (byte) data.consumeInt();\n"
+                        + "}",
                 "if (expected[expectedIndex] != actual[actualIndex]) {\n"
                         + "    throw new AssertionError(\n"
                         + "            \"expected=\" + expected[expectedIndex] + \", actual=\" + actual[actualIndex]);\n"
+                        + "}",
+                "if (expected != actual) {\n"
+                        + "    throw new AssertionError(\n"
+                        + "            \"Incorrect value at index \" + index + \": expected=\" + expected + \", actual=\" + actual);\n"
                         + "}",
                 true);
 
@@ -323,9 +356,27 @@ public final class TemplateGenerator {
                         + "            break;\n"
                         + "    }\n"
                         + "}",
+                "switch (index & 7) {\n"
+                        + "    case 0:\n"
+                        + "        return '\\0';\n"
+                        + "    case 1:\n"
+                        + "        return '\\uffff';\n"
+                        + "    case 2:\n"
+                        + "        return 0;\n"
+                        + "    case 3:\n"
+                        + "        return 1;\n"
+                        + "    case 4:\n"
+                        + "        return Character.MAX_VALUE;\n"
+                        + "    default:\n"
+                        + "        return (char) data.consumeInt();\n"
+                        + "}",
                 "if (expected[expectedIndex] != actual[actualIndex]) {\n"
                         + "    throw new AssertionError(\n"
                         + "            \"expected=\" + (int) expected[expectedIndex] + \", actual=\" + (int) actual[actualIndex]);\n"
+                        + "}",
+                "if (expected != actual) {\n"
+                        + "    throw new AssertionError(\n"
+                        + "            \"Incorrect value at index \" + index + \": expected=\" + (int) expected + \", actual=\" + (int) actual);\n"
                         + "}",
                 true);
 
@@ -360,12 +411,40 @@ public final class TemplateGenerator {
                         + "            break;\n"
                         + "    }\n"
                         + "}",
+                "switch (index & 7) {\n"
+                        + "    case 0:\n"
+                        + "        return 0.0;\n"
+                        + "    case 1:\n"
+                        + "        return -0.0;\n"
+                        + "    case 2:\n"
+                        + "        return Double.NaN;\n"
+                        + "    case 3:\n"
+                        + "        return Double.POSITIVE_INFINITY;\n"
+                        + "    case 4:\n"
+                        + "        return Double.NEGATIVE_INFINITY;\n"
+                        + "    case 5:\n"
+                        + "        return Double.MIN_VALUE;\n"
+                        + "    case 6:\n"
+                        + "        return Double.MAX_VALUE;\n"
+                        + "    default:\n"
+                        + "        return data.consumeDouble();\n"
+                        + "}",
                 "long expectedBits = Double.doubleToRawLongBits(expected[expectedIndex]);\n"
                         + "long actualBits = Double.doubleToRawLongBits(actual[actualIndex]);\n"
                         + "if (expectedBits != actualBits) {\n"
                         + "    throw new AssertionError(\"expectedBits=\"\n"
                         + "            + Long.toHexString(expectedBits)\n"
                         + "            + \", actualBits=\" + Long.toHexString(actualBits));\n"
+                        + "}",
+                "long expectedBits = Double.doubleToRawLongBits(expected);\n"
+                        + "long actualBits = Double.doubleToRawLongBits(actual);\n"
+                        + "if (expectedBits != actualBits) {\n"
+                        + "    throw new AssertionError(\"Incorrect value at index \"\n"
+                        + "            + index\n"
+                        + "            + \": expectedBits=\"\n"
+                        + "            + Long.toHexString(expectedBits)\n"
+                        + "            + \", actualBits=\"\n"
+                        + "            + Long.toHexString(actualBits));\n"
                         + "}",
                 false);
 
@@ -400,6 +479,24 @@ public final class TemplateGenerator {
                         + "            break;\n"
                         + "    }\n"
                         + "}",
+                "switch (index & 7) {\n"
+                        + "    case 0:\n"
+                        + "        return 0.0f;\n"
+                        + "    case 1:\n"
+                        + "        return -0.0f;\n"
+                        + "    case 2:\n"
+                        + "        return Float.NaN;\n"
+                        + "    case 3:\n"
+                        + "        return Float.POSITIVE_INFINITY;\n"
+                        + "    case 4:\n"
+                        + "        return Float.NEGATIVE_INFINITY;\n"
+                        + "    case 5:\n"
+                        + "        return Float.MIN_VALUE;\n"
+                        + "    case 6:\n"
+                        + "        return Float.MAX_VALUE;\n"
+                        + "    default:\n"
+                        + "        return data.consumeFloat();\n"
+                        + "}",
                 "int expectedBits = Float.floatToRawIntBits(expected[expectedIndex]);\n"
                         + "int actualBits = Float.floatToRawIntBits(actual[actualIndex]);\n"
                         + "if (expectedBits != actualBits) {\n"
@@ -407,15 +504,43 @@ public final class TemplateGenerator {
                         + "            + Integer.toHexString(expectedBits)\n"
                         + "            + \", actualBits=\" + Integer.toHexString(actualBits));\n"
                         + "}",
+                "int expectedBits = Float.floatToRawIntBits(expected);\n"
+                        + "int actualBits = Float.floatToRawIntBits(actual);\n"
+                        + "if (expectedBits != actualBits) {\n"
+                        + "    throw new AssertionError(\"Incorrect value at index \"\n"
+                        + "            + index\n"
+                        + "            + \": expectedBits=\"\n"
+                        + "            + Integer.toHexString(expectedBits)\n"
+                        + "            + \", actualBits=\"\n"
+                        + "            + Integer.toHexString(actualBits));\n"
+                        + "}",
                 true);
 
         addFuzzType(
                 types,
                 "int",
                 "for (int i = 0; i < array.length; i++) {\n" + "    array[i] = i * 0x9e3779b9 ^ 0x12345678;\n" + "}",
+                "switch (index & 7) {\n"
+                        + "    case 0:\n"
+                        + "        return Integer.MIN_VALUE;\n"
+                        + "    case 1:\n"
+                        + "        return Integer.MAX_VALUE;\n"
+                        + "    case 2:\n"
+                        + "        return 0;\n"
+                        + "    case 3:\n"
+                        + "        return -1;\n"
+                        + "    case 4:\n"
+                        + "        return 1;\n"
+                        + "    default:\n"
+                        + "        return data.consumeInt();\n"
+                        + "}",
                 "if (expected[expectedIndex] != actual[actualIndex]) {\n"
                         + "    throw new AssertionError(\n"
                         + "            \"expected=\" + expected[expectedIndex] + \", actual=\" + actual[actualIndex]);\n"
+                        + "}",
+                "if (expected != actual) {\n"
+                        + "    throw new AssertionError(\n"
+                        + "            \"Incorrect value at index \" + index + \": expected=\" + expected + \", actual=\" + actual);\n"
                         + "}",
                 true);
 
@@ -425,9 +550,27 @@ public final class TemplateGenerator {
                 "for (int i = 0; i < array.length; i++) {\n"
                         + "    array[i] = 0x123456789ABCDEFL ^ ((long) i * 0x100000001L);\n"
                         + "}",
+                "switch (index & 7) {\n"
+                        + "    case 0:\n"
+                        + "        return Long.MIN_VALUE;\n"
+                        + "    case 1:\n"
+                        + "        return Long.MAX_VALUE;\n"
+                        + "    case 2:\n"
+                        + "        return 0L;\n"
+                        + "    case 3:\n"
+                        + "        return -1L;\n"
+                        + "    case 4:\n"
+                        + "        return 1L;\n"
+                        + "    default:\n"
+                        + "        return data.consumeLong();\n"
+                        + "}",
                 "if (expected[expectedIndex] != actual[actualIndex]) {\n"
                         + "    throw new AssertionError(\n"
                         + "            \"expected=\" + expected[expectedIndex] + \", actual=\" + actual[actualIndex]);\n"
+                        + "}",
+                "if (expected != actual) {\n"
+                        + "    throw new AssertionError(\n"
+                        + "            \"Incorrect value at index \" + index + \": expected=\" + expected + \", actual=\" + actual);\n"
                         + "}",
                 true);
 
@@ -450,10 +593,28 @@ public final class TemplateGenerator {
                         + "            break;\n"
                         + "    }\n"
                         + "}",
+                "switch (index & 7) {\n"
+                        + "    case 0:\n"
+                        + "        return null;\n"
+                        + "    case 1:\n"
+                        + "        return \"tfw-\" + data.consumeInt();\n"
+                        + "    case 2:\n"
+                        + "        return Integer.valueOf(data.consumeInt());\n"
+                        + "    case 3:\n"
+                        + "        return Long.valueOf(data.consumeLong());\n"
+                        + "    case 4:\n"
+                        + "        return Boolean.valueOf(data.consumeBoolean());\n"
+                        + "    default:\n"
+                        + "        return \"tfw-\" + index;\n"
+                        + "}",
                 "Object expectedValue = expected[expectedIndex];\n"
                         + "Object actualValue = actual[actualIndex];\n"
                         + "if (expectedValue == null ? actualValue != null : !expectedValue.equals(actualValue)) {\n"
                         + "    throw new AssertionError(\"expected=\" + expectedValue + \", actual=\" + actualValue);\n"
+                        + "}",
+                "if (expected == null ? actual != null : !expected.equals(actual)) {\n"
+                        + "    throw new AssertionError(\n"
+                        + "            \"Incorrect value at index \" + index + \": expected=\" + expected + \", actual=\" + actual);\n"
                         + "}",
                 false);
 
@@ -461,9 +622,27 @@ public final class TemplateGenerator {
                 types,
                 "short",
                 "for (int i = 0; i < array.length; i++) {\n" + "    array[i] = (short) (i * 7919 + 12345);\n" + "}",
+                "switch (index & 7) {\n"
+                        + "    case 0:\n"
+                        + "        return Short.MIN_VALUE;\n"
+                        + "    case 1:\n"
+                        + "        return Short.MAX_VALUE;\n"
+                        + "    case 2:\n"
+                        + "        return 0;\n"
+                        + "    case 3:\n"
+                        + "        return -1;\n"
+                        + "    case 4:\n"
+                        + "        return 1;\n"
+                        + "    default:\n"
+                        + "        return (short) data.consumeInt();\n"
+                        + "}",
                 "if (expected[expectedIndex] != actual[actualIndex]) {\n"
                         + "    throw new AssertionError(\n"
                         + "            \"expected=\" + expected[expectedIndex] + \", actual=\" + actual[actualIndex]);\n"
+                        + "}",
+                "if (expected != actual) {\n"
+                        + "    throw new AssertionError(\n"
+                        + "            \"Incorrect value at index \" + index + \": expected=\" + expected + \", actual=\" + actual);\n"
                         + "}",
                 true);
     }
@@ -472,7 +651,9 @@ public final class TemplateGenerator {
             final Map<String, TypeDefinition> types,
             final String lowercase,
             final String initialize,
+            final String randomInitialize,
             final String assertElementEquals,
+            final String assertValueEquals,
             final boolean singleLineAssertElementEquals) {
 
         final String key = lowercase + "ilaf";
@@ -482,18 +663,32 @@ public final class TemplateGenerator {
             throw new IllegalArgumentException("Unknown fuzz type: " + key);
         }
 
-        types.put(key, withFuzz(base, initialize, assertElementEquals, singleLineAssertElementEquals));
+        types.put(
+                key,
+                withFuzz(
+                        base,
+                        initialize,
+                        randomInitialize,
+                        assertElementEquals,
+                        assertValueEquals,
+                        singleLineAssertElementEquals));
     }
 
     private static TypeDefinition withFuzz(
             final TypeDefinition base,
             final String initialize,
+            final String randomInitialize,
             final String assertElementEquals,
+            final String assertValueEquals,
             final boolean singleLineAssertElementEquals) {
+
         final TypeDefinition result = new TypeDefinition(base);
 
         result.fuzz(FuzzProperty.INITIALIZE, initialize);
+        result.fuzz(FuzzProperty.SUPPORT_INITIALIZE, initialize);
+        result.fuzz(FuzzProperty.RANDOM_INITIALIZE, randomInitialize);
         result.fuzz(FuzzProperty.ASSERT_ELEMENT_EQUALS, assertElementEquals);
+        result.fuzz(FuzzProperty.ASSERT_VALUE_EQUALS, assertValueEquals);
         result.fuzzSingleLineAssertElementEquals = singleLineAssertElementEquals;
 
         return result;
@@ -620,7 +815,10 @@ public final class TemplateGenerator {
 
     private static void addFuzzModel(final Map<String, Object> model, final TypeDefinition type) {
         model.put("FUZZ_INITIALIZE", indent(type.fuzz(FuzzProperty.INITIALIZE), 20));
+        model.put("FUZZ_SUPPORT_INITIALIZE", indent(type.fuzz(FuzzProperty.SUPPORT_INITIALIZE), 8));
+        model.put("FUZZ_RANDOM_INITIALIZE", indent(type.fuzz(FuzzProperty.RANDOM_INITIALIZE), 8));
         model.put("FUZZ_ASSERT_ELEMENT_EQUALS", indent(type.fuzz(FuzzProperty.ASSERT_ELEMENT_EQUALS), 20));
+        model.put("FUZZ_ASSERT_VALUE_EQUALS", indent(type.fuzz(FuzzProperty.ASSERT_VALUE_EQUALS), 8));
         model.put("FUZZ_SINGLE_LINE_ASSERT_ELEMENT_EQUALS", type.fuzzSingleLineAssertElementEquals);
     }
 
