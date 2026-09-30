@@ -14,20 +14,29 @@ public final class IntIlaFactoryBoundFuzzer {
 
         final int[] source = IntIlaFactoryFuzzerSupport.createInitializedArray(length, data);
 
-        final IntIlaFactory sourceFactory = IntIlaFactoryFromArray.create(source);
+        final IntIlaFactory sourceIlaFactory = IntIlaFactoryFromArray.create(source);
 
-        testArgumentValidation(sourceFactory);
+        testArgumentValidation(sourceIlaFactory);
 
-        final int minimum = data.consumeInt();
-        final int maximum = data.consumeInt();
+        final int minimum = consumeBound(data);
+        final int maximum = consumeBound(data);
 
-        final int actualMinimum = Math.min(minimum, maximum);
-        final int actualMaximum = Math.max(minimum, maximum);
+        final int actualMinimum;
+        final int actualMaximum;
 
-        final IntIlaFactory boundedFactory = IntIlaFactoryBound.create(sourceFactory, actualMinimum, actualMaximum);
+        if (minimum <= maximum) {
+            actualMinimum = minimum;
+            actualMaximum = maximum;
+        } else {
+            actualMinimum = maximum;
+            actualMaximum = minimum;
+        }
+
+        final IntIlaFactory boundedIlaFactory =
+                IntIlaFactoryBound.create(sourceIlaFactory, actualMinimum, actualMaximum);
 
         IntIlaFactoryFuzzerSupport.verifyIla(
-                boundedFactory.create(),
+                boundedIlaFactory.create(),
                 length,
                 input,
                 index -> bound(source[index], actualMinimum, actualMaximum),
@@ -37,9 +46,11 @@ public final class IntIlaFactoryBoundFuzzer {
     private static void testArgumentValidation(IntIlaFactory sourceFactory) throws Exception {
 
         IntIlaFactoryFuzzerSupport.expectIllegalArgumentException(
-                () -> IntIlaFactoryBound.create(null, 0, 1), "create() accepted null ilaFactory");
+                () -> IntIlaFactoryBound.create(null, minimumValue(), maximumValue()),
+                "create() accepted null ilaFactory");
 
-        final IntIlaFactory invalidBoundsFactory = IntIlaFactoryBound.create(sourceFactory, 1, 0);
+        final IntIlaFactory invalidBoundsFactory =
+                IntIlaFactoryBound.create(sourceFactory, maximumValue(), minimumValue());
 
         try {
             invalidBoundsFactory.create();
@@ -49,6 +60,21 @@ public final class IntIlaFactoryBoundFuzzer {
         } catch (IllegalArgumentException expected) {
             // Correct.
         }
+    }
+
+    private static int consumeBound(FuzzedDataProvider data) {
+
+        return data.consumeInt();
+    }
+
+    private static int minimumValue() {
+
+        return Integer.MIN_VALUE;
+    }
+
+    private static int maximumValue() {
+
+        return Integer.MAX_VALUE;
     }
 
     private static int bound(int value, int minimum, int maximum) {
