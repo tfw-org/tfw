@@ -1,4 +1,4 @@
-// intilaf
+// byteilaf,charilaf,doubleilaf,floatilaf,intilaf,longilaf,shortilaf
 package ${PACKAGE};
 
 import com.code_intelligence.jazzer.api.FuzzedDataProvider;
@@ -26,7 +26,7 @@ public final class ${NAME}IlaFactoryAddFuzzer {
         final ${NAME}IlaFactory addFactory = ${NAME}IlaFactoryAdd.create(leftFactory, rightFactory, 1);
 
         ${NAME}IlaFactoryFuzzerSupport.verifyIla(
-                addFactory.create(), length, input, index -> left[index] + right[index], data);
+                addFactory.create(), length, input, index -> expectedValue(left[index], right[index]), data);
     }
 
     private static void testArgumentValidation(${NAME}IlaFactory leftFactory, ${NAME}IlaFactory rightFactory, int length)
@@ -54,10 +54,10 @@ public final class ${NAME}IlaFactoryAddFuzzer {
         final ${NAME}IlaFactory differentLengthFactory =
                 ${NAME}IlaFactoryFromArray.create(${NAME}IlaFactoryFuzzerSupport.createInitializedArray(differentLength));
 
-        final ${NAME}IlaFactory invalidLengthFactory = ${NAME}IlaFactoryAdd.create(leftFactory, differentLengthFactory, 1);
+        final ${NAME}IlaFactory invalidLenFactory = ${NAME}IlaFactoryAdd.create(leftFactory, differentLengthFactory, 1);
 
         try {
-            invalidLengthFactory.create();
+            invalidLenFactory.create();
 
             throw new AssertionError("create() accepted factories with different lengths"
                     + " [leftLength="
@@ -69,5 +69,18 @@ public final class ${NAME}IlaFactoryAddFuzzer {
         } catch (IllegalArgumentException expected) {
             // Correct.
         }
+    }
+
+    private static ${TYPE} expectedValue(${TYPE} left, ${TYPE} right) {
+
+        <#if TYPE == "byte">
+        return (byte) (left + right);
+        <#elseif TYPE == "char">
+        return (char) (left + right);
+        <#elseif TYPE == "short">
+        return (short) (left + right);
+        <#else>
+        return left + right;
+        </#if>
     }
 }

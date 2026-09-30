@@ -25,7 +25,7 @@ public final class IntIlaFactoryAddFuzzer {
         final IntIlaFactory addFactory = IntIlaFactoryAdd.create(leftFactory, rightFactory, 1);
 
         IntIlaFactoryFuzzerSupport.verifyIla(
-                addFactory.create(), length, input, index -> left[index] + right[index], data);
+                addFactory.create(), length, input, index -> expectedValue(left[index], right[index]), data);
     }
 
     private static void testArgumentValidation(IntIlaFactory leftFactory, IntIlaFactory rightFactory, int length)
@@ -53,10 +53,10 @@ public final class IntIlaFactoryAddFuzzer {
         final IntIlaFactory differentLengthFactory =
                 IntIlaFactoryFromArray.create(IntIlaFactoryFuzzerSupport.createInitializedArray(differentLength));
 
-        final IntIlaFactory invalidLengthFactory = IntIlaFactoryAdd.create(leftFactory, differentLengthFactory, 1);
+        final IntIlaFactory invalidLenFactory = IntIlaFactoryAdd.create(leftFactory, differentLengthFactory, 1);
 
         try {
-            invalidLengthFactory.create();
+            invalidLenFactory.create();
 
             throw new AssertionError("create() accepted factories with different lengths"
                     + " [leftLength="
@@ -68,6 +68,11 @@ public final class IntIlaFactoryAddFuzzer {
         } catch (IllegalArgumentException expected) {
             // Correct.
         }
+    }
+
+    private static int expectedValue(int left, int right) {
+
+        return left + right;
     }
 }
 // AUTO GENERATED FROM TEMPLATE
