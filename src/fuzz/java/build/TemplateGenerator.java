@@ -43,11 +43,11 @@ public final class TemplateGenerator {
     }
 
     private enum FuzzProperty {
-        CREATE_EXPRESSION,
-        LENGTH_EXPRESSION,
-        GET_EXPRESSION,
         INITIALIZE,
-        ASSERT_ELEMENT_EQUALS
+        SUPPORT_INITIALIZE,
+        RANDOM_INITIALIZE,
+        ASSERT_ELEMENT_EQUALS,
+        ASSERT_VALUE_EQUALS
     }
 
     private static final class TypeDefinition {
@@ -290,35 +290,56 @@ public final class TemplateGenerator {
         addFuzzType(
                 types,
                 "boolean",
-                "array -> BooleanIlaFactoryFromArray.create(array).create()",
-                "BooleanIla::length",
-                "BooleanIla::get",
                 "for (int i = 0; i < array.length; i++) {\n" + "    array[i] = (i & 1) != 0;\n" + "}",
+                "switch (index & 7) {\n"
+                        + "    case 0:\n"
+                        + "        return false;\n"
+                        + "    case 1:\n"
+                        + "        return true;\n"
+                        + "    default:\n"
+                        + "        return data.consumeBoolean();\n"
+                        + "}",
                 "if (expected[expectedIndex] != actual[actualIndex]) {\n"
                         + "    throw new AssertionError(\n"
                         + "            \"expected=\" + expected[expectedIndex] + \", actual=\" + actual[actualIndex]);\n"
+                        + "}",
+                "if (expected != actual) {\n"
+                        + "    throw new AssertionError(\n"
+                        + "            \"Incorrect value at index \" + index + \": expected=\" + expected + \", actual=\" + actual);\n"
                         + "}",
                 false);
 
         addFuzzType(
                 types,
                 "byte",
-                "array -> ByteIlaFactoryFromArray.create(array).create()",
-                "ByteIla::length",
-                "ByteIla::get",
                 "for (int i = 0; i < array.length; i++) {\n" + "    array[i] = (byte) (i * 37 + 11);\n" + "}",
+                "switch (index & 7) {\n"
+                        + "    case 0:\n"
+                        + "        return Byte.MIN_VALUE;\n"
+                        + "    case 1:\n"
+                        + "        return Byte.MAX_VALUE;\n"
+                        + "    case 2:\n"
+                        + "        return 0;\n"
+                        + "    case 3:\n"
+                        + "        return -1;\n"
+                        + "    case 4:\n"
+                        + "        return 1;\n"
+                        + "    default:\n"
+                        + "        return (byte) data.consumeInt();\n"
+                        + "}",
                 "if (expected[expectedIndex] != actual[actualIndex]) {\n"
                         + "    throw new AssertionError(\n"
                         + "            \"expected=\" + expected[expectedIndex] + \", actual=\" + actual[actualIndex]);\n"
+                        + "}",
+                "if (expected != actual) {\n"
+                        + "    throw new AssertionError(\n"
+                        + "            \"Incorrect value at index \" + index + \": expected=\" + expected + \", actual=\" + actual);\n"
                         + "}",
                 true);
 
         addFuzzType(
                 types,
                 "char",
-                "array -> CharIlaFactoryFromArray.create(array).create()",
-                "CharIla::length",
-                "CharIla::get",
                 "for (int i = 0; i < array.length; i++) {\n"
                         + "    switch (i & 3) {\n"
                         + "        case 0:\n"
@@ -335,18 +356,33 @@ public final class TemplateGenerator {
                         + "            break;\n"
                         + "    }\n"
                         + "}",
+                "switch (index & 7) {\n"
+                        + "    case 0:\n"
+                        + "        return '\\0';\n"
+                        + "    case 1:\n"
+                        + "        return '\\uffff';\n"
+                        + "    case 2:\n"
+                        + "        return 0;\n"
+                        + "    case 3:\n"
+                        + "        return 1;\n"
+                        + "    case 4:\n"
+                        + "        return Character.MAX_VALUE;\n"
+                        + "    default:\n"
+                        + "        return (char) data.consumeInt();\n"
+                        + "}",
                 "if (expected[expectedIndex] != actual[actualIndex]) {\n"
                         + "    throw new AssertionError(\n"
                         + "            \"expected=\" + (int) expected[expectedIndex] + \", actual=\" + (int) actual[actualIndex]);\n"
+                        + "}",
+                "if (expected != actual) {\n"
+                        + "    throw new AssertionError(\n"
+                        + "            \"Incorrect value at index \" + index + \": expected=\" + (int) expected + \", actual=\" + (int) actual);\n"
                         + "}",
                 true);
 
         addFuzzType(
                 types,
                 "double",
-                "array -> DoubleIlaFactoryFromArray.create(array).create()",
-                "DoubleIla::length",
-                "DoubleIla::get",
                 "for (int i = 0; i < array.length; i++) {\n"
                         + "    switch (i & 7) {\n"
                         + "        case 0:\n"
@@ -375,6 +411,24 @@ public final class TemplateGenerator {
                         + "            break;\n"
                         + "    }\n"
                         + "}",
+                "switch (index & 7) {\n"
+                        + "    case 0:\n"
+                        + "        return 0.0;\n"
+                        + "    case 1:\n"
+                        + "        return -0.0;\n"
+                        + "    case 2:\n"
+                        + "        return Double.NaN;\n"
+                        + "    case 3:\n"
+                        + "        return Double.POSITIVE_INFINITY;\n"
+                        + "    case 4:\n"
+                        + "        return Double.NEGATIVE_INFINITY;\n"
+                        + "    case 5:\n"
+                        + "        return Double.MIN_VALUE;\n"
+                        + "    case 6:\n"
+                        + "        return Double.MAX_VALUE;\n"
+                        + "    default:\n"
+                        + "        return data.consumeDouble();\n"
+                        + "}",
                 "long expectedBits = Double.doubleToRawLongBits(expected[expectedIndex]);\n"
                         + "long actualBits = Double.doubleToRawLongBits(actual[actualIndex]);\n"
                         + "if (expectedBits != actualBits) {\n"
@@ -382,14 +436,21 @@ public final class TemplateGenerator {
                         + "            + Long.toHexString(expectedBits)\n"
                         + "            + \", actualBits=\" + Long.toHexString(actualBits));\n"
                         + "}",
+                "long expectedBits = Double.doubleToRawLongBits(expected);\n"
+                        + "long actualBits = Double.doubleToRawLongBits(actual);\n"
+                        + "if (expectedBits != actualBits) {\n"
+                        + "    throw new AssertionError(\"Incorrect value at index \"\n"
+                        + "            + index\n"
+                        + "            + \": expectedBits=\"\n"
+                        + "            + Long.toHexString(expectedBits)\n"
+                        + "            + \", actualBits=\"\n"
+                        + "            + Long.toHexString(actualBits));\n"
+                        + "}",
                 false);
 
         addFuzzType(
                 types,
                 "float",
-                "array -> FloatIlaFactoryFromArray.create(array).create()",
-                "FloatIla::length",
-                "FloatIla::get",
                 "for (int i = 0; i < array.length; i++) {\n"
                         + "    switch (i & 7) {\n"
                         + "        case 0:\n"
@@ -418,6 +479,24 @@ public final class TemplateGenerator {
                         + "            break;\n"
                         + "    }\n"
                         + "}",
+                "switch (index & 7) {\n"
+                        + "    case 0:\n"
+                        + "        return 0.0f;\n"
+                        + "    case 1:\n"
+                        + "        return -0.0f;\n"
+                        + "    case 2:\n"
+                        + "        return Float.NaN;\n"
+                        + "    case 3:\n"
+                        + "        return Float.POSITIVE_INFINITY;\n"
+                        + "    case 4:\n"
+                        + "        return Float.NEGATIVE_INFINITY;\n"
+                        + "    case 5:\n"
+                        + "        return Float.MIN_VALUE;\n"
+                        + "    case 6:\n"
+                        + "        return Float.MAX_VALUE;\n"
+                        + "    default:\n"
+                        + "        return data.consumeFloat();\n"
+                        + "}",
                 "int expectedBits = Float.floatToRawIntBits(expected[expectedIndex]);\n"
                         + "int actualBits = Float.floatToRawIntBits(actual[actualIndex]);\n"
                         + "if (expectedBits != actualBits) {\n"
@@ -425,42 +504,79 @@ public final class TemplateGenerator {
                         + "            + Integer.toHexString(expectedBits)\n"
                         + "            + \", actualBits=\" + Integer.toHexString(actualBits));\n"
                         + "}",
+                "int expectedBits = Float.floatToRawIntBits(expected);\n"
+                        + "int actualBits = Float.floatToRawIntBits(actual);\n"
+                        + "if (expectedBits != actualBits) {\n"
+                        + "    throw new AssertionError(\"Incorrect value at index \"\n"
+                        + "            + index\n"
+                        + "            + \": expectedBits=\"\n"
+                        + "            + Integer.toHexString(expectedBits)\n"
+                        + "            + \", actualBits=\"\n"
+                        + "            + Integer.toHexString(actualBits));\n"
+                        + "}",
                 true);
 
         addFuzzType(
                 types,
                 "int",
-                "array -> IntIlaFactoryFromArray.create(array).create()",
-                "IntIla::length",
-                "IntIla::get",
                 "for (int i = 0; i < array.length; i++) {\n" + "    array[i] = i * 0x9e3779b9 ^ 0x12345678;\n" + "}",
+                "switch (index & 7) {\n"
+                        + "    case 0:\n"
+                        + "        return Integer.MIN_VALUE;\n"
+                        + "    case 1:\n"
+                        + "        return Integer.MAX_VALUE;\n"
+                        + "    case 2:\n"
+                        + "        return 0;\n"
+                        + "    case 3:\n"
+                        + "        return -1;\n"
+                        + "    case 4:\n"
+                        + "        return 1;\n"
+                        + "    default:\n"
+                        + "        return data.consumeInt();\n"
+                        + "}",
                 "if (expected[expectedIndex] != actual[actualIndex]) {\n"
                         + "    throw new AssertionError(\n"
                         + "            \"expected=\" + expected[expectedIndex] + \", actual=\" + actual[actualIndex]);\n"
+                        + "}",
+                "if (expected != actual) {\n"
+                        + "    throw new AssertionError(\n"
+                        + "            \"Incorrect value at index \" + index + \": expected=\" + expected + \", actual=\" + actual);\n"
                         + "}",
                 true);
 
         addFuzzType(
                 types,
                 "long",
-                "array -> LongIlaFactoryFromArray.create(array).create()",
-                "LongIla::length",
-                "LongIla::get",
                 "for (int i = 0; i < array.length; i++) {\n"
                         + "    array[i] = 0x123456789ABCDEFL ^ ((long) i * 0x100000001L);\n"
+                        + "}",
+                "switch (index & 7) {\n"
+                        + "    case 0:\n"
+                        + "        return Long.MIN_VALUE;\n"
+                        + "    case 1:\n"
+                        + "        return Long.MAX_VALUE;\n"
+                        + "    case 2:\n"
+                        + "        return 0L;\n"
+                        + "    case 3:\n"
+                        + "        return -1L;\n"
+                        + "    case 4:\n"
+                        + "        return 1L;\n"
+                        + "    default:\n"
+                        + "        return data.consumeLong();\n"
                         + "}",
                 "if (expected[expectedIndex] != actual[actualIndex]) {\n"
                         + "    throw new AssertionError(\n"
                         + "            \"expected=\" + expected[expectedIndex] + \", actual=\" + actual[actualIndex]);\n"
+                        + "}",
+                "if (expected != actual) {\n"
+                        + "    throw new AssertionError(\n"
+                        + "            \"Incorrect value at index \" + index + \": expected=\" + expected + \", actual=\" + actual);\n"
                         + "}",
                 true);
 
         addFuzzType(
                 types,
                 "object",
-                "array -> ObjectIlaFactoryFromArray.<Object>create(array).create()",
-                "ObjectIla::length",
-                "ObjectIla::get",
                 "for (int i = 0; i < array.length; i++) {\n"
                         + "    switch (i & 3) {\n"
                         + "        case 0:\n"
@@ -477,23 +593,56 @@ public final class TemplateGenerator {
                         + "            break;\n"
                         + "    }\n"
                         + "}",
+                "switch (index & 7) {\n"
+                        + "    case 0:\n"
+                        + "        return null;\n"
+                        + "    case 1:\n"
+                        + "        return \"tfw-\" + data.consumeInt();\n"
+                        + "    case 2:\n"
+                        + "        return Integer.valueOf(data.consumeInt());\n"
+                        + "    case 3:\n"
+                        + "        return Long.valueOf(data.consumeLong());\n"
+                        + "    case 4:\n"
+                        + "        return Boolean.valueOf(data.consumeBoolean());\n"
+                        + "    default:\n"
+                        + "        return \"tfw-\" + index;\n"
+                        + "}",
                 "Object expectedValue = expected[expectedIndex];\n"
                         + "Object actualValue = actual[actualIndex];\n"
                         + "if (expectedValue == null ? actualValue != null : !expectedValue.equals(actualValue)) {\n"
                         + "    throw new AssertionError(\"expected=\" + expectedValue + \", actual=\" + actualValue);\n"
+                        + "}",
+                "if (expected == null ? actual != null : !expected.equals(actual)) {\n"
+                        + "    throw new AssertionError(\n"
+                        + "            \"Incorrect value at index \" + index + \": expected=\" + expected + \", actual=\" + actual);\n"
                         + "}",
                 false);
 
         addFuzzType(
                 types,
                 "short",
-                "array -> ShortIlaFactoryFromArray.create(array).create()",
-                "ShortIla::length",
-                "ShortIla::get",
                 "for (int i = 0; i < array.length; i++) {\n" + "    array[i] = (short) (i * 7919 + 12345);\n" + "}",
+                "switch (index & 7) {\n"
+                        + "    case 0:\n"
+                        + "        return Short.MIN_VALUE;\n"
+                        + "    case 1:\n"
+                        + "        return Short.MAX_VALUE;\n"
+                        + "    case 2:\n"
+                        + "        return 0;\n"
+                        + "    case 3:\n"
+                        + "        return -1;\n"
+                        + "    case 4:\n"
+                        + "        return 1;\n"
+                        + "    default:\n"
+                        + "        return (short) data.consumeInt();\n"
+                        + "}",
                 "if (expected[expectedIndex] != actual[actualIndex]) {\n"
                         + "    throw new AssertionError(\n"
                         + "            \"expected=\" + expected[expectedIndex] + \", actual=\" + actual[actualIndex]);\n"
+                        + "}",
+                "if (expected != actual) {\n"
+                        + "    throw new AssertionError(\n"
+                        + "            \"Incorrect value at index \" + index + \": expected=\" + expected + \", actual=\" + actual);\n"
                         + "}",
                 true);
     }
@@ -501,11 +650,10 @@ public final class TemplateGenerator {
     private static void addFuzzType(
             final Map<String, TypeDefinition> types,
             final String lowercase,
-            final String createExpression,
-            final String lengthExpression,
-            final String getExpression,
             final String initialize,
+            final String randomInitialize,
             final String assertElementEquals,
+            final String assertValueEquals,
             final boolean singleLineAssertElementEquals) {
 
         final String key = lowercase + "ilaf";
@@ -519,29 +667,28 @@ public final class TemplateGenerator {
                 key,
                 withFuzz(
                         base,
-                        createExpression,
-                        lengthExpression,
-                        getExpression,
                         initialize,
+                        randomInitialize,
                         assertElementEquals,
+                        assertValueEquals,
                         singleLineAssertElementEquals));
     }
 
     private static TypeDefinition withFuzz(
             final TypeDefinition base,
-            final String createExpression,
-            final String lengthExpression,
-            final String getExpression,
             final String initialize,
+            final String randomInitialize,
             final String assertElementEquals,
+            final String assertValueEquals,
             final boolean singleLineAssertElementEquals) {
+
         final TypeDefinition result = new TypeDefinition(base);
 
-        result.fuzz(FuzzProperty.CREATE_EXPRESSION, createExpression);
-        result.fuzz(FuzzProperty.LENGTH_EXPRESSION, lengthExpression);
-        result.fuzz(FuzzProperty.GET_EXPRESSION, getExpression);
         result.fuzz(FuzzProperty.INITIALIZE, initialize);
+        result.fuzz(FuzzProperty.SUPPORT_INITIALIZE, initialize);
+        result.fuzz(FuzzProperty.RANDOM_INITIALIZE, randomInitialize);
         result.fuzz(FuzzProperty.ASSERT_ELEMENT_EQUALS, assertElementEquals);
+        result.fuzz(FuzzProperty.ASSERT_VALUE_EQUALS, assertValueEquals);
         result.fuzzSingleLineAssertElementEquals = singleLineAssertElementEquals;
 
         return result;
@@ -667,21 +814,12 @@ public final class TemplateGenerator {
     }
 
     private static void addFuzzModel(final Map<String, Object> model, final TypeDefinition type) {
-        model.put("FUZZ_ARRAY_TYPE", type.type + "[]");
-        model.put("FUZZ_ELEMENT_TYPE", type.type);
-        model.put("FUZZ_ILA_PACKAGE", type.lowercase + "ila");
-        model.put("FUZZ_ILA_TYPE", type.name + "Ila");
-        model.put("FUZZ_FACTORY_NAME", type.name + "IlaFactoryFromArray");
-        model.put("FUZZ_CREATE_EXPRESSION", type.fuzz(FuzzProperty.CREATE_EXPRESSION));
-        model.put("FUZZ_LENGTH_EXPRESSION", type.fuzz(FuzzProperty.LENGTH_EXPRESSION));
-        model.put("FUZZ_GET_EXPRESSION", type.fuzz(FuzzProperty.GET_EXPRESSION));
         model.put("FUZZ_INITIALIZE", indent(type.fuzz(FuzzProperty.INITIALIZE), 20));
+        model.put("FUZZ_SUPPORT_INITIALIZE", indent(type.fuzz(FuzzProperty.SUPPORT_INITIALIZE), 8));
+        model.put("FUZZ_RANDOM_INITIALIZE", indent(type.fuzz(FuzzProperty.RANDOM_INITIALIZE), 8));
         model.put("FUZZ_ASSERT_ELEMENT_EQUALS", indent(type.fuzz(FuzzProperty.ASSERT_ELEMENT_EQUALS), 20));
+        model.put("FUZZ_ASSERT_VALUE_EQUALS", indent(type.fuzz(FuzzProperty.ASSERT_VALUE_EQUALS), 8));
         model.put("FUZZ_SINGLE_LINE_ASSERT_ELEMENT_EQUALS", type.fuzzSingleLineAssertElementEquals);
-
-        if ("Object".equals(type.type)) {
-            model.put("FUZZ_GENERIC", "Object");
-        }
     }
 
     private static void generateMapping(

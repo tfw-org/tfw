@@ -60,5 +60,32 @@ final class DoubleIlaDecimateTest {
 
         assertThat(testIla.getNumberOfCloses()).isEqualTo(1);
     }
+
+    @Test
+    void largeFactorTest() throws Exception {
+        final Random random = new Random(0);
+        final double[] array = new double[2];
+        array[0] = random.nextDouble();
+        array[1] = random.nextDouble();
+
+        final DoubleIla ila = DoubleIlaFromArray.create(array);
+
+        try {
+            final DoubleIla actualIla = DoubleIlaDecimate.create(ila, Long.MAX_VALUE, new double[1]);
+
+            try {
+                assertThat(actualIla.length()).isEqualTo(1);
+
+                final double[] destination = new double[1];
+                actualIla.get(destination, 0, 0, 1);
+
+                assertThat(destination[0]).isEqualTo(array[0]);
+            } finally {
+                actualIla.close();
+            }
+        } finally {
+            ila.close();
+        }
+    }
 }
 // AUTO GENERATED FROM TEMPLATE

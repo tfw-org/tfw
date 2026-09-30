@@ -55,5 +55,32 @@ final class FloatIlaConcatenateTest {
         assertThat(leftIla.getNumberOfCloses()).isEqualTo(1);
         assertThat(rightIla.getNumberOfCloses()).isEqualTo(1);
     }
+
+    @Test
+    void exactLeftBoundaryTest() throws Exception {
+        final Random random = new Random(0);
+        final float[] leftArray = new float[2];
+        final float[] rightArray = new float[2];
+
+        leftArray[0] = random.nextFloat();
+        leftArray[1] = random.nextFloat();
+        rightArray[0] = random.nextFloat();
+        rightArray[1] = random.nextFloat();
+
+        final FloatIla leftIla = FloatIlaFromArray.create(leftArray);
+        final FloatIla rightIla = FloatIlaFromArray.create(rightArray);
+        final FloatIla actualIla = FloatIlaConcatenate.create(leftIla, rightIla);
+
+        try {
+            final float[] destination = new float[1];
+
+            // Read exactly the final element of the left ILA.
+            actualIla.get(destination, 0, 1, 1);
+
+            assertThat(destination[0]).isEqualTo(leftArray[1]);
+        } finally {
+            actualIla.close();
+        }
+    }
 }
 // AUTO GENERATED FROM TEMPLATE

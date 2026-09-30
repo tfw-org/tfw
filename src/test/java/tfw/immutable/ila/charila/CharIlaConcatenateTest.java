@@ -55,5 +55,32 @@ final class CharIlaConcatenateTest {
         assertThat(leftIla.getNumberOfCloses()).isEqualTo(1);
         assertThat(rightIla.getNumberOfCloses()).isEqualTo(1);
     }
+
+    @Test
+    void exactLeftBoundaryTest() throws Exception {
+        final Random random = new Random(0);
+        final char[] leftArray = new char[2];
+        final char[] rightArray = new char[2];
+
+        leftArray[0] = (char) random.nextInt();
+        leftArray[1] = (char) random.nextInt();
+        rightArray[0] = (char) random.nextInt();
+        rightArray[1] = (char) random.nextInt();
+
+        final CharIla leftIla = CharIlaFromArray.create(leftArray);
+        final CharIla rightIla = CharIlaFromArray.create(rightArray);
+        final CharIla actualIla = CharIlaConcatenate.create(leftIla, rightIla);
+
+        try {
+            final char[] destination = new char[1];
+
+            // Read exactly the final element of the left ILA.
+            actualIla.get(destination, 0, 1, 1);
+
+            assertThat(destination[0]).isEqualTo(leftArray[1]);
+        } finally {
+            actualIla.close();
+        }
+    }
 }
 // AUTO GENERATED FROM TEMPLATE

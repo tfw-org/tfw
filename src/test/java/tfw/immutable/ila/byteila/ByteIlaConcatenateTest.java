@@ -55,5 +55,32 @@ final class ByteIlaConcatenateTest {
         assertThat(leftIla.getNumberOfCloses()).isEqualTo(1);
         assertThat(rightIla.getNumberOfCloses()).isEqualTo(1);
     }
+
+    @Test
+    void exactLeftBoundaryTest() throws Exception {
+        final Random random = new Random(0);
+        final byte[] leftArray = new byte[2];
+        final byte[] rightArray = new byte[2];
+
+        leftArray[0] = (byte) random.nextInt();
+        leftArray[1] = (byte) random.nextInt();
+        rightArray[0] = (byte) random.nextInt();
+        rightArray[1] = (byte) random.nextInt();
+
+        final ByteIla leftIla = ByteIlaFromArray.create(leftArray);
+        final ByteIla rightIla = ByteIlaFromArray.create(rightArray);
+        final ByteIla actualIla = ByteIlaConcatenate.create(leftIla, rightIla);
+
+        try {
+            final byte[] destination = new byte[1];
+
+            // Read exactly the final element of the left ILA.
+            actualIla.get(destination, 0, 1, 1);
+
+            assertThat(destination[0]).isEqualTo(leftArray[1]);
+        } finally {
+            actualIla.close();
+        }
+    }
 }
 // AUTO GENERATED FROM TEMPLATE
