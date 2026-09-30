@@ -27,7 +27,7 @@ public final class IntIlaFactoryDivideFuzzer {
         final IntIlaFactory divideFactory = IntIlaFactoryDivide.create(leftFactory, rightFactory, bufferSize);
 
         IntIlaFactoryFuzzerSupport.verifyIla(
-                divideFactory.create(), length, input, index -> left[index] / right[index], data);
+                divideFactory.create(), length, input, index -> expectedValue(left[index], right[index]), data);
     }
 
     private static void testArgumentValidation(IntIlaFactory leftFactory, IntIlaFactory rightFactory, int length)
@@ -56,10 +56,11 @@ public final class IntIlaFactoryDivideFuzzer {
 
         final IntIlaFactory differentLengthFactory = IntIlaFactoryFromArray.create(differentLengthArray);
 
-        final IntIlaFactory invalidLengthFactory = IntIlaFactoryDivide.create(leftFactory, differentLengthFactory, 1);
+        final IntIlaFactory invalidLengthIlaFactory =
+                IntIlaFactoryDivide.create(leftFactory, differentLengthFactory, 1);
 
         try {
-            invalidLengthFactory.create();
+            invalidLengthIlaFactory.create();
 
             throw new AssertionError("create() accepted factories with different lengths"
                     + " [leftLength="
@@ -92,21 +93,30 @@ public final class IntIlaFactoryDivideFuzzer {
                     break;
 
                 case 3:
-                    array[i] = Integer.MAX_VALUE;
+                    array[i] = -1;
                     break;
 
                 case 4:
                     array[i] = Integer.MIN_VALUE;
                     break;
 
+                case 5:
+                    array[i] = Integer.MAX_VALUE;
+                    break;
+
                 default:
-                    final int value = data.consumeInt();
+                    int value = data.consumeInt();
                     array[i] = value == 0 ? 1 : value;
                     break;
             }
         }
 
         return array;
+    }
+
+    private static int expectedValue(int left, int right) {
+
+        return left / right;
     }
 }
 // AUTO GENERATED FROM TEMPLATE
