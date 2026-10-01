@@ -83,7 +83,6 @@ mapfile -t FUZZ_SOURCES < <(
     find "$FUZZ_SRC" \
         -type f \
         -name '*.java' \
-        ! -path "$FUZZ_SRC/build/*" \
         -print
 )
 

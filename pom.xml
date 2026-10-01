@@ -101,6 +101,7 @@
                             <include>src/main/java/**/*.java</include>
                             <include>src/test/java/**/*.java</include>
                             <include>src/fuzz/java/**/*.java</include>
+                            <include>src/build/java/**/*.java</include>
                         </includes>
                         <excludes>
                             <exclude>src/main/java/tfw/math/BigDecimal.java</exclude>
@@ -375,7 +376,7 @@
                                 <classpath/>
                                 <argument>-d</argument>
                                 <argument>${project.build.directory}/template-generator-classes</argument>
-                                <argument>${project.basedir}/src/fuzz/java/build/TemplateGenerator.java</argument>
+                                <argument>${project.basedir}/src/build/java/tfw/build/TemplateGenerator.java</argument>
                             </arguments>
                         </configuration>
                     </execution>
