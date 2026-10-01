@@ -53,15 +53,9 @@ RUNTIME_CLASSPATH="$(
         xargs printf -- "\$this_dir/%s:"
 ):\$this_dir"
 
-# Find all Java sources under src/fuzz/java, except for build-time generator
-# sources.
+# Find all Java sources under src/fuzz/java.
 #
-# The build directory contains Java programs used to generate the fuzzers.
-# Those programs are compiled and executed by Maven during generate-sources.
-# They are not part of the fuzzing runtime and must not be compiled by the
-# ClusterFuzzLite javac invocation.
-#
-# Everything else under src/fuzz/java includes either:
+# Everything under src/fuzz/java includes either:
 #
 #   shared fuzzing support classes
 #
@@ -83,7 +77,6 @@ mapfile -t FUZZ_SOURCES < <(
     find "$FUZZ_SRC" \
         -type f \
         -name '*.java' \
-        ! -path "$FUZZ_SRC/build/*" \
         -print
 )
 
