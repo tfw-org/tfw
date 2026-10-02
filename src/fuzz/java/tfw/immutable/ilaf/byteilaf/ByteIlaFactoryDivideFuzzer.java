@@ -105,8 +105,8 @@ public final class ByteIlaFactoryDivideFuzzer {
                     break;
 
                 default:
-                    int value = data.consumeInt();
-                    array[i] = (byte) (value == 0 ? 1 : value);
+                    byte value = (byte) data.consumeInt();
+                    array[i] = value == 0 ? 1 : value;
                     break;
             }
         }

@@ -174,11 +174,11 @@ public final class ${NAME}IlaFactoryDivideFuzzer {
                     <#elseif TYPE == "double">
                     array[i] = data.consumeDouble();
                     <#elseif TYPE == "byte">
-                    int value = data.consumeInt();
-                    array[i] = (byte) (value == 0 ? 1 : value);
+                    byte value = (byte) data.consumeInt();
+                    array[i] = value == 0 ? 1 : value;
                     <#elseif TYPE == "short">
-                    int value = data.consumeInt();
-                    array[i] = (short) (value == 0 ? 1 : value);
+                    short value = (short) data.consumeInt();
+                    array[i] = value == 0 ? 1 : value;
                     <#elseif TYPE == "int">
                     int value = data.consumeInt();
                     array[i] = value == 0 ? 1 : value;

@@ -105,8 +105,8 @@ public final class ShortIlaFactoryDivideFuzzer {
                     break;
 
                 default:
-                    int value = data.consumeInt();
-                    array[i] = (short) (value == 0 ? 1 : value);
+                    short value = (short) data.consumeInt();
+                    array[i] = value == 0 ? 1 : value;
                     break;
             }
         }

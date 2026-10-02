@@ -533,13 +533,13 @@ This is a **local reproduction of the ClusterFuzzLite/Jazzer environment**, inte
 
 
    32  clear
-   33  docker pull gcr.io/oss-fuzz-base/base-builder-jvm
-   34  docker run --rm gcr.io/oss-fuzz-base/base-builder-jvm   bash -c 'echo "JAZZER_API_PATH=$JAZZER_API_PATH"; \
+   * 33  docker pull gcr.io/oss-fuzz-base/base-builder-jvm
+   * 34  docker run --rm gcr.io/oss-fuzz-base/base-builder-jvm   bash -c 'echo "JAZZER_API_PATH=$JAZZER_API_PATH"; \
            which jazzer_driver; \
            ls -l "$JAZZER_API_PATH"'
    35  clear
-   36  docker run --rm gcr.io/oss-fuzz-base/base-builder-jvm   bash -c 'find /usr/local -name "*jazzer*" -type f -o -name "jazzer_driver" 2>/dev/null | sort'
-   37  docker run --rm gcr.io/oss-fuzz-base/base-builder-jvm   java -version
+   * 36  docker run --rm gcr.io/oss-fuzz-base/base-builder-jvm   bash -c 'find /usr/local -name "*jazzer*" -type f -o -name "jazzer_driver" 2>/dev/null | sort'
+   * 37  docker run --rm gcr.io/oss-fuzz-base/base-builder-jvm   java -version
    38  pwd
    39  clear
    40  docker run --rm   -v "$PWD":/work/tfw   -e SRC=/work   -e OUT=/work/out   -e WORK=/work/work   -e JAZZER_API_PATH=/usr/local/lib/jazzer_api_deploy.jar   -w /work/tfw   gcr.io/oss-fuzz-base/base-builder-jvm   bash -c '
@@ -705,14 +705,14 @@ EOF
    58  clear
    59  ls -lh target/tfw-*.jar
    60  rm -rf out work
-   61  mkdir -p out work
+   * 61  mkdir -p out work
    62  cp target/tfw-*.jar out/tfw.jar
    63  ls -lh out/tfw.jar
    64  clear
-   65  cp target/tfw-2026.16-SNAPSHOT.jar out/tfw.jar
+   * 65  cp target/tfw-2026.16-SNAPSHOT.jar out/tfw.jar
    66  ls -lh out/tfw.jar
    67  clear
-   68  docker run --rm   -v "$PWD":/work/tfw   -v "$PWD/out":/work/out   -v "$PWD/work":/work/work   -e SRC=/work   -e OUT=/work/out   -e WORK=/work/work   -e JAZZER_API_PATH=/usr/local/lib/jazzer_api_deploy.jar   -w /work/tfw   gcr.io/oss-fuzz-base/base-builder-jvm   bash -c '
+   * 68  docker run --rm   -v "$PWD":/work/tfw   -v "$PWD/out":/work/out   -v "$PWD/work":/work/work   -e SRC=/work   -e OUT=/work/out   -e WORK=/work/work   -e JAZZER_API_PATH=/usr/local/lib/jazzer_api_deploy.jar   -w /work/tfw   gcr.io/oss-fuzz-base/base-builder-jvm   bash -c '
     set -e
 
     FUZZ_SRC="$SRC/tfw/src/fuzz/java"
@@ -777,6 +777,6 @@ EOF
     find "$OUT" -maxdepth 1 -type f -name "*Fuzzer" -printf "%f\n" | sort
   '
    69  clear
-   70  ./out/IntIlaFactoryAddFuzzer   -runs=10000
+   * 70  ./out/IntIlaFactoryAddFuzzer   -runs=10000
    71  clear
    72  history
