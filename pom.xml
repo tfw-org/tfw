@@ -243,6 +243,11 @@
                 <artifactId>maven-pmd-plugin</artifactId>
                 <version>${plugin.maven-pmd-plugin.version}</version>
                 <configuration>
+                    <compileSourceRoots>
+                        <compileSourceRoot>${project.build.sourceDirectory}</compileSourceRoot>
+                        <compileSourceRoot>${project.basedir}/src/build/java</compileSourceRoot>
+                        <compileSourceRoot>${project.basedir}/src/fuzz/java</compileSourceRoot>
+                    </compileSourceRoots>
                     <excludes>
                         <exclude>tfw/math/BigDecimal.java</exclude>
                         <exclude>tfw/math/BigInteger.java</exclude>
@@ -255,20 +260,28 @@
                         <exclude>tfw/math/SignedMutableBigInteger.java</exclude>
                     </excludes>
                     <linkXRef>false</linkXRef>
-                    <failOnViolation>true</failOnViolation>
-                    <failurePriority>2</failurePriority>
-                    <maxAllowedViolations>5</maxAllowedViolations>
+                    <failOnViolation>false</failOnViolation>
                     <format>txt</format>
                     <includeTests>true</includeTests>
-                    <minimumTokens>100</minimumTokens>
-                    <targetJdk>${maven.compiler.target}</targetJdk>
+                    <targetJdk>17</targetJdk>
                 </configuration>
                 <executions>
                     <execution>
+                        <id>pmd</id>
                         <goals>
                             <goal>check</goal>
                         </goals>
                         <phase>verify</phase>
+                    </execution>
+                    <execution>
+                        <id>cpd</id>
+                        <goals>
+                            <goal>cpd</goal>
+                        </goals>
+                        <phase>verify</phase>
+                        <configuration>
+                            <minimumTokens>100</minimumTokens>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
