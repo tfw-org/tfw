@@ -263,15 +263,25 @@
                     <failOnViolation>false</failOnViolation>
                     <format>txt</format>
                     <includeTests>true</includeTests>
-                    <minimumTokens>100</minimumTokens>
                     <targetJdk>17</targetJdk>
                 </configuration>
                 <executions>
                     <execution>
+                        <id>pmd</id>
                         <goals>
                             <goal>check</goal>
                         </goals>
                         <phase>verify</phase>
+                    </execution>
+                    <execution>
+                        <id>cpd</id>
+                        <goals>
+                            <goal>cpd</goal>
+                        </goals>
+                        <phase>verify</phase>
+                        <configuration>
+                            <minimumTokens>100</minimumTokens>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
