@@ -5,7 +5,7 @@
 export JAVA_HOME="${JAVA_HOME:-/usr/lib/jvm/java-21-openjdk-amd64}"
 export PATH="$JAVA_HOME/bin:$PATH"
 
-mvn -DskipTests \
+mvn -Dmaven.test.skip=true \
     -Dmaven.compiler.release=17 \
     -Dmaven.compiler.source=17 \
     -Dmaven.compiler.target=17 \
@@ -28,6 +28,24 @@ if [ -z "$PROJECT_JAR" ]; then
 fi
 
 cp "$PROJECT_JAR" "$OUT/tfw.jar"
+
+# Do not include the OpenJDK-derived tfw.math classes in the
+# ClusterFuzzLite coverage report.
+#
+# These classes remain in tfw.jar and are therefore still available
+# to the fuzzers at runtime. Removing their compiled copies from
+# target/classes prevents the ClusterFuzzLite JVM coverage script from
+# including them in the JaCoCo report.
+rm -f \
+    "$SRC/tfw/target/classes/tfw/math/BigDecimal"*.class \
+    "$SRC/tfw/target/classes/tfw/math/BigInteger"*.class \
+    "$SRC/tfw/target/classes/tfw/math/BitSieve"*.class \
+    "$SRC/tfw/target/classes/tfw/math/DoubleConsts"*.class \
+    "$SRC/tfw/target/classes/tfw/math/FloatConsts"*.class \
+    "$SRC/tfw/target/classes/tfw/math/MathContext"*.class \
+    "$SRC/tfw/target/classes/tfw/math/MutableBigInteger"*.class \
+    "$SRC/tfw/target/classes/tfw/math/RoundingMode"*.class \
+    "$SRC/tfw/target/classes/tfw/math/SignedMutableBigInteger"*.class
 
 PROJECT_JARS="tfw.jar"
 
