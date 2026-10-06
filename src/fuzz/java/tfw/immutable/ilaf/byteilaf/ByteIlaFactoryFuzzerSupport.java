@@ -1,6 +1,8 @@
 package tfw.immutable.ilaf.byteilaf;
 
 import com.code_intelligence.jazzer.api.FuzzedDataProvider;
+import java.io.IOException;
+import tfw.immutable.ila.byteila.AbstractByteIla;
 import tfw.immutable.ila.byteila.ByteIla;
 
 final class ByteIlaFactoryFuzzerSupport {
@@ -24,6 +26,27 @@ final class ByteIlaFactoryFuzzerSupport {
         final byte[] array = new byte[length];
         initialize(array);
         return array;
+    }
+
+    static ByteIla createIlaWithLengthException() {
+
+        return new AbstractByteIla() {
+
+            @Override
+            protected long lengthImpl() throws IOException {
+                throw new IOException("Test length exception");
+            }
+
+            @Override
+            protected void getImpl(byte[] array, int offset, long start, int length) throws IOException {
+                throw new AssertionError("getImpl() should not be called");
+            }
+
+            @Override
+            protected void closeImpl() throws IOException {
+                // Nothing to close.
+            }
+        };
     }
 
     static void initialize(byte[] array, FuzzedDataProvider data) {

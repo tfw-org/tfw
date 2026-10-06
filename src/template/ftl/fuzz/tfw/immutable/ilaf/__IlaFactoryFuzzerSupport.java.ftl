@@ -2,6 +2,8 @@
 package ${PACKAGE};
 
 import com.code_intelligence.jazzer.api.FuzzedDataProvider;
+import java.io.IOException;
+import tfw.immutable.ila.${LOWERCASE}ila.Abstract${NAME}Ila;
 import tfw.immutable.ila.${LOWERCASE}ila.${NAME}Ila;
 
 final class ${NAME}IlaFactoryFuzzerSupport {
@@ -25,6 +27,27 @@ final class ${NAME}IlaFactoryFuzzerSupport {
         final ${TYPE}[] array = new ${TYPE}[length];
         initialize(array);
         return array;
+    }
+
+    static ${NAME}Ila<#if TYPE == "Object"><Object></#if> createIlaWithLengthException() {
+
+        return new Abstract${NAME}Ila<#if TYPE == "Object"><Object></#if>() {
+
+            @Override
+            protected long lengthImpl() throws IOException {
+                throw new IOException("Test length exception");
+            }
+
+            @Override
+            protected void getImpl(${TYPE}[] array, int offset, long start, int length) throws IOException {
+                throw new AssertionError("getImpl() should not be called");
+            }
+
+            @Override
+            protected void closeImpl() throws IOException {
+                // Nothing to close.
+            }
+        };
     }
 
     static void initialize(${TYPE}[] array, FuzzedDataProvider data) {

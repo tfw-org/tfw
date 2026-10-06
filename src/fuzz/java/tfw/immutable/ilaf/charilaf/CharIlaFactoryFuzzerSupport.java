@@ -1,6 +1,8 @@
 package tfw.immutable.ilaf.charilaf;
 
 import com.code_intelligence.jazzer.api.FuzzedDataProvider;
+import java.io.IOException;
+import tfw.immutable.ila.charila.AbstractCharIla;
 import tfw.immutable.ila.charila.CharIla;
 
 final class CharIlaFactoryFuzzerSupport {
@@ -24,6 +26,27 @@ final class CharIlaFactoryFuzzerSupport {
         final char[] array = new char[length];
         initialize(array);
         return array;
+    }
+
+    static CharIla createIlaWithLengthException() {
+
+        return new AbstractCharIla() {
+
+            @Override
+            protected long lengthImpl() throws IOException {
+                throw new IOException("Test length exception");
+            }
+
+            @Override
+            protected void getImpl(char[] array, int offset, long start, int length) throws IOException {
+                throw new AssertionError("getImpl() should not be called");
+            }
+
+            @Override
+            protected void closeImpl() throws IOException {
+                // Nothing to close.
+            }
+        };
     }
 
     static void initialize(char[] array, FuzzedDataProvider data) {

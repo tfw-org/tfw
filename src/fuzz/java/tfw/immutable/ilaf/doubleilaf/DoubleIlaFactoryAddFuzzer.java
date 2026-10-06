@@ -37,6 +37,19 @@ public final class DoubleIlaFactoryAddFuzzer {
         DoubleIlaFactoryFuzzerSupport.expectIllegalArgumentException(
                 () -> DoubleIlaFactoryAdd.create(leftFactory, null, 1), "create() accepted null rightFactory");
 
+        final DoubleIlaFactory throwingLengthDoubleIlaFactory =
+                () -> DoubleIlaFactoryFuzzerSupport.createIlaWithLengthException();
+
+        DoubleIlaFactoryFuzzerSupport.expectIllegalArgumentException(
+                () -> DoubleIlaFactoryAdd.create(throwingLengthDoubleIlaFactory, rightFactory, 1)
+                        .create(),
+                "create() accepted left ILA whose length() throws IOException");
+
+        DoubleIlaFactoryFuzzerSupport.expectIllegalArgumentException(
+                () -> DoubleIlaFactoryAdd.create(leftFactory, throwingLengthDoubleIlaFactory, 1)
+                        .create(),
+                "create() accepted right ILA whose length() throws IOException");
+
         final DoubleIlaFactory invalidBufferFactory = DoubleIlaFactoryAdd.create(leftFactory, rightFactory, 0);
 
         try {

@@ -37,6 +37,19 @@ public final class FloatIlaFactoryAddFuzzer {
         FloatIlaFactoryFuzzerSupport.expectIllegalArgumentException(
                 () -> FloatIlaFactoryAdd.create(leftFactory, null, 1), "create() accepted null rightFactory");
 
+        final FloatIlaFactory throwingLengthFloatIlaFactory =
+                () -> FloatIlaFactoryFuzzerSupport.createIlaWithLengthException();
+
+        FloatIlaFactoryFuzzerSupport.expectIllegalArgumentException(
+                () -> FloatIlaFactoryAdd.create(throwingLengthFloatIlaFactory, rightFactory, 1)
+                        .create(),
+                "create() accepted left ILA whose length() throws IOException");
+
+        FloatIlaFactoryFuzzerSupport.expectIllegalArgumentException(
+                () -> FloatIlaFactoryAdd.create(leftFactory, throwingLengthFloatIlaFactory, 1)
+                        .create(),
+                "create() accepted right ILA whose length() throws IOException");
+
         final FloatIlaFactory invalidBufferFactory = FloatIlaFactoryAdd.create(leftFactory, rightFactory, 0);
 
         try {

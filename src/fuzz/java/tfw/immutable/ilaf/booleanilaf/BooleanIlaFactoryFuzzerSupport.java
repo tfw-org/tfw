@@ -1,6 +1,8 @@
 package tfw.immutable.ilaf.booleanilaf;
 
 import com.code_intelligence.jazzer.api.FuzzedDataProvider;
+import java.io.IOException;
+import tfw.immutable.ila.booleanila.AbstractBooleanIla;
 import tfw.immutable.ila.booleanila.BooleanIla;
 
 final class BooleanIlaFactoryFuzzerSupport {
@@ -24,6 +26,27 @@ final class BooleanIlaFactoryFuzzerSupport {
         final boolean[] array = new boolean[length];
         initialize(array);
         return array;
+    }
+
+    static BooleanIla createIlaWithLengthException() {
+
+        return new AbstractBooleanIla() {
+
+            @Override
+            protected long lengthImpl() throws IOException {
+                throw new IOException("Test length exception");
+            }
+
+            @Override
+            protected void getImpl(boolean[] array, int offset, long start, int length) throws IOException {
+                throw new AssertionError("getImpl() should not be called");
+            }
+
+            @Override
+            protected void closeImpl() throws IOException {
+                // Nothing to close.
+            }
+        };
     }
 
     static void initialize(boolean[] array, FuzzedDataProvider data) {
