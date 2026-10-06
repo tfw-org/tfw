@@ -1,6 +1,8 @@
 package tfw.immutable.ilaf.floatilaf;
 
 import com.code_intelligence.jazzer.api.FuzzedDataProvider;
+import java.io.IOException;
+import tfw.immutable.ila.floatila.AbstractFloatIla;
 import tfw.immutable.ila.floatila.FloatIla;
 
 final class FloatIlaFactoryFuzzerSupport {
@@ -24,6 +26,27 @@ final class FloatIlaFactoryFuzzerSupport {
         final float[] array = new float[length];
         initialize(array);
         return array;
+    }
+
+    static FloatIla createIlaWithLengthException() {
+
+        return new AbstractFloatIla() {
+
+            @Override
+            protected long lengthImpl() throws IOException {
+                throw new IOException("Test length exception");
+            }
+
+            @Override
+            protected void getImpl(float[] array, int offset, long start, int length) throws IOException {
+                throw new AssertionError("getImpl() should not be called");
+            }
+
+            @Override
+            protected void closeImpl() throws IOException {
+                // Nothing to close.
+            }
+        };
     }
 
     static void initialize(float[] array, FuzzedDataProvider data) {

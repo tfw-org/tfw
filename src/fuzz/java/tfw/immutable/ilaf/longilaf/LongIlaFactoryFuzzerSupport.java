@@ -1,6 +1,8 @@
 package tfw.immutable.ilaf.longilaf;
 
 import com.code_intelligence.jazzer.api.FuzzedDataProvider;
+import java.io.IOException;
+import tfw.immutable.ila.longila.AbstractLongIla;
 import tfw.immutable.ila.longila.LongIla;
 
 final class LongIlaFactoryFuzzerSupport {
@@ -24,6 +26,27 @@ final class LongIlaFactoryFuzzerSupport {
         final long[] array = new long[length];
         initialize(array);
         return array;
+    }
+
+    static LongIla createIlaWithLengthException() {
+
+        return new AbstractLongIla() {
+
+            @Override
+            protected long lengthImpl() throws IOException {
+                throw new IOException("Test length exception");
+            }
+
+            @Override
+            protected void getImpl(long[] array, int offset, long start, int length) throws IOException {
+                throw new AssertionError("getImpl() should not be called");
+            }
+
+            @Override
+            protected void closeImpl() throws IOException {
+                // Nothing to close.
+            }
+        };
     }
 
     static void initialize(long[] array, FuzzedDataProvider data) {

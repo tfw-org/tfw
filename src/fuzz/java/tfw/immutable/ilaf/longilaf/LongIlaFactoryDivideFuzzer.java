@@ -39,6 +39,19 @@ public final class LongIlaFactoryDivideFuzzer {
         LongIlaFactoryFuzzerSupport.expectIllegalArgumentException(
                 () -> LongIlaFactoryDivide.create(leftFactory, null, 1), "create() accepted null rightFactory");
 
+        final LongIlaFactory throwingLengthLongIlaFactory =
+                () -> LongIlaFactoryFuzzerSupport.createIlaWithLengthException();
+
+        LongIlaFactoryFuzzerSupport.expectIllegalArgumentException(
+                () -> LongIlaFactoryDivide.create(throwingLengthLongIlaFactory, rightFactory, 1)
+                        .create(),
+                "create() accepted left ILA whose length() throws IOException");
+
+        LongIlaFactoryFuzzerSupport.expectIllegalArgumentException(
+                () -> LongIlaFactoryDivide.create(leftFactory, throwingLengthLongIlaFactory, 1)
+                        .create(),
+                "create() accepted right ILA whose length() throws IOException");
+
         final LongIlaFactory invalidBufferFactory = LongIlaFactoryDivide.create(leftFactory, rightFactory, 0);
 
         try {

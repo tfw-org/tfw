@@ -1,6 +1,8 @@
 package tfw.immutable.ilaf.shortilaf;
 
 import com.code_intelligence.jazzer.api.FuzzedDataProvider;
+import java.io.IOException;
+import tfw.immutable.ila.shortila.AbstractShortIla;
 import tfw.immutable.ila.shortila.ShortIla;
 
 final class ShortIlaFactoryFuzzerSupport {
@@ -24,6 +26,27 @@ final class ShortIlaFactoryFuzzerSupport {
         final short[] array = new short[length];
         initialize(array);
         return array;
+    }
+
+    static ShortIla createIlaWithLengthException() {
+
+        return new AbstractShortIla() {
+
+            @Override
+            protected long lengthImpl() throws IOException {
+                throw new IOException("Test length exception");
+            }
+
+            @Override
+            protected void getImpl(short[] array, int offset, long start, int length) throws IOException {
+                throw new AssertionError("getImpl() should not be called");
+            }
+
+            @Override
+            protected void closeImpl() throws IOException {
+                // Nothing to close.
+            }
+        };
     }
 
     static void initialize(short[] array, FuzzedDataProvider data) {
