@@ -3,6 +3,8 @@
 [![Maven Central](https://img.shields.io/maven-central/v/io.github.tfw-org/tfw.svg)](https://central.sonatype.com/artifact/io.github.tfw-org/tfw)
 [![Java](https://img.shields.io/badge/Java-8%2B-blue)](https://github.com/tfw-org/tfw)
 [![License](https://img.shields.io/github/license/tfw-org/tfw?color=blue)](https://github.com/tfw-org/tfw/blob/master/LICENSE.md)
+[![Repository size](https://img.shields.io/github/repo-size/tfw-org/tfw?label=Repository%20size&color=blue)](https://github.com/tfw-org/tfw)
+[![GitHub Pages size](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Ftfw-org.github.io%2Ftfw%2Fsite-size.json&query=%24.size&label=GitHub%20Pages%20size&color=blue)](https://tfw-org.github.io/tfw/)
 <br>
 [![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/tfw-org/tfw/badge)](https://securityscorecards.dev/viewer/?uri=github.com/tfw-org/tfw)
 [![OpenSSF Best Practices](https://www.bestpractices.dev/projects/14047/badge)](https://www.bestpractices.dev/projects/14047)

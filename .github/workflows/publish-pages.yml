@@ -196,6 +196,15 @@ jobs:
         file_count=$(find target/pages -type f | wc -l)
         total_size=$(numfmt --to=iec --suffix=B "$total_bytes")
 
+        # Publish machine-readable site-size information for badges and other tooling.
+        cat > target/pages/site-size.json <<EOF
+        {
+          "bytes": ${total_bytes},
+          "size": "${total_size}",
+          "files": ${file_count}
+        }
+        EOF
+
         echo
         echo "GitHub Pages content:"
         echo "  Latest release:         ${RELEASE_TAG}"
