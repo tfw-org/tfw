@@ -12,7 +12,9 @@ public final class CharIlaUtil {
     public static char[] toArray(final CharIla charIla, final long ilaStart, int length) throws IOException {
         char[] result = new char[length];
 
-        charIla.get(result, 0, ilaStart, length);
+        if (result.length > 0) {
+            charIla.get(result, 0, ilaStart, length);
+        }
 
         return result;
     }

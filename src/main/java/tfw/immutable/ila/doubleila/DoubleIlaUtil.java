@@ -12,7 +12,9 @@ public final class DoubleIlaUtil {
     public static double[] toArray(final DoubleIla doubleIla, final long ilaStart, int length) throws IOException {
         double[] result = new double[length];
 
-        doubleIla.get(result, 0, ilaStart, length);
+        if (result.length > 0) {
+            doubleIla.get(result, 0, ilaStart, length);
+        }
 
         return result;
     }
