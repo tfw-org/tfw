@@ -32,6 +32,6 @@ jobs:
         env:
           REPO_TOKEN: ${{ github.token }}
         run: >
-          mvn -B
+          ./mvnw -B
           com.arcmutate:pitest-github-maven-plugin:2.3.3:updatePR
           -DrepoToken="$REPO_TOKEN"

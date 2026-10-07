@@ -36,11 +36,11 @@ jobs:
       - name: Get Maven artifact information
         id: maven
         run: |
-          echo "artifactId=$(mvn -ntp -q help:evaluate -Dexpression=project.artifactId -DforceStdout)" >> "$GITHUB_OUTPUT"
-          echo "version=$(mvn -ntp -q help:evaluate -Dexpression=project.version -DforceStdout)" >> "$GITHUB_OUTPUT"
+          echo "artifactId=$(./mvnw -ntp -q help:evaluate -Dexpression=project.artifactId -DforceStdout)" >> "$GITHUB_OUTPUT"
+          echo "version=$(./mvnw -ntp -q help:evaluate -Dexpression=project.version -DforceStdout)" >> "$GITHUB_OUTPUT"
 
       - name: Publish package
-        run: mvn -ntp -B deploy -P release
+        run: ./mvnw -ntp -B deploy -P release
         env:
           MVN_USERNAME: ${{ secrets.MVN_USERNAME }}
           MVN_PASSWORD: ${{ secrets.MVN_PASSWORD }}
