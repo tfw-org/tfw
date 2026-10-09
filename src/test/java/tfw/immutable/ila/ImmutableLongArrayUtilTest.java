@@ -38,9 +38,12 @@ final class ImmutableLongArrayUtilTest {
 
     @Test
     void boundsCheckRejectsRangesPastBoundaries() {
-        assertThatThrownBy(() -> ImmutableLongArrayUtil.boundsCheck(1, 9, 5, 0, 5))
+        // Destination range exceeds the array, but the ILA range is valid.
+        assertThatThrownBy(() -> ImmutableLongArrayUtil.boundsCheck(9, 1, 0, 0, 5))
                 .isInstanceOf(IllegalArgumentException.class);
-        assertThatThrownBy(() -> ImmutableLongArrayUtil.boundsCheck(9, 1, 0, 5, 5))
+
+        // ILA range exceeds the ILA, but the destination range is valid.
+        assertThatThrownBy(() -> ImmutableLongArrayUtil.boundsCheck(9, 9, 0, 5, 5))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
