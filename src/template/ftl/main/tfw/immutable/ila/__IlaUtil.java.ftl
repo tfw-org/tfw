@@ -13,9 +13,7 @@ public final class ${NAME}IlaUtil {
     public static ${TYPE}[] toArray(final ${NAME}Ila ${TYPE}Ila, final long ilaStart, int length) throws IOException {
         ${TYPE}[] result = new ${TYPE}[length];
 
-        if (result.length > 0) {
-            ${TYPE}Ila.get(result, 0, ilaStart, length);
-        }
+        ${TYPE}Ila.get(result, 0, ilaStart, length);
 
         return result;
     }

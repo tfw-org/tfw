@@ -12,9 +12,7 @@ public final class ShortIlaUtil {
     public static short[] toArray(final ShortIla shortIla, final long ilaStart, int length) throws IOException {
         short[] result = new short[length];
 
-        if (result.length > 0) {
-            shortIla.get(result, 0, ilaStart, length);
-        }
+        shortIla.get(result, 0, ilaStart, length);
 
         return result;
     }

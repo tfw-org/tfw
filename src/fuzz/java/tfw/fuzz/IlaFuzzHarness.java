@@ -323,54 +323,23 @@ public final class IlaFuzzHarness<A, I extends tfw.immutable.ila.ImmutableLongAr
     }
 
     /*
-     * This mirrors ImmutableLongArrayUtil.boundsCheck().
-     *
-     * Abstract*Ila.get() performs argument validation BEFORE the
-     * length == 0 early return. Therefore zero-length operations
-     * are valid only when all of the normal bounds requirements are
-     * satisfied.
+     * Mirrors ImmutableLongArrayUtil.boundsCheck(), including its
+     * System.arraycopy-style handling of zero-length ranges.
      */
     private static boolean isValidGet(long ilaLength, int arrayLength, int offset, long start, int length) {
-        if (ilaLength < 0) {
+        if (ilaLength < 0 || arrayLength < 0 || offset < 0 || start < 0 || length < 0) {
             return false;
         }
 
-        if (arrayLength < 0) {
+        if (offset > arrayLength || start > ilaLength) {
             return false;
         }
 
-        if (offset < 0) {
+        if ((long) offset + length > arrayLength) {
             return false;
         }
 
-        if (start < 0) {
-            return false;
-        }
-
-        if (length < 0) {
-            return false;
-        }
-
-        /*
-         * offset and start must identify valid positions in their
-         * respective arrays/ILAs, even when length == 0.
-         */
-        if (offset >= arrayLength) {
-            return false;
-        }
-
-        if (start >= ilaLength) {
-            return false;
-        }
-
-        /*
-         * Widen BEFORE adding.
-         */
-        if ((long) offset + (long) length > (long) arrayLength) {
-            return false;
-        }
-
-        if (start + (long) length > ilaLength) {
+        if ((long) length > ilaLength - start) {
             return false;
         }
 

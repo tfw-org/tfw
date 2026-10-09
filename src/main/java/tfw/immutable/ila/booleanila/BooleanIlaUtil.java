@@ -12,9 +12,7 @@ public final class BooleanIlaUtil {
     public static boolean[] toArray(final BooleanIla booleanIla, final long ilaStart, int length) throws IOException {
         boolean[] result = new boolean[length];
 
-        if (result.length > 0) {
-            booleanIla.get(result, 0, ilaStart, length);
-        }
+        booleanIla.get(result, 0, ilaStart, length);
 
         return result;
     }
