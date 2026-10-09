@@ -38,14 +38,14 @@
         <plugin.maven-surefire-junit5-tree-reporter.version>1.5.1</plugin.maven-surefire-junit5-tree-reporter.version>
         <plugin.maven-surefire-plugin.version>3.6.0</plugin.maven-surefire-plugin.version>
         <plugin.nexus-staging-maven-plugin.version>1.7.0</plugin.nexus-staging-maven-plugin.version>
+        <plugin.palantir-java-format.version>2.81.0</plugin.palantir-java-format.version>
         <plugin.pitest-git-plugin.version>2.3.4</plugin.pitest-git-plugin.version>
         <plugin.pitest-github-maven-plugin.version>2.3.4</plugin.pitest-github-maven-plugin.version>
         <plugin.pitest-junit5-plugin.version>1.2.3</plugin.pitest-junit5-plugin.version>
         <plugin.pitest-maven.version>1.30.0</plugin.pitest-maven.version>
         <plugin.refaster-runner.version>0.30.0</plugin.refaster-runner.version>
         <plugin.sonar-maven-plugin.version>5.8.0.7211</plugin.sonar-maven-plugin.version>
-        <plugin.spotless-maven-plugin.version>3.10.2</plugin.spotless-maven-plugin.version>
-        <plugin.spotless-palantirJavaFormat.version>2.81.0</plugin.spotless-palantirJavaFormat.version>
+        <plugin.spotless-maven-plugin.version>3.10.3</plugin.spotless-maven-plugin.version>
         <project.build.outputTimestamp>${git.commit.time}</project.build.outputTimestamp>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <sonar.exclusions>src/main/java/tfw/math/BigDecimal.java,
@@ -119,7 +119,7 @@
                             <exclude>src/main/java/tfw/math/SignedMutableBigInteger.java</exclude>
                         </excludes>
                         <palantirJavaFormat>
-                            <version>${plugin.spotless-palantirJavaFormat.version}</version>
+                            <version>${plugin.palantir-java-format.version}</version>
                             <style>PALANTIR</style>
                         </palantirJavaFormat>
                     </java>
@@ -138,6 +138,13 @@
                         </sortPom>
                     </pom>
                 </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.palantir.javaformat</groupId>
+                        <artifactId>palantir-java-format</artifactId>
+                        <version>${plugin.palantir-java-format.version}</version>
+                    </dependency>
+                </dependencies>
                 <executions>
                     <execution>
                         <goals>
