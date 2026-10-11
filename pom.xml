@@ -159,6 +159,11 @@
                 <version>${plugin.git-commit-id-maven-plugin.version}</version>
                 <configuration>
                     <dateFormatTimeZone>UTC</dateFormatTimeZone>
+                    <generateGitPropertiesFile>false</generateGitPropertiesFile>
+                    <excludeProperties>
+                        <excludeProperty>^git\.build\.time$</excludeProperty>
+                    </excludeProperties>
+                    <failOnNoGitDirectory>false</failOnNoGitDirectory>
                 </configuration>
                 <executions>
                     <execution>
@@ -700,6 +705,17 @@
                     </plugin>
                 </plugins>
             </build>
+        </profile>
+        <profile>
+            <id>reproducible-build-without-git-metadata</id>
+            <activation>
+                <file>
+                    <missing>${basedir}/.git</missing>
+                </file>
+            </activation>
+            <properties>
+                <project.build.outputTimestamp>2000-01-01T00:00:00Z</project.build.outputTimestamp>
+            </properties>
         </profile>
     </profiles>
 </project>
