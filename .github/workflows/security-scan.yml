@@ -28,7 +28,7 @@ jobs:
     # 1. Build project and generate the precise Maven SBOM (target/bom.json)
     # This acts as our primary inventory source
     - name: Build project and generate SBOM
-      run: mvn clean package
+      run: ./mvnw clean package
 
     # 2. Gatekeeper: Run Trivy to scan the repository filesystem for secrets,
     # misconfigurations, and vulnerable code. It will fail the build if CRITICAL issues exist.
