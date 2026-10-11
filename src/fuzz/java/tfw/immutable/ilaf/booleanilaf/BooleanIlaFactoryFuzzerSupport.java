@@ -160,12 +160,11 @@ final class BooleanIlaFactoryFuzzerSupport {
     }
 
     static boolean isValidGet(long ilaLength, int destinationLength, int offset, long start, int length) {
-
         if (offset < 0 || start < 0 || length < 0) {
             return false;
         }
 
-        if (offset >= destinationLength || start >= ilaLength) {
+        if (offset > destinationLength || start > ilaLength) {
             return false;
         }
 
@@ -173,7 +172,7 @@ final class BooleanIlaFactoryFuzzerSupport {
             return false;
         }
 
-        return start + (long) length <= ilaLength;
+        return (long) length <= ilaLength - start;
     }
 
     private static void verifyGet(

@@ -29,16 +29,16 @@ public final class ObjectIlaCheck {
                 .hasMessage("length (=-1) < 0 not allowed!");
         assertThatThrownBy(() -> ila.get(array, array.length, 0, 1))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("offset (=10) >= array.length (=10) not allowed!");
+                .hasMessage("offset+length (=11) > array.length (=10) not allowed!");
         assertThatThrownBy(() -> ila.get(array, 0, ilaLength, 1))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("start (=%s) >= ila.length() (=%s) not allowed!", ilaLength, ilaLength);
+                .hasMessage("length (=1) > ila.length()-start (=0) not allowed!");
         assertThatThrownBy(() -> ila.get(array, array.length - 1, 0, 2))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("offset+length (=11) > array.length (=10) not allowed!");
         assertThatThrownBy(() -> ila.get(array, 0, ilaLength - 1, 2))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("start+length (=%s) > ila.length() (=%s) not allowed!", ilaLength + 1, ilaLength);
+                .hasMessage("length (=2) > ila.length()-start (=1) not allowed!");
     }
 
     public static void checkGetExhaustively(ObjectIla<Object> ila1, ObjectIla<Object> ila2) throws IOException {
