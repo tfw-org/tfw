@@ -5,7 +5,7 @@
 export JAVA_HOME="${JAVA_HOME:-/usr/lib/jvm/java-21-openjdk-amd64}"
 export PATH="$JAVA_HOME/bin:$PATH"
 
-mvn -Dmaven.test.skip=true \
+./mvnw -Dmaven.test.skip=true \
     -Dmaven.compiler.release=17 \
     -Dmaven.compiler.source=17 \
     -Dmaven.compiler.target=17 \

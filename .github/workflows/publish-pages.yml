@@ -43,7 +43,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: >
         ${{ github.workspace }}/execute-on-vnc.sh
-        mvn -B
+        ./mvnw -B
         clean
         test-compile
         -Ppitest
@@ -52,7 +52,7 @@ jobs:
 
     - name: Generate development Javadoc
       run: >
-        mvn -B
+        ./mvnw -B
         javadoc:javadoc
         -DoutputDirectory=target/reports/apidocs
         -Ddoclint=none
