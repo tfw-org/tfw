@@ -13,6 +13,7 @@
 [![Java CI with Maven](https://github.com/tfw-org/tfw/actions/workflows/maven.yml/badge.svg)](https://github.com/tfw-org/tfw/actions/workflows/maven.yml)
 [![CodeQL](https://github.com/tfw-org/tfw/actions/workflows/codeql.yml/badge.svg)](https://github.com/tfw-org/tfw/actions/workflows/codeql.yml)
 [![Sonar Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=tfw-org_tfw&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=tfw-org_tfw)
+[![Reproducible Builds](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/jvm-repo-rebuild/reproducible-central/master/content/io/github/tfw-org/tfw/badge.json)](https://github.com/jvm-repo-rebuild/reproducible-central/blob/master/content/io/github/tfw-org/tfw/README.md)
 
 **TFW is a lightweight Java framework for building large-scale applications.** It is composed of two main packages, `tfw.immutable` and `tfw.tsm`, which provide complementary foundations for managing application data, state, and component composition.
 
@@ -71,6 +72,7 @@ TFW uses several complementary techniques to assess the quality, robustness, and
 - **Code coverage** — [SonarQube Cloud](https://sonarcloud.io) is used to monitor the coverage of the unit tests. The latest coverage report is available at [TFW's Overview](https://sonarcloud.io/project/overview?id=tfw-org_tfw)
 - **Mutation testing** — [PIT Mutation Testing](https://pitest.org/) is used to evaluate the effectiveness of the test suite. The latest mutation testing report is available at [TFW's PIT report](https://tfw-org.github.io/tfw/pit/)
 - **Fuzz testing** — [ClusterFuzzLite](https://google.github.io/clusterfuzzlite/) is used to "fuzz" test the API. The [latest fuzzing results](https://tfw-org.github.io/tfw-fuzzing/coverage/latest/report/linux/) are available on GitHub Pages.
+- **Reproducible builds** — TFW [releases](https://github.com/jvm-repo-rebuild/reproducible-central/blob/master/content/io/github/tfw-org/tfw/README.md) are independently rebuilt and verified by [Reproducible Central](https://github.com/jvm-repo-rebuild/reproducible-central/tree/master), including verification of the POM, binary and sources JARs, and CycloneDX SBOMs.
 - **Javadoc** — API documentation is available for both the [current development version](https://tfw-org.github.io/tfw/javadoc/) and the [latest released version](https://tfw-org.github.io/tfw/javadoc/latest/).
 
 ## Project Repositories
