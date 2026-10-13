@@ -2,7 +2,7 @@ package tfw.immutable.iba.bitiba;
 
 import java.io.IOException;
 import java.math.BigInteger;
-import tfw.check.Argument;
+import tfw.check.Arguments;
 import tfw.immutable.iba.longiba.LongIba;
 import tfw.immutable.ila.bitila.BitIlaUtil;
 
@@ -21,11 +21,11 @@ public final class BitIbaFromLongIba {
         private final BigInteger lengthInBits;
 
         public BitIbaImpl(final LongIba longIba, final int firstLongOffsetInBits, final BigInteger lengthInBits) {
-            Argument.assertNotNull(longIba, "longIba");
-            Argument.assertNotLessThan(firstLongOffsetInBits, 0, "firstLongOffsetInBits");
-            Argument.assertNotGreaterThan(firstLongOffsetInBits, 63, "firstLongOffsetInBits");
-            Argument.assertNotNull(lengthInBits, "lengthInBits");
-            Argument.assertGreaterThanOrEqualTo(lengthInBits, BigInteger.ZERO, "lengthInBits");
+            Arguments.checkNotNull(longIba, "longIba");
+            Arguments.checkGreaterThanOrEqual(firstLongOffsetInBits, "firstLongOffsetInBits", 0, "0");
+            Arguments.checkLessThanOrEqual(firstLongOffsetInBits, "firstLongOffsetInBits", 63, "63");
+            Arguments.checkNotNull(lengthInBits, "lengthInBits");
+            Arguments.checkGreaterThanOrEqual(lengthInBits, "lengthInBits", BigInteger.ZERO, "0");
 
             this.longIba = longIba;
             this.firstLongOffsetInBits = firstLongOffsetInBits;

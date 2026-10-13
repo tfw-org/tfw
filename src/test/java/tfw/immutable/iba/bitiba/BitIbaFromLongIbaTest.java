@@ -16,19 +16,19 @@ class BitIbaFromLongIbaTest {
 
         assertThatThrownBy(() -> BitIbaFromLongIba.create(null, 0, BigInteger.ZERO))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("longIba == null not allowed!");
+                .hasMessage("longIba (=null) == null not allowed!");
         assertThatThrownBy(() -> BitIbaFromLongIba.create(longIba, -1, BigInteger.TEN))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("firstLongOffsetInBits (=-1) < 0 not allowed!");
+                .hasMessage("firstLongOffsetInBits (=-1) < 0 (=0) not allowed!");
         assertThatThrownBy(() -> BitIbaFromLongIba.create(longIba, 64, BigInteger.TEN))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("firstLongOffsetInBits (=64) > 63 not allowed!");
+                .hasMessage("firstLongOffsetInBits (=64) > 63 (=63) not allowed!");
         assertThatThrownBy(() -> BitIbaFromLongIba.create(longIba, 0, null))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("lengthInBits == null not allowed!");
+                .hasMessage("lengthInBits (=null) == null not allowed!");
         assertThatThrownBy(() -> BitIbaFromLongIba.create(longIba, 0, biNegativeOne))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("lengthInBits (=-1) < 0 not allowed!");
+                .hasMessage("lengthInBits (=-1) < 0 (=0) not allowed!");
     }
 
     @Test
