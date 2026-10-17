@@ -1,7 +1,7 @@
 package tfw.immutable.iba.booleaniba;
 
 import java.math.BigInteger;
-import tfw.check.Argument;
+import tfw.check.Arguments;
 import tfw.immutable.iba.AbstractIbaFromArray;
 
 public final class BooleanIbaFromArray {
@@ -28,7 +28,7 @@ public final class BooleanIbaFromArray {
         }
 
         private static BigInteger checkAndReturnLength(boolean[] array) {
-            Argument.assertNotNull(array, "array");
+            Arguments.checkNotNull(array, "array");
 
             return BigInteger.valueOf(array.length);
         }

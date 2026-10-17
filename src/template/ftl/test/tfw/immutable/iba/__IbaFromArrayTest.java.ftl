@@ -13,7 +13,7 @@ class ${NAME}IbaFromArrayTest {
     void parameterTest() {
         assertThatThrownBy(() -> ${NAME}IbaFromArray.create(null))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("array == null not allowed!");
+                .hasMessage("array (=null) == null not allowed!");
     }
 
     @Test
