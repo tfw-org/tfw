@@ -41,100 +41,208 @@ public final class Arguments {
         checkIntegral(Operation.LESS_THAN, left, leftName, right, rightName);
     }
 
+    public static void checkLessThan(byte left, String leftName, byte right) {
+        checkLessThan(left, leftName, right, null);
+    }
+
     public static void checkLessThan(char left, String leftName, char right, String rightName) {
         checkIntegral(Operation.LESS_THAN, left, leftName, right, rightName);
+    }
+
+    public static void checkLessThan(char left, String leftName, char right) {
+        checkLessThan(left, leftName, right, null);
     }
 
     public static void checkLessThan(double left, String leftName, double right, String rightName) {
         checkFloatingPoint(Operation.LESS_THAN, left, leftName, right, rightName);
     }
 
+    public static void checkLessThan(double left, String leftName, double right) {
+        checkLessThan(left, leftName, right, null);
+    }
+
     public static void checkLessThan(float left, String leftName, float right, String rightName) {
         checkFloatingPoint(Operation.LESS_THAN, left, leftName, right, rightName);
+    }
+
+    public static void checkLessThan(float left, String leftName, float right) {
+        checkLessThan(left, leftName, right, null);
     }
 
     public static void checkLessThan(int left, String leftName, int right, String rightName) {
         checkIntegral(Operation.LESS_THAN, left, leftName, right, rightName);
     }
 
+    public static void checkLessThan(int left, String leftName, int right) {
+        checkLessThan(left, leftName, right, null);
+    }
+
     public static void checkLessThan(long left, String leftName, long right, String rightName) {
         checkIntegral(Operation.LESS_THAN, left, leftName, right, rightName);
+    }
+
+    public static void checkLessThan(long left, String leftName, long right) {
+        checkLessThan(left, leftName, right, null);
     }
 
     public static void checkLessThan(short left, String leftName, short right, String rightName) {
         checkIntegral(Operation.LESS_THAN, left, leftName, right, rightName);
     }
 
+    public static void checkLessThan(short left, String leftName, short right) {
+        checkLessThan(left, leftName, right, null);
+    }
+
     public static void checkLessThan(BigInteger left, String leftName, BigInteger right, String rightName) {
         checkBigInteger(Operation.LESS_THAN, left, leftName, right, rightName);
+    }
+
+    public static void checkLessThan(BigInteger left, String leftName, BigInteger right) {
+        checkLessThan(left, leftName, right, null);
     }
 
     public static void checkLessThanOrEqual(byte left, String leftName, byte right, String rightName) {
         checkIntegral(Operation.LESS_THAN_OR_EQUAL, left, leftName, right, rightName);
     }
 
+    public static void checkLessThanOrEqual(byte left, String leftName, byte right) {
+        checkLessThanOrEqual(left, leftName, right, null);
+    }
+
     public static void checkLessThanOrEqual(char left, String leftName, char right, String rightName) {
         checkIntegral(Operation.LESS_THAN_OR_EQUAL, left, leftName, right, rightName);
+    }
+
+    public static void checkLessThanOrEqual(char left, String leftName, char right) {
+        checkLessThanOrEqual(left, leftName, right, null);
     }
 
     public static void checkLessThanOrEqual(double left, String leftName, double right, String rightName) {
         checkFloatingPoint(Operation.LESS_THAN_OR_EQUAL, left, leftName, right, rightName);
     }
 
+    public static void checkLessThanOrEqual(double left, String leftName, double right) {
+        checkLessThanOrEqual(left, leftName, right, null);
+    }
+
     public static void checkLessThanOrEqual(float left, String leftName, float right, String rightName) {
         checkFloatingPoint(Operation.LESS_THAN_OR_EQUAL, left, leftName, right, rightName);
+    }
+
+    public static void checkLessThanOrEqual(float left, String leftName, float right) {
+        checkLessThanOrEqual(left, leftName, right, null);
     }
 
     public static void checkLessThanOrEqual(int left, String leftName, int right, String rightName) {
         checkIntegral(Operation.LESS_THAN_OR_EQUAL, left, leftName, right, rightName);
     }
 
+    public static void checkLessThanOrEqual(int left, String leftName, int right) {
+        checkLessThanOrEqual(left, leftName, right, null);
+    }
+
     public static void checkLessThanOrEqual(long left, String leftName, long right, String rightName) {
         checkIntegral(Operation.LESS_THAN_OR_EQUAL, left, leftName, right, rightName);
+    }
+
+    public static void checkLessThanOrEqual(long left, String leftName, long right) {
+        checkLessThanOrEqual(left, leftName, right, null);
     }
 
     public static void checkLessThanOrEqual(short left, String leftName, short right, String rightName) {
         checkIntegral(Operation.LESS_THAN_OR_EQUAL, left, leftName, right, rightName);
     }
 
+    public static void checkLessThanOrEqual(short left, String leftName, short right) {
+        checkLessThanOrEqual(left, leftName, right, null);
+    }
+
     public static void checkLessThanOrEqual(BigInteger left, String leftName, BigInteger right, String rightName) {
         checkBigInteger(Operation.LESS_THAN_OR_EQUAL, left, leftName, right, rightName);
+    }
+
+    public static void checkLessThanOrEqual(BigInteger left, String leftName, BigInteger right) {
+        checkLessThanOrEqual(left, leftName, right, null);
     }
 
     public static void checkEquals(byte left, String leftName, byte right, String rightName) {
         checkIntegral(Operation.EQUALS, left, leftName, right, rightName);
     }
 
+    public static void checkEquals(byte left, String leftName, byte right) {
+        checkEquals(left, leftName, right, null);
+    }
+
     public static void checkEquals(char left, String leftName, char right, String rightName) {
         checkIntegral(Operation.EQUALS, left, leftName, right, rightName);
+    }
+
+    public static void checkEquals(char left, String leftName, char right) {
+        checkEquals(left, leftName, right, null);
     }
 
     public static void checkEquals(double left, String leftName, double right, String rightName) {
         checkFloatingPoint(Operation.EQUALS, left, leftName, right, rightName);
     }
 
+    public static void checkEquals(double left, String leftName, double right) {
+        checkEquals(left, leftName, right, null);
+    }
+
     public static void checkEquals(float left, String leftName, float right, String rightName) {
         checkFloatingPoint(Operation.EQUALS, left, leftName, right, rightName);
+    }
+
+    public static void checkEquals(float left, String leftName, float right) {
+        checkEquals(left, leftName, right, null);
     }
 
     public static void checkEquals(int left, String leftName, int right, String rightName) {
         checkIntegral(Operation.EQUALS, left, leftName, right, rightName);
     }
 
+    public static void checkEquals(int left, String leftName, int right) {
+        checkEquals(left, leftName, right, null);
+    }
+
     public static void checkEquals(long left, String leftName, long right, String rightName) {
         checkIntegral(Operation.EQUALS, left, leftName, right, rightName);
+    }
+
+    public static void checkEquals(long left, String leftName, long right) {
+        checkEquals(left, leftName, right, null);
     }
 
     public static void checkEquals(short left, String leftName, short right, String rightName) {
         checkIntegral(Operation.EQUALS, left, leftName, right, rightName);
     }
 
+    public static void checkEquals(short left, String leftName, short right) {
+        checkEquals(left, leftName, right, null);
+    }
+
     public static void checkEquals(BigInteger left, String leftName, BigInteger right, String rightName) {
         checkBigInteger(Operation.EQUALS, left, leftName, right, rightName);
     }
 
+    public static void checkEquals(BigInteger left, String leftName, BigInteger right) {
+        checkEquals(left, leftName, right, null);
+    }
+
     public static void checkEquals(boolean left, String leftName, boolean right, String rightName) {
         checkBoolean(Operation.EQUALS, left, leftName, right, rightName);
+    }
+
+    public static void checkEquals(boolean left, String leftName, boolean right) {
+        checkEquals(left, leftName, right, null);
+    }
+
+    public static void checkEquals(Object left, String leftName, Object right, String rightName) {
+        checkObjectEquals(Operation.EQUALS, left, leftName, right, rightName);
+    }
+
+    public static void checkEquals(Object left, String leftName, Object right) {
+        checkEquals(left, leftName, right, null);
     }
 
     public static void checkTrue(boolean bool, String boolName) {
@@ -143,10 +251,6 @@ public final class Arguments {
 
     public static void checkFalse(boolean bool, String boolName) {
         checkBoolean(Operation.EQUALS, bool, boolName, false, null);
-    }
-
-    public static void checkEquals(Object left, String leftName, Object right, String rightName) {
-        checkObjectEquals(Operation.EQUALS, left, leftName, right, rightName);
     }
 
     public static void checkNull(Object object, String objectName) {
@@ -161,104 +265,208 @@ public final class Arguments {
         checkIntegral(Operation.NOT_EQUALS, left, leftName, right, rightName);
     }
 
+    public static void checkNotEquals(byte left, String leftName, byte right) {
+        checkNotEquals(left, leftName, right, null);
+    }
+
     public static void checkNotEquals(char left, String leftName, char right, String rightName) {
         checkIntegral(Operation.NOT_EQUALS, left, leftName, right, rightName);
+    }
+
+    public static void checkNotEquals(char left, String leftName, char right) {
+        checkNotEquals(left, leftName, right, null);
     }
 
     public static void checkNotEquals(double left, String leftName, double right, String rightName) {
         checkFloatingPoint(Operation.NOT_EQUALS, left, leftName, right, rightName);
     }
 
+    public static void checkNotEquals(double left, String leftName, double right) {
+        checkNotEquals(left, leftName, right, null);
+    }
+
     public static void checkNotEquals(float left, String leftName, float right, String rightName) {
         checkFloatingPoint(Operation.NOT_EQUALS, left, leftName, right, rightName);
+    }
+
+    public static void checkNotEquals(float left, String leftName, float right) {
+        checkNotEquals(left, leftName, right, null);
     }
 
     public static void checkNotEquals(int left, String leftName, int right, String rightName) {
         checkIntegral(Operation.NOT_EQUALS, left, leftName, right, rightName);
     }
 
+    public static void checkNotEquals(int left, String leftName, int right) {
+        checkNotEquals(left, leftName, right, null);
+    }
+
     public static void checkNotEquals(long left, String leftName, long right, String rightName) {
         checkIntegral(Operation.NOT_EQUALS, left, leftName, right, rightName);
+    }
+
+    public static void checkNotEquals(long left, String leftName, long right) {
+        checkNotEquals(left, leftName, right, null);
     }
 
     public static void checkNotEquals(short left, String leftName, short right, String rightName) {
         checkIntegral(Operation.NOT_EQUALS, left, leftName, right, rightName);
     }
 
+    public static void checkNotEquals(short left, String leftName, short right) {
+        checkNotEquals(left, leftName, right, null);
+    }
+
     public static void checkNotEquals(BigInteger left, String leftName, BigInteger right, String rightName) {
         checkBigInteger(Operation.NOT_EQUALS, left, leftName, right, rightName);
+    }
+
+    public static void checkNotEquals(BigInteger left, String leftName, BigInteger right) {
+        checkNotEquals(left, leftName, right, null);
     }
 
     public static void checkNotEquals(boolean left, String leftName, boolean right, String rightName) {
         checkBoolean(Operation.NOT_EQUALS, left, leftName, right, rightName);
     }
 
+    public static void checkNotEquals(boolean left, String leftName, boolean right) {
+        checkNotEquals(left, leftName, right, null);
+    }
+
     public static void checkNotEquals(Object left, String leftName, Object right, String rightName) {
         checkObjectEquals(Operation.NOT_EQUALS, left, leftName, right, rightName);
+    }
+
+    public static void checkNotEquals(Object left, String leftName, Object right) {
+        checkNotEquals(left, leftName, right, null);
     }
 
     public static void checkGreaterThanOrEqual(byte left, String leftName, byte right, String rightName) {
         checkIntegral(Operation.GREATER_THAN_OR_EQUAL, left, leftName, right, rightName);
     }
 
+    public static void checkGreaterThanOrEqual(byte left, String leftName, byte right) {
+        checkGreaterThanOrEqual(left, leftName, right, null);
+    }
+
     public static void checkGreaterThanOrEqual(char left, String leftName, char right, String rightName) {
         checkIntegral(Operation.GREATER_THAN_OR_EQUAL, left, leftName, right, rightName);
+    }
+
+    public static void checkGreaterThanOrEqual(char left, String leftName, char right) {
+        checkGreaterThanOrEqual(left, leftName, right, null);
     }
 
     public static void checkGreaterThanOrEqual(double left, String leftName, double right, String rightName) {
         checkFloatingPoint(Operation.GREATER_THAN_OR_EQUAL, left, leftName, right, rightName);
     }
 
+    public static void checkGreaterThanOrEqual(double left, String leftName, double right) {
+        checkGreaterThanOrEqual(left, leftName, right, null);
+    }
+
     public static void checkGreaterThanOrEqual(float left, String leftName, float right, String rightName) {
         checkFloatingPoint(Operation.GREATER_THAN_OR_EQUAL, left, leftName, right, rightName);
+    }
+
+    public static void checkGreaterThanOrEqual(float left, String leftName, float right) {
+        checkGreaterThanOrEqual(left, leftName, right, null);
     }
 
     public static void checkGreaterThanOrEqual(int left, String leftName, int right, String rightName) {
         checkIntegral(Operation.GREATER_THAN_OR_EQUAL, left, leftName, right, rightName);
     }
 
+    public static void checkGreaterThanOrEqual(int left, String leftName, int right) {
+        checkGreaterThanOrEqual(left, leftName, right, null);
+    }
+
     public static void checkGreaterThanOrEqual(long left, String leftName, long right, String rightName) {
         checkIntegral(Operation.GREATER_THAN_OR_EQUAL, left, leftName, right, rightName);
+    }
+
+    public static void checkGreaterThanOrEqual(long left, String leftName, long right) {
+        checkGreaterThanOrEqual(left, leftName, right, null);
     }
 
     public static void checkGreaterThanOrEqual(short left, String leftName, short right, String rightName) {
         checkIntegral(Operation.GREATER_THAN_OR_EQUAL, left, leftName, right, rightName);
     }
 
+    public static void checkGreaterThanOrEqual(short left, String leftName, short right) {
+        checkGreaterThanOrEqual(left, leftName, right, null);
+    }
+
     public static void checkGreaterThanOrEqual(BigInteger left, String leftName, BigInteger right, String rightName) {
         checkBigInteger(Operation.GREATER_THAN_OR_EQUAL, left, leftName, right, rightName);
+    }
+
+    public static void checkGreaterThanOrEqual(BigInteger left, String leftName, BigInteger right) {
+        checkGreaterThanOrEqual(left, leftName, right, null);
     }
 
     public static void checkGreaterThan(byte left, String leftName, byte right, String rightName) {
         checkIntegral(Operation.GREATER_THAN, left, leftName, right, rightName);
     }
 
+    public static void checkGreaterThan(byte left, String leftName, byte right) {
+        checkGreaterThan(left, leftName, right, null);
+    }
+
     public static void checkGreaterThan(char left, String leftName, char right, String rightName) {
         checkIntegral(Operation.GREATER_THAN, left, leftName, right, rightName);
+    }
+
+    public static void checkGreaterThan(char left, String leftName, char right) {
+        checkGreaterThan(left, leftName, right, null);
     }
 
     public static void checkGreaterThan(double left, String leftName, double right, String rightName) {
         checkFloatingPoint(Operation.GREATER_THAN, left, leftName, right, rightName);
     }
 
+    public static void checkGreaterThan(double left, String leftName, double right) {
+        checkGreaterThan(left, leftName, right, null);
+    }
+
     public static void checkGreaterThan(float left, String leftName, float right, String rightName) {
         checkFloatingPoint(Operation.GREATER_THAN, left, leftName, right, rightName);
+    }
+
+    public static void checkGreaterThan(float left, String leftName, float right) {
+        checkGreaterThan(left, leftName, right, null);
     }
 
     public static void checkGreaterThan(int left, String leftName, int right, String rightName) {
         checkIntegral(Operation.GREATER_THAN, left, leftName, right, rightName);
     }
 
+    public static void checkGreaterThan(int left, String leftName, int right) {
+        checkGreaterThan(left, leftName, right, null);
+    }
+
     public static void checkGreaterThan(long left, String leftName, long right, String rightName) {
         checkIntegral(Operation.GREATER_THAN, left, leftName, right, rightName);
+    }
+
+    public static void checkGreaterThan(long left, String leftName, long right) {
+        checkGreaterThan(left, leftName, right, null);
     }
 
     public static void checkGreaterThan(short left, String leftName, short right, String rightName) {
         checkIntegral(Operation.GREATER_THAN, left, leftName, right, rightName);
     }
 
+    public static void checkGreaterThan(short left, String leftName, short right) {
+        checkGreaterThan(left, leftName, right, null);
+    }
+
     public static void checkGreaterThan(BigInteger left, String leftName, BigInteger right, String rightName) {
         checkBigInteger(Operation.GREATER_THAN, left, leftName, right, rightName);
+    }
+
+    public static void checkGreaterThan(BigInteger left, String leftName, BigInteger right) {
+        checkGreaterThan(left, leftName, right, null);
     }
 
     private static void checkIntegral(
@@ -273,11 +481,18 @@ public final class Arguments {
                 || (operation == Operation.NOT_EQUALS && left == right)
                 || (operation == Operation.GREATER_THAN_OR_EQUAL && left < right)
                 || (operation == Operation.GREATER_THAN && left <= right)) {
-            final String msg = String.format(
-                    "%s (=%d) %s %s (=%d) not allowed!",
-                    leftName, left, OPERATION_STRING_MAP.get(operation), rightName, right);
+            if (rightName == null) {
+                final String msg = String.format(
+                        "%s (=%d) %s %d not allowed!", leftName, left, OPERATION_STRING_MAP.get(operation), right);
 
-            throw new IllegalArgumentException(msg);
+                throw new IllegalArgumentException(msg);
+            } else {
+                final String msg = String.format(
+                        "%s (=%d) %s %s (=%d) not allowed!",
+                        leftName, left, OPERATION_STRING_MAP.get(operation), rightName, right);
+
+                throw new IllegalArgumentException(msg);
+            }
         }
     }
 
@@ -293,11 +508,18 @@ public final class Arguments {
                 || (operation == Operation.NOT_EQUALS && left == right)
                 || (operation == Operation.GREATER_THAN_OR_EQUAL && left < right)
                 || (operation == Operation.GREATER_THAN && left <= right)) {
-            final String msg = String.format(
-                    "%s (=%f) %s %s (=%f) not allowed!",
-                    leftName, left, OPERATION_STRING_MAP.get(operation), rightName, right);
+            if (rightName == null) {
+                final String msg = String.format(
+                        "%s (=%f) %s %f not allowed!", leftName, left, OPERATION_STRING_MAP.get(operation), right);
 
-            throw new IllegalArgumentException(msg);
+                throw new IllegalArgumentException(msg);
+            } else {
+                final String msg = String.format(
+                        "%s (=%f) %s %s (=%f) not allowed!",
+                        leftName, left, OPERATION_STRING_MAP.get(operation), rightName, right);
+
+                throw new IllegalArgumentException(msg);
+            }
         }
     }
 
@@ -307,6 +529,12 @@ public final class Arguments {
             final String leftName,
             final BigInteger right,
             final String rightName) {
+        if ((operation == Operation.EQUALS || operation == Operation.NOT_EQUALS) && (left == null || right == null)) {
+            checkObjectEquals(operation, left, leftName, right, rightName);
+
+            return;
+        }
+
         final int result = left.compareTo(right);
 
         if ((operation == Operation.LESS_THAN && result >= 0)
@@ -315,11 +543,18 @@ public final class Arguments {
                 || (operation == Operation.NOT_EQUALS && result == 0)
                 || (operation == Operation.GREATER_THAN_OR_EQUAL && result < 0)
                 || (operation == Operation.GREATER_THAN && result <= 0)) {
-            final String msg = String.format(
-                    "%s (=%s) %s %s (=%s) not allowed!",
-                    leftName, left, OPERATION_STRING_MAP.get(operation), rightName, right);
+            if (rightName == null) {
+                final String msg = String.format(
+                        "%s (=%s) %s %s not allowed!", leftName, left, OPERATION_STRING_MAP.get(operation), right);
 
-            throw new IllegalArgumentException(msg);
+                throw new IllegalArgumentException(msg);
+            } else {
+                final String msg = String.format(
+                        "%s (=%s) %s %s (=%s) not allowed!",
+                        leftName, left, OPERATION_STRING_MAP.get(operation), rightName, right);
+
+                throw new IllegalArgumentException(msg);
+            }
         }
     }
 
@@ -354,11 +589,18 @@ public final class Arguments {
         final boolean equals = (left == null && right == null) || (left != null && left.equals(right));
 
         if ((operation == Operation.EQUALS && !equals) || (operation == Operation.NOT_EQUALS && equals)) {
-            final String msg = String.format(
-                    "%s (=%s) %s %s (=%s) not allowed!",
-                    leftName, left, OPERATION_STRING_MAP.get(operation), rightName, right);
+            if (rightName == null) {
+                final String msg = String.format(
+                        "%s (=%s) %s %s not allowed!", leftName, left, OPERATION_STRING_MAP.get(operation), right);
 
-            throw new IllegalArgumentException(msg);
+                throw new IllegalArgumentException(msg);
+            } else {
+                final String msg = String.format(
+                        "%s (=%s) %s %s (=%s) not allowed!",
+                        leftName, left, OPERATION_STRING_MAP.get(operation), rightName, right);
+
+                throw new IllegalArgumentException(msg);
+            }
         }
     }
 
