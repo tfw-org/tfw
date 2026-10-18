@@ -433,6 +433,10 @@ final class ArgumentsTest {
         Arguments.checkNotEquals(Float.NEGATIVE_INFINITY, LEFT, Float.POSITIVE_INFINITY, RIGHT);
         Arguments.checkGreaterThanOrEqual(ZERO_FLOAT, LEFT, ZERO_FLOAT, RIGHT);
         Arguments.checkGreaterThan(ONE_FLOAT, LEFT, ZERO_FLOAT, RIGHT);
+    }
+
+    @Test
+    void floatSuccessConstantTest() {
         Arguments.checkLessThan(ZERO_FLOAT, LEFT, ONE_FLOAT);
         Arguments.checkLessThanOrEqual(ZERO_FLOAT, LEFT, ZERO_FLOAT);
         Arguments.checkEquals(ZERO_FLOAT, LEFT, ZERO_FLOAT);
@@ -519,6 +523,10 @@ final class ArgumentsTest {
         assertThatThrownBy(() -> Arguments.checkEquals(Float.NEGATIVE_INFINITY, LEFT, Float.NaN, RIGHT))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("left (=-Infinity) != right (=NaN) not allowed!");
+    }
+
+    @Test
+    void floatFailureConstantNanTest() {
         assertThatThrownBy(() -> Arguments.checkEquals(Float.NaN, LEFT, ONE_FLOAT))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("left (=NaN) != 1.000000 not allowed!");
@@ -570,6 +578,10 @@ final class ArgumentsTest {
         assertThatThrownBy(() -> Arguments.checkEquals(Float.NEGATIVE_INFINITY, LEFT, Float.POSITIVE_INFINITY, RIGHT))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("left (=-Infinity) != right (=Infinity) not allowed!");
+    }
+
+    @Test
+    void floatFailureInfinityConstantTest() {
         assertThatThrownBy(() -> Arguments.checkNotEquals(Float.POSITIVE_INFINITY, LEFT, Float.POSITIVE_INFINITY))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("left (=Infinity) == Infinity not allowed!");
@@ -619,6 +631,10 @@ final class ArgumentsTest {
         Arguments.checkNotEquals(Double.NEGATIVE_INFINITY, LEFT, Double.POSITIVE_INFINITY, RIGHT);
         Arguments.checkGreaterThanOrEqual(ZERO_DOUBLE, LEFT, ZERO_DOUBLE, RIGHT);
         Arguments.checkGreaterThan(ONE_DOUBLE, LEFT, ZERO_DOUBLE, RIGHT);
+    }
+
+    @Test
+    void doubleSuccessConstantTest() {
         Arguments.checkLessThan(ZERO_DOUBLE, LEFT, ONE_DOUBLE);
         Arguments.checkLessThanOrEqual(ZERO_DOUBLE, LEFT, ZERO_DOUBLE);
         Arguments.checkEquals(ZERO_DOUBLE, LEFT, ZERO_DOUBLE);
@@ -705,6 +721,10 @@ final class ArgumentsTest {
         assertThatThrownBy(() -> Arguments.checkEquals(Double.NaN, LEFT, Double.NaN, RIGHT))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("left (=NaN) != right (=NaN) not allowed!");
+    }
+
+    @Test
+    void doubleFailureNanConstantTest() {
         assertThatThrownBy(() -> Arguments.checkEquals(Double.NaN, LEFT, ONE_FLOAT))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("left (=NaN) != 1.000000 not allowed!");
@@ -756,6 +776,10 @@ final class ArgumentsTest {
         assertThatThrownBy(() -> Arguments.checkEquals(Double.NEGATIVE_INFINITY, LEFT, Double.POSITIVE_INFINITY, RIGHT))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("left (=-Infinity) != right (=Infinity) not allowed!");
+    }
+
+    @Test
+    void doubleFailureInfinityConstantTest() {
         assertThatThrownBy(() -> Arguments.checkNotEquals(Double.POSITIVE_INFINITY, LEFT, Double.POSITIVE_INFINITY))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("left (=Infinity) == Infinity not allowed!");
@@ -829,6 +853,10 @@ final class ArgumentsTest {
         assertThatThrownBy(() -> Arguments.checkNotEquals(NULL_OBJECT, LEFT, NULL_OBJECT, RIGHT))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageMatching("left \\(=null\\) == right \\(=null\\) not allowed!");
+    }
+
+    @Test
+    void objectFailureConstantTest() {
         assertThatThrownBy(() -> Arguments.checkEquals(ZERO_OBJECT, LEFT, ONE_OBJECT))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageMatching(
