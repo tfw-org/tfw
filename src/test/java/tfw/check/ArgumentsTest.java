@@ -3,6 +3,9 @@ package tfw.check;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.math.BigInteger;
+import java.util.Locale;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 final class ArgumentsTest {
@@ -25,6 +28,19 @@ final class ArgumentsTest {
     private static final Object ZERO_OBJECT = new Object();
     private static final Object ONE_OBJECT = new Object();
     private static final Object NULL_OBJECT = null;
+
+    private static Locale defaultLocale;
+
+    @BeforeAll
+    static void beforeAll() {
+        defaultLocale = Locale.getDefault();
+        Locale.setDefault(Locale.US);
+    }
+
+    @AfterAll
+    static void afterAll() {
+        Locale.setDefault(defaultLocale);
+    }
 
     @Test
     void booleanSuccessTest() {
@@ -356,6 +372,8 @@ final class ArgumentsTest {
 
     @Test
     void bigIntegerSuccessTest() {
+        final BigInteger nullValue = null;
+
         Arguments.checkLessThan(BigInteger.ZERO, LEFT, BigInteger.ONE, RIGHT);
         Arguments.checkLessThanOrEqual(BigInteger.ZERO, LEFT, BigInteger.ZERO, RIGHT);
         Arguments.checkEquals(BigInteger.ZERO, LEFT, BigInteger.ZERO, RIGHT);
@@ -368,10 +386,18 @@ final class ArgumentsTest {
         Arguments.checkNotEquals(BigInteger.ZERO, LEFT, BigInteger.ONE);
         Arguments.checkGreaterThanOrEqual(BigInteger.ZERO, LEFT, BigInteger.ZERO);
         Arguments.checkGreaterThan(BigInteger.ONE, LEFT, BigInteger.ZERO);
+        Arguments.checkEquals(nullValue, LEFT, nullValue);
+        Arguments.checkNotEquals(nullValue, LEFT, BigInteger.ZERO);
+        Arguments.checkNotEquals(BigInteger.ZERO, LEFT, nullValue);
+        Arguments.checkEquals(nullValue, LEFT, nullValue, RIGHT);
+        Arguments.checkNotEquals(nullValue, LEFT, BigInteger.ZERO, RIGHT);
+        Arguments.checkNotEquals(BigInteger.ZERO, LEFT, nullValue, RIGHT);
     }
 
     @Test
     void bigIntegerFailureTest() {
+        final BigInteger nullValue = null;
+
         assertThatThrownBy(() -> Arguments.checkLessThan(BigInteger.ZERO, LEFT, BigInteger.ZERO, RIGHT))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("left (=0) >= right (=0) not allowed!");
@@ -408,6 +434,24 @@ final class ArgumentsTest {
         assertThatThrownBy(() -> Arguments.checkGreaterThan(BigInteger.ZERO, LEFT, BigInteger.ZERO))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("left (=0) <= 0 not allowed!");
+        assertThatThrownBy(() -> Arguments.checkEquals(nullValue, LEFT, BigInteger.ZERO))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("left (=null) != 0 not allowed!");
+        assertThatThrownBy(() -> Arguments.checkEquals(BigInteger.ZERO, LEFT, nullValue))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("left (=0) != null not allowed!");
+        assertThatThrownBy(() -> Arguments.checkNotEquals(nullValue, LEFT, nullValue))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("left (=null) == null not allowed!");
+        assertThatThrownBy(() -> Arguments.checkEquals(nullValue, LEFT, BigInteger.ZERO, RIGHT))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("left (=null) != right (=0) not allowed!");
+        assertThatThrownBy(() -> Arguments.checkEquals(BigInteger.ZERO, LEFT, nullValue, RIGHT))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("left (=0) != right (=null) not allowed!");
+        assertThatThrownBy(() -> Arguments.checkNotEquals(nullValue, LEFT, nullValue, RIGHT))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("left (=null) == right (=null) not allowed!");
     }
 
     @Test

@@ -529,6 +529,12 @@ public final class Arguments {
             final String leftName,
             final BigInteger right,
             final String rightName) {
+        if ((operation == Operation.EQUALS || operation == Operation.NOT_EQUALS) && (left == null || right == null)) {
+            checkObjectEquals(operation, left, leftName, right, rightName);
+
+            return;
+        }
+
         final int result = left.compareTo(right);
 
         if ((operation == Operation.LESS_THAN && result >= 0)
