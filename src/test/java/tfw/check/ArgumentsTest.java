@@ -416,6 +416,21 @@ final class ArgumentsTest {
         assertThatThrownBy(() -> Arguments.checkGreaterThan(BigInteger.ZERO, LEFT, BigInteger.ZERO, RIGHT))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("left (=0) <= right (=0) not allowed!");
+        assertThatThrownBy(() -> Arguments.checkEquals(nullValue, LEFT, BigInteger.ZERO, RIGHT))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("left (=null) != right (=0) not allowed!");
+        assertThatThrownBy(() -> Arguments.checkEquals(BigInteger.ZERO, LEFT, nullValue, RIGHT))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("left (=0) != right (=null) not allowed!");
+        assertThatThrownBy(() -> Arguments.checkNotEquals(nullValue, LEFT, nullValue, RIGHT))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("left (=null) == right (=null) not allowed!");
+    }
+
+    @Test
+    void bigIntegerFailureConstantTest() {
+        final BigInteger nullValue = null;
+
         assertThatThrownBy(() -> Arguments.checkLessThan(BigInteger.ZERO, LEFT, BigInteger.ZERO))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("left (=0) >= 0 not allowed!");
@@ -443,15 +458,6 @@ final class ArgumentsTest {
         assertThatThrownBy(() -> Arguments.checkNotEquals(nullValue, LEFT, nullValue))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("left (=null) == null not allowed!");
-        assertThatThrownBy(() -> Arguments.checkEquals(nullValue, LEFT, BigInteger.ZERO, RIGHT))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("left (=null) != right (=0) not allowed!");
-        assertThatThrownBy(() -> Arguments.checkEquals(BigInteger.ZERO, LEFT, nullValue, RIGHT))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("left (=0) != right (=null) not allowed!");
-        assertThatThrownBy(() -> Arguments.checkNotEquals(nullValue, LEFT, nullValue, RIGHT))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("left (=null) == right (=null) not allowed!");
     }
 
     @Test
