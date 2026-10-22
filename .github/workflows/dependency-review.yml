@@ -3,6 +3,11 @@ name: 'Dependency Review'
 on:
   pull_request:
 
+# Cancel outdated dependency reviews for the same PR.
+concurrency:
+  group: ${{ github.workflow }}-pr-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
   pull-requests: write # Required if you want PR summaries/comments
@@ -33,5 +38,5 @@ jobs:
           # Optional: Wait slightly if you suspect race conditions, 
           # but usually the push workflow finishes before PR checks start.
           retry-on-snapshot-warnings: true
-          retry-on-snapshot-warnings-timeout: 180
+          retry-on-snapshot-warnings-timeout: 600
           
