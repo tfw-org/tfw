@@ -12,7 +12,7 @@ class CharIbaFromArrayTest {
     void parameterTest() {
         assertThatThrownBy(() -> CharIbaFromArray.create(null))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("array == null not allowed!");
+                .hasMessage("array (=null) == null not allowed!");
     }
 
     @Test
