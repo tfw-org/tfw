@@ -93,7 +93,13 @@ jobs:
         # Generate Javadoc for the released source.
         rm -rf target/reports/apidocs
 
-        mvn -B \
+        if [ -x ./mvnw ]; then
+          MVN=./mvnw
+        else
+          MVN=mvn
+        fi
+
+        "$MVN" -B \
           javadoc:javadoc \
           -DoutputDirectory=target/reports/apidocs \
           -Ddoclint=none \
