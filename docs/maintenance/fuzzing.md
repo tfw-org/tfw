@@ -82,14 +82,14 @@ ls -lh out/tfw.jar
 Run the build script from the TFW repository root:
 
 ```bash
-./scripts/compile_fuzzers.sh
+./bin/compile_fuzzers.sh
 ```
 
 The script starts the OSS-Fuzz JVM container, compiles the Java fuzzing sources against the TFW JAR and Jazzer API, copies the required Jazzer runtime files, and creates an executable wrapper for each discovered fuzzer.
 
 The resulting fuzzer executables are placed in `out/`. The script discovers fuzzer source files by their `*Fuzzer.java` names, so the list of fuzzers does not need to be maintained manually.
 
-See [`scripts/compile_fuzzers.sh`](../../scripts/compile_fuzzers.sh) for the implementation.
+See [`bin/compile_fuzzers.sh`](../../bin/compile_fuzzers.sh) for the implementation.
 
 ## 6. Run a fuzzer
 
