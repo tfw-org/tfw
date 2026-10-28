@@ -2,7 +2,7 @@
 
 This guide describes the standard workflow for developing and validating changes to TFW. It is intended for contributors working on the TFW source repository.
 
-For release and publishing procedures, see [Releasing](releasing.md). For fuzzing-specific workflows, see [Fuzzing](fuzzing.md).
+For release and publishing procedures, see [Deployment](deployment.md). For fuzzing-specific workflows, see [Fuzzing](fuzzing.md).
 
 ## Development environment
 
