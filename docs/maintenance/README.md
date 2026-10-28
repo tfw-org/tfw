@@ -10,7 +10,7 @@ The guides complement the user documentation: they explain how to work on the fr
 
 Development practices and workflows for making changes to TFW, including building the project, running tests, and following the project's development conventions.
 
-### [Releasing](releasing.md)
+### [Releasing](deployment.md)
 
 The release process for TFW, including version preparation, publishing artifacts to Maven Central, and verifying the results of a release.
 
