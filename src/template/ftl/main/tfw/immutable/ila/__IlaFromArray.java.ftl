@@ -9,6 +9,20 @@ public final class ${NAME}IlaFromArray {
         // non-instantiable class
     }
 
+    /**
+     * Creates an immutable array backed by the specified array.
+     *
+     * <p>The supplied array is not copied. Ownership of the array is transferred
+     * to the returned ILA, allowing the ILA to use the array directly without
+     * the overhead of copying it. The caller must not access or modify the
+     * array after this method returns.
+     *
+     * <p>If the caller needs to retain and use the original array, a clone
+     * should be passed instead.
+     *
+     * @param array the array whose ownership is transferred to the returned ILA
+     * @return an ILA backed by the supplied array
+     */
     public static ${TEMPLATE_SPACE}${NAME}Ila${TEMPLATE} create(${TYPE_OR_TEMPLATE}[] array) {
         Argument.assertNotNull(array, "array");
 

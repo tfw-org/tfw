@@ -109,6 +109,26 @@ The logical source position is a `long`, while the number of values transferred 
 
 For example, a consumer can retrieve a section of a large ILA into a suitably sized destination array, process it, and then retrieve another section. The consumer need not allocate a destination array as large as the complete logical ILA.
 
+### Ownership transfer and immutable implementations
+
+Some immutable implementations can avoid copying data by taking ownership of objects or data structures supplied by the caller. This can improve performance by avoiding the time and memory costs of defensive copies.
+
+When an API documents that it takes ownership of a supplied object, the caller must no longer modify or otherwise use that object as independently owned data after passing it to the API. The immutable implementation may retain and use the supplied object directly.
+
+For example, the array-backed ILA implementations use the supplied Java array as their backing storage without copying it:
+
+```java
+int[] original = getValues();
+
+// Transfer ownership of the array to the ILA.
+IntIla ila = IntIlaFromArray.create(original);
+
+// Alternatively, retain the original array by passing a clone.
+IntIla independentIla = IntIlaFromArray.create(original.clone());
+```
+
+The same principle applies to other immutable implementations that document ownership transfer. When using these APIs, consult their documentation to determine whether supplied objects are copied or retained directly.
+
 The underlying implementation determines how requested values are obtained. They might be read from memory, retrieved from another source, calculated, or delegated to another immutable array.
 
 ## Immutable Big Integer Arrays (IBA)
