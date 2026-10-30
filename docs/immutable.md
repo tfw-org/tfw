@@ -44,6 +44,18 @@ The library provides type-specific interfaces for primitive values and objects. 
 
 For primitive types, specialized interfaces can avoid the boxing and unboxing that a generic object-based design might require. They also make the types of values being read and written explicit in the API. The actual performance benefit depends on the implementation and usage pattern.
 
+### Consistent support for ten data types
+
+The immutable packages follow a consistent design across ten data types:
+
+- **Eight Java primitive types:** `boolean`, `byte`, `char`, `short`, `int`, `long`, `float`, and `double`.
+- **Generic objects:** values of a reference type.
+- **Bits:** bit data represented within primitive `long` values.
+
+This pattern is used across the relevant immutable abstractions and their factory packages. For example, ILA and its factory counterpart, ILAF, provide the long-indexed array abstraction and factories for these data types; IBA provides the corresponding abstraction for arrays indexed using `BigInteger`.
+
+The consistent type coverage makes it easier to apply the same design concepts across different data types and immutable abstractions.
+
 ### Minimal interfaces
 
 The core interfaces are intentionally small. They describe the essential operations needed to access the data rather than attempting to expose every capability that an implementation might support.
@@ -71,6 +83,10 @@ Additional caching should not be assumed to improve performance. The recommended
 ## Immutable Long Arrays (ILA)
 
 The `tfw.immutable.ila` package provides the Immutable Long Array abstraction, or **ILA**.
+
+The word *Long* refers to the type used for the array's logical length and indexing, not the type of values it contains. An ILA uses `long` for its logical length and positions, while specialized interfaces determine the element type. For example, `IntIla` represents an ILA containing `int` values, and `LongIla` represents one containing `long` values.
+
+For logical lengths and indices that exceed the range of `long`, TFW provides the Immutable Big Integer Array abstraction (IBA), which uses `BigInteger` for its logical length and indexing.
 
 An ILA represents a logical sequence of values indexed using `long`. The library includes type-specific interfaces for primitive values and objects, including implementations for values such as `int`, `long`, `double`, and other Java primitive types.
 
@@ -243,16 +259,14 @@ Implementing a new immutable data source is a separate matter. Correctly handlin
 
 The library provides adapters that allow certain ILA implementations to be consumed through the Java Stream API.
 
-Adapters are available for:
+The supported stream types correspond to the types defined by Java in `java.util.stream`:
 
-- Object-valued ILAs through Java object streams.
-- `IntIla` through `IntStream`.
-- `LongIla` through `LongStream`.
-- `DoubleIla` through `DoubleStream`.
+- `Stream<T>` for object values.
+- `IntStream` for `int` values.
+- `LongStream` for `long` values.
+- `DoubleStream` for `double` values.
 
-These adapters make it possible to use familiar Java Stream operations with the supported immutable arrays. They provide an integration path rather than replacing the underlying immutable-array interfaces.
-
-Java Stream adapters are not provided for every primitive ILA type, so availability should be checked for the particular type and adapter needed.
+The adapters reflect the stream types Java provides; they are not an arbitrary selection of ILA element types. They make it possible to use familiar Java Stream operations with supported immutable arrays, while retaining the underlying immutable-array interfaces as a separate way to access the data.
 
 ## Choosing an abstraction
 
