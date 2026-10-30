@@ -1,6 +1,19 @@
 #!/bin/bash
 
-docker run --rm   -v "$PWD":/work/tfw   -v "$PWD/out":/work/out   -v "$PWD/work":/work/work   -e SRC=/work   -e OUT=/work/out   -e WORK=/work/work   -e JAZZER_API_PATH=/usr/local/lib/jazzer_api_deploy.jar   -w /work/tfw   gcr.io/oss-fuzz-base/base-builder-jvm   bash -c '
+mkdir -p "$PWD/work" "$PWD/out"
+
+# The build uses shared work and output directories, so serialize invocations.
+flock "$PWD/work/compile_fuzzers.lock" docker run --rm \
+    -v "$PWD":/work/tfw \
+    -v "$PWD/out":/work/out \
+    -v "$PWD/work":/work/work \
+    -e SRC=/work \
+    -e OUT=/work/out \
+    -e WORK=/work/work \
+    -e JAZZER_API_PATH=/usr/local/lib/jazzer_api_deploy.jar \
+    -w /work/tfw \
+    gcr.io/oss-fuzz-base/base-builder-jvm \
+    bash -c '
     set -e
 
     FUZZ_SRC="$SRC/tfw/src/fuzz/java"
