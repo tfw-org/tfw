@@ -20,6 +20,7 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <plugin.cyclonedx-maven-plugin.version>2.9.3</plugin.cyclonedx-maven-plugin.version>
+        <plugin.duplicate-finder-maven-plugin.version>2.0.1</plugin.duplicate-finder-maven-plugin.version>
         <plugin.error-prone-contrib.version>0.30.0</plugin.error-prone-contrib.version>
         <plugin.error_prone_core.version>2.50.0</plugin.error_prone_core.version>
         <plugin.errorprone-slf4j.version>0.1.29</plugin.errorprone-slf4j.version>
@@ -377,6 +378,31 @@
                         <version>${plugin.maven-surefire-junit5-tree-reporter.version}</version>
                     </dependency>
                 </dependencies>
+            </plugin>
+            <plugin>
+                <groupId>org.basepom.maven</groupId>
+                <artifactId>duplicate-finder-maven-plugin</artifactId>
+                <version>${plugin.duplicate-finder-maven-plugin.version}</version>
+                <configuration>
+                    <checkCompileClasspath>true</checkCompileClasspath>
+                    <checkRuntimeClasspath>true</checkRuntimeClasspath>
+                    <checkTestClasspath>true</checkTestClasspath>
+                    <failBuildInCaseOfDifferentContentConflict>true</failBuildInCaseOfDifferentContentConflict>
+                    <failBuildInCaseOfEqualContentConflict>false</failBuildInCaseOfEqualContentConflict>
+                    <failBuildInCaseOfConflict>false</failBuildInCaseOfConflict>
+                    <printEqualFiles>false</printEqualFiles>
+                    <useDefaultClassIgnoreList>true</useDefaultClassIgnoreList>
+                    <useDefaultResourceIgnoreList>true</useDefaultResourceIgnoreList>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>check-duplicates</id>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                        <phase>verify</phase>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
