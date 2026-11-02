@@ -218,14 +218,39 @@ final class InitiatorTest {
 
     @Test
     void invalidArgumentTest() {
-        final List<EventChannelConfig<?>> eventChannelConfigList = null;
+        final List<EventChannelConfig<?>> nullEventChannelConfigList = null;
 
         assertThatThrownBy(() -> Initiator.builder()
                         .setName("testInitiator")
-                        .addEventChannelConfigs(eventChannelConfigList)
+                        .addEventChannelConfigs(nullEventChannelConfigList)
                         .build())
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("eventChannelConfigs (=null) == null not allowed!");
+
+        final List<EventChannelConfig<?>> duplicateEventChannelConfigList = new ArrayList<>();
+        final EventChannelConfig<?> eventChannelConfig =
+                new DefaultEventChannelConfig<ObjectECD>(new ObjectECD("test"), DotEqualsRule.RULE, new Object(), null);
+
+        duplicateEventChannelConfigList.add(eventChannelConfig);
+        duplicateEventChannelConfigList.add(eventChannelConfig);
+
+        assertThatThrownBy(() -> Initiator.builder()
+                        .setName("testInitiator")
+                        .addEventChannelConfigs(duplicateEventChannelConfigList)
+                        .build())
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Duplicate ECD = test");
+
+        final List<EventChannelConfig<?>> hasNullEventChannelConfigList = new ArrayList<>();
+
+        hasNullEventChannelConfigList.add(null);
+
+        assertThatThrownBy(() -> Initiator.builder()
+                        .setName("testInitiator")
+                        .addEventChannelConfigs(hasNullEventChannelConfigList)
+                        .build())
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("eventChannelConfig (=null) == null not allowed!");
     }
 
     @Test

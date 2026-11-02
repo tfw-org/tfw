@@ -286,6 +286,7 @@ public class Initiator extends TreeComponent {
         private String name = null;
         private List<EventChannelDescription> eventChannelDescriptions = new ArrayList<>();
         private StateQueueFactory stateQueueFactory = new DefaultStateQueueFactory();
+        private List<List<EventChannelConfig<?>>> eventChannelConfigLists = new ArrayList<>();
 
         InitiatorBuilder() {}
 
@@ -302,11 +303,7 @@ public class Initiator extends TreeComponent {
         }
 
         public InitiatorBuilder addEventChannelConfigs(final List<EventChannelConfig<?>> eventChannelConfigs) {
-            Arguments.checkNotNull(eventChannelConfigs, "eventChannelConfigs");
-
-            for (EventChannelConfig<?> eventChannelConfig : eventChannelConfigs) {
-                eventChannelDescriptions.add(eventChannelConfig.getEventChannelDescription());
-            }
+            eventChannelConfigLists.add(eventChannelConfigs);
 
             return this;
         }
@@ -319,6 +316,23 @@ public class Initiator extends TreeComponent {
 
         public Initiator build() {
             Argument.assertNotNull(name, "name");
+
+            for (List<EventChannelConfig<?>> eventChannelConfigs : eventChannelConfigLists) {
+                Arguments.checkNotNull(eventChannelConfigs, "eventChannelConfigs");
+
+                for (EventChannelConfig<?> eventChannelConfig : eventChannelConfigs) {
+                    Arguments.checkNotNull(eventChannelConfig, "eventChannelConfig");
+
+                    final EventChannelDescription ecd = eventChannelConfig.getEventChannelDescription();
+
+                    if (eventChannelDescriptions.contains(ecd)) {
+                        throw new IllegalArgumentException("Duplicate ECD = " + ecd.getEventChannelName());
+                    }
+
+                    eventChannelDescriptions.add(eventChannelConfig.getEventChannelDescription());
+                }
+            }
+
             Argument.assertGreaterThan(eventChannelDescriptions.size(), 0, "eventChannelDescriptions.size()");
 
             final EventChannelDescription[] ecds =
