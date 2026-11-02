@@ -3,6 +3,7 @@ package tfw.tsm;
 import java.util.ArrayList;
 import java.util.List;
 import tfw.check.Argument;
+import tfw.check.Arguments;
 import tfw.tsm.ecd.EventChannelDescription;
 import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.StatelessTriggerECD;
@@ -301,6 +302,8 @@ public class Initiator extends TreeComponent {
         }
 
         public InitiatorBuilder addEventChannelConfigs(final List<EventChannelConfig<?>> eventChannelConfigs) {
+            Arguments.checkNotNull(eventChannelConfigs, "eventChannelConfigs");
+
             for (EventChannelConfig<?> eventChannelConfig : eventChannelConfigs) {
                 eventChannelDescriptions.add(eventChannelConfig.getEventChannelDescription());
             }

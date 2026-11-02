@@ -217,6 +217,18 @@ final class InitiatorTest {
     }
 
     @Test
+    void invalidArgumentTest() {
+        final List<EventChannelConfig<?>> eventChannelConfigList = null;
+
+        assertThatThrownBy(() -> Initiator.builder()
+                        .setName("testInitiator")
+                        .addEventChannelConfigs(eventChannelConfigList)
+                        .build())
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("eventChannelConfigs (=null) == null not allowed!");
+    }
+
+    @Test
     void addEventChannelConfigsTest() {
         final List<EventChannelConfig<?>> eventChannelConfigList = new ArrayList<>();
         final EventChannelConfig<?> eventChannelConfig =
@@ -229,6 +241,6 @@ final class InitiatorTest {
                 .addEventChannelConfigs(eventChannelConfigList)
                 .build();
 
-        assertThat(new InitiatorProxy(initiator).getSourceProxies().length).isEqualTo(1);
+        assertThat(new InitiatorProxy(initiator).getSourceProxies()).hasSize(1);
     }
 }

@@ -2,6 +2,7 @@ package tfw.tsm;
 
 import java.util.List;
 import tfw.check.Argument;
+import tfw.check.Arguments;
 
 /**
  * The framework uses a tree metaphor to describe its hierarchical
@@ -71,6 +72,8 @@ public class Branch extends BranchComponent {
     }
 
     public Branch add(final List<ComponentConfig<?>> componentConfigs) {
+        Arguments.checkNotNull(componentConfigs, "componentConfigs");
+
         for (ComponentConfig<?> componentConfig : componentConfigs) {
             add(componentConfig.getComponent());
         }
@@ -79,6 +82,8 @@ public class Branch extends BranchComponent {
     }
 
     public Branch remove(final List<ComponentConfig<?>> componentConfigs) {
+        Arguments.checkNotNull(componentConfigs, "componentConfigs");
+
         for (ComponentConfig<?> componentConfig : componentConfigs) {
             remove(componentConfig.getComponent());
         }
