@@ -300,6 +300,14 @@ public class Initiator extends TreeComponent {
             return this;
         }
 
+        public InitiatorBuilder addEventChannelConfigs(final List<EventChannelConfig<?>> eventChannelConfigs) {
+            for (EventChannelConfig<?> eventChannelConfig : eventChannelConfigs) {
+                eventChannelDescriptions.add(eventChannelConfig.getEventChannelDescription());
+            }
+
+            return this;
+        }
+
         public InitiatorBuilder setStateQueueFactory(final StateQueueFactory stateQueueFactory) {
             this.stateQueueFactory = stateQueueFactory;
 

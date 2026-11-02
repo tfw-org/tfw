@@ -2,7 +2,10 @@ package tfw.tsm;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.junit.jupiter.api.Test;
+import tfw.tsm.ecd.ObjectECD;
 
 final class RootTest {
     @Test
@@ -30,5 +33,41 @@ final class RootTest {
                 .build();
 
         assertThat(root.getName()).isEqualTo("test");
+    }
+
+    @Test
+    void testAddComponentEnumList() throws Exception {
+        final CheckDependencies checkDependencies = new DefaultCheckDependencies();
+        final BasicTransactionQueue transactionQueue = new BasicTransactionQueue();
+        final TransactionExceptionHandler transactionExceptionHandler = new TestTransactionExceptionHandler();
+        final ObjectECD objectECD = new ObjectECD("test");
+        final Initiator initiator = Initiator.builder()
+                .setName("testInitiator")
+                .addEventChannelDescription(objectECD)
+                .build();
+        final List<ComponentConfig<?>> componentConfigList = new ArrayList<>();
+
+        componentConfigList.add(new DefaultComponentConfig<>(initiator));
+        assertThat(componentConfigList.size()).isEqualTo(1);
+
+        final Root root = Root.builder()
+                .setName("test")
+                .setTransactionQueue(transactionQueue)
+                .setCheckDependencies(new DefaultCheckDependencies())
+                .setTransactionExceptionHandler(transactionExceptionHandler)
+                .setCheckDependencies(checkDependencies)
+                .addEventChannel(objectECD, DotEqualsRule.RULE, new Object(), null)
+                .build();
+        final Branch addRoot = root.add(componentConfigList);
+
+        transactionQueue.waitTilEmpty();
+        assertThat(addRoot).isEqualTo(root);
+        assertThat(new RootProxy(root).getChildProxies().length).isEqualTo(1);
+
+        final Branch removeRoot = root.remove(componentConfigList);
+
+        transactionQueue.waitTilEmpty();
+        assertThat(removeRoot).isEqualTo(root);
+        assertThat(new RootProxy(root).getChildProxies().length).isEqualTo(0);
     }
 }

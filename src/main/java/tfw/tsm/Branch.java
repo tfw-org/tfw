@@ -1,5 +1,6 @@
 package tfw.tsm;
 
+import java.util.List;
 import tfw.check.Argument;
 
 /**
@@ -67,6 +68,22 @@ public class Branch extends BranchComponent {
         Argument.assertNotNull(branchBox, "branchBox");
 
         removeChild(branchBox.getBranch());
+    }
+
+    public Branch add(final List<ComponentConfig<?>> componentConfigs) {
+        for (ComponentConfig<?> componentConfig : componentConfigs) {
+            add(componentConfig.getComponent());
+        }
+
+        return this;
+    }
+
+    public Branch remove(final List<ComponentConfig<?>> componentConfigs) {
+        for (ComponentConfig<?> componentConfig : componentConfigs) {
+            remove(componentConfig.getComponent());
+        }
+
+        return this;
     }
 
     public final synchronized void removeAll() {

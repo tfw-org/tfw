@@ -3,6 +3,8 @@ package tfw.tsm;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.Test;
 import tfw.tsm.ecd.ObjectECD;
@@ -212,5 +214,21 @@ final class InitiatorTest {
         public void debugCommit() {
             debugCommitState = this.get();
         }
+    }
+
+    @Test
+    void addEventChannelConfigsTest() {
+        final List<EventChannelConfig<?>> eventChannelConfigList = new ArrayList<>();
+        final EventChannelConfig<?> eventChannelConfig =
+                new DefaultEventChannelConfig<>(new ObjectECD("test"), DotEqualsRule.RULE, new Object(), null);
+
+        eventChannelConfigList.add(eventChannelConfig);
+
+        Initiator initiator = Initiator.builder()
+                .setName("testInitiator")
+                .addEventChannelConfigs(eventChannelConfigList)
+                .build();
+
+        assertThat(new InitiatorProxy(initiator).getSourceProxies().length).isEqualTo(1);
     }
 }
