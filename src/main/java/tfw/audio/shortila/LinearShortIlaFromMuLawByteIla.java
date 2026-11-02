@@ -50,13 +50,13 @@ public final class LinearShortIlaFromMuLawByteIla {
                  * available from the following location:
                  * ftp://svr-ftp.eng.cam.ac.uk/pub/comp.speech/coding/G711_G721_G723.tar.gz
                  */
-                int u_val = ~bi.next();
+                int muLawValue = ~bi.next();
 
-                int t = ((u_val & QUANT_MASK) << 3) + BIAS;
+                int t = ((muLawValue & QUANT_MASK) << 3) + BIAS;
 
-                t <<= (u_val & SEG_MASK) >> SEG_SHIFT;
+                t <<= (muLawValue & SEG_MASK) >> SEG_SHIFT;
 
-                if ((u_val & SIGN_BIT) == 0) {
+                if ((muLawValue & SIGN_BIT) == 0) {
                     array[i] = (short) (t - BIAS);
                 } else {
                     array[i] = (short) (BIAS - t);
