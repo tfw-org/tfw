@@ -91,5 +91,10 @@ public final class CharIlaFromUtf8ByteIla {
             nextCharIndex = start + length;
             nextByteIndex = byteIndex;
         }
+
+        @Override
+        public void close() throws IOException {
+            utf8ByteIla.close();
+        }
     }
 }

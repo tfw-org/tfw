@@ -1,0 +1,15 @@
+{
+    "templateName": "IlaFactoryFromArrayFuzzer.java.ftl",
+    "dataModel": {
+        "typePackage": "objectilaf",
+        "fuzzerClassName": "ObjectIlaFactoryFromArrayFuzzer",
+        "factoryName": "ObjectIlaFactoryFromArray",
+        "ilaPackage": "objectila",
+        "ilaType": "ObjectIla<String>",
+        "arrayType": "String[]",
+        "arrayTypeCreation": "String[length]",
+        "factoryExpression": "array -> ObjectIlaFactoryFromArray.<String>create(array).create()",
+        "initializationKind": "object",
+        "equalityKind": "object"
+    }
+}

@@ -34,6 +34,11 @@ public final class ShortIlaNegate {
                 array[ii] = (short) -array[ii];
             }
         }
+
+        @Override
+        protected void closeImpl() throws IOException {
+            ila.close();
+        }
     }
 }
 // AUTO GENERATED FROM TEMPLATE

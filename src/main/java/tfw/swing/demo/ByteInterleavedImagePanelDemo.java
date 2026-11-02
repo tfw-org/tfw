@@ -19,10 +19,10 @@ import org.slf4j.LoggerFactory;
 import tfw.awt.ecd.ColorModelECD;
 import tfw.swing.ByteInterleavedImagePanel;
 import tfw.tsm.AWTTransactionQueue;
+import tfw.tsm.DefaultCheckDependencies;
 import tfw.tsm.EventChannelStateBuffer;
 import tfw.tsm.Initiator;
 import tfw.tsm.Root;
-import tfw.tsm.RootFactory;
 import tfw.tsm.ecd.IntegerECD;
 import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.ilm.ByteIlmECD;
@@ -39,20 +39,23 @@ public class ByteInterleavedImagePanelDemo {
         final ColorModelECD cmECD = new ColorModelECD("colorModel");
 
         final Color initialColor = Color.red;
-        RootFactory rf = new RootFactory();
-        rf.addEventChannel(xECD);
-        rf.addEventChannel(yECD);
-        rf.addEventChannel(ilmECD);
-        rf.addEventChannel(
-                cmECD,
-                new IndexColorModel(
-                        8,
-                        2,
-                        new byte[] {(byte) 0, (byte) initialColor.getRed()},
-                        new byte[] {(byte) 0, (byte) initialColor.getGreen()},
-                        new byte[] {(byte) 0, (byte) initialColor.getBlue()},
-                        0));
-        Root root = rf.create("ByteInterleavedImagePanelTest", new AWTTransactionQueue());
+        final Root root = Root.builder()
+                .setName("ByteInterleavedImagePanelTest")
+                .setTransactionQueue(new AWTTransactionQueue())
+                .setCheckDependencies(new DefaultCheckDependencies())
+                .addObjectECD(xECD, null)
+                .addObjectECD(yECD, null)
+                .addObjectECD(ilmECD, null)
+                .addObjectECD(
+                        cmECD,
+                        new IndexColorModel(
+                                8,
+                                2,
+                                new byte[] {(byte) 0, (byte) initialColor.getRed()},
+                                new byte[] {(byte) 0, (byte) initialColor.getGreen()},
+                                new byte[] {(byte) 0, (byte) initialColor.getBlue()},
+                                0))
+                .build();
 
         final Initiator initiator =
                 new Initiator("ByteInterleavedImagePanelTest", new ObjectECD[] {xECD, yECD, ilmECD, cmECD});

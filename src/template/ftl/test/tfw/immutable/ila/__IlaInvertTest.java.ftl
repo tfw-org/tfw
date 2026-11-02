@@ -1,0 +1,45 @@
+// doubleila,floatila
+package ${PACKAGE};
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
+import java.io.IOException;
+${RANDOM_INCLUDE}import org.junit.jupiter.api.Test;
+import tfw.immutable.ila.IlaTestDimensions;
+
+final class ${NAME}IlaInvertTest {
+    @Test
+    void argumentsTest() throws Exception {
+        assertThatThrownBy(() -> ${NAME}IlaInvert.create(null))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("ila == null not allowed!");
+    }
+
+    @Test
+    void allTest() throws Exception {
+        ${RANDOM_INIT}final int length = IlaTestDimensions.defaultIlaLength();
+        final ${TYPE}[] array = new ${TYPE}[length];
+        final ${TYPE}[] target = new ${TYPE}[length];
+        for (int ii = 0; ii < array.length; ++ii) {
+            array[ii] = ${RANDOM_VALUE};
+            target[ii] = (${TYPE}) 1 / array[ii];
+        }
+        ${NAME}Ila ila = ${NAME}IlaFromArray.create(array);
+        ${NAME}Ila targetIla = ${NAME}IlaFromArray.create(target);
+        ${NAME}Ila actualIla = ${NAME}IlaInvert.create(ila);
+
+        ${NAME}IlaCheck.check(targetIla, actualIla);
+    }
+
+    @Test
+    void closeTest() throws IOException {
+        final TestClose${NAME}Ila testIla = new TestClose${NAME}Ila();
+
+        try (${NAME}Ila${TEMPLATE} ila = ${NAME}IlaInvert.create(testIla)) {
+            assertThat(ila).isNotNull();
+        }
+
+        assertThat(testIla.getNumberOfCloses()).isEqualTo(1);
+    }
+}

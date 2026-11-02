@@ -1,7 +1,9 @@
 package tfw.immutable.ila.byteila;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import java.io.IOException;
 import java.util.Random;
 import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
@@ -48,6 +50,25 @@ final class ByteIlaBoundTest {
         ByteIla actualIla = ByteIlaBound.create(ila, minimum, maximum);
 
         ByteIlaCheck.check(targetIla, actualIla);
+    }
+
+    @Test
+    void closeTest() throws IOException {
+        final Random random = new Random(0);
+        final TestCloseByteIla testIla = new TestCloseByteIla();
+        byte minimum = (byte) random.nextInt();
+        byte maximum = (byte) random.nextInt();
+        if (minimum > maximum) {
+            byte tmp = minimum;
+            minimum = maximum;
+            maximum = tmp;
+        }
+
+        try (ByteIla ila = ByteIlaBound.create(testIla, minimum, maximum)) {
+            assertThat(ila).isNotNull();
+        }
+
+        assertThat(testIla.getNumberOfCloses()).isEqualTo(1);
     }
 }
 // AUTO GENERATED FROM TEMPLATE

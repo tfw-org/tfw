@@ -1,7 +1,9 @@
 package tfw.immutable.ila.charila;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import java.io.IOException;
 import java.util.Random;
 import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
@@ -45,6 +47,44 @@ final class CharIlaDecimateTest {
             CharIla actualIla = CharIlaDecimate.create(ila, factor, new char[100]);
 
             CharIlaCheck.check(targetIla, actualIla);
+        }
+    }
+
+    @Test
+    void closeTest() throws IOException {
+        final TestCloseCharIla testIla = new TestCloseCharIla();
+
+        try (CharIla ila = CharIlaDecimate.create(testIla, 2, new char[1])) {
+            assertThat(ila).isNotNull();
+        }
+
+        assertThat(testIla.getNumberOfCloses()).isEqualTo(1);
+    }
+
+    @Test
+    void largeFactorTest() throws Exception {
+        final Random random = new Random(0);
+        final char[] array = new char[2];
+        array[0] = (char) random.nextInt();
+        array[1] = (char) random.nextInt();
+
+        final CharIla ila = CharIlaFromArray.create(array);
+
+        try {
+            final CharIla actualIla = CharIlaDecimate.create(ila, Long.MAX_VALUE, new char[1]);
+
+            try {
+                assertThat(actualIla.length()).isEqualTo(1);
+
+                final char[] destination = new char[1];
+                actualIla.get(destination, 0, 0, 1);
+
+                assertThat(destination[0]).isEqualTo(array[0]);
+            } finally {
+                actualIla.close();
+            }
+        } finally {
+            ila.close();
         }
     }
 }

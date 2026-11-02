@@ -1,7 +1,6 @@
 package tfw.tsm.ecd;
 
-import tfw.value.ClassValueConstraint;
-import tfw.value.ValueConstraint;
+import java.util.function.Predicate;
 
 /**
  * A <code>java.lang.Object</code> event channel descritpion. This is the base
@@ -15,7 +14,7 @@ public class ObjectECD extends EventChannelDescription {
      *            the name of the event channel.
      */
     public ObjectECD(String name) {
-        super(name, ClassValueConstraint.OBJECT);
+        super(name, new IsAssignableFromPredicate(Object.class));
     }
 
     /**
@@ -24,11 +23,11 @@ public class ObjectECD extends EventChannelDescription {
      *
      * @param eventChannelName
      *            the name of the event channel.
-     * @param constraint
-     *            the value constraint for the event channel.
+     * @param predicate
+     *            the value predicate for the event channel.
      */
-    protected ObjectECD(String eventChannelName, ValueConstraint<? extends Object> constraint) {
-        super(eventChannelName, constraint, true, true);
+    protected ObjectECD(String eventChannelName, Predicate<Object> predicate) {
+        super(eventChannelName, predicate, true, true);
     }
 
     /**
@@ -37,8 +36,8 @@ public class ObjectECD extends EventChannelDescription {
      *
      * @param eventChannelName
      *            the name of the event channel.
-     * @param constraint
-     *            the value constraint for the evnet channel.
+     * @param predicate
+     *            the value predicate for the evnet channel.
      * @param fireOnConnect
      *            flag indicating whether the event channel fires state when a
      *            new sink is connected.
@@ -47,10 +46,7 @@ public class ObjectECD extends EventChannelDescription {
      *            transaction rollbacks.
      */
     ObjectECD(
-            String eventChannelName,
-            ValueConstraint<Object> constraint,
-            boolean fireOnConnect,
-            boolean rollbackParticipant) {
-        super(eventChannelName, constraint, fireOnConnect, rollbackParticipant);
+            String eventChannelName, Predicate<Object> predicate, boolean fireOnConnect, boolean rollbackParticipant) {
+        super(eventChannelName, predicate, fireOnConnect, rollbackParticipant);
     }
 }

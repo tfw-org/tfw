@@ -2,6 +2,7 @@ package tfw.immutable.ila.charila;
 
 import java.io.IOException;
 import tfw.check.Argument;
+import tfw.immutable.ila.IlaReverseUtil;
 
 public final class CharIlaReverse {
     private CharIlaReverse() {
@@ -11,6 +12,7 @@ public final class CharIlaReverse {
     public static CharIla create(CharIla ila, final char[] buffer) {
         Argument.assertNotNull(ila, "ila");
         Argument.assertNotNull(buffer, "buffer");
+        Argument.assertNotLessThan(buffer.length, 1, "buffer.length");
 
         return new CharIlaImpl(ila, buffer);
     }
@@ -31,9 +33,26 @@ public final class CharIlaReverse {
 
         @Override
         protected void getImpl(char[] array, int offset, long start, int length) throws IOException {
-            final StridedCharIla stridedCharIla = StridedCharIlaFromCharIla.create(ila, buffer.clone());
+            final char[] reverseBuffer = buffer.clone();
 
-            stridedCharIla.get(array, offset + length - 1, -1, length() - (start + length), length);
+            IlaReverseUtil.reverse(
+                    ila.length(),
+                    offset,
+                    start,
+                    length,
+                    reverseBuffer.length,
+                    (sourcePosition, destinationOffset, amount) -> {
+                        ila.get(reverseBuffer, 0, sourcePosition, amount);
+
+                        for (int i = 0; i < amount; i++) {
+                            array[destinationOffset + i] = reverseBuffer[amount - 1 - i];
+                        }
+                    });
+        }
+
+        @Override
+        protected void closeImpl() throws IOException {
+            ila.close();
         }
     }
 }

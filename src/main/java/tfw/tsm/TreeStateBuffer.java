@@ -3,7 +3,6 @@ package tfw.tsm;
 import java.util.HashSet;
 import java.util.Set;
 import tfw.check.Argument;
-import tfw.value.ValueException;
 
 /**
  * A buffer for constructing {@link TreeState} structures.
@@ -26,10 +25,8 @@ public class TreeStateBuffer {
     /**
      * Adds the state for the specified event channel.
      * @param state the event channel state.
-     * @throws ValueException if the specfiec state violates the event channel
-     * value constraint.
      */
-    public void addState(EventChannelState state) throws ValueException {
+    public void addState(EventChannelState state) {
         Argument.assertNotNull(state, "state");
         stateMap.add(state);
     }

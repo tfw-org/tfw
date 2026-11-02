@@ -74,6 +74,13 @@ public final class ByteIlaInterleave {
                 }
             }
         }
+
+        @Override
+        protected void closeImpl() throws IOException {
+            for (StridedByteIla ila : stridedByteIlas) {
+                ila.close();
+            }
+        }
     }
 }
 // AUTO GENERATED FROM TEMPLATE

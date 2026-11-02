@@ -15,7 +15,7 @@ public class EventChannelCopyConverter extends Converter {
         super("EventChannelCopyConverter[" + name + "]", inputECDs, null, outputECDs);
 
         for (int i = 0; i < inputECDs.length; i++) {
-            if (outputECDs[i].getConstraint().isCompatible(inputECDs[i].getConstraint()) == false) {
+            if (outputECDs[i].getPredicate().equals(inputECDs[i].getPredicate()) == false) {
                 throw new IllegalArgumentException(
                         "outputECD.getConstraint().isCompatible(" + "inputECD.getConstraint()) == false not allowed");
             }

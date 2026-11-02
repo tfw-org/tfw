@@ -2,6 +2,7 @@ package tfw.immutable.ila.longila;
 
 import java.io.IOException;
 import tfw.check.Argument;
+import tfw.immutable.ila.IlaReverseUtil;
 
 public final class LongIlaReverse {
     private LongIlaReverse() {
@@ -11,6 +12,7 @@ public final class LongIlaReverse {
     public static LongIla create(LongIla ila, final long[] buffer) {
         Argument.assertNotNull(ila, "ila");
         Argument.assertNotNull(buffer, "buffer");
+        Argument.assertNotLessThan(buffer.length, 1, "buffer.length");
 
         return new LongIlaImpl(ila, buffer);
     }
@@ -31,9 +33,26 @@ public final class LongIlaReverse {
 
         @Override
         protected void getImpl(long[] array, int offset, long start, int length) throws IOException {
-            final StridedLongIla stridedLongIla = StridedLongIlaFromLongIla.create(ila, buffer.clone());
+            final long[] reverseBuffer = buffer.clone();
 
-            stridedLongIla.get(array, offset + length - 1, -1, length() - (start + length), length);
+            IlaReverseUtil.reverse(
+                    ila.length(),
+                    offset,
+                    start,
+                    length,
+                    reverseBuffer.length,
+                    (sourcePosition, destinationOffset, amount) -> {
+                        ila.get(reverseBuffer, 0, sourcePosition, amount);
+
+                        for (int i = 0; i < amount; i++) {
+                            array[destinationOffset + i] = reverseBuffer[amount - 1 - i];
+                        }
+                    });
+        }
+
+        @Override
+        protected void closeImpl() throws IOException {
+            ila.close();
         }
     }
 }

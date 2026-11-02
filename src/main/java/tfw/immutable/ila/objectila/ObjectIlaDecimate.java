@@ -30,7 +30,9 @@ public final class ObjectIlaDecimate {
 
         @Override
         protected long lengthImpl() throws IOException {
-            return (ila.length() + factor - 1) / factor;
+            final long length = ila.length();
+
+            return length == 0 ? 0 : 1 + (length - 1) / factor;
         }
 
         @Override
@@ -44,6 +46,11 @@ public final class ObjectIlaDecimate {
                 array[ii] = fi.next();
                 fi.skip(factor - 1);
             }
+        }
+
+        @Override
+        protected void closeImpl() throws IOException {
+            ila.close();
         }
     }
 }

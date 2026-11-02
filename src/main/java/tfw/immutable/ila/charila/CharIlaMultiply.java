@@ -44,6 +44,12 @@ public final class CharIlaMultiply {
                 array[ii] = (char) (li.next() * ri.next());
             }
         }
+
+        @Override
+        protected void closeImpl() throws IOException {
+            leftIla.close();
+            rightIla.close();
+        }
     }
 }
 // AUTO GENERATED FROM TEMPLATE

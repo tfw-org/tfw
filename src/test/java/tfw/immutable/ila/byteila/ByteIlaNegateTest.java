@@ -1,7 +1,9 @@
 package tfw.immutable.ila.byteila;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import java.io.IOException;
 import java.util.Random;
 import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
@@ -29,6 +31,17 @@ final class ByteIlaNegateTest {
         ByteIla actualIla = ByteIlaNegate.create(ila);
 
         ByteIlaCheck.check(targetIla, actualIla);
+    }
+
+    @Test
+    void closeTest() throws IOException {
+        final TestCloseByteIla testIla = new TestCloseByteIla();
+
+        try (ByteIla ila = ByteIlaNegate.create(testIla)) {
+            assertThat(ila).isNotNull();
+        }
+
+        assertThat(testIla.getNumberOfCloses()).isEqualTo(1);
     }
 }
 // AUTO GENERATED FROM TEMPLATE

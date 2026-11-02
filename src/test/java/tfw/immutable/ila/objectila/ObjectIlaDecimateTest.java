@@ -1,7 +1,9 @@
 package tfw.immutable.ila.objectila;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import java.io.IOException;
 import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 
@@ -43,6 +45,43 @@ final class ObjectIlaDecimateTest {
             ObjectIla<Object> actualIla = ObjectIlaDecimate.create(ila, factor, new Object[100]);
 
             ObjectIlaCheck.check(targetIla, actualIla);
+        }
+    }
+
+    @Test
+    void closeTest() throws IOException {
+        final TestCloseObjectIla testIla = new TestCloseObjectIla();
+
+        try (ObjectIla<Object> ila = ObjectIlaDecimate.create(testIla, 2, new Object[1])) {
+            assertThat(ila).isNotNull();
+        }
+
+        assertThat(testIla.getNumberOfCloses()).isEqualTo(1);
+    }
+
+    @Test
+    void largeFactorTest() throws Exception {
+        final Object[] array = new Object[2];
+        array[0] = new Object();
+        array[1] = new Object();
+
+        final ObjectIla<Object> ila = ObjectIlaFromArray.create(array);
+
+        try {
+            final ObjectIla<Object> actualIla = ObjectIlaDecimate.create(ila, Long.MAX_VALUE, new Object[1]);
+
+            try {
+                assertThat(actualIla.length()).isEqualTo(1);
+
+                final Object[] destination = new Object[1];
+                actualIla.get(destination, 0, 0, 1);
+
+                assertThat(destination[0]).isEqualTo(array[0]);
+            } finally {
+                actualIla.close();
+            }
+        } finally {
+            ila.close();
         }
     }
 }

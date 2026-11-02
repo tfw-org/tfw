@@ -46,5 +46,10 @@ public final class ByteIlaFromIntIla {
                 col = 0;
             }
         }
+
+        @Override
+        protected void closeImpl() throws IOException {
+            intIla.close();
+        }
     }
 }

@@ -1,5 +1,6 @@
 package tfw.immutable.ila.objectila;
 
+import java.io.IOException;
 import tfw.check.Argument;
 
 public final class ObjectIlaFromArray {
@@ -28,6 +29,11 @@ public final class ObjectIlaFromArray {
         @Override
         protected void getImpl(T[] array, int offset, long start, int length) {
             System.arraycopy(this.array, (int) start, array, offset, length);
+        }
+
+        @Override
+        protected void closeImpl() throws IOException {
+            // Nothing to do.
         }
     }
 }

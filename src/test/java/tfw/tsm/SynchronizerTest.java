@@ -145,20 +145,20 @@ final class SynchronizerTest {
 
     private BasicTransactionQueue queue = new BasicTransactionQueue();
 
-    public Root initializeRoot(TransactionExceptionHandler handler) {
-        RootFactory rf = new RootFactory();
+    public Root initializeRoot(TransactionExceptionHandler handler) throws InterruptedException {
+        final Root root = Root.builder()
+                .setName("Root")
+                .setTransactionQueue(queue)
+                .setCheckDependencies(new DefaultCheckDependencies())
+                .setTransactionExceptionHandler(handler)
+                .addObjectECD(a1Port, null)
+                .addObjectECD(a2Port, null)
+                .addObjectECD(b1Port, null)
+                .addObjectECD(b2Port, null)
+                .addObjectECD(source, null)
+                .addObjectECD(sink, null)
+                .build();
 
-        rf.addEventChannel(a1Port, null, AlwaysChangeRule.RULE, null);
-        rf.addEventChannel(a2Port, null, AlwaysChangeRule.RULE, null);
-        rf.addEventChannel(b1Port, null, AlwaysChangeRule.RULE, null);
-        rf.addEventChannel(b2Port, null, AlwaysChangeRule.RULE, null);
-        rf.addEventChannel(source, null, AlwaysChangeRule.RULE, null);
-        rf.addEventChannel(sink, null, AlwaysChangeRule.RULE, null);
-        if (handler != null) {
-            rf.setTransactionExceptionHandler(handler);
-        }
-
-        Root root = rf.create("Root", queue);
         root.add(initiator);
         root.add(converter);
         root.add(commit);

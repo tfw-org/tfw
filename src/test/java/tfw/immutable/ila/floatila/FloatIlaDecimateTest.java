@@ -1,7 +1,9 @@
 package tfw.immutable.ila.floatila;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import java.io.IOException;
 import java.util.Random;
 import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
@@ -45,6 +47,44 @@ final class FloatIlaDecimateTest {
             FloatIla actualIla = FloatIlaDecimate.create(ila, factor, new float[100]);
 
             FloatIlaCheck.check(targetIla, actualIla);
+        }
+    }
+
+    @Test
+    void closeTest() throws IOException {
+        final TestCloseFloatIla testIla = new TestCloseFloatIla();
+
+        try (FloatIla ila = FloatIlaDecimate.create(testIla, 2, new float[1])) {
+            assertThat(ila).isNotNull();
+        }
+
+        assertThat(testIla.getNumberOfCloses()).isEqualTo(1);
+    }
+
+    @Test
+    void largeFactorTest() throws Exception {
+        final Random random = new Random(0);
+        final float[] array = new float[2];
+        array[0] = random.nextFloat();
+        array[1] = random.nextFloat();
+
+        final FloatIla ila = FloatIlaFromArray.create(array);
+
+        try {
+            final FloatIla actualIla = FloatIlaDecimate.create(ila, Long.MAX_VALUE, new float[1]);
+
+            try {
+                assertThat(actualIla.length()).isEqualTo(1);
+
+                final float[] destination = new float[1];
+                actualIla.get(destination, 0, 0, 1);
+
+                assertThat(destination[0]).isEqualTo(array[0]);
+            } finally {
+                actualIla.close();
+            }
+        } finally {
+            ila.close();
         }
     }
 }

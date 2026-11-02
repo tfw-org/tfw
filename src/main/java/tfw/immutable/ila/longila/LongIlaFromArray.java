@@ -1,5 +1,6 @@
 package tfw.immutable.ila.longila;
 
+import java.io.IOException;
 import tfw.check.Argument;
 
 public final class LongIlaFromArray {
@@ -28,6 +29,11 @@ public final class LongIlaFromArray {
         @Override
         protected void getImpl(long[] array, int offset, long start, int length) {
             System.arraycopy(this.array, (int) start, array, offset, length);
+        }
+
+        @Override
+        protected void closeImpl() throws IOException {
+            // Nothing to do.
         }
     }
 }

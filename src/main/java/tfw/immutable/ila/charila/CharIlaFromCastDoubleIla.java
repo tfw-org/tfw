@@ -41,6 +41,11 @@ public final class CharIlaFromCastDoubleIla {
                 array[ii] = (char) fi.next();
             }
         }
+
+        @Override
+        protected void closeImpl() throws IOException {
+            doubleIla.close();
+        }
     }
 }
 // AUTO GENERATED FROM TEMPLATE

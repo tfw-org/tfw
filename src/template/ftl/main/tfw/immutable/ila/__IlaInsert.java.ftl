@@ -1,0 +1,57 @@
+// booleanila,byteila,charila,doubleila,floatila,intila,longila,objectila,shortila
+package ${PACKAGE};
+
+import java.io.IOException;
+import tfw.check.Argument;
+import tfw.immutable.ila.IlaInsertUtil;
+
+public final class ${NAME}IlaInsert {
+    private ${NAME}IlaInsert() {
+        // non-instantiable class
+    }
+
+    public static ${TEMPLATE_SPACE}${NAME}Ila${TEMPLATE} create(${NAME}Ila${TEMPLATE} ila, long index, ${TYPE_OR_TEMPLATE} value) {
+        return new ${NAME}IlaImpl${DIAMOND}(ila, index, value);
+    }
+
+    private static class ${NAME}IlaImpl${TEMPLATE} extends Abstract${NAME}Ila${TEMPLATE} {
+        private final ${NAME}Ila${TEMPLATE} ila;
+        private final long index;
+        private final ${TYPE_OR_TEMPLATE} value;
+
+        private ${NAME}IlaImpl(${NAME}Ila${TEMPLATE} ila, long index, ${TYPE_OR_TEMPLATE} value) {
+            Argument.assertNotNull(ila, "ila");
+            Argument.assertNotLessThan(index, 0, "index");
+            try {
+                Argument.assertNotGreaterThan(index, ila.length(), "index", "ila.length()");
+            } catch (IOException e) {
+                throw new IllegalArgumentException("Could not get ila length()!", e);
+            }
+
+            this.ila = ila;
+            this.index = index;
+            this.value = value;
+        }
+
+        @Override
+        protected long lengthImpl() throws IOException {
+            return ila.length() + 1;
+        }
+
+        @Override
+        protected void getImpl(${TYPE_OR_TEMPLATE}[] array, int offset, long start, int length) throws IOException {
+            IlaInsertUtil.get(
+                    index,
+                    start,
+                    length,
+                    offset,
+                    (destinationOffset, sourceStart, amount) -> ila.get(array, destinationOffset, sourceStart, amount),
+                    destinationOffset -> array[destinationOffset] = value);
+        }
+
+        @Override
+        protected void closeImpl() throws IOException {
+            ila.close();
+        }
+    }
+}

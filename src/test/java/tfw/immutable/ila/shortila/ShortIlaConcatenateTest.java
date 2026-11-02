@@ -1,7 +1,9 @@
 package tfw.immutable.ila.shortila;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import java.io.IOException;
 import java.util.Random;
 import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
@@ -39,6 +41,46 @@ final class ShortIlaConcatenateTest {
         ShortIla actualIla = ShortIlaConcatenate.create(leftIla, rightIla);
 
         ShortIlaCheck.check(targetIla, actualIla);
+    }
+
+    @Test
+    void closeTest() throws IOException {
+        final TestCloseShortIla leftIla = new TestCloseShortIla();
+        final TestCloseShortIla rightIla = new TestCloseShortIla();
+
+        try (ShortIla ila = ShortIlaConcatenate.create(leftIla, rightIla)) {
+            assertThat(ila).isNotNull();
+        }
+
+        assertThat(leftIla.getNumberOfCloses()).isEqualTo(1);
+        assertThat(rightIla.getNumberOfCloses()).isEqualTo(1);
+    }
+
+    @Test
+    void exactLeftBoundaryTest() throws Exception {
+        final Random random = new Random(0);
+        final short[] leftArray = new short[2];
+        final short[] rightArray = new short[2];
+
+        leftArray[0] = (short) random.nextInt();
+        leftArray[1] = (short) random.nextInt();
+        rightArray[0] = (short) random.nextInt();
+        rightArray[1] = (short) random.nextInt();
+
+        final ShortIla leftIla = ShortIlaFromArray.create(leftArray);
+        final ShortIla rightIla = ShortIlaFromArray.create(rightArray);
+        final ShortIla actualIla = ShortIlaConcatenate.create(leftIla, rightIla);
+
+        try {
+            final short[] destination = new short[1];
+
+            // Read exactly the final element of the left ILA.
+            actualIla.get(destination, 0, 1, 1);
+
+            assertThat(destination[0]).isEqualTo(leftArray[1]);
+        } finally {
+            actualIla.close();
+        }
     }
 }
 // AUTO GENERATED FROM TEMPLATE

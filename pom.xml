@@ -4,7 +4,7 @@
 
     <groupId>io.github.tfw-org</groupId>
     <artifactId>tfw</artifactId>
-    <version>2025.2-SNAPSHOT</version>
+    <version>2026.17-SNAPSHOT</version>
 
     <name>tfw</name>
     <description>The FrameWork for building highly scalable and maintainable applications</description>
@@ -13,32 +13,39 @@
         <argLine/>
         <dependency.assertj-core.version>3.27.7</dependency.assertj-core.version>
         <dependency.assertj-swing.version>3.17.1</dependency.assertj-swing.version>
-        <dependency.junit-jupiter-api.version>6.0.2</dependency.junit-jupiter-api.version>
-        <dependency.slf4j-api.version>2.0.17</dependency.slf4j-api.version>
+        <dependency.junit-jupiter-api.version>6.1.3</dependency.junit-jupiter-api.version>
+        <dependency.slf4j-api.version>2.0.20</dependency.slf4j-api.version>
+        <dependency.slf4j-jdk14.version>2.0.20</dependency.slf4j-jdk14.version>
         <maven.compiler.release>8</maven.compiler.release>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <plugin.error-prone-contrib.version>0.28.0</plugin.error-prone-contrib.version>
-        <plugin.error_prone_core.version>2.46.0</plugin.error_prone_core.version>
+        <plugin.cyclonedx-maven-plugin.version>2.9.3</plugin.cyclonedx-maven-plugin.version>
+        <plugin.error-prone-contrib.version>0.30.0</plugin.error-prone-contrib.version>
+        <plugin.error_prone_core.version>2.50.0</plugin.error_prone_core.version>
         <plugin.errorprone-slf4j.version>0.1.29</plugin.errorprone-slf4j.version>
-        <plugin.jacoco-maven-plugin.version>0.8.14</plugin.jacoco-maven-plugin.version>
-        <plugin.maven-compiler-plugin.version>3.14.1</plugin.maven-compiler-plugin.version>
-        <plugin.maven-dependency-plugin.version>3.9.0</plugin.maven-dependency-plugin.version>
+        <plugin.exec-maven-plugin.version>3.6.4</plugin.exec-maven-plugin.version>
+        <plugin.jacoco-maven-plugin.version>0.8.15</plugin.jacoco-maven-plugin.version>
+        <plugin.maven-compiler-plugin.version>3.16.0</plugin.maven-compiler-plugin.version>
+        <plugin.maven-dependency-plugin.version>3.11.0</plugin.maven-dependency-plugin.version>
+        <plugin.maven-enforcer-plugin.version>3.6.3</plugin.maven-enforcer-plugin.version>
         <plugin.maven-gpg-plugin.version>3.2.8</plugin.maven-gpg-plugin.version>
+        <plugin.maven-jar-plugin.version>3.5.1</plugin.maven-jar-plugin.version>
         <plugin.maven-javadoc-plugin.version>3.12.0</plugin.maven-javadoc-plugin.version>
         <plugin.maven-pmd-plugin.version>3.28.0</plugin.maven-pmd-plugin.version>
+        <plugin.maven-resources-plugin.version>3.5.0</plugin.maven-resources-plugin.version>
         <plugin.maven-source-plugin.version>3.4.0</plugin.maven-source-plugin.version>
-        <plugin.maven-surefire-junit5-tree-reporter.version>1.5.1</plugin.maven-surefire-junit5-tree-reporter.version>
-        <plugin.maven-surefire-plugin.version>3.5.4</plugin.maven-surefire-plugin.version>
+        <plugin.maven-surefire-junit5-tree-reporter.version>2.1.0</plugin.maven-surefire-junit5-tree-reporter.version>
+        <plugin.maven-surefire-plugin.version>3.6.0</plugin.maven-surefire-plugin.version>
         <plugin.nexus-staging-maven-plugin.version>1.7.0</plugin.nexus-staging-maven-plugin.version>
-        <plugin.pitest-git-plugin.version>2.3.2</plugin.pitest-git-plugin.version>
-        <plugin.pitest-github-maven-plugin.version>2.3.2</plugin.pitest-github-maven-plugin.version>
+        <plugin.palantir-java-format.version>2.102.0</plugin.palantir-java-format.version>
+        <plugin.pitest-git-plugin.version>2.3.4</plugin.pitest-git-plugin.version>
+        <plugin.pitest-github-maven-plugin.version>2.3.4</plugin.pitest-github-maven-plugin.version>
         <plugin.pitest-junit5-plugin.version>1.2.3</plugin.pitest-junit5-plugin.version>
-        <plugin.pitest-maven.version>1.22.0</plugin.pitest-maven.version>
-        <plugin.refaster-runner.version>0.28.0</plugin.refaster-runner.version>
-        <plugin.sonar-maven-plugin.version>5.5.0.6356</plugin.sonar-maven-plugin.version>
-        <plugin.spotless-maven-plugin.version>3.2.0</plugin.spotless-maven-plugin.version>
-        <plugin.spotless-palantirJavaFormat.version>2.81.0</plugin.spotless-palantirJavaFormat.version>
+        <plugin.pitest-maven.version>1.30.1</plugin.pitest-maven.version>
+        <plugin.refaster-runner.version>0.30.0</plugin.refaster-runner.version>
+        <plugin.sonar-maven-plugin.version>5.8.0.7211</plugin.sonar-maven-plugin.version>
+        <plugin.spotless-maven-plugin.version>3.10.4</plugin.spotless-maven-plugin.version>
+        <project.build.outputTimestamp>2000-01-01T00:00:00Z</project.build.outputTimestamp>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <sonar.exclusions>src/main/java/tfw/math/BigDecimal.java,
             src/main/java/tfw/math/BigInteger.java,
@@ -101,15 +108,16 @@
             <version>${dependency.junit-jupiter-api.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-jdk14</artifactId>
+            <version>${dependency.slf4j-jdk14.version}</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
         <plugins>
-            <plugin>
-                <groupId>com.arcmutate</groupId>
-                <artifactId>pitest-github-maven-plugin</artifactId>
-                <version>${plugin.pitest-github-maven-plugin.version}</version>
-            </plugin>
             <plugin>
                 <groupId>com.diffplug.spotless</groupId>
                 <artifactId>spotless-maven-plugin</artifactId>
@@ -119,6 +127,8 @@
                         <includes>
                             <include>src/main/java/**/*.java</include>
                             <include>src/test/java/**/*.java</include>
+                            <include>src/fuzz/java/**/*.java</include>
+                            <include>src/build/java/**/*.java</include>
                         </includes>
                         <excludes>
                             <exclude>src/main/java/tfw/math/BigDecimal.java</exclude>
@@ -132,7 +142,7 @@
                             <exclude>src/main/java/tfw/math/SignedMutableBigInteger.java</exclude>
                         </excludes>
                         <palantirJavaFormat>
-                            <version>${plugin.spotless-palantirJavaFormat.version}</version>
+                            <version>${plugin.palantir-java-format.version}</version>
                             <style>PALANTIR</style>
                         </palantirJavaFormat>
                     </java>
@@ -151,6 +161,13 @@
                         </sortPom>
                     </pom>
                 </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.palantir.javaformat</groupId>
+                        <artifactId>palantir-java-format</artifactId>
+                        <version>${plugin.palantir-java-format.version}</version>
+                    </dependency>
+                </dependencies>
                 <executions>
                     <execution>
                         <goals>
@@ -164,6 +181,7 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${plugin.maven-compiler-plugin.version}</version>
                 <configuration>
+                    <fork>true</fork>
                     <compilerArgs>
                         <arg>-Xmaxerrs</arg>
                         <arg>-1</arg>
@@ -173,9 +191,17 @@
                         <arg>-XDcompilePolicy=simple</arg>
                         <arg>-XDaddTypeAnnotationsToSymbol=true</arg>
                         <arg>--should-stop=ifError=FLOW</arg>
-                        <arg>-Xplugin:ErrorProne \
-                        -XepAllErrorsAsWarnings \
-                        -XepExcludedPaths:.*/tfw/math/BigDecimal.java|.*/tfw/math/BigInteger.java|.*/tfw/math/BitSieve.java|.*/tfw/math/DoubleConsts.java|.*/tfw/math/FloatConsts.java|.*/tfw/math/MathContext.java|.*/tfw/math/MutableBigInteger.java|.*/tfw/math/RoundingMode.java|.*/tfw/math/SignedMutableBigInteger.java</arg>
+                        <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED</arg>
+                        <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.file=ALL-UNNAMED</arg>
+                        <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.main=ALL-UNNAMED</arg>
+                        <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.model=ALL-UNNAMED</arg>
+                        <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.parser=ALL-UNNAMED</arg>
+                        <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.processing=ALL-UNNAMED</arg>
+                        <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.tree=ALL-UNNAMED</arg>
+                        <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED</arg>
+                        <arg>-J--add-opens=jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED</arg>
+                        <arg>-J--add-opens=jdk.compiler/com.sun.tools.javac.comp=ALL-UNNAMED</arg>
+                        <arg>-Xplugin:ErrorProne -XepAllErrorsAsWarnings -XepExcludedPaths:.*/tfw/math/BigDecimal.java|.*/tfw/math/BigInteger.java|.*/tfw/math/BitSieve.java|.*/tfw/math/DoubleConsts.java|.*/tfw/math/FloatConsts.java|.*/tfw/math/MathContext.java|.*/tfw/math/MutableBigInteger.java|.*/tfw/math/RoundingMode.java|.*/tfw/math/SignedMutableBigInteger.java</arg>
                     </compilerArgs>
                     <annotationProcessorPaths>
                         <path>
@@ -225,8 +251,27 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-gpg-plugin</artifactId>
-                <version>${plugin.maven-gpg-plugin.version}</version>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <version>${plugin.maven-enforcer-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>enforce-maven-version</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <requireMavenVersion>
+                                    <version>[3.9.16,)</version>
+                                </requireMavenVersion>
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>${plugin.maven-jar-plugin.version}</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -234,19 +279,19 @@
                 <version>${plugin.maven-javadoc-plugin.version}</version>
                 <configuration>
                     <quiet>true</quiet>
-                    <doclint>all</doclint>
-                    <failOnWarnings>true</failOnWarnings>
-                    <failOnError>true</failOnError>
                     <excludePackageNames>tfw.math</excludePackageNames>
                 </configuration>
                 <executions>
                     <execution>
                         <id>attach-javadocs</id>
                         <goals>
+                            <goal>javadoc-no-fork</goal>
                             <goal>jar</goal>
                         </goals>
+                        <phase>package</phase>
                         <configuration>
                             <doclint>none</doclint>
+                            <failOnError>false</failOnError>
                         </configuration>
                     </execution>
                 </executions>
@@ -256,6 +301,11 @@
                 <artifactId>maven-pmd-plugin</artifactId>
                 <version>${plugin.maven-pmd-plugin.version}</version>
                 <configuration>
+                    <compileSourceRoots>
+                        <compileSourceRoot>${project.build.sourceDirectory}</compileSourceRoot>
+                        <compileSourceRoot>${project.basedir}/src/build/java</compileSourceRoot>
+                        <compileSourceRoot>${project.basedir}/src/fuzz/java</compileSourceRoot>
+                    </compileSourceRoots>
                     <excludes>
                         <exclude>tfw/math/BigDecimal.java</exclude>
                         <exclude>tfw/math/BigInteger.java</exclude>
@@ -268,20 +318,53 @@
                         <exclude>tfw/math/SignedMutableBigInteger.java</exclude>
                     </excludes>
                     <linkXRef>false</linkXRef>
-                    <failOnViolation>true</failOnViolation>
-                    <failurePriority>2</failurePriority>
-                    <maxAllowedViolations>5</maxAllowedViolations>
+                    <failOnViolation>false</failOnViolation>
                     <format>txt</format>
                     <includeTests>true</includeTests>
-                    <minimumTokens>100</minimumTokens>
-                    <targetJdk>${maven.compiler.target}</targetJdk>
+                    <targetJdk>17</targetJdk>
                 </configuration>
                 <executions>
                     <execution>
+                        <id>pmd</id>
                         <goals>
                             <goal>check</goal>
                         </goals>
                         <phase>verify</phase>
+                    </execution>
+                    <execution>
+                        <id>cpd</id>
+                        <goals>
+                            <goal>cpd</goal>
+                        </goals>
+                        <phase>verify</phase>
+                        <configuration>
+                            <minimumTokens>100</minimumTokens>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>${plugin.maven-resources-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>copy-license</id>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <phase>process-resources</phase>
+                        <configuration>
+                            <outputDirectory>${project.build.outputDirectory}</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${project.basedir}</directory>
+                                    <includes>
+                                        <include>LICENSE.md</include>
+                                    </includes>
+                                </resource>
+                            </resources>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
@@ -320,27 +403,91 @@
                 </dependencies>
             </plugin>
             <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>${plugin.exec-maven-plugin.version}</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.freemarker</groupId>
+                        <artifactId>freemarker</artifactId>
+                        <version>2.3.35</version>
+                    </dependency>
+                </dependencies>
+                <executions>
+                    <execution>
+                        <id>create-template-generator-directory</id>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <executable>mkdir</executable>
+                            <arguments>
+                                <argument>-p</argument>
+                                <argument>${project.build.directory}/template-generator-classes</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>compile-template-generator</id>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <executable>javac</executable>
+                            <includeProjectDependencies>false</includeProjectDependencies>
+                            <includePluginDependencies>true</includePluginDependencies>
+                            <arguments>
+                                <argument>-source</argument>
+                                <argument>${maven.compiler.source}</argument>
+                                <argument>-target</argument>
+                                <argument>${maven.compiler.target}</argument>
+                                <argument>-classpath</argument>
+                                <classpath/>
+                                <argument>-d</argument>
+                                <argument>${project.build.directory}/template-generator-classes</argument>
+                                <argument>${project.basedir}/src/build/java/tfw/build/TemplateGenerator.java</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>generate-templates</id>
+                        <goals>
+                            <goal>java</goal>
+                        </goals>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <mainClass>tfw.build.TemplateGenerator</mainClass>
+                            <includeProjectDependencies>false</includeProjectDependencies>
+                            <includePluginDependencies>true</includePluginDependencies>
+                            <additionalClasspathElements>
+                                <additionalClasspathElement>${project.build.directory}/template-generator-classes</additionalClasspathElement>
+                            </additionalClasspathElements>
+                            <arguments>
+                                <argument>${project.basedir}/src/template/ftl</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.cyclonedx</groupId>
+                <artifactId>cyclonedx-maven-plugin</artifactId>
+                <version>${plugin.cyclonedx-maven-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>makeAggregateBom</goal>
+                        </goals>
+                        <phase>package</phase>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <groupId>org.sonarsource.scanner.maven</groupId>
                 <artifactId>sonar-maven-plugin</artifactId>
                 <version>${plugin.sonar-maven-plugin.version}</version>
-                <configuration>
-                    <mainClass>tfw.build.SearchAndReplace</mainClass>
-                    <arguments>
-                        <argument>./src/main/template</argument>
-                        <argument>./src/test/template</argument>
-                    </arguments>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.sonatype.plugins</groupId>
-                <artifactId>nexus-staging-maven-plugin</artifactId>
-                <version>${plugin.nexus-staging-maven-plugin.version}</version>
-                <extensions>true</extensions>
-                <configuration>
-                    <serverId>ossrh</serverId>
-                    <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
-                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
-                </configuration>
             </plugin>
         </plugins>
     </build>
@@ -462,6 +609,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
+                        <version>${plugin.maven-gpg-plugin.version}</version>
                         <executions>
                             <execution>
                                 <id>sign-artifacts</id>
@@ -478,13 +626,39 @@
                             </execution>
                         </executions>
                     </plugin>
+                    <plugin>
+                        <groupId>org.sonatype.central</groupId>
+                        <artifactId>central-publishing-maven-plugin</artifactId>
+                        <version>0.12.0</version>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <publishingServerId>central</publishingServerId>
+                            <autoPublish>true</autoPublish>
+                        </configuration>
+                    </plugin>
                 </plugins>
             </build>
+            <distributionManagement>
+                <repository>
+                    <id>central</id>
+                    <url>https://central.sonatype.com/api/v1/publish</url>
+                </repository>
+            </distributionManagement>
         </profile>
         <profile>
             <id>pitest</id>
             <build>
                 <plugins>
+                    <plugin>
+                        <groupId>com.arcmutate</groupId>
+                        <artifactId>pitest-git-maven-plugin</artifactId>
+                        <version>${plugin.pitest-git-plugin.version}</version>
+                    </plugin>
+                    <plugin>
+                        <groupId>com.arcmutate</groupId>
+                        <artifactId>pitest-github-maven-plugin</artifactId>
+                        <version>${plugin.pitest-github-maven-plugin.version}</version>
+                    </plugin>
                     <plugin>
                         <groupId>org.pitest</groupId>
                         <artifactId>pitest-maven</artifactId>

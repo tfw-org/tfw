@@ -1,5 +1,6 @@
 package tfw.immutable.ila.booleanila;
 
+import java.io.IOException;
 import tfw.check.Argument;
 
 public final class BooleanIlaFill {
@@ -33,6 +34,11 @@ public final class BooleanIlaFill {
             for (int startInt = (int) start; startInt != startPlusLength; ++startInt, offset++) {
                 array[offset] = value;
             }
+        }
+
+        @Override
+        protected void closeImpl() throws IOException {
+            // Nothing to do.
         }
     }
 }

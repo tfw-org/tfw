@@ -65,21 +65,24 @@ final class CascadeTest {
     };
 
     @Test
-    void converterTest() {
-        RootFactory rf = new RootFactory();
-        rf.addEventChannel(portA);
-        rf.addEventChannel(portB);
-        rf.addEventChannel(portC);
-        BasicTransactionQueue queue = new BasicTransactionQueue();
+    void converterTest() throws InterruptedException {
+        final BasicTransactionQueue queue = new BasicTransactionQueue();
+        final Root root = Root.builder()
+                .setName("Test branch")
+                .setTransactionQueue(queue)
+                .setCheckDependencies(new DefaultCheckDependencies())
+                .addObjectECD(portA, null)
+                .addObjectECD(portB, null)
+                .addObjectECD(portC, null)
+                .build();
 
-        Branch branch = rf.create("Test branch", queue);
-        branch.add(initiator);
-        branch.add(aValidator);
-        branch.add(converterAB);
-        branch.add(bValidator);
-        branch.add(converterBC);
-        branch.add(cValidator);
-        branch.add(commit);
+        root.add(initiator);
+        root.add(aValidator);
+        root.add(converterAB);
+        root.add(bValidator);
+        root.add(converterBC);
+        root.add(cValidator);
+        root.add(commit);
 
         initiator.set(portA, "Hello");
         queue.waitTilEmpty();

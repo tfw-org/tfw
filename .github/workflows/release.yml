@@ -1,26 +1,84 @@
 name: Release to Maven Central
+
 on:
   release:
     types: [created]
+
+permissions:
+  contents: read
+
 jobs:
   publish:
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+      id-token: write
+      attestations: write
+      artifact-metadata: write
+
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
       - name: Configure java
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@b843ebf9b913146b38da2eaa7aeddf76074ae1ad # v6.1.0
         with:
           java-version: 21
           distribution: corretto
-          server-id: ossrh
+          server-id: central
           server-username: MVN_USERNAME
           server-password: MVN_PASSWORD
           gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
           gpg-passphrase: GPG_PASSPHRASE
+
+      - name: Get Maven artifact information
+        id: maven
+        run: |
+          echo "artifactId=$(./mvnw -ntp -q help:evaluate -Dexpression=project.artifactId -DforceStdout)" >> "$GITHUB_OUTPUT"
+          echo "version=$(./mvnw -ntp -q help:evaluate -Dexpression=project.version -DforceStdout)" >> "$GITHUB_OUTPUT"
+
       - name: Publish package
-        run: mvn -ntp -B deploy -P release
+        run: ./mvnw -ntp -B deploy -P release
         env:
           MVN_USERNAME: ${{ secrets.MVN_USERNAME }}
           MVN_PASSWORD: ${{ secrets.MVN_PASSWORD }}
           GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
 
+      - name: Generate build provenance
+        id: attest
+        uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4.2.2
+        with:
+          subject-path: |
+            target/${{ steps.maven.outputs.artifactId }}-${{ steps.maven.outputs.version }}.jar
+            target/${{ steps.maven.outputs.artifactId }}-${{ steps.maven.outputs.version }}-sources.jar
+            target/${{ steps.maven.outputs.artifactId }}-${{ steps.maven.outputs.version }}-javadoc.jar
+
+      - name: Prepare provenance bundle
+        env:
+          BUNDLE_PATH: ${{ steps.attest.outputs.bundle-path }}
+          ARTIFACT_ID: ${{ steps.maven.outputs.artifactId }}
+          VERSION: ${{ steps.maven.outputs.version }}
+        run: |
+          set -euo pipefail
+
+          cp "$BUNDLE_PATH" \
+            "target/${ARTIFACT_ID}-${VERSION}.sigstore.json"
+
+      - name: Upload Artifacts, Signatures, and Provenance to GitHub Release
+        run: |
+          gh release upload "$RELEASE_TAG" \
+            --clobber \
+            "target/$ARTIFACT_ID-$VERSION.jar" \
+            "target/$ARTIFACT_ID-$VERSION.jar.asc" \
+            "target/$ARTIFACT_ID-$VERSION-sources.jar" \
+            "target/$ARTIFACT_ID-$VERSION-sources.jar.asc" \
+            "target/$ARTIFACT_ID-$VERSION-javadoc.jar" \
+            "target/$ARTIFACT_ID-$VERSION-javadoc.jar.asc" \
+            "target/$ARTIFACT_ID-$VERSION.sigstore.json"
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+          ARTIFACT_ID: ${{ steps.maven.outputs.artifactId }}
+          VERSION: ${{ steps.maven.outputs.version }}

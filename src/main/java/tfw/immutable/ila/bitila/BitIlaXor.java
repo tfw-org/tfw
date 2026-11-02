@@ -101,5 +101,11 @@ public final class BitIlaXor {
 
             xor(array, arrayOffsetInBits, rightArray, rightOffsetInBits, lengthInBits);
         }
+
+        @Override
+        public void closeImpl() throws IOException {
+            leftIla.close();
+            rightIla.close();
+        }
     }
 }

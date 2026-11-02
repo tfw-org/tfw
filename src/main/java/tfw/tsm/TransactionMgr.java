@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import tfw.check.Argument;
 
 // TODO: What should happen if an exception occurs while processing a
@@ -34,6 +34,8 @@ import tfw.check.Argument;
  * </UL>
  */
 public final class TransactionMgr {
+    private static final Logger LOGGER = LoggerFactory.getLogger(TransactionMgr.class);
+
     final TransactionQueue queue;
     final CheckDependencies checkDependencies;
 
@@ -52,16 +54,16 @@ public final class TransactionMgr {
 
     private HashSet<Validator> validators = null;
 
-    private ArrayList<Processor> processors = new ArrayList<Processor>();
-    private ArrayList<Processor> delayedProcessors = new ArrayList<Processor>();
+    private ArrayList<Processor> processors = new ArrayList<>();
+    private ArrayList<Processor> delayedProcessors = new ArrayList<>();
 
-    private ArrayList<CommitRollbackListener> crListeners = new ArrayList<CommitRollbackListener>();
+    private ArrayList<CommitRollbackListener> crListeners = new ArrayList<>();
 
-    private ArrayList<EventChannel> cycleStateChanges = new ArrayList<EventChannel>();
+    private ArrayList<EventChannel> cycleStateChanges = new ArrayList<>();
 
-    private ArrayList<EventChannel> transStateChanges = new ArrayList<EventChannel>();
+    private ArrayList<EventChannel> transStateChanges = new ArrayList<>();
 
-    private ArrayList<EventChannel> eventChannelFires = new ArrayList<EventChannel>();
+    private ArrayList<EventChannel> eventChannelFires = new ArrayList<>();
 
     private Runnable componentChange = null;
 
@@ -72,7 +74,7 @@ public final class TransactionMgr {
     private TransactionExceptionHandler exceptionHandler = new TransactionExceptionHandler() {
         @Override
         public void handle(Exception exception) {
-            logger.log(Level.INFO, "Unexpected Exception!", exception);
+            LOGGER.atWarn().setCause(exception).log("Unexpected Exception!");
 
             throw new RuntimeException(
                     "An unhandled exception occured while processing a transaction: " + exception.getMessage(),
@@ -81,8 +83,6 @@ public final class TransactionMgr {
     };
 
     private LocationFormatter locationFormatter = null;
-
-    private static final Logger logger = Logger.getLogger(TransactionMgr.class.getName());
 
     /**
      * Constructs a transaction manager
@@ -144,14 +144,6 @@ public final class TransactionMgr {
         return currentlyExecutingTransactionId;
     }
 
-    Logger getLogger() {
-        if (logging) {
-            return Logger.getLogger(TransactionMgr.class.getName());
-        } else {
-            return null;
-        }
-    }
-
     /**
      * Set the exception handler for this transaction manager.
      *
@@ -161,6 +153,26 @@ public final class TransactionMgr {
     void setExceptionHandler(TransactionExceptionHandler exceptionHandler) {
         Argument.assertNotNull(exceptionHandler, "exceptionHandler");
         this.exceptionHandler = exceptionHandler;
+    }
+
+    private boolean isDebugEnabled() {
+        return logging && LOGGER.isDebugEnabled();
+    }
+
+    private boolean isTraceEnabled() {
+        return logging && LOGGER.isTraceEnabled();
+    }
+
+    private void debug(String format, Object... args) {
+        if (isDebugEnabled()) {
+            LOGGER.atDebug().log(format, args);
+        }
+    }
+
+    private void trace(String format, Object... args) {
+        if (isTraceEnabled()) {
+            LOGGER.atTrace().log(format, args);
+        }
     }
 
     private void executeTransaction(TransactionState transactionState, Throwable location) {
@@ -180,45 +192,35 @@ public final class TransactionMgr {
 
         long cycleNumber = 0;
         do {
-            Logger logger = getLogger();
+            debug("Cycle {}", cycleNumber);
+            debug("  State Changes:");
 
-            if (logger != null) {
-                logger.log(Level.INFO, "Cycle " + cycleNumber);
-                logger.log(Level.INFO, "  State Changes:");
-            }
+            trace("executeEventChannelFires()");
 
-            if (logger != null) {
-                logger.log(Level.FINE, "executeEventChannelFires()");
-            }
             executeEventChannelFires();
 
-            if (logger != null) {
-                logger.log(Level.FINE, "executeStateChanges()");
-            }
+            trace("executeStateChanges()");
+
             executeStateChanges();
 
-            if (logger != null) {
-                logger.log(Level.INFO, "  Validators:");
-            }
+            debug("  Validators:");
+
             executeValidators();
 
-            if (logger != null) {
-                logger.log(Level.INFO, "  Processors:");
-            }
+            debug("  Processors:");
+
             executeProcessors();
 
-            if (logger != null) {
-                logger.log(Level.FINE, "synchronizeCycleState()");
-            }
+            trace("synchronizeCycleState()");
+
             synchronizeCycleState();
 
-            if (logger != null) {
-                logger.log(Level.FINE, "executeEndOfCycleRunnables");
-            }
+            trace("executeEndOfCycleRunnables");
+
             executeEndOfCycleRunnables();
 
             cycleNumber++;
-        } while (stateChanges.size() != 0 || eventChannelFires.size() != 0 || processors.size() != 0);
+        } while (!stateChanges.isEmpty() || !eventChannelFires.isEmpty() || !processors.isEmpty());
 
         componentChange = null;
     }
@@ -238,15 +240,11 @@ public final class TransactionMgr {
             }
         }
 
-        Logger logger = getLogger();
+        debug("******** Begin transaction: {} *********", ++transactionCount);
 
-        if (logger != null) {
-            logger.log(Level.INFO, "******** Begin transaction: " + ++transactionCount + " *********");
-
-            synchronized (lock) {
-                if (locationFormatter != null) {
-                    locationFormatter.formatLocation(logger, location);
-                }
+        synchronized (lock) {
+            if (locationFormatter != null) {
+                locationFormatter.formatLocation(LOGGER, location);
             }
         }
 
@@ -273,9 +271,7 @@ public final class TransactionMgr {
             inTransaction = false;
         }
 
-        if (logger != null) {
-            logger.log(Level.INFO, "End transaction: " + transactionCount + "\n");
-        }
+        debug("End transaction: {}", transactionCount);
 
         return thrown;
     }
@@ -296,23 +292,19 @@ public final class TransactionMgr {
         stateChanges.clear();
         executingStateChanges = true;
 
-        Logger logger = getLogger();
         for (int i = 0; i < sourcesArraySize; i++) {
             Object state = sourcesArray[i].fire();
             cycleStateChanges.add(sourcesArray[i].eventChannel);
             transStateChanges.add(sourcesArray[i].eventChannel);
-            if (logger != null) {
-                logger.log(
-                        Level.INFO,
-                        "    S" + i + " : " + sourcesArray[i].getTreeComponent().getName()
-                                + " : " + sourcesArray[i].ecd.getEventChannelName()
-                                + " = " + state);
-            }
+            debug(
+                    "    S{} : {} : {} = {}",
+                    i,
+                    sourcesArray[i].getTreeComponent().getName(),
+                    sourcesArray[i].ecd.getEventChannelName(),
+                    state);
         }
 
         executingStateChanges = false;
-
-        // System.out.println();
     }
 
     private void executeValidators() {
@@ -321,20 +313,14 @@ public final class TransactionMgr {
             return;
         }
 
-        // System.out.print("executeValidators()");
         Validator[] v = validators.toArray(new Validator[validators.size()]);
         validators = null;
 
-        Logger logger = getLogger();
         for (int i = 0; i < v.length; i++) {
-            if (logger != null) {
-                logger.log(Level.INFO, "validators[" + i + "].validateState(): " + v[i].getName());
-            }
+            debug("validators[{}].validateState(): {}", i, v[i].getName());
 
             v[i].validate();
         }
-
-        // System.out.println();
     }
 
     private int executeProcessorsArraySize = 0;
@@ -347,7 +333,7 @@ public final class TransactionMgr {
         }
 
         if (processors.size() > 1) {
-            checkDependencies.checkDependencies(processors, delayedProcessors, logger);
+            checkDependencies.checkDependencies(processors, delayedProcessors, null);
         }
 
         // process the independent processors...
@@ -367,16 +353,12 @@ public final class TransactionMgr {
             delayedProcessors = t;
         }
 
-        Logger logger = getLogger();
         for (int i = 0; i < executeProcessorsArraySize; i++) {
-            if (logger != null) {
-                logger.log(Level.INFO, "    P" + i + " : " + executeProcessorsArray[i].getName());
-            }
+            debug("    P{} : {}", i, executeProcessorsArray[i].getName());
             try {
                 executeProcessorsArray[i].process();
             } catch (Exception e) {
-                Logger.getLogger(TransactionMgr.class.getName())
-                        .log(Level.WARNING, "Exception in " + executeProcessorsArray[i].getName(), e);
+                LOGGER.atWarn().setCause(e).log("Exception in {}", executeProcessorsArray[i].getName());
             }
         }
     }
@@ -476,15 +458,12 @@ public final class TransactionMgr {
         cycleStateChanges.toArray(cycleStateChangesArray);
         cycleStateChanges.clear();
 
-        Logger logger = getLogger();
         for (int i = 0; i < cycleStateChangesArraySize; i++) {
-            if (logger != null) {
-                logger.log(
-                        Level.FINE,
-                        "eventChannels[" + i
-                                + "].synchronizeCycleState(): "
-                                + cycleStateChangesArray[i].getECD().getEventChannelName());
-            }
+            trace(
+                    "eventChannels[{}].synchronizeCycleState(): {}",
+                    i,
+                    cycleStateChangesArray[i].getECD().getEventChannelName());
+
             cycleStateChangesArray[i].synchronizeCycleState();
         }
     }
@@ -504,15 +483,12 @@ public final class TransactionMgr {
         transStateChanges.toArray(eventChannels);
         transStateChanges.clear();
 
-        Logger logger = getLogger();
         for (int i = 0; i < eventChannelsSize; i++) {
-            if (logger != null) {
-                logger.log(
-                        Level.FINE,
-                        "eventChannels[" + i
-                                + "].synchronizeTransactionState(): "
-                                + eventChannels[i].getECD().getEventChannelName());
-            }
+            trace(
+                    "eventChannels[{}].synchronizeTransactionState(): {}",
+                    i,
+                    eventChannels[i].getECD().getEventChannelName());
+
             eventChannels[i].synchronizeTransactionState();
         }
     }
@@ -522,20 +498,16 @@ public final class TransactionMgr {
             return;
         }
 
-        // System.out.print("executeEventChannelFires()");
         EventChannel[] ec = eventChannelFires.toArray(new EventChannel[eventChannelFires.size()]);
         eventChannelFires.clear();
 
         executingStateChanges = true;
 
-        Logger logger = getLogger();
         for (int i = 0; i < ec.length; i++) {
             ec[i].fire();
-            if (logger != null) {
-                logger.log(
-                        Level.INFO,
-                        "    S" + i + " : " + ec[i].getECD().getEventChannelName() + " : " + ec[i].getState());
-            }
+
+            debug("    S{} : {} : {}", i, ec[i].getECD().getEventChannelName(), ec[i].getState());
+
             this.transStateChanges.add(ec[i]);
         }
 
@@ -547,17 +519,13 @@ public final class TransactionMgr {
             return;
         }
 
-        Logger logger = getLogger();
-        if (logger != null) {
-            logger.log(Level.INFO, "Add/Remove Component");
-            logger.log(Level.INFO, "  " + componentChange);
-        }
+        debug("Add/Remove Component");
+        debug("  {}", componentChange);
 
         componentChange.run();
     }
 
     private void executeRollback() {
-        // System.out.print("executeRollback()");
         stateChanges.clear();
         validators = null;
         processors.clear();
@@ -571,11 +539,9 @@ public final class TransactionMgr {
         crListeners.clear();
 
         for (int i = 0; i < crls.length; i++) {
-            // System.out.print("*");
             crls[i].rollback();
         }
 
-        // System.out.println();
         executeTransactionCycles();
     }
 
@@ -583,11 +549,7 @@ public final class TransactionMgr {
     private CommitRollbackListener[] commitRollbackListeners = new CommitRollbackListener[commitRollbackListenersSize];
 
     private void commitTransaction() {
-        Logger logger = getLogger();
-        // System.out.print("commitTransaction()");
-        if (logger != null) {
-            logger.log(Level.INFO, "Commit:");
-        }
+        debug("Commit:");
 
         synchronized (this) {
             commitRollbackListenersSize = crListeners.size();
@@ -598,23 +560,18 @@ public final class TransactionMgr {
             crListeners.clear();
         }
 
-        for (int i = 0, c = 0; i < commitRollbackListenersSize; i++) {
-            if (logger != null) {
-                if (!(commitRollbackListeners[i] instanceof Terminator)) {
-                    logger.log(Level.INFO, "  C" + (c++) + " : " + commitRollbackListeners[i].getName());
-                }
+        int commitNumber = 0;
+        for (int i = 0; i < commitRollbackListenersSize; i++) {
+            if (!(commitRollbackListeners[i] instanceof Terminator)) {
+                debug("  C{} : {}", commitNumber++, commitRollbackListeners[i].getName());
             }
 
-            // System.out.print("*");
             try {
                 commitRollbackListeners[i].commit();
             } catch (Exception e) {
-                Logger.getLogger(TransactionMgr.class.getName())
-                        .log(Level.WARNING, "Exception in " + commitRollbackListeners[i].getName(), e);
+                LOGGER.atWarn().setCause(e).log("Exception in {}", commitRollbackListeners[i].getName());
             }
         }
-
-        // System.out.println();
     }
 
     void addCommitRollbackListener(CommitRollbackListener listener) {
@@ -928,10 +885,7 @@ public final class TransactionMgr {
 
         @Override
         public void run() {
-            Logger logger = transactionMgr.getLogger();
-            if (logger != null) {
-                logger.info(this.toString());
-            }
+            LOGGER.atDebug().log("{}", this);
 
             boolean clearCache = false;
 

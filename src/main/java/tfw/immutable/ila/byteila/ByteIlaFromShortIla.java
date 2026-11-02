@@ -46,5 +46,10 @@ public final class ByteIlaFromShortIla {
                 col = 0;
             }
         }
+
+        @Override
+        protected void closeImpl() throws IOException {
+            shortIla.close();
+        }
     }
 }

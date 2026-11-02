@@ -38,6 +38,11 @@ public final class StridedObjectIlaFromObjectIla<T> {
                 array[ii] = bii.next();
             }
         }
+
+        @Override
+        protected void closeImpl() throws IOException {
+            ila.close();
+        }
     }
 }
 // AUTO GENERATED FROM TEMPLATE

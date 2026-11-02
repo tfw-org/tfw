@@ -1,0 +1,15 @@
+{
+    "templateName": "IlaFactoryFromArrayFuzzer.java.ftl",
+    "dataModel": {
+        "typePackage": "shortilaf",
+        "fuzzerClassName": "ShortIlaFactoryFromArrayFuzzer",
+        "factoryName": "ShortIlaFactoryFromArray",
+        "ilaPackage": "shortila",
+        "ilaType": "ShortIla",
+        "arrayType": "short[]",
+        "arrayTypeCreation": "short[length]",
+        "factoryExpression": "array -> ShortIlaFactoryFromArray.create(array).create()",
+        "initializationKind": "short",
+        "equalityKind": "primitive"
+    }
+}

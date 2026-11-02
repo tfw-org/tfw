@@ -9,6 +9,7 @@ import tfw.swing.SwingTestUtil;
 import tfw.swing.SwingUtil;
 import tfw.swing.TestTriggeredCommit;
 import tfw.tsm.BasicTransactionQueue;
+import tfw.tsm.DefaultCheckDependencies;
 import tfw.tsm.OneDeepStateQueueFactory;
 import tfw.tsm.Root;
 import tfw.tsm.ecd.StatelessTriggerECD;
@@ -42,7 +43,9 @@ final class ActionListenerFactoryTest {
         final BasicTransactionQueue basicTransactionQueue = new BasicTransactionQueue();
         final Root root = Root.builder()
                 .setName(ROOT_NAME)
-                .addEventChannel(STATELESS_TRIGGER_ECD, null)
+                .setTransactionQueue(new BasicTransactionQueue())
+                .setCheckDependencies(new DefaultCheckDependencies())
+                .addStatelessTriggerECD(STATELESS_TRIGGER_ECD)
                 .setTransactionQueue(basicTransactionQueue)
                 .build();
         final ActionListener actionListener = ActionListenerFactory.create(TEST_NAME, STATELESS_TRIGGER_ECD, null);
@@ -67,7 +70,9 @@ final class ActionListenerFactoryTest {
         final BasicTransactionQueue basicTransactionQueue = new BasicTransactionQueue();
         final Root root = Root.builder()
                 .setName(ROOT_NAME)
-                .addEventChannel(STATELESS_TRIGGER_ECD, null)
+                .setTransactionQueue(new BasicTransactionQueue())
+                .setCheckDependencies(new DefaultCheckDependencies())
+                .addStatelessTriggerECD(STATELESS_TRIGGER_ECD)
                 .setTransactionQueue(basicTransactionQueue)
                 .build();
         final ActionListener actionListener =

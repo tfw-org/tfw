@@ -39,5 +39,10 @@ public final class LongIlaFromDoubleIla {
                 array[offset + i] = Double.doubleToRawLongBits(dii.next());
             }
         }
+
+        @Override
+        protected void closeImpl() throws IOException {
+            doubleIla.close();
+        }
     }
 }

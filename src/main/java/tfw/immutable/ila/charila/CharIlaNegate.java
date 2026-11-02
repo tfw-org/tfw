@@ -34,6 +34,11 @@ public final class CharIlaNegate {
                 array[ii] = (char) -array[ii];
             }
         }
+
+        @Override
+        protected void closeImpl() throws IOException {
+            ila.close();
+        }
     }
 }
 // AUTO GENERATED FROM TEMPLATE

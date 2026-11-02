@@ -17,25 +17,28 @@ final class MultiplexerConstructionTest {
     private final ValueCommit vc2 = new ValueCommit("vc2");
 
     @Test
-    void dynamicConstructionTest() {
+    void dynamicConstructionTest() throws InterruptedException {
         String value = "bob";
         MultiplexedBranchFactory mbf = new MultiplexedBranchFactory();
         mbf.addMultiplexer(VALUE_ECD, MULTIVALUE_ECD);
         MultiplexedBranch multiBranch = mbf.create("multiBranch");
         multiBranch.add(vc1, 0);
 
-        BasicTransactionQueue queue = new BasicTransactionQueue();
-        RootFactory rf = new RootFactory();
-        rf.addEventChannel(MULTIVALUE_ECD, ObjectIlaFromArray.create(new String[] {value}));
-        rf.addEventChannel(TRIGGER_ECD);
-        Root root = rf.create("Test", queue);
+        final BasicTransactionQueue queue = new BasicTransactionQueue();
+        final Root root = Root.builder()
+                .setName("Test")
+                .setTransactionQueue(queue)
+                .setCheckDependencies(new DefaultCheckDependencies())
+                .addObjectECD(MULTIVALUE_ECD, ObjectIlaFromArray.create(new String[] {value}))
+                .addStatelessTriggerECD(TRIGGER_ECD)
+                .build();
 
         root.add(multiBranch);
         queue.waitTilEmpty();
     }
 
     @Test
-    void nameSpaceSeparationTest() {
+    void nameSpaceSeparationTest() throws InterruptedException {
         String value0 = "bob";
         String value1 = "sally";
         MultiplexedBranchFactory mbf = new MultiplexedBranchFactory();
@@ -46,10 +49,14 @@ final class MultiplexerConstructionTest {
         multiBranch.add(vc0, 0);
         multiBranch.add(vc1, 1);
 
-        BasicTransactionQueue queue = new BasicTransactionQueue();
-        RootFactory rf = new RootFactory();
-        rf.addEventChannel(MULTIVALUE_ECD, ObjectIlaFromArray.create(new String[] {value0, value1}));
-        Root root = rf.create("Test", queue);
+        final BasicTransactionQueue queue = new BasicTransactionQueue();
+        final Root root = Root.builder()
+                .setName("Test")
+                .setTransactionQueue(queue)
+                .setCheckDependencies(new DefaultCheckDependencies())
+                .addObjectECD(MULTIVALUE_ECD, ObjectIlaFromArray.create(new String[] {value0, value1}))
+                .build();
+
         root.add(multiBranch);
         queue.waitTilEmpty();
         assertThat(value0).isEqualTo(vc0.value);

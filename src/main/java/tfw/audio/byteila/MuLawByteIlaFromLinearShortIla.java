@@ -57,5 +57,10 @@ public final class MuLawByteIlaFromLinearShortIla {
                 array[offset] = (byte) (uval ^ mask);
             }
         }
+
+        @Override
+        protected void closeImpl() throws IOException {
+            shortIla.close();
+        }
     }
 }

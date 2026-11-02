@@ -12,9 +12,9 @@ import javax.swing.JTextField;
 import tfw.swing.JTextFieldBB;
 import tfw.tsm.AWTTransactionQueue;
 import tfw.tsm.Commit;
+import tfw.tsm.DefaultCheckDependencies;
 import tfw.tsm.Initiator;
 import tfw.tsm.Root;
-import tfw.tsm.RootFactory;
 import tfw.tsm.ecd.BooleanECD;
 import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.StringECD;
@@ -28,12 +28,15 @@ public class JTextFieldBBDemo {
         final StringECD textECD = new StringECD("text");
         final BooleanECD enabledECD = new BooleanECD("enabled");
 
-        RootFactory rf = new RootFactory();
-        rf.addEventChannel(textECD, "Initial Value");
-        rf.addEventChannel(enabledECD, Boolean.FALSE);
-        Root root = rf.create("JTextFieldBBTest", new AWTTransactionQueue());
+        final Root root = Root.builder()
+                .setName("JTextFieldBBTestRoot")
+                .setTransactionQueue(new AWTTransactionQueue())
+                .setCheckDependencies(new DefaultCheckDependencies())
+                .addObjectECD(textECD, "Initial Value")
+                .addObjectECD(enabledECD, Boolean.FALSE)
+                .build();
 
-        final Initiator initiator = new Initiator("JTextFieldBBTest", new ObjectECD[] {textECD, enabledECD});
+        final Initiator initiator = new Initiator("JTextFieldBBTestInitiator", new ObjectECD[] {textECD, enabledECD});
         root.add(initiator);
 
         final JTextField tf = new JTextField();
@@ -52,7 +55,7 @@ public class JTextFieldBBDemo {
         });
 
         JTextFieldBB tfb = JTextFieldBB.builder()
-                .setName("JTextFieldBBTest")
+                .setName("JTextFieldBBTestTextField")
                 .setTextInputOutputECD(textECD)
                 .setEnabledInputECD(enabledECD)
                 .build();

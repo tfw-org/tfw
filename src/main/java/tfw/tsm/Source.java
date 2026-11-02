@@ -1,14 +1,13 @@
 package tfw.tsm;
 
 import tfw.tsm.ecd.EventChannelDescription;
-import tfw.value.ValueException;
 
 public abstract class Source extends Port {
     Source(String name, EventChannelDescription ecd) {
         super(name, ecd);
     }
 
-    abstract void setState(Object state) throws ValueException;
+    abstract void setState(Object state);
 
     abstract Object fire();
 

@@ -43,7 +43,7 @@ final class BasicTransactionQueueTest {
     }
 
     @Test
-    void addNWaitTest() {
+    void addNWaitTest() throws InterruptedException {
         BasicTransactionQueue queue = new BasicTransactionQueue();
         TestRunnable ts = new TestRunnable(500);
 

@@ -1,0 +1,37 @@
+name: Update Pitest PR
+
+on:
+  workflow_run: # zizmor: ignore[dangerous-triggers] Intentional privileged follow-up; this workflow never checks out or executes PR code.
+    workflows: ["pitest"]
+    types:
+      - completed
+
+permissions: {}
+
+jobs:
+  pitest-update-pr:
+    permissions:
+      contents: read
+      pull-requests: write
+      checks: write
+      actions: read
+
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download Pitest results
+        uses: dawidd6/action-download-artifact@eab87c9830c39eff17e5a6eadb20bfb4bc880477 # v27
+        with:
+          workflow: ${{ github.event.workflow_run.workflow_id }}
+          run_id: ${{ github.event.workflow_run.id }}
+          name: pitest
+          path: target/pit-reports-ci
+
+      - name: Update pull request
+        env:
+          REPO_TOKEN: ${{ github.token }}
+        run: >
+          mvn -B
+          com.arcmutate:pitest-github-maven-plugin:2.3.3:updatePR
+          -DrepoToken="$REPO_TOKEN"

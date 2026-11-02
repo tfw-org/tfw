@@ -1,0 +1,15 @@
+{
+    "templateName": "IlaFactoryFromArrayFuzzer.java.ftl",
+    "dataModel": {
+        "typePackage": "doubleilaf",
+        "fuzzerClassName": "DoubleIlaFactoryFromArrayFuzzer",
+        "factoryName": "DoubleIlaFactoryFromArray",
+        "ilaPackage": "doubleila",
+        "ilaType": "DoubleIla",
+        "arrayType": "double[]",
+        "arrayTypeCreation": "double[length]",
+        "factoryExpression": "array -> DoubleIlaFactoryFromArray.create(array).create()",
+        "initializationKind": "double",
+        "equalityKind": "double"
+    }
+}

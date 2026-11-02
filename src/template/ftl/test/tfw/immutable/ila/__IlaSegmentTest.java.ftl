@@ -1,0 +1,79 @@
+// booleanila,byteila,charila,doubleila,floatila,intila,longila,objectila,shortila
+package ${PACKAGE};
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
+import java.io.IOException;
+${RANDOM_INCLUDE}import org.junit.jupiter.api.Test;
+import tfw.immutable.ila.IlaTestDimensions;
+
+final class ${NAME}IlaSegmentTest {
+    @Test
+    void argumentsTest() throws Exception {
+        final ${NAME}Ila${TEMPLATE} ila = ${NAME}IlaFromArray.create(new ${TYPE}[10]);
+        final long ilaLength = ila.length();
+
+        assertThatThrownBy(() -> ${NAME}IlaSegment.create(null, 0))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("ila == null not allowed!");
+        assertThatThrownBy(() -> ${NAME}IlaSegment.create(ila, -1))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("start (=-1) < 0 not allowed!");
+        assertThatThrownBy(() -> ${NAME}IlaSegment.create(ila, ilaLength + 1))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("length (=-1) < 0 not allowed!");
+        assertThatThrownBy(() -> ${NAME}IlaSegment.create(null, 0, 0))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("ila == null not allowed!");
+        assertThatThrownBy(() -> ${NAME}IlaSegment.create(ila, -1, 0))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("start (=-1) < 0 not allowed!");
+        assertThatThrownBy(() -> ${NAME}IlaSegment.create(ila, 0, -1))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("length (=-1) < 0 not allowed!");
+        assertThatThrownBy(() -> ${NAME}IlaSegment.create(ila, ilaLength + 1, 0))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("start + length (=11) > ila.length() (=10) not allowed!");
+        assertThatThrownBy(() -> ${NAME}IlaSegment.create(ila, 0, ilaLength + 1))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("start + length (=11) > ila.length() (=10) not allowed!");
+    }
+
+    @Test
+    void allTest() throws Exception {
+        ${RANDOM_INIT}final int length = IlaTestDimensions.defaultIlaLength();
+        final ${TYPE}[] master = new ${TYPE}[length];
+        for (int ii = 0; ii < master.length; ++ii) {
+            master[ii] = ${RANDOM_VALUE};
+        }
+        ${NAME}Ila${TEMPLATE} masterIla = ${NAME}IlaFromArray.create(master);
+        ${NAME}Ila${TEMPLATE} checkIla = ${NAME}IlaSegment.create(masterIla, 0, masterIla.length());
+        final int offsetLength = IlaTestDimensions.defaultOffsetLength();
+        final int maxStride = IlaTestDimensions.defaultMaxStride();
+        final ${TYPE} epsilon = ${DEFAULT_VALUE};
+        ${NAME}IlaCheck.checkWithoutCorrectness(checkIla, offsetLength, epsilon);
+        for (long start = 0; start < length; ++start) {
+            for (long len = 0; len < length - start; ++len) {
+                ${TYPE}[] array = new ${TYPE}[(int) len];
+                for (int ii = 0; ii < array.length; ++ii) {
+                    array[ii] = master[ii + (int) start];
+                }
+                ${NAME}Ila${TEMPLATE} targetIla = ${NAME}IlaFromArray.create(array);
+                ${NAME}Ila${TEMPLATE} actualIla = ${NAME}IlaSegment.create(masterIla, start, len);
+                ${NAME}IlaCheck.checkCorrectness(targetIla, actualIla, offsetLength, maxStride, epsilon);
+            }
+        }
+    }
+
+    @Test
+    void closeTest() throws IOException {
+        final TestClose${NAME}Ila testIla = new TestClose${NAME}Ila();
+
+        try (${NAME}Ila ila = ${NAME}IlaSegment.create(testIla, 1, 1)) {
+            assertThat(ila).isNotNull();
+        }
+
+        assertThat(testIla.getNumberOfCloses()).isEqualTo(1);
+    }
+}

@@ -122,19 +122,19 @@ final class RollbackTest {
     }
 
     @Test
-    void converterTest() throws Exception {
-        RootFactory rf = new RootFactory();
-        rf.addEventChannel(error1ECD);
-        rf.addEventChannel(error2ECD);
-        rf.addEventChannel(aECD, aInitialState);
-        rf.addEventChannel(bECD, bInitialState);
-        rf.addEventChannel(cECD, cInitialState);
+    void converterTest() throws InterruptedException {
+        final BasicTransactionQueue queue = new BasicTransactionQueue();
+        final Root root = Root.builder()
+                .setName("Test branch")
+                .setTransactionQueue(queue)
+                .setCheckDependencies(new DefaultCheckDependencies())
+                .addRollbackECD(error1ECD)
+                .addRollbackECD(error2ECD)
+                .addObjectECD(aECD, aInitialState)
+                .addObjectECD(bECD, bInitialState)
+                .addObjectECD(cECD, cInitialState)
+                .build();
 
-        // rf.setLogging(true);
-        BasicTransactionQueue queue = new BasicTransactionQueue();
-
-        // rf.setLogging(true);
-        Root root = rf.create("Test branch", queue);
         root.add(initiator);
         root.add(aValidator);
         root.add(bValidator);
@@ -178,18 +178,22 @@ final class RollbackTest {
     }
 
     @Test
-    void simpleRollbackTest() {
+    void simpleRollbackTest() throws InterruptedException {
         String errorMsg = "An error occurred";
         TestCommit aCommit = new TestCommit(aECD, null);
         TestCommit errorCommit = new TestCommit(error1ECD, null);
         Validator validator = new TestValidator(aECD, error1ECD, errorMsg);
         Initiator initiator = new Initiator("Test initiator", aECD);
-        RootFactory rf = new RootFactory();
-        rf.addEventChannel(aECD);
-        rf.addEventChannel(error1ECD);
 
-        BasicTransactionQueue queue = new BasicTransactionQueue();
-        Root root = rf.create("SimpleRollbackTest", queue);
+        final BasicTransactionQueue queue = new BasicTransactionQueue();
+        final Root root = Root.builder()
+                .setName("SimpleRollbackTest")
+                .setTransactionQueue(queue)
+                .setCheckDependencies(new DefaultCheckDependencies())
+                .addObjectECD(aECD, null)
+                .addRollbackECD(error1ECD)
+                .build();
+
         root.add(aCommit);
         root.add(errorCommit);
         root.add(validator);
@@ -209,7 +213,7 @@ final class RollbackTest {
     }
 
     @Test
-    void daisyChainedMultiCycleRollbackTest() {
+    void daisyChainedMultiCycleRollbackTest() throws InterruptedException {
         String cErrorMsg = "An error occurred";
         Initiator initiator = new Initiator("Test initiator", aECD);
         TestCommit aCommit = new TestCommit(aECD, null);
@@ -220,14 +224,17 @@ final class RollbackTest {
         Validator cValidator = new TestValidator(cECD, error1ECD, cErrorMsg);
         TestCommit errorCommit = new TestCommit(error1ECD, new StringECD[] {aECD, bECD, cECD});
 
-        RootFactory rf = new RootFactory();
-        rf.addEventChannel(aECD);
-        rf.addEventChannel(bECD);
-        rf.addEventChannel(cECD);
-        rf.addEventChannel(error1ECD);
+        final BasicTransactionQueue queue = new BasicTransactionQueue();
+        final Root root = Root.builder()
+                .setName("SimpleRollbackTest")
+                .setTransactionQueue(queue)
+                .setCheckDependencies(new DefaultCheckDependencies())
+                .addObjectECD(aECD, null)
+                .addObjectECD(bECD, null)
+                .addObjectECD(cECD, null)
+                .addRollbackECD(error1ECD)
+                .build();
 
-        BasicTransactionQueue queue = new BasicTransactionQueue();
-        Root root = rf.create("SimpleRollbackTest", queue);
         root.add(aCommit);
         root.add(bCommit);
         root.add(cCommit);
@@ -262,7 +269,7 @@ final class RollbackTest {
     }
 
     @Test
-    void multiValueRollbackTest() {
+    void multiValueRollbackTest() throws InterruptedException {
         String error1msg = "Error notification on error channel one";
         String error2msg = "Error notification on error channel two";
         EventChannelState[] rollbackState = new EventChannelState[] {
@@ -274,13 +281,16 @@ final class RollbackTest {
         TestCommit errorCommit1 = new TestCommit(error1ECD, null);
         TestCommit errorCommit2 = new TestCommit(error2ECD, null);
 
-        RootFactory rf = new RootFactory();
-        rf.addEventChannel(aECD);
-        rf.addEventChannel(error1ECD);
-        rf.addEventChannel(error2ECD);
+        final BasicTransactionQueue queue = new BasicTransactionQueue();
+        final Root root = Root.builder()
+                .setName("SimpleRollbackTest")
+                .setTransactionQueue(queue)
+                .setCheckDependencies(new DefaultCheckDependencies())
+                .addObjectECD(aECD, null)
+                .addRollbackECD(error1ECD)
+                .addRollbackECD(error2ECD)
+                .build();
 
-        BasicTransactionQueue queue = new BasicTransactionQueue();
-        Root root = rf.create("SimpleRollbackTest", queue);
         root.add(aValidator);
         root.add(initiator);
         root.add(errorCommit1);

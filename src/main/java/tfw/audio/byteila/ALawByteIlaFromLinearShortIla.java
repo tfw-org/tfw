@@ -51,5 +51,10 @@ public final class ALawByteIlaFromLinearShortIla {
                 array[offset] = (byte) (aval ^ mask);
             }
         }
+
+        @Override
+        protected void closeImpl() throws IOException {
+            shortIla.close();
+        }
     }
 }

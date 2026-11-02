@@ -1,0 +1,61 @@
+// booleanila,byteila,charila,doubleila,floatila,intila,longila,objectila,shortila
+package ${PACKAGE};
+
+import java.io.IOException;
+import tfw.check.Argument;
+
+public final class ${NAME}IlaSegment {
+    private ${NAME}IlaSegment() {
+        // non-instantiable class
+    }
+
+    public static ${TEMPLATE_SPACE}${NAME}Ila${TEMPLATE} create(${NAME}Ila${TEMPLATE} ila, long start) {
+        Argument.assertNotNull(ila, "ila");
+
+        try {
+            return create(ila, start, ila.length() - start);
+        } catch (IOException e) {
+            throw new IllegalArgumentException("Could not get ila length!", e);
+        }
+    }
+
+    public static ${TEMPLATE_SPACE}${NAME}Ila${TEMPLATE} create(${NAME}Ila${TEMPLATE} ila, long start, long length) {
+        return new ${NAME}IlaImpl${DIAMOND}(ila, start, length);
+    }
+
+    private static class ${NAME}IlaImpl${TEMPLATE} extends Abstract${NAME}Ila${TEMPLATE} {
+        private final ${NAME}Ila${TEMPLATE} ila;
+        private final long start;
+        private final long length;
+
+        private ${NAME}IlaImpl(${NAME}Ila${TEMPLATE} ila, long start, long length) {
+            Argument.assertNotNull(ila, "ila");
+            Argument.assertNotLessThan(start, 0, "start");
+            Argument.assertNotLessThan(length, 0, "length");
+            try {
+                Argument.assertNotGreaterThan(start + length, ila.length(), "start + length", "ila.length()");
+            } catch (IOException e) {
+                throw new IllegalArgumentException("Could not get ila length!", e);
+            }
+
+            this.ila = ila;
+            this.start = start;
+            this.length = length;
+        }
+
+        @Override
+        protected long lengthImpl() {
+            return length;
+        }
+
+        @Override
+        protected void getImpl(${TYPE_OR_TEMPLATE}[] array, int offset, long start, int length) throws IOException {
+            ila.get(array, offset, this.start + start, length);
+        }
+
+        @Override
+        protected void closeImpl() throws IOException {
+            ila.close();
+        }
+    }
+}

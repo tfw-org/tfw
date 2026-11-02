@@ -2,7 +2,6 @@ package tfw.tsm;
 
 import tfw.check.Argument;
 import tfw.tsm.ecd.EventChannelDescription;
-import tfw.value.ValueException;
 
 /**
  * The event channel for sub-channels under a multiplexer.
@@ -61,7 +60,7 @@ public class DemultiplexedEventChannel extends Terminator {
      * Overrides the Terminator method inorder to count connections.
      */
     @Override
-    public void add(Port port) {
+    public synchronized void add(Port port) {
         super.add(port);
         connectionCount++;
     }
@@ -71,7 +70,7 @@ public class DemultiplexedEventChannel extends Terminator {
      * this demultiplexer event channel when connections reach zero.
      */
     @Override
-    public void remove(Port port) {
+    public synchronized void remove(Port port) {
         super.remove(port);
         connectionCount--;
 
@@ -116,7 +115,7 @@ public class DemultiplexedEventChannel extends Terminator {
         }
 
         @Override
-        void setState(Object state) throws ValueException {
+        void setState(Object state) {
             Argument.assertNotNull(state, "state");
             if (this.getState() != null) {
                 // (new IllegalStateException("Attempt to overwrite state "

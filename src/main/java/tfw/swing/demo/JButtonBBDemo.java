@@ -11,9 +11,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import tfw.swing.JButtonBB;
 import tfw.tsm.AWTTransactionQueue;
+import tfw.tsm.DefaultCheckDependencies;
 import tfw.tsm.Initiator;
 import tfw.tsm.Root;
-import tfw.tsm.RootFactory;
 import tfw.tsm.TriggeredCommit;
 import tfw.tsm.ecd.BooleanECD;
 import tfw.tsm.ecd.ObjectECD;
@@ -62,10 +62,14 @@ public class JButtonBBDemo {
         p.add(cb, BorderLayout.NORTH);
         p.add(l, BorderLayout.SOUTH);
 
-        RootFactory rf = new RootFactory();
-        rf.addEventChannel(ENABLE_ECD, Boolean.FALSE);
-        rf.addEventChannel(TRIGGER_ECD);
-        Root r = rf.create("JButtonBBTest", new AWTTransactionQueue());
+        final Root r = Root.builder()
+                .setName("JButtonBBTest")
+                .setTransactionQueue(new AWTTransactionQueue())
+                .setCheckDependencies(new DefaultCheckDependencies())
+                .addObjectECD(ENABLE_ECD, Boolean.FALSE)
+                .addStatelessTriggerECD(TRIGGER_ECD)
+                .build();
+
         r.add(commit);
         r.add(initiator);
         r.add(b);

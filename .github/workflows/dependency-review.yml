@@ -1,0 +1,42 @@
+name: 'Dependency Review'
+
+on:
+  pull_request:
+
+# Cancel outdated dependency reviews for the same PR.
+concurrency:
+  group: ${{ github.workflow }}-pr-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pull-requests: write # Required if you want PR summaries/comments
+
+jobs:
+  dependency-review:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout Repository'
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: 'Dependency Review'
+        uses: actions/dependency-review-action@a1d282b36b6f3519aa1f3fc636f609c47dddb294 # v5.0.0
+        with:
+          # Fail the build if a vulnerability is moderate, high, or critical
+          # fail-on-severity: moderate
+          # warn-only: true 
+         
+          # Optional: Prevent merging unapproved licenses
+          allow-licenses: MIT, Apache-2.0, BSD-3-Clause
+          allow-dependencies-licenses: pkg:maven/com.arcmutate/pitest-git-maven-plugin, pkg:maven/com.arcmutate/pitest-git-plugin, pkg:maven/com.arcmutate/pitest-github-maven-plugin, pkg:maven/org.sonarsource.scanner.maven/sonar-maven-plugin
+
+          # Optional: Post a helpful summary table directly into the PR comments
+          comment-summary-in-pr: always
+
+          # Optional: Wait slightly if you suspect race conditions, 
+          # but usually the push workflow finishes before PR checks start.
+          retry-on-snapshot-warnings: true
+          retry-on-snapshot-warnings-timeout: 600
+          

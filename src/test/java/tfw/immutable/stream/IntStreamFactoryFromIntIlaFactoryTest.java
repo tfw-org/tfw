@@ -37,6 +37,11 @@ final class IntStreamFactoryFromIntIlaFactoryTest {
                     public void get(int[] array, int arrayOffset, long ilaStart, int length) throws IOException {
                         throw new IOException("Test IntIla that only throws IOExceptions!");
                     }
+
+                    @Override
+                    public void close() throws IOException {
+                        throw new IOException("Test IntIla that only throws IOExceptions!");
+                    }
                 };
             }
         };
@@ -61,6 +66,11 @@ final class IntStreamFactoryFromIntIlaFactoryTest {
                     @Override
                     public void get(int[] array, int arrayOffset, long ilaStart, int length) throws IOException {
                         throw new IOException("Test IntIla whose get() only throws IOExceptions!");
+                    }
+
+                    @Override
+                    public void close() throws IOException {
+                        throw new IOException("Test IntIla whose close() only throws IOExceptions!");
                     }
                 };
             }

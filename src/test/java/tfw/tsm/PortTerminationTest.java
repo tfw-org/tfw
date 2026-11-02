@@ -10,18 +10,20 @@ final class PortTerminationTest {
     static Exception expected = null;
 
     @Test
-    void unTerminatedPortTest() {
-        ObjectECD ecd = new StringECD("Test");
-        RootFactory rf = new RootFactory();
-        rf.setTransactionExceptionHandler(new TransactionExceptionHandler() {
-            @Override
-            public void handle(Exception exception) {
-                PortTerminationTest.expected = exception;
-            }
-        });
-
-        BasicTransactionQueue queue = new BasicTransactionQueue();
-        Root root = rf.create("test", queue);
+    void unTerminatedPortTest() throws InterruptedException {
+        final ObjectECD ecd = new StringECD("Test");
+        final BasicTransactionQueue queue = new BasicTransactionQueue();
+        final Root root = Root.builder()
+                .setName("test")
+                .setTransactionQueue(queue)
+                .setCheckDependencies(new DefaultCheckDependencies())
+                .setTransactionExceptionHandler(new TransactionExceptionHandler() {
+                    @Override
+                    public void handle(Exception exception) {
+                        PortTerminationTest.expected = exception;
+                    }
+                })
+                .build();
 
         Commit commit = new Commit("test", new ObjectECD[] {ecd}) {
             @Override

@@ -51,6 +51,11 @@ public final class FloatIlaSegment {
         protected void getImpl(float[] array, int offset, long start, int length) throws IOException {
             ila.get(array, offset, this.start + start, length);
         }
+
+        @Override
+        protected void closeImpl() throws IOException {
+            ila.close();
+        }
     }
 }
 // AUTO GENERATED FROM TEMPLATE

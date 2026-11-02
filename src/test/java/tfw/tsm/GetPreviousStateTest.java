@@ -9,20 +9,23 @@ final class GetPreviousStateTest {
     StringECD channel = new StringECD("channel");
 
     @Test
-    void isStateChangedTest() {
+    void isStateChangedTest() throws InterruptedException {
         final String initialState = "initialState";
         final String stateChangeOne = "StateOne";
         final String stateChangeTwo = "StateTwo";
-        RootFactory rf = new RootFactory();
-        rf.setTransactionExceptionHandler(new TransactionExceptionHandler() {
-            @Override
-            public void handle(Exception e) {
-                assertThat(e).isNull();
-            }
-        });
-        rf.addEventChannel(channel, initialState);
-        BasicTransactionQueue queue = new BasicTransactionQueue();
-        Root root = rf.create("TestRoot", queue);
+        final BasicTransactionQueue queue = new BasicTransactionQueue();
+        final Root root = Root.builder()
+                .setName("TestRoot")
+                .setTransactionQueue(queue)
+                .setCheckDependencies(new DefaultCheckDependencies())
+                .setTransactionExceptionHandler(new TransactionExceptionHandler() {
+                    @Override
+                    public void handle(Exception e) {
+                        assertThat(e).isNull();
+                    }
+                })
+                .addObjectECD(channel, initialState)
+                .build();
 
         TestConverter converter = new TestConverter();
         TestCommit commit = new TestCommit();

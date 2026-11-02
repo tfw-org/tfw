@@ -1,12 +1,15 @@
 package tfw.immutable.ila.doubleila;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import java.io.IOException;
 import java.util.Random;
 import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
 import tfw.immutable.ila.intila.IntIla;
 import tfw.immutable.ila.intila.IntIlaFromArray;
+import tfw.immutable.ila.intila.TestCloseIntIla;
 
 final class DoubleIlaFromCastIntIlaTest {
     @Test
@@ -36,6 +39,17 @@ final class DoubleIlaFromCastIntIlaTest {
         DoubleIla actualIla = DoubleIlaFromCastIntIla.create(ila, 100);
 
         DoubleIlaCheck.check(targetIla, actualIla);
+    }
+
+    @Test
+    void closeTest() throws IOException {
+        final TestCloseIntIla testIla = new TestCloseIntIla();
+
+        try (DoubleIla ila = DoubleIlaFromCastIntIla.create(testIla, 100)) {
+            assertThat(ila).isNotNull();
+        }
+
+        assertThat(testIla.getNumberOfCloses()).isEqualTo(1);
     }
 }
 // AUTO GENERATED FROM TEMPLATE

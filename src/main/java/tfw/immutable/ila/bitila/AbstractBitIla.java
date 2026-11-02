@@ -2,16 +2,23 @@ package tfw.immutable.ila.bitila;
 
 import java.io.IOException;
 import tfw.check.Argument;
+import tfw.check.ClosedManager;
 
 public abstract class AbstractBitIla implements BitIla {
+    protected abstract void closeImpl() throws IOException;
+
     protected abstract void getImpl(
             final long[] array, final long arrayOffsetInBits, final long ilaStartInBits, final long lengthInBits)
             throws IOException;
 
     protected abstract long lengthInBitsImpl() throws IOException;
 
+    private final ClosedManager closedManager = new ClosedManager();
+
     @Override
     public final long lengthInBits() throws IOException {
+        checkClosed();
+
         return lengthInBitsImpl();
     }
 
@@ -19,6 +26,8 @@ public abstract class AbstractBitIla implements BitIla {
     public final void get(
             final long[] array, final long arrayOffsetInBits, final long ilaStartInBits, final long lengthInBits)
             throws IOException {
+        checkClosed();
+
         Argument.assertNotNull(array, "array");
         Argument.assertNotLessThan(arrayOffsetInBits, 0, "offset");
         Argument.assertLessThan(arrayOffsetInBits, MAX_BITS_IN_ARRAY, "arrayOffsetInBits", "MAX_BITS_IN_ARRAY");
@@ -35,5 +44,16 @@ public abstract class AbstractBitIla implements BitIla {
         }
 
         getImpl(array, arrayOffsetInBits, ilaStartInBits, lengthInBits);
+    }
+
+    @Override
+    public final void close() throws IOException {
+        if (closedManager.close()) {
+            closeImpl();
+        }
+    }
+
+    protected void checkClosed() {
+        closedManager.checkClosed();
     }
 }

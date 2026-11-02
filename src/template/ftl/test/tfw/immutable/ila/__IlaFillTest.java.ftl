@@ -1,0 +1,32 @@
+// booleanila,byteila,charila,doubleila,floatila,intila,longila,objectila,shortila
+package ${PACKAGE};
+
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
+${RANDOM_INCLUDE}import org.junit.jupiter.api.Test;
+import tfw.immutable.ila.IlaTestDimensions;
+
+final class ${NAME}IlaFillTest {
+    @Test
+    void argumentsTest() {
+        ${RANDOM_INIT}final ${TYPE} value = ${RANDOM_VALUE};
+
+        assertThatThrownBy(() -> ${NAME}IlaFill.create(value, -1))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("length (=-1) < 0 not allowed!");
+    }
+
+    @Test
+    void allTest() throws Exception {
+        ${RANDOM_INIT}final ${TYPE} value = ${RANDOM_VALUE};
+        final int length = IlaTestDimensions.defaultIlaLength();
+        final ${TYPE}[] array = new ${TYPE}[length];
+        for (int ii = 0; ii < array.length; ++ii) {
+            array[ii] = value;
+        }
+        ${NAME}Ila${TEMPLATE} targetIla = ${NAME}IlaFromArray.create(array);
+        ${NAME}Ila${TEMPLATE} actualIla = ${NAME}IlaFill.create(value, length);
+
+        ${NAME}IlaCheck.check(targetIla, actualIla);
+    }
+}

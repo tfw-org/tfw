@@ -2,6 +2,7 @@ package tfw.immutable.ila.shortila;
 
 import java.io.IOException;
 import tfw.check.Argument;
+import tfw.immutable.ila.IlaReverseUtil;
 
 public final class ShortIlaReverse {
     private ShortIlaReverse() {
@@ -11,6 +12,7 @@ public final class ShortIlaReverse {
     public static ShortIla create(ShortIla ila, final short[] buffer) {
         Argument.assertNotNull(ila, "ila");
         Argument.assertNotNull(buffer, "buffer");
+        Argument.assertNotLessThan(buffer.length, 1, "buffer.length");
 
         return new ShortIlaImpl(ila, buffer);
     }
@@ -31,9 +33,26 @@ public final class ShortIlaReverse {
 
         @Override
         protected void getImpl(short[] array, int offset, long start, int length) throws IOException {
-            final StridedShortIla stridedShortIla = StridedShortIlaFromShortIla.create(ila, buffer.clone());
+            final short[] reverseBuffer = buffer.clone();
 
-            stridedShortIla.get(array, offset + length - 1, -1, length() - (start + length), length);
+            IlaReverseUtil.reverse(
+                    ila.length(),
+                    offset,
+                    start,
+                    length,
+                    reverseBuffer.length,
+                    (sourcePosition, destinationOffset, amount) -> {
+                        ila.get(reverseBuffer, 0, sourcePosition, amount);
+
+                        for (int i = 0; i < amount; i++) {
+                            array[destinationOffset + i] = reverseBuffer[amount - 1 - i];
+                        }
+                    });
+        }
+
+        @Override
+        protected void closeImpl() throws IOException {
+            ila.close();
         }
     }
 }

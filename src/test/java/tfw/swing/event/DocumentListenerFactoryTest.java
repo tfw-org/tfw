@@ -12,6 +12,7 @@ import tfw.swing.SwingTestUtil;
 import tfw.swing.SwingUtil;
 import tfw.swing.TestCommit;
 import tfw.tsm.BasicTransactionQueue;
+import tfw.tsm.DefaultCheckDependencies;
 import tfw.tsm.OneDeepStateQueueFactory;
 import tfw.tsm.Root;
 import tfw.tsm.ecd.StringECD;
@@ -47,7 +48,9 @@ final class DocumentListenerFactoryTest {
         final BasicTransactionQueue basicTransactionQueue = new BasicTransactionQueue();
         final Root root = Root.builder()
                 .setName(ROOT_NAME)
-                .addEventChannel(TEXT_ECD, null)
+                .setTransactionQueue(new BasicTransactionQueue())
+                .setCheckDependencies(new DefaultCheckDependencies())
+                .addObjectECD(TEXT_ECD, null)
                 .setTransactionQueue(basicTransactionQueue)
                 .build();
         final DocumentListener documentListener = DocumentListenerFactory.create(TEST_NAME, TEXT_ECD, null);

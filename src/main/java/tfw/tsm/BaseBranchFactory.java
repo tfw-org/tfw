@@ -5,7 +5,6 @@ import tfw.check.Argument;
 import tfw.tsm.ecd.EventChannelDescription;
 import tfw.tsm.ecd.RollbackECD;
 import tfw.tsm.ecd.StatelessTriggerECD;
-import tfw.value.ValueException;
 
 /**
  * The base class for branch component factories. It is made public solely to
@@ -51,12 +50,8 @@ public class BaseBranchFactory {
      *            a description of the event channel.
      * @param initialState
      *            the initial state for the event channel.
-     * @throws ValueException
-     *             if the <code>initialState</code> value is incompatible with
-     *             the event channel.
      */
-    public void addEventChannel(EventChannelDescription eventChannelDescription, Object initialState)
-            throws ValueException {
+    public void addEventChannel(EventChannelDescription eventChannelDescription, Object initialState) {
         if (eventChannelDescription instanceof StatelessTriggerECD || eventChannelDescription instanceof RollbackECD) {
             addEventChannel(eventChannelDescription, initialState, AlwaysChangeRule.RULE, null);
         } else {
@@ -76,16 +71,12 @@ public class BaseBranchFactory {
      *            change for the event channel.
      * @param exportTags
      *            The list of export tags for this event channel.
-     * @throws ValueException
-     *             if the <code>initialState</code> value is incompatible with
-     *             the event channel.
      */
     public void addEventChannel(
             EventChannelDescription eventChannelDescription,
             Object initialState,
             StateChangeRule rule,
-            String[] exportTags)
-            throws ValueException {
+            String[] exportTags) {
         Argument.assertNotNull(eventChannelDescription, "eventChannelDescription");
         Argument.assertNotNull(rule, "rule");
         if (exportTags != null) {

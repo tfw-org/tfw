@@ -35,5 +35,10 @@ public final class BitIlaSegment {
                 throws IOException {
             bitIla.get(array, arrayOffsetInBits, ilaOffsetInBits + ilaStartInBits, lengthInBits);
         }
+
+        @Override
+        protected void closeImpl() throws IOException {
+            bitIla.close();
+        }
     }
 }

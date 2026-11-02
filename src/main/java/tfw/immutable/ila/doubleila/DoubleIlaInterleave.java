@@ -74,6 +74,13 @@ public final class DoubleIlaInterleave {
                 }
             }
         }
+
+        @Override
+        protected void closeImpl() throws IOException {
+            for (StridedDoubleIla ila : stridedDoubleIlas) {
+                ila.close();
+            }
+        }
     }
 }
 // AUTO GENERATED FROM TEMPLATE

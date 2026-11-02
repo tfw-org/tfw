@@ -34,6 +34,11 @@ public final class DoubleIlaInvert {
                 array[ii] = (double) 1 / array[ii];
             }
         }
+
+        @Override
+        protected void closeImpl() throws IOException {
+            ila.close();
+        }
     }
 }
 // AUTO GENERATED FROM TEMPLATE

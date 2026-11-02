@@ -11,12 +11,15 @@ public abstract class AbstractObjectIla<T> extends AbstractIla implements Object
 
     @Override
     public final void get(final T[] array, final int offset, final long start, int length) throws IOException {
+        checkClosed();
+
+        Argument.assertNotNull(array, "array");
+        boundsCheck(array.length, offset, start, length);
+
         if (length == 0) {
             return;
         }
 
-        Argument.assertNotNull(array, "array");
-        boundsCheck(array.length, offset, start, length);
         getImpl(array, offset, start, length);
     }
 }

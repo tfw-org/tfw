@@ -1,7 +1,9 @@
 package tfw.immutable.ila.byteila;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import java.io.IOException;
 import java.util.Random;
 import org.junit.jupiter.api.Test;
 import tfw.immutable.ila.IlaTestDimensions;
@@ -39,6 +41,46 @@ final class ByteIlaConcatenateTest {
         ByteIla actualIla = ByteIlaConcatenate.create(leftIla, rightIla);
 
         ByteIlaCheck.check(targetIla, actualIla);
+    }
+
+    @Test
+    void closeTest() throws IOException {
+        final TestCloseByteIla leftIla = new TestCloseByteIla();
+        final TestCloseByteIla rightIla = new TestCloseByteIla();
+
+        try (ByteIla ila = ByteIlaConcatenate.create(leftIla, rightIla)) {
+            assertThat(ila).isNotNull();
+        }
+
+        assertThat(leftIla.getNumberOfCloses()).isEqualTo(1);
+        assertThat(rightIla.getNumberOfCloses()).isEqualTo(1);
+    }
+
+    @Test
+    void exactLeftBoundaryTest() throws Exception {
+        final Random random = new Random(0);
+        final byte[] leftArray = new byte[2];
+        final byte[] rightArray = new byte[2];
+
+        leftArray[0] = (byte) random.nextInt();
+        leftArray[1] = (byte) random.nextInt();
+        rightArray[0] = (byte) random.nextInt();
+        rightArray[1] = (byte) random.nextInt();
+
+        final ByteIla leftIla = ByteIlaFromArray.create(leftArray);
+        final ByteIla rightIla = ByteIlaFromArray.create(rightArray);
+        final ByteIla actualIla = ByteIlaConcatenate.create(leftIla, rightIla);
+
+        try {
+            final byte[] destination = new byte[1];
+
+            // Read exactly the final element of the left ILA.
+            actualIla.get(destination, 0, 1, 1);
+
+            assertThat(destination[0]).isEqualTo(leftArray[1]);
+        } finally {
+            actualIla.close();
+        }
     }
 }
 // AUTO GENERATED FROM TEMPLATE

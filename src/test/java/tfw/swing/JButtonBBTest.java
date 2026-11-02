@@ -27,6 +27,7 @@ import tfw.swing.ecd.IconECD;
 import tfw.tsm.BasicTransactionQueue;
 import tfw.tsm.Branch;
 import tfw.tsm.BranchProxy;
+import tfw.tsm.DefaultCheckDependencies;
 import tfw.tsm.Initiator;
 import tfw.tsm.Root;
 import tfw.tsm.ecd.BooleanECD;
@@ -95,13 +96,15 @@ final class JButtonBBTest {
         final JButtonFixture jButton = window.button(BUTTON_NAME);
         final Root root = Root.builder()
                 .setName(this.getClass().getSimpleName())
-                .addEventChannel(BUTTON_ACTION_ECD, null)
-                .addEventChannel(BUTTON_ENABLED_ECD, Boolean.TRUE)
-                .addEventChannel(BUTTON_BACKGROUND_ECD, buttonBackgroundDefault)
-                .addEventChannel(BUTTON_FOREGROUND_ECD, buttonForegroundDefault)
-                .addEventChannel(BUTTON_FONT_ECD, buttonFontDefault)
-                .addEventChannel(BUTTON_TEXT_ECD, buttonTextDefault)
-                .addEventChannel(BUTTON_ICON_ECD, BUTTON_ICON_DEFAULT)
+                .setTransactionQueue(new BasicTransactionQueue())
+                .setCheckDependencies(new DefaultCheckDependencies())
+                .addStatelessTriggerECD(BUTTON_ACTION_ECD)
+                .addObjectECD(BUTTON_ENABLED_ECD, Boolean.TRUE)
+                .addObjectECD(BUTTON_BACKGROUND_ECD, buttonBackgroundDefault)
+                .addObjectECD(BUTTON_FOREGROUND_ECD, buttonForegroundDefault)
+                .addObjectECD(BUTTON_FONT_ECD, buttonFontDefault)
+                .addObjectECD(BUTTON_TEXT_ECD, buttonTextDefault)
+                .addObjectECD(BUTTON_ICON_ECD, BUTTON_ICON_DEFAULT)
                 .setTransactionQueue(basicTransactionQueue)
                 .build();
         final Initiator initiator = Initiator.builder()
