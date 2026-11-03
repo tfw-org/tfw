@@ -1,7 +1,9 @@
 package tfw.tsm;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import tfw.check.Argument;
 import tfw.check.Arguments;
 import tfw.tsm.ecd.EventChannelDescription;
@@ -317,6 +319,18 @@ public class Initiator extends TreeComponent {
         public Initiator build() {
             Argument.assertNotNull(name, "name");
 
+            final Map<String, EventChannelDescription> ecds = new HashMap<>();
+
+            for (EventChannelDescription ecd : eventChannelDescriptions) {
+                if (ecd == null) {
+                    throw new IllegalArgumentException("null ECD not allowed!");
+                } else if (ecds.containsKey(ecd.getEventChannelName())) {
+                    throw new IllegalArgumentException("Duplicate ECD = " + ecd.getEventChannelName());
+                } else {
+                    ecds.put(ecd.getEventChannelName(), ecd);
+                }
+            }
+
             for (List<EventChannelConfig<?>> eventChannelConfigs : eventChannelConfigLists) {
                 Arguments.checkNotNull(eventChannelConfigs, "eventChannelConfigs");
 
@@ -325,20 +339,19 @@ public class Initiator extends TreeComponent {
 
                     final EventChannelDescription ecd = eventChannelConfig.getEventChannelDescription();
 
-                    if (eventChannelDescriptions.contains(ecd)) {
+                    if (ecds.containsKey(ecd.getEventChannelName())) {
                         throw new IllegalArgumentException("Duplicate ECD = " + ecd.getEventChannelName());
+                    } else {
+                        ecds.put(ecd.getEventChannelName(), ecd);
                     }
-
-                    eventChannelDescriptions.add(eventChannelConfig.getEventChannelDescription());
                 }
             }
 
-            Argument.assertGreaterThan(eventChannelDescriptions.size(), 0, "eventChannelDescriptions.size()");
+            Arguments.checkGreaterThan(ecds.size(), "ecds.size()", 0, "0");
 
-            final EventChannelDescription[] ecds =
-                    eventChannelDescriptions.toArray(new EventChannelDescription[eventChannelDescriptions.size()]);
+            final EventChannelDescription[] ecdsArray = ecds.values().toArray(new EventChannelDescription[ecds.size()]);
 
-            return new Initiator(name, ecds, stateQueueFactory);
+            return new Initiator(name, ecdsArray, stateQueueFactory);
         }
     }
 }
