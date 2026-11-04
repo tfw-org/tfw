@@ -1,7 +1,9 @@
 package tfw.tsm;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import tfw.check.Argument;
 import tfw.check.Arguments;
 
@@ -85,6 +87,24 @@ public class Branch extends BranchComponent {
             Arguments.checkNotNull(component, "component");
 
             components.add(component);
+        }
+
+        // Validate that every component can be added before modifying the branch.
+        final Set<TreeComponent> uniqueComponents = new HashSet<>();
+
+        for (final TreeComponent component : components) {
+            if (!uniqueComponents.add(component)) {
+                throw new IllegalArgumentException("Duplicate component: " + component.getName());
+            }
+
+            if (component == this) {
+                throw new IllegalArgumentException("Cannot add a branch to itself.");
+            }
+
+            if (component.immediateParent != null || component.immediateRoot != null || component.getParent() != null) {
+                throw new IllegalArgumentException(
+                        "Component '" + component.getName() + "' already has a parent or root.");
+            }
         }
 
         // Add components, keeping track of those successfully added.

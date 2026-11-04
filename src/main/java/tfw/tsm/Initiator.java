@@ -1,7 +1,7 @@
 package tfw.tsm;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import tfw.check.Argument;
@@ -320,7 +320,7 @@ public class Initiator extends TreeComponent {
         public Initiator build() {
             Argument.assertNotNull(name, "name");
 
-            final Map<String, EventChannelDescription> ecds = new HashMap<>();
+            final Map<String, EventChannelDescription> ecds = new LinkedHashMap<>();
 
             for (EventChannelDescription ecd : eventChannelDescriptions) {
                 if (ecd == null) {
@@ -339,6 +339,8 @@ public class Initiator extends TreeComponent {
                     Arguments.checkNotNull(eventChannelConfig, "eventChannelConfig");
 
                     final EventChannelDescription ecd = eventChannelConfig.getEventChannelDescription();
+
+                    Arguments.checkNotNull(ecd, "eventChannelDescription");
 
                     if (ecds.containsKey(ecd.getEventChannelName())) {
                         throw new IllegalArgumentException("Duplicate ECD = " + ecd.getEventChannelName());
