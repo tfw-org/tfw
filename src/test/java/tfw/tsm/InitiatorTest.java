@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.Test;
+import tfw.tsm.Initiator.InitiatorBuilder;
 import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.StringECD;
 
@@ -219,11 +220,10 @@ final class InitiatorTest {
     @Test
     void invalidArgumentTest() {
         final List<EventChannelConfig<?>> nullEventChannelConfigList = null;
+        final InitiatorBuilder nullInitiatorBuilder =
+                Initiator.builder().setName("testInitiator").addEventChannelConfigs(nullEventChannelConfigList);
 
-        assertThatThrownBy(() -> Initiator.builder()
-                        .setName("testInitiator")
-                        .addEventChannelConfigs(nullEventChannelConfigList)
-                        .build())
+        assertThatThrownBy(() -> nullInitiatorBuilder.build())
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("eventChannelConfigs (=null) == null not allowed!");
 
@@ -234,10 +234,10 @@ final class InitiatorTest {
         duplicateEventChannelConfigList.add(eventChannelConfig);
         duplicateEventChannelConfigList.add(eventChannelConfig);
 
-        assertThatThrownBy(() -> Initiator.builder()
-                        .setName("testInitiator")
-                        .addEventChannelConfigs(duplicateEventChannelConfigList)
-                        .build())
+        final InitiatorBuilder duplicateInitiatorBuilder =
+                Initiator.builder().setName("testInitiator").addEventChannelConfigs(duplicateEventChannelConfigList);
+
+        assertThatThrownBy(() -> duplicateInitiatorBuilder.build())
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Duplicate ECD = test");
 
@@ -245,10 +245,10 @@ final class InitiatorTest {
 
         hasNullEventChannelConfigList.add(null);
 
-        assertThatThrownBy(() -> Initiator.builder()
-                        .setName("testInitiator")
-                        .addEventChannelConfigs(hasNullEventChannelConfigList)
-                        .build())
+        final InitiatorBuilder hasNullInitiatorBuilder =
+                Initiator.builder().setName("testInitiator").addEventChannelConfigs(hasNullEventChannelConfigList);
+
+        assertThatThrownBy(() -> hasNullInitiatorBuilder.build())
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("eventChannelConfig (=null) == null not allowed!");
     }

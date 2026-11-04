@@ -286,9 +286,9 @@ public class Initiator extends TreeComponent {
 
     public static class InitiatorBuilder {
         private String name = null;
-        private List<EventChannelDescription> eventChannelDescriptions = new ArrayList<>();
+        private final List<EventChannelDescription> eventChannelDescriptions = new ArrayList<>();
         private StateQueueFactory stateQueueFactory = new DefaultStateQueueFactory();
-        private List<List<? extends EventChannelConfig<?>>> eventChannelConfigLists = new ArrayList<>();
+        private final List<List<? extends EventChannelConfig<?>>> eventChannelConfigLists = new ArrayList<>();
 
         InitiatorBuilder() {}
 
