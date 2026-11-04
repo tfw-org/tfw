@@ -251,6 +251,12 @@ final class InitiatorTest {
         assertThatThrownBy(hasNullInitiatorBuilder::build)
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("eventChannelConfig (=null) == null not allowed!");
+
+        final InitiatorBuilder emptyInitiatorBuilder = Initiator.builder().setName("testInitiator");
+
+        assertThatThrownBy(emptyInitiatorBuilder::build)
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("ecds.size() (=0) <= 0 (=0) not allowed!");
     }
 
     @Test

@@ -62,6 +62,35 @@ final class RootTest {
     }
 
     @Test
+    void testArguments() {
+        final CheckDependencies checkDependencies = new DefaultCheckDependencies();
+        final BasicTransactionQueue transactionQueue = new BasicTransactionQueue();
+        final Root root = Root.builder()
+                .setName("Root")
+                .setTransactionQueue(transactionQueue)
+                .setCheckDependencies(checkDependencies)
+                .build();
+        final List<? extends ComponentConfig<?>> nullComponentConfigList = null;
+        final List<? extends ComponentConfig<?>> hasNullComponentConfigList = new ArrayList<>();
+
+        hasNullComponentConfigList.add(null);
+
+        assertThatThrownBy(() -> root.add(nullComponentConfigList))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("componentConfigs (=null) == null not allowed!");
+        assertThatThrownBy(() -> root.remove(nullComponentConfigList))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("componentConfigs (=null) == null not allowed!");
+
+        assertThatThrownBy(() -> root.add(hasNullComponentConfigList))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("componentConfig (=null) == null not allowed!");
+        assertThatThrownBy(() -> root.remove(hasNullComponentConfigList))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("componentConfig (=null) == null not allowed!");
+    }
+
+    @Test
     void testAddComponentEnumList() throws Exception {
         final CheckDependencies checkDependencies = new DefaultCheckDependencies();
         final BasicTransactionQueue transactionQueue = new BasicTransactionQueue();
