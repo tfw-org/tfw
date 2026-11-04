@@ -223,7 +223,7 @@ final class InitiatorTest {
         final InitiatorBuilder nullInitiatorBuilder =
                 Initiator.builder().setName("testInitiator").addEventChannelConfigs(nullEventChannelConfigList);
 
-        assertThatThrownBy(() -> nullInitiatorBuilder.build())
+        assertThatThrownBy(nullInitiatorBuilder::build)
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("eventChannelConfigs (=null) == null not allowed!");
 
@@ -237,7 +237,7 @@ final class InitiatorTest {
         final InitiatorBuilder duplicateInitiatorBuilder =
                 Initiator.builder().setName("testInitiator").addEventChannelConfigs(duplicateEventChannelConfigList);
 
-        assertThatThrownBy(() -> duplicateInitiatorBuilder.build())
+        assertThatThrownBy(duplicateInitiatorBuilder::build)
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Duplicate ECD = test");
 
@@ -248,7 +248,7 @@ final class InitiatorTest {
         final InitiatorBuilder hasNullInitiatorBuilder =
                 Initiator.builder().setName("testInitiator").addEventChannelConfigs(hasNullEventChannelConfigList);
 
-        assertThatThrownBy(() -> hasNullInitiatorBuilder.build())
+        assertThatThrownBy(hasNullInitiatorBuilder::build)
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("eventChannelConfig (=null) == null not allowed!");
     }
