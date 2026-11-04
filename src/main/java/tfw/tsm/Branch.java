@@ -1,5 +1,6 @@
 package tfw.tsm;
 
+import java.util.ArrayList;
 import java.util.List;
 import tfw.check.Argument;
 import tfw.check.Arguments;
@@ -71,21 +72,83 @@ public class Branch extends BranchComponent {
         removeChild(branchBox.getBranch());
     }
 
-    public Branch add(final List<ComponentConfig<?>> componentConfigs) {
+    public synchronized Branch add(final List<? extends ComponentConfig<?>> componentConfigs) {
         Arguments.checkNotNull(componentConfigs, "componentConfigs");
 
-        for (ComponentConfig<?> componentConfig : componentConfigs) {
-            add(componentConfig.getComponent());
+        // Validate and capture every component before modifying the branch.
+        final List<TreeComponent> components = new ArrayList<>(componentConfigs.size());
+
+        for (final ComponentConfig<?> componentConfig : componentConfigs) {
+            Arguments.checkNotNull(componentConfig, "componentConfig");
+
+            final TreeComponent component = componentConfig.getComponent();
+            Arguments.checkNotNull(component, "component");
+
+            components.add(component);
+        }
+
+        // Add components, keeping track of those successfully added.
+        final List<TreeComponent> added = new ArrayList<>(components.size());
+
+        try {
+            for (final TreeComponent component : components) {
+                add(component);
+                added.add(component);
+            }
+        } catch (final RuntimeException failure) {
+            // Undo successful additions in reverse order.
+            for (int i = added.size() - 1; i >= 0; i--) {
+                try {
+                    remove(added.get(i));
+                } catch (final RuntimeException rollbackFailure) {
+                    if (rollbackFailure != failure) {
+                        failure.addSuppressed(rollbackFailure);
+                    }
+                }
+            }
+
+            throw failure;
         }
 
         return this;
     }
 
-    public Branch remove(final List<ComponentConfig<?>> componentConfigs) {
+    public synchronized Branch remove(final List<? extends ComponentConfig<?>> componentConfigs) {
         Arguments.checkNotNull(componentConfigs, "componentConfigs");
 
-        for (ComponentConfig<?> componentConfig : componentConfigs) {
-            remove(componentConfig.getComponent());
+        // Validate and capture every component before modifying the branch.
+        final List<TreeComponent> components = new ArrayList<>(componentConfigs.size());
+
+        for (final ComponentConfig<?> componentConfig : componentConfigs) {
+            Arguments.checkNotNull(componentConfig, "componentConfig");
+
+            final TreeComponent component = componentConfig.getComponent();
+            Arguments.checkNotNull(component, "component");
+
+            components.add(component);
+        }
+
+        // Remove components, keeping track of those successfully removed.
+        final List<TreeComponent> removed = new ArrayList<>(components.size());
+
+        try {
+            for (final TreeComponent component : components) {
+                remove(component);
+                removed.add(component);
+            }
+        } catch (final RuntimeException failure) {
+            // Undo successful removals in reverse order.
+            for (int i = removed.size() - 1; i >= 0; i--) {
+                try {
+                    add(removed.get(i));
+                } catch (final RuntimeException rollbackFailure) {
+                    if (rollbackFailure != failure) {
+                        failure.addSuppressed(rollbackFailure);
+                    }
+                }
+            }
+
+            throw failure;
         }
 
         return this;

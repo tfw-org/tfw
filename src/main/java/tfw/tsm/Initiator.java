@@ -288,7 +288,7 @@ public class Initiator extends TreeComponent {
         private String name = null;
         private List<EventChannelDescription> eventChannelDescriptions = new ArrayList<>();
         private StateQueueFactory stateQueueFactory = new DefaultStateQueueFactory();
-        private List<List<EventChannelConfig<?>>> eventChannelConfigLists = new ArrayList<>();
+        private List<List<? extends EventChannelConfig<?>>> eventChannelConfigLists = new ArrayList<>();
 
         InitiatorBuilder() {}
 
@@ -304,7 +304,8 @@ public class Initiator extends TreeComponent {
             return this;
         }
 
-        public InitiatorBuilder addEventChannelConfigs(final List<EventChannelConfig<?>> eventChannelConfigs) {
+        public InitiatorBuilder addEventChannelConfigs(
+                final List<? extends EventChannelConfig<?>> eventChannelConfigs) {
             eventChannelConfigLists.add(eventChannelConfigs);
 
             return this;
@@ -331,7 +332,7 @@ public class Initiator extends TreeComponent {
                 }
             }
 
-            for (List<EventChannelConfig<?>> eventChannelConfigs : eventChannelConfigLists) {
+            for (List<? extends EventChannelConfig<?>> eventChannelConfigs : eventChannelConfigLists) {
                 Arguments.checkNotNull(eventChannelConfigs, "eventChannelConfigs");
 
                 for (EventChannelConfig<?> eventChannelConfig : eventChannelConfigs) {
