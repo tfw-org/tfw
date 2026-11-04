@@ -91,6 +91,17 @@ public class Branch extends BranchComponent {
 
         // Validate that every component can be added before modifying the branch.
         final Set<TreeComponent> uniqueComponents = new HashSet<>();
+        final Set<String> uniqueNames = new HashSet<>();
+
+        // Include names of existing committed children.
+        uniqueNames.addAll(getChildren().keySet());
+
+        // Include names of immediate children, including pending additions.
+        if (immediateChildren != null) {
+            for (final TreeComponent child : immediateChildren) {
+                uniqueNames.add(child.getName());
+            }
+        }
 
         for (final TreeComponent component : components) {
             if (!uniqueComponents.add(component)) {
@@ -104,6 +115,10 @@ public class Branch extends BranchComponent {
             if (component.immediateParent != null || component.immediateRoot != null || component.getParent() != null) {
                 throw new IllegalArgumentException(
                         "Component '" + component.getName() + "' already has a parent or root.");
+            }
+
+            if (!uniqueNames.add(component.getName())) {
+                throw new IllegalArgumentException("Duplicate component name: " + component.getName());
             }
         }
 
