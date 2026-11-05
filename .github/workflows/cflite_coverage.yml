@@ -45,19 +45,22 @@ jobs:
           ref: gh-pages
           path: tfw-fuzzing-pages
           token: ${{ secrets.TFW_FUZZING_TOKEN }}
+          persist-credentials: false
 
       - name: Calculate and publish GitHub Pages size
         working-directory: tfw-fuzzing-pages
+        env:
+          TFW_FUZZING_TOKEN: ${{ secrets.TFW_FUZZING_TOKEN }}
         run: |
           # Calculate the size of the published files, excluding
-          # the metadata file itself.
+          # the root metadata file itself.
           total_bytes=$(find . -type f \
             ! -path './.git/*' \
-            ! -name 'site-size.json' \
+            ! -path './site-size.json' \
             -printf '%s\n' | awk '{sum += $1} END {print sum}')
           file_count=$(find . -type f \
             ! -path './.git/*' \
-            ! -name 'site-size.json' | wc -l)
+            ! -path './site-size.json' | wc -l)
           total_size=$(numfmt --to=iec --suffix=B "$total_bytes")
 
           # Publish machine-readable site-size information.
@@ -82,5 +85,8 @@ jobs:
             echo "GitHub Pages size information has not changed."
           else
             git commit -m "Update GitHub Pages size"
-            git push origin gh-pages
+            auth_header=$(printf 'x-access-token:%s' \
+              "$TFW_FUZZING_TOKEN" | base64 -w0)
+            git -c http.extraheader="AUTHORIZATION: basic ${auth_header}" \
+              push origin gh-pages
           fi
