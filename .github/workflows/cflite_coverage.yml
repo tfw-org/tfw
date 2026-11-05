@@ -37,3 +37,50 @@ jobs:
           storage-repo: https://${{ secrets.TFW_FUZZING_TOKEN }}@github.com/tfw-org/tfw-fuzzing.git
           storage-repo-branch: main
           storage-repo-branch-coverage: gh-pages
+
+      - name: Check out tfw-fuzzing Pages
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: tfw-org/tfw-fuzzing
+          ref: gh-pages
+          path: tfw-fuzzing-pages
+          token: ${{ secrets.TFW_FUZZING_TOKEN }}
+
+      - name: Calculate and publish GitHub Pages size
+        working-directory: tfw-fuzzing-pages
+        run: |
+          # Calculate the size of the published files, excluding
+          # the metadata file itself.
+          total_bytes=$(find . -type f \
+            ! -path './.git/*' \
+            ! -name 'site-size.json' \
+            -printf '%s\n' | awk '{sum += $1} END {print sum}')
+          file_count=$(find . -type f \
+            ! -path './.git/*' \
+            ! -name 'site-size.json' | wc -l)
+          total_size=$(numfmt --to=iec --suffix=B "$total_bytes")
+
+          # Publish machine-readable site-size information.
+          cat > site-size.json <<EOF
+          {
+            "bytes": ${total_bytes},
+            "size": "${total_size}",
+            "files": ${file_count}
+          }
+          EOF
+
+          echo "GitHub Pages size: ${total_size} (${total_bytes} bytes)"
+          echo "Files published: ${file_count}"
+
+          # Commit the updated size information.
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add site-size.json
+
+          if git diff --cached --quiet; then
+            echo "GitHub Pages size information has not changed."
+          else
+            git commit -m "Update GitHub Pages size"
+            git push origin gh-pages
+          fi
