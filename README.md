@@ -71,16 +71,17 @@ TFW uses several complementary techniques to assess the quality, robustness, and
 
 - **Code coverage** — [SonarQube Cloud](https://sonarcloud.io) is used to monitor the coverage of the unit tests. The latest coverage report is available at [TFW's Overview](https://sonarcloud.io/project/overview?id=tfw-org_tfw)
 - **Mutation testing** — [PIT Mutation Testing](https://pitest.org/) is used to evaluate the effectiveness of the test suite. The latest mutation testing report is available at [TFW's PIT report](https://tfw-org.github.io/tfw/pit/)
-- **Fuzz testing** — [ClusterFuzzLite](https://google.github.io/clusterfuzzlite/) is used to "fuzz" test the API. The [latest fuzzing results](https://tfw-org.github.io/tfw-fuzzing/coverage/latest/report/linux/) are available on GitHub Pages.
+- **Fuzz testing** — [ClusterFuzzLite](https://google.github.io/clusterfuzzlite/) is used to "fuzz" test the API. The [latest fuzzing results](https://tfw-org.github.io/tfw-fuzzing/coverage/latest/report/linux/) are available on GitHub Pages. Historical results and trends are available on the [TFW fuzzing metrics dashboard](https://tfw-org.github.io/tfw-metrics/).
 - **Reproducible builds** — TFW [releases](https://github.com/jvm-repo-rebuild/reproducible-central/blob/master/content/io/github/tfw-org/tfw/README.md) are independently rebuilt and verified by [Reproducible Central](https://github.com/jvm-repo-rebuild/reproducible-central/tree/master), including verification of the POM, binary and sources JARs, and CycloneDX SBOMs.
 - **Javadoc** — API documentation is available for both the [current development version](https://tfw-org.github.io/tfw/javadoc/) and the [latest released version](https://tfw-org.github.io/tfw/javadoc/latest/).
 
 ## Project Repositories
 
-The TFW project has two repositories:
+The TFW project has the following repositories:
 
 - **[tfw](https://github.com/tfw-org/tfw)** — The primary TFW repository. It contains the TFW Java framework, its tests, documentation, and the code used to produce TFW releases.
 - **[tfw-fuzzing](https://github.com/tfw-org/tfw-fuzzing)** — A repository used by the TFW project's fuzz-testing infrastructure. It contains ClusterFuzzLite fuzzing corpus and coverage data only and does not provide source code or other components used to build or run TFW.
+- **[tfw-metrics](https://github.com/tfw-org/tfw-metrics)** — A repository that collects historical metrics from TFW's ClusterFuzzLite runs and provides a dashboard of historical trends for fuzzing coverage, feature discovery, execution throughput, corpus size, and JaCoCo coverage.
 
 ## Lightweight by Design
 
