@@ -178,13 +178,13 @@ jobs:
             --source-path "$API_WORK/release/source" \
             --class-path "$(cat "$API_WORK/release-classpath.txt")" \
             --api-directory "$GITHUB_WORKSPACE/target/pages/javadoc/latest" \
-            --release 8 \
+            --source 8 \
           --api master \
             --label "Development (master)" \
             --source-path "$API_WORK/master/source" \
             --class-path "$(cat "$API_WORK/master-classpath.txt")" \
             --api-directory "$GITHUB_WORKSPACE/target/pages/javadoc" \
-            --release 8 \
+            --source 8 \
           --include 'tfw.**' \
           --exclude 'tfw.math.**' \
           --compare-doc-comments true \
