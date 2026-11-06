@@ -54,6 +54,32 @@ jobs:
         git -C "$APIDIFF_SOURCE" fetch --depth=1 origin "$APIDIFF_COMMIT"
         git -C "$APIDIFF_SOURCE" checkout --detach FETCH_HEAD
 
+        # Work around APIDiff's assumption that a module is always available.
+        # When analyzing Java 8 source, getModuleElement("java.base") returns null.
+        python3 - "$APIDIFF_SOURCE/src/share/classes/jdk/codetools/apidiff/model/SerializedFormFactory.java" <<'PY'
+        from pathlib import Path
+        import sys
+
+        path = Path(sys.argv[1])
+        source = path.read_text()
+
+        old = """    private TypeMirror getType(ModuleElement me, String name) {
+                return elements.getTypeElement(me, name).asType();
+            }"""
+
+        new = """    private TypeMirror getType(ModuleElement me, String name) {
+                return (me == null
+                        ? elements.getTypeElement(name)
+                        : elements.getTypeElement(me, name)).asType();
+            }"""
+
+        if source.count(old) != 1:
+            raise SystemExit("Expected APIDiff source code was not found exactly once.")
+
+        path.write_text(source.replace(old, new))
+        print("Applied Java 8 module compatibility fix.")
+        PY
+
         # Build APIDiff and its self-contained distribution.
         bash "$APIDIFF_SOURCE/make/build.sh"
 
