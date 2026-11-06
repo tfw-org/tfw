@@ -3,14 +3,16 @@ name: Publish GitHub Pages
 on:
   push:
     branches: [ "master" ]
+  release:
+    types: [ released ]
   workflow_dispatch:
 
 permissions:
   contents: read
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  group: ${{ github.workflow }}-pages
+  cancel-in-progress: false
 
 jobs:
   publish:
@@ -26,6 +28,7 @@ jobs:
     - name: Checkout project
       uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       with:
+        ref: master
         persist-credentials: false
 
     - name: Set up Java 21-temurin
@@ -128,7 +131,7 @@ jobs:
           exit 1
         fi
 
-        # Check out the exact source corresponding to the latest release.
+        # Check out the exact source corresponding to the latest GitHub release.
         git checkout --detach "${RELEASE_TAG}"
 
         # Preserve the release source files.
@@ -183,6 +186,7 @@ jobs:
             --api-directory "$GITHUB_WORKSPACE/target/pages/javadoc" \
             --release 8 \
           --include 'tfw.**' \
+          --exclude 'tfw.math.**' \
           --compare-doc-comments true \
           --compare-api-descriptions true \
           --title "TFW API Differences" \
