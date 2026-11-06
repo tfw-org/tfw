@@ -2,7 +2,7 @@ package tfw.immutable.iba.bitiba;
 
 import java.io.IOException;
 import java.math.BigInteger;
-import tfw.check.Argument;
+import tfw.check.Arguments;
 import tfw.check.ClosedManager;
 import tfw.immutable.iba.ImmutableBigIntegerArrayUtil;
 
@@ -35,7 +35,7 @@ public abstract class AbstractBitIba implements BitIba {
             throws IOException {
         closedManager.checkClosed();
 
-        Argument.assertNotNull(array, "array");
+        Arguments.checkNotNull(array, "array");
         ImmutableBigIntegerArrayUtil.validateGetParameters(
                 array.length, arrayOffsetInBits, ibaStartInBits, lengthInBits(), lengthInBits);
 

@@ -2,7 +2,7 @@ package tfw.immutable.iba.chariba;
 
 import java.io.IOException;
 import java.math.BigInteger;
-import tfw.check.Argument;
+import tfw.check.Arguments;
 import tfw.immutable.iba.AbstractIba;
 import tfw.immutable.iba.ImmutableBigIntegerArrayUtil;
 
@@ -14,7 +14,7 @@ public abstract class AbstractCharIba extends AbstractIba implements CharIba {
     public final void get(char[] array, int arrayOffset, BigInteger ibaStart, int length) throws IOException {
         checkClosed();
 
-        Argument.assertNotNull(array, "array");
+        Arguments.checkNotNull(array, "array");
         ImmutableBigIntegerArrayUtil.validateGetParameters(array.length, arrayOffset, ibaStart, length(), length);
 
         if (length == 0) {
