@@ -199,11 +199,23 @@ jobs:
           --description "Changes from the latest release to master." \
           --output-directory target/pages/apidiff; then
 
-          echo "APIDiff report generated successfully."
+          echo "APIDiff completed successfully: no API differences found."
 
-          # Remove temporary source trees and classpath files.
-          rm -rf "$API_WORK"
-          rm -rf "$RUNNER_TEMP/apidiff-source"
+        else
+          apidiff_status=$?
+
+          if [ "$apidiff_status" -eq 1 ]; then
+            echo "APIDiff completed successfully: API differences were found."
+          else
+            echo "::error::APIDiff failed with exit code ${apidiff_status}."
+            echo "Temporary source files have been retained for troubleshooting."
+            exit "$apidiff_status"
+          fi
+        fi
+
+        # Remove temporary source trees and classpath files.
+        rm -rf "$API_WORK"
+        rm -rf "$RUNNER_TEMP/apidiff-source"
 
         else
           echo "::error::APIDiff failed. Temporary source files have been retained for troubleshooting."
