@@ -57,17 +57,20 @@ jobs:
         # Add a diagnostic check for package elements that javac cannot resolve.
         python3 - "$APIDIFF_SOURCE/src/share/classes/jdk/codetools/apidiff/model/API.java" <<'PY'
         from pathlib import Path
+        import re
         import sys
 
         path = Path(sys.argv[1])
         source = path.read_text()
 
-        old = """            return selectedPackages.entrySet().stream()
-                    .filter(Entry::getValue)
-                    .map(e -> getPackageElement.apply(e.getKey()))
-                    .collect(Collectors.toSet());"""
+        pattern = re.compile(
+            r"(?m)^            return selectedPackages\.entrySet\(\)\.stream\(\)\r?\n"
+            r"                    \.filter\(Entry::getValue\)\r?\n"
+            r"                    \.map\(e -> getPackageElement\.apply\(e\.getKey\(\)\)\)\r?\n"
+            r"                    \.collect\(Collectors\.toSet\(\)\);"
+        )
 
-        new = """            Set<PackageElement> result = new HashSet<>();
+        replacement = """            Set<PackageElement> result = new HashSet<>();
             for (Map.Entry<String, Boolean> entry : selectedPackages.entrySet()) {
                 if (!entry.getValue()) {
                     continue;
@@ -89,12 +92,14 @@ jobs:
             }
             return result;"""
 
-        if source.count(old) != 1:
+        source, count = pattern.subn(lambda _: replacement, source)
+
+        if count != 1:
             raise SystemExit(
-                "Expected APIDiff package-discovery code was not found exactly once."
+                f"Expected exactly one APIDiff package-discovery block; found {count}."
             )
 
-        path.write_text(source.replace(old, new))
+        path.write_text(source)
         print("Applied APIDiff package-resolution diagnostic.")
         PY
 
