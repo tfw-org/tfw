@@ -3,14 +3,16 @@ name: Publish GitHub Pages
 on:
   push:
     branches: [ "master" ]
+  release:
+    types: [ released ]
   workflow_dispatch:
 
 permissions:
   contents: read
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  group: ${{ github.workflow }}-pages
+  cancel-in-progress: false
 
 jobs:
   publish:
@@ -26,6 +28,7 @@ jobs:
     - name: Checkout project
       uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       with:
+        ref: master
         persist-credentials: false
 
     - name: Set up Java 21-temurin
@@ -35,8 +38,82 @@ jobs:
         distribution: 'temurin'
         cache: maven
 
-    - name: Install tightvncserver
-      run: sudo apt-get install -y tightvncserver
+    - name: Install build dependencies
+      run: sudo apt-get install -y tightvncserver pandoc
+
+    - name: Build OpenJDK APIDiff
+      env:
+        APIDIFF_COMMIT: 70c3b131b73c95f4c17f5c0b489c5794d414d1c3
+      run: |
+        APIDIFF_SOURCE="$RUNNER_TEMP/apidiff-source"
+
+        # Fetch the official OpenJDK APIDiff source at a pinned commit.
+        git init "$APIDIFF_SOURCE"
+        git -C "$APIDIFF_SOURCE" remote add origin \
+          https://github.com/openjdk/apidiff.git
+        git -C "$APIDIFF_SOURCE" fetch --depth=1 origin "$APIDIFF_COMMIT"
+        git -C "$APIDIFF_SOURCE" checkout --detach FETCH_HEAD
+
+        # Add a diagnostic check for package elements that javac cannot resolve.
+        python3 - "$APIDIFF_SOURCE/src/share/classes/jdk/codetools/apidiff/model/API.java" <<'PY'
+        from pathlib import Path
+        import re
+        import sys
+
+        path = Path(sys.argv[1])
+        source = path.read_text()
+
+        pattern = re.compile(
+            r"(?m)^            return selectedPackages\.entrySet\(\)\.stream\(\)\r?\n"
+            r"                    \.filter\(Entry::getValue\)\r?\n"
+            r"                    \.map\(e -> getPackageElement\.apply\(e\.getKey\(\)\)\)\r?\n"
+            r"                    \.collect\(Collectors\.toSet\(\)\);"
+        )
+
+        replacement = """            Set<PackageElement> result = new HashSet<>();
+            for (Map.Entry<String, Boolean> entry : selectedPackages.entrySet()) {
+                if (!entry.getValue()) {
+                    continue;
+                }
+
+                String packageName = entry.getKey();
+                PackageElement packageElement = getPackageElement.apply(packageName);
+
+                if (packageElement == null) {
+                    throw new IllegalStateException(
+                            "Cannot resolve package '" + packageName
+                            + "' in API '" + name
+                            + "' (module: "
+                            + (moduleName == null ? "<unnamed>" : moduleName)
+                            + ")");
+                }
+
+                result.add(packageElement);
+            }
+            return result;"""
+
+        source, count = pattern.subn(lambda _: replacement, source)
+
+        if count != 1:
+            raise SystemExit(
+                f"Expected exactly one APIDiff package-discovery block; found {count}."
+            )
+
+        path.write_text(source)
+        print("Applied APIDiff package-resolution diagnostic.")
+        PY
+
+        # Build APIDiff and its self-contained distribution.
+        bash "$APIDIFF_SOURCE/make/build.sh"
+
+        APIDIFF="$APIDIFF_SOURCE/build/images/apidiff/bin/apidiff"
+
+        if [ ! -x "$APIDIFF" ]; then
+          echo "::error::APIDiff executable was not created."
+          exit 1
+        fi
+
+        echo "APIDIFF=$APIDIFF" >> "$GITHUB_ENV"
 
     - name: Run full mutation testing
       env:
@@ -58,6 +135,24 @@ jobs:
         -Ddoclint=none
         -DfailOnError=false
 
+    - name: Preserve development API inputs
+      run: |
+        API_WORK="$RUNNER_TEMP/tfw-apidiff"
+
+        mkdir -p "$API_WORK/master"
+
+        # Preserve the source files used to generate the master Javadoc.
+        cp -R src/main/java "$API_WORK/master/source"
+
+        # Preserve the compile-time dependencies for this API version.
+        ./mvnw -B dependency:build-classpath \
+          -DincludeScope=compile \
+          "-Dmdep.outputFile=$API_WORK/master-classpath.txt"
+
+        # Preserve the generated development Javadoc.
+        mkdir -p target/pages/javadoc
+        cp -R target/reports/apidocs/. target/pages/javadoc/
+
     - name: Get latest release
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -74,6 +169,8 @@ jobs:
 
     - name: Generate latest release Javadoc
       run: |
+        API_WORK="$RUNNER_TEMP/tfw-apidiff"
+
         echo "Generating Javadoc for release ${RELEASE_TAG}"
 
         # Fetch the exact release tag.
@@ -83,21 +180,26 @@ jobs:
           exit 1
         fi
 
-        # Save the development Javadoc before changing the working tree.
-        mkdir -p target/pages/javadoc
-        cp -R target/reports/apidocs/. target/pages/javadoc/
-
-        # Check out the exact source corresponding to the latest release.
+        # Check out the exact source corresponding to the latest GitHub release.
         git checkout --detach "${RELEASE_TAG}"
 
-        # Generate Javadoc for the released source.
-        rm -rf target/reports/apidocs
+        # Preserve the release source files.
+        mkdir -p "$API_WORK/release"
+        cp -R src/main/java "$API_WORK/release/source"
 
+        # Preserve the release compile-time dependencies.
         if [ -x ./mvnw ]; then
           MVN=./mvnw
         else
           MVN=mvn
         fi
+
+        "$MVN" -B dependency:build-classpath \
+          -DincludeScope=compile \
+          "-Dmdep.outputFile=$API_WORK/release-classpath.txt"
+
+        # Generate Javadoc for the released source.
+        rm -rf target/reports/apidocs
 
         "$MVN" -B \
           javadoc:javadoc \
@@ -108,6 +210,48 @@ jobs:
         # Put the release Javadoc under /javadoc/latest/.
         mkdir -p target/pages/javadoc/latest
         cp -R target/reports/apidocs/. target/pages/javadoc/latest/
+
+    - name: Generate API difference report
+      run: |
+        API_WORK="$RUNNER_TEMP/tfw-apidiff"
+
+        # Return to the master checkout.
+        git checkout --detach origin/master
+
+        echo "Comparing release ${RELEASE_TAG} with master."
+
+        # Generate the comparison report.
+        if "$APIDIFF" \
+          --api release \
+            --label "Latest Release (${RELEASE_TAG})" \
+            --source-path "$API_WORK/release/source" \
+            --class-path "$(cat "$API_WORK/release-classpath.txt")" \
+            --api-directory "$GITHUB_WORKSPACE/target/pages/javadoc/latest" \
+            --release 9 \
+          --api master \
+            --label "Development (master)" \
+            --source-path "$API_WORK/master/source" \
+            --class-path "$(cat "$API_WORK/master-classpath.txt")" \
+            --api-directory "$GITHUB_WORKSPACE/target/pages/javadoc" \
+            --release 9 \
+          --include 'tfw.**' \
+          --exclude 'tfw.math.**' \
+          --compare-doc-comments true \
+          --compare-api-descriptions true \
+          --title "TFW API Differences" \
+          --description "Changes from the latest release to master." \
+          --output-directory target/pages/apidiff; then
+
+          echo "APIDiff report generated successfully."
+
+          # Remove temporary source trees and classpath files.
+          rm -rf "$API_WORK"
+          rm -rf "$RUNNER_TEMP/apidiff-source"
+
+        else
+          echo "::error::APIDiff failed. Temporary source files have been retained for troubleshooting."
+          exit 1
+        fi
 
     - name: Prepare GitHub Pages
       run: |
@@ -121,12 +265,14 @@ jobs:
         # Calculate the sizes of the reports.
         development_javadoc_bytes=$(find target/pages/javadoc -type f ! -path '*/latest/*' -printf '%s\n' | awk '{sum += $1} END {print sum}')
         release_javadoc_bytes=$(find target/pages/javadoc/latest -type f -printf '%s\n' | awk '{sum += $1} END {print sum}')
+        apidiff_bytes=$(find target/pages/apidiff -type f -printf '%s\n' | awk '{sum += $1} END {print sum}')
         pit_bytes=$(find target/pages/pit -type f -printf '%s\n' | awk '{sum += $1} END {print sum}')
 
-        report_bytes=$((development_javadoc_bytes + release_javadoc_bytes + pit_bytes))
+        report_bytes=$((development_javadoc_bytes + release_javadoc_bytes + apidiff_bytes + pit_bytes))
 
         development_javadoc_size=$(numfmt --to=iec --suffix=B "$development_javadoc_bytes")
         release_javadoc_size=$(numfmt --to=iec --suffix=B "$release_javadoc_bytes")
+        apidiff_size=$(numfmt --to=iec --suffix=B "$apidiff_bytes")
         pit_size=$(numfmt --to=iec --suffix=B "$pit_bytes")
         report_size=$(numfmt --to=iec --suffix=B "$report_bytes")
 
@@ -153,6 +299,10 @@ jobs:
               <a href="javadoc/latest/">Latest Release Javadoc</a>
               — documentation for release ${RELEASE_TAG}.
             </li>
+            <li>
+              <a href="apidiff/">API Differences</a>
+              — comparison of the latest release API with master.
+            </li>
           </ul>
 
           <h2>Testing</h2>
@@ -178,6 +328,10 @@ jobs:
             <tr>
               <td>Latest Release Javadoc (${RELEASE_TAG})</td>
               <td>${release_javadoc_size}</td>
+            </tr>
+            <tr>
+              <td>API Differences</td>
+              <td>${apidiff_size}</td>
             </tr>
             <tr>
               <td>PIT report</td>
@@ -217,6 +371,7 @@ jobs:
         echo "  Total site size:        ${total_size} (${total_bytes} bytes)"
         echo "  Development Javadoc:    ${development_javadoc_size} (${development_javadoc_bytes} bytes)"
         echo "  Release Javadoc:        ${release_javadoc_size} (${release_javadoc_bytes} bytes)"
+        echo "  API Differences:        ${apidiff_size} (${apidiff_bytes} bytes)"
         echo "  PIT size:               ${pit_size} (${pit_bytes} bytes)"
         echo "  Total reports:          ${report_size} (${report_bytes} bytes)"
         echo "  File count:             ${file_count}"
