@@ -54,6 +54,50 @@ jobs:
         git -C "$APIDIFF_SOURCE" fetch --depth=1 origin "$APIDIFF_COMMIT"
         git -C "$APIDIFF_SOURCE" checkout --detach FETCH_HEAD
 
+        # Add a diagnostic check for package elements that javac cannot resolve.
+        python3 - "$APIDIFF_SOURCE/src/share/classes/jdk/codetools/apidiff/model/API.java" <<'PY'
+        from pathlib import Path
+        import sys
+
+        path = Path(sys.argv[1])
+        source = path.read_text()
+
+        old = """            return selectedPackages.entrySet().stream()
+                    .filter(Entry::getValue)
+                    .map(e -> getPackageElement.apply(e.getKey()))
+                    .collect(Collectors.toSet());"""
+
+        new = """            Set<PackageElement> result = new HashSet<>();
+            for (Map.Entry<String, Boolean> entry : selectedPackages.entrySet()) {
+                if (!entry.getValue()) {
+                    continue;
+                }
+
+                String packageName = entry.getKey();
+                PackageElement packageElement = getPackageElement.apply(packageName);
+
+                if (packageElement == null) {
+                    throw new IllegalStateException(
+                            "Cannot resolve package '" + packageName
+                            + "' in API '" + name
+                            + "' (module: "
+                            + (moduleName == null ? "<unnamed>" : moduleName)
+                            + ")");
+                }
+
+                result.add(packageElement);
+            }
+            return result;"""
+
+        if source.count(old) != 1:
+            raise SystemExit(
+                "Expected APIDiff package-discovery code was not found exactly once."
+            )
+
+        path.write_text(source.replace(old, new))
+        print("Applied APIDiff package-resolution diagnostic.")
+        PY
+
         # Build APIDiff and its self-contained distribution.
         bash "$APIDIFF_SOURCE/make/build.sh"
 
