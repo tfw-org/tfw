@@ -73,7 +73,7 @@ TFW uses several complementary techniques to assess the quality, robustness, and
 - **Mutation testing** — [PIT Mutation Testing](https://pitest.org/) is used to evaluate the effectiveness of the test suite. The latest mutation testing report is available at [TFW's PIT report](https://tfw-org.github.io/tfw/pit/)
 - **Fuzz testing** — [ClusterFuzzLite](https://google.github.io/clusterfuzzlite/) is used to "fuzz" test the API. The [latest fuzzing results](https://tfw-org.github.io/tfw-fuzzing/coverage/latest/report/linux/) are available on GitHub Pages. Historical results and trends are available on the [TFW fuzzing metrics dashboard](https://tfw-org.github.io/tfw-metrics/).
 - **Reproducible builds** — TFW [releases](https://github.com/jvm-repo-rebuild/reproducible-central/blob/master/content/io/github/tfw-org/tfw/README.md) are independently rebuilt and verified by [Reproducible Central](https://github.com/jvm-repo-rebuild/reproducible-central/tree/master), including verification of the POM, binary and sources JARs, and CycloneDX SBOMs.
-- **Javadoc** — API documentation is available for both the [current development version](https://tfw-org.github.io/tfw/javadoc/) and the [latest released version](https://tfw-org.github.io/tfw/javadoc/latest/).
+- **Javadoc** — API documentation is available for both the [current development version](https://tfw-org.github.io/tfw/javadoc/) and the [latest released version](https://tfw-org.github.io/tfw/javadoc/latest/)[Javadoc] along with the [API Differences](https://tfw-org.github.io/tfw/apidiff/).
 
 ## Project Repositories
 
