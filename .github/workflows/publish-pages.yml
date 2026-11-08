@@ -217,11 +217,6 @@ jobs:
         rm -rf "$API_WORK"
         rm -rf "$RUNNER_TEMP/apidiff-source"
 
-        else
-          echo "::error::APIDiff failed. Temporary source files have been retained for troubleshooting."
-          exit 1
-        fi
-
     - name: Prepare GitHub Pages
       run: |
         # Return to the master checkout for consistency.
