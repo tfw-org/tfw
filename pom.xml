@@ -4,7 +4,7 @@
 
     <groupId>io.github.tfw-org</groupId>
     <artifactId>tfw</artifactId>
-    <version>2026.17-SNAPSHOT</version>
+    <version>2026.18-SNAPSHOT</version>
 
     <name>tfw</name>
     <description>The FrameWork for building highly scalable and maintainable applications</description>
@@ -20,11 +20,12 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <plugin.cyclonedx-maven-plugin.version>2.9.3</plugin.cyclonedx-maven-plugin.version>
+        <plugin.duplicate-finder-maven-plugin.version>2.0.1</plugin.duplicate-finder-maven-plugin.version>
         <plugin.error-prone-contrib.version>0.30.0</plugin.error-prone-contrib.version>
         <plugin.error_prone_core.version>2.50.0</plugin.error_prone_core.version>
         <plugin.errorprone-slf4j.version>0.1.29</plugin.errorprone-slf4j.version>
         <plugin.exec-maven-plugin.version>3.6.4</plugin.exec-maven-plugin.version>
-        <plugin.jacoco-maven-plugin.version>0.8.15</plugin.jacoco-maven-plugin.version>
+        <plugin.jacoco-maven-plugin.version>0.8.16</plugin.jacoco-maven-plugin.version>
         <plugin.maven-compiler-plugin.version>3.16.0</plugin.maven-compiler-plugin.version>
         <plugin.maven-dependency-plugin.version>3.11.0</plugin.maven-dependency-plugin.version>
         <plugin.maven-enforcer-plugin.version>3.6.3</plugin.maven-enforcer-plugin.version>
@@ -35,10 +36,10 @@
         <plugin.maven-resources-plugin.version>3.5.0</plugin.maven-resources-plugin.version>
         <plugin.maven-source-plugin.version>3.4.0</plugin.maven-source-plugin.version>
         <plugin.maven-surefire-junit5-tree-reporter.version>2.1.0</plugin.maven-surefire-junit5-tree-reporter.version>
-        <plugin.maven-surefire-plugin.version>3.6.0</plugin.maven-surefire-plugin.version>
+        <plugin.maven-surefire-plugin.version>3.6.1</plugin.maven-surefire-plugin.version>
         <plugin.nexus-staging-maven-plugin.version>1.7.0</plugin.nexus-staging-maven-plugin.version>
-        <plugin.palantir-java-format.version>2.102.0</plugin.palantir-java-format.version>
-        <plugin.pitest-git-plugin.version>2.3.4</plugin.pitest-git-plugin.version>
+        <plugin.palantir-java-format.version>2.103.0</plugin.palantir-java-format.version>
+        <plugin.pitest-git-plugin.version>2.4.0</plugin.pitest-git-plugin.version>
         <plugin.pitest-github-maven-plugin.version>2.3.4</plugin.pitest-github-maven-plugin.version>
         <plugin.pitest-junit5-plugin.version>1.2.3</plugin.pitest-junit5-plugin.version>
         <plugin.pitest-maven.version>1.30.1</plugin.pitest-maven.version>
@@ -377,6 +378,31 @@
                         <version>${plugin.maven-surefire-junit5-tree-reporter.version}</version>
                     </dependency>
                 </dependencies>
+            </plugin>
+            <plugin>
+                <groupId>org.basepom.maven</groupId>
+                <artifactId>duplicate-finder-maven-plugin</artifactId>
+                <version>${plugin.duplicate-finder-maven-plugin.version}</version>
+                <configuration>
+                    <checkCompileClasspath>true</checkCompileClasspath>
+                    <checkRuntimeClasspath>true</checkRuntimeClasspath>
+                    <checkTestClasspath>true</checkTestClasspath>
+                    <failBuildInCaseOfDifferentContentConflict>true</failBuildInCaseOfDifferentContentConflict>
+                    <failBuildInCaseOfEqualContentConflict>false</failBuildInCaseOfEqualContentConflict>
+                    <failBuildInCaseOfConflict>false</failBuildInCaseOfConflict>
+                    <printEqualFiles>false</printEqualFiles>
+                    <useDefaultClassIgnoreList>true</useDefaultClassIgnoreList>
+                    <useDefaultResourceIgnoreList>true</useDefaultResourceIgnoreList>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>check-duplicates</id>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                        <phase>verify</phase>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
