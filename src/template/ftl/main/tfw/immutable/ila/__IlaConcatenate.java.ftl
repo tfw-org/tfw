@@ -6,24 +6,12 @@ import tfw.check.Argument;
 import tfw.immutable.ila.IlaConcatenateUtil;
 
 public final class ${NAME}IlaConcatenate {
-    private ${NAME}IlaConcatenate() {
-        // non-instantiable class
-    }
+    private ${NAME}IlaConcatenate() {}
 
     public static ${TEMPLATE_SPACE}${NAME}Ila${TEMPLATE} create(${NAME}Ila${TEMPLATE} leftIla, ${NAME}Ila${TEMPLATE} rightIla) {
         Argument.assertNotNull(leftIla, "leftIla");
         Argument.assertNotNull(rightIla, "rightIla");
 
-        /*
-          // this efficiency step would help out in a number
-          // of situations, but could be confusing when the
-          // immutable proxy getParameters() is called and you
-          // don't see your concatenation!
-        if(leftIla.length() == 0)
-            return rightIla;
-        if(rightIla.length() == 0)
-            return leftIla;
-        */
         return new ${NAME}IlaImpl${DIAMOND}(leftIla, rightIla);
     }
 
