@@ -36,7 +36,6 @@ jobs:
       with:
         java-version: '21'
         distribution: 'temurin'
-        cache: maven
 
     - name: Install build dependencies
       run: sudo apt-get install -y tightvncserver pandoc
