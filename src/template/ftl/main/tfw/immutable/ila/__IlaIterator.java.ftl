@@ -7,9 +7,10 @@ import tfw.check.Argument;
 public final class ${NAME}IlaIterator${TEMPLATE} {
     private final ${NAME}Ila${TEMPLATE} instance;
     private final long instanceLength;
+    private final ${TYPE_OR_TEMPLATE}[] buffer;
+
     private long amountLeftToFetch;
     private int amountToFetch;
-    private ${TYPE_OR_TEMPLATE}[] buffer;
     private int bufferIndex;
     private long fetchPosition;
     private long actualPosition;

@@ -9,9 +9,10 @@ import tfw.check.Argument;
  * TODO: Need to check for loops in the tree structure.
  */
 public class TreeStateBuffer {
+    private final Set<EventChannelState> stateMap = new HashSet<>();
+    private final Set<TreeState> children = new HashSet<>();
+
     private String name = null;
-    private Set<EventChannelState> stateMap = new HashSet<>();
-    private Set<TreeState> children = new HashSet<>();
 
     /**
      * Set the name of the tree component.

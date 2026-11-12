@@ -6,9 +6,10 @@ import tfw.check.Argument;
 public final class DoubleIlaIterator {
     private final DoubleIla instance;
     private final long instanceLength;
+    private final double[] buffer;
+
     private long amountLeftToFetch;
     private int amountToFetch;
-    private double[] buffer;
     private int bufferIndex;
     private long fetchPosition;
     private long actualPosition;
