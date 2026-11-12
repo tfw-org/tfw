@@ -5,24 +5,12 @@ import tfw.check.Argument;
 import tfw.immutable.ila.IlaConcatenateUtil;
 
 public final class ShortIlaConcatenate {
-    private ShortIlaConcatenate() {
-        // non-instantiable class
-    }
+    private ShortIlaConcatenate() {}
 
     public static ShortIla create(ShortIla leftIla, ShortIla rightIla) {
         Argument.assertNotNull(leftIla, "leftIla");
         Argument.assertNotNull(rightIla, "rightIla");
 
-        /*
-          // this efficiency step would help out in a number
-          // of situations, but could be confusing when the
-          // immutable proxy getParameters() is called and you
-          // don't see your concatenation!
-        if(leftIla.length() == 0)
-            return rightIla;
-        if(rightIla.length() == 0)
-            return leftIla;
-        */
         return new ShortIlaImpl(leftIla, rightIla);
     }
 
