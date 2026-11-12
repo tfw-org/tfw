@@ -6,9 +6,10 @@ import tfw.check.Argument;
 public final class BooleanIlaIterator {
     private final BooleanIla instance;
     private final long instanceLength;
+    private final boolean[] buffer;
+
     private long amountLeftToFetch;
     private int amountToFetch;
-    private boolean[] buffer;
     private int bufferIndex;
     private long fetchPosition;
     private long actualPosition;

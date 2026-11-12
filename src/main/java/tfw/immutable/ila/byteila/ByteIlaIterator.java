@@ -6,9 +6,10 @@ import tfw.check.Argument;
 public final class ByteIlaIterator {
     private final ByteIla instance;
     private final long instanceLength;
+    private final byte[] buffer;
+
     private long amountLeftToFetch;
     private int amountToFetch;
-    private byte[] buffer;
     private int bufferIndex;
     private long fetchPosition;
     private long actualPosition;
