@@ -309,7 +309,7 @@ When a component cannot perform its normal work because a required input is miss
 
 ### Use rollback for failed transactions
 
-If a component determines that the current transaction should not be completed successfully, request rollback through the appropriate TSM mechanism. Consider whether a follow-on transaction should establish recovery state or communicate an error.
+If a component determines that the current transaction should not be completed successfully, request rollback through the appropriate TSM mechanism. Consider what recovery state should be established and how an error should be communicated.
 
 ### Keep commit processing separate from state processing
 
