@@ -190,7 +190,7 @@ For the exact setup and implementation, see the `HelloWorld` example in the TFW 
 
 ## 7. Example 2: AdditionDemo
 
-`AdditionDemo` demonstrates a more involved interaction between state-bearing channels, processors, validation and rollback.
+`AdditionDemo` demonstrates a more involved interaction between state-bearing channels, processors, conversion errors and rollback.
 
 The example provides an interface for entering values and calculating a sum. It also illustrates how conversion errors can be handled as part of transaction processing rather than simply allowing invalid state to propagate through the application.
 
@@ -205,7 +205,7 @@ Its components include:
 
 Some of the example's object event channels begin with `null`. This allows the application to represent state that has not yet been supplied. Normal processing still depends on the required state-bearing inputs being non-null.
 
-The `IntegerSynchronizer` illustrates how conversion can fail. If text cannot be parsed as an integer, the synchronizer can request rollback and supply error state for a follow-on transaction. This allows the application to return to a suitable state and communicate the problem without treating the failed conversion as a successful update.
+The `IntegerSynchronizer` illustrates how conversion can fail. If text cannot be parsed as an integer, the synchronizer can request rollback and supply error state. That state is processed during rollback handling, before the current transaction completes. This allows the application to return to a suitable state and communicate the problem without treating the failed conversion as a successful update.
 
 The `AdditionConverter` performs the addition when the required inputs are available. The Calculate trigger provides an explicit way to request the operation, rather than requiring every change to every input to initiate a calculation.
 
@@ -219,7 +219,7 @@ A validator may request rollback when it determines that the current state is in
 
 For example, a synchronizer may fail to convert a text value to an integer. Continuing with the invalid result could cause other components to process inconsistent state. Requesting rollback provides a way to prevent the failed operation from being treated as a successful transaction.
 
-Rollback can also be associated with follow-on state. TSM provides a mechanism such as `rollback(RollbackECD, Object)` to supply state for a separate follow-on transaction. An application can use this to communicate an error or establish state needed to recover after the failed transaction.
+Rollback can also be associated with recovery state. TSM provides a mechanism such as `rollback(RollbackECD, Object)` to supply state that is processed during rollback handling. The transaction manager executes the resulting transaction cycles before proceeding to commit processing for the current transaction. An application can use this mechanism to communicate an error or establish state needed to recover from the failed operation.
 
 Rollback should be understood as part of transaction management, not simply as an exception-handling substitute. It allows components to signal that the intended transaction should not proceed as a successful update.
 

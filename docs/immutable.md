@@ -117,15 +117,18 @@ When an API documents that it takes ownership of a supplied object, the caller m
 
 For example, the array-backed ILA implementations use the supplied Java array as their backing storage without copying it:
 
-```java
+// Option 1: Transfer ownership of the array to the ILA.
+int[] values = getValues();
+IntIla ila = IntIlaFromArray.create(values);
+
+// Do not access or modify values after this point.
+
+// Option 2: Retain ownership of the original array.
 int[] original = getValues();
+IntIla independentIla =
+        IntIlaFromArray.create(original.clone());
 
-// Transfer ownership of the array to the ILA.
-IntIla ila = IntIlaFromArray.create(original);
-
-// Alternatively, retain the original array by passing a clone.
-IntIla independentIla = IntIlaFromArray.create(original.clone());
-```
+// The original array remains independently owned by the caller.
 
 The same principle applies to other immutable implementations that document ownership transfer. When using these APIs, consult their documentation to determine whether supplied objects are copied or retained directly.
 

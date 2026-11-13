@@ -9,6 +9,7 @@ permissions:
 
 jobs:
   publish:
+    if: github.event.release.prerelease == false
     runs-on: ubuntu-latest
 
     permissions:
