@@ -57,6 +57,28 @@ The following example demonstrates the basic structure of a TFW application:
 
 [`HelloWorld.java`](src/main/java/tfw/tsm/demo/HelloWorld.java)
 
+## Documentation
+
+The [TFW documentation](docs/README.md) provides guides for getting started with the framework and understanding its main features.
+
+- **[Immutable Data](docs/immutable.md)** — immutable arrays, matrices, streams, composition, lazy evaluation, and caching.
+- **[Transaction and State Management](docs/tsm.md)** — components, event channels, transaction processing, rollback, and application composition.
+- **[Maintenance Guides](docs/maintenance/README.md)** — development, testing, release, and local fuzzing procedures.
+
+### Adding TFW to a Maven project
+
+TFW is published to Maven Central. Add it as a dependency to your project's `pom.xml`, using a current released version from [Maven Central](https://central.sonatype.com/artifact/io.github.tfw-org/tfw):
+
+```xml
+<dependency>
+    <groupId>io.github.tfw-org</groupId>
+    <artifactId>tfw</artifactId>
+    <version>YOUR_TFW_VERSION</version>
+</dependency>
+```
+
+Replace `YOUR_TFW_VERSION` with the version you choose from Maven Central. The library targets Java 8 bytecode. Consult the user guides and Javadocs for instructions on using its APIs.
+
 ## Designed for Large-Scale Applications
 
 `tfw.immutable` and `tfw.tsm` are designed to complement one another.
