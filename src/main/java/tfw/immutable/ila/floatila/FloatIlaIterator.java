@@ -6,9 +6,10 @@ import tfw.check.Argument;
 public final class FloatIlaIterator {
     private final FloatIla instance;
     private final long instanceLength;
+    private final float[] buffer;
+
     private long amountLeftToFetch;
     private int amountToFetch;
-    private float[] buffer;
     private int bufferIndex;
     private long fetchPosition;
     private long actualPosition;
