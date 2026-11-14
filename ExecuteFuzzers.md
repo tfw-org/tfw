@@ -780,3 +780,6 @@ EOF
    * 70  ./out/IntIlaFactoryAddFuzzer   -runs=10000
    71  clear
    72  history
+
+   * 69.5 docker run --rm -it --platform linux/amd64 -v "$PWD":/work/tfw -w /work/tfw gcr.io/oss-fuzz-base/base-builder-jvm bash
+   
