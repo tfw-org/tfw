@@ -69,7 +69,7 @@ public final class Au {
      * length is unknown when the header is written, then it will be set to
      * UNKNOWN_DATA_SIZE.
      */
-    public final long data_size;
+    public final long dataSize;
 
     /**
      * A long that is set to one of the ISDN, LINEAR, IEEE or CCITT constants
@@ -142,7 +142,7 @@ public final class Au {
             throw new IOException("offset(" + offset + ") > length(" + byteIla.length() + ") not allowed!");
         }
 
-        data_size = unsignedIntFromBytes(header, 4, magicNumber);
+        dataSize = unsignedIntFromBytes(header, 4, magicNumber);
         encoding = unsignedIntFromBytes(header, 8, magicNumber);
         sampleRate = unsignedIntFromBytes(header, 12, magicNumber);
         numberOfChannels = unsignedIntFromBytes(header, 16, magicNumber);
@@ -179,8 +179,8 @@ public final class Au {
         this.offset = MINIMUM_HEADER_LENGTH + annotation.length();
         bytesFromUnsignedInt(header, 4, offset);
 
-        this.data_size = audioData.length();
-        bytesFromUnsignedInt(header, 8, data_size);
+        this.dataSize = audioData.length();
+        bytesFromUnsignedInt(header, 8, dataSize);
 
         this.encoding = encoding;
         bytesFromUnsignedInt(header, 12, encoding);
