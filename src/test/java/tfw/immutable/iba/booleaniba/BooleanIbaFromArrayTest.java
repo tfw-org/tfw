@@ -12,7 +12,7 @@ class BooleanIbaFromArrayTest {
     void parameterTest() {
         assertThatThrownBy(() -> BooleanIbaFromArray.create(null))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("array == null not allowed!");
+                .hasMessage("array (=null) == null not allowed!");
     }
 
     @Test

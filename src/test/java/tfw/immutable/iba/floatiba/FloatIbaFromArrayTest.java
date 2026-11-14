@@ -12,7 +12,7 @@ class FloatIbaFromArrayTest {
     void parameterTest() {
         assertThatThrownBy(() -> FloatIbaFromArray.create(null))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("array == null not allowed!");
+                .hasMessage("array (=null) == null not allowed!");
     }
 
     @Test
