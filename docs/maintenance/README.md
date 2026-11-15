@@ -18,6 +18,10 @@ The release process for TFW, including version preparation, publishing artifacts
 
 How to build and run TFW fuzzers, work with the fuzzing infrastructure, and use fuzzing results to improve robustness.
 
+### [Metrics Token](metrics-token.md)
+
+How to generate and install a replacement `TFW_ORG_READ_TOKEN` used by the TFW metrics infrastructure.
+
 ## Keeping the guides current
 
 These guides should describe the repository's actual configuration and workflows. When a relevant build configuration, GitHub Actions workflow, or development procedure changes, update the corresponding guide so that it remains a reliable reference.
