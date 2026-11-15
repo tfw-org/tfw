@@ -43,7 +43,17 @@ The example demonstrates the basic steps involved in creating and running a TSM 
 5. Add the components to the root.
 6. Trigger the initial work and wait for transaction processing to complete.
 
-The example uses SLF4J for logging. TFW provides the logging API but does not select a logging implementation, so an application should include an appropriate SLF4J provider to see the example's log output.
+The example uses SLF4J for logging. TFW provides the SLF4J API but does not include a logging provider. To see the example's output, add a provider to the runtime classpath. If you do not already use another SLF4J provider, the simplest option is `slf4j-jdk14`, which routes logging through the JDK's built-in logging system. Add the following dependency to the project's `pom.xml`:
+
+```xml
+<dependency>
+    <groupId>org.slf4j</groupId>
+    <artifactId>slf4j-jdk14</artifactId>
+    <version>2.0.20</version>
+</dependency>
+```
+
+Use a version compatible with the `slf4j-api` dependency. This provider must be available at runtime, not just in test scope.
 
 ## Learning more
 
@@ -64,7 +74,7 @@ When developing components or other extensions that process TFW event-channel va
 - **Check assumptions:** Converters, synchronizers, validators, event-channel predicates, and other components should not assume that values are valid merely because they are carried by a typed event channel.
 - **Protect sensitive information:** Avoid exposing credentials, private data, or other sensitive values through log messages, exception messages, or diagnostic output.
 - **Control resource consumption:** Consider the size and complexity of values being processed, particularly when they originate from untrusted sources. Avoid allowing input values to cause unbounded memory allocation or excessive processing.
-- **Control external side effects:** Use commit processing for operations that should occur after transaction processing completes. Ensure that external operations do not inadvertently expose or modify protected resources.
+- **Control external side effects:** TFW uses initiators to introduce state changes originating outside the application into a transaction. Commits provide the complementary mechanism for notifying external code of state changes made within the application. Commit callbacks are invoked after transaction processing has completed successfully. Exceptions thrown by commit callbacks do not roll back the completed transaction, and TFW does not automatically retry failed external operations. Applications should therefore provide an appropriate recovery strategy for external operations that fail or produce uncertain results.
 
 The immutable interfaces do not automatically guarantee thread safety. Applications should follow the thread-safety and ownership requirements documented for the particular implementations they use. In particular, when ownership of an underlying array is transferred to an immutable implementation, the caller must not subsequently modify or access that array.
 
