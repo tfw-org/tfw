@@ -43,17 +43,13 @@ The example demonstrates the basic steps involved in creating and running a TSM 
 5. Add the components to the root.
 6. Trigger the initial work and wait for transaction processing to complete.
 
-The example uses SLF4J for logging. TFW provides the SLF4J API but does not include a logging provider. To see the example's output, add a provider to the runtime classpath. If you do not already use another SLF4J provider, the simplest option is `slf4j-jdk14`, which routes logging through the JDK's built-in logging system. Add the following dependency to the project's `pom.xml`:
+The example uses SLF4J for logging. TFW provides the SLF4J API but does not include a logging provider. The TFW repository already declares `slf4j-jdk14` as a test-scoped dependency. To make the provider available when running `HelloWorld`, edit the existing `slf4j-jdk14` dependency in the project's `pom.xml` and change its scope from `test` to `runtime`:
 
 ```xml
-<dependency>
-    <groupId>org.slf4j</groupId>
-    <artifactId>slf4j-jdk14</artifactId>
-    <version>2.0.20</version>
-</dependency>
+<scope>runtime</scope>
 ```
 
-Use a version compatible with the `slf4j-api` dependency. This provider must be available at runtime, not just in test scope.
+The `slf4j-jdk14` provider routes logging through the JDK's built-in logging system. Its version is already managed by the project's Maven properties.
 
 ## Learning more
 
