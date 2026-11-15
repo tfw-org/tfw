@@ -4,7 +4,11 @@ This directory contains documentation for using TFW and for developing and maint
 
 ## User guides
 
-These guides explain the concepts and features provided by TFW's main packages.
+These guides explain how to install and use TFW and describe the concepts and features provided by its main packages.
+
+### [Getting Started](getting-started.md)
+
+Learn how to install TFW, run a simple application, find additional documentation, and use the framework securely.
 
 ### [Immutable Data](immutable.md)
 
@@ -14,7 +18,7 @@ Learn about the `tfw.immutable` package, including immutable arrays, matrices, i
 
 Learn about the `tfw.tsm` package, including components, event channels, transactions, state changes, reactive inputs, rollback, commit processing, and hierarchical application structure.
 
-For a first look at TFW, the [HelloWorld example](../src/main/java/tfw/tsm/demo/HelloWorld.java) demonstrates a minimal TSM application.
+For a first look at TFW's transaction and state-management capabilities, the [HelloWorld example](../src/main/java/tfw/tsm/demo/HelloWorld.java) demonstrates a minimal TSM application.
 
 ## Maintenance guides
 

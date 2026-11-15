@@ -59,11 +59,13 @@ The following example demonstrates the basic structure of a TFW application:
 
 ## Documentation
 
-The [TFW documentation](docs/README.md) provides guides for getting started with the framework and understanding its main features.
+Start with the [Getting Started guide](docs/getting-started.md) for instructions on installing TFW, running an example application, and using TFW securely.
+
+The [TFW documentation](docs/README.md) provides additional guides for understanding the framework and its main features.
 
 - **[Immutable Data](docs/immutable.md)** — immutable arrays, matrices, streams, composition, lazy evaluation, and caching.
 - **[Transaction and State Management](docs/tsm.md)** — components, event channels, transaction processing, rollback, and application composition.
-- **[Maintenance Guides](docs/maintenance/README.md)** — development, testing, release, and local fuzzing procedures.
+- **[Maintenance Guides](docs/maintenance/README.md)** — development, testing, release, and repository maintenance procedures.
 
 ### Adding TFW to a Maven project
 
