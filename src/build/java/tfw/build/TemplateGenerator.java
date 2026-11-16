@@ -141,8 +141,6 @@ public final class TemplateGenerator {
 
     private static final Path ILAF_DIRECTORY = Paths.get("tfw", "immutable", "ilaf");
 
-    private static final Path CHECK_DIRECTORY = Paths.get("tfw", "check");
-
     private static Map<String, TypeDefinition> createTypes() {
         final Map<String, TypeDefinition> types = new HashMap<>();
 
@@ -847,9 +845,7 @@ public final class TemplateGenerator {
             return;
         }
 
-        if (sourceKind == SourceKind.FUZZ
-                && !ILAF_DIRECTORY.equals(relativeDirectory)
-                && !CHECK_DIRECTORY.equals(relativeDirectory)) {
+        if (sourceKind == SourceKind.FUZZ && !ILAF_DIRECTORY.equals(relativeDirectory)) {
             return;
         }
 
