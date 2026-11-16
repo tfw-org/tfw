@@ -7,7 +7,6 @@ import java.math.BigInteger;
 import java.util.Objects;
 
 public final class ArgumentsFuzzerSupport {
-
     private ArgumentsFuzzerSupport() {}
 
     public static void validateMethod(final Method method) {
@@ -26,7 +25,6 @@ public final class ArgumentsFuzzerSupport {
             if (types.length != 2 || types[0] != boolean.class || types[1] != String.class) {
                 throw new ExceptionInInitializerError("Unsupported Arguments method: " + method);
             }
-
             return;
         }
 
@@ -34,7 +32,6 @@ public final class ArgumentsFuzzerSupport {
             if (types.length != 2 || types[0] != Object.class || types[1] != String.class) {
                 throw new ExceptionInInitializerError("Unsupported Arguments method: " + method);
             }
-
             return;
         }
 
@@ -53,7 +50,6 @@ public final class ArgumentsFuzzerSupport {
         final Class<?> type = types[0];
 
         if ("checkEquals".equals(name) || "checkNotEquals".equals(name)) {
-
             if (type != byte.class
                     && type != char.class
                     && type != double.class
@@ -66,7 +62,6 @@ public final class ArgumentsFuzzerSupport {
                     && type != Object.class) {
                 throw new ExceptionInInitializerError("Unsupported Arguments method: " + method);
             }
-
             return;
         }
 
@@ -96,19 +91,13 @@ public final class ArgumentsFuzzerSupport {
     }
 
     public static Object[] createArguments(final Method method, final FuzzedDataProvider data) {
-
         final Class<?>[] types = method.getParameterTypes();
 
         if (types.length == 2) {
-            final Object value;
+            final Object value =
+                    types[0] == boolean.class ? data.consumeBoolean() : consumeValue(Object.class, data, true);
 
-            if (types[0] == boolean.class) {
-                value = data.consumeBoolean();
-            } else {
-                value = consumeValue(Object.class, data, true);
-            }
-
-            return new Object[] {value, data.consumeString(32)};
+            return new Object[] {value, consumeName(data)};
         }
 
         final Class<?> type = types[0];
@@ -119,13 +108,107 @@ public final class ArgumentsFuzzerSupport {
                         && ("checkEquals".equals(methodName) || "checkNotEquals".equals(methodName)));
 
         final Object left = consumeValue(type, data, nullable);
-        final Object right = consumeValue(type, data, nullable);
+        final Object right = consumeRelatedValue(type, left, data, nullable);
 
         if (types.length == 3) {
-            return new Object[] {left, data.consumeString(32), right};
+            return new Object[] {left, consumeName(data), right};
         }
 
-        return new Object[] {left, data.consumeString(32), right, data.consumeString(32)};
+        return new Object[] {left, consumeName(data), right, consumeName(data)};
+    }
+
+    private static String consumeName(final FuzzedDataProvider data) {
+        return data.consumeBoolean() ? null : data.consumeString(32);
+    }
+
+    /*
+     * Generate a mixture of independent and deliberately related values.
+     *
+     * Independent values preserve broad exploration. Related values make
+     * equality, inequality, and adjacent relational cases common enough to
+     * exercise consistently.
+     */
+    private static Object consumeRelatedValue(
+            final Class<?> type, final Object left, final FuzzedDataProvider data, final boolean nullable) {
+
+        switch (data.consumeInt(0, 3)) {
+            case 0:
+                return consumeValue(type, data, nullable);
+
+            case 1:
+                return left;
+
+            case 2:
+                return adjacentValue(type, left, true, data, nullable);
+
+            case 3:
+                return adjacentValue(type, left, false, data, nullable);
+
+            default:
+                throw new AssertionError("Unexpected pair-generation mode");
+        }
+    }
+
+    private static Object adjacentValue(
+            final Class<?> type,
+            final Object value,
+            final boolean increment,
+            final FuzzedDataProvider data,
+            final boolean nullable) {
+
+        if (value == null) {
+            return consumeValue(type, data, nullable);
+        }
+
+        if (type == byte.class) {
+            final byte v = ((Byte) value).byteValue();
+            return (byte) (increment ? v + 1 : v - 1);
+        }
+
+        if (type == char.class) {
+            final char v = ((Character) value).charValue();
+            return (char) (increment ? v + 1 : v - 1);
+        }
+
+        if (type == short.class) {
+            final short v = ((Short) value).shortValue();
+            return (short) (increment ? v + 1 : v - 1);
+        }
+
+        if (type == int.class) {
+            final int v = ((Integer) value).intValue();
+            return increment ? v + 1 : v - 1;
+        }
+
+        if (type == long.class) {
+            final long v = ((Long) value).longValue();
+            return increment ? v + 1 : v - 1;
+        }
+
+        if (type == float.class) {
+            final float v = ((Float) value).floatValue();
+            return increment ? Math.nextUp(v) : Math.nextDown(v);
+        }
+
+        if (type == double.class) {
+            final double v = ((Double) value).doubleValue();
+            return increment ? Math.nextUp(v) : Math.nextDown(v);
+        }
+
+        if (type == BigInteger.class) {
+            final BigInteger v = (BigInteger) value;
+            return increment ? v.add(BigInteger.ONE) : v.subtract(BigInteger.ONE);
+        }
+
+        if (type == boolean.class) {
+            return !((Boolean) value).booleanValue();
+        }
+
+        if (type == Object.class) {
+            return value.toString() + "x";
+        }
+
+        throw new AssertionError("Unsupported argument type: " + type);
     }
 
     private static Object consumeValue(final Class<?> type, final FuzzedDataProvider data, final boolean nullable) {
@@ -167,7 +250,6 @@ public final class ArgumentsFuzzerSupport {
             }
 
             final byte[] bytes = data.consumeBytes(16);
-
             return bytes.length == 0 ? BigInteger.ZERO : new BigInteger(bytes);
         }
 
@@ -185,11 +267,9 @@ public final class ArgumentsFuzzerSupport {
             invoke(method, arguments);
 
         } catch (IllegalArgumentException exception) {
-
             if (!shouldThrow) {
                 throw new AssertionError(method + " threw unexpectedly", exception);
             }
-
             return;
         }
 
@@ -246,15 +326,14 @@ public final class ArgumentsFuzzerSupport {
 
     private static boolean relationalFailure(
             final String operation, final Class<?> type, final Object left, final Object right) {
+
         if (type == BigInteger.class) {
             final int comparison = ((BigInteger) left).compareTo((BigInteger) right);
-
             return compare(operation, comparison);
         }
 
         if (type == char.class) {
             final int comparison = Character.compare((Character) left, (Character) right);
-
             return compare(operation, comparison);
         }
 
@@ -267,7 +346,6 @@ public final class ArgumentsFuzzerSupport {
         }
 
         final int comparison = Long.compare(((Number) left).longValue(), ((Number) right).longValue());
-
         return compare(operation, comparison);
     }
 
@@ -314,7 +392,6 @@ public final class ArgumentsFuzzerSupport {
             method.invoke(null, arguments);
 
         } catch (InvocationTargetException exception) {
-
             final Throwable cause = exception.getCause();
 
             if (cause instanceof IllegalArgumentException) {
