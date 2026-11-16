@@ -3,7 +3,7 @@ name: ClusterFuzzLite PR fuzzing
 on:
   pull_request:
     paths:
-      - 'src/main/java/tfw/immutable/**'
+      - 'src/main/java/**'
       - 'src/fuzz/java/**'
       - 'src/template/ftl/**'
       - '.clusterfuzzlite/**'

@@ -28,7 +28,6 @@ public final class ArgumentsReflectionFuzzer {
         final Method[] methods = Arrays.stream(Arguments.class.getDeclaredMethods())
                 .filter(method -> Modifier.isPublic(method.getModifiers()))
                 .filter(method -> Modifier.isStatic(method.getModifiers()))
-                .filter(method -> method.getReturnType() == void.class)
                 .toArray(Method[]::new);
 
         Arrays.sort(methods, Comparator.comparing(Method::toGenericString));
