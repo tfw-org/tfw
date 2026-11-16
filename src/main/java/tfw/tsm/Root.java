@@ -83,11 +83,13 @@ public class Root extends Branch {
     }
 
     public static class Builder {
+        private final List<EventChannelConfig<? extends EventChannelDescription>> eventChannelConfigs =
+                new ArrayList<>();
+
         private String name = null;
         private TransactionQueue transactionQueue = null;
         private CheckDependencies checkDependencies = null;
         private boolean logging = false;
-        private List<EventChannelConfig<? extends EventChannelDescription>> eventChannelConfigs = new ArrayList<>();
         private TransactionExceptionHandler transactionExceptionHandler = null;
 
         Builder() {}

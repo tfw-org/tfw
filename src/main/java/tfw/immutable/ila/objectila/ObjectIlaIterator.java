@@ -6,9 +6,10 @@ import tfw.check.Argument;
 public final class ObjectIlaIterator<T> {
     private final ObjectIla<T> instance;
     private final long instanceLength;
+    private final T[] buffer;
+
     private long amountLeftToFetch;
     private int amountToFetch;
-    private T[] buffer;
     private int bufferIndex;
     private long fetchPosition;
     private long actualPosition;

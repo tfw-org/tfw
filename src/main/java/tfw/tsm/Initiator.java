@@ -1,8 +1,11 @@
 package tfw.tsm;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import tfw.check.Argument;
+import tfw.check.Arguments;
 import tfw.tsm.ecd.EventChannelDescription;
 import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.StatelessTriggerECD;
@@ -283,8 +286,9 @@ public class Initiator extends TreeComponent {
 
     public static class InitiatorBuilder {
         private String name = null;
-        private List<EventChannelDescription> eventChannelDescriptions = new ArrayList<>();
+        private final List<EventChannelDescription> eventChannelDescriptions = new ArrayList<>();
         private StateQueueFactory stateQueueFactory = new DefaultStateQueueFactory();
+        private final List<List<? extends EventChannelConfig<?>>> eventChannelConfigLists = new ArrayList<>();
 
         InitiatorBuilder() {}
 
@@ -300,6 +304,13 @@ public class Initiator extends TreeComponent {
             return this;
         }
 
+        public InitiatorBuilder addEventChannelConfigs(
+                final List<? extends EventChannelConfig<?>> eventChannelConfigs) {
+            eventChannelConfigLists.add(eventChannelConfigs);
+
+            return this;
+        }
+
         public InitiatorBuilder setStateQueueFactory(final StateQueueFactory stateQueueFactory) {
             this.stateQueueFactory = stateQueueFactory;
 
@@ -308,12 +319,42 @@ public class Initiator extends TreeComponent {
 
         public Initiator build() {
             Argument.assertNotNull(name, "name");
-            Argument.assertGreaterThan(eventChannelDescriptions.size(), 0, "eventChannelDescriptions.size()");
 
-            final EventChannelDescription[] ecds =
-                    eventChannelDescriptions.toArray(new EventChannelDescription[eventChannelDescriptions.size()]);
+            final Map<String, EventChannelDescription> ecds = new LinkedHashMap<>();
 
-            return new Initiator(name, ecds, stateQueueFactory);
+            for (EventChannelDescription ecd : eventChannelDescriptions) {
+                if (ecd == null) {
+                    throw new IllegalArgumentException("null ECD not allowed!");
+                } else if (ecds.containsKey(ecd.getEventChannelName())) {
+                    throw new IllegalArgumentException("Duplicate ECD = " + ecd.getEventChannelName());
+                } else {
+                    ecds.put(ecd.getEventChannelName(), ecd);
+                }
+            }
+
+            for (List<? extends EventChannelConfig<?>> eventChannelConfigs : eventChannelConfigLists) {
+                Arguments.checkNotNull(eventChannelConfigs, "eventChannelConfigs");
+
+                for (EventChannelConfig<?> eventChannelConfig : eventChannelConfigs) {
+                    Arguments.checkNotNull(eventChannelConfig, "eventChannelConfig");
+
+                    final EventChannelDescription ecd = eventChannelConfig.getEventChannelDescription();
+
+                    Arguments.checkNotNull(ecd, "eventChannelDescription");
+
+                    if (ecds.containsKey(ecd.getEventChannelName())) {
+                        throw new IllegalArgumentException("Duplicate ECD = " + ecd.getEventChannelName());
+                    } else {
+                        ecds.put(ecd.getEventChannelName(), ecd);
+                    }
+                }
+            }
+
+            Arguments.checkGreaterThan(ecds.size(), "ecds.size()", 0, "0");
+
+            final EventChannelDescription[] ecdsArray = ecds.values().toArray(new EventChannelDescription[ecds.size()]);
+
+            return new Initiator(name, ecdsArray, stateQueueFactory);
         }
     }
 }

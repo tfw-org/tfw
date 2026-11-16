@@ -3,8 +3,11 @@ package tfw.tsm;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.Test;
+import tfw.tsm.Initiator.InitiatorBuilder;
 import tfw.tsm.ecd.ObjectECD;
 import tfw.tsm.ecd.StringECD;
 
@@ -212,5 +215,63 @@ final class InitiatorTest {
         public void debugCommit() {
             debugCommitState = this.get();
         }
+    }
+
+    @Test
+    void invalidArgumentTest() {
+        final List<EventChannelConfig<?>> nullEventChannelConfigList = null;
+        final InitiatorBuilder nullInitiatorBuilder =
+                Initiator.builder().setName("testInitiator").addEventChannelConfigs(nullEventChannelConfigList);
+
+        assertThatThrownBy(nullInitiatorBuilder::build)
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("eventChannelConfigs (=null) == null not allowed!");
+
+        final List<EventChannelConfig<?>> duplicateEventChannelConfigList = new ArrayList<>();
+        final EventChannelConfig<?> eventChannelConfig =
+                new DefaultEventChannelConfig<ObjectECD>(new ObjectECD("test"), DotEqualsRule.RULE, new Object(), null);
+
+        duplicateEventChannelConfigList.add(eventChannelConfig);
+        duplicateEventChannelConfigList.add(eventChannelConfig);
+
+        final InitiatorBuilder duplicateInitiatorBuilder =
+                Initiator.builder().setName("testInitiator").addEventChannelConfigs(duplicateEventChannelConfigList);
+
+        assertThatThrownBy(duplicateInitiatorBuilder::build)
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Duplicate ECD = test");
+
+        final List<EventChannelConfig<?>> hasNullEventChannelConfigList = new ArrayList<>();
+
+        hasNullEventChannelConfigList.add(null);
+
+        final InitiatorBuilder hasNullInitiatorBuilder =
+                Initiator.builder().setName("testInitiator").addEventChannelConfigs(hasNullEventChannelConfigList);
+
+        assertThatThrownBy(hasNullInitiatorBuilder::build)
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("eventChannelConfig (=null) == null not allowed!");
+
+        final InitiatorBuilder emptyInitiatorBuilder = Initiator.builder().setName("testInitiator");
+
+        assertThatThrownBy(emptyInitiatorBuilder::build)
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("ecds.size() (=0) <= 0 (=0) not allowed!");
+    }
+
+    @Test
+    void addEventChannelConfigsTest() {
+        final List<EventChannelConfig<?>> eventChannelConfigList = new ArrayList<>();
+        final EventChannelConfig<?> eventChannelConfig =
+                new DefaultEventChannelConfig<>(new ObjectECD("test"), DotEqualsRule.RULE, new Object(), null);
+
+        eventChannelConfigList.add(eventChannelConfig);
+
+        Initiator initiator = Initiator.builder()
+                .setName("testInitiator")
+                .addEventChannelConfigs(eventChannelConfigList)
+                .build();
+
+        assertThat(new InitiatorProxy(initiator).getSourceProxies()).hasSize(1);
     }
 }
