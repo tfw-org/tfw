@@ -514,6 +514,18 @@ final class ArgumentsTest {
         assertThatThrownBy(() -> Arguments.checkLessThan(nullValue, LEFT, BigInteger.ZERO))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("left == null not allowed!");
+        // Null left operand with no supplied name: use the fallback.
+        assertThatThrownBy(() -> Arguments.checkLessThan(nullValue, null, BigInteger.ZERO))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("left == null not allowed!");
+        // Null left operand with a custom name: preserve the supplied name.
+        assertThatThrownBy(() -> Arguments.checkLessThan(nullValue, "amount", BigInteger.ZERO))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("amount == null not allowed!");
+        // Null right operand with a custom name: preserve the supplied name.
+        assertThatThrownBy(() -> Arguments.checkLessThan(BigInteger.ZERO, LEFT, nullValue, "limit"))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("limit == null not allowed!");
     }
 
     @Test
