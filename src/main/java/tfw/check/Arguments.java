@@ -529,6 +529,20 @@ public final class Arguments {
             final String leftName,
             final BigInteger right,
             final String rightName) {
+        if (operation != Operation.EQUALS && operation != Operation.NOT_EQUALS) {
+            if (left == null) {
+                final String msg = String.format("%s == null not allowed!", leftName == null ? "left" : leftName);
+
+                throw new IllegalArgumentException(msg);
+            }
+
+            if (right == null) {
+                final String msg = String.format("%s == null not allowed!", rightName == null ? "right" : rightName);
+
+                throw new IllegalArgumentException(msg);
+            }
+        }
+
         if ((operation == Operation.EQUALS || operation == Operation.NOT_EQUALS) && (left == null || right == null)) {
             checkObjectEquals(operation, left, leftName, right, rightName);
 
