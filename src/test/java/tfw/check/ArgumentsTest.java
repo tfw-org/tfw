@@ -507,6 +507,13 @@ final class ArgumentsTest {
         assertThatThrownBy(() -> Arguments.checkGreaterThan(nullValue, LEFT, nullValue, RIGHT))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("left == null not allowed!");
+
+        assertThatThrownBy(() -> Arguments.checkLessThan(BigInteger.ZERO, LEFT, nullValue))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("right == null not allowed!");
+        assertThatThrownBy(() -> Arguments.checkLessThan(nullValue, LEFT, BigInteger.ZERO))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("left == null not allowed!");
     }
 
     @Test
