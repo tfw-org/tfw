@@ -102,11 +102,7 @@ public final class ArgumentsFuzzerSupport {
 
         final Class<?> type = types[0];
         final String methodName = method.getName();
-
-        final boolean nullable = type == Object.class
-                || (type == BigInteger.class
-                        && ("checkEquals".equals(methodName) || "checkNotEquals".equals(methodName)));
-
+        final boolean nullable = type == Object.class || type == BigInteger.class;
         final Object left = consumeValue(type, data, nullable);
         final Object right = consumeRelatedValue(type, left, data, nullable);
 
@@ -328,6 +324,10 @@ public final class ArgumentsFuzzerSupport {
             final String operation, final Class<?> type, final Object left, final Object right) {
 
         if (type == BigInteger.class) {
+            if (left == null || right == null) {
+                return true;
+            }
+
             final int comparison = ((BigInteger) left).compareTo((BigInteger) right);
             return compare(operation, comparison);
         }

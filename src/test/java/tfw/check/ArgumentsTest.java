@@ -461,6 +461,55 @@ final class ArgumentsTest {
     }
 
     @Test
+    void bigIntegerNullRelationalFailureTest() {
+        final BigInteger nullValue = null;
+
+        // checkLessThan
+        assertThatThrownBy(() -> Arguments.checkLessThan(nullValue, LEFT, BigInteger.ZERO, RIGHT))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("left must not be null!");
+        assertThatThrownBy(() -> Arguments.checkLessThan(BigInteger.ZERO, LEFT, nullValue, RIGHT))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("right must not be null!");
+        assertThatThrownBy(() -> Arguments.checkLessThan(nullValue, LEFT, nullValue, RIGHT))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("left must not be null!");
+
+        // checkLessThanOrEqual
+        assertThatThrownBy(() -> Arguments.checkLessThanOrEqual(nullValue, LEFT, BigInteger.ZERO, RIGHT))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("left must not be null!");
+        assertThatThrownBy(() -> Arguments.checkLessThanOrEqual(BigInteger.ZERO, LEFT, nullValue, RIGHT))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("right must not be null!");
+        assertThatThrownBy(() -> Arguments.checkLessThanOrEqual(nullValue, LEFT, nullValue, RIGHT))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("left must not be null!");
+
+        // checkGreaterThanOrEqual
+        assertThatThrownBy(() -> Arguments.checkGreaterThanOrEqual(nullValue, LEFT, BigInteger.ZERO, RIGHT))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("left must not be null!");
+        assertThatThrownBy(() -> Arguments.checkGreaterThanOrEqual(BigInteger.ZERO, LEFT, nullValue, RIGHT))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("right must not be null!");
+        assertThatThrownBy(() -> Arguments.checkGreaterThanOrEqual(nullValue, LEFT, nullValue, RIGHT))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("left must not be null!");
+
+        // checkGreaterThan
+        assertThatThrownBy(() -> Arguments.checkGreaterThan(nullValue, LEFT, BigInteger.ZERO, RIGHT))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("left must not be null!");
+        assertThatThrownBy(() -> Arguments.checkGreaterThan(BigInteger.ZERO, LEFT, nullValue, RIGHT))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("right must not be null!");
+        assertThatThrownBy(() -> Arguments.checkGreaterThan(nullValue, LEFT, nullValue, RIGHT))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("left must not be null!");
+    }
+
+    @Test
     void floatSuccessTest() {
         Arguments.checkLessThan(ZERO_FLOAT, LEFT, ONE_FLOAT, RIGHT);
         Arguments.checkLessThanOrEqual(ZERO_FLOAT, LEFT, ZERO_FLOAT, RIGHT);
