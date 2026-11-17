@@ -531,11 +531,15 @@ public final class Arguments {
             final String rightName) {
         if (operation != Operation.EQUALS && operation != Operation.NOT_EQUALS) {
             if (left == null) {
-                throw new IllegalArgumentException("left must not be null!");
+                final String msg = String.format("%s == null not allowed!", leftName);
+
+                throw new IllegalArgumentException(msg);
             }
 
             if (right == null) {
-                throw new IllegalArgumentException("right must not be null!");
+                final String msg = String.format("%s == null not allowed!", rightName);
+
+                throw new IllegalArgumentException(msg);
             }
         }
 
