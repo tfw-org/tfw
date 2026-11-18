@@ -243,6 +243,38 @@ For fuzzing-specific procedures, consult
 `docs/maintenance/fuzzing.md` and the repository's current
 fuzzing configuration.
 
+### Privileged ARM64 emulation setup
+
+The local fuzzing instructions include an optional Docker command
+using `--privileged` to register AMD64 emulation on ARM64 hosts.
+
+This operation grants the container broad privileges on the host.
+An AI agent must not execute this command automatically.
+
+Before running it:
+
+1. Explain to the user why AMD64 emulation is needed and what
+   the privileged operation does.
+2. Obtain the user's explicit approval for this specific operation.
+3. Verify that the `tonistiigi/binfmt` image comes from the
+   official upstream project and resolve its published digest
+   from a trusted source.
+4. Use the immutable image digest (`@sha256:...`) rather than
+   relying on a mutable image tag.
+5. Do not invent or assume an image digest.
+
+For example, after independently verifying the digest, the
+command should use this form:
+
+```bash
+docker run --privileged --rm \
+    tonistiigi/binfmt@sha256:<verified-digest> \
+    --install amd64
+```
+
+If approval is not provided, do not execute the privileged
+command or attempt an equivalent privileged operation.
+
 When a fuzzing run discovers a defect:
 
 - Treat the finding as a potential production defect.
@@ -314,8 +346,8 @@ Use the Maven Wrapper rather than assuming a particular
 system Maven installation. On Windows, use `mvnw.cmd`.
 
 A focused test passing does not replace the full verification
-build. A successful local build does not replace checking the
-actual CI results.
+build. A successful local build does not replace checking
+the actual CI results.
 
 ## Completion Criteria
 
