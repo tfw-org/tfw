@@ -40,10 +40,12 @@ is consistent merely because it seems reasonable.
 - Components declare their inputs and outputs.
 - Components communicate through event channels rather than direct
   calls to other components.
-- All required state-bearing inputs must be non-null when a component
-  executes, regardless of whether an input is reactive or non-reactive.
-- Diagnostic methods such as `debugConvert()` are not substitutes
-  for normal processing.
+- All required state-bearing inputs must be non-null when normal
+  processing methods execute, regardless of whether an input is
+  reactive or non-reactive.
+- Diagnostic methods, including `debugConvert()` and `debugCommit()`,
+  may execute when one or more inputs have null state. Implementations
+  of these methods must handle unavailable state appropriately.
 
 ### Event Channels
 
@@ -65,9 +67,19 @@ is consistent merely because it seems reasonable.
 - Validators execute before processors.
 - Processors include converters and synchronizers.
 - Changes produced during a cycle may require subsequent cycles.
-- Commits execute after transaction processing.
-- Rollback event channels terminate normal transaction processing
-  and trigger commits that listen for rollback.
+- Commits execute after transaction processing has completed.
+- No TSM state changes are permitted during the commit phase.
+- If additional TSM state changes are required, they must be
+  performed through an appropriate transaction, not from a commit.
+- Rollback is initiated when `RollbackHandler.rollback()` throws
+  `RollbackException`. `TransactionMgr` catches this exception and
+  executes the rollback process.
+- `RollbackECD` identifies an event channel whose state can be set
+  in a follow-on transaction associated with rollback. Setting this
+  channel does not itself initiate rollback.
+- The rollback methods that accept a `RollbackECD` or
+  `EventChannelState[]` establish follow-on state before initiating
+  rollback.
 
 Do not confuse a processing cycle with a transaction.
 
