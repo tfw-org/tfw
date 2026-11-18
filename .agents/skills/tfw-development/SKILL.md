@@ -105,5 +105,12 @@ unverified assumptions remain undisclosed.
 - `.mvn/wrapper/maven-wrapper.properties`
 - `.github/workflows/`
 
-Consult the current files rather than relying on remembered
-commands, versions, or workflow behavior.
+
+Consult `docs/maintenance/development.md` for current testing
+and validation practices.
+
+For CI/CD and GitHub Actions behavior, inspect the relevant
+workflow files under `.github/workflows/` and consult the
+applicable maintenance guides, including
+`docs/maintenance/deployment.md` and
+`docs/maintenance/fuzzing.md`.
