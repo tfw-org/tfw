@@ -76,8 +76,15 @@ maintainability.
 - Investigate failures rather than bypassing or weakening checks.
 - Do not claim that a check passed unless its result has been verified.
 
-Consult `tfw-testing` for detailed testing practices and
-`tfw-workflows` for CI/CD and GitHub Actions procedures.
+For detailed testing, validation, and CI guidance, consult
+`docs/maintenance/development.md`.
+
+For release and publishing procedures, consult
+`docs/maintenance/deployment.md`. For fuzzing-specific procedures,
+consult `docs/maintenance/fuzzing.md`.
+
+For the actual CI/CD configuration, inspect the relevant workflow
+files under `.github/workflows/`.
 
 ## Development Workflow
 
