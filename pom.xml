@@ -22,7 +22,7 @@
         <plugin.cyclonedx-maven-plugin.version>2.9.3</plugin.cyclonedx-maven-plugin.version>
         <plugin.duplicate-finder-maven-plugin.version>2.0.1</plugin.duplicate-finder-maven-plugin.version>
         <plugin.error-prone-contrib.version>0.30.0</plugin.error-prone-contrib.version>
-        <plugin.error_prone_core.version>2.50.0</plugin.error_prone_core.version>
+        <plugin.error_prone_core.version>2.52.0</plugin.error_prone_core.version>
         <plugin.errorprone-slf4j.version>0.1.29</plugin.errorprone-slf4j.version>
         <plugin.exec-maven-plugin.version>3.6.4</plugin.exec-maven-plugin.version>
         <plugin.jacoco-maven-plugin.version>0.8.16</plugin.jacoco-maven-plugin.version>
