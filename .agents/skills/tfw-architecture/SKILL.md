@@ -68,9 +68,11 @@ is consistent merely because it seems reasonable.
 - Processors include converters and synchronizers.
 - Changes produced during a cycle may require subsequent cycles.
 - Commits execute after transaction processing has completed.
-- No TSM state changes are permitted during the commit phase.
-- If additional TSM state changes are required, they must be
-  performed through an appropriate transaction, not from a commit.
+- A commit must not modify the TSM state of the transaction being
+  committed.
+- Additional TSM state changes may be performed through a separate,
+  appropriate transaction, including a follow-up transaction initiated
+  as part of commit processing.
 - Rollback is initiated when `RollbackHandler.rollback()` throws
   `RollbackException`. `TransactionMgr` catches this exception and
   executes the rollback process.
