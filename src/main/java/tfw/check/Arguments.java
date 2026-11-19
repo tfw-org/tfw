@@ -10,8 +10,8 @@ import java.util.Map;
  * Provides static checks for argument values and relationships between arguments.
  *
  * <p>Each check returns normally unless its failure condition is met, in which case it
- * throws {@link IllegalArgumentException}. Failure messages include operand values and
- * the supplied operand names.
+ * throws {@link IllegalArgumentException}. Failure messages report the relevant
+ * operand values and names where applicable.
  *
  * <p>Comparison checks support the primitive numeric types and {@link BigInteger}.
  * Equality checks additionally support {@code boolean} and {@link Object}. Overloads
@@ -27,9 +27,11 @@ import java.util.Map;
  * {@code checkNotEquals} accepts them.
  *
  * <p>Relational checks involving {@link BigInteger} require both operands to be
- * non-null. BigInteger equality checks allow null operands and consider two null
- * operands equal. Object equality checks use the left operand's
- * {@link Object#equals(Object)} method; two null operands are considered equal.
+ * non-null. If either is null, the exception message identifies the null operand
+ * by its supplied name, or by {@code left} or {@code right} if no name is given.
+ * BigInteger equality checks allow null operands and consider two null operands
+ * equal. Object equality checks consider two null operands equal; otherwise,
+ * equality is determined by the left operand's {@link Object#equals(Object)} method.
  *
  * <p>This class is not instantiable.
  */
@@ -885,15 +887,15 @@ public final class Arguments {
     /**
      * Checks that the left operand is equal to the right operand.
      *
-     * <p>For ordinary values, the required relation is {@code Objects.equals(left, right)}.
-     * Equality is determined by the left operand's {@link Object#equals(Object)} method; two null operands are equal.
+     * <p>For object operands, equality is
+     * {@code (left == null && right == null) || (left != null && left.equals(right))}.
      * If {@code rightName} is null, the failure message shows the right operand's value without a name.
      *
      * @param left the left operand
      * @param leftName the name used to identify the left operand in a failure message
      * @param right the right operand
      * @param rightName the right operand's name in a failure message; may be null
-     * @throws IllegalArgumentException if the failure condition {@code !Objects.equals(left, right)}
+     * @throws IllegalArgumentException if the equality condition is false
      */
     public static void checkEquals(Object left, String leftName, Object right, String rightName) {
         checkObjectEquals(Operation.EQUALS, left, leftName, right, rightName);
@@ -902,15 +904,15 @@ public final class Arguments {
     /**
      * Checks that the left operand is equal to the right operand.
      *
-     * <p>For ordinary values, the required relation is {@code Objects.equals(left, right)}.
-     * Equality is determined by the left operand's {@link Object#equals(Object)} method; two null operands are equal.
+     * <p>For object operands, equality is
+     * {@code (left == null && right == null) || (left != null && left.equals(right))}.
      * This overload is intended for a constant or otherwise self-explanatory right operand.
      * The right operand's name is omitted from the failure message.
      *
      * @param left the left operand
      * @param leftName the name used to identify the left operand in a failure message
      * @param right the right operand
-     * @throws IllegalArgumentException if the failure condition {@code !Objects.equals(left, right)}
+     * @throws IllegalArgumentException if the equality condition is false
      */
     public static void checkEquals(Object left, String leftName, Object right) {
         checkEquals(left, leftName, right, null);
@@ -1265,15 +1267,15 @@ public final class Arguments {
     /**
      * Checks that the left operand is not equal to the right operand.
      *
-     * <p>For ordinary values, the required relation is {@code !Objects.equals(left, right)}.
-     * Equality is determined by the left operand's {@link Object#equals(Object)} method; two null operands are equal.
+     * <p>For object operands, inequality is
+     * {@code (left != null && !left.equals(right)) || (left == null && right != null)}.
      * If {@code rightName} is null, the failure message shows the right operand's value without a name.
      *
      * @param left the left operand
      * @param leftName the name used to identify the left operand in a failure message
      * @param right the right operand
      * @param rightName the right operand's name in a failure message; may be null
-     * @throws IllegalArgumentException if the failure condition {@code Objects.equals(left, right)}
+     * @throws IllegalArgumentException if the inequality condition is false
      */
     public static void checkNotEquals(Object left, String leftName, Object right, String rightName) {
         checkObjectEquals(Operation.NOT_EQUALS, left, leftName, right, rightName);
@@ -1282,15 +1284,15 @@ public final class Arguments {
     /**
      * Checks that the left operand is not equal to the right operand.
      *
-     * <p>For ordinary values, the required relation is {@code !Objects.equals(left, right)}.
-     * Equality is determined by the left operand's {@link Object#equals(Object)} method; two null operands are equal.
+     * <p>For object operands, inequality is
+     * {@code (left != null && !left.equals(right)) || (left == null && right != null)}.
      * This overload is intended for a constant or otherwise self-explanatory right operand.
      * The right operand's name is omitted from the failure message.
      *
      * @param left the left operand
      * @param leftName the name used to identify the left operand in a failure message
      * @param right the right operand
-     * @throws IllegalArgumentException if the failure condition {@code Objects.equals(left, right)}
+     * @throws IllegalArgumentException if the inequality condition is false
      */
     public static void checkNotEquals(Object left, String leftName, Object right) {
         checkNotEquals(left, leftName, right, null);
