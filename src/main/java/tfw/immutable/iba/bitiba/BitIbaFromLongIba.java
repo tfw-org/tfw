@@ -22,10 +22,10 @@ public final class BitIbaFromLongIba {
 
         public BitIbaImpl(final LongIba longIba, final int firstLongOffsetInBits, final BigInteger lengthInBits) {
             Arguments.checkNotNull(longIba, "longIba");
-            Arguments.checkGreaterThanOrEqual(firstLongOffsetInBits, "firstLongOffsetInBits", 0, "0");
-            Arguments.checkLessThanOrEqual(firstLongOffsetInBits, "firstLongOffsetInBits", 63, "63");
+            Arguments.checkGreaterThanOrEqual(firstLongOffsetInBits, "firstLongOffsetInBits", 0);
+            Arguments.checkLessThanOrEqual(firstLongOffsetInBits, "firstLongOffsetInBits", 63);
             Arguments.checkNotNull(lengthInBits, "lengthInBits");
-            Arguments.checkGreaterThanOrEqual(lengthInBits, "lengthInBits", BigInteger.ZERO, "0");
+            Arguments.checkGreaterThanOrEqual(lengthInBits, "lengthInBits", BigInteger.ZERO);
 
             this.longIba = longIba;
             this.firstLongOffsetInBits = firstLongOffsetInBits;
