@@ -1,7 +1,7 @@
 package tfw.immutable.iba.shortiba;
 
 import java.math.BigInteger;
-import tfw.check.Argument;
+import tfw.check.Arguments;
 import tfw.immutable.iba.AbstractIbaFromArray;
 
 public final class ShortIbaFromArray {
@@ -28,7 +28,7 @@ public final class ShortIbaFromArray {
         }
 
         private static BigInteger checkAndReturnLength(short[] array) {
-            Argument.assertNotNull(array, "array");
+            Arguments.checkNotNull(array, "array");
 
             return BigInteger.valueOf(array.length);
         }

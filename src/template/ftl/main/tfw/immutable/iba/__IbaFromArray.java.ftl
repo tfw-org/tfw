@@ -2,7 +2,7 @@
 package ${PACKAGE};
 
 import java.math.BigInteger;
-import tfw.check.Argument;
+import tfw.check.Arguments;
 import tfw.immutable.iba.AbstractIbaFromArray;
 
 public final class ${NAME}IbaFromArray {
@@ -29,7 +29,7 @@ public final class ${NAME}IbaFromArray {
         }
 
         private static ${TEMPLATE_SPACE}BigInteger checkAndReturnLength(${TYPE_OR_TEMPLATE}[] array) {
-            Argument.assertNotNull(array, "array");
+            Arguments.checkNotNull(array, "array");
 
             return BigInteger.valueOf(array.length);
         }

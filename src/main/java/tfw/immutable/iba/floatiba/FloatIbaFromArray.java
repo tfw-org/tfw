@@ -1,7 +1,7 @@
 package tfw.immutable.iba.floatiba;
 
 import java.math.BigInteger;
-import tfw.check.Argument;
+import tfw.check.Arguments;
 import tfw.immutable.iba.AbstractIbaFromArray;
 
 public final class FloatIbaFromArray {
@@ -28,7 +28,7 @@ public final class FloatIbaFromArray {
         }
 
         private static BigInteger checkAndReturnLength(float[] array) {
-            Argument.assertNotNull(array, "array");
+            Arguments.checkNotNull(array, "array");
 
             return BigInteger.valueOf(array.length);
         }

@@ -3,7 +3,7 @@ package tfw.immutable.iba;
 import static tfw.immutable.iba.bitiba.BitIba.MAX_BITS_IN_ARRAY;
 
 import java.math.BigInteger;
-import tfw.check.Argument;
+import tfw.check.Arguments;
 
 public class ImmutableBigIntegerArrayUtil {
     private static final String MAX_BITS_IN_ARRAY_STRING = "MAX_BITS_IN_ARRAY";
@@ -12,14 +12,14 @@ public class ImmutableBigIntegerArrayUtil {
 
     public static void validateGetParameters(
             int arrayLength, int arrayOffset, BigInteger ibaStart, BigInteger ibaLength, int length) {
-        Argument.assertNotLessThan(arrayOffset, 0, "arrayOffset");
-        Argument.assertLessThan(arrayOffset, MAX_BITS_IN_ARRAY, "arrayOffset", MAX_BITS_IN_ARRAY_STRING);
-        Argument.assertLessThan(arrayOffset + (long) length, arrayLength, "arrayOffset+length", "arrayLength");
-        Argument.assertGreaterThanOrEqualTo(ibaStart, BigInteger.ZERO, "ibaStart");
-        Argument.assertNotLessThan(length, 0, "length");
-        Argument.assertLessThan(length, MAX_BITS_IN_ARRAY, "length", MAX_BITS_IN_ARRAY_STRING);
-        Argument.assertNotGreaterThan(
-                ibaStart.add(BigInteger.valueOf(length)), ibaLength, "ibaStart+length", "IbaLength");
+        Arguments.checkGreaterThanOrEqual(arrayOffset, "arrayOffset", 0);
+        Arguments.checkLessThan(arrayOffset, "arrayOffset", MAX_BITS_IN_ARRAY, MAX_BITS_IN_ARRAY_STRING);
+        Arguments.checkLessThan(arrayOffset + (long) length, "arrayOffset+length", arrayLength, "arrayLength");
+        Arguments.checkGreaterThanOrEqual(ibaStart, "ibaStart", BigInteger.ZERO);
+        Arguments.checkGreaterThanOrEqual(length, "length", 0);
+        Arguments.checkLessThan(length, "length", MAX_BITS_IN_ARRAY, MAX_BITS_IN_ARRAY_STRING);
+        Arguments.checkLessThanOrEqual(
+                ibaStart.add(BigInteger.valueOf(length)), "ibaStart+length", ibaLength, "IbaLength");
     }
 
     public static void validateGetParameters(
@@ -28,20 +28,20 @@ public class ImmutableBigIntegerArrayUtil {
             BigInteger ibaStartInBits,
             BigInteger ibaLengthInBits,
             long lengthInBits) {
-        Argument.assertNotLessThan(arrayOffsetInBits, 0, "arrayOffsetInBits");
-        Argument.assertLessThan(arrayOffsetInBits, MAX_BITS_IN_ARRAY, "arrayOffsetInBits", MAX_BITS_IN_ARRAY_STRING);
-        Argument.assertLessThan(
+        Arguments.checkGreaterThanOrEqual(arrayOffsetInBits, "arrayOffsetInBits", 0);
+        Arguments.checkLessThan(arrayOffsetInBits, "arrayOffsetInBits", MAX_BITS_IN_ARRAY, MAX_BITS_IN_ARRAY_STRING);
+        Arguments.checkLessThan(
                 arrayOffsetInBits + lengthInBits,
-                arrayLength * (long) Long.SIZE,
                 "arrayOffsetInBits+lengthInBits",
+                arrayLength * (long) Long.SIZE,
                 "arrayLength*Long.SIZE");
-        Argument.assertGreaterThanOrEqualTo(ibaStartInBits, BigInteger.ZERO, "ibaStartInBits");
-        Argument.assertNotLessThan(lengthInBits, 0, "lengthInBits");
-        Argument.assertLessThan(lengthInBits, MAX_BITS_IN_ARRAY, "lengthInBits", MAX_BITS_IN_ARRAY_STRING);
-        Argument.assertNotGreaterThan(
+        Arguments.checkGreaterThanOrEqual(ibaStartInBits, "ibaStartInBits", BigInteger.ZERO);
+        Arguments.checkGreaterThanOrEqual(lengthInBits, "lengthInBits", 0);
+        Arguments.checkLessThan(lengthInBits, "lengthInBits", MAX_BITS_IN_ARRAY, MAX_BITS_IN_ARRAY_STRING);
+        Arguments.checkLessThanOrEqual(
                 ibaStartInBits.add(BigInteger.valueOf(lengthInBits)),
-                ibaLengthInBits,
                 "ibaStartInBits+lengthInBits",
+                ibaLengthInBits,
                 "IbaLengthInBits");
     }
 }

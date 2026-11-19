@@ -1,7 +1,7 @@
 package tfw.immutable.iba.doubleiba;
 
 import java.math.BigInteger;
-import tfw.check.Argument;
+import tfw.check.Arguments;
 import tfw.immutable.iba.AbstractIbaFromArray;
 
 public final class DoubleIbaFromArray {
@@ -28,7 +28,7 @@ public final class DoubleIbaFromArray {
         }
 
         private static BigInteger checkAndReturnLength(double[] array) {
-            Argument.assertNotNull(array, "array");
+            Arguments.checkNotNull(array, "array");
 
             return BigInteger.valueOf(array.length);
         }
