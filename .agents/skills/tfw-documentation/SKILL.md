@@ -63,11 +63,11 @@ The `docs/` directory contains documentation for people using TFW.
 
 Current documents include:
 
-- `docs/README.md`  documentation index and navigation.
-- `docs/getting-started.md`  installation, running an example,
+- `docs/README.md` — documentation index and navigation.
+- `docs/getting-started.md` — installation, running an example,
   finding additional information, and security considerations.
-- `docs/immutable.md`  the `tfw.immutable` package.
-- `docs/tsm.md`  Transaction and State Management.
+- `docs/immutable.md` — the `tfw.immutable` package.
+- `docs/tsm.md` — Transaction and State Management.
 
 User documentation should explain what TFW provides, how its
 features work, and how users can apply them correctly.
@@ -83,13 +83,13 @@ contributors and maintainers.
 
 Current documents include:
 
-- `docs/maintenance/README.md`  maintenance guide index.
-- `docs/maintenance/development.md`  development environment,
+- `docs/maintenance/README.md` — maintenance guide index.
+- `docs/maintenance/development.md` — development environment,
   build, testing, and validation.
-- `docs/maintenance/deployment.md`  release and publishing
+- `docs/maintenance/deployment.md` — release and publishing
   procedure.
-- `docs/maintenance/fuzzing.md`  building and running fuzzers.
-- `docs/maintenance/metrics-token.md`  metrics token maintenance.
+- `docs/maintenance/fuzzing.md` — building and running fuzzers.
+- `docs/maintenance/metrics-token.md` — metrics token maintenance.
 
 Maintenance guides should describe the actual procedures used
 by the project.
