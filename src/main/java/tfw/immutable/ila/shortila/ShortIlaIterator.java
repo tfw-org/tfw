@@ -6,9 +6,10 @@ import tfw.check.Argument;
 public final class ShortIlaIterator {
     private final ShortIla instance;
     private final long instanceLength;
+    private final short[] buffer;
+
     private long amountLeftToFetch;
     private int amountToFetch;
-    private short[] buffer;
     private int bufferIndex;
     private long fetchPosition;
     private long actualPosition;

@@ -205,6 +205,28 @@ EOF
 
 done
 
+# Create one seed for each public Arguments method.
+#
+# The fuzzer consumes the first byte as its method selector.
+# Arguments currently exposes 108 public static methods.
+
+CORPUS_DIR="$WORK/arguments-reflection-corpus"
+
+rm -rf "$CORPUS_DIR"
+mkdir -p "$CORPUS_DIR"
+
+for ((i = 0; i < 108; i++)); do
+    seed_name="$(printf '%03d' "$i")"
+    seed_byte="$(printf '%03o' "$i")"
+
+    printf '%b' "\\$seed_byte" > "$CORPUS_DIR/$seed_name"
+done
+
+jar --create \
+    --file "$OUT/ArgumentsReflectionFuzzer_seed_corpus.zip" \
+    --no-manifest \
+    -C "$CORPUS_DIR" .
+
 # jazzer_junit.jar is a Jazzer support artifact, not a fuzz target.
 #
 # ClusterFuzzLite's JVM coverage target discovery can identify executable

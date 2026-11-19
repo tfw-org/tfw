@@ -8,7 +8,7 @@ import tfw.tsm.ecd.ObjectECD;
  * A utility class for creating an array of {@link EventChannelState}.
  */
 public class EventChannelStateBuffer {
-    private Map<String, EventChannelState> state = new HashMap<String, EventChannelState>();
+    private final Map<String, EventChannelState> state = new HashMap<String, EventChannelState>();
 
     /**
      * Adds an {@link EventChannelState} based on the specified event

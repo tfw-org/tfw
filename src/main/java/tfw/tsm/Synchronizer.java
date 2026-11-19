@@ -23,9 +23,9 @@ public abstract class Synchronizer extends Processor {
     private final List<ObjectECD> aEventList;
     private final List<ObjectECD> bEventList;
     private final List<ObjectECD> additionalList;
-    private HashSet<EventChannel> aToBConvert = new HashSet<EventChannel>();
-    private HashSet<EventChannel> bToAConvert = new HashSet<EventChannel>();
-    private CommitRollbackListener crListener = new CommitRollbackListener() {
+    private final HashSet<EventChannel> aToBConvert = new HashSet<EventChannel>();
+    private final HashSet<EventChannel> bToAConvert = new HashSet<EventChannel>();
+    private final CommitRollbackListener crListener = new CommitRollbackListener() {
         @Override
         public void rollback() {
             aToBConvert.clear();

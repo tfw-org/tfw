@@ -57,13 +57,13 @@ public final class TransactionMgr {
     private ArrayList<Processor> processors = new ArrayList<>();
     private ArrayList<Processor> delayedProcessors = new ArrayList<>();
 
-    private ArrayList<CommitRollbackListener> crListeners = new ArrayList<>();
+    private final ArrayList<CommitRollbackListener> crListeners = new ArrayList<>();
 
-    private ArrayList<EventChannel> cycleStateChanges = new ArrayList<>();
+    private final ArrayList<EventChannel> cycleStateChanges = new ArrayList<>();
 
-    private ArrayList<EventChannel> transStateChanges = new ArrayList<>();
+    private final ArrayList<EventChannel> transStateChanges = new ArrayList<>();
 
-    private ArrayList<EventChannel> eventChannelFires = new ArrayList<>();
+    private final ArrayList<EventChannel> eventChannelFires = new ArrayList<>();
 
     private Runnable componentChange = null;
 

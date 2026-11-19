@@ -6,9 +6,10 @@ import tfw.check.Argument;
 public final class CharIlaIterator {
     private final CharIla instance;
     private final long instanceLength;
+    private final char[] buffer;
+
     private long amountLeftToFetch;
     private int amountToFetch;
-    private char[] buffer;
     private int bufferIndex;
     private long fetchPosition;
     private long actualPosition;
