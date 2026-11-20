@@ -227,6 +227,25 @@ jobs:
           fi
         done
 
+    - name: Generate CPD reports
+      run: |
+        ./mvnw -B pmd:cpd
+
+        for report in target/cpd.txt target/cpd.xml target/reports/cpd.html; do
+          if [ ! -s "$report" ]; then
+            echo "::error::CPD report missing or empty: $report"
+            exit 1
+          fi
+        done
+
+        # Verify that the HTML report's supporting assets exist.
+        for asset in css fonts images img js; do
+          if [ ! -d "target/reports/$asset" ]; then
+            echo "::error::CPD HTML report asset directory missing: $asset"
+            exit 1
+          fi
+        done
+
     - name: Prepare GitHub Pages
       run: |
         # Return to the master checkout for consistency.
@@ -234,10 +253,20 @@ jobs:
 
         mkdir -p target/pages/pit
         mkdir -p target/pages/pmd
+        mkdir -p target/pages/cpd
 
         cp -R target/pit-reports/. target/pages/pit/
+
         cp target/pmd.txt target/pages/pmd/
         cp target/pmd.xml target/pages/pmd/
+
+        cp target/cpd.txt target/cpd.xml target/pages/cpd/
+        cp target/reports/cpd.html target/pages/cpd/
+
+        # Preserve the assets required by the CPD HTML report.
+        cp -R target/reports/css target/reports/fonts \
+          target/reports/images target/reports/img \
+          target/reports/js target/pages/cpd/
 
         # Calculate the sizes of the reports.
         development_javadoc_bytes=$(find target/pages/javadoc -type f ! -path '*/latest/*' -printf '%s\n' | awk '{sum += $1} END {print sum}')
@@ -245,14 +274,16 @@ jobs:
         apidiff_bytes=$(find target/pages/apidiff -type f -printf '%s\n' | awk '{sum += $1} END {print sum}')
         pit_bytes=$(find target/pages/pit -type f -printf '%s\n' | awk '{sum += $1} END {print sum}')
         pmd_bytes=$(find target/pages/pmd -type f -printf '%s\n' | awk '{sum += $1} END {print sum}')
+        cpd_bytes=$(find target/pages/cpd -type f -printf '%s\n' | awk '{sum += $1} END {print sum}')
 
-        report_bytes=$((development_javadoc_bytes + release_javadoc_bytes + apidiff_bytes + pit_bytes + pmd_bytes))
+        report_bytes=$((development_javadoc_bytes + release_javadoc_bytes + apidiff_bytes + pit_bytes + pmd_bytes + cpd_bytes))
 
         development_javadoc_size=$(numfmt --to=iec --suffix=B "$development_javadoc_bytes")
         release_javadoc_size=$(numfmt --to=iec --suffix=B "$release_javadoc_bytes")
         apidiff_size=$(numfmt --to=iec --suffix=B "$apidiff_bytes")
         pit_size=$(numfmt --to=iec --suffix=B "$pit_bytes")
         pmd_size=$(numfmt --to=iec --suffix=B "$pmd_bytes")
+        cpd_size=$(numfmt --to=iec --suffix=B "$cpd_bytes")
         report_size=$(numfmt --to=iec --suffix=B "$report_bytes")
 
         # Create the top-level GitHub Pages landing page.
@@ -299,6 +330,18 @@ jobs:
               <a href="pmd/pmd.xml">PMD Report (XML)</a>
               — PMD static analysis results in XML format.
             </li>
+            <li>
+              <a href="cpd/cpd.html">CPD Report (HTML)</a>
+              — copy/paste detection results in HTML format.
+            </li>
+            <li>
+              <a href="cpd/cpd.txt">CPD Report (Text)</a>
+              — copy/paste detection results in text format.
+            </li>
+            <li>
+              <a href="cpd/cpd.xml">CPD Report (XML)</a>
+              — copy/paste detection results in XML format.
+            </li>
           </ul>
 
           <h2>Site Information</h2>
@@ -327,6 +370,10 @@ jobs:
             <tr>
               <td>PMD reports</td>
               <td>${pmd_size}</td>
+            </tr>
+            <tr>
+              <td>CPD reports</td>
+              <td>${cpd_size}</td>
             </tr>
             <tr>
               <td>Total reports</td>
@@ -365,6 +412,7 @@ jobs:
         echo "  API Differences:        ${apidiff_size} (${apidiff_bytes} bytes)"
         echo "  PIT size:               ${pit_size} (${pit_bytes} bytes)"
         echo "  PMD size:               ${pmd_size} (${pmd_bytes} bytes)"
+        echo "  CPD size:               ${cpd_size} (${cpd_bytes} bytes)"
         echo "  Total reports:          ${report_size} (${report_bytes} bytes)"
         echo "  File count:             ${file_count}"
 
