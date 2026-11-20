@@ -12,6 +12,7 @@ public class ImmutableBigIntegerArrayUtil {
 
     public static void validateGetParameters(
             int arrayLength, int arrayOffset, BigInteger ibaStart, BigInteger ibaLength, int length) {
+        Arguments.checkGreaterThanOrEqual(arrayLength, "arrayLength", 0);
         Arguments.checkGreaterThanOrEqual(arrayOffset, "arrayOffset", 0);
         Arguments.checkLessThan(arrayOffset, "arrayOffset", MAX_BITS_IN_ARRAY, MAX_BITS_IN_ARRAY_STRING);
         Arguments.checkGreaterThanOrEqual(length, "length", 0);
@@ -31,10 +32,13 @@ public class ImmutableBigIntegerArrayUtil {
             BigInteger ibaStartInBits,
             BigInteger ibaLengthInBits,
             long lengthInBits) {
+        Arguments.checkGreaterThanOrEqual(arrayLength, "arrayLength", 0);
+
         final long arrayLengthInBits = arrayLength * (long) Long.SIZE;
 
         Arguments.checkGreaterThanOrEqual(arrayOffsetInBits, "arrayOffsetInBits", 0);
-        Arguments.checkLessThan(arrayOffsetInBits, "arrayOffsetInBits", MAX_BITS_IN_ARRAY, MAX_BITS_IN_ARRAY_STRING);
+        Arguments.checkLessThanOrEqual(
+                arrayOffsetInBits, "arrayOffsetInBits", MAX_BITS_IN_ARRAY, MAX_BITS_IN_ARRAY_STRING);
         Arguments.checkGreaterThanOrEqual(lengthInBits, "lengthInBits", 0);
         Arguments.checkLessThan(lengthInBits, "lengthInBits", MAX_BITS_IN_ARRAY, MAX_BITS_IN_ARRAY_STRING);
         Arguments.checkGreaterThanOrEqual(ibaLengthInBits, "ibaLengthInBits", BigInteger.ZERO);
