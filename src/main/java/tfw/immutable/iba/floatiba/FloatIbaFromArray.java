@@ -3,6 +3,7 @@ package tfw.immutable.iba.floatiba;
 import java.math.BigInteger;
 import tfw.check.Arguments;
 import tfw.immutable.iba.AbstractIbaFromArray;
+import tfw.immutable.iba.ImmutableBigIntegerArrayUtil;
 
 public final class FloatIbaFromArray {
     private FloatIbaFromArray() {
@@ -24,7 +25,16 @@ public final class FloatIbaFromArray {
 
         @Override
         public void get(float[] array, int offset, BigInteger start, int length) {
-            System.arraycopy(this.array, (int) start.longValue(), array, offset, length);
+            checkClosed();
+
+            Arguments.checkNotNull(array, "array");
+            ImmutableBigIntegerArrayUtil.validateGetParameters(array.length, offset, start, arrayLength, length);
+
+            if (length == 0) {
+                return;
+            }
+
+            System.arraycopy(this.array, start.intValueExact(), array, offset, length);
         }
 
         private static BigInteger checkAndReturnLength(float[] array) {
