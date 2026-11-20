@@ -231,12 +231,18 @@ jobs:
       run: |
         ./mvnw -B pmd:cpd
 
+        # Verify that all CPD reports were generated.
         for report in target/cpd.txt target/cpd.xml target/reports/cpd.html; do
-          if [ ! -s "$report" ]; then
-            echo "::error::CPD report missing or empty: $report"
+          if [ ! -f "$report" ]; then
+            echo "::error::CPD report missing: $report"
             exit 1
           fi
         done
+
+        # Make an empty text report explicit when no duplications are found.
+        if [ ! -s target/cpd.txt ]; then
+          echo "No duplicate code detected." > target/cpd.txt
+        fi
 
         # Verify that the HTML report's supporting assets exist.
         for asset in css fonts images img js; do
