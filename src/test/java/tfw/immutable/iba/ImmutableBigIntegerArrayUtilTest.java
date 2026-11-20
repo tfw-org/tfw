@@ -14,8 +14,8 @@ class ImmutableBigIntegerArrayUtilTest {
                         3, 3, BigInteger.valueOf(3), BigInteger.valueOf(3), 0))
                 .doesNotThrowAnyException();
 
-        assertThatThrownBy(() -> ImmutableBigIntegerArrayUtil.validateGetParameters(
-                        -1, 0, BigInteger.ZERO, BigInteger.ZERO, 0))
+        assertThatThrownBy(() ->
+                        ImmutableBigIntegerArrayUtil.validateGetParameters(-1, 0, BigInteger.ZERO, BigInteger.ZERO, 0))
                 .isInstanceOf(IllegalArgumentException.class);
 
         assertThatThrownBy(() -> ImmutableBigIntegerArrayUtil.validateGetParameters(
@@ -38,11 +38,11 @@ class ImmutableBigIntegerArrayUtilTest {
     @Test
     void validateBitArrayParametersTest() {
         assertThatCode(() -> ImmutableBigIntegerArrayUtil.validateGetParameters(
-                        1, Long.SIZE, BigInteger.valueOf(64), BigInteger.valueOf(64), 0))
+                        1, (long) Long.SIZE, BigInteger.valueOf(64), BigInteger.valueOf(64), 0L))
                 .doesNotThrowAnyException();
 
-        assertThatThrownBy(() -> ImmutableBigIntegerArrayUtil.validateGetParameters(
-                        -1, 0, BigInteger.ZERO, BigInteger.ZERO, 0))
+        assertThatThrownBy(() ->
+                        ImmutableBigIntegerArrayUtil.validateGetParameters(-1, 0, BigInteger.ZERO, BigInteger.ZERO, 0))
                 .isInstanceOf(IllegalArgumentException.class);
 
         assertThatThrownBy(() -> ImmutableBigIntegerArrayUtil.validateGetParameters(
@@ -67,19 +67,11 @@ class ImmutableBigIntegerArrayUtilTest {
         final int maximumArrayLength = Integer.MAX_VALUE - 8;
 
         assertThatCode(() -> ImmutableBigIntegerArrayUtil.validateGetParameters(
-                        maximumArrayLength,
-                        MAX_BITS_IN_ARRAY,
-                        BigInteger.ZERO,
-                        BigInteger.ZERO,
-                        0))
+                        maximumArrayLength, MAX_BITS_IN_ARRAY, BigInteger.ZERO, BigInteger.ZERO, 0))
                 .doesNotThrowAnyException();
 
         assertThatThrownBy(() -> ImmutableBigIntegerArrayUtil.validateGetParameters(
-                        Integer.MAX_VALUE,
-                        MAX_BITS_IN_ARRAY + 1,
-                        BigInteger.ZERO,
-                        BigInteger.ZERO,
-                        0))
+                        Integer.MAX_VALUE, MAX_BITS_IN_ARRAY + 1, BigInteger.ZERO, BigInteger.ZERO, 0))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 }
