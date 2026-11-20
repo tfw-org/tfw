@@ -8,6 +8,10 @@ import java.util.Arrays;
 import org.junit.jupiter.api.Test;
 
 class IntIbaFromArrayTest {
+    private static final BigInteger TWO = BigInteger.valueOf(2);
+    private static final BigInteger THREE = BigInteger.valueOf(3);
+    private static final BigInteger FOUR = BigInteger.valueOf(4);
+
     @Test
     void parameterTest() {
         assertThatThrownBy(() -> IntIbaFromArray.create(null))
@@ -34,7 +38,7 @@ class IntIbaFromArrayTest {
 
     @Test
     void boundaryTest() throws Exception {
-        final int[] source = new int[] {1, 1, 1};
+        final int[] source = {1, 1, 1};
         final int[] destination = new int[3];
 
         try (IntIba iba = IntIbaFromArray.create(source)) {
@@ -42,14 +46,13 @@ class IntIbaFromArrayTest {
             assertThat(destination).isEqualTo(source);
 
             // An empty range at the exact end of either array is valid.
-            iba.get(destination, destination.length, BigInteger.valueOf(3), 0);
-            iba.get(destination, 0, BigInteger.valueOf(3), 0);
+            iba.get(destination, destination.length, THREE, 0);
+            iba.get(destination, 0, THREE, 0);
 
             // Empty ranges beyond either end are invalid.
-            assertThatThrownBy(() -> iba.get(destination, destination.length + 1, BigInteger.valueOf(3), 0))
+            assertThatThrownBy(() -> iba.get(destination, destination.length + 1, THREE, 0))
                     .isInstanceOf(IllegalArgumentException.class);
-            assertThatThrownBy(() -> iba.get(destination, 0, BigInteger.valueOf(4), 0))
-                    .isInstanceOf(IllegalArgumentException.class);
+            assertThatThrownBy(() -> iba.get(destination, 0, FOUR, 0)).isInstanceOf(IllegalArgumentException.class);
         }
     }
 
@@ -65,8 +68,7 @@ class IntIbaFromArrayTest {
                     .isInstanceOf(IllegalArgumentException.class);
             assertThatThrownBy(() -> iba.get(destination, 2, BigInteger.ZERO, 2))
                     .isInstanceOf(IllegalArgumentException.class);
-            assertThatThrownBy(() -> iba.get(destination, 0, BigInteger.valueOf(2), 2))
-                    .isInstanceOf(IllegalArgumentException.class);
+            assertThatThrownBy(() -> iba.get(destination, 0, TWO, 2)).isInstanceOf(IllegalArgumentException.class);
             assertThatThrownBy(() -> iba.get(null, 0, BigInteger.ZERO, 0)).isInstanceOf(IllegalArgumentException.class);
         }
     }
