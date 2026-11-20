@@ -216,27 +216,43 @@ jobs:
         rm -rf "$API_WORK"
         rm -rf "$RUNNER_TEMP/apidiff-source"
 
+    - name: Generate PMD reports
+      run: |
+        ./mvnw -B pmd:pmd
+
+        for report in target/pmd.txt target/pmd.xml; do
+          if [ ! -s "$report" ]; then
+            echo "::error::PMD report missing or empty: $report"
+            exit 1
+          fi
+        done
+
     - name: Prepare GitHub Pages
       run: |
         # Return to the master checkout for consistency.
         git checkout --detach origin/master
 
         mkdir -p target/pages/pit
+        mkdir -p target/pages/pmd
 
         cp -R target/pit-reports/. target/pages/pit/
+        cp target/pmd.txt target/pages/pmd/
+        cp target/pmd.xml target/pages/pmd/
 
         # Calculate the sizes of the reports.
         development_javadoc_bytes=$(find target/pages/javadoc -type f ! -path '*/latest/*' -printf '%s\n' | awk '{sum += $1} END {print sum}')
         release_javadoc_bytes=$(find target/pages/javadoc/latest -type f -printf '%s\n' | awk '{sum += $1} END {print sum}')
         apidiff_bytes=$(find target/pages/apidiff -type f -printf '%s\n' | awk '{sum += $1} END {print sum}')
         pit_bytes=$(find target/pages/pit -type f -printf '%s\n' | awk '{sum += $1} END {print sum}')
+        pmd_bytes=$(find target/pages/pmd -type f -printf '%s\n' | awk '{sum += $1} END {print sum}')
 
-        report_bytes=$((development_javadoc_bytes + release_javadoc_bytes + apidiff_bytes + pit_bytes))
+        report_bytes=$((development_javadoc_bytes + release_javadoc_bytes + apidiff_bytes + pit_bytes + pmd_bytes))
 
         development_javadoc_size=$(numfmt --to=iec --suffix=B "$development_javadoc_bytes")
         release_javadoc_size=$(numfmt --to=iec --suffix=B "$release_javadoc_bytes")
         apidiff_size=$(numfmt --to=iec --suffix=B "$apidiff_bytes")
         pit_size=$(numfmt --to=iec --suffix=B "$pit_bytes")
+        pmd_size=$(numfmt --to=iec --suffix=B "$pmd_bytes")
         report_size=$(numfmt --to=iec --suffix=B "$report_bytes")
 
         # Create the top-level GitHub Pages landing page.
@@ -275,6 +291,14 @@ jobs:
               <a href="pit/">Mutation Testing Report</a>
               — PIT mutation testing results for the current master branch.
             </li>
+            <li>
+              <a href="pmd/pmd.txt">PMD Report (Text)</a>
+              — PMD static analysis results in text format.
+            </li>
+            <li>
+              <a href="pmd/pmd.xml">PMD Report (XML)</a>
+              — PMD static analysis results in XML format.
+            </li>
           </ul>
 
           <h2>Site Information</h2>
@@ -299,6 +323,10 @@ jobs:
             <tr>
               <td>PIT report</td>
               <td>${pit_size}</td>
+            </tr>
+            <tr>
+              <td>PMD reports</td>
+              <td>${pmd_size}</td>
             </tr>
             <tr>
               <td>Total reports</td>
@@ -336,6 +364,7 @@ jobs:
         echo "  Release Javadoc:        ${release_javadoc_size} (${release_javadoc_bytes} bytes)"
         echo "  API Differences:        ${apidiff_size} (${apidiff_bytes} bytes)"
         echo "  PIT size:               ${pit_size} (${pit_bytes} bytes)"
+        echo "  PMD size:               ${pmd_size} (${pmd_bytes} bytes)"
         echo "  Total reports:          ${report_size} (${report_bytes} bytes)"
         echo "  File count:             ${file_count}"
 
