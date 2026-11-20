@@ -41,24 +41,24 @@ class ImmutableBigIntegerArrayUtilTest {
                         1, (long) Long.SIZE, BigInteger.valueOf(64), BigInteger.valueOf(64), 0L))
                 .doesNotThrowAnyException();
 
-        assertThatThrownBy(() ->
-                        ImmutableBigIntegerArrayUtil.validateGetParameters(-1, 0, BigInteger.ZERO, BigInteger.ZERO, 0))
+        assertThatThrownBy(() -> ImmutableBigIntegerArrayUtil.validateGetParameters(
+                        -1, 0L, BigInteger.ZERO, BigInteger.ZERO, 0L))
                 .isInstanceOf(IllegalArgumentException.class);
 
         assertThatThrownBy(() -> ImmutableBigIntegerArrayUtil.validateGetParameters(
-                        1, Long.SIZE + 1L, BigInteger.ZERO, BigInteger.valueOf(64), 0))
+                        1, Long.SIZE + 1L, BigInteger.ZERO, BigInteger.valueOf(64), 0L))
                 .isInstanceOf(IllegalArgumentException.class);
 
         assertThatThrownBy(() -> ImmutableBigIntegerArrayUtil.validateGetParameters(
-                        1, 0, BigInteger.valueOf(65), BigInteger.valueOf(64), 0))
+                        1, 0L, BigInteger.valueOf(65), BigInteger.valueOf(64), 0L))
                 .isInstanceOf(IllegalArgumentException.class);
 
         assertThatThrownBy(() -> ImmutableBigIntegerArrayUtil.validateGetParameters(
-                        1, 0, BigInteger.ZERO, BigInteger.valueOf(64), 65))
+                        1, 0L, BigInteger.ZERO, BigInteger.valueOf(64), 65L))
                 .isInstanceOf(IllegalArgumentException.class);
 
         assertThatThrownBy(() -> ImmutableBigIntegerArrayUtil.validateGetParameters(
-                        1, 0, BigInteger.ZERO, BigInteger.valueOf(64), -1))
+                        1, 0L, BigInteger.ZERO, BigInteger.valueOf(64), -1L))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
