@@ -3,6 +3,7 @@ package tfw.immutable.iba.booleaniba;
 import java.math.BigInteger;
 import tfw.check.Arguments;
 import tfw.immutable.iba.AbstractIbaFromArray;
+import tfw.immutable.iba.ImmutableBigIntegerArrayUtil;
 
 public final class BooleanIbaFromArray {
     private BooleanIbaFromArray() {
@@ -24,7 +25,16 @@ public final class BooleanIbaFromArray {
 
         @Override
         public void get(boolean[] array, int offset, BigInteger start, int length) {
-            System.arraycopy(this.array, (int) start.longValue(), array, offset, length);
+            checkClosed();
+
+            Arguments.checkNotNull(array, "array");
+            ImmutableBigIntegerArrayUtil.validateGetParameters(array.length, offset, start, arrayLength, length);
+
+            if (length == 0) {
+                return;
+            }
+
+            System.arraycopy(this.array, start.intValueExact(), array, offset, length);
         }
 
         private static BigInteger checkAndReturnLength(boolean[] array) {
