@@ -405,7 +405,7 @@ commands, plugin versions, or workflow behavior.
 ### Completion criteria
 A testing effort should be considered complete when:
 - Coverage is 100% where practical, with any exceptions understood and justified.
-- All non-equivalent mutations are killed, or any survivors are individually examined and justified.
+- When mutation testing is appropriate, all non-equivalent mutations are killed, or any surviving mutations are individually examined and justified.
 - Argument-validation tests isolate the checks they are intended to verify.
 - Assertions verify both outcomes and, where applicable, the specific exception messages.
 - No unnecessary production logic has been retained or introduced merely to satisfy testing metrics.
