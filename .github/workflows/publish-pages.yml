@@ -89,6 +89,10 @@ jobs:
         REPORT_DIR="$RUNNER_TEMP/errorprone"
         mkdir -p "$REPORT_DIR"
 
+        # Clear any previous reports before extracting new ones.
+        : > "$REPORT_DIR/main.txt"
+        : > "$REPORT_DIR/test.txt"
+
         # Extract the complete production and test compiler sections.
         # A section ends when a blank INFO line is followed by
         # the next Maven task separator. The blank INFO line is
@@ -116,7 +120,7 @@ jobs:
             section = 1
             main_found = 1
             pending_blank = 0
-            print
+            print > main_file
             next
           }
 
@@ -125,7 +129,7 @@ jobs:
             section = 2
             test_found = 1
             pending_blank = 0
-            print
+            print > test_file
             next
           }
 
