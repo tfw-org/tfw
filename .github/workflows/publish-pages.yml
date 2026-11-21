@@ -68,14 +68,118 @@ jobs:
     - name: Run full mutation testing
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: >
-        ${{ github.workspace }}/execute-on-vnc.sh
-        ./mvnw -B
-        clean
-        test-compile
-        -Ppitest
-        -DtimestampedReports=false
-        org.pitest:pitest-maven:mutationCoverage
+        MAVEN_BUILD_LOG: ${{ runner.temp }}/maven-build.log
+      run: |
+        set -o pipefail
+
+        # Capture the complete Maven output while displaying it in Actions.
+        "${{ github.workspace }}/execute-on-vnc.sh" \
+          ./mvnw -B \
+          clean \
+          test-compile \
+          -Ppitest \
+          -DtimestampedReports=false \
+          org.pitest:pitest-maven:mutationCoverage \
+          2>&1 | tee "$MAVEN_BUILD_LOG"
+
+    - name: Extract Error Prone reports
+      env:
+        MAVEN_BUILD_LOG: ${{ runner.temp }}/maven-build.log
+      run: |
+        REPORT_DIR="$RUNNER_TEMP/errorprone"
+        mkdir -p "$REPORT_DIR"
+
+        # Extract the complete production and test compiler sections.
+        # A section ends at an empty INFO line immediately followed
+        # by the next Maven task separator. The empty INFO line is
+        # excluded from the extracted report.
+        awk \
+          -v main_file="$REPORT_DIR/main.txt" \
+          -v test_file="$REPORT_DIR/test.txt" '
+          BEGIN {
+            section = 0
+            previous = ""
+          }
+
+          # Start the production compilation section.
+          /^\[INFO\] --- compiler:[^:]+:compile \(default-compile\) @ / {
+            section = 1
+            main_found = 1
+            previous = ""
+            print > main_file
+            next
+          }
+
+          # Start the test compilation section.
+          /^\[INFO\] --- compiler:[^:]+:testCompile \(default-testCompile\) @ / {
+            section = 2
+            test_found = 1
+            previous = ""
+            print > test_file
+            next
+          }
+
+          {
+            # Detect the boundary using the previous empty INFO line
+            # and the current Maven task separator.
+            if (section != 0 &&
+                previous == "[INFO]" &&
+                /^\[INFO\] --- /) {
+              section = 0
+              previous = ""
+              next
+            }
+
+            # Write a pending INFO line if it was not a separator.
+            if (previous == "[INFO]") {
+              if (section == 1) {
+                print previous > main_file
+              } else if (section == 2) {
+                print previous > test_file
+              }
+            }
+
+            previous = ""
+
+            if (section == 1) {
+              if ($0 == "[INFO]") {
+                previous = $0
+              } else {
+                print > main_file
+              }
+            } else if (section == 2) {
+              if ($0 == "[INFO]") {
+                previous = $0
+              } else {
+                print > test_file
+              }
+            }
+          }
+
+          END {
+            # Retain a trailing INFO line if it was not a separator.
+            if (section == 1 && previous == "[INFO]") {
+              print previous > main_file
+            } else if (section == 2 && previous == "[INFO]") {
+              print previous > test_file
+            }
+
+            if (!main_found) {
+              print "Production compiler section was not found." > "/dev/stderr"
+            }
+
+            if (!test_found) {
+              print "Test compiler section was not found." > "/dev/stderr"
+            }
+
+            if (!main_found || !test_found) {
+              exit 1
+            }
+          }
+        ' "$MAVEN_BUILD_LOG"
+
+        echo "Error Prone reports extracted:"
+        ls -l "$REPORT_DIR"
 
     - name: Generate development Javadoc
       run: >
@@ -260,11 +364,11 @@ jobs:
         mkdir -p target/pages/pit
         mkdir -p target/pages/pmd
         mkdir -p target/pages/cpd
+        mkdir -p target/pages/errorprone
 
         cp -R target/pit-reports/. target/pages/pit/
 
-        cp target/pmd.txt target/pages/pmd/
-        cp target/pmd.xml target/pages/pmd/
+        cp target/pmd.txt target/pmd.xml target/pages/pmd/
 
         cp target/cpd.txt target/cpd.xml target/pages/cpd/
         cp target/reports/cpd.html target/pages/cpd/
@@ -274,6 +378,11 @@ jobs:
           target/reports/images target/reports/img \
           target/reports/js target/pages/cpd/
 
+        # Publish the production and test compiler reports.
+        cp "$RUNNER_TEMP/errorprone/main.txt" \
+          "$RUNNER_TEMP/errorprone/test.txt" \
+          target/pages/errorprone/
+
         # Calculate the sizes of the reports.
         development_javadoc_bytes=$(find target/pages/javadoc -type f ! -path '*/latest/*' -printf '%s\n' | awk '{sum += $1} END {print sum}')
         release_javadoc_bytes=$(find target/pages/javadoc/latest -type f -printf '%s\n' | awk '{sum += $1} END {print sum}')
@@ -281,8 +390,9 @@ jobs:
         pit_bytes=$(find target/pages/pit -type f -printf '%s\n' | awk '{sum += $1} END {print sum}')
         pmd_bytes=$(find target/pages/pmd -type f -printf '%s\n' | awk '{sum += $1} END {print sum}')
         cpd_bytes=$(find target/pages/cpd -type f -printf '%s\n' | awk '{sum += $1} END {print sum}')
+        errorprone_bytes=$(find target/pages/errorprone -type f -printf '%s\n' | awk '{sum += $1} END {print sum}')
 
-        report_bytes=$((development_javadoc_bytes + release_javadoc_bytes + apidiff_bytes + pit_bytes + pmd_bytes + cpd_bytes))
+        report_bytes=$((development_javadoc_bytes + release_javadoc_bytes + apidiff_bytes + pit_bytes + pmd_bytes + cpd_bytes + errorprone_bytes))
 
         development_javadoc_size=$(numfmt --to=iec --suffix=B "$development_javadoc_bytes")
         release_javadoc_size=$(numfmt --to=iec --suffix=B "$release_javadoc_bytes")
@@ -290,6 +400,7 @@ jobs:
         pit_size=$(numfmt --to=iec --suffix=B "$pit_bytes")
         pmd_size=$(numfmt --to=iec --suffix=B "$pmd_bytes")
         cpd_size=$(numfmt --to=iec --suffix=B "$cpd_bytes")
+        errorprone_size=$(numfmt --to=iec --suffix=B "$errorprone_bytes")
         report_size=$(numfmt --to=iec --suffix=B "$report_bytes")
 
         # Create the top-level GitHub Pages landing page.
@@ -348,6 +459,14 @@ jobs:
               <a href="cpd/cpd.xml">CPD Report (XML)</a>
               — copy/paste detection results in XML format.
             </li>
+            <li>
+              <a href="errorprone/main.txt">Production Error Prone Report</a>
+              - complete production compiler-task output.
+            </li>
+            <li>
+              <a href="errorprone/test.txt">Test Error Prone Report</a>
+              - complete test compiler-task output.
+            </li>
           </ul>
 
           <h2>Site Information</h2>
@@ -380,6 +499,10 @@ jobs:
             <tr>
               <td>CPD reports</td>
               <td>${cpd_size}</td>
+            </tr>
+            <tr>
+              <td>Error Prone reports</td>
+              <td>${errorprone_size}</td>
             </tr>
             <tr>
               <td>Total reports</td>
@@ -419,6 +542,7 @@ jobs:
         echo "  PIT size:               ${pit_size} (${pit_bytes} bytes)"
         echo "  PMD size:               ${pmd_size} (${pmd_bytes} bytes)"
         echo "  CPD size:               ${cpd_size} (${cpd_bytes} bytes)"
+        echo "  Error Prone reports:    ${errorprone_size} (${errorprone_bytes} bytes)"
         echo "  Total reports:          ${report_size} (${report_bytes} bytes)"
         echo "  File count:             ${file_count}"
 
