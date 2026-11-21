@@ -90,78 +90,80 @@ jobs:
         mkdir -p "$REPORT_DIR"
 
         # Extract the complete production and test compiler sections.
-        # A section ends at an empty INFO line immediately followed
-        # by the next Maven task separator. The empty INFO line is
+        # A section ends when a blank INFO line is followed by
+        # the next Maven task separator. The blank INFO line is
         # excluded from the extracted report.
         awk \
           -v main_file="$REPORT_DIR/main.txt" \
           -v test_file="$REPORT_DIR/test.txt" '
-          BEGIN {
-            section = 0
-            previous = ""
+          function write_line(line) {
+            if (section == 1) {
+              print line > main_file
+            } else if (section == 2) {
+              print line > test_file
+            }
           }
 
-          # Start the production compilation section.
-          /^\[INFO\] --- compiler:[^:]+:compile \(default-compile\) @ / {
+          BEGIN {
+            section = 0
+            pending_blank = 0
+            main_found = 0
+            test_found = 0
+          }
+
+          # Start production compilation.
+          /^\[INFO\] --- maven-compiler-plugin:[^:]+:compile \(default-compile\) @ / {
             section = 1
             main_found = 1
-            previous = ""
-            print > main_file
+            pending_blank = 0
+            print
             next
           }
 
-          # Start the test compilation section.
-          /^\[INFO\] --- compiler:[^:]+:testCompile \(default-testCompile\) @ / {
+          # Start test compilation.
+          /^\[INFO\] --- maven-compiler-plugin:[^:]+:testCompile \(default-testCompile\) @ / {
             section = 2
             test_found = 1
-            previous = ""
-            print > test_file
+            pending_blank = 0
+            print
             next
           }
 
           {
-            # Detect the boundary using the previous empty INFO line
-            # and the current Maven task separator.
-            if (section != 0 &&
-                previous == "[INFO]" &&
-                /^\[INFO\] --- /) {
-              section = 0
-              previous = ""
-              next
-            }
-
-            # Write a pending INFO line if it was not a separator.
-            if (previous == "[INFO]") {
-              if (section == 1) {
-                print previous > main_file
-              } else if (section == 2) {
-                print previous > test_file
+            if (section != 0) {
+              # End the current compiler section at the next
+              # Maven task separator following a blank INFO line.
+              if (pending_blank &&
+                  /^\[INFO\] --- /) {
+                section = 0
+                pending_blank = 0
+                next
               }
-            }
 
-            previous = ""
+              # Preserve the previously buffered blank INFO line
+              # unless it was the task boundary.
+              if (pending_blank) {
+                write_line(pending_line)
+                pending_blank = 0
+              }
 
-            if (section == 1) {
-              if ($0 == "[INFO]") {
-                previous = $0
-              } else {
-                print > main_file
+              # Hold blank INFO lines until the next line tells
+              # us whether they are section boundaries.
+              if (/^\[INFO\][[:space:]]*$/) {
+                pending_line = $0
+                pending_blank = 1
+                next
               }
-            } else if (section == 2) {
-              if ($0 == "[INFO]") {
-                previous = $0
-              } else {
-                print > test_file
-              }
+
+              write_line($0)
             }
           }
 
           END {
-            # Retain a trailing INFO line if it was not a separator.
-            if (section == 1 && previous == "[INFO]") {
-              print previous > main_file
-            } else if (section == 2 && previous == "[INFO]") {
-              print previous > test_file
+            # Preserve a trailing blank INFO line if the log
+            # ended without a following Maven task separator.
+            if (pending_blank && section != 0) {
+              write_line(pending_line)
             }
 
             if (!main_found) {
