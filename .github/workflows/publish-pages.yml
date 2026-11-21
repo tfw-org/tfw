@@ -184,7 +184,7 @@ jobs:
           }
         ' "$MAVEN_BUILD_LOG"
 
-        echo "Error Prone reports extracted:"
+        echo "Compiler reports extracted:"
         ls -l "$REPORT_DIR"
 
     - name: Generate development Javadoc
