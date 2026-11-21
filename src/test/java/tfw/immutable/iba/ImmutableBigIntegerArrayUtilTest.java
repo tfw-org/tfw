@@ -15,6 +15,7 @@ class ImmutableBigIntegerArrayUtilTest {
     private static final BigInteger SIXTY_THREE = BigInteger.valueOf(63);
     private static final BigInteger SIXTY_FOUR = BigInteger.valueOf(64);
     private static final BigInteger SIXTY_FIVE = BigInteger.valueOf(65);
+    private static final BigInteger MAX_BITS_IN_ARRAY_BIG_INTEGER = BigInteger.valueOf(MAX_BITS_IN_ARRAY);
 
     @Test
     void validateArrayParametersTest() {
@@ -100,11 +101,7 @@ class ImmutableBigIntegerArrayUtilTest {
 
         // lengthInBits must be strictly less than MAX_BITS_IN_ARRAY.
         assertThatThrownBy(() -> ImmutableBigIntegerArrayUtil.validateGetParameters(
-                        Integer.MAX_VALUE,
-                        0L,
-                        BigInteger.ZERO,
-                        BigInteger.valueOf(MAX_BITS_IN_ARRAY),
-                        MAX_BITS_IN_ARRAY))
+                        Integer.MAX_VALUE, 0L, BigInteger.ZERO, MAX_BITS_IN_ARRAY_BIG_INTEGER, MAX_BITS_IN_ARRAY))
                 .isInstanceOf(IllegalArgumentException.class);
 
         // arrayOffsetInBits must fit in the destination array.
