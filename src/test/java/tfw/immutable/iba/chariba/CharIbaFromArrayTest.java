@@ -8,6 +8,10 @@ import java.util.Arrays;
 import org.junit.jupiter.api.Test;
 
 class CharIbaFromArrayTest {
+    private static final BigInteger TWO = BigInteger.valueOf(2);
+    private static final BigInteger THREE = BigInteger.valueOf(3);
+    private static final BigInteger FOUR = BigInteger.valueOf(4);
+
     @Test
     void parameterTest() {
         assertThatThrownBy(() -> CharIbaFromArray.create(null))
@@ -30,6 +34,56 @@ class CharIbaFromArrayTest {
 
             assertThat(actualArray).isEqualTo(expectedArray);
         }
+    }
+
+    @Test
+    void boundaryTest() throws Exception {
+        final char[] source = {(char) 1, (char) 1, (char) 1};
+        final char[] destination = new char[3];
+
+        try (CharIba iba = CharIbaFromArray.create(source)) {
+            iba.get(destination, 0, BigInteger.ZERO, 3);
+            assertThat(destination).isEqualTo(source);
+
+            // An empty range at the exact end of either array is valid.
+            iba.get(destination, destination.length, THREE, 0);
+            iba.get(destination, 0, THREE, 0);
+
+            // Empty ranges beyond either end are invalid.
+            assertThatThrownBy(() -> iba.get(destination, destination.length + 1, THREE, 0))
+                    .isInstanceOf(IllegalArgumentException.class);
+            assertThatThrownBy(() -> iba.get(destination, 0, FOUR, 0)).isInstanceOf(IllegalArgumentException.class);
+        }
+    }
+
+    @Test
+    void invalidRangeTest() throws Exception {
+        final char[] source = new char[3];
+        final char[] destination = new char[3];
+
+        try (CharIba iba = CharIbaFromArray.create(source)) {
+            assertThatThrownBy(() -> iba.get(destination, -1, BigInteger.ZERO, 1))
+                    .isInstanceOf(IllegalArgumentException.class);
+            assertThatThrownBy(() -> iba.get(destination, 0, BigInteger.ZERO, -1))
+                    .isInstanceOf(IllegalArgumentException.class);
+            assertThatThrownBy(() -> iba.get(destination, 2, BigInteger.ZERO, 2))
+                    .isInstanceOf(IllegalArgumentException.class);
+            assertThatThrownBy(() -> iba.get(destination, 0, TWO, 2)).isInstanceOf(IllegalArgumentException.class);
+            assertThatThrownBy(() -> iba.get(null, 0, BigInteger.ZERO, 0)).isInstanceOf(IllegalArgumentException.class);
+        }
+    }
+
+    @Test
+    void closedTest() throws Exception {
+        final char[] source = new char[1];
+        final char[] destination = new char[1];
+
+        final CharIba iba = CharIbaFromArray.create(source);
+        iba.close();
+
+        assertThatThrownBy(() -> iba.get(destination, 0, BigInteger.ZERO, 0))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessage("This object is closed!");
     }
 }
 // AUTO GENERATED FROM TEMPLATE
