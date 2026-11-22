@@ -116,7 +116,7 @@ jobs:
           }
 
           # Start production compilation.
-          /^\[INFO\] --- maven-compiler-plugin:[^:]+:compile \(default-compile\) @ / {
+          /^\[INFO\] --- compiler:[^:]+:compile \(default-compile\) @ / {
             section = 1
             main_found = 1
             pending_blank = 0
@@ -125,7 +125,7 @@ jobs:
           }
 
           # Start test compilation.
-          /^\[INFO\] --- maven-compiler-plugin:[^:]+:testCompile \(default-testCompile\) @ / {
+          /^\[INFO\] --- compiler:[^:]+:testCompile \(default-testCompile\) @ / {
             section = 2
             test_found = 1
             pending_blank = 0
