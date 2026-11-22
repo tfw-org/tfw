@@ -382,3 +382,30 @@ have actually been verified.
 
 Consult the current files rather than relying on remembered
 commands, plugin versions, or workflow behavior.
+
+## Testing and Mutation Testing Standards
+
+### Coverage and correctness
+- Strive for 100% code coverage wherever practical. Coverage is a means of identifying untested behavior, not a substitute for meaningful assertions.
+- Aim to kill all non-equivalent PIT mutations. Investigate surviving mutations individually rather than accepting them simply because the mutation score is high.
+- Do not weaken tests, assertions, or validation to improve mutation results or make tests pass.
+
+### Argument validation
+- Test every meaningful argument-validation rule independently.
+- Exercise valid boundaries, invalid boundaries, exact-end conditions, zero-length conditions, negative values, overflow conditions, and null inputs where applicable.
+- Design invalid-input tests so that the intended validation check is the one rejecting the input, rather than an earlier or subsequent check masking it.
+- Assert exception messages as well as exception types whenever practical. This verifies which check failed and protects against unintended changes to validation behavior.
+
+### Production code discipline
+- Remove redundant, unreachable, or mathematically impossible production checks rather than retaining them merely for documentation or to satisfy test coverage.
+- Do not add production code solely to satisfy coverage or mutation testing.
+- If a mutation cannot be killed because the original code is redundant, unreachable, or equivalent, investigate whether the production code should be simplified instead of forcing an artificial test.
+- Prefer meaningful boundary tests and precise assertions over increasing test counts or writing tests specifically to manipulate mutation scores.
+
+### Completion criteria
+A testing effort should be considered complete when:
+- Coverage is 100% where practical, with any exceptions understood and justified.
+- When mutation testing is appropriate, all non-equivalent mutations are killed, or any surviving mutations are individually examined and justified.
+- Argument-validation tests isolate the checks they are intended to verify.
+- Assertions verify both outcomes and, where applicable, the specific exception messages.
+- No unnecessary production logic has been retained or introduced merely to satisfy testing metrics.
