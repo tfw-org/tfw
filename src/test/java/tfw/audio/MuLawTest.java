@@ -1,6 +1,7 @@
 package tfw.audio;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.junit.jupiter.api.Test;
 import tfw.audio.byteila.MuLawByteIlaFromLinearShortIla;
@@ -8,9 +9,20 @@ import tfw.audio.shortila.LinearShortIlaFromMuLawByteIla;
 import tfw.immutable.ila.byteila.ByteIla;
 import tfw.immutable.ila.byteila.ByteIlaUtil;
 import tfw.immutable.ila.shortila.ShortIla;
+import tfw.immutable.ila.shortila.ShortIlaFill;
 import tfw.immutable.ila.shortila.ShortIlaFromArray;
 
 final class MuLawTest {
+    @Test
+    void argumentsTest() {
+        final ShortIla shortIla = ShortIlaFill.create((short) 0, 10);
+
+        assertThatThrownBy(() -> MuLawByteIlaFromLinearShortIla.create(null, 1))
+                .isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> MuLawByteIlaFromLinearShortIla.create(shortIla, 0))
+                .isInstanceOf(IllegalArgumentException.class);
+    }
+
     @Test
     void muLawTest() throws Exception {
         final short[] linearArray = new short[65536];
