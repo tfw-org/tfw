@@ -18,126 +18,201 @@ class ImmutableBigIntegerArrayUtilTest {
     private static final BigInteger MAX_BITS_IN_ARRAY_BIG_INTEGER = BigInteger.valueOf(MAX_BITS_IN_ARRAY);
 
     @Test
-    void validateArrayParametersTest() {
-        // Exact-end ranges are valid.
-        assertThatCode(() -> ImmutableBigIntegerArrayUtil.validateGetParameters(3, 3, THREE, THREE, 0))
+    void validateElementParametersAcceptsValidRange() {
+        assertThatCode(() -> ImmutableBigIntegerArrayUtil.validateGetParameters(3, 1, TWO, FOUR, 2))
                 .doesNotThrowAnyException();
+    }
 
-        // arrayLength must be nonnegative.
-        assertThatThrownBy(() ->
-                        ImmutableBigIntegerArrayUtil.validateGetParameters(-1, 0, BigInteger.ZERO, BigInteger.ZERO, 0))
-                .isInstanceOf(IllegalArgumentException.class);
+    @Test
+    void validateElementParametersRejectsNegativeArrayLength() {
+        assertThatThrownBy(() -> ImmutableBigIntegerArrayUtil.validateGetParameters(
+                        Integer.MIN_VALUE, 1, BigInteger.ZERO, THREE, 0))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("arrayLength (=" + Integer.MIN_VALUE + ") < 0 not allowed!");
+    }
 
-        // arrayOffset must be nonnegative.
+    @Test
+    void validateElementParametersRejectsNegativeArrayOffset() {
         assertThatThrownBy(() -> ImmutableBigIntegerArrayUtil.validateGetParameters(3, -1, BigInteger.ZERO, THREE, 0))
-                .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("arrayOffset (=-1) < 0 not allowed!");
+    }
 
-        // length must be nonnegative.
+    @Test
+    void validateElementParametersRejectsNegativeLength() {
         assertThatThrownBy(() -> ImmutableBigIntegerArrayUtil.validateGetParameters(3, 0, BigInteger.ZERO, THREE, -1))
-                .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("length (=-1) < 0 not allowed!");
+    }
 
-        // ibaLength must be nonnegative.
+    @Test
+    void validateElementParametersRejectsNullIbaLength() {
+        assertThatThrownBy(() -> ImmutableBigIntegerArrayUtil.validateGetParameters(3, 0, BigInteger.ZERO, null, 0))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("ibaLength (=null) == null not allowed!");
+    }
+
+    @Test
+    void validateElementParametersRejectsNullIbaStart() {
+        assertThatThrownBy(() -> ImmutableBigIntegerArrayUtil.validateGetParameters(3, 0, null, THREE, 0))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("ibaStart == null not allowed!");
+    }
+
+    @Test
+    void validateElementParametersRejectsNegativeIbaStart() {
+        assertThatThrownBy(() -> ImmutableBigIntegerArrayUtil.validateGetParameters(3, 0, NEGATIVE_ONE, THREE, 0))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("ibaStart (=-1) < 0 not allowed!");
+    }
+
+    @Test
+    void validateElementParametersRejectsArrayRangeBeyondEnd() {
+        assertThatThrownBy(() -> ImmutableBigIntegerArrayUtil.validateGetParameters(3, 1, BigInteger.ZERO, FOUR, 3))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("length (=3) > arrayLength-arrayOffset (=2) not allowed!");
+    }
+
+    @Test
+    void validateElementParametersRejectsSourceRangeBeyondEnd() {
+        assertThatThrownBy(() -> ImmutableBigIntegerArrayUtil.validateGetParameters(5, 0, TWO, THREE, 2))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("length (=2) > ibaLength-ibaStart (=1) not allowed!");
+    }
+
+    @Test
+    void validateElementParametersRejectsNegativeIbaLength() {
         assertThatThrownBy(() ->
                         ImmutableBigIntegerArrayUtil.validateGetParameters(3, 0, BigInteger.ZERO, NEGATIVE_ONE, 0))
-                .isInstanceOf(IllegalArgumentException.class);
-
-        // ibaStart must be nonnegative.
-        assertThatThrownBy(() -> ImmutableBigIntegerArrayUtil.validateGetParameters(3, 0, NEGATIVE_ONE, THREE, 0))
-                .isInstanceOf(IllegalArgumentException.class);
-
-        // arrayOffset must not exceed arrayLength.
-        assertThatThrownBy(() -> ImmutableBigIntegerArrayUtil.validateGetParameters(3, 4, BigInteger.ZERO, THREE, 0))
-                .isInstanceOf(IllegalArgumentException.class);
-
-        // length must fit in the destination array.
-        assertThatThrownBy(() -> ImmutableBigIntegerArrayUtil.validateGetParameters(3, 0, BigInteger.ZERO, THREE, 4))
-                .isInstanceOf(IllegalArgumentException.class);
-
-        // ibaStart must not exceed ibaLength.
-        assertThatThrownBy(() -> ImmutableBigIntegerArrayUtil.validateGetParameters(3, 0, FOUR, THREE, 0))
-                .isInstanceOf(IllegalArgumentException.class);
-
-        // length must fit in the remaining source range.
-        assertThatThrownBy(() -> ImmutableBigIntegerArrayUtil.validateGetParameters(5, 0, TWO, THREE, 2))
-                .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("length (=0) > ibaLength-ibaStart (=-1) not allowed!");
     }
 
     @Test
-    void validateBitArrayParametersTest() {
-        // Exact-end ranges are valid.
-        assertThatCode(() -> ImmutableBigIntegerArrayUtil.validateGetParameters(
-                        1, (long) Long.SIZE, SIXTY_FOUR, SIXTY_FOUR, 0L))
+    void validateElementParametersRejectsIbaStartBeyondIbaLength() {
+        assertThatThrownBy(() -> ImmutableBigIntegerArrayUtil.validateGetParameters(3, 0, FOUR, THREE, 0))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("length (=0) > ibaLength-ibaStart (=-1) not allowed!");
+    }
+
+    @Test
+    void validateBitParametersAcceptsValidRange() {
+        assertThatCode(() -> ImmutableBigIntegerArrayUtil.validateGetParameters(2, 1L, SIXTY_THREE, SIXTY_FIVE, 2L))
                 .doesNotThrowAnyException();
+    }
 
-        // arrayLength must be nonnegative.
-        assertThatThrownBy(() -> ImmutableBigIntegerArrayUtil.validateGetParameters(
-                        -1, 0L, BigInteger.ZERO, BigInteger.ZERO, 0L))
-                .isInstanceOf(IllegalArgumentException.class);
+    @Test
+    void validateBitParametersRejectsNegativeArrayLength() {
+        assertThatThrownBy(() ->
+                        ImmutableBigIntegerArrayUtil.validateGetParameters(-1, 0L, BigInteger.ZERO, SIXTY_FOUR, 0L))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("lengthInBits (=0) > arrayLength*Long.SIZE-arrayOffsetInBits (=-64) not allowed!");
+    }
 
-        // arrayOffsetInBits must be nonnegative.
+    @Test
+    void validateBitParametersRejectsNegativeArrayOffset() {
         assertThatThrownBy(() ->
                         ImmutableBigIntegerArrayUtil.validateGetParameters(1, -1L, BigInteger.ZERO, SIXTY_FOUR, 0L))
-                .isInstanceOf(IllegalArgumentException.class);
-
-        // lengthInBits must be nonnegative.
-        assertThatThrownBy(() ->
-                        ImmutableBigIntegerArrayUtil.validateGetParameters(1, 0L, BigInteger.ZERO, SIXTY_FOUR, -1L))
-                .isInstanceOf(IllegalArgumentException.class);
-
-        // ibaLengthInBits must be nonnegative.
-        assertThatThrownBy(() ->
-                        ImmutableBigIntegerArrayUtil.validateGetParameters(1, 0L, BigInteger.ZERO, NEGATIVE_ONE, 0L))
-                .isInstanceOf(IllegalArgumentException.class);
-
-        // ibaStartInBits must be nonnegative.
-        assertThatThrownBy(
-                        () -> ImmutableBigIntegerArrayUtil.validateGetParameters(1, 0L, NEGATIVE_ONE, SIXTY_FOUR, 0L))
-                .isInstanceOf(IllegalArgumentException.class);
-
-        // arrayOffsetInBits must not exceed MAX_BITS_IN_ARRAY.
-        assertThatThrownBy(() -> ImmutableBigIntegerArrayUtil.validateGetParameters(
-                        Integer.MAX_VALUE - 8, MAX_BITS_IN_ARRAY + 1L, BigInteger.ZERO, BigInteger.ZERO, 0L))
-                .isInstanceOf(IllegalArgumentException.class);
-
-        // lengthInBits must be strictly less than MAX_BITS_IN_ARRAY.
-        assertThatThrownBy(() -> ImmutableBigIntegerArrayUtil.validateGetParameters(
-                        Integer.MAX_VALUE, 0L, BigInteger.ZERO, MAX_BITS_IN_ARRAY_BIG_INTEGER, MAX_BITS_IN_ARRAY))
-                .isInstanceOf(IllegalArgumentException.class);
-
-        // arrayOffsetInBits must fit in the destination array.
-        assertThatThrownBy(() -> ImmutableBigIntegerArrayUtil.validateGetParameters(
-                        1, 65L, BigInteger.ZERO, BigInteger.ZERO, 0L))
-                .isInstanceOf(IllegalArgumentException.class);
-
-        // lengthInBits must fit in the remaining destination array.
-        assertThatThrownBy(() ->
-                        ImmutableBigIntegerArrayUtil.validateGetParameters(1, 0L, BigInteger.ZERO, SIXTY_FIVE, 65L))
-                .isInstanceOf(IllegalArgumentException.class);
-
-        // ibaStartInBits must not exceed ibaLengthInBits.
-        assertThatThrownBy(() -> ImmutableBigIntegerArrayUtil.validateGetParameters(1, 0L, SIXTY_FIVE, SIXTY_FOUR, 0L))
-                .isInstanceOf(IllegalArgumentException.class);
-
-        // lengthInBits must fit in the remaining source range.
-        // The destination has enough room, so this specifically exercises the source check.
-        assertThatThrownBy(() -> ImmutableBigIntegerArrayUtil.validateGetParameters(2, 0L, SIXTY_THREE, SIXTY_FOUR, 2L))
-                .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("arrayOffsetInBits (=-1) < 0 not allowed!");
     }
 
     @Test
-    void maximumBitArrayOffsetTest() {
-        final int maximumArrayLength = Integer.MAX_VALUE - 8;
+    void validateBitParametersRejectsNegativeLength() {
+        assertThatThrownBy(() ->
+                        ImmutableBigIntegerArrayUtil.validateGetParameters(1, 0L, BigInteger.ZERO, SIXTY_FOUR, -1L))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("lengthInBits (=-1) < 0 not allowed!");
+    }
 
+    @Test
+    void validateBitParametersRejectsNullIbaLength() {
+        assertThatThrownBy(() -> ImmutableBigIntegerArrayUtil.validateGetParameters(1, 0L, BigInteger.ZERO, null, 0L))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("ibaLengthInBits (=null) == null not allowed!");
+    }
+
+    @Test
+    void validateBitParametersRejectsNullIbaStart() {
+        assertThatThrownBy(() -> ImmutableBigIntegerArrayUtil.validateGetParameters(1, 0L, null, SIXTY_FOUR, 0L))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("ibaStartInBits == null not allowed!");
+    }
+
+    @Test
+    void validateBitParametersRejectsNegativeIbaStart() {
+        assertThatThrownBy(
+                        () -> ImmutableBigIntegerArrayUtil.validateGetParameters(1, 0L, NEGATIVE_ONE, SIXTY_FOUR, 0L))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("ibaStartInBits (=-1) < 0 not allowed!");
+    }
+
+    @Test
+    void validateBitParametersRejectsArrayOffsetBeyondMaximum() {
+        assertThatThrownBy(() -> ImmutableBigIntegerArrayUtil.validateGetParameters(
+                        Integer.MAX_VALUE, MAX_BITS_IN_ARRAY + 1, BigInteger.ZERO, MAX_BITS_IN_ARRAY_BIG_INTEGER, 0L))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("arrayOffsetInBits (=" + (MAX_BITS_IN_ARRAY + 1) + ") > " + MAX_BITS_IN_ARRAY
+                        + " not allowed!");
+    }
+
+    @Test
+    void validateBitParametersRejectsLengthAtMaximum() {
+        assertThatThrownBy(() -> ImmutableBigIntegerArrayUtil.validateGetParameters(
+                        Integer.MAX_VALUE, 0L, BigInteger.ZERO, MAX_BITS_IN_ARRAY_BIG_INTEGER, MAX_BITS_IN_ARRAY))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("lengthInBits (=" + MAX_BITS_IN_ARRAY + ") >= " + MAX_BITS_IN_ARRAY + " not allowed!");
+    }
+
+    @Test
+    void validateBitParametersRejectsArrayOffsetBeyondEnd() {
+        assertThatThrownBy(() ->
+                        ImmutableBigIntegerArrayUtil.validateGetParameters(1, 65L, BigInteger.ZERO, SIXTY_FOUR, 0L))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("lengthInBits (=0) > arrayLength*Long.SIZE-arrayOffsetInBits (=-1) not allowed!");
+    }
+
+    @Test
+    void validateBitParametersRejectsArrayRangeBeyondEndWithNonzeroOffset() {
+        assertThatThrownBy(() ->
+                        ImmutableBigIntegerArrayUtil.validateGetParameters(1, 1L, BigInteger.ZERO, SIXTY_FIVE, 64L))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("lengthInBits (=64) > arrayLength*Long.SIZE-arrayOffsetInBits (=63) not allowed!");
+    }
+
+    @Test
+    void validateBitParametersRejectsSourceRangeBeyondEnd() {
+        assertThatThrownBy(() -> ImmutableBigIntegerArrayUtil.validateGetParameters(2, 0L, SIXTY_THREE, SIXTY_FOUR, 2L))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("lengthInBits (=2) > ibaLengthInBits-ibaStartInBits (=1) not allowed!");
+    }
+
+    @Test
+    void validateBitParametersRejectsNegativeIbaLength() {
+        assertThatThrownBy(() ->
+                        ImmutableBigIntegerArrayUtil.validateGetParameters(1, 0L, BigInteger.ZERO, NEGATIVE_ONE, 0L))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("lengthInBits (=0) > ibaLengthInBits-ibaStartInBits (=-1) not allowed!");
+    }
+
+    @Test
+    void validateBitParametersRejectsIbaStartBeyondIbaLength() {
+        assertThatThrownBy(() -> ImmutableBigIntegerArrayUtil.validateGetParameters(1, 0L, SIXTY_FIVE, SIXTY_FOUR, 0L))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("lengthInBits (=0) > ibaLengthInBits-ibaStartInBits (=-1) not allowed!");
+    }
+
+    @Test
+    void validateBitParametersAcceptsMaximumValidLength() {
         assertThatCode(() -> ImmutableBigIntegerArrayUtil.validateGetParameters(
-                        maximumArrayLength, MAX_BITS_IN_ARRAY, BigInteger.ZERO, BigInteger.ZERO, 0L))
+                        Integer.MAX_VALUE, 0L, BigInteger.ZERO, MAX_BITS_IN_ARRAY_BIG_INTEGER, MAX_BITS_IN_ARRAY - 1))
                 .doesNotThrowAnyException();
+    }
 
+    @Test
+    void validateBitParametersAcceptsMaximumValidOffset() {
         assertThatCode(() -> ImmutableBigIntegerArrayUtil.validateGetParameters(
-                        maximumArrayLength,
-                        0L,
-                        BigInteger.ZERO,
-                        BigInteger.valueOf(MAX_BITS_IN_ARRAY - 1),
-                        MAX_BITS_IN_ARRAY - 1))
+                        Integer.MAX_VALUE, MAX_BITS_IN_ARRAY, BigInteger.ZERO, MAX_BITS_IN_ARRAY_BIG_INTEGER, 0L))
                 .doesNotThrowAnyException();
     }
 }
