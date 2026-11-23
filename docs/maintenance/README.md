@@ -20,7 +20,11 @@ How to build and run TFW fuzzers, work with the fuzzing infrastructure, and use 
 
 ### [Metrics Token](metrics-token.md)
 
-How to generate and install a replacement `TFW_ORG_READ_TOKEN` used by the TFW metrics infrastructure.
+How to generate and install a replacement `TFW_ORG_READ_TOKEN` used by the tfw-metrics repository.
+
+### [Tfw token](tfw-token.md)
+
+How to generate and install a replacement `TFW_FUZZING_TOKEN` used by the tfw repositry.
 
 ## Keeping the guides current
 
