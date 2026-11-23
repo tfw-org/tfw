@@ -24,7 +24,7 @@ How to generate and install a replacement `TFW_ORG_READ_TOKEN` used by the tfw-m
 
 ### [Tfw token](tfw-token.md)
 
-How to generate and install a replacement `TFW_FUZZING_TOKEN` used by the tfw repositry.
+How to generate and install a replacement `TFW_FUZZING_TOKEN` used by the tfw repository.
 
 ## Keeping the guides current
 
