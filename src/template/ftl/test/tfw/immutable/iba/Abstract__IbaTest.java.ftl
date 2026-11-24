@@ -9,7 +9,9 @@ import java.math.BigInteger;
 import org.junit.jupiter.api.Test;
 
 class Abstract${NAME}IbaTest {
-    private static final BigInteger BIG_INTEGER_ZERO = BigInteger.valueOf(0);
+    private static final BigInteger BIG_INTEGER_ZERO = BigInteger.ZERO;
+    private static final BigInteger BIG_INTEGER_ONE = BigInteger.ONE;
+    private static final BigInteger BIG_INTEGER_NEGATIVE_ONE = BigInteger.valueOf(-1);
 
     @Test
     void closeTest() throws IOException {
@@ -26,7 +28,7 @@ class Abstract${NAME}IbaTest {
             assertThatThrownBy(tabi::length)
                     .isInstanceOf(IllegalStateException.class)
                     .hasMessage("This object is closed!");
-            assertThatThrownBy(() -> tabi.get(array, 0, BIG_INTEGER_ZERO, 5))
+            assertThatThrownBy(() -> tabi.get(null, 0, BIG_INTEGER_ZERO, 1))
                     .isInstanceOf(IllegalStateException.class)
                     .hasMessage("This object is closed!");
 
@@ -36,29 +38,76 @@ class Abstract${NAME}IbaTest {
             assertThatThrownBy(tabi::length)
                     .isInstanceOf(IllegalStateException.class)
                     .hasMessage("This object is closed!");
-            assertThatThrownBy(() -> tabi.get(array, 0, BIG_INTEGER_ZERO, 5))
-                    .isInstanceOf(IllegalStateException.class)
-                    .hasMessage("This object is closed!");
         }
     }
 
     @Test
     void getTest() throws IOException {
         try (TestAbstract${NAME}Iba tabi = new TestAbstract${NAME}Iba()) {
-            final ${TYPE}[] expectedArray = new ${TYPE}[10];
-            final ${TYPE}[] actualArray = expectedArray.clone();
+            final ${TYPE}[] array = new ${TYPE}[10];
 
-            tabi.get(actualArray, 0, BIG_INTEGER_ZERO, 0);
+            tabi.get(array, 0, BIG_INTEGER_ZERO, 0);
 
-            assertThat(actualArray).isEqualTo(expectedArray);
+            assertThat(tabi.getImplCalls()).isZero();
+
+            tabi.get(array, 2, BIG_INTEGER_ONE, 2);
+
+            assertThat(tabi.getImplCalls()).isEqualTo(1);
+            assertThat(tabi.getLastArray()).isSameAs(array);
+            assertThat(tabi.getLastArrayOffset()).isEqualTo(2);
+            assertThat(tabi.getLastIbaStart()).isEqualTo(BIG_INTEGER_ONE);
+            assertThat(tabi.getLastLength()).isEqualTo(2);
+        }
+    }
+
+    @Test
+    void argumentsTest() throws IOException {
+        try (TestAbstract${NAME}Iba tabi = new TestAbstract${NAME}Iba()) {
+            final ${TYPE}[] array = new ${TYPE}[10];
+
+            assertThatThrownBy(() -> tabi.get(null, 0, BIG_INTEGER_ZERO, 1))
+                    .isInstanceOf(IllegalArgumentException.class);
+            assertThatThrownBy(() -> tabi.get(array, -1, BIG_INTEGER_ZERO, 1))
+                    .isInstanceOf(IllegalArgumentException.class);
+            assertThatThrownBy(() -> tabi.get(array, 0, BIG_INTEGER_NEGATIVE_ONE, 1))
+                    .isInstanceOf(IllegalArgumentException.class);
+            assertThatThrownBy(() -> tabi.get(array, 0, BIG_INTEGER_ZERO, -1))
+                    .isInstanceOf(IllegalArgumentException.class);
+            assertThatThrownBy(() -> tabi.get(array, 0, BIG_INTEGER_ZERO, 6))
+                    .isInstanceOf(IllegalArgumentException.class);
         }
     }
 
     private static class TestAbstract${NAME}Iba extends Abstract${NAME}Iba${TEMPLATE} {
         private int closeImplCalls = 0;
+        private int getImplCalls = 0;
+        private ${TYPE_OR_TEMPLATE}[] lastArray;
+        private int lastArrayOffset;
+        private BigInteger lastIbaStart;
+        private int lastLength;
 
         public int getCloseImplCalls() {
             return closeImplCalls;
+        }
+
+        public int getImplCalls() {
+            return getImplCalls;
+        }
+
+        public ${TYPE_OR_TEMPLATE}[] getLastArray() {
+            return lastArray;
+        }
+
+        public int getLastArrayOffset() {
+            return lastArrayOffset;
+        }
+
+        public BigInteger getLastIbaStart() {
+            return lastIbaStart;
+        }
+
+        public int getLastLength() {
+            return lastLength;
         }
 
         @Override
@@ -72,8 +121,12 @@ class Abstract${NAME}IbaTest {
         }
 
         @Override
-        protected void getImpl(${TYPE}[] array, int arrayOffset, BigInteger ibaStart, int length) throws IOException {
-            // Nothing to do
+        protected void getImpl(${TYPE_OR_TEMPLATE}[] array, int arrayOffset, BigInteger ibaStart, int length) throws IOException {
+            getImplCalls++;
+            lastArray = array;
+            lastArrayOffset = arrayOffset;
+            lastIbaStart = ibaStart;
+            lastLength = length;
         }
     }
 }
