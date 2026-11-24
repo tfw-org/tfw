@@ -81,7 +81,7 @@ class Abstract${NAME}IbaTest {
     private static class TestAbstract${NAME}Iba extends Abstract${NAME}Iba${TEMPLATE} {
         private int closeImplCalls = 0;
         private int getImplCalls = 0;
-        private ${TYPE_OR_TEMPLATE}[] lastArray;
+        private ${TYPE}[] lastArray;
         private int lastArrayOffset;
         private BigInteger lastIbaStart;
         private int lastLength;
@@ -94,7 +94,7 @@ class Abstract${NAME}IbaTest {
             return getImplCalls;
         }
 
-        public ${TYPE_OR_TEMPLATE}[] getLastArray() {
+        public ${TYPE}[] getLastArray() {
             return lastArray;
         }
 
@@ -121,7 +121,7 @@ class Abstract${NAME}IbaTest {
         }
 
         @Override
-        protected void getImpl(${TYPE_OR_TEMPLATE}[] array, int arrayOffset, BigInteger ibaStart, int length) throws IOException {
+        protected void getImpl(${TYPE}[] array, int arrayOffset, BigInteger ibaStart, int length) throws IOException {
             getImplCalls++;
             lastArray = array;
             lastArrayOffset = arrayOffset;

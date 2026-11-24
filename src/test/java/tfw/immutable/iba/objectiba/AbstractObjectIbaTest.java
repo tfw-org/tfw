@@ -80,7 +80,7 @@ class AbstractObjectIbaTest {
     private static class TestAbstractObjectIba extends AbstractObjectIba<Object> {
         private int closeImplCalls = 0;
         private int getImplCalls = 0;
-        private T[] lastArray;
+        private Object[] lastArray;
         private int lastArrayOffset;
         private BigInteger lastIbaStart;
         private int lastLength;
@@ -93,7 +93,7 @@ class AbstractObjectIbaTest {
             return getImplCalls;
         }
 
-        public T[] getLastArray() {
+        public Object[] getLastArray() {
             return lastArray;
         }
 
@@ -120,7 +120,7 @@ class AbstractObjectIbaTest {
         }
 
         @Override
-        protected void getImpl(T[] array, int arrayOffset, BigInteger ibaStart, int length) throws IOException {
+        protected void getImpl(Object[] array, int arrayOffset, BigInteger ibaStart, int length) throws IOException {
             getImplCalls++;
             lastArray = array;
             lastArrayOffset = arrayOffset;
