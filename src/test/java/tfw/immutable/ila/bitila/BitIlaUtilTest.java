@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.junit.jupiter.api.Test;
 
-final class BItIlaUtilTest {
+final class BitIlaUtilTest {
     @Test
     void getPartialLongArgumentsTest() {
         assertThatThrownBy(() -> BitIlaUtil.getPartialLong(null, 0, 0)).isInstanceOf(IllegalArgumentException.class);
@@ -48,5 +48,11 @@ final class BItIlaUtilTest {
         BitIlaUtil.copy(actual, 0, new long[] {value}, 0, Long.SIZE);
 
         assertThat(actual).containsExactly(value);
+    }
+
+    @Test
+    void getPartialLongLengthTooLargeTest() {
+        assertThatThrownBy(() -> BitIlaUtil.getPartialLong(new long[2], 0, Long.SIZE + 1))
+                .isInstanceOf(IllegalArgumentException.class);
     }
 }
