@@ -8,6 +8,7 @@ import tfw.immutable.ila.bitila.BitIlaUtil;
 
 public final class BitIbaFromLongIba {
     private static final BigInteger LONG_SIZE = BigInteger.valueOf(Long.SIZE);
+    private static final BigInteger LONG_SIZE_MINUS_ONE = LONG_SIZE.subtract(BigInteger.ONE);
 
     private BitIbaFromLongIba() {}
 
@@ -50,18 +51,20 @@ public final class BitIbaFromLongIba {
                 final long lengthInBits)
                 throws IOException {
             final BigInteger ibaStartInLongs = ibaStartInBits.divide(LONG_SIZE);
-            final BigInteger ibaEndInLongs =
-                    ibaStartInBits.add(BigInteger.valueOf(lengthInBits)).divide(LONG_SIZE);
-            final int lengthInLongs = ibaEndInLongs
-                    .subtract(ibaStartInLongs)
-                    .add(BigInteger.ONE)
-                    .min(BigInteger.valueOf(Integer.MAX_VALUE))
-                    .intValue();
+            final int ibaStartOffsetInBits = ibaStartInBits.remainder(LONG_SIZE).intValueExact();
+            final int sourceOffsetInBits = firstLongOffsetInBits + ibaStartOffsetInBits;
+
+            final BigInteger requiredLengthInLongs = BigInteger.valueOf(sourceOffsetInBits)
+                    .add(BigInteger.valueOf(lengthInBits))
+                    .add(LONG_SIZE_MINUS_ONE)
+                    .divide(LONG_SIZE);
+            final int lengthInLongs = requiredLengthInLongs.intValueExact();
+
             final long[] tempArray = new long[lengthInLongs];
 
             longIba.get(tempArray, 0, ibaStartInLongs, lengthInLongs);
 
-            BitIlaUtil.copy(array, arrayOffsetInBits, tempArray, firstLongOffsetInBits, lengthInBits);
+            BitIlaUtil.copy(array, arrayOffsetInBits, tempArray, sourceOffsetInBits, lengthInBits);
         }
     }
 }
